@@ -13,7 +13,6 @@ aux-display pandadx9
 aux-display p3tinydisplay
 
 # Models:
-model-path resources/
 model-cache-models #f
 model-cache-textures #f
 default-model-extension .bam
