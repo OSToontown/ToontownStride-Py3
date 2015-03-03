@@ -38,7 +38,6 @@ from otp.otpbase import OTPGlobals
 from otp.otpbase import OTPLauncherGlobals
 from otp.otpbase import OTPLocalizer
 from otp.otpgui import OTPDialog
-from otp.uberdog import OtpAvatarManager
 from toontown.chat.ChatGlobals import *
 
 
@@ -999,12 +998,10 @@ class OTPClientRepository(ClientRepositoryBase):
     def _requestAvatarList(self):
         self.csm.requestAvatars()
         self.waitForDatabaseTimeout(requestName='WaitForAvatarList')
-        self.acceptOnce(OtpAvatarManager.OtpAvatarManager.OnlineEvent, self._requestAvatarList)
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def exitWaitForAvatarList(self):
         self.cleanupWaitingForDatabase()
-        self.ignore(OtpAvatarManager.OtpAvatarManager.OnlineEvent)
         self.handler = None
         return
 
