@@ -667,24 +667,8 @@ class TalkAssistant(DirectObject.DirectObject):
         return error
 
     def sendPlayerWhisperSpeedChat(self, type, messageIndex, receiverId):
-        error = None
-        if type == SPEEDCHAT_NORMAL:
-            base.cr.speedchatRelay.sendSpeedchat(receiverId, messageIndex)
-            message = self.SCDecoder.decodeSCStaticTextMsg(messageIndex)
-        elif type == SPEEDCHAT_EMOTE:
-            base.cr.speedchatRelay.sendSpeedchatEmote(receiverId, messageIndex)
-            message = self.SCDecoder.decodeSCEmoteWhisperMsg(messageIndex, localAvatar.getName())
-            return
-        elif type == SPEEDCHAT_CUSTOM:
-            base.cr.speedchatRelay.sendSpeedchatCustom(receiverId, messageIndex)
-            message = self.SCDecoder.decodeSCCustomMsg(messageIndex)
-        if self.logWhispers:
-            receiverName = self.findName(receiverId, 1)
-            newMessage = TalkMessage(self.countMessage(), self.stampTime(), message, localAvatar.doId, localAvatar.getName(), localAvatar.DISLid, localAvatar.DISLname, None, None, receiverId, receiverName, TALK_ACCOUNT, None)
-            self.historyComplete.append(newMessage)
-            self.addToHistoryDoId(newMessage, localAvatar.doId)
-            messenger.send('NewOpenMessage', [newMessage])
-        return error
+        # TODO: Remove Player system
+        return None
 
     def sendGuildSpeedChat(self, type, msgIndex):
         error = None

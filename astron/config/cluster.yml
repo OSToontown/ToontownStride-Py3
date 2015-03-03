@@ -39,10 +39,6 @@ uberdogs:
       id: 4666
       anonymous: false
 
-    - class: TTSpeedchatRelay
-      id: 4712
-      anonymous: false
-
     - class: DistributedDeliveryManager
       id: 4683
       anonymous: false

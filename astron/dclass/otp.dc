@@ -22,7 +22,6 @@ from otp.snapshot import SnapshotDispatcher/AI/UD
 from otp.snapshot import SnapshotRenderer/AI/UD
 from otp.uberdog import OtpAvatarManager/AI/UD
 from otp.chat import ChatAgent/UD
-from otp.uberdog import SpeedchatRelay/UD
 from otp.distributed import CentralLogger/AI/UD
 from otp.status import StatusDatabase/UD
 from otp.avatar import AvatarHandle
@@ -470,10 +469,6 @@ dclass SnapshotDispatcher : DistributedObject {
 dclass SnapshotRenderer : DistributedObject {
   online();
   requestRender(uint32, uint32, string);
-};
-
-dclass SpeedchatRelay : DistributedObject, TalkPath_account {
-  forwardSpeedchat(uint32, uint8, uint32 [], uint32, string(0-256), uint8) clsend;
 };
 
 dclass CentralLogger : DistributedObject {

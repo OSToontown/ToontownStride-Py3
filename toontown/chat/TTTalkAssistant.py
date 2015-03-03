@@ -25,17 +25,8 @@ class TTTalkAssistant(TalkAssistant):
         TalkAssistant.clearHistory(self)
 
     def sendPlayerWhisperToonTaskSpeedChat(self, taskId, toNpcId, toonProgress, msgIndex, receiverId):
-        error = None
-        base.cr.speedchatRelay.sendSpeedchatToonTask(receiverId, taskId, toNpcId, toonProgress, msgIndex)
-        message = TTSCDecoders.decodeTTSCToontaskMsg(taskId, toNpcId, toonProgress, msgIndex)
-        if self.logWhispers:
-            receiverName = self.findName(receiverId, 1)
-            newMessage = TalkMessage(self.countMessage(), self.stampTime(), message, localAvatar.doId, localAvatar.getName(), localAvatar.DISLid, localAvatar.DISLname, None, None, receiverId, receiverName, TALK_ACCOUNT, None)
-            self.historyComplete.append(newMessage)
-            self.addToHistoryDoId(newMessage, localAvatar.doId)
-            self.addToHistoryDISLId(newMessage, base.cr.accountDetailRecord.playerAccountId)
-            messenger.send('NewOpenMessage', [newMessage])
-        return error
+        # TODO: Remove Player system.
+        return None
 
     def sendToonTaskSpeedChat(self, taskId, toNpcId, toonProgress, msgIndex):
         error = None

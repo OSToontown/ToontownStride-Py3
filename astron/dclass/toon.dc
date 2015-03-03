@@ -259,7 +259,6 @@ from toontown.parties import DistributedPartyValentineJukeboxActivity/AI
 from toontown.parties import DistributedPartyValentineJukebox40Activity/AI
 from toontown.friends import TTPlayerFriendsManager/UD
 from toontown.friends import TTUFriendsManager/UD
-from toontown.uberdog import TTSpeedchatRelay/UD
 from toontown.safezone import DistributedGolfKart/AI
 from toontown.safezone import DistributedPicnicBasket/AI
 from toontown.safezone import DistributedGameTable/AI
@@ -2891,9 +2890,6 @@ dclass TTAvatarFriendsManager : AvatarFriendsManager {
 };
 
 dclass TTPlayerFriendsManager : PlayerFriendsManager {
-};
-
-dclass TTSpeedchatRelay : SpeedchatRelay {
 };
 
 dclass DistributedGolfKart : DistributedObject {
