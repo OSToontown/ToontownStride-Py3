@@ -36,11 +36,17 @@ class CatalogGUI(NodePath, DirectObject):
         guiItems = loader.loadModel('phase_5.5/models/gui/catalog_gui')
         hangupGui = guiItems.find('**/hangup')
         hangupRolloverGui = guiItems.find('**/hangup_rollover')
-        self.hangup = DirectButton(self, relief=None, pos=(2.28, 0, -1.3),
+        self.hangup = DirectButton(self,
+                                   relief=None,
+                                   pos=(-0.158, 0, 0.17),
+                                   parent=base.a2dBottomRight,
                                    image=[hangupGui, hangupRolloverGui, hangupRolloverGui, hangupGui],
                                    text=['', TTLocalizer.CatalogHangUp, TTLocalizer.CatalogHangUp],
-                                   text_fg=Vec4(1), text_scale=0.07, text_pos=(0.0, 0.14),
-                                   command=self.hangUp)
+                                   text_fg=Vec4(1),
+                                   text_scale=0.07,
+                                   text_pos=(0.0, 0.14),
+                                   command=self.hangUp
+                                   )
         guiItems.removeNode()
 
     def setCurrentTab(self, tab):

@@ -327,3 +327,12 @@ def leftHand(prop=None):
             child.removeNode()
         requestedProp = globalPropPool.getProp(prop)
         requestedProp.reparentTo(leftHand)
+
+@magicWord(category=CATEGORY_PROGRAMMER, types=[])
+def getPos():
+    """
+    print av position
+    """
+    target = spellbook.getTarget()
+    pos = target.getPos()
+    print(pos)
