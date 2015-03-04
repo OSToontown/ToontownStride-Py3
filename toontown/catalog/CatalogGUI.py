@@ -39,7 +39,6 @@ class CatalogGUI(NodePath, DirectObject):
         self.hangup = DirectButton(self,
                                    relief=None,
                                    pos=(-0.158, 0, 0.17),
-                                   parent=base.a2dBottomRight,
                                    image=[hangupGui, hangupRolloverGui, hangupRolloverGui, hangupGui],
                                    text=['', TTLocalizer.CatalogHangUp, TTLocalizer.CatalogHangUp],
                                    text_fg=Vec4(1),
@@ -47,6 +46,7 @@ class CatalogGUI(NodePath, DirectObject):
                                    text_pos=(0.0, 0.14),
                                    command=self.hangUp
                                    )
+        self.hangup.reparentTo(base.a2dBottomRight)
         guiItems.removeNode()
 
     def setCurrentTab(self, tab):
