@@ -20,7 +20,6 @@ from otp.distributed import DistributedDirectory/AI
 from otp.distributed import DistributedTestObject/AI
 from otp.snapshot import SnapshotDispatcher/AI/UD
 from otp.snapshot import SnapshotRenderer/AI/UD
-from otp.uberdog import OtpAvatarManager/AI/UD
 from otp.chat import ChatAgent/UD
 from otp.distributed import CentralLogger/AI/UD
 from otp.status import StatusDatabase/UD
@@ -257,27 +256,6 @@ dclass DistributedPlayer : DistributedAvatar {
 dclass MagicWordManager : DistributedObject {
   sendMagicWord(string, uint32) airecv clsend;
   sendMagicWordResponse(string);
-};
-
-dclass OtpAvatarManager : DistributedObject {
-  online();
-  requestAvatarList(uint32) airecv clsend;
-  rejectAvatarList(uint32);
-  avatarListResponse(blob);
-  requestAvatarSlot(uint32, uint32, uint8) clsend airecv;
-  rejectAvatarSlot(uint32, uint32, uint8);
-  avatarSlotResponse(uint32, uint8);
-  requestPlayAvatar(uint32, uint32, uint32) clsend airecv;
-  rejectPlayAvatar(uint32, uint32);
-  playAvatarResponse(uint32, uint32, uint8, uint8);
-  rejectCreateAvatar(uint32);
-  createAvatarResponse(uint32, uint32, uint8, uint8);
-  requestRemoveAvatar(uint32, uint32, uint32, string(0-256)) airecv clsend;
-  rejectRemoveAvatar(uint32);
-  removeAvatarResponse(uint32, uint32);
-  requestShareAvatar(uint32, uint32, uint32, uint8) airecv clsend;
-  rejectShareAvatar(uint32);
-  shareAvatarResponse(uint32, uint32, uint8);
 };
 
 dclass ChatAgent : DistributedObject {
