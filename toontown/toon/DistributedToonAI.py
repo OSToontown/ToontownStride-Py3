@@ -424,30 +424,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
                 'suspicious', self.doId, 'Invalid DNA string.')
 
     def verifyDNA(self):
-        valid = True
-        if self.isPlayerControlled():
-            if self.dna.gloveColor != 0:
-                self.dna.gloveColor = 0
-                valid = False
-            bodyColors = (self.dna.headColor, self.dna.armColor, self.dna.legColor)
-            if (26 in bodyColors) or (0 in bodyColors):
-                if (bodyColors[1] != bodyColors[0]) or (bodyColors[2] != bodyColors[0]):
-                    self.dna.armColor = bodyColors[0]
-                    self.dna.legColor = bodyColors[0]
-                    valid = False
-                if ((self.dna.getAnimal() != 'cat') and (26 in bodyColors)) or (
-                    (self.dna.getAnimal() != 'bear') and (0 in bodyColors)):
-                    if self.dna.getGender() == 'm':
-                        color = ToonDNA.defaultBoyColorList[0]
-                    else:
-                        color = ToonDNA.defaultGirlColorList[0]
-                    self.dna.headColor = color
-                    self.dna.armColor = color
-                    self.dna.legColor = color
-                    valid = False
-            if not valid:
-                self.b_setDNAString(self.dna.makeNetString())
-        return valid
+        return True
 
     def getDNAString(self):
         return self.dna.makeNetString()
@@ -1900,7 +1877,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             simbase.air.writeServerEvent('suspicious', self.doId, 'Toon teleporting to zone %s they do not have access to.' % zoneId)
             if simbase.config.GetBool('want-ban-teleport', False):
                 commentStr = 'Toon %s teleporting to a zone %s they do not have access to' % (self.doId, zoneId)
-                #simbase.air.banManager.ban(self.doId, self.DISLid, commentStr)
+                simbase.air.banManager.ban(self.doId, self.DISLid, commentStr)
 
     def setTeleportOverride(self, flag):
         self.teleportOverride = flag
@@ -2384,7 +2361,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             commentStr = 'User %s has negative money %s' % (self.doId, money)
             dislId = self.DISLid
             if simbase.config.GetBool('want-ban-negative-money', False):
-                #simbase.air.banManager.ban(self.doId, dislId, commentStr)
+                simbase.air.banManager.ban(self.doId, dislId, commentStr)
                 pass
         self.money = money
 
@@ -3606,14 +3583,14 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             if 'invalid msgIndex in setSCSinging:' in eventName:
                 if senderId == self.doId:
                     commentStr = 'Toon %s trying to call setSCSinging' % self.doId
-                    #simbase.air.banManager.ban(self.doId, self.DISLid, commentStr)
+                    simbase.air.banManager.ban(self.doId, self.DISLid, commentStr)
                 else:
                     self.notify.warning('logSuspiciousEvent event=%s senderId=%s != self.doId=%s' % (eventName, senderId, self.doId))
         if simbase.config.GetBool('want-ban-setAnimState', True):
             if eventName.startswith('setAnimState: '):
                 if senderId == self.doId:
                     commentStr = 'Toon %s trying to call setAnimState' % self.doId
-                    #simbase.air.banManager.ban(self.doId, self.DISLid, commentStr)
+                    simbase.air.banManager.ban(self.doId, self.DISLid, commentStr)
                 else:
                     self.notify.warning('logSuspiciousEvent event=%s senderId=%s != self.doId=%s' % (eventName, senderId, self.doId))
 
@@ -4044,7 +4021,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         if self.WantOldGMNameBan:
             if self.isGenerated():
                 self._checkOldGMName()
-        #self._updateGMName()
+        self._updateGMName()
 
     def _checkOldGMName(self):
         if '$' in set(self.name):
@@ -4074,7 +4051,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
                     if simbase.config.GetBool('want-ban-blacklist-module', False):
                         commentStr = 'User has blacklist module: %s attached to their game process' % module
                         dislId = self.DISLid
-                        #simbase.air.banManager.ban(self.doId, dislId, commentStr)
+                        simbase.air.banManager.ban(self.doId, dislId, commentStr)
                 else:
                     self.air.writeServerEvent('suspicious', avId, 'Unknown module %s loaded into process.' % module)
 
