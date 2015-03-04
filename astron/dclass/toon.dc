@@ -286,9 +286,7 @@ from toontown.uberdog.DistributedMailManager/AI/UD import DistributedMailManager
 from toontown.uberdog.DistributedPartyManager/AI/UD import DistributedPartyManager/AI/UD
 from toontown.rpc.AwardManager/UD import AwardManager/UD
 from toontown.uberdog.DistributedCpuInfoMgr/AI/UD import DistributedCpuInfoMgr/AI/UD
-from toontown.uberdog.DistributedSecurityMgr/AI/UD import DistributedSecurityMgr/AI/UD
 from toontown.uberdog.DistributedInGameNewsMgr/AI/UD import DistributedInGameNewsMgr/AI/UD
-from toontown.uberdog.DistributedWhitelistMgr/AI/UD import DistributedWhitelistMgr/AI/UD
 from toontown.coderedemption.TTCodeRedemptionMgr/AI/UD import TTCodeRedemptionMgr/AI/UD
 from toontown.distributed.NonRepeatableRandomSourceAI import NonRepeatableRandomSourceAI
 from toontown.distributed.NonRepeatableRandomSourceUD import NonRepeatableRandomSourceUD
@@ -3307,11 +3305,6 @@ dclass DistributedCpuInfoMgr : DistributedObjectGlobal {
   setCpuInfoToUd(uint32, uint32, string, string);
 };
 
-dclass DistributedSecurityMgr : DistributedObjectGlobal {
-  requestAccountId(uint32, uint32, uint32);
-  requestAccountIdResponse(uint32, uint32) airecv;
-};
-
 dclass NonRepeatableRandomSourceClient {
   getRandomSamplesReply(uint32, uint32 []) airecv;
 };
@@ -3334,12 +3327,6 @@ dclass DistributedInGameNewsMgr : DistributedObjectGlobal {
   setLatestIssueStr(string) required broadcast ram;
   inGameNewsMgrAIStartingUp(uint32, uint32);
   newIssueUDtoAI(string) airecv;
-};
-
-dclass DistributedWhitelistMgr : DistributedObjectGlobal {
-  updateWhitelist() broadcast;
-  whitelistMgrAIStartingUp(uint32, uint32);
-  newListUDtoAI() airecv;
 };
 
 struct Friend
