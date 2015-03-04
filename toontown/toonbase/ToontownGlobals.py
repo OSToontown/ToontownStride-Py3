@@ -189,7 +189,7 @@ SellbotHQ = 11000
 SellbotLobby = 11100
 SellbotFactoryExt = 11200
 SellbotFactoryInt = 11500
-SellbotBrutalFactoryInt = 11600
+SellbotMegaCorpInt = 11600
 CashbotHQ = 12000
 CashbotLobby = 12100
 CashbotMintIntA = 12500
@@ -298,7 +298,7 @@ FT_Arm = 'arm'
 FT_Torso = 'torso'
 factoryId2factoryType = {MockupFactoryId: FT_FullSuit,
  SellbotFactoryInt: FT_FullSuit,
- SellbotBrutalFactoryInt: FT_FullSuit,
+ SellbotMegaCorpInt: FT_FullSuit,
  LawbotOfficeInt: FT_FullSuit}
 StreetNames = TTLocalizer.GlobalStreetNames
 StreetBranchZones = StreetNames.keys()

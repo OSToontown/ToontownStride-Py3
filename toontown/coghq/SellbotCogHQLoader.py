@@ -6,7 +6,7 @@ from direct.gui import DirectGui
 from toontown.toonbase import TTLocalizer
 from toontown.toon import Toon
 from direct.fsm import State
-import BrutalFactoryInterior
+import MegaCorpInterior
 import FactoryExterior
 import FactoryInterior
 import SellbotHQExterior
@@ -25,7 +25,7 @@ class SellbotCogHQLoader(CogHQLoader.CogHQLoader):
             state.addTransition('factoryExterior')
 
         self.fsm.addState(State.State('factoryInterior', self.enterFactoryInterior, self.exitFactoryInterior, ['quietZone', 'factoryExterior']))
-        self.fsm.addState(State.State('brutalFactoryInterior', self.enterBrutalFactoryInterior, self.exitBrutalFactoryInterior, ['quietZone', 'factoryExterior']))        
+        self.fsm.addState(State.State('megaCorpInterior', self.enterMegaCorpInterior, self.exitMegaCorpInterior, ['quietZone', 'factoryExterior']))        
         for stateName in ['quietZone']:
             state = self.fsm.getStateNamed(stateName)
             state.addTransition('factoryInterior')
@@ -168,11 +168,11 @@ class SellbotCogHQLoader(CogHQLoader.CogHQLoader):
         self.exitPlace()
         self.placeClass = None
 
-    def enterBrutalFactoryInterior(self, requestStatus):
-        self.placeClass = BrutalFactoryInterior.BrutalFactoryInterior
+    def enterMegaCorpInterior(self, requestStatus):
+        self.placeClass = MegaCorpInterior.MegaCorpInterior
         self.enterPlace(requestStatus)
         
-    def exitBrutalFactoryInterior(self):
+    def exitMegaCorpInterior(self):
         self.exitPlace()
         self.placeClass = None    
 

@@ -120,7 +120,7 @@ GlobalStreetNames = {20000: ('to', 'on', 'Tutorial Terrace'),
  11100: ('to the', 'in the', 'Sellbot HQ Lobby'),
  11200: ('to the', 'in the', 'Sellbot Factory'),
  11500: ('to the', 'in the', 'Sellbot Factory'),
- 11600: ('to the', 'in the', 'Brutal Sellbot Factory'),
+ 11600: ('to the', 'in the', 'Sellbot Megacorp'),
  12000: ('to', 'in', 'Cashbot Train Yard'),
  12100: ('to the', 'in the', 'Cashbot HQ Lobby'),
  12500: ('to the', 'in the', 'Cashbot Coin Mint'),
@@ -158,7 +158,7 @@ SellbotSideEntrance = 'Side Entrance'
 Office = 'Office'
 FactoryNames = {0: 'Factory Mockup',
  11500: 'Sellbot Cog Factory',
- 11600: 'Brutal Sellbot Cog Factory',
+ 11600: 'Sellbot Cog Megacorp',
  13300: 'Lawbot Cog Office'}
 FactoryTypeLeg = 'Leg'
 FactoryTypeArm = 'Arm'
@@ -9578,8 +9578,7 @@ ElevatorCashBotMint2 = 'Bullion Mint'
 ElevatorSellBotBoss = 'Sellbot Towers'
 ElevatorSellBotFactory0 = 'Front Entrance'
 ElevatorSellBotFactory1 = 'Side Entrance'
-ElevatorSellBotFactory2 = 'Brutal Front Entrance'
-ElevatorSellBotFactory3 = 'Brutal Side Entrance'
+ElevatorSellBotFactory2 = 'Megacorp Entrance'
 ElevatorLawBotBoss = 'Lawbot Courthouse'
 ElevatorLawBotCourse0 = 'Office A'
 ElevatorLawBotCourse1 = 'Office B'

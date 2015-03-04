@@ -180,8 +180,10 @@ def factoryWarp(zoneNum):
     """
     Warp to a specific factory zone.
     """
-    factory = base.cr.doFind('DistributedFactory')
-    if (not factory) or (not isinstance(factory, DistributedFactory)):
-        return 'You must be in a factory.'
+    factory = [base.cr.doFind('DistributedFactory'), base.cr.doFind('DistributedMegaCorp')]
+    for f in factory:
+        if (not f) or (not isinstance(f, DistributedFactory)):
+            return 'You must be in a factory.'
+        factory = f
     factory.warpToZone(zoneNum)
     return 'Warped to zone: %d' % zoneNum

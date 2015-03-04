@@ -18,13 +18,13 @@ CogSpecModules = {ToontownGlobals.SellbotFactoryInt: SellbotLegFactoryCogs,
  ToontownGlobals.LawbotOfficeInt: LawbotLegFactoryCogs}
 
 if config.GetBool('want-brutal-factory', True):
-    import SellbotBrutalLegFactorySpec
-    import SellbotBrutalLegFactoryCogs
-    FactorySpecModules[ToontownGlobals.SellbotBrutalFactoryInt] = SellbotBrutalLegFactorySpec
-    CogSpecModules[ToontownGlobals.SellbotBrutalFactoryInt] = SellbotBrutalLegFactoryCogs
+    import SellbotMegaCorpLegSpec
+    import SellbotMegaCorpLegCogs
+    FactorySpecModules[ToontownGlobals.SellbotMegaCorpInt] = SellbotMegaCorpLegSpec
+    CogSpecModules[ToontownGlobals.SellbotMegaCorpInt] = SellbotMegaCorpLegCogs
 
 if __dev__:
     import FactoryMockupSpec
-    FactorySpecModules[ToontownGlobals.MockupFactoryId] = FactoryMockupSpec
     import FactoryMockupCogs
+    FactorySpecModules[ToontownGlobals.MockupFactoryId] = FactoryMockupSpec
     CogSpecModules[ToontownGlobals.MockupFactoryId] = FactoryMockupCogs
