@@ -49,7 +49,6 @@ from toontown.building import DistributedBuildingQueryMgr
 from ToontownMsgTypes import *
 import HoodMgr
 import PlayGame
-from toontown.toontowngui import ToontownLoadingBlocker
 from toontown.hood import StreetSign
 import random
 
@@ -216,8 +215,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.avChoice.load(self.isPaid())
         self.avChoice.enter()
         self.accept(self.avChoiceDoneEvent, self.__handleAvatarChooserDone, [avList])
-        if config.GetBool('want-gib-loader', 1):
-            self.loadingBlocker = ToontownLoadingBlocker.ToontownLoadingBlocker(avList)
         return
 
     def __handleAvatarChooserDone(self, avList, doneStatus):

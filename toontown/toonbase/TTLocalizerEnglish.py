@@ -4107,7 +4107,6 @@ LauncherStartingGame = 'Starting Toontown Unlimited...'
 LauncherRecoverFiles = 'Updating Toontown Unlimited. Recovering files...'
 LauncherCheckUpdates = 'Checking for updates for ' + LauncherProgress
 LauncherVerifyPhase = 'Updating Toontown Unlimited...'
-LoadingDownloadWatcherUpdate = 'Loading %s'
 AvatarChoiceMakeAToon = 'Make A\nToon'
 AvatarChoicePlayThisToon = 'Play\nThis Toon'
 AvatarChoiceSubscribersOnly = 'Subscribe'
@@ -8294,39 +8293,6 @@ FireworksNewYearsEveBeginning = lToonHQ + ': Happy New Year! Enjoy the fireworks
 FireworksNewYearsEveEnding = lToonHQ + ': Hope you enjoyed the show! Have a Toontastic New Year!'
 FireworksComboBeginning = lToonHQ + ': Enjoy lots of Laffs with Toon fireworks!'
 FireworksComboEnding = lToonHQ + ': Thank you, Toons! Hope you enjoyed the show!'
-BlockerTitle = 'LOADING TOONTOWN...'
-BlockerLoadingTexts = ['Rewriting history',
- 'Baking pie crusts',
- 'Heating pie filling',
- 'Loading Doodle chow',
- 'Stringing Jungle Vines',
- 'Uncaging those spiders who crawl down jungle vines',
- 'Planting squirting flower seeds',
- 'Stretching trampolines',
- 'Herding pigs',
- "Tweaking 'SPLAT' sounds",
- 'Cleaning Hypno-glasses',
- 'Unbottling ink for Toon News',
- 'Clipping TNT fuses',
- "Setting up 'Under Construction' sign in Acorn Acres",
- 'Waking Donald Duck',
- 'Teaching new moves to dancing fire hydrants',
- 'Binding Shticker Books',
- 'Analyzing quacks',
- 'Harvesting Jellybean pods',
- 'Emptying fish buckets',
- 'Corralling trashcan trash',
- 'Spreading Cog grease',
- 'Polishing kart trophies',
- 'Balancing scale for weighing 1 Ton weights',
- 'Practicing Victory Dances',
- 'Preparing wackiness',
- "Giving Mickey Mouse the 'five minutes' sign",
- 'Testing white gloves',
- 'Bending underwater rings',
- 'Spooling red tape',
- 'Freezing Brrrgh ice',
- 'Tuning falling pianos']
 TIP_NONE = 0
 TIP_GENERAL = 1
 TIP_STREET = 2

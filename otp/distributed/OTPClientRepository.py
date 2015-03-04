@@ -1199,9 +1199,7 @@ class OTPClientRepository(ClientRepositoryBase):
         return
 
     def detectLeakedEvents(self, extraHooks = None):
-        allowedHooks = ['destroy-DownloadWatcherBar',
-         'destroy-DownloadWatcherText',
-         'destroy-fade',
+        allowedHooks = ['destroy-fade',
          'f9',
          'meta-q',
          'meta-q-repeat',

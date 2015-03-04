@@ -20,7 +20,6 @@ import ToontownGlobals
 import ToontownLoader
 from otp.otpbase import OTPBase
 from otp.otpbase import OTPGlobals
-from toontown.launcher import ToontownDownloadWatcher
 from toontown.margins import MarginGlobals
 from toontown.margins.MarginManager import MarginManager
 from toontown.nametag import NametagGlobals
@@ -389,18 +388,9 @@ class ToonBase(OTPBase.OTPBase):
             cell.setActive(active)
         self.marginManager.reorganize()
 
-    def cleanupDownloadWatcher(self):
-        self.downloadWatcher.cleanup()
-        self.downloadWatcher = None
-
     def startShow(self, cr, launcherServer = None):
         self.cr = cr
         base.graphicsEngine.renderFrame()
-        self.downloadWatcher = ToontownDownloadWatcher.ToontownDownloadWatcher(TTLocalizer.LauncherPhaseNames)
-        if launcher.isDownloadComplete():
-            self.cleanupDownloadWatcher()
-        else:
-            self.acceptOnce('launcherAllPhasesComplete', self.cleanupDownloadWatcher)
         gameServer = os.environ.get('TTU_GAMESERVER', 'localhost')
         # Get the base port.
         serverPort = base.config.GetInt('server-port', 7199)
