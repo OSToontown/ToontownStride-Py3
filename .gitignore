@@ -1,9 +1,6 @@
 # Python artifacts:
 *.pyc
 
-# Windows Files
-*.exe
-
 # Eclipse IDE:
 .project
 .pydevproject
