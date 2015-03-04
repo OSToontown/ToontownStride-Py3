@@ -20,7 +20,6 @@ from otp.distributed import DistributedDirectory/AI
 from otp.distributed import DistributedTestObject/AI
 from otp.chat import ChatAgent/UD
 from otp.distributed import CentralLogger/AI/UD
-from otp.status import StatusDatabase/UD
 from otp.avatar import AvatarHandle
 
 typedef uint8 bool;
@@ -435,11 +434,6 @@ dclass PlayerFriendsManager : DistributedObject, TalkPath_account {
 dclass CentralLogger : DistributedObject {
   sendMessage(string(0-256), string(0-1024), uint32, uint32) clsend;
   logAIGarbage() airecv;
-};
-
-dclass StatusDatabase : DistributedObject {
-  requestOfflineAvatarStatus(uint32 []) airecv clsend;
-  recvOfflineAvatarStatus(uint32, uint32);
 };
 
 dclass CallbackObject {
