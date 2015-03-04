@@ -145,7 +145,7 @@ from toontown.coghq import LobbyManager/AI
 from otp.level import DistributedLevel/AI
 from otp.level import DistributedEntity/AI
 from otp.level import DistributedInteractiveEntity/AI
-from toontown.coghq import DistributedBrutalFactory/AI
+from toontown.coghq import DistributedMegaCorp/AI
 from toontown.coghq import DistributedFactory/AI
 from toontown.coghq import DistributedLawOffice/AI
 from toontown.coghq import DistributedLawOfficeFloor/AI
@@ -2210,7 +2210,7 @@ dclass DistributedFactory : DistributedLevel {
   setDefeated() broadcast ram;
 };
 
-dclass DistributedBrutalFactory: DistributedFactory {
+dclass DistributedMegaCorp: DistributedFactory {
 };
 
 dclass DistributedLawOffice : DistributedObject {
