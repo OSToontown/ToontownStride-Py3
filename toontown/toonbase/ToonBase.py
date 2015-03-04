@@ -20,7 +20,6 @@ import ToontownGlobals
 import ToontownLoader
 from otp.otpbase import OTPBase
 from otp.otpbase import OTPGlobals
-from otp.otpbase import OTPLauncherGlobals
 from toontown.launcher import ToontownDownloadWatcher
 from toontown.margins import MarginGlobals
 from toontown.margins.MarginManager import MarginManager
@@ -473,12 +472,6 @@ class ToonBase(OTPBase.OTPBase):
 
     def setExitErrorCode(self, code):
         self.exitErrorCode = code
-        if os.name == 'nt':
-            exitCode2exitPage = {OTPLauncherGlobals.ExitEnableChat: 'chat',
-             OTPLauncherGlobals.ExitSetParentPassword: 'setparentpassword',
-             OTPLauncherGlobals.ExitPurchase: 'purchase'}
-            if code in exitCode2exitPage:
-                launcher.setRegistry('EXIT_PAGE', exitCode2exitPage[code])
 
     def getExitErrorCode(self):
         return self.exitErrorCode

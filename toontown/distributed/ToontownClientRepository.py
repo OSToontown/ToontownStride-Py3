@@ -25,7 +25,6 @@ from otp.distributed.OtpDoGlobals import *
 from otp.distributed import OtpDoGlobals
 from otp.otpbase import OTPGlobals
 from otp.otpbase import OTPLocalizer
-from otp.otpbase import OTPLauncherGlobals
 from otp.avatar.Avatar import teleportNotify
 from toontown.toonbase.ToonBaseGlobal import *
 from toontown.toonbase.ToontownGlobals import *

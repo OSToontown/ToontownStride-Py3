@@ -4,8 +4,6 @@ from direct.fsm import State
 from direct.gui.DirectGui import *
 from direct.showbase import DirectObject
 from pandac.PandaModules import *
-
-from otp.login import LeaveToPayDialog
 from otp.login import PrivacyPolicyPanel
 from otp.login import SecretFriendsInfoPanel
 from otp.otpbase import OTPLocalizer
@@ -59,7 +57,6 @@ class ChatManager(DirectObject.DirectObject):
         self.chatPrivacyPolicy = None
         self.secretChatActivated = None
         self.problemActivatingChat = None
-        self.leaveToPayDialog = None
         self.fsm = ClassicFSM.ClassicFSM('chatManager', [State.State('off', self.enterOff, self.exitOff),
          State.State('mainMenu', self.enterMainMenu, self.exitMainMenu),
          State.State('speedChat', self.enterSpeedChat, self.exitSpeedChat),
@@ -70,7 +67,6 @@ class ChatManager(DirectObject.DirectObject):
          State.State('whisperSpeedChat', self.enterWhisperSpeedChat, self.exitWhisperSpeedChat),
          State.State('whisperSpeedChatPlayer', self.enterWhisperSpeedChatPlayer, self.exitWhisperSpeedChatPlayer),
          State.State('openChatWarning', self.enterOpenChatWarning, self.exitOpenChatWarning),
-         State.State('leaveToPayDialog', self.enterLeaveToPayDialog, self.exitLeaveToPayDialog),
          State.State('unpaidChatWarning', self.enterUnpaidChatWarning, self.exitUnpaidChatWarning),
          State.State('noSecretChatAtAll', self.enterNoSecretChatAtAll, self.exitNoSecretChatAtAll),
          State.State('noSecretChatAtAllAndNoWhitelist', self.enterNoSecretChatAtAllAndNoWhitelist, self.exitNoSecretChatAtAllAndNoWhitelist),
@@ -409,19 +405,6 @@ class ChatManager(DirectObject.DirectObject):
     def exitOpenChatWarning(self):
         self.notify.error('called exitOpenChatWarning() on parent class')
 
-    def enterLeaveToPayDialog(self):
-        if self.leaveToPayDialog == None:
-            self.leaveToPayDialog = LeaveToPayDialog.LeaveToPayDialog(self.paidNoParentPassword)
-            self.leaveToPayDialog.setCancel(self.__handleLeaveToPayCancel)
-        self.leaveToPayDialog.show()
-        return
-
-    def exitLeaveToPayDialog(self):
-        if self.leaveToPayDialog:
-            self.leaveToPayDialog.destroy()
-            self.leaveToPayDialog = None
-        return
-
     def enterUnpaidChatWarning(self):
         self.notify.error('called enterUnpaidChatWarning() on parent class')
 
@@ -505,9 +488,6 @@ class ChatManager(DirectObject.DirectObject):
 
     def exitTrueFriendTeaserPanel(self):
         self.notify.error('called exitTrueFriendTeaserPanel () on parent class')
-
-    def __handleLeaveToPayCancel(self):
-        self.fsm.request('mainMenu')
 
     def __secretFriendsInfoDone(self):
         self.fsm.request('activateChat')

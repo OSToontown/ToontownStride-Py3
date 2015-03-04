@@ -35,7 +35,6 @@ from otp.login import HTTPUtil
 from otp.login import LoginTTUAccount
 from otp.login.CreateAccountScreen import CreateAccountScreen
 from otp.otpbase import OTPGlobals
-from otp.otpbase import OTPLauncherGlobals
 from otp.otpbase import OTPLocalizer
 from otp.otpgui import OTPDialog
 from toontown.chat.ChatGlobals import *
@@ -1104,10 +1103,7 @@ class OTPClientRepository(ClientRepositoryBase):
         leakedGarbage = self.detectLeakedGarbage()
         if leakedTasks or leakedEvents or leakedIvals or leakedGarbage:
             errorCode = base.getExitErrorCode()
-            if errorCode >= OTPLauncherGlobals.NonErrorExitStateStart and errorCode <= OTPLauncherGlobals.NonErrorExitStateEnd:
-                logFunc = self.notify.warning
-                allowExit = True
-            elif __debug__ and not PythonUtil.configIsToday('temp-disable-leak-detection'):
+            if __debug__ and not PythonUtil.configIsToday('temp-disable-leak-detection'):
                 logFunc = self.notify.error
                 allowExit = False
             else:

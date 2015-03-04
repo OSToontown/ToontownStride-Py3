@@ -493,10 +493,7 @@ class ToontownChatManager(ChatManager.ChatManager):
         self.fsm.request('mainMenu')
 
     def __handleUnpaidChatWarningPay(self):
-        if base.cr.isWebPlayToken():
-            self.fsm.request('leaveToPayDialog')
-        else:
-            self.fsm.request('mainMenu')
+        self.fsm.request('mainMenu')
 
     def __handleNoSecretChatAtAllOK(self):
         self.fsm.request('mainMenu')

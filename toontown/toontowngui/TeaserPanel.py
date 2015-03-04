@@ -7,7 +7,6 @@ import TTDialog
 from toontown.toonbase import TTLocalizer
 from direct.showbase import PythonUtil
 from direct.showbase.DirectObject import DirectObject
-from otp.login import LeaveToPayDialog
 Pages = {'otherHoods': (TTLocalizer.TeaserOtherHoods,),
  'typeAName': (TTLocalizer.TeaserTypeAName,),
  'sixToons': (TTLocalizer.TeaserSixToons,),
@@ -87,15 +86,7 @@ class TeaserPanel(DirectObject):
             self.doneFunc()
 
     def __handlePay(self):
-        if base.cr.isWebPlayToken() or __dev__:
-            if self.leaveDialog == None:
-                self.notify.debug('making LTP')
-                self.leaveDialog = LeaveToPayDialog.LeaveToPayDialog(0, doneFunc=self.doneFunc)
-            self.notify.debug('showing LTP')
-            self.leaveDialog.show()
-        else:
-            self.notify.error('You should not have a TeaserPanel without a PlayToken')
-        return
+        pass
 
     def destroy(self):
         self.cleanup()

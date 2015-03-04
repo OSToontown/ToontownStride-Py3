@@ -19,7 +19,6 @@ import Toon
 from otp.avatar import DistributedPlayer
 from otp.avatar import LocalAvatar
 from otp.avatar import PositionExaminer
-from otp.login import LeaveToPayDialog
 from otp.otpbase import OTPGlobals
 from toontown.achievements import AchievementGui
 from toontown.battle import Fanfare
@@ -438,8 +437,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
                     paidNoParentPassword = launcher and not launcher.getParentPasswordSet()
             else:
                 paidNoParentPassword = 0
-            self.leaveToPayDialog = LeaveToPayDialog.LeaveToPayDialog(paidNoParentPassword, self.purchaseButton.show)
-            self.leaveToPayDialog.show()
         else:
             self.notify.error('You should not get here without a PlayToken')
 
