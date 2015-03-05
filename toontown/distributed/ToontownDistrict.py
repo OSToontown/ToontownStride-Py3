@@ -10,6 +10,7 @@ class ToontownDistrict(DistributedDistrict.DistributedDistrict):
         self.avatarCount = 0
         self.newAvatarCount = 0
         self.invasionStatus = 0
+        self.suitStatus = ''
 
     def allowAHNNLog(self, allow):
         self.allowAHNN = allow

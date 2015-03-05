@@ -21,14 +21,18 @@ class DNABulkLoader:
 
 def loadDNABulk(dnaStorage, file):
     dnaLoader = DNALoader.DNALoader()
-    file = '../resources/' + file
+    file = 'resources/' + file
+    if config.GetBool('want-uplevel-res', False):
+        file = '../resources/' + file
     dnaLoader.loadDNAFile(dnaStorage, file)
     dnaLoader.destroy()
 
 def loadDNAFile(dnaStorage, file):
     print 'Reading DNA file...', file
     dnaLoader = DNALoader.DNALoader()
-    file = '../resources/' + file
+    file = 'resources/' + file
+    if config.GetBool('want-uplevel-res', False):
+        file = '../resources/' + file
     node = dnaLoader.loadDNAFile(dnaStorage, file)
     dnaLoader.destroy()
     if node.node().getNumChildren() > 0:
@@ -37,7 +41,9 @@ def loadDNAFile(dnaStorage, file):
 
 def loadDNAFileAI(dnaStorage, file):
     dnaLoader = DNALoader.DNALoader()
-    file = '../resources/' + file
+    file = 'resources/' + file
+    if config.GetBool('want-uplevel-res', False):
+        file = '../resources/' + file
     data = dnaLoader.loadDNAFileAI(dnaStorage, file)
     dnaLoader.destroy()
     return data
