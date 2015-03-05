@@ -2,7 +2,6 @@
 distribution dev
 
 # Art assets:
-want-uplevel-res #t
 model-path ../resources/
 
 # Server:
