@@ -75,15 +75,15 @@ want-suit-planners #t
 want-butterflies #f
 
 # Classic characters:
-want-classic-chars #f
-want-mickey #f
-want-donald-dock #f
-want-daisy #f
-want-minnie #f
-want-pluto #f
-want-donald-dreamland #f
-want-chip-and-dale #f
-want-goofy #f
+want-classic-chars #t
+want-mickey #t
+want-donald-dock #t
+want-daisy #t
+want-minnie #t
+want-pluto #t
+want-donald-dreamland #t
+want-chip-and-dale #t
+want-goofy #t
 
 # Trolley minigames:
 want-minigames #t
