@@ -646,36 +646,22 @@ class CodesTabPage(DirectFrame):
         if result == 0:
             self.resultPanel['image'] = self.resultPanelSuccessGui
             self.resultPanel['text'] = TTLocalizer.CdrResultSuccess
-        elif result == 1 or result == 3:
+        elif result == 1:
             self.resultPanel['image'] = self.resultPanelFailureGui
             self.resultPanel['text'] = TTLocalizer.CdrResultInvalidCode
         elif result == 2:
             self.resultPanel['image'] = self.resultPanelFailureGui
             self.resultPanel['text'] = TTLocalizer.CdrResultExpiredCode
-        elif result == 4:
+        elif result == 3:
             self.resultPanel['image'] = self.resultPanelErrorGui
-            if awardMgrResult == 0:
-                self.resultPanel['text'] = TTLocalizer.CdrResultSuccess
-            elif awardMgrResult == 1 or awardMgrResult == 2 or awardMgrResult == 15 or awardMgrResult == 16:
-                self.resultPanel['text'] = TTLocalizer.CdrResultUnknownError
-            elif awardMgrResult == 3 or awardMgrResult == 4:
+            if awardMgrResult == 1:
                 self.resultPanel['text'] = TTLocalizer.CdrResultMailboxFull
-            elif awardMgrResult == 5 or awardMgrResult == 10:
+            elif awardMgrResult == 2:
                 self.resultPanel['text'] = TTLocalizer.CdrResultAlreadyInMailbox
-            elif awardMgrResult == 6 or awardMgrResult == 7 or awardMgrResult == 11:
-                self.resultPanel['text'] = TTLocalizer.CdrResultAlreadyInQueue
-            elif awardMgrResult == 8:
-                self.resultPanel['text'] = TTLocalizer.CdrResultAlreadyInCloset
-            elif awardMgrResult == 9:
-                self.resultPanel['text'] = TTLocalizer.CdrResultAlreadyBeingWorn
-            elif awardMgrResult == 12 or awardMgrResult == 13 or awardMgrResult == 14:
-                self.resultPanel['text'] = TTLocalizer.CdrResultAlreadyReceived
-        elif result == 5:
-            self.resultPanel['text'] = TTLocalizer.CdrResultTooManyFails
-            self.__disableCodeEntry()
-        elif result == 6:
-            self.resultPanel['text'] = TTLocalizer.CdrResultServiceUnavailable
-            self.__disableCodeEntry()
+            elif awardMgrResult == 3:
+                self.resultPanel['text'] = TTLocalizer.CdrResultReachedLimit
+            elif awardMgrResult == 4:
+                self.resultPanel['text'] = TTLocalizer.CdrResultAlreadyRedeemed
         if result == 0:
             self.successSfx.play()
         else:

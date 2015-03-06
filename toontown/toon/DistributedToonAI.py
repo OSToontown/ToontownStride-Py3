@@ -565,6 +565,19 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def getMaxNPCFriends(self):
         return self.maxNPCFriends
 
+    def b_setRedeemedCodes(self, redeemedCodes):
+        self.redeemedCodes = redeemedCodes
+
+    def getRedeemedCodes(self, redeemedCodes):
+        return self.redeemedCodes
+
+    def isCodeRedeemed(self, code):
+        return code in self.redeemedCodes
+
+    def redeemCode(self, code):
+        if not isCodeReedemed(code):
+            self.redeemedCodes.append(code)
+
     def getBattleId(self):
         if self.battleId >= 0:
             return self.battleId
