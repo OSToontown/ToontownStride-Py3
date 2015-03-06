@@ -27,6 +27,7 @@ from toontown.coghq import MintManagerAI
 from toontown.distributed.ToontownDistrictAI import ToontownDistrictAI
 from toontown.distributed.ToontownDistrictStatsAI import ToontownDistrictStatsAI
 from toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
+from toontown.coderedemption.TTCodeRedemptionMgrAI import TTCodeRedemptionMgrAI
 from toontown.dna.DNAParser import loadDNAFileAI
 from toontown.estate.EstateManagerAI import EstateManagerAI
 from toontown.hood import BRHoodAI
@@ -115,6 +116,8 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.cogPageManager = CogPageManagerAI.CogPageManagerAI()
         self.bankManager = BankManagerAI.BankManagerAI(self)
         self.holidayManager = HolidayManagerAI(self)
+        self.codeRedemptionMgr = TTCodeRedemptionMgrAI(self)
+        self.codeRedemptionMgr.generateWithRequired(2)
         self.buildingQueryMgr = DistributedBuildingQueryMgrAI(self)
         self.buildingQueryMgr.generateWithRequired(2)
         if self.wantFishing:

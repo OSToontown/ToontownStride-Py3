@@ -44,6 +44,21 @@ class ToontownLoadingScreen:
         ToontownGlobals.LawbotHQ : 'phase_3.5/maps/loading/lbhq.jpg',
         ToontownGlobals.BossbotHQ : 'phase_3.5/maps/loading/bbhq.jpg'
     }
+    emotes = [
+        {'emote': 'bored', 'frame': 135},
+        {'emote': 'run', 'frame': 7},
+        {'emote': 'victory', 'frame': 10},
+        {'emote': 'applause', 'frame': 23},
+        {'emote': 'sprinkle-dust', 'frame': 40},
+        {'emote': 'hypnotize', 'frame': 25},
+        {'emote': 'cringe', 'frame': 25},
+        {'emote': 'wave', 'frame': 25},
+        {'emote': 'shrug', 'frame': 30},
+        {'emote': 'duck', 'frame': 40},
+        {'emote': 'up', 'frame': 60},
+        {'emote': 'down', 'frame': 23},
+        {'emote': 'bow', 'frame': 45}
+    ]
 
     def __init__(self):
         self.__expectedCount = 0
@@ -82,9 +97,10 @@ class ToontownLoadingScreen:
         if gui:
             if base.localAvatarStyle:
                 from toontown.toon import Toon
+                emote = random.choice(self.emotes)
                 self.toon = Toon.Toon()
                 self.toon.setDNA(base.localAvatarStyle)
-                self.toon.loop('bored', fromFrame=135, toFrame=135)
+                self.toon.loop(emote['emote'], fromFrame=emote['frame'], toFrame=emote['frame'])
                 self.toon.getGeomNode().setDepthWrite(1)
                 self.toon.getGeomNode().setDepthTest(1)
                 self.toon.setHpr(205, 0, 0)
