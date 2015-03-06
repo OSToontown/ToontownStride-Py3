@@ -1,14 +1,30 @@
+########################## TOONTOWN ADVENTURE ##########################
+# Filename: GameSprite.py
+# Created by: sillypeppymacspeed
+# Date: March 28th, 2014
+####
+# Description:
+#
+# This codes the sprites for the Garden Drop estate game.
+####
+### DEFINITELY NOT COPIED FROM TOONTOWN HOUSE
+ 
 import math
 
 class GameSprite:
+
     colorRed = (1, 0, 0, 1)
     colorBlue = (0, 0, 1, 1)
     colorGreen = (0, 1, 0, 1)
+    colorYellow = (1, 1, 0, 1)
+    colorPurple = (1, 0, 1, 1)
     colorGhostRed = (1, 0, 0, 0.5)
     colorGhostBlue = (0, 0, 1, 0.5)
     colorGhostGreen = (0, 1, 0, 0.5)
+    colorGhostYellow = (1, 1, 0, 0.5)
+    colorGhostPurple = (1, 0, 1, 0.5)
     colorWhite = (1, 1, 1, 1)
-    colorBlack = (0, 0, 0, 1.0)
+    colorBlack = (0.5, 0.5, 0.5, 1.0)
     colorShadow = (0, 0, 0, 0.5)
 
     def __init__(self, nodeObj, colorType = 0, foundation = 0):
@@ -29,12 +45,20 @@ class GameSprite:
                 self.setColor(GameSprite.colorGhostBlue)
             elif colorType == 2:
                 self.setColor(GameSprite.colorGhostGreen)
+            elif colorType == 3:
+                self.setColor(GameSprite.colorGhostYellow)
+            elif colorType == 4:
+                self.setColor(GameSprite.colorGhostPurple)
         elif colorType == 0:
             self.setColor(GameSprite.colorRed)
         elif colorType == 1:
             self.setColor(GameSprite.colorBlue)
         elif colorType == 2:
             self.setColor(GameSprite.colorGreen)
+        elif colorType == 3:
+            self.setColor(GameSprite.colorYellow)
+        elif colorType == 4:
+            self.setColor(GameSprite.colorPurple)
         self.markedForDeath = 0
 
     def delete(self):

@@ -74,6 +74,7 @@ class DistributedEstate(DistributedObject.DistributedObject):
         self.loadFlowerSellBox()
         self.oldClear = base.win.getClearColor()
         base.win.setClearColor(Vec4(0.09, 0.55, 0.21, 1.0))
+        self.startGame()
 
     def unload(self):
         self.ignoreAll()
@@ -100,6 +101,7 @@ class DistributedEstate(DistributedObject.DistributedObject):
             self.flowerSellBox.removeNode()
             del self.flowerSellBox
             self.flowerSellBox = None
+        GardenDropGame.GardenDropGame().endGame()
         return
 
     def announceGenerate(self):
@@ -107,7 +109,7 @@ class DistributedEstate(DistributedObject.DistributedObject):
         self.accept('gardenGame', self.startGame)
 
     def startGame(self):
-        self.game = GardenDropGame.GardenDropGame()
+        self.game = GardenDropGame.GardenDropGame().playGardenDrop()
 
     def loadAirplane(self):
         self.airplane = loader.loadModel('phase_4/models/props/airplane.bam')
