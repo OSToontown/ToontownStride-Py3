@@ -236,9 +236,6 @@ class ToonBase(OTPBase.OTPBase):
 
         self.filters = CommonFilters(self.win, self.cam)
 
-        # Free black/white Toons:
-        self.wantYinYang = config.GetBool('want-yin-yang', False)
-
     def openMainWindow(self, *args, **kw):
         result = OTPBase.OTPBase.openMainWindow(self, *args, **kw)
         self.setCursorAndIcon()
