@@ -7007,6 +7007,7 @@ NPCToonNames = {20000: 'Tutorial Tom',
  2018: 'Doctor Surlee',
  2019: 'Doctor Dimm',
  2020: 'Professor Prepostera',
+ 2021: 'Painter Joey',
  2101: 'Dentist Daniel',
  2102: 'Sheriff Sherry',
  2103: 'Sneezy Kitty',
@@ -9785,6 +9786,9 @@ InteractivePropTrackBonusTerms = {0: 'Super Toon-Up!',
  5: 'Super Squirt!',
  6: ''}
 PlayingCardUnknown = 'Card Name is unknown'
+GloveSameColorMessage = 'You already have that glove!'
+GloveNoMoneyMessage = "You don't have enough jellybeans!"
+GloveSuccessMessage = 'Have fun with your new glove!'
 
 # Buffs
 

@@ -4999,6 +4999,8 @@ def dna(part, value):
         invoker.b_setDNAString(backup['dna'][value])
         return 'Restored a DNA backup for %s under the name: %s' % (invoker.getName(), value)
 
+    if part == 'show':
+        return dna.asTuple()
     return 'Invalid part: ' + part
 
 @magicWord(category=CATEGORY_ADMINISTRATOR, types=[int])
