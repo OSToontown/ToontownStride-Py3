@@ -33,6 +33,9 @@ want-resistance-toonup #t
 want-resistance-restock #t
 want-resistance-dance #t
 
+# Optional:
+want-glove-npc #t
+
 # Developer options:
 show-population #t
 force-skip-tutorial #t

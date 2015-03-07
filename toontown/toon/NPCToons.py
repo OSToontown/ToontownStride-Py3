@@ -70,6 +70,7 @@ NPC_FLIPPYTOONHALL = 10
 NPC_SCIENTIST = 11
 NPC_SMART = 13
 NPC_BANKER = 14
+NPC_GLOVE = 15
 CLERK_COUNTDOWN_TIME = 120
 TAILOR_COUNTDOWN_TIME = 300
 RTDNAFile = '/RTDNAFile.txt'
@@ -95,6 +96,7 @@ def createNPC(air, npcId, desc, zoneId, posIndex = 0, questCallback = None):
     import DistributedNPCScientistAI
     import DistributedSmartNPCAI
     import DistributedNPCBankerAI
+    import DistributedNPCGloveAI
     canonicalZoneId, name, dnaType, gender, protected, type = desc
     if type == NPC_REGULAR:
         npc = DistributedNPCToonAI.DistributedNPCToonAI(air, npcId, questCallback=questCallback)
@@ -124,6 +126,8 @@ def createNPC(air, npcId, desc, zoneId, posIndex = 0, questCallback = None):
         npc = DistributedSmartNPCAI.DistributedSmartNPCAI(air, npcId)
     elif type == NPC_BANKER:
         npc = DistributedNPCBankerAI.DistributedNPCBankerAI(air, npcId)
+    elif type == NPC_GLOVE and simbase.air.wantGloveNpc:
+        npc = DistributedNPCGloveAI.DistributedNPCGloveAI(air, npcId)
     else:
         print 'createNPC() error!!!'
     npc.setName(name)
