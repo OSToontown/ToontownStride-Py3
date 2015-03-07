@@ -97,10 +97,10 @@ class ToontownLoadingScreen:
         if gui:
             if base.localAvatarStyle:
                 from toontown.toon import Toon
-                emote = random.choice(self.emotes)
+                emote = random.choice(self.emotes).values()
                 self.toon = Toon.Toon()
                 self.toon.setDNA(base.localAvatarStyle)
-                self.toon.loop(emote['emote'], fromFrame=emote['frame'], toFrame=emote['frame'])
+                self.toon.pose(*emote)
                 self.toon.getGeomNode().setDepthWrite(1)
                 self.toon.getGeomNode().setDepthTest(1)
                 self.toon.setHpr(205, 0, 0)
