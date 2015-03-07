@@ -108,6 +108,11 @@ want-resistance-dance #f
 # Cog battles:
 base-xp-multiplier 1.0
 
+# Cog Dominiums
+want-emblems #t
+cogdo-want-barrel-room #t
+want-lawbot-cogdo #t
+
 # Cog buildings:
 want-cogbuildings #t
 

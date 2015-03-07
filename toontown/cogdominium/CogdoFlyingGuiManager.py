@@ -28,7 +28,7 @@ class CogdoFlyingGuiManager:
         self._progressGui = CogdoFlyingProgressGui(self.root, self._level)
 
     def _initHud(self):
-        self._memoGui = CogdoMemoGui(self.root)
+        self._memoGui = CogdoMemoGui(self.root, 'memo_card')
         self._memoGui.posNextToLaffMeter()
 
     def _initTimer(self):

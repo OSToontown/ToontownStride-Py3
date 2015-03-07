@@ -70,6 +70,8 @@ class CogdoFlyingLegalEagle(DirectObject, FSM):
         audioMgr = base.cogdoGameAudioMgr
         self._screamSfx = audioMgr.createSfx('legalEagleScream', self.suit)
         self.initIntervals()
+        self.suit.nametag3d.stash()
+        self.suit.nametag.destroy()
         return
 
     def attachPropeller(self):

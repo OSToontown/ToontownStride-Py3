@@ -160,13 +160,7 @@ class CogdoFlyingGame(DirectObject):
         self.acceptOnce(CogdoFlyingLocalPlayer.RanOutOfTimeEventName, self.handleLocalPlayerRanOutOfTime)
         self.__startUpdateTask()
         self.isGameComplete = False
-        if __debug__ and base.config.GetBool('schellgames-dev', True):
-            self.acceptOnce('end', self.guiMgr.forceTimerDone)
 
-            def toggleFog():
-                self.levelFog.setVisible(not self.levelFog.isVisible())
-
-            self.accept('home', toggleFog)
         for eagle in self.legalEagles:
             eagle.gameStart(self.distGame.getStartTime())
 
@@ -299,20 +293,22 @@ class CogdoFlyingGame(DirectObject):
                 if gatherable.type in [Globals.Level.GatherableTypes.InvulPowerup]:
                     if player.toon.isLocal():
                         self.audioMgr.playMusic('invul')
+                taskMgr.doMethodLater(30, lambda task: self.debuffPowerup(toonId, gatherable.type, elapsedTime), 'gatherable-timeout')
         else:
             self.notify.warning('Trying to pickup gatherable nonetype:%s' % pickupNum)
         return
 
     def debuffPowerup(self, toonId, pickupType, elapsedTime):
         self.notify.debugCall()
-        player = self.toonId2Player[toonId]
-        if player.isBuffActive(pickupType):
-            if pickupType in [Globals.Level.GatherableTypes.InvulPowerup]:
-                if self.guiMgr.isTimeRunningOut():
-                    self.audioMgr.playMusic('timeRunningOut')
-                else:
-                    self.audioMgr.playMusic('normal')
-                player.handleDebuffPowerup(pickupType, elapsedTime)
+        if toonId in self.toonId2Player:
+            player = self.toonId2Player[toonId]
+            if player.isBuffActive(pickupType):
+                if pickupType in [Globals.Level.GatherableTypes.InvulPowerup]:
+                    if self.guiMgr.isTimeRunningOut():
+                        self.audioMgr.playMusic('timeRunningOut')
+                    else:
+                        self.audioMgr.playMusic('normal')
+                    player.handleDebuffPowerup(pickupType, elapsedTime)
 
     def handleLocalToonEnterLegalEagle(self, eagle, collEntry):
         if not self.localPlayer.isEnemyHitting() and not self.localPlayer.isInvulnerable():

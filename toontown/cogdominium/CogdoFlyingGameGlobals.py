@@ -9,25 +9,29 @@ AI.SafezoneId2DeathDamage = {2000: 1,
  5000: 4,
  4000: 8,
  3000: 12,
- 9000: 16}
+ 9000: 16,
+ 7000: 20}
 AI.SafezoneId2WhirlwindDamage = {2000: 1,
  1000: 2,
  5000: 4,
  4000: 8,
  3000: 12,
- 9000: 16}
+ 9000: 16,
+ 7000: 20}
 AI.SafezoneId2LegalEagleDamage = {2000: 2,
  1000: 4,
  5000: 8,
  4000: 16,
  3000: 24,
- 9000: 32}
+ 9000: 32,
+ 7000: 36}
 AI.SafezoneId2MinionDamage = {2000: 1,
  1000: 2,
  5000: 4,
  4000: 8,
  3000: 12,
- 9000: 16}
+ 9000: 16,
+ 7000: 20}
 Camera = VariableContainer()
 Camera.Angle = 12.5
 Camera.Distance = 20
@@ -41,6 +45,7 @@ Camera.AlphaBetweenToon = 0.35
 Camera.SpinRadius = 9.0
 Camera.MaxSpinAngle = 20.0
 Camera.MaxSpinX = 16.0
+Camera.GameCameraFar = 400.0
 Gameplay = VariableContainer()
 Gameplay.SecondsUntilGameOver = 60.0 * 3.0
 Gameplay.TimeRunningOutSeconds = 45.0
@@ -95,7 +100,8 @@ Gameplay.SafezoneId2LaffPickupHealAmount = {2000: 1,
  5000: 4,
  4000: 8,
  3000: 12,
- 9000: 16}
+ 9000: 16,
+ 7000: 20}
 Gameplay.InvulBuffTime = 15.0
 Gameplay.InvulBlinkTime = 5.0
 Gameplay.InvulSingleBlinkTime = 0.5
@@ -167,15 +173,15 @@ LegalEagle.PostCooldownHeightOffNest = 40.0
 Dev = DevVariableContainer('cogdoflying')
 Dev.DisableDeath = False
 Dev.InfiniteFuel = False
-Dev.InfiniteTimeLimit = True
+Dev.InfiniteTimeLimit = False
 Dev.Invincibility = False
 Dev.NoLegalEagleAttacks = False
 Audio = VariableContainer()
 Audio.Cutoff = 75.0
-Audio.MusicFiles = {'normal': 'phase_4/audio/bgm/MG_cannon_game.ogg',
- 'end': 'phase_4/audio/bgm/FF_safezone.ogg',
- 'waiting': 'phase_4/audio/bgm/m_match_bg2.ogg',
- 'invul': 'phase_4/audio/bgm/MG_CogThief.ogg',
+Audio.MusicFiles = {'normal': 'phase_9/audio/bgm/CHQ_FACT_bg.ogg',
+ 'end': 'phase_7/audio/bgm/encntr_toon_winning_indoor.ogg',
+ 'waiting': 'phase_7/audio/bgm/encntr_toon_winning_indoor.ogg',
+ 'invul': 'phase_9/audio/bgm/encntr_toon_winning.ogg',
  'timeRunningOut': 'phase_7/audio/bgm/encntr_suit_winning_indoor.ogg'}
 Audio.SfxFiles = {'propeller': 'phase_4/audio/sfx/TB_propeller.ogg',
  'propeller_damaged': 'phase_5/audio/sfx/tt_s_ara_cfg_propellers_damaged.ogg',
@@ -226,7 +232,8 @@ Level.DifficultyOrder = {2000: (1, 1, 1, 2, 1),
  5000: (1, 2, 1, 2, 2),
  4000: (1, 2, 1, 2, 3, 2),
  3000: (1, 2, 2, 3, 2, 3),
- 9000: (2, 3, 2, 3, 2, 3, 2)}
+ 9000: (2, 3, 2, 3, 2, 3, 2),
+ 7000: (2, 3, 2, 3, 2, 3, 2)}
 Dev.WantTempLevel = True
 Dev.DevQuadsOrder = (1, 2, 3, 4, 5, 6, 7, 8)
 Level.AddSparkleToPowerups = True

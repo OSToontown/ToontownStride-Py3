@@ -3,12 +3,15 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
 from toontown.toonbase import ToontownGlobals, ToontownIntervals
 from toontown.cogdominium import CogdoBarrelRoomConsts
+from toontown.cogdominium import CogdoBarrelRoom
+import random
 
 class DistributedCogdoBarrel(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCogdoBarrel')
 
     def __init__(self, cr):
         DistributedObject.DistributedObject.__init__(self, cr)
+        self.barrelRoom = CogdoBarrelRoom.CogdoBarrelRoom()
         self.index = None
         self.state = None
         self.model = None
@@ -17,6 +20,7 @@ class DistributedCogdoBarrel(DistributedObject.DistributedObject):
         self.collNodePath = None
         self.availableTex = None
         self.usedTex = None
+        self.brLaff = 0
         return
 
     def generate(self):
@@ -32,7 +36,6 @@ class DistributedCogdoBarrel(DistributedObject.DistributedObject):
         cogdoBarrelsNode = render.find('@@CogdoBarrels')
         if not cogdoBarrelsNode or cogdoBarrelsNode.isEmpty():
             cogdoBarrelsNode = render.attachNewNode('CogdoBarrels')
-            cogdoBarrelsNode.stash()
         self.model.reparentTo(cogdoBarrelsNode)
         self.availableTex = loader.loadTexture('phase_5/maps/tt_t_ara_cbr_Barrel_notUsed.jpg')
         self.usedTex = loader.loadTexture('phase_5/maps/tt_t_ara_cbr_Barrel_Used.jpg')
@@ -110,12 +113,17 @@ class DistributedCogdoBarrel(DistributedObject.DistributedObject):
         self.sendUpdate('requestGrab', [])
 
     def setGrab(self, avId):
+        toonup = CogdoBarrelRoomConsts.ToonUp
         if avId == base.localAvatar.doId:
             ToontownIntervals.start(ToontownIntervals.getPulseIval(self.model, self.__pulseIvalName(), 1.15, duration=0.2))
             self.setState(CogdoBarrelRoomConsts.StateUsed)
+            self.brLaff = random.randint(toonup[0], toonup[1])
 
     def setReject(self):
         pass
+
+    def getBarrelLaff(self):
+        return self.brLaff
 
     def __pulseIvalName(self):
         return 'DistributedCogdoBarrelPulse%s' % self.doId

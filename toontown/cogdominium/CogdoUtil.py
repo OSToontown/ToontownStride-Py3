@@ -69,7 +69,7 @@ class CogdoGameMovie:
         textNode.setFont(ToontownGlobals.getToonFont())
         self._dialogueLabel = aspect2d.attachNewNode(textNode)
         self._dialogueLabel.setScale(0.06, 0.06, 0.06)
-        self._dialogueLabel.setPos(0.32, 0, -0.75)
+        self._dialogueLabel.setPos(0.32, 0, -0.7325)
         self._dialogueLabel.reparentTo(hidden)
 
     def unload(self):
@@ -120,9 +120,9 @@ def rotateTable(table, angle):
         t = []
         width = len(table[0])
         height = len(table)
-        for j in xrange(width):
+        for j in range(width):
             row = []
-            for i in xrange(height):
+            for i in range(height):
                 row.append(table[height - 1 - i][j])
 
             t.append(row)
@@ -137,9 +137,9 @@ def rotateTable(table, angle):
         t = []
         width = len(table[0])
         height = len(table)
-        for j in xrange(width):
+        for j in range(width):
             row = []
-            for i in xrange(height):
+            for i in range(height):
                 row.append(table[i][width - 1 - j])
 
             t.append(row)

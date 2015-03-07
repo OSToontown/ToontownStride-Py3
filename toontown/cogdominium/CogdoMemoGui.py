@@ -9,9 +9,9 @@ MEMOICON_SCALE = 0.2
 
 class CogdoMemoGui(DirectFrame):
 
-    def __init__(self, parent):
+    def __init__(self, parent, type='joke_card'):
         DirectFrame.__init__(self, parent=parent, relief=None, state=DGG.NORMAL, sortOrder=DGG.BACKGROUND_SORT_INDEX)
-        self._initModel()
+        self._initModel(type)
         self.hide()
         return
 
@@ -26,9 +26,9 @@ class CogdoMemoGui(DirectFrame):
     def posNextToLaffMeter(self):
         self.setPos(-0.975, 0, -0.875)
 
-    def _initModel(self):
+    def _initModel(self, type='joke_card'):
         self._countLabel = DirectLabel(parent=self, relief=None, pos=(0.0625, 0, -0.025), scale=CogdoGameConsts.MemoGuiTextScale, text=str(0), text_fg=CogdoGameConsts.MemoGuiTextColor, text_shadow=(0.2, 0.2, 0.2, 1), text_align=TextNode.ALeft, text_font=ToontownGlobals.getToonFont())
-        self._memoIcon = CogdoUtil.loadModel('memo_card', game='shared', group='gui')
+        self._memoIcon = CogdoUtil.loadModel(type, game='shared', group='gui')
         self._memoIcon.reparentTo(self)
         self._memoIcon.setScale(MEMOICON_SCALE)
         return
