@@ -1,7 +1,6 @@
 from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 
-
 class ToontownDistrictStatsAI(DistributedObjectAI):
     notify = directNotify.newCategory('ToontownDistrictStatsAI')
 

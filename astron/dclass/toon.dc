@@ -72,6 +72,7 @@ from toontown.estate import DistributedGarden/AI
 from toontown.shtiker import DeleteManager/AI
 from toontown.ai import NewsManager/AI
 from toontown.shtiker import PurchaseManager/AI
+from toontown.shtiker import GroupManager/AI
 from toontown.shtiker import NewbiePurchaseManager/AI
 from toontown.safezone import SafeZoneManager/AI
 from toontown.tutorial import TutorialManager/AI
@@ -1486,6 +1487,16 @@ dclass PurchaseManager : DistributedObject {
   requestPlayAgain() airecv clsend;
   setInventory(blob, int16, uint8) airecv clsend;
   setPurchaseExit() broadcast;
+};
+
+dclass GroupManager : DistributedObject {
+  createGroup(uint32, uint32, string) clsend airecv;
+  closeGroup(uint32, uint32) clsend airecv;
+  addPlayerId(uint32, uint32, uint32) clsend airecv;
+  removePlayerId(uint32, uint32, uint32) clsend airecv;
+  getInfo(uint32) clsend airecv;
+  setInfo(string) clsend airecv;
+  info(string);
 };
 
 dclass NewbiePurchaseManager : PurchaseManager {

@@ -2,7 +2,7 @@
 from pandac.PandaModules import *
 
 
-hashVal = 3181838135L
+hashVal = 3179828763L
 
 
 from toontown.coghq import DistributedCashbotBossSafe, DistributedCashbotBossCrane, DistributedBattleFactory, DistributedCashbotBossTreasure, DistributedCogHQDoor, DistributedSellbotHQDoor, DistributedFactoryElevatorExt, DistributedMintElevatorExt, DistributedLawOfficeElevatorExt, DistributedLawOfficeElevatorInt, LobbyManager, DistributedMegaCorp, DistributedFactory, DistributedLawOffice, DistributedLawOfficeFloor, DistributedLift, DistributedDoorEntity, DistributedSwitch, DistributedButton, DistributedTrigger, DistributedCrushableEntity, DistributedCrusherEntity, DistributedStomper, DistributedStomperPair, DistributedLaserField, DistributedGolfGreenGame, DistributedSecurityCamera, DistributedMover, DistributedElevatorMarker, DistributedBarrelBase, DistributedGagBarrel, DistributedBeanBarrel, DistributedHealBarrel, DistributedGrid, ActiveCell, DirectionalCell, CrusherCell, DistributedCrate, DistributedSinkingPlatform, BattleBlocker, DistributedMint, DistributedMintRoom, DistributedMintBattle, DistributedStage, DistributedStageRoom, DistributedStageBattle, DistributedLawbotBossGavel, DistributedLawbotCannon, DistributedLawbotChair, DistributedCogKart, DistributedCountryClub, DistributedCountryClubRoom, DistributedMoleField, DistributedCountryClubBattle, DistributedMaze, DistributedFoodBelt, DistributedBanquetTable, DistributedGolfSpot
@@ -11,7 +11,7 @@ from toontown.building import DistributedAnimatedProp, DistributedTrophyMgr, Dis
 from toontown.uberdog.DistributedPartyManager import DistributedPartyManager
 from otp.friends import FriendManager, AvatarFriendsManager, PlayerFriendsManager, GuildManager, FriendInfo, AvatarFriendInfo
 from otp.level import DistributedLevel, DistributedEntity, DistributedInteractiveEntity
-from toontown.shtiker import DeleteManager, PurchaseManager, NewbiePurchaseManager
+from toontown.shtiker import DeleteManager, PurchaseManager, GroupManager, NewbiePurchaseManager
 from toontown.pets import DistributedPetProxy
 from toontown.uberdog.ClientServicesManager import ClientServicesManager
 from toontown.ai import WelcomeValleyManager, NewsManager, DistributedAprilToonsMgr, DistributedBlackCatMgr, DistributedPolarBearMgr, DistributedPolarPlaceEffectMgr, DistributedGreenToonEffectMgr, DistributedResistanceEmoteMgr, DistributedScavengerHuntTarget, DistributedTrickOrTreatTarget, DistributedWinterCarolingTarget, DistributedSillyMeterMgr

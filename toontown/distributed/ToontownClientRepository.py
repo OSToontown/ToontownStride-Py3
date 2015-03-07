@@ -45,7 +45,6 @@ from toontown.distributed import ToontownDistrictStats
 from toontown.makeatoon import TTPickANamePattern
 from toontown.parties import ToontownTimeManager
 from toontown.toon import Toon, DistributedToon
-from toontown.building import DistributedBuildingQueryMgr
 from ToontownMsgTypes import *
 import HoodMgr
 import PlayGame

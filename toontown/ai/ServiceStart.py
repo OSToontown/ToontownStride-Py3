@@ -35,7 +35,6 @@ if args.astron_ip: localconfig += 'air-connect %s\n' % args.astron_ip
 if args.eventlogger_ip: localconfig += 'eventlog-host %s\n' % args.eventlogger_ip
 loadPrcFileData('Command-line', localconfig)
 
-
 from otp.ai.AIBaseGlobal import *
 
 from toontown.ai.ToontownAIRepository import ToontownAIRepository
