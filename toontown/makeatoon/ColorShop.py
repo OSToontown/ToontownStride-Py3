@@ -24,12 +24,6 @@ class ColorShop(StateData.StateData):
         else:
             colorList = ToonDNA.defaultGirlColorList
 
-        if base.wantYinYang:  # Free black/white Toons event.
-            if dna.head[0] == 'c':
-                colorList = colorList + [26]
-            elif dna.head[0] == 'b':
-                colorList = [0] + colorList
-
         return colorList
 
     def enter(self, toon, shopsVisited = []):
