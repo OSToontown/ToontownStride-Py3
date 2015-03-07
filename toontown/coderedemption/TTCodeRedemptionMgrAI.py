@@ -36,6 +36,11 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
                 CatalogClothingItem.CatalogClothingItem(1821, 0)
             ],
             'expirationDate': datetime(2016, 3, 30) # temporary expiration until release
+        },
+        'gardening': {
+            'items': [
+                CatalogGardenStarterItem.CatalogGardenStarterItem()
+            ]
         }
     }
 
