@@ -568,6 +568,7 @@ class CodesTabPage(DirectFrame):
         return
 
     def load(self):
+        self.notice = DirectLabel(parent=self, relief=None, text='NOTICE: All codes can only be entered once!', text_scale=0.06, pos=(0.0, 0, 0.53), text_fg=Vec4(1.0, 0, 0, 1))
         cdrGui = loader.loadModel('phase_3.5/models/gui/tt_m_gui_sbk_codeRedemptionGui')
         instructionGui = cdrGui.find('**/tt_t_gui_sbk_cdrPresent')
         flippyGui = cdrGui.find('**/tt_t_gui_sbk_cdrFlippy')
