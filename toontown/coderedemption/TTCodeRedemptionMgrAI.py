@@ -46,7 +46,7 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
         count = 0
 
         for item in items:
-            if item.getDeliveryTime() < 1:
+            if item.getDeliveryTime() > 0:
                 count += 1
 
         return count
