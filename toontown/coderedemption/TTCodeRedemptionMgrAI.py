@@ -31,11 +31,11 @@ Expiration date, month and day are optional fields.
 class TTCodeRedemptionMgrAI(DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("TTCodeRedemptionMgrAI")
     codes = {
-        'test': {
+        'weed': {
             'items': [
                 CatalogClothingItem.CatalogClothingItem(1821, 0)
             ]
-            'expirationDate': datetime(2015, 3, 30)
+            'expirationDate': datetime(2016, 3, 30) # temporary expiration until release
         }
     }
 
