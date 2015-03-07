@@ -7,7 +7,7 @@ import CogdoUtil
 import CogdoFlyingGameGlobals as Globals
 from CogdoFlyingLevelQuadrant import CogdoFlyingLevelQuadrant
 from CogdoFlyingObjects import CogdoFlyingGatherableFactory, CogdoFlyingPlatform, CogdoFlyingLevelFog
-from CogdoFlyingObstacles import CogdoFlyingObtacleFactory
+from CogdoFlyingObstacles import CogdoFlyingObstacleFactory
 from CogdoGameExit import CogdoGameExit
 from otp.otpbase import OTPGlobals
 
@@ -51,7 +51,7 @@ class CogdoFlyingLevel(DirectObject):
         self.forwardLimit = self.quadLengthUnits * 20
         self._frameModel.flattenStrong()
         self.gatherableFactory = CogdoFlyingGatherableFactory()
-        self.obstacleFactory = CogdoFlyingObtacleFactory()
+        self.obstacleFactory = CogdoFlyingObstacleFactory()
         return
 
     def getExit(self):
@@ -159,7 +159,7 @@ class CogdoFlyingLevel(DirectObject):
         if quadNum >= 0:
             if quadNum > 0:
                 self.quadrants[max(quadNum - self.quadVisibiltyBehind, 0)].onstage()
-            for i in xrange(quadNum, min(quadNum + self.quadVisibiltyAhead + 1, self._numQuads)):
+            for i in range(quadNum, min(quadNum + self.quadVisibiltyAhead + 1, self._numQuads)):
                 self.quadrants[i].onstage()
                 self.visibleQuadIndices.append(i)
                 if i == 0:
@@ -168,7 +168,7 @@ class CogdoFlyingLevel(DirectObject):
                     self.endPlatform.onstage()
 
         self._currentQuadNum = quadNum
-        for i in xrange(0, max(self._currentQuadNum - self.quadVisibiltyBehind, 0)) + range(min(self._currentQuadNum + self.quadVisibiltyAhead + 1, self._numQuads), self._numQuads):
+        for i in range(0, max(self._currentQuadNum - self.quadVisibiltyBehind, 0)) + range(min(self._currentQuadNum + self.quadVisibiltyAhead + 1, self._numQuads), self._numQuads):
             self.quadrants[i].offstage()
             if i == 0:
                 self.startPlatform.offstage()
@@ -193,6 +193,7 @@ class CogdoFlyingLevelFactory:
         self.quadVisibiltyAhead = quadVisibilityAhead
         self.quadVisibiltyBehind = quadVisibiltyBehind
         self._rng = rng or RandomNumGen(1)
+        self.isOrg = self._rng.randint(0, 1)
         self._level = None
         return
 
@@ -200,7 +201,8 @@ class CogdoFlyingLevelFactory:
         levelNode = NodePath('level')
         frameModel = CogdoUtil.loadFlyingModel('level')
         startPlatformModel = CogdoUtil.loadFlyingModel('levelStart')
-        endPlatformModel = CogdoUtil.loadFlyingModel('levelEnd')
+        ver = '_org' if self.isOrg else ''
+        endPlatformModel = CogdoUtil.loadFlyingModel('levelEnd%s' % ver)
         for fan in frameModel.findAllMatches('**/*wallFan'):
             fan.flattenStrong()
 
@@ -211,7 +213,8 @@ class CogdoFlyingLevelFactory:
         frameModel.find('**/wallL').setBin('opaque', 2)
         frameModel.find('**/fogTranslucent_top').setBin('fixed', 2)
         frameModel.getChildren().reparentTo(levelNode)
-        levelNode.hide()
+        if not self.isOrg:
+            levelNode.hide()
         self._level = CogdoFlyingLevel(self.parent, levelNode, startPlatformModel, endPlatformModel, self.quadLengthUnits, self.quadVisibiltyAhead, self.quadVisibiltyBehind)
         if Globals.Dev.WantTempLevel:
             quads = Globals.Dev.DevQuadsOrder
@@ -223,7 +226,8 @@ class CogdoFlyingLevelFactory:
                 quads.append(quadList[self._rng.randint(0, len(quadList) - 1)])
 
         for i in quads:
-            filePath = CogdoUtil.getModelPath('quadrant%i' % i, 'flying')
+            ver = '_org' if self.isOrg else ''
+            filePath = CogdoUtil.getModelPath('quadrant%i%s' % (i, ver), 'flying')
             quadModel = loader.loadModel(filePath)
             for np in quadModel.findAllMatches('**/*lightCone*'):
                 CogdoUtil.initializeLightCone(np, 'fixed', 3)
@@ -240,4 +244,7 @@ class CogdoFlyingLevelFactory:
     def createLevelFog(self):
         if self._level is None:
             self.loadAndBuildLevel()
-        return CogdoFlyingLevelFog(self._level)
+        if self.isOrg:
+            return CogdoFlyingLevelFog(self._level, (0,0,0,1))
+        else:
+            return CogdoFlyingLevelFog(self._level)

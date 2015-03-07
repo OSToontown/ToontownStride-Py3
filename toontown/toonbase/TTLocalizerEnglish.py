@@ -4698,15 +4698,8 @@ CdrInstructions = 'Enter your code to receive a special item in your mailbox.'
 CdrResultSuccess = 'Congratulations! Check your mailbox to claim your item!'
 CdrResultInvalidCode = "You've entered an invalid code. Please check the code and try again."
 CdrResultExpiredCode = "We're sorry. This code has expired."
-CdrResultUnknownError = "We're sorry. This code cannot be applied to your Toon."
 CdrResultMailboxFull = 'Your mailbox is full. Please remove an item, then enter your code again.'
-CdrResultAlreadyInMailbox = "You've already received this item. Check your mailbox to confirm."
-CdrResultAlreadyInQueue = 'Your item is on its way. Check your mailbox in a few minutes to receive it.'
-CdrResultAlreadyInCloset = "You've already received this item. Check your closet to confirm."
-CdrResultAlreadyBeingWorn = "You've already received this item, and you are wearing it!"
-CdrResultAlreadyReceived = "You've already received this item."
-CdrResultTooManyFails = "We're sorry. You've tried to enter an incorrect code too many times. Please try again after some time."
-CdrResultServiceUnavailable = "We're sorry. This feature is temporarily unavailable. Please try again during your next login."
+CdrResultAlreadyRedeemed = "You've already redeemed this item!"
 TrackPageTitle = 'Gag Track Training'
 TrackPageShortTitle = 'Gag Training'
 TrackPageSubtitle = 'Complete ToonTasks to learn how to use new gags!'
@@ -6135,7 +6128,8 @@ ShirtStylesDescriptions = {'bss1': 'solid',
  'lb_1': 'Lawbot Icon Shirt',
  'jb_1': 'Jellybean Shirt',
  'jb_2': 'Doodle Shirt',
- 'ugcms': 'Get Connected Mover & Shaker'}
+ 'ugcms': 'Get Connected Mover & Shaker',
+ 'weed': '420 BlazeIt Shirt'}
 BottomStylesDescriptions = {'bbs1': 'plain w/ pockets',
  'bbs2': 'belt',
  'bbs3': 'cargo',
@@ -6675,7 +6669,8 @@ ClothingTypeNames = {1001: 'Ghost Shirt',
  1783: 'Racing Shorts 1',
  1784: 'Racing Skirt 1',
  1801: 'Batty Moon Shirt',
- 1802: 'Mittens Shirt'}
+ 1802: 'Mittens Shirt',
+ 1821: '420 BlazeIt Shirt'}
 AccessoryArticleNames = ('Hat',
  'Glasses',
  'Backpack',
@@ -9609,6 +9604,16 @@ CheckersObserver = 'You are Observing'
 RegularCheckers = 'Checkers.'
 RegularCheckersGameOf = ' has just won a game of '
 RegularCheckersYouWon = 'You just won a game of Checkers!'
+GardenDropTitle = 'Garden Drop'
+GardenDropExitGame = 'Exit Mini Game'
+GardenDropHelpTitle = 'Instructions:'
+GardenDropInstructions = "Match the ghost balls with the normal balls! But beware of the cog ball, it will try to block you off!"
+GardenDropBackToGame = "Back to Game"
+GardenDropButtonTitle = 'Garden\nDrop'
+GardenDropCongradulations = 'Super Congratulations!!'
+GardenDropProgressLevels = "Click 'Next' to go to the next level!"
+GardenDropWinGame = 'You have won the Garden Drop Game!'
+GardenDropExit = 'Exit'
 MailNotifyNewItems = "You've got mail!"
 MailNewMailButton = 'Mail'
 MailSimpleMail = 'Note'

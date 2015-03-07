@@ -102,10 +102,7 @@ class CogdoMemo(CogdoGameGatherable):
 
     def __init__(self, serialNum, model = None, pitch = 0, triggerRadius = 1.0, spinRate = 60):
         if model is None:
-            node = CogdoUtil.loadModel('memo', 'shared')
-            model = node.find('**/memo')
-            model.detachNode()
-            node.removeNode()
+            model = CogdoUtil.loadModel('joke', 'shared')
         model.setP(pitch)
         self._spinRate = spinRate
         CogdoGameGatherable.__init__(self, serialNum, model, triggerRadius, name='CogdoMemo')

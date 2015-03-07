@@ -577,7 +577,6 @@ class ShardPage(ShtikerPage.ShtikerPage):
         for shardId, buttonTuple in self.shardButtonMap.items():
             buttonTuple[1]['state'] = DGG.NORMAL
             buttonTuple[2]['state'] = DGG.NORMAL
-        self.removeRightBrain()
         self.ignore('shardInfoUpdated')
         self.ignore('ShardPageConfirmDone')
         taskMgr.remove('ShardPageUpdateTask-doLater')

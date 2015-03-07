@@ -21,6 +21,5 @@ logs/
 screenshots/
 backups/
 contentpacks/
-toondata/
 resources/
-panel_save.mp
+save.dat

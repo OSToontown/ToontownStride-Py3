@@ -1,21 +1,93 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
+from toontown.catalog import CatalogClothingItem
+from toontown.catalog import CatalogNametagItem
+from toontown.catalog import CatalogChatItem
+from toontown.catalog import CatalogEmoteItem
+from toontown.catalog import CatalogGardenItem
+from toontown.catalog import CatalogGardenStarterItem
+from toontown.catalog import CatalogMouldingItem
+from toontown.catalog import CatalogRentalItem
+from toontown.catalog import CatalogFurnitureItem
+from toontown.catalog import CatalogFlooringItem
+from toontown.toonbase import ToontownGlobals
+from datetime import datetime, timedelta
+import time
 
+"""
+Code example:
+
+'codeName': {
+    'items': [
+        CatalogTypeItem.CatalogTypeItem(arguments)
+    ]
+    'expirationDate': datetime(2020, 1, 30),
+    'month': 1,
+    'day': 30
+}
+
+Expiration date, month and day are optional fields.
+"""
 class TTCodeRedemptionMgrAI(DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("TTCodeRedemptionMgrAI")
+    codes = {
+        'weed': {
+            'items': [
+                CatalogClothingItem.CatalogClothingItem(1821, 0)
+            ],
+            'expirationDate': datetime(2016, 3, 30) # temporary expiration until release
+        }
+    }
 
-    def giveAwardToToonResult(self, todo0, todo1):
-        pass
+    def announceGenerate(self):
+        DistributedObjectAI.announceGenerate(self)
 
-    def redeemCode(self, todo0, todo1):
-        pass
+    def getMailboxCount(self, items):
+        count = 0
 
-    def redeemCodeAiToUd(self, todo0, todo1, todo2, todo3, todo4):
-        pass
+        for item in items:
+            if item.getDeliveryTime() > 0:
+                count += 1
 
-    def redeemCodeResultUdToAi(self, todo0, todo1, todo2, todo3, todo4):
-        pass
+        return count
+                
+    def redeemCode(self, context, code):
+        avId = self.air.getAvatarIdFromSender()
+        av = self.air.doId2do.get(avId)
 
-    def redeemCodeResult(self, todo0, todo1, todo2):
-        pass
+        if not av:
+            return
 
+        if code in self.codes:
+            if av.isCodeRedeemed(code):
+                self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [context, 3, 2])
+                return
+
+            codeInfo = self.codes[code]
+            date = datetime.now()
+
+            if ('month' in codeInfo and date.month is not codeInfo['month']) or ('day' in codeInfo and date.day is not codeInfo['day']) or ('expirationDate' in codeInfo and codeInfo['expirationDate'] - date < timedelta(hours = 1)):
+                self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [context, 2, 0])
+                return
+
+            av.redeemCode(code)
+            self.requestCodeRedeem(context, avId, av, codeInfo['items'])
+        else:
+            self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [context, 1, 0])
+        
+    def requestCodeRedeem(self, context, avId, av, items):
+        count = self.getMailboxCount(items)
+
+        if len(av.onOrder) + count > 5 or len(av.mailboxContents) + len(av.onOrder) + count >= ToontownGlobals.MaxMailboxContents:
+            self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [context, 3, 1])
+            return
+
+        for item in items:
+            if item in av.onOrder or item.reachedPurchaseLimit:
+                continue
+			
+            item.deliveryDate = int(time.time() / 60) + 0.01
+            av.onOrder.append(item)
+
+        av.b_setDeliverySchedule(av.onOrder)
+        self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [context, 0, 0])

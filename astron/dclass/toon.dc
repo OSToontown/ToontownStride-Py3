@@ -70,9 +70,9 @@ from toontown.estate import DistributedHouse/AI
 from toontown.estate import DistributedHouseInterior/AI
 from toontown.estate import DistributedGarden/AI
 from toontown.shtiker import DeleteManager/AI
+from toontown.shtiker import GroupManager/AI
 from toontown.ai import NewsManager/AI
 from toontown.shtiker import PurchaseManager/AI
-from toontown.shtiker import GroupManager/AI
 from toontown.shtiker import NewbiePurchaseManager/AI
 from toontown.safezone import SafeZoneManager/AI
 from toontown.tutorial import TutorialManager/AI
@@ -288,7 +288,7 @@ from toontown.uberdog.DistributedPartyManager/AI/UD import DistributedPartyManag
 from toontown.rpc.AwardManager/UD import AwardManager/UD
 from toontown.uberdog.DistributedCpuInfoMgr/AI/UD import DistributedCpuInfoMgr/AI/UD
 from toontown.uberdog.DistributedInGameNewsMgr/AI/UD import DistributedInGameNewsMgr/AI/UD
-from toontown.coderedemption.TTCodeRedemptionMgr/AI/UD import TTCodeRedemptionMgr/AI/UD
+from toontown.coderedemption.TTCodeRedemptionMgr/AI import TTCodeRedemptionMgr/AI
 from toontown.distributed.NonRepeatableRandomSourceAI import NonRepeatableRandomSourceAI
 from toontown.distributed.NonRepeatableRandomSourceUD import NonRepeatableRandomSourceUD
 from toontown.ai.DistributedPhaseEventMgr/AI import DistributedPhaseEventMgr/AI
@@ -627,6 +627,7 @@ dclass DistributedToon : DistributedPlayer {
   flagAv(uint32, uint16, string []) airecv ownsend;
   setAnimalSound(uint8 index) ram broadcast ownrecv;
   setBuffs(uint32[] = []) required ownrecv db;
+  setRedeemedCodes(string [] = []) required ownrecv db;
 };
 
 dclass DistributedCCharBase : DistributedObject {
@@ -1265,7 +1266,7 @@ dclass DistributedPartyActivity : DistributedObject {
   exitRequestDenied(uint8);
   setToonsPlaying(uint32 []) broadcast ram;
   setState(string, int16) broadcast ram;
-  showJellybeanReward(uint32, uint8, string);
+  showJellybeanReward(uint32, uint32, string);
 };
 
 dclass DistributedPartyTeamActivity : DistributedPartyActivity {
@@ -1417,6 +1418,16 @@ dclass DeleteManager : DistributedObject {
   setInventory(blob) airecv clsend;
 };
 
+dclass GroupManager : DistributedObject {
+  createGroup(uint32, uint32, string) clsend airecv;
+  closeGroup(uint32, uint32) clsend airecv;
+  addPlayerId(uint32, uint32, uint32) clsend airecv;
+  removePlayerId(uint32, uint32, uint32) clsend airecv;
+  getInfo(uint32) clsend airecv;
+  setInfo(string) clsend airecv;
+  info(string);
+};
+
 struct weeklyCalendarHoliday {
   uint8 holidayId;
   uint8 dayOfTheWeek;
@@ -1487,16 +1498,6 @@ dclass PurchaseManager : DistributedObject {
   requestPlayAgain() airecv clsend;
   setInventory(blob, int16, uint8) airecv clsend;
   setPurchaseExit() broadcast;
-};
-
-dclass GroupManager : DistributedObject {
-  createGroup(uint32, uint32, string) clsend airecv;
-  closeGroup(uint32, uint32) clsend airecv;
-  addPlayerId(uint32, uint32, uint32) clsend airecv;
-  removePlayerId(uint32, uint32, uint32) clsend airecv;
-  getInfo(uint32) clsend airecv;
-  setInfo(string) clsend airecv;
-  info(string);
 };
 
 dclass NewbiePurchaseManager : PurchaseManager {
@@ -1701,72 +1702,6 @@ dclass DistCogdoFlyingGame : DistCogdoGame {
 };
 
 dclass DistCogdoBoardroomGame : DistCogdoLevelGame {
-};
-
-dclass DistCogdoCraneGame : DistCogdoLevelGame {
-};
-
-dclass DistCogdoCrane : DistributedObject {
-  setCraneGameId(uint32) required broadcast ram;
-  setIndex(uint8) required broadcast ram;
-  setState(char, uint32) broadcast ram;
-  clearSmoothing(int8) broadcast clsend;
-  setCablePos(uint8, int16/100, uint16%360/100, LinkPosition [3], int16) broadcast clsend;
-};
-
-dclass DistCogdoCraneObject : DistributedObject {
-  setCraneGameId(uint32) required broadcast ram;
-  setObjectState(char, uint32, uint32) broadcast ram;
-  requestGrab() airecv clsend;
-  rejectGrab();
-  requestDrop() airecv clsend;
-  hitFloor() clsend;
-  requestFree(int16/10, int16/10, int16/10, uint16%360/100) airecv clsend;
-  hitBoss(uint16/255) airecv clsend;
-  setX(int16/10) broadcast ram clsend airecv;
-  setY(int16/10) broadcast ram clsend airecv;
-  setZ(int16/10) broadcast ram clsend airecv;
-  setH(int16%360/10) broadcast ram clsend airecv;
-  setP(int16%360/10) broadcast ram clsend airecv;
-  setR(int16%360/10) broadcast ram clsend airecv;
-  setPos : setX, setY, setZ;
-  setHpr : setH, setP, setR;
-  setPosHpr : setX, setY, setZ, setH, setP, setR;
-  setXY : setX, setY;
-  setXZ : setX, setZ;
-  setXYH : setX, setY, setH;
-  setXYZH : setX, setY, setZ, setH;
-  setComponentL(uint64) broadcast ram clsend airecv;
-  setComponentX(int16/10) broadcast ram clsend airecv;
-  setComponentY(int16/10) broadcast ram clsend airecv;
-  setComponentZ(int16/10) broadcast ram clsend airecv;
-  setComponentH(int16%360/10) broadcast ram clsend airecv;
-  setComponentP(int16%360/10) broadcast ram clsend airecv;
-  setComponentR(int16%360/10) broadcast ram clsend airecv;
-  setComponentT(int16) broadcast ram clsend airecv;
-  setSmStop : setComponentT;
-  setSmH : setComponentH, setComponentT;
-  setSmZ : setComponentZ, setComponentT;
-  setSmXY : setComponentX, setComponentY, setComponentT;
-  setSmXZ : setComponentX, setComponentZ, setComponentT;
-  setSmPos : setComponentX, setComponentY, setComponentZ, setComponentT;
-  setSmHpr : setComponentH, setComponentP, setComponentR, setComponentT;
-  setSmXYH : setComponentX, setComponentY, setComponentH, setComponentT;
-  setSmXYZH : setComponentX, setComponentY, setComponentZ, setComponentH, setComponentT;
-  setSmPosHpr : setComponentX, setComponentY, setComponentZ, setComponentH, setComponentP, setComponentR, setComponentT;
-  setSmPosHprL : setComponentL, setComponentX, setComponentY, setComponentZ, setComponentH, setComponentP, setComponentR, setComponentT;
-  clearSmoothing(int8) broadcast clsend;
-};
-
-dclass DistCogdoCraneMoneyBag : DistCogdoCraneObject {
-  setIndex(uint8) required broadcast ram;
-  requestInitial() airecv clsend;
-};
-
-dclass DistCogdoCraneCog : DistributedObject {
-  setGameId(uint32) required broadcast ram;
-  setDNAString(blob) required broadcast ram;
-  setSpawnInfo(uint8, int16) required broadcast ram;
 };
 
 dclass DistributedHQInterior : DistributedObject {
@@ -3321,10 +3256,7 @@ dclass NonRepeatableRandomSourceClient {
 };
 
 dclass TTCodeRedemptionMgr : DistributedObject, NonRepeatableRandomSourceClient {
-  giveAwardToToonResult(uint32, uint32);
   redeemCode(uint32, char [0-256]) airecv clsend;
-  redeemCodeAiToUd(uint32, DoId, uint32, string, uint32);
-  redeemCodeResultUdToAi(uint32, uint32, uint32, uint32, uint32) airecv;
   redeemCodeResult(uint32, uint32, uint32);
 };
 

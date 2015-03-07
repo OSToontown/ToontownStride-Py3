@@ -185,6 +185,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.canEarnAchievements = False
         self.promotionStatus = [0, 0, 0, 0]
         self.buffs = []
+        self.redeemedCodes = []
 
     def disable(self):
         for soundSequence in self.soundSequenceList:
@@ -2634,6 +2635,9 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def setBuffs(self, buffs):
         self.buffs = buffs
         self.applyBuffs()
+
+    def setRedeemedCodes(self, redeemedCodes):
+        self.redeemedCodes = redeemedCodes
 
     def applyBuffs(self):
         for id, timestamp in enumerate(self.buffs):
