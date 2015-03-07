@@ -83,7 +83,7 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
             return
 
         for item in items:
-            if item in av.onOrder or item.reachedPurchaseLimit:
+            if item in av.onOrder:
                 continue
 			
             item.deliveryDate = int(time.time() / 60) + 0.01
