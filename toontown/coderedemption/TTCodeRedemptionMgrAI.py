@@ -1,5 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
+from toontown.catalog import CatalogAccessoryItem
 from toontown.catalog import CatalogClothingItem
 from toontown.catalog import CatalogNametagItem
 from toontown.catalog import CatalogChatItem
@@ -9,7 +10,13 @@ from toontown.catalog import CatalogGardenStarterItem
 from toontown.catalog import CatalogMouldingItem
 from toontown.catalog import CatalogRentalItem
 from toontown.catalog import CatalogFurnitureItem
+from toontown.catalog import CatalogAnimatedFurnitureItem
 from toontown.catalog import CatalogFlooringItem
+from toontown.catalog import CatalogPetTrickItem
+from toontown.catalog import CatalogWainscotingItem
+from toontown.catalog import CatalogToonStatueItem
+from toontown.catalog import CatalogWallpaperItem
+from toontown.catalog import CatalogWindowItem
 from toontown.toonbase import ToontownGlobals
 from datetime import datetime, timedelta
 import time
@@ -35,7 +42,8 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
             'items': [
                 CatalogClothingItem.CatalogClothingItem(1821, 0)
             ],
-            'expirationDate': datetime(2016, 3, 30) # temporary expiration until release
+            'month': 4,
+            'day': 20
         },
         'gardening': {
             'items': [
