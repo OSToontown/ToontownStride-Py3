@@ -6,7 +6,6 @@ class GroupManagerUD(DistributedObjectUD.DistributedObjectUD):
 
     def __init__(self, air):
         DistributedObjectUD.DistributedObjectUD.__init__(self, air)
-        self.air = air
 
     def announceGenerate(self):
         DistributedObjectUD.DistributedObjectUD.announceGenerate(self)
