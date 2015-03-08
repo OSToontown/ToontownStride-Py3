@@ -47,7 +47,7 @@ from toontown.hood import ZoneUtil
 from toontown.pets.PetManagerAI import PetManagerAI
 from toontown.safezone.SafeZoneManagerAI import SafeZoneManagerAI
 from toontown.suit.SuitInvasionManagerAI import SuitInvasionManagerAI
-from toontown.shtiker.GroupManagerAI import GroupManagerAI
+from toontown.groups.GroupManagerAI import GroupManagerAI
 from toontown.toon import NPCToons
 from toontown.toonbase import ToontownGlobals
 from toontown.tutorial.TutorialManagerAI import TutorialManagerAI

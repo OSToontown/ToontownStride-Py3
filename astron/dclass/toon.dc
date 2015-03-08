@@ -70,7 +70,7 @@ from toontown.estate import DistributedHouse/AI
 from toontown.estate import DistributedHouseInterior/AI
 from toontown.estate import DistributedGarden/AI
 from toontown.shtiker import DeleteManager/AI
-from toontown.shtiker import GroupManager/AI
+from toontown.groups import GroupManager/AI/UD
 from toontown.ai import NewsManager/AI
 from toontown.shtiker import PurchaseManager/AI
 from toontown.shtiker import NewbiePurchaseManager/AI
@@ -1418,13 +1418,20 @@ dclass DeleteManager : DistributedObject {
 };
 
 dclass GroupManager : DistributedObject {
-  createGroup(uint32, uint32, string) clsend airecv;
-  closeGroup(uint32, uint32) clsend airecv;
-  addPlayerId(uint32, uint32, uint32) clsend airecv;
-  removePlayerId(uint32, uint32, uint32) clsend airecv;
-  getInfo(uint32) clsend airecv;
-  setInfo(string) clsend airecv;
-  info(string);
+  setChildId() clsend airecv;
+  isPlayerGrouped(uint32);
+  isInGroup(uint32, uint32);
+  updateInfo() clsend airecv;
+  requestInfo() broadcast ram;
+  getTypeFromId(uint32);
+  setGroups(string) broadcast ram;
+  getGroups();
+  setGroupPlayers(string) broadcast ram;
+  getGroupPlayers(uint32);
+  createGroup(uint32, string) clsend airecv;
+  closeGroup(uint32) clsend airecv;
+  addPlayerToGroup(uint32, uint32) clsend airecv;
+  removePlayerFromGroup(uint32, uint32) clsend airecv;
 };
 
 struct weeklyCalendarHoliday {
