@@ -141,7 +141,6 @@ class DistributedNPCGlove(DistributedNPCToonBase):
 
     def exitPickColor(self, task=None):
         taskMgr.remove('npcSleepTask-%s' % self.doId)
-        self.destroyGui()
         taskMgr.doMethodLater(0.5, self.reset, 'avatarRecover-%s-%s' % (self.doId, base.localAvatar.doId))
         
         if task is not None:
@@ -186,6 +185,7 @@ class DistributedNPCGlove(DistributedNPCToonBase):
         self.fsm.request('off')
         base.cr.playGame.getPlace().setState('walk')
         base.setCellsActive(base.bottomCells, 1)
+        self.destroyGui()
 
         if task is not None:
             return task.done
