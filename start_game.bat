@@ -2,7 +2,6 @@
 title TTU Game Launcher
 set /P PPYTHON_PATH=<PPYTHON_PATH
 
-rem Get the user input:
 echo Choose your game server!
 echo #1 - Localhost
 echo #2 - DenialMC

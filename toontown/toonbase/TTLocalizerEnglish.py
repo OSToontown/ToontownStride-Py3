@@ -9786,9 +9786,15 @@ InteractivePropTrackBonusTerms = {0: 'Super Toon-Up!',
  5: 'Super Squirt!',
  6: ''}
 PlayingCardUnknown = 'Card Name is unknown'
-GloveSameColorMessage = 'You already have that glove!'
+GloveSameColorMessage = 'You already have those gloves!'
 GloveNoMoneyMessage = "You don't have enough jellybeans!"
-GloveSuccessMessage = 'Have fun with your new glove!'
+GloveSuccessMessage = 'Have fun with your new gloves!'
+GloveByeMessage = 'See you later!'
+GlovePickColorMessage = 'Feel free to choose!'
+GloveGuiTitle = 'Choose a glove color!'
+GloveGuiNotice = 'Costs %s jellybeans.'
+GloveGuiBuy = 'Buy'
+GloveGuiCancel = 'Cancel'
 
 # Buffs
 
