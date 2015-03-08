@@ -130,7 +130,7 @@ class DistributedNPCGlove(DistributedNPCToonBase):
 
     def enterPickColor(self):
         base.cr.playGame.getPlace().setState('stopped')
-        taskMgr.doMethodLater(45, self.exitPickColor, 'npcSleepTask-%s' % self.doId)
+        taskMgr.doMethodLater(45, self.leave, 'npcSleepTask-%s' % self.doId)
         self.setChatAbsolute('', CFSpeech)
         
         if base.localAvatar.getMoney() < ToontownGlobals.GloveCost:
