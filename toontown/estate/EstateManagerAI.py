@@ -403,4 +403,5 @@ class EstateManagerAI(DistributedObjectAI):
             pass
 
     def _lookupEstate(self, toon):
+        print(self.toon2estate)
         return self.toon2estate.get(toon)

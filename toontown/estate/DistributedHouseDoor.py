@@ -12,6 +12,7 @@ from toontown.hood import ZoneUtil
 from toontown.suit import Suit
 from toontown.building import FADoorCodes
 from toontown.building import DoorTypes
+from toontown.estate.DistributedHouse import DistributedHouse
 
 class DistributedHouseDoor(DistributedDoor.DistributedDoor):
 
@@ -36,6 +37,8 @@ class DistributedHouseDoor(DistributedDoor.DistributedDoor):
         DistributedObject.DistributedObject.announceGenerate(self)
         if self.doorType == DoorTypes.EXT_STANDARD:
             house = base.cr.doId2do.get(self.houseId)
+            if not isinstance(house, DistributedHouse):
+                self.notify.error('tried to use {0} as house'.format(house.__class__.__name__))
             if house and house.house_loaded:
                 self.__gotRelatedHouse()
             else:
