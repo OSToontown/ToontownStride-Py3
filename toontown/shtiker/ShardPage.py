@@ -541,11 +541,10 @@ class ShardPage(ShtikerPage.ShtikerPage):
 
             self.shardButtons.append(buttonTuple[0])
 
-            setupInvasionMarker(buttonTuple[3], 1)
-##            if invasionStatus:
-##                setupInvasionMarker(buttonTuple[3], invasionStatus)
-##            else:
-##                removeInvasionMarker(buttonTuple[3])
+            if invasionStatus:
+                setupInvasionMarker(buttonTuple[3], invasionStatus)
+            else:
+                removeInvasionMarker(buttonTuple[3])
 
         for shardId, buttonTuple in self.shardButtonMap.items():
 
