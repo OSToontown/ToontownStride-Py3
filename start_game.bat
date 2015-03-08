@@ -5,7 +5,7 @@ set /P PPYTHON_PATH=<PPYTHON_PATH
 echo Choose your game server!
 echo #1 - Localhost
 echo #2 - DenialMC
-echo #3 - DenialMC Server
+echo #3 - Development Server
 echo #4 - Custom
 echo #5 - Custom w/ RemoteDB
 echo.
