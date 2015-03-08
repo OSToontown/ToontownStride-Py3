@@ -64,7 +64,7 @@ class DistributedNPCGlove(DistributedNPCToonBase):
     
     def createGui(self):
         self.title = DirectLabel(aspect2d, relief=None, text=TTLocalizer.GloveGuiTitle,
-                     text_fg=(0, 1, 0, 1), text_scale=0.21, text_font=ToontownGlobals.getSignFont(),
+                     text_fg=(0, 1, 0, 1), text_scale=0.15, text_font=ToontownGlobals.getSignFont(),
                      pos=(0, 0, -0.30), text_shadow=(1, 1, 1, 1))
         
         self.notice = DirectLabel(aspect2d, relief=None, text=TTLocalizer.GloveGuiNotice % ToontownGlobals.GloveCost,
