@@ -176,10 +176,10 @@ class DistributedNPCGlove(DistributedNPCToonBase):
         self.sendUpdate('requestTransformation', [color])
         self.reset()
 
-    def leave(self):
+    def leave(self, task=None):
         self.setChatAbsolute('', CFSpeech)
         self.setChatAbsolute(TTLocalizer.GloveByeMessage, CFSpeech|CFTimeout)
-        self.reset()
+        self.reset(task)
     
     def reset(self, task=None):
         self.fsm.request('off')
