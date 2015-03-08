@@ -148,7 +148,7 @@ class DistributedNPCGlove(DistributedNPCToonBase):
 
     def popupPickColorGUI(self):
         self.setChatAbsolute('', CFSpeech)
-        self.setChatAbsolute(TTLocalizer.GlovePickColorMessage, CFSpeech)
+        self.setChatAbsolute(TTLocalizer.GlovePickColorMessage, CFSpeech|CFTimeout)
         base.setCellsActive(base.bottomCells, 0)
         self.createGui()
 
