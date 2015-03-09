@@ -28,7 +28,7 @@ def compareShardTuples(a, b):
         return 0
 
 def setupInvasionMarkerAny(node):
-    pass # TODO
+    pass
 
 def setupInvasionMarker(node, invasionStatus):
     if node.find('**/*invasion-marker'):
@@ -369,22 +369,17 @@ class ShardPage(ShtikerPage.ShtikerPage):
             self.rejectGroup(3)
             return
         suitIdx = -1
-        if groupId == 10000:
-            suitIdx = 0
-        elif groupId == 11000:
-            suitIdx = 1
-        elif groupId == 12000:
-            suitIdx = 2
-        elif groupId == 13000:
-            suitIdx = 3
-        merits = base.localAvatar.cogMerits[suitIdx]
-        if CogDisguiseGlobals.getTotalMerits(base.localAvatar, suitIdx) > merits:
-            self.rejectGroup(2, suitIdx)
-            return
-        parts = base.localAvatar.getCogParts()
-        if not CogDisguiseGlobals.isSuitComplete(parts, suitIdx):
-            self.rejectGroup(1)
-            return
+        gids = {10000:0, 11000:1, 12000:2, 13000:3}
+        suitIdx = gids.get(groupId)
+        if suitIdx is not None:
+            merits = base.localAvatar.cogMerits[suitIdx]
+            if CogDisguiseGlobals.getTotalMerits(base.localAvatar, suitIdx) > merits:
+                self.rejectGroup(2, suitIdx)
+                return
+            parts = base.localAvatar.getCogParts()
+            if not CogDisguiseGlobals.isSuitComplete(parts, suitIdx):
+                self.rejectGroup(1)
+                return
         base.cr.groupManager.d_addPlayerToGroup(groupId, base.localAvatar.doId)
         self.currentGroupJoined = groupId
         try:
@@ -394,12 +389,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
                 place = base.cr.playGame.hood.loader.place
             except:
                 place = base.cr.playGame.hood.place
-        if ZoneUtil.getCanonicalHoodId(self.getCurrentZoneId()) != groupId:
-            place.requestTeleport(groupId, groupId, base.localAvatar.defaultShard, -1)
-        else:
-            btpl = (self.currentBTP, self.currentBTL, self.currentBTR, self.currentBTI)
-            args = self.currentO.append(btpl)
-            self.reloadRightBrain(*args)
+        place.requestTeleport(groupId, groupId, base.localAvatar.defaultShard, -1)
 
     def leaveGroup(self, groupId, buttonTuple):
         self.acceptOnce('confLeave', self.confirmLeaveGroup, extraArgs=[groupId, buttonTuple])
@@ -423,20 +413,11 @@ class ShardPage(ShtikerPage.ShtikerPage):
             except:
                 place = base.cr.playGame.hood.place
         hoodId = -1
-        if groupId == 10000:
-            hoodId = 1000
-        elif groupId == 11000:
-            hoodId = 5000
-        elif groupId == 12000:
-            hoodId = 9000
-        elif groupId == 13000:
-            hoodId = 3000
-        if ZoneUtil.getCanonicalHoodId(self.getCurrentZoneId()) != hoodId:
-            place.requestTeleport(hoodId, hoodId, base.localAvatar.defaultShard, -1)
-        else:
-            btpl = (self.currentBTP, self.currentBTL, self.currentBTR, self.currentBTI)
-            args = self.currentO.append(btpl)
-            self.reloadRightBrain(*args)
+        gids = {10000:1000, 11000:5000, 12000:9000, 13000:3000}
+        hoodId = gids.get(groupId)
+        if hoodId is None:
+            return
+        place.requestTeleport(hoodId, hoodId, base.localAvatar.defaultShard, -1)
 
     def getPopColor(self, pop):
         if pop <= self.lowPop:
@@ -605,7 +586,6 @@ class ShardPage(ShtikerPage.ShtikerPage):
         if self.currentGroupJoined:
             self.rejectGroup(5)
             return
-
         if shardId == currentShardId:
             return
         elif shardId == base.localAvatar.defaultShard:
@@ -619,5 +599,4 @@ class ShardPage(ShtikerPage.ShtikerPage):
                     place = base.cr.playGame.hood.loader.place
                 except:
                     place = base.cr.playGame.hood.place
-
             place.requestTeleport(canonicalHoodId, canonicalHoodId, shardId, -1)
