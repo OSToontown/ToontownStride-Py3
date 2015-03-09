@@ -77,7 +77,6 @@ from toontown.shtiker import NewbiePurchaseManager/AI
 from toontown.safezone import SafeZoneManager/AI
 from toontown.tutorial import TutorialManager/AI
 from toontown.catalog import CatalogManager/AI
-from toontown.catalog import AccountDate/AI
 from toontown.safezone import DistributedTreasure/AI
 from toontown.coghq import DistributedCashbotBossTreasure/AI
 from toontown.building import DistributedTrophyMgr/AI
@@ -1534,11 +1533,6 @@ dclass TutorialManager : DistributedObject {
 
 dclass CatalogManager : DistributedObject {
   startCatalog() airecv clsend;
-};
-
-dclass AccountDate : DistributedObject {
-  requestDate() airecv clsend;
-  requestDateResult(string);
 };
 
 dclass DistributedMyTest : DistributedObject {

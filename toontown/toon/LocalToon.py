@@ -1852,7 +1852,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.inventory.updateTotalPropsText()
 
     def getAccountDays(self):
-        return base.cr.accountDateMgr.getAccountDays()
+        return 0
     
     def hasActiveBoardingGroup(self):
         if hasattr(localAvatar, 'boardingParty') and localAvatar.boardingParty:
