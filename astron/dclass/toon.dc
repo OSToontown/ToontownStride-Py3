@@ -1527,8 +1527,6 @@ dclass TutorialManager : DistributedObject {
 
 dclass CatalogManager : DistributedObject {
   startCatalog() airecv clsend;
-  fetchPopularItems() airecv clsend;
-  setPopularItems(blob);
 };
 
 dclass DistributedMyTest : DistributedObject {

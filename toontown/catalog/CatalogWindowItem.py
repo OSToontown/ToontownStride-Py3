@@ -43,6 +43,9 @@ class CatalogWindowItem(CatalogAtticItem.CatalogAtticItem):
             house.addWindow(self)
         return retcode
 
+    def getDeliveryTime(self):
+        return 1
+
     def getPicture(self, avatar):
         frame = self.makeFrame()
         model = self.loadModel()

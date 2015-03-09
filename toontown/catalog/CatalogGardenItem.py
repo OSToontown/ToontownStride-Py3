@@ -45,11 +45,12 @@ class CatalogGardenItem(CatalogItem.CatalogItem):
     def recordPurchase(self, avatar, optional):
         if avatar:
             avatar.addGardenItem(self.gardenIndex, self.numItems)
-        return ToontownGlobals.P_ItemAvailable
+        if 1:
+            return ToontownGlobals.P_ItemAvailable
 
     def getPicture(self, avatar):
         photoModel = GardenGlobals.Specials[self.gardenIndex]['photoModel']
-        if 'photoAnimation' in GardenGlobals.Specials[self.gardenIndex]:
+        if GardenGlobals.Specials[self.gardenIndex].has_key('photoAnimation'):
             modelPath = photoModel + GardenGlobals.Specials[self.gardenIndex]['photoAnimation'][0]
             animationName = GardenGlobals.Specials[self.gardenIndex]['photoAnimation'][1]
             animationPath = photoModel + animationName
@@ -122,6 +123,12 @@ class CatalogGardenItem(CatalogItem.CatalogItem):
     def getRequestPurchaseErrorTextTimeout(self):
         return 20
 
+    def getDeliveryTime(self):
+        if self.gardenIndex == GardenGlobals.GardenAcceleratorSpecial:
+            return 1
+        else:
+            return 0
+
     def getPurchaseLimit(self):
         if self.gardenIndex == GardenGlobals.GardenAcceleratorSpecial:
             return 1
@@ -153,7 +160,7 @@ class CatalogGardenItem(CatalogItem.CatalogItem):
         result = False
         if canPlant < numBeansRequired:
             result = True
-        if not result and self.gardenIndex in GardenGlobals.Specials and 'minSkill' in GardenGlobals.Specials[self.gardenIndex]:
+        if not result and GardenGlobals.Specials.has_key(self.gardenIndex) and GardenGlobals.Specials[self.gardenIndex].has_key('minSkill'):
             minSkill = GardenGlobals.Specials[self.gardenIndex]['minSkill']
             if avatar.shovelSkill < minSkill:
                 result = True
