@@ -1605,8 +1605,6 @@ class OTPClientRepository(ClientRepositoryBase):
             return 0
         elif paidStatus == 'FULL':
             return OTPGlobals.AccessFull
-        elif paidStatus == 'VELVET':
-            return OTPGlobals.AccessVelvetRope
         else:
             return 0
 
