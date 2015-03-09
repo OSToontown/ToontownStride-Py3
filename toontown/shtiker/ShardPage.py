@@ -389,12 +389,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
                 place = base.cr.playGame.hood.loader.place
             except:
                 place = base.cr.playGame.hood.place
-        if ZoneUtil.getCanonicalHoodId(self.getCurrentZoneId()) != groupId:
-            place.requestTeleport(groupId, groupId, base.localAvatar.defaultShard, -1)
-        else:
-            btpl = (self.currentBTP, self.currentBTL, self.currentBTR, self.currentBTI)
-            args = self.currentO.append(btpl)
-            self.reloadRightBrain(*args)
+        place.requestTeleport(groupId, groupId, base.localAvatar.defaultShard, -1)
 
     def leaveGroup(self, groupId, buttonTuple):
         self.acceptOnce('confLeave', self.confirmLeaveGroup, extraArgs=[groupId, buttonTuple])
@@ -422,12 +417,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
         hoodId = gids.get(groupId)
         if hoodId is None:
             return
-        if ZoneUtil.getCanonicalHoodId(self.getCurrentZoneId()) != hoodId:
-            place.requestTeleport(hoodId, hoodId, base.localAvatar.defaultShard, -1)
-        else:
-            btpl = (self.currentBTP, self.currentBTL, self.currentBTR, self.currentBTI)
-            args = self.currentO.append(btpl)
-            self.reloadRightBrain(*args)
+        place.requestTeleport(hoodId, hoodId, base.localAvatar.defaultShard, -1)
 
     def getPopColor(self, pop):
         if pop <= self.lowPop:
