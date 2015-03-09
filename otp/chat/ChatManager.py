@@ -47,7 +47,6 @@ class ChatManager(DirectObject.DirectObject):
         self.__normalObscured = 0
         self.openChatWarning = None
         self.unpaidChatWarning = None
-        self.teaser = None
         self.paidNoParentPassword = None
         self.noSecretChatAtAll = None
         self.noSecretChatAtAllAndNoWhitelist = None
@@ -80,8 +79,7 @@ class ChatManager(DirectObject.DirectObject):
          State.State('problemActivatingChat', self.enterProblemActivatingChat, self.exitProblemActivatingChat),
          State.State('whiteListOpenChat', self.enterWhiteListOpenChat, self.exitWhiteListOpenChat),
          State.State('whiteListAvatarChat', self.enterWhiteListAvatarChat, self.exitWhiteListAvatarChat),
-         State.State('whiteListPlayerChat', self.enterWhiteListPlayerChat, self.exitWhiteListPlayerChat),
-         State.State('trueFriendTeaserPanel', self.enterTrueFriendTeaserPanel, self.exitTrueFriendTeaserPanel)], 'off', 'off')
+         State.State('whiteListPlayerChat', self.enterWhiteListPlayerChat, self.exitWhiteListPlayerChat)], 'off', 'off')
         self.fsm.enterInitialState()
         return
 
@@ -101,10 +99,6 @@ class ChatManager(DirectObject.DirectObject):
             self.payButton = None
             self.unpaidChatWarning.destroy()
             self.unpaidChatWarning = None
-        if self.teaser:
-            self.teaser.cleanup()
-            self.teaser.unload()
-            self.teaser = None
         if self.noSecretChatAtAll:
             self.noSecretChatAtAll.destroy()
             self.noSecretChatAtAll = None
@@ -482,12 +476,6 @@ class ChatManager(DirectObject.DirectObject):
 
     def exitProblemActivatingChat(self):
         self.notify.error('called exitProblemActivatingChat() on parent class')
-
-    def enterTrueFriendTeaserPanel(self):
-        self.notify.error('called enterTrueFriendTeaserPanel () on parent class')
-
-    def exitTrueFriendTeaserPanel(self):
-        self.notify.error('called exitTrueFriendTeaserPanel () on parent class')
 
     def __secretFriendsInfoDone(self):
         self.fsm.request('activateChat')

@@ -4040,36 +4040,6 @@ DownloadForceAcknowledgeVerbList = ['painted',
  'inflated',
  'built']
 DownloadForceAcknowledgeMsg = 'Sorry, the %(phase)s area is still being %(verb)s, and will be ready for you in a minute.'
-TeaserTop = ''
-TeaserBottom = ''
-TeaserDefault = ',\nyou need to become a Member.\n\nJoin us!'
-TeaserOtherHoods = 'For unlimited adventures in all 6 neighborhoods'
-TeaserTypeAName = 'Type in your favorite name for your Toon!'
-TeaserSixToons = 'To play more than one Toon'
-TeaserClothing = 'To buy items from the Cattlelog \nto customize your toon'
-TeaserCogHQ = 'To access awesome Cog HQs'
-TeaserSecretChat = 'To use the True Friends Chat feature'
-TeaserSpecies = 'To pick this type of Toon'
-TeaserFishing = 'To fish in all 6 neighborhoods'
-TeaserGolf = 'To play Toon MiniGolf'
-TeaserParties = 'To plan a party'
-TeaserSubscribe = 'Subscribe'
-TeaserContinue = 'Return To Game'
-TeaserEmotions = 'To make your Toon more expressive'
-TeaserKarting = 'To access unlimited Kart Racing'
-TeaserKartingAccessories = 'To customize your Kart'
-TeaserGardening = 'To continue gardening at your Toon Estate'
-TeaserHaveFun = 'Have more fun!'
-TeaserJoinUs = 'Join us!'
-TeaserPlantGags = 'To plant these gags'
-TeaserPickGags = 'To pick these gags'
-TeaserRestockGags = 'To restock these gags'
-TeaserGetGags = 'To get these gags'
-TeaserUseGags = 'To use these gags'
-TeaserMinigames = TeaserOtherHoods
-TeaserQuests = TeaserOtherHoods
-TeaserOtherGags = TeaserOtherHoods
-TeaserTricks = TeaserOtherHoods
 LauncherPhaseNames = {0: 'Initialization',
  1: 'Panda',
  2: 'Engine',
@@ -6963,7 +6933,6 @@ CatalogPurchasedGiftText = 'Already\nOwned'
 CatalogMailboxFull = 'No Room'
 CatalogNotAGift = 'Not a Gift'
 CatalogNoFit = "Doesn't\nFit"
-CatalogMembersOnly = 'Members\nOnly!'
 CatalogSndOnText = 'Snd On'
 CatalogSndOffText = 'Snd Off'
 CatalogPurchasedMaxText = 'Already\nPurchased Max'

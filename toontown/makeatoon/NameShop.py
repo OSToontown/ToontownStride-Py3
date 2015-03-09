@@ -18,7 +18,6 @@ import NameGenerator
 import random
 from otp.distributed import PotentialAvatar
 from otp.namepanel import NameCheck
-from toontown.toontowngui import TeaserPanel
 from direct.distributed.PyDatagram import PyDatagram
 from direct.showbase import PythonUtil
 from toontown.toon import NPCToons
@@ -751,14 +750,6 @@ class NameShop(StateData.StateData):
         self.nameEntry['focus'] = 1
 
     def __typeAName(self):
-        if base.cr.productName in ['JP',
-         'DE',
-         'BR',
-         'FR']:
-            if base.restrictTrialers:
-                if not base.cr.isPaid():
-                    dialog = TeaserPanel.TeaserPanel(pageName='typeAName')
-                    return
         if self.fsm.getCurrentState().getName() == 'TypeAName':
             self.typeANameButton['text'] = TTLocalizer.TypeANameButton
             self.typeANameButton.wrtReparentTo(self.namePanel, sort=2)

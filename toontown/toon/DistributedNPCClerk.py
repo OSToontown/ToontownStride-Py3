@@ -10,7 +10,6 @@ from toontown.minigame import ClerkPurchase
 from toontown.nametag.NametagGlobals import *
 from toontown.shtiker.PurchaseManagerConstants import *
 from toontown.toonbase import TTLocalizer
-from toontown.toontowngui import TeaserPanel
 
 
 class DistributedNPCClerk(DistributedNPCToonBase):
@@ -34,16 +33,6 @@ class DistributedNPCClerk(DistributedNPCToonBase):
         base.localAvatar.posCamera(0, 0)
 
         DistributedNPCToonBase.disable(self)
-
-    def allowedToEnter(self):
-        return True
-
-    def handleOkTeaser(self):
-        self.dialog.destroy()
-        del self.dialog
-        place = base.cr.playGame.getPlace()
-        if place:
-            place.fsm.request('walk')
 
     def handleCollisionSphereEnter(self, collEntry):
         base.cr.playGame.getPlace().fsm.request('purchase')

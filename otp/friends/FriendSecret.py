@@ -14,10 +14,7 @@ BothSecrets = 2
 
 def showFriendSecret(secretType = AvatarSecret):
     global globalFriendSecret
-    if not base.cr.isPaid():
-        chatMgr = base.localAvatar.chatMgr
-        chatMgr.fsm.request('trueFriendTeaserPanel')
-    elif not base.cr.isParentPasswordSet():
+    if not base.cr.isParentPasswordSet():
         chatMgr = base.localAvatar.chatMgr
         if base.cr.productName in ['DisneyOnline-AP',
          'DisneyOnline-UK',

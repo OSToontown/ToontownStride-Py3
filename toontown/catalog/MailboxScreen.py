@@ -8,7 +8,6 @@ from toontown.parties.PartyGlobals import InviteStatus
 from toontown.parties.SimpleMailBase import SimpleMailBase
 from toontown.toonbase import TTLocalizer, ToontownGlobals
 from toontown.toontowngui import TTDialog
-from toontown.toontowngui.TeaserPanel import TeaserPanel
 from toontown.parties.InviteVisual import InviteVisual
 import CatalogItem
 from direct.showbase.PythonUtil import StackTrace
@@ -184,14 +183,11 @@ class MailboxScreen(DirectObject.DirectObject):
         isAward = False
         if isinstance(item, CatalogItem.CatalogItem):
             isAward = item.isAward()
-        if not base.cr.isPaid() and not (isinstance(item, InviteInfoBase) or isAward):
-            TeaserPanel(pageName='clothing')
-        else:
-            self.acceptingIndex = self.itemIndex
-            self.acceptButton['state'] = DGG.DISABLED
-            self.__showCurrentItem()
-            item = self.items[self.itemIndex]
-            item.acceptItem(self.mailbox, self.acceptingIndex, self.__acceptItemCallback)
+        self.acceptingIndex = self.itemIndex
+        self.acceptButton['state'] = DGG.DISABLED
+        self.__showCurrentItem()
+        item = self.items[self.itemIndex]
+        item.acceptItem(self.mailbox, self.acceptingIndex, self.__acceptItemCallback)
         return
 
     def __handleDiscard(self, buttonValue = None):

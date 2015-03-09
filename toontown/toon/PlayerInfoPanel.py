@@ -13,10 +13,7 @@ import ToonAvatarDetailPanel
 import AvatarPanelBase
 import PlayerDetailPanel
 from otp.otpbase import OTPGlobals
-GAME_LOGO_NAMES = {'Default': 'GameLogo_Unknown',
- 'Disney XD': 'GameLogo_XD',
- 'Toontown': 'GameLogo_Toontown',
- 'Pirates': 'GameLogo_Pirates'}
+GAME_LOGO_NAMES = {'Default': 'GameLogo_Toontown'}
 GAME_LOGO_FILE = 'phase_3/models/misc/game_logo_card'
 
 class PlayerInfoPanel(AvatarPanelBase.AvatarPanelBase):

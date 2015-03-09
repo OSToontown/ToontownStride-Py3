@@ -4,7 +4,6 @@ from direct.showbase.PythonUtil import traceFunctionCall
 from otp.otpbase import OTPGlobals
 from otp.otpbase import OTPLocalizer
 from toontown.toonbase import TTLocalizer
-from toontown.toontowngui import TeaserPanel
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
@@ -169,19 +168,6 @@ class ToontownChatManager(ChatManager.ChatManager):
             self.payButton.hide()
         else:
             self.payButton.show()
-        if base.cr.productName not in ['ES',
-         'JP',
-         'DE',
-         'BR',
-         'FR']:
-            self.unpaidChatWarning.show()
-        else:
-            place = base.cr.playGame.getPlace()
-            if place:
-                place.fsm.request('stopped')
-            self.teaser = TeaserPanel.TeaserPanel('secretChat', self.__handleUnpaidChatWarningDone)
-            if base.localAvatar.inTutorial:
-                self.teaser.hidePay()
         normObs, scObs = self.isObscured()
         if not scObs:
             self.scButton.show()
@@ -424,33 +410,6 @@ class ToontownChatManager(ChatManager.ChatManager):
 
     def exitNoSecretChatAtAllAndNoWhitelist(self):
         self.noSecretChatAtAllAndNoWhitelist.hide()
-
-    def enterTrueFriendTeaserPanel(self):
-        self.previousStateBeforeTeaser = None
-        place = base.cr.playGame.getPlace()
-        if place:
-            if place.fsm.hasStateNamed('stopped'):
-                self.previousStateBeforeTeaser = place.fsm.getCurrentState().getName()
-                place.fsm.request('stopped')
-            else:
-                self.notify.warning("Enter: %s has no 'stopped' state." % place)
-        self.teaser = TeaserPanel.TeaserPanel(pageName='secretChat', doneFunc=self.handleOkTeaser)
-        return
-
-    def exitTrueFriendTeaserPanel(self):
-        self.teaser.destroy()
-        place = base.cr.playGame.getPlace()
-        if place:
-            if place.fsm.hasStateNamed('stopped'):
-                if self.previousStateBeforeTeaser:
-                    place.fsm.request(self.previousStateBeforeTeaser, force=1)
-                else:
-                    place.fsm.request('walk')
-            else:
-                self.notify.warning("Exit: %s has no 'stopped' state." % place)
-
-    def handleOkTeaser(self):
-        self.fsm.request('mainMenu')
 
     def __whisperScButtonPressed(self, avatarName, avatarId, playerId):
         if base.config.GetBool('want-qa-regression', 0):

@@ -2,7 +2,6 @@ from pandac.PandaModules import *
 from toontown.toonbase import TTLocalizer
 import ZoneUtil
 from toontown.toonbase import ToontownGlobals
-from toontown.toontowngui import TeaserPanel
 
 class TrialerForceAcknowledge:
 
@@ -38,7 +37,6 @@ class TrialerForceAcknowledge:
 
         doneStatus['mode'] = 'fail'
         self.doneStatus = doneStatus
-        self.dialog = TeaserPanel.TeaserPanel(pageName='otherHoods', doneFunc=self.handleOk)
 
     def exit(self):
         if self.dialog:

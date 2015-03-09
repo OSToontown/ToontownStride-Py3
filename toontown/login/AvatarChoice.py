@@ -7,7 +7,6 @@ from toontown.toontowngui import TTDialog
 from direct.gui.DirectGui import *
 from toontown.toonbase import TTLocalizer
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toontowngui import TeaserPanel
 NAME_ROTATIONS = (7, -11, 1, -5, 3.5, -5)
 NAME_POSITIONS = ((0, 0, 0.26),
  (-0.03, 0, 0.25),
@@ -24,36 +23,25 @@ DELETE_POSITIONS = ((0.187, 0, -0.26),
 
 class AvatarChoice(DirectButton):
     notify = DirectNotifyGlobal.directNotify.newCategory('AvatarChoice')
-    NEW_TRIALER_OPEN_POS = (1,)
-    OLD_TRIALER_OPEN_POS = (1, 4)
     MODE_CREATE = 0
     MODE_CHOOSE = 1
-    MODE_LOCKED = 2
 
-    def __init__(self, av = None, position = 0, paid = 0, okToLockout = 1):
+    def __init__(self, av = None, position = 0):
         DirectButton.__init__(self, relief=None, text='', text_font=ToontownGlobals.getSignFont())
         self.initialiseoptions(AvatarChoice)
-        self.hasPaid = paid
         self.mode = None
-        if base.restrictTrialers and okToLockout:
-            if position not in AvatarChoice.NEW_TRIALER_OPEN_POS:
-                if not self.hasPaid:
-                    self.mode = AvatarChoice.MODE_LOCKED
-                    self.name = ''
-                    self.dna = None
-        if self.mode is not AvatarChoice.MODE_LOCKED:
-            if not av:
-                self.mode = AvatarChoice.MODE_CREATE
-                self.name = ''
-                self.dna = None
-            else:
-                self.mode = AvatarChoice.MODE_CHOOSE
-                self.name = av.name
-                self.dna = ToonDNA.ToonDNA(av.dna)
-                self.wantName = av.wantName
-                self.approvedName = av.approvedName
-                self.rejectedName = av.rejectedName
-                self.allowedName = av.allowedName
+        if not av:
+            self.mode = AvatarChoice.MODE_CREATE
+            self.name = ''
+            self.dna = None
+        else:
+            self.mode = AvatarChoice.MODE_CHOOSE
+            self.name = av.name
+            self.dna = ToonDNA.ToonDNA(av.dna)
+            self.wantName = av.wantName
+            self.approvedName = av.approvedName
+            self.rejectedName = av.rejectedName
+            self.allowedName = av.allowedName
         self.position = position
         self.doneEvent = 'avChoicePanel-' + str(self.position)
         self.deleteWithPasswordFrame = None
@@ -67,26 +55,7 @@ class AvatarChoice(DirectButton):
         self.buttonBgs.append(self.pickAToonGui.find('**/tt_t_gui_pat_squareYellow'))
         self['image'] = self.buttonBgs[position]
         self.setScale(1.01)
-        if self.mode is AvatarChoice.MODE_LOCKED:
-            self['command'] = self.__handleTrialer
-            self['text'] = TTLocalizer.AvatarChoiceSubscribersOnly
-            self['text0_scale'] = 0.1
-            self['text1_scale'] = TTLocalizer.ACsubscribersOnly
-            self['text2_scale'] = TTLocalizer.ACsubscribersOnly
-            self['text0_fg'] = (0, 1, 0.8, 0.0)
-            self['text1_fg'] = (0, 1, 0.8, 1)
-            self['text2_fg'] = (0.3, 1, 0.9, 1)
-            self['text_pos'] = (0, 0.19)
-            upsellModel = loader.loadModel('phase_3/models/gui/tt_m_gui_ups_mainGui')
-            upsellTex = upsellModel.find('**/tt_t_gui_ups_logo_noBubbles')
-            self.logoModelImage = loader.loadModel('phase_3/models/gui/members_only_gui').find('**/MembersOnly')
-            logo = DirectFrame(state=DGG.DISABLED, parent=self, relief=None, image=upsellTex, image_scale=(0.9, 0, 0.9), image_pos=(0, 0, 0), scale=0.45)
-            logo.reparentTo(self.stateNodePath[0], 20)
-            logo.instanceTo(self.stateNodePath[1], 20)
-            logo.instanceTo(self.stateNodePath[2], 20)
-            self.logo = logo
-            upsellModel.removeNode()
-        elif self.mode is AvatarChoice.MODE_CREATE:
+        if self.mode is AvatarChoice.MODE_CREATE:
             self['command'] = self.__handleCreate
             self['text'] = (TTLocalizer.AvatarChoiceMakeAToon,)
             self['text_pos'] = (0, 0)
@@ -117,7 +86,7 @@ class AvatarChoice(DirectButton):
             elif self.rejectedName != '':
                 self.nameYourToonButton.hide()
                 self.statusText['text'] = TTLocalizer.AvatarChoiceNameRejected
-            elif self.allowedName == 1 and (base.cr.allowFreeNames() or self.hasPaid):
+            elif self.allowedName == 1:
                 self.nameYourToonButton.show()
                 self.statusText['text'] = ''
             else:
@@ -152,7 +121,7 @@ class AvatarChoice(DirectButton):
         self.pickAToonGui.removeNode()
         del self.pickAToonGui
         del self.dna
-        if self.mode in (AvatarChoice.MODE_CREATE, AvatarChoice.MODE_LOCKED):
+        if self.mode == AvatarChoice.MODE_CREATE:
             pass
         else:
             self.headModel.stopBlink()
@@ -267,6 +236,3 @@ class AvatarChoice(DirectButton):
     def __handleDeleteWithPasswordCancel(self):
         self.deleteWithPasswordFrame.hide()
         base.transitions.noTransitions()
-
-    def __handleTrialer(self):
-        TeaserPanel.TeaserPanel(pageName='sixToons')

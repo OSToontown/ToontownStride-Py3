@@ -21,7 +21,6 @@ from toontown.racing.Kart import Kart
 from toontown.racing.KartShopGlobals import KartGlobals
 from toontown.racing import RaceGlobals
 from toontown.toontowngui.TTDialog import TTGlobalDialog
-from toontown.toontowngui.TeaserPanel import TeaserPanel
 if (__debug__):
     import pdb
 
@@ -219,8 +218,6 @@ class DistributedStartingBlock(DistributedObject.DistributedObject, FSM):
             self.dialog = TTGlobalDialog(msg, doneEvent, 2)
             self.dialog.accept(doneEvent, handleTicketError)
             self.accept('stoppedAsleep', handleTicketError)
-        elif errCode == KartGlobals.ERROR_CODE.eUnpaid:
-            self.dialog = TeaserPanel(pageName='karting', doneFunc=handleTicketError)
         else:
             self.cr.playGame.getPlace().setState('walk')
 

@@ -12,7 +12,6 @@ from toontown.toonbase import TTLocalizer, ToontownGlobals
 from direct.task.Task import Task
 from toontown.distributed import DelayDelete
 from toontown.hood import ZoneUtil
-from toontown.toontowngui import TeaserPanel
 from toontown.building import BoardingGroupShow
 
 class DistributedElevator(DistributedObject.DistributedObject):
@@ -332,36 +331,14 @@ class DistributedElevator(DistributedObject.DistributedObject):
                 self.notify.warning('toon: ' + str(avId) + " doesn't exist, and" + ' cannot exit the elevator!')
         return
 
-    def allowedToEnter(self, zoneId = None):
-        allowed = False
-        if hasattr(base, 'ttAccess') and base.ttAccess:
-            if zoneId:
-                allowed = base.ttAccess.canAccess(zoneId)
-            else:
-                allowed = base.ttAccess.canAccess()
-        return allowed
-
     def handleEnterSphere(self, collEntry):
         self.notify.debug('Entering Elevator Sphere....')
-        if self.allowedToEnter(self.zoneId):
-            if self.elevatorTripId and localAvatar.lastElevatorLeft == self.elevatorTripId:
-                self.rejectBoard(base.localAvatar.doId, REJECT_SHUFFLE)
-            elif base.localAvatar.hp > 0:
-                self.cr.playGame.getPlace().detectedElevatorCollision(self)
-                toon = base.localAvatar
-                self.sendUpdate('requestBoard', [])
-        else:
-            place = base.cr.playGame.getPlace()
-            if place:
-                place.fsm.request('stopped')
-            self.dialog = TeaserPanel.TeaserPanel(pageName='cogHQ', doneFunc=self.handleOkTeaser)
-
-    def handleOkTeaser(self):
-        self.dialog.destroy()
-        del self.dialog
-        place = base.cr.playGame.getPlace()
-        if place:
-            place.fsm.request('walk')
+        if self.elevatorTripId and localAvatar.lastElevatorLeft == self.elevatorTripId:
+            self.rejectBoard(base.localAvatar.doId, REJECT_SHUFFLE)
+        elif base.localAvatar.hp > 0:
+            self.cr.playGame.getPlace().detectedElevatorCollision(self)
+            toon = base.localAvatar
+            self.sendUpdate('requestBoard', [])
 
     def rejectBoard(self, avId, reason = 0):
         if hasattr(base.localAvatar, 'elevatorNotifier'):

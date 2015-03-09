@@ -10,7 +10,6 @@ from toontown.hood import ZoneUtil
 from toontown.nametag.NametagGlobals import *
 from toontown.pets import PetshopGUI
 from toontown.toonbase import TTLocalizer
-from toontown.toontowngui import TeaserPanel
 
 
 class DistributedNPCPetclerk(DistributedNPCToonBase):
@@ -51,16 +50,6 @@ class DistributedNPCPetclerk(DistributedNPCToonBase):
 
     def getCollSphereRadius(self):
         return 4.0
-
-    def allowedToEnter(self):
-        return True
-
-    def handleOkTeaser(self):
-        self.dialog.destroy()
-        del self.dialog
-        place = base.cr.playGame.getPlace()
-        if place:
-            place.fsm.request('walk')
 
     def handleCollisionSphereEnter(self, collEntry):
         base.cr.playGame.getPlace().fsm.request('purchase')

@@ -9,7 +9,6 @@ from toontown.quest import QuestChoiceGui
 from toontown.quest import QuestParser
 from toontown.quest import TrackChoiceGui
 from toontown.toonbase import TTLocalizer
-from toontown.toontowngui import TeaserPanel
 
 
 ChoiceTimeout = 20
@@ -74,13 +73,6 @@ class DistributedNPCSpecialQuestGiver(DistributedNPCToonBase):
         self.sendUpdate('avatarEnter', [])
         self.nametag3d.setDepthTest(0)
         self.nametag3d.setBin('fixed', 0)
-
-    def handleOkTeaser(self):
-        self.dialog.destroy()
-        del self.dialog
-        place = base.cr.playGame.getPlace()
-        if place:
-            place.fsm.request('walk')
 
     def finishMovie(self, av, isLocalToon, elapsedTime):
         self.cleanupMovie()

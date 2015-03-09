@@ -71,10 +71,9 @@ class AvatarChooser(StateData.StateData):
         base.setBackgroundColor(ToontownGlobals.DefaultBackgroundColor)
         return None
 
-    def load(self, isPaid):
+    def load(self):
         if self.isLoaded == 1:
             return None
-        self.isPaid = isPaid
         gui = loader.loadModel('phase_3/models/gui/pick_a_toon_gui')
         gui2 = loader.loadModel('phase_3/models/gui/quit_button')
         newGui = loader.loadModel('phase_3/models/gui/tt_m_gui_pat_mainGui')
@@ -94,20 +93,14 @@ class AvatarChooser(StateData.StateData):
         self.panelList = []
         used_position_indexs = []
         for av in self.avatarList:
-            if base.cr.isPaid():
-                okToLockout = 0
-            else:
-                okToLockout = 1
-                if av.position in AvatarChoice.AvatarChoice.OLD_TRIALER_OPEN_POS:
-                    okToLockout = 0
-            panel = AvatarChoice.AvatarChoice(av, position=av.position, paid=isPaid, okToLockout=okToLockout)
+            panel = AvatarChoice.AvatarChoice(av, position=av.position)
             panel.setPos(POSITIONS[av.position])
             used_position_indexs.append(av.position)
             self.panelList.append(panel)
 
         for panelNum in range(0, MAX_AVATARS):
             if panelNum not in used_position_indexs:
-                panel = AvatarChoice.AvatarChoice(position=panelNum, paid=isPaid)
+                panel = AvatarChoice.AvatarChoice(position=panelNum)
                 panel.setPos(POSITIONS[panelNum])
                 self.panelList.append(panel)
 

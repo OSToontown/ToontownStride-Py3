@@ -11,7 +11,6 @@ from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
 from toontown.toontowngui import TTDialog
-from toontown.toontowngui import TeaserPanel
 
 
 class DistributedNPCPartyPerson(DistributedNPCToonBase):
@@ -21,7 +20,6 @@ class DistributedNPCPartyPerson(DistributedNPCToonBase):
         self.av = None
         self.button = None
         self.askGui = None
-        self.teaserDialog = None
         return
 
     def disable(self):
@@ -94,8 +92,7 @@ class DistributedNPCPartyPerson(DistributedNPCToonBase):
         self.detectAvatars()
         self.clearMat()
         if self.isInteractingWithLocalToon:
-            if hasattr(self, 'teaserDialog') and not self.teaserDialog:
-                self.freeAvatar()
+            self.freeAvatar()
         return Task.done
 
     def setMovie(self, mode, npcId, avId, extraArgs, timestamp):
@@ -180,28 +177,10 @@ class DistributedNPCPartyPerson(DistributedNPCToonBase):
 
     def __handleAskDone(self):
         self.ignore(self.planPartyQuestionGuiDoneEvent)
-        doneStatus = self.askGui.doneStatus
-        if doneStatus == 'ok':
-            wantsToPlan = 1
-            if localAvatar.getGameAccess() != ToontownGlobals.AccessFull:
-                wantsToPlan = 0
-                place = base.cr.playGame.getPlace()
-                if place:
-                    place.fsm.request('stopped', force=1)
-                self.teaserDialog = TeaserPanel.TeaserPanel(pageName='parties', doneFunc=self.handleOkTeaser)
-        else:
-            wantsToPlan = 0
-        self.sendUpdate('answer', [wantsToPlan])
+        self.sendUpdate('answer', [self.askGui.doneStatus == 'ok'])
         self.askGui.hide()
 
     def popupAskGUI(self, task):
         self.setChatAbsolute('', CFSpeech)
         self.acceptOnce(self.planPartyQuestionGuiDoneEvent, self.__handleAskDone)
         self.askGui.show()
-
-    def handleOkTeaser(self):
-        self.teaserDialog.destroy()
-        del self.teaserDialog
-        place = base.cr.playGame.getPlace()
-        if place:
-            place.fsm.request('walk')

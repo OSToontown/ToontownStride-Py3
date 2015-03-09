@@ -2,8 +2,6 @@ from pandac.PandaModules import *
 from direct.directnotify import DirectNotifyGlobal
 import string
 from direct.fsm import StateData
-from toontown.toontowngui.TeaserPanel import TeaserPanel
-from toontown.toonbase.ToontownBattleGlobals import gagIsPaidOnly
 AttackPanelHidden = 0
 
 def hideAttackPanel(flag):
@@ -26,7 +24,6 @@ class TownBattleAttackPanel(StateData.StateData):
 
     def enter(self):
         StateData.StateData.enter(self)
-        self._teaserPanel = None
         if not AttackPanelHidden:
             base.localAvatar.inventory.show()
         self.accept('inventory-selection', self.__handleInventory)
@@ -46,9 +43,6 @@ class TownBattleAttackPanel(StateData.StateData):
         self.ignore('inventory-fire')
         self.ignore('hide-attack-panel')
         base.localAvatar.inventory.hide()
-        if self._teaserPanel:
-            self._teaserPanel.destroy()
-            del self._teaserPanel
 
     def __handleRun(self):
         doneStatus = {'mode': 'Run'}
@@ -67,9 +61,6 @@ class TownBattleAttackPanel(StateData.StateData):
         messenger.send(self.doneEvent, [doneStatus])
 
     def __handleInventory(self, track, level):
-        if not base.cr.isPaid() and gagIsPaidOnly(track, level):
-            self._teaserPanel = TeaserPanel(pageName='useGags')
-            return
         if base.localAvatar.inventory.numItem(track, level) > 0:
             doneStatus = {}
             doneStatus['mode'] = 'Inventory'

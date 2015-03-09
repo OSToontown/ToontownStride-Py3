@@ -12,7 +12,6 @@ from toontown.toonbase import TTLocalizer
 import string, types
 from toontown.toon import LaffMeter
 from toontown.toonbase.ToontownBattleGlobals import AvPropsNew
-from toontown.toontowngui.TeaserPanel import TeaserPanel
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toontowngui import TTDialog
 from otp.otpbase import OTPLocalizer
@@ -265,15 +264,8 @@ class QuestPoster(DirectFrame):
             guiButton.removeNode()
         npcZone = NPCToons.getNPCZone(toNpcId)
         hoodId = ZoneUtil.getCanonicalHoodId(npcZone)
-        if not base.cr.isPaid() and (questId == 401 or hasattr(quest, 'getLocation') and quest.getLocation() == 1000 or hoodId == 1000):
-
-            def showTeaserPanel():
-                TeaserPanel(pageName='getGags')
-
-            self.chooseButton['command'] = showTeaserPanel
-        else:
-            self.chooseButton['command'] = callback
-            self.chooseButton['extraArgs'] = [questId]
+        self.chooseButton['command'] = callback
+        self.chooseButton['extraArgs'] = [questId]
         self.unbind(DGG.WITHIN)
         self.unbind(DGG.WITHOUT)
         if not quest.getType() == Quests.TrackChoiceQuest:

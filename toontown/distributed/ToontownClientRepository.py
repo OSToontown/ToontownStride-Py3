@@ -208,7 +208,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.handler = self.handleMessageType
         self.avChoiceDoneEvent = 'avatarChooserDone'
         self.avChoice = AvatarChooser.AvatarChooser(avList, self.loginFSM, self.avChoiceDoneEvent)
-        self.avChoice.load(self.isPaid())
+        self.avChoice.load()
         self.avChoice.enter()
         self.accept(self.avChoiceDoneEvent, self.__handleAvatarChooserDone, [avList])
         return

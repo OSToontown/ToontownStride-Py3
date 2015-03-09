@@ -11,7 +11,6 @@ from CatalogMouldingItem import getAllMouldings
 from CatalogWainscotingItem import getAllWainscotings
 from CatalogFurnitureItem import getAllFurnitures
 from CatalogFurnitureItem import FLTrunk
-from toontown.toontowngui.TeaserPanel import TeaserPanel
 from otp.otpbase import OTPGlobals
 CATALOG_PANEL_WORDWRAP = 10
 CATALOG_PANEL_CHAT_WORDWRAP = 9
@@ -280,25 +279,9 @@ class CatalogItemPanel(DirectFrame):
         self.unload()
         return
 
-    def getTeaserPanel(self):
-        typeName = self['item'].getTypeName()
-        if typeName == TTLocalizer.EmoteTypeName or typeName == TTLocalizer.ChatTypeName:
-            page = 'emotions'
-        elif typeName == TTLocalizer.GardenTypeName or typeName == TTLocalizer.GardenStarterTypeName:
-            page = 'gardening'
-        else:
-            page = 'clothing'
-
-        def showTeaserPanel():
-            TeaserPanel(pageName=page)
-
-        return showTeaserPanel
-
     def updateBuyButton(self):
         if not self.loaded:
             return
-        if not base.cr.isPaid():
-            self.buyButton['command'] = self.getTeaserPanel()
         self.buyButton.show()
         typeCode = self['item'].getTypeCode()
         orderCount = base.localAvatar.onOrder.count(self['item'])
@@ -469,8 +452,6 @@ class CatalogItemPanel(DirectFrame):
         self.giftButton.show()
         if giftUpdate == 0:
             return
-        if not base.cr.isPaid():
-            self.giftButton['command'] = self.getTeaserPanel()
         self.auxText['text'] = ' '
         numFriends = len(base.localAvatar.friendsList) + len(base.cr.avList) - 1
         if numFriends > 0:

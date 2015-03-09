@@ -8,7 +8,6 @@ from toontown.quest import QuestChoiceGui
 from toontown.quest import QuestParser
 from toontown.quest import TrackChoiceGui
 from toontown.toonbase import TTLocalizer
-from toontown.toontowngui import TeaserPanel
 
 
 SPAMMING = 1
