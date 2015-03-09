@@ -474,7 +474,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             if oldTracks == 0 and oldLevels == 0:
                 self.notify.warning('reseting invalid inventory to MAX on toon: %s' % self.doId)
                 self.inventory.zeroInv()
-                self.inventory.maxOutInv(1)
+                self.inventory.maxOutInv(1, 1)
             else:
                 newInventory = InventoryBase.InventoryBase(self)
                 oldList = emptyInv.makeFromNetStringForceSize(inventoryNetString, oldTracks, oldLevels)
@@ -488,9 +488,9 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def getInventory(self):
         return self.inventory.makeNetString()
 
-    def doRestock(self, noUber = 1):
+    def doRestock(self, noUber = 1, noPaid = 1):
         self.inventory.zeroInv()
-        self.inventory.maxOutInv(noUber)
+        self.inventory.maxOutInv(noUber, noPaid)
         self.d_setInventory(self.inventory.makeNetString())
 
     def setDefaultShard(self, shard):
@@ -3703,7 +3703,11 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         if paidStatus == 'unpaid':
             access = 1
         if access == OTPGlobals.AccessInvalid:
-            access = OTPGlobals.AccessFull
+            if not __dev__:
+                self.air.writeServerEvent('Setting Access', self.doId, 'setAccess not being sent by the OTP Server, changing access to unpaid')
+                access = OTPGlobals.AccessVelvetRope
+            elif __dev__:
+                access = OTPGlobals.AccessFull
         self.setGameAccess(access)
 
     def setGameAccess(self, access):

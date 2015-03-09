@@ -102,6 +102,19 @@ UnpaidMaxSkills = [Levels[0][1] - 1,
  Levels[6][1] - 1]
 ExperienceCap = 300
 
+def gagIsPaidOnly(track, level):
+    return Levels[track][level] > UnpaidMaxSkills[track]
+
+
+def gagIsVelvetRoped(track, level):
+    if level > 0:
+        if track in [4, 5]:
+            if level > 3:
+                return True
+        else:
+            return True
+    return False
+
 
 MaxToonAcc = 95
 StartingLevel = 0

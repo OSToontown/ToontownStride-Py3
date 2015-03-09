@@ -376,6 +376,7 @@ ChatFeedback_PassedBlacklist = 32
 ChatFeedback_Whitelist = 64
 ChatFeedback_OpenChat = 128
 AccessUnknown = 0
+AccessVelvetRope = 1
 AccessFull = 2
 AccessInvalid = 3
 AvatarPendingCreate = -1
