@@ -1852,14 +1852,8 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.inventory.updateTotalPropsText()
 
     def getAccountDays(self):
-        days = 0
-        defaultDays = base.cr.config.GetInt('account-days', -1)
-        if defaultDays >= 0:
-            days = defaultDays
-        elif hasattr(base.cr, 'accountDays'):
-            days = base.cr.accountDays
-        return days
-
+        return base.cr.accountDateMgr.getAccountDays()
+    
     def hasActiveBoardingGroup(self):
         if hasattr(localAvatar, 'boardingParty') and localAvatar.boardingParty:
             return localAvatar.boardingParty.hasActiveGroup(localAvatar.doId)
