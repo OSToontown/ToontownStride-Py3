@@ -1597,7 +1597,6 @@ DG = 5
 BR = 6
 OZ = 7
 DL = 8
-DefaultWantNewsPageSetting = 0
 gmMagicWordList = ['restock',
  'restockUber',
  'autoRestock',
@@ -1614,7 +1613,6 @@ gmMagicWordList = ['restock',
  'newSummons',
  'who',
  'who all']
-NewsPageScaleAdjust = 0.85
 AnimPropTypes = Enum(('Unknown',
  'Hydrant',
  'Mailbox',

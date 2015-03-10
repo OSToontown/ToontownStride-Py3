@@ -218,7 +218,6 @@ EPtitleLabel = 0.12
 EPhostTab = 0.07
 EPinvitedTab = 0.07
 EPcalendarTab = 0.07
-EPnewsTab = 0.07
 EPhostingCancelButton = 0.04
 EPhostingDateLabel = 0.05
 EPpartyGoButton = 0.045

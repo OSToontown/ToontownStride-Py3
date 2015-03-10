@@ -287,7 +287,6 @@ from toontown.uberdog.DistributedMailManager/AI/UD import DistributedMailManager
 from toontown.uberdog.DistributedPartyManager/AI/UD import DistributedPartyManager/AI/UD
 from toontown.rpc.AwardManager/UD import AwardManager/UD
 from toontown.uberdog.DistributedCpuInfoMgr/AI/UD import DistributedCpuInfoMgr/AI/UD
-from toontown.uberdog.DistributedInGameNewsMgr/AI/UD import DistributedInGameNewsMgr/AI/UD
 from toontown.coderedemption.TTCodeRedemptionMgr/AI import TTCodeRedemptionMgr/AI
 from toontown.distributed.NonRepeatableRandomSourceAI import NonRepeatableRandomSourceAI
 from toontown.distributed.NonRepeatableRandomSourceUD import NonRepeatableRandomSourceUD
@@ -3275,12 +3274,6 @@ dclass NonRepeatableRandomSource : DistributedObject, NonRepeatableRandomSourceC
   getRandomSamples(DoId, string, uint32, uint32);
   randomSample(DoId, uint32);
   randomSampleAck() airecv;
-};
-
-dclass DistributedInGameNewsMgr : DistributedObjectGlobal {
-  setLatestIssueStr(string) required broadcast ram;
-  inGameNewsMgrAIStartingUp(uint32, uint32);
-  newIssueUDtoAI(string) airecv;
 };
 
 struct Friend

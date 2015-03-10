@@ -24,7 +24,6 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         self.pageTabFrame = DirectFrame(parent=self, relief=None, pos=(0.93, 1, 0.575), scale=1.25)
         self.pageTabFrame.hide()
         self.currPageIndex = None
-        self.pageBeforeNews = None
         self.entered = 0
         self.safeMode = 0
         self.__obscured = 0
@@ -47,8 +46,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
          TTLocalizer.GolfPageTitle,
          TTLocalizer.PhotoPageTitle,
          TTLocalizer.EventsPageName,
-         TTLocalizer.AchievementsPageTitle,
-         TTLocalizer.NewsPageName]
+         TTLocalizer.AchievementsPageTitle]
         return
 
     def setSafeMode(self, setting):
@@ -79,8 +77,6 @@ class ShtikerBook(DirectFrame, StateData.StateData):
             self.accept(ToontownGlobals.OptionsPageHotkey, self.__close)
             self.pageTabFrame.show()
         self.pages[self.currPageIndex].enter()
-        if hasattr(localAvatar, 'newsButtonMgr') and localAvatar.newsButtonMgr:
-            localAvatar.newsButtonMgr.hideNewIssueButton()
 
     def exit(self):
         if not self.entered:
@@ -164,28 +160,12 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         if pageName not in self.pageOrder:
             self.notify.error('Trying to add page %s in the ShtickerBook. Page not listed in the order.' % pageName)
             return
-        pageIndex = 0
-        if len(self.pages):
-            newIndex = len(self.pages)
-            prevIndex = newIndex - 1
-            if self.pages[prevIndex].pageName == TTLocalizer.NewsPageName:
-                self.pages.insert(prevIndex, page)
-                pageIndex = prevIndex
-                if self.currPageIndex >= pageIndex:
-                    self.currPageIndex += 1
-            else:
-                self.pages.append(page)
-                pageIndex = len(self.pages) - 1
-        else:
-            self.pages.append(page)
-            pageIndex = len(self.pages) - 1
+        self.pages.append(page)
+        pageIndex = len(self.pages) - 1
         page.setBook(self)
         page.setPageName(pageName)
         page.reparentTo(self)
         self.addPageTab(page, pageIndex, pageName)
-        from toontown.shtiker import MapPage
-        if isinstance(page, MapPage.MapPage):
-            self.pageBeforeNews = page
 
     def addPageTab(self, page, pageIndex, pageName = 'Page'):
         tabIndex = len(self.pageTabs)
@@ -196,8 +176,6 @@ class ShtikerBook(DirectFrame, StateData.StateData):
             self.setPage(page)
             if base.config.GetBool('want-qa-regression', 0):
                 self.notify.info('QA-REGRESSION: SHTICKERBOOK: Browse tabs %s' % page.pageName)
-            localAvatar.newsButtonMgr.setGoingToNewsPageFromStickerBook(False)
-            localAvatar.newsButtonMgr.showAppropriateButton()
 
         yOffset = 0.07 * pageIndex
         iconGeom = None
@@ -271,13 +249,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         elif pageName == TTLocalizer.PhotoPageTitle:
             iconGeom = iconModels = loader.loadModel('phase_4/models/minigames/photogame_filmroll')
             iconScale = (1.9, 1.5, 1.5)
-            iconModels.detachNode()         
-        elif pageName == TTLocalizer.NewsPageName:
-            iconModels = loader.loadModel('phase_3.5/models/gui/sos_textures')
-            iconGeom = iconModels.find('**/tt_t_gui_sbk_newsPageTab')
             iconModels.detachNode()
-            buttonPressedCommand = self.goToNewsPage
-            extraArgs = [page]
         if pageName == TTLocalizer.OptionsPageTitle:
             pageName = TTLocalizer.OptionsTabTitle
         pageTab = DirectButton(parent=self.pageTabFrame, relief=DGG.RAISED, frameSize=(-0.575,
@@ -298,15 +270,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         if enterPage:
             self.showPageArrows()
             page.enter()
-        from toontown.shtiker import NewsPage
-        if not isinstance(page, NewsPage.NewsPage):
-            self.pageBeforeNews = page
         return
-
-    def setPageBeforeNews(self, enterPage = True):
-        self.setPage(self.pageBeforeNews, enterPage)
-        self.accept(ToontownGlobals.StickerBookHotkey, self.__close)
-        self.accept(ToontownGlobals.OptionsPageHotkey, self.__close)
 
     def setPageTabIndex(self, pageTabIndex):
         if self.currPageTabIndex is not None and pageTabIndex != self.currPageTabIndex:
@@ -333,12 +297,10 @@ class ShtikerBook(DirectFrame, StateData.StateData):
     def showButton(self):
         self.__shown = 1
         self.__setButtonVisibility()
-        localAvatar.newsButtonMgr.showAppropriateButton()
 
     def hideButton(self):
         self.__shown = 0
         self.__setButtonVisibility()
-        localAvatar.newsButtonMgr.request('Hidden')
 
     def __setButtonVisibility(self):
         if self.__isOpen:
@@ -398,12 +360,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         self.setPageTabIndex(self.currPageIndex)
         self.showPageArrows()
         page = self.pages[self.currPageIndex]
-        from toontown.shtiker import NewsPage
-        if isinstance(page, NewsPage.NewsPage):
-            self.goToNewsPage(page)
-        else:
-            page.enter()
-            self.pageBeforeNews = page
+        page.enter()
 
     def showPageArrows(self):
         if self.currPageIndex == len(self.pages) - 1:
@@ -412,33 +369,14 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         else:
             self.prevArrow.show()
             self.nextArrow.show()
-        self.__checkForNewsPage()
+        self.__checkForPage()
         if self.currPageIndex == 0:
             self.prevArrow.hide()
             self.nextArrow.show()
 
-    def __checkForNewsPage(self):
-        from toontown.shtiker import NewsPage
-        self.ignore('arrow_left')
-        self.ignore('arrow_right')
-        if isinstance(self.pages[self.currPageIndex], NewsPage.NewsPage):
-            self.ignore('arrow_left')
-            self.ignore('arrow_right')
-        else:
-            self.accept('arrow_right', self.__pageChange, [1])
-            self.accept('arrow_left', self.__pageChange, [-1])
-
-    def goToNewsPage(self, page):
-        messenger.send('wakeup')
-        base.playSfx(self.pageSound)
-        localAvatar.newsButtonMgr.setGoingToNewsPageFromStickerBook(True)
-        localAvatar.newsButtonMgr.showAppropriateButton()
-        self.setPage(page)
-        if base.config.GetBool('want-qa-regression', 0):
-            self.notify.info('QA-REGRESSION: SHTICKERBOOK: Browse tabs %s' % page.pageName)
-        self.ignore(ToontownGlobals.StickerBookHotkey)
-        self.ignore(ToontownGlobals.OptionsPageHotkey)
-        localAvatar.newsButtonMgr.acceptEscapeKeyPress()
+    def __checkForPage(self):
+        self.accept('arrow_right', self.__pageChange, [1])
+        self.accept('arrow_left', self.__pageChange, [-1])
 
     def disableBookCloseButton(self):
         if self.bookCloseButton:

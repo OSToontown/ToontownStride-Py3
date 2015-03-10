@@ -1170,7 +1170,6 @@ class OTPClientRepository(ClientRepositoryBase):
          jobMgr.TaskName,
          self.GarbageCollectTaskName,
          'garbageCollectStates',
-         'RedownloadNewsTask',
          TelemetryLimiter.TaskName]
         if extraTasks is not None:
             allowedTasks.extend(extraTasks)
