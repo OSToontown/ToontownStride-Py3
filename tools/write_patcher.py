@@ -8,19 +8,19 @@ import xml.etree.ElementTree as ET
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--build-dir', default='build',
-                    help='The directory of the Toontown Unlimited build.')
+                    help='The directory of the Toontown United build.')
 parser.add_argument('--dest-dir', default='.',
                     help='The directory in which to store the patcher.')
 parser.add_argument('--output', default='patcher.xml',
                     help='The name of the output file.')
-parser.add_argument('--launcher-version', default='unlimited-dev',
-                    help='The current version of the Toontown Unlimited launcher.')
-parser.add_argument('--account-server', default='toontownunlimited.com',
-                    help='The address of the Toontown Unlimited account server.')
+parser.add_argument('--launcher-version', default='united-dev',
+                    help='The current version of the Toontown United launcher.')
+parser.add_argument('--account-server', default='toontownunited.com',
+                    help='The address of the Toontown United account server.')
 parser.add_argument('--client-agent', default='192.99.200.107',
                     help='The IP address of the Client Agent to connect to.')
-parser.add_argument('--server-version', default='unlimited-dev',
-                    help='The current version of the Toontown Unlimited game.')
+parser.add_argument('--server-version', default='united-dev',
+                    help='The current version of the Toontown United game.')
 parser.add_argument('--resources-revision', default='',
                     help='The current revision of the resources repository.')
 parser.add_argument('includes', nargs='*', default=['GameData.bin'],
@@ -71,7 +71,7 @@ print 'Writing %s...' % args.output
 # First, add the element:
 patcher = ET.Element('patcher')
 
-# Next, add the Toontown Unlimited launcher version:
+# Next, add the Toontown United launcher version:
 launcher_version = ET.SubElement(patcher, 'launcher-version')
 launcher_version.text = args.launcher_version
 

@@ -31,7 +31,7 @@ if %INPUT%==5 (
 set TTU_PLAYCOOKIE=%ttuUsername%
 
 echo ===============================
-echo Starting Toontown Unlimited...
+echo Starting Toontown United...
 echo ppython: %PPYTHON_PATH%
 echo Username: %ttuUsername%
 echo Password: %ttuPassword%

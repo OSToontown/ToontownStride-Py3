@@ -54,7 +54,7 @@ messagedirector:
 roles:
     - type: clientagent
       bind: 0.0.0.0:7599
-      version: "unlimited-dev"
+      version: "united-dev"
       client:
         relocate: true
         add_interest: enabled

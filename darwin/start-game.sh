@@ -16,7 +16,7 @@ export TTU_PLAYCOOKIE=$ttuUsername
 export TTU_GAMESERVER=$TTU_GAMESERVER
 
 echo "==============================="
-echo "Starting Toontown Unlimited..."
+echo "Starting Toontown United..."
 echo "Username: $ttuUsername"
 echo "Gameserver: $TTU_GAMESERVER"
 echo "==============================="

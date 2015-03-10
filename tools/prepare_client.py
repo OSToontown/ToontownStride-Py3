@@ -12,15 +12,15 @@ parser.add_argument('--distribution', default='en',
 parser.add_argument('--build-dir', default='build',
                     help='The directory in which to store the build files.')
 parser.add_argument('--src-dir', default='..',
-                    help='The directory of the Toontown Unlimited source code.')
-parser.add_argument('--server-ver', default='unlimited-dev',
+                    help='The directory of the Toontown United source code.')
+parser.add_argument('--server-ver', default='united-dev',
                     help='The server version of this build.')
 parser.add_argument('--build-mfs', action='store_true',
                     help='When present, the resource multifiles will be built.')
 parser.add_argument('--resources-dir', default='../resources',
-                    help='The directory of the Toontown Unlimited resources.')
+                    help='The directory of the Toontown United resources.')
 parser.add_argument('--config-dir', default='../config/release',
-                    help='The directory of the Toontown Unlimited configuration files.')
+                    help='The directory of the Toontown United configuration files.')
 parser.add_argument('--include', '-i', action='append',
                     help='Explicitly include this file in the build.')
 parser.add_argument('--exclude', '-x', action='append',
@@ -28,7 +28,7 @@ parser.add_argument('--exclude', '-x', action='append',
 parser.add_argument('--vfs', action='append',
                     help='Add this file to the virtual file system at runtime.')
 parser.add_argument('modules', nargs='*', default=['otp', 'toontown'],
-                    help='The Toontown Unlimited modules to be included in the build.')
+                    help='The Toontown United modules to be included in the build.')
 args = parser.parse_args()
 
 print 'Preparing the client...'
@@ -39,7 +39,7 @@ if os.path.exists(args.build_dir):
 os.mkdir(args.build_dir)
 print 'Build directory = ' + args.build_dir
 
-# Copy the provided Toontown Unlimited modules:
+# Copy the provided Toontown United modules:
 
 
 def minify(f):

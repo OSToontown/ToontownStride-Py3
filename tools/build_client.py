@@ -10,10 +10,10 @@ parser.add_argument('--build-dir', default='build',
                     help='The directory of which the build was prepared.')
 parser.add_argument('--output', default='GameData.pyd',
                     help='The built file.')
-parser.add_argument('--main-module', default='unlimited.base.ClientStart',
+parser.add_argument('--main-module', default='united.base.ClientStart',
                     help='The module to load at the start of the game.')
-parser.add_argument('modules', nargs='*', default=['shared', 'unlimited'],
-                    help='The Toontown Unlimited modules to be included in the build.')
+parser.add_argument('modules', nargs='*', default=['shared', 'united'],
+                    help='The Toontown United modules to be included in the build.')
 args = parser.parse_args()
 
 print 'Building the client...'

@@ -1,9 +1,9 @@
 #!/usr/bin/env python2
 # This is the "main" module that will start a production copy of
-# Toontown Unlimited.
+# Toontown United.
 
 # This is a temp patch.
-# It should really be done by the runtime (e.g. unlimited.exe):
+# It should really be done by the runtime (e.g. united.exe):
 import sys
 sys.path = ['.']
 

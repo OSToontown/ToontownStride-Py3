@@ -1,6 +1,6 @@
 # src #
 
-The source code for Toontown Unlimited.
+The source code for Toontown United.
 
 ### What is this repository for? ###
 

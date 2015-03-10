@@ -26,7 +26,7 @@ print 'Starting the deployment process...'
 
 # Stop the user if they are missing vital files:
 missingFiles = []
-for filename in ('deploy.json', 'unlimitedcipher'):
+for filename in ('deploy.json', 'unitedcipher'):
     if sys.platform == 'win32':
         # On the Windows platform, if there is no extension, we must infer that
         # this is an executable file. Therefore, let's append '.exe':
@@ -231,9 +231,9 @@ os.system(cmd)
 # ...and encrypt the product:
 os.chdir('build')
 if sys.platform == 'win32':
-    os.system('..\\unlimitedcipher.exe %s GameData.bin' % output)
+    os.system('..\\unitedcipher.exe %s GameData.bin' % output)
 else:
-    os.system('../unlimitedcipher %s GameData.bin' % output)
+    os.system('../unitedcipher %s GameData.bin' % output)
 
 # Copy the necessary patcher includes:
 for include in patcherIncludes:

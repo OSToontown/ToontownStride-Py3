@@ -29,7 +29,7 @@ if accountDBType == 'remote':
 minAccessLevel = simbase.config.GetInt('min-access-level', 100)
 
 accountServerEndpoint = simbase.config.GetString(
-    'account-server-endpoint', 'https://toontownunlimited.com/api/')
+    'account-server-endpoint', 'https://toontownunited.com/api/')
 accountServerSecret = simbase.config.GetString(
     'account-server-secret', '6163636f756e7473')
 
@@ -73,7 +73,7 @@ def judgeName(name):
 
 
 # --- ACCOUNT DATABASES ---
-# These classes make up the available account databases for Toontown Unlimited.
+# These classes make up the available account databases for Toontown United.
 # Databases with login tokens use the PyCrypto module for decrypting them.
 # DeveloperAccountDB is a special database that accepts a username, and assigns
 # each user with 600 access automatically upon login.

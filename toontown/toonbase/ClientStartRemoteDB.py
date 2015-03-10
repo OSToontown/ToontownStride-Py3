@@ -11,7 +11,7 @@ distribution = ConfigVariableString('distribution', 'dev').getValue()
 
 accountServerEndpoint = ConfigVariableString(
     'account-server-endpoint',
-    'https://toontownunlimited.com/api/').getValue()
+    'https://toontownunited.com/api/').getValue()
 request = requests.post(
     accountServerEndpoint + 'login/',
     data={'n': username, 'p': password, 'dist': distribution})
