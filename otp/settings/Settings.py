@@ -2,11 +2,9 @@ import collections
 import json
 import os
 
-
 class Settings(collections.MutableMapping):
     def __init__(self, filename):
         self.filename = filename
-
         self.store = {}
         self.read()
 
