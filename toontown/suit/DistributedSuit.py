@@ -214,8 +214,6 @@ class DistributedSuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):
     def setPathEndpoints(self, start, end, minPathLen, maxPathLen):
         if self.pathEndpointStart == start and self.pathEndpointEnd == end and self.minPathLen == minPathLen and self.maxPathLen == maxPathLen and self.path != None:
             return
-        if start not in self.sp.pointIndexes or end not in self.sp.pointIndexes:
-            return
         self.pathEndpointStart = start
         self.pathEndpointEnd = end
         self.minPathLen = minPathLen
@@ -224,9 +222,7 @@ class DistributedSuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):
         self.pathLength = 0
         self.currentLeg = -1
         self.legList = None
-        if self.maxPathLen == 0:
-            return
-        if not self.verifySuitPlanner():
+        if self.maxPathLen == 0 or not self.verifySuitPlanner() or start not in self.sp.pointIndexes or end not in self.sp.pointIndexes:
             return
         self.startPoint = self.sp.pointIndexes[self.pathEndpointStart]
         self.endPoint = self.sp.pointIndexes[self.pathEndpointEnd]
