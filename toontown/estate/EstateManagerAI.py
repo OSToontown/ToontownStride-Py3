@@ -74,6 +74,10 @@ class LoadHouseFSM(FSM):
         self.demand('LoadHouse')
 
     def enterLoadHouse(self):
+        # Load the garden if they have one.
+        if self.toon['setGardenStarted'][0]:
+            self.estate.spawnGarden(self.houseIndex)
+            
         # Activate the house:
         self.mgr.air.sendActivate(self.houseId, self.mgr.air.districtId, self.estate.zoneId,
                                   self.mgr.air.dclassesByName['DistributedHouseAI'],
