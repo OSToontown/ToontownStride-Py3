@@ -215,9 +215,8 @@ class DistributedEstateAI(DistributedObjectAI):
         DistributedObjectAI.announceGenerate(self)
         for index, garden in self.__pendingGardens.items():
             started = garden[0]
-            if started:
-                self.gardenManager.handleSingleGarden(self.toons[index], garden[1:])
-                self.placeStarterGarden(self.toons[index])
+            self.gardenManager.handleSingleGarden(self.toons[index], garden[1:])
+            self.placeStarterGarden(self.toons[index])
         self.__pendingGardens = {}
 
     def destroy(self):
