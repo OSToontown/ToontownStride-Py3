@@ -27,13 +27,16 @@ Code example:
 'codeName': {
     'items': [
         CatalogTypeItem.CatalogTypeItem(arguments)
-    ]
+    ],
     'expirationDate': datetime(2020, 1, 30),
     'month': 1,
     'day': 30
 }
 
 Expiration date, month and day are optional fields.
+
+If you for some reason are not familiar with arrays or lists, you
+only include the comma if there are multiple arguments.
 """
 class TTCodeRedemptionMgrAI(DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("TTCodeRedemptionMgrAI")
@@ -41,7 +44,7 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
         'weed': {
             'items': [
                 CatalogClothingItem.CatalogClothingItem(1821, 0)
-            ]
+            ],
             'month': 4,
             'day': 20
         },
@@ -53,11 +56,6 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
         'xXx_WeedRab_420': {
             'items': [
                 CatalogClothingItem.CatalogClothingItem(1822, 0)
-            ]
-        },
-        'eastsideofthelbc': {
-            'items': [
-                CatalogClothingItem.CatalogClothingItem(1821, 0)
             ]
         }
     }
