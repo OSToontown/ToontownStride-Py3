@@ -1,5 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
+from direct.distributed.PyDatagramIterator import *
+from direct.distributed.PyDatagram import *
 from toontown.toonbase import ToontownGlobals
 import HouseGlobals
 import time
@@ -147,82 +149,6 @@ class GardenManager:
             return packGardenData(NULL_FLOWERS + NULL_TREES, NULL_STATUARY, False)
         return packGardenData(g.flowersData + g.treesData, g.statuaryIndex)
 
-class Rental:
-    def __init__(self, estate):
-        self.estate = estate
-        self.objects = set()
-        
-    def destroy(self):
-        del self.estate
-        for object in self.objects:
-            if not object.isDeleted():
-                object.requestDelete()
-                taskMgr.remove(object.uniqueName('delete'))
-        self.objects = set()
-        
-class CannonRental(Rental):
-    def generateObjects(self):
-        target = DistributedTargetAI(self.estate.air)
-        target.generateWithRequired(self.estate.zoneId)
-        
-        for drop in CannonGlobals.cannonDrops:
-            cannon = DistributedCannonAI(self.estate.air)
-            cannon.setEstateId(self.estate.doId)
-            cannon.setTargetId(target.doId)
-            cannon.setPosHpr(*drop)
-            cannon.generateWithRequired(self.estate.zoneId)
-            self.objects.add(cannon)
-            
-        self.generateTreasures()
-        self.estate.b_setClouds(1)
-        
-    def destroy(self):
-        self.estate.b_setClouds(0)
-        Rental.destroy(self)
-            
-    def generateTreasures(self):
-        doIds = []
-        z = 35
-        
-        for i in xrange(20):
-            x = random.randint(100, 300) - 200
-            y = random.randint(100, 300) - 200
-            treasure = DistributedTreasureAI.DistributedTreasureAI(self.estate.air, self, 9, x, y, z)
-            treasure.generateWithRequired(self.estate.zoneId)
-            self.objects.add(treasure)
-            doIds.append(treasure.doId)
-            
-        self.estate.sendUpdate("setTreasureIds", [doIds])
-        
-    def grabAttempt(self, avId, treasureId):
-        av = self.estate.air.doId2do.get(avId)
-        if av == None:
-            self.estate.air.writeServerEvent('suspicious', avId, 'TreasurePlannerAI.grabAttempt unknown avatar')
-            self.estate.notify.warning('avid: %s does not exist' % avId)
-            return
-            
-        treasure = self.estate.air.doId2do.get(treasureId)
-        if self.validAvatar(av):
-            treasure.d_setGrab(avId)
-            self.deleteTreasureSoon(treasure)
-            
-        else:
-            treasure.d_setReject()
-
-    def deleteTreasureSoon(self, treasure):
-        taskName = treasure.uniqueName('delete')
-        taskMgr.doMethodLater(5, self.__deleteTreasureNow, taskName, extraArgs=(treasure, taskName))
-
-    def __deleteTreasureNow(self, treasure, taskName):
-        treasure.requestDelete()
-        
-    def validAvatar(self, av):
-        if av.getMaxHp() == av.getHp():
-            return 0
-            
-        av.toonUp(3)
-        return 1
-
 class DistributedEstateAI(DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedEstateAI")
     def __init__(self, air):
@@ -235,7 +161,7 @@ class DistributedEstateAI(DistributedObjectAI):
         self.dawnTime = 0
         self.lastEpochTimestamp = 0
         self.rentalTimestamp = 0
-        self.houses = [None] * 6
+        self.houses = [None, None, None, None, None, None]
         self.rentalType = 0
         self.rentalHandle = None
         self.pond = None
@@ -258,7 +184,6 @@ class DistributedEstateAI(DistributedObjectAI):
             target.setPondDoId(self.pond.getDoId())
             target.generateWithRequired(self.zoneId)
             self.targets.append(target)
-
 
         spot = DistributedFishingSpotAI(self.air)
         spot.setPondDoId(self.pond.getDoId())
@@ -290,10 +215,9 @@ class DistributedEstateAI(DistributedObjectAI):
         DistributedObjectAI.announceGenerate(self)
         for index, garden in self.__pendingGardens.items():
             started = garden[0]
-            if started:
-                self.gardenManager.handleSingleGarden(self.toons[index], garden[1:])
+            self.gardenManager.handleSingleGarden(self.toons[index], garden[1:])
+            self.placeStarterGarden(self.toons[index])
         self.__pendingGardens = {}
-        self.placeStarterGarden(100000001) #temporary
 
     def destroy(self):
         for house in self.houses:
@@ -377,7 +301,7 @@ class DistributedEstateAI(DistributedObjectAI):
     def getDecorData(self):
         return self.decorData
 
-    def setLastEpochTimeStamp(self, last): #how do I do this
+    def setLastEpochTimeStamp(self, last):
         self.lastEpochTimestamp = last
         
     def d_setLastEpochTimeStamp(self, last):
@@ -397,56 +321,17 @@ class DistributedEstateAI(DistributedObjectAI):
         self.sendUpdate('setRentalTimeStamp', [rental])
         
     def b_setRentalTimeStamp(self, rental):
-        self.b_setRentalTimeStamp(rental)
+        self.setRentalTimeStamp(self, rental)
+        self.b_setRentalTimeStamp(self, rental)
         
     def getRentalTimeStamp(self):
         return self.rentalTimestamp
 
-    def b_setRentalType(self, type):
-        self.d_setRentalType(type)
-        self.setRentalType(type)
-
-    def d_setRentalType(self, type):
-        self.sendUpdate("setRentalType", [type])
-
-    def setRentalType(self, type):
-        expirestamp = self.getRentalTimeStamp()
-        if expirestamp == 0:
-            expire = 0
-            
-        else:
-            expire = int(expirestamp - time.time())
-            
-        if expire < 0:
-            self.rentalType = 0
-            self.d_setRentalType(0)
-            self.b_setRentalTimeStamp(0)
-        
-        else:
-            if self.rentalType == type:
-                return
-                
-            self.rentalType = type
-            if self.rentalHandle:
-                self.rentalHandle.destroy()
-                self.rentalHandle = None
-                
-            if self.rentalType == ToontownGlobals.RentalCannon:
-                self.rentalHandle = CannonRental(self)
-                
-            else:
-                self.notify.warning('Unknown rental %s' % self.rentalType)
-                return
-                
-            self.rentalHandle.generateObjects()
+    def setRentalType(self, todo0):
+        pass
         
     def getRentalType(self):
-        return self.rentalType
-
-    def rentItem(self, rentType, duration):
-        self.rentalType = rentType
-        self.b_setRentalTimeStamp(time.time() + duration * 60)
-        self.b_setRentalType(rentType)
+        return 0
 
     def setSlot0ToonId(self, id):
         self.toons[0] = id
@@ -696,7 +581,6 @@ class DistributedEstateAI(DistributedObjectAI):
         av = self.air.doId2do.get(avId)
         if not av:
             return
-        av.b_setGardenStarted(1)
         self.notify.info('placeStarterGarden %d' % avId)
         self.gardenManager.placeGarden(avId)
         self.d_updateGarden()
