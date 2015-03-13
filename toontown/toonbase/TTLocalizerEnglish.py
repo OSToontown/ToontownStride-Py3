@@ -4609,7 +4609,6 @@ MapPageGoTo = 'Go To\n%s'
 OptionsPageTitle = 'Options'
 OptionsTabTitle = 'Options\n& Codes'
 OptionsPagePurchase = 'Subscribe'
-OptionsPageLogout = 'Logout'
 OptionsPageExitToontown = 'Exit Toontown'
 OptionsPageMusicOnLabel = 'Music is on.'
 OptionsPageMusicOffLabel = 'Music is off.'
@@ -9745,6 +9744,13 @@ GloveGuiTitle = 'Choose a glove color!'
 GloveGuiNotice = 'Costs %s jellybeans.'
 GloveGuiBuy = 'Buy'
 GloveGuiCancel = 'Cancel'
+LanguageButtonText = 'Language'
+LanguageSelectorTitle = 'Choose your language!'
+LanguageSelectorCurrent = 'Current language: %s'
+LanguageSelectorAvailable = 'Available languages:'
+LanguageSelectorBack = 'Back'
+LanguageSelectorConfirm = 'Are you sure you want to change your language to %s? This will close your game.'
+LanguageSelectorSameLanguage = "You're already using that language!"
 
 # Buffs
 

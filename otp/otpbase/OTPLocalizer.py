@@ -12,7 +12,7 @@ from otp.otpbase.OTPLocalizerEnglish import *
 if language != 'English':
     l = {}
     g = {}
-    module = 'otp.optbase.OTPLocalizer' + language
+    module = 'otp.otpbase.OTPLocalizer' + language
     englishModule = __import__('otp.otpbase.OTPLocalizerEnglish', g, l)
     foreignModule = __import__(module, g, l)
     for key, val in englishModule.__dict__.items():
