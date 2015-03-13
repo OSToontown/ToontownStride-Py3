@@ -1,18 +1,14 @@
 from direct.directnotify.DirectNotifyGlobal import directNotify
 import fnmatch
 import os
-from panda3d.core import Multifile, Filename, VirtualFileSystem
-
 import yaml
-
+from panda3d.core import Multifile, Filename, VirtualFileSystem
 
 APPLICABLE_FILE_PATTERNS = ('*.mf', 'ambience.yaml')
 CONTENT_EXT_WHITELIST = ('.jpg', '.jpeg', '.rgb', '.png', '.ogg', '.ttf')
 
-
 class ContentPackError(Exception):
     pass
-
 
 class ContentPacksManager:
     notify = directNotify.newCategory('ContentPacksManager')
@@ -37,7 +33,7 @@ class ContentPacksManager:
         Returns whether or not the specified file is applicable.
         """
         # Does this file exist?
-        if not os.path.exists(os.path.join(self.filepath, filename)):
+        if not os.path.exists(filename):
             return False
 
         # Does this file match one of the applicable file patterns?
@@ -53,7 +49,7 @@ class ContentPacksManager:
         Apply the specified multifile.
         """
         mf = Multifile()
-        mf.openReadWrite(Filename(os.path.join(self.filepath, filename)))
+        mf.openReadWrite(Filename(filename))
 
         # Discard content with non-whitelisted extensions:
         for subfileName in mf.getSubfileNames():
@@ -77,7 +73,7 @@ class ContentPacksManager:
         self.notify.info('Applying %s...' % filename)
         basename = os.path.basename(filename)
         if basename.endswith('.mf'):
-            self.applyMultifile(filename)
+            self.applyMultifile(os.path.join(self.filepath, filename))
         elif basename == 'ambience.yaml':
             self.applyAmbience(filename)
 
@@ -91,7 +87,7 @@ class ContentPacksManager:
 
         # Next, apply the sorted files:
         for filename in self.sort[:]:
-            if self.isApplicable(filename):
+            if self.isApplicable(os.path.join(self.filepath, filename)):
                 self.apply(filename)
             else:
                 self.notify.warning('Invalidating %s...' % filename)
@@ -108,7 +104,7 @@ class ContentPacksManager:
                     continue
 
                 # Ensure this file is applicable:
-                if not self.isApplicable(filename):
+                if not self.isApplicable(os.path.join(self.filepath, filename)):
                     continue
 
                 # Apply this file, and add it to the sort configuration:

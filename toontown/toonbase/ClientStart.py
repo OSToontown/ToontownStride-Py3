@@ -101,6 +101,10 @@ __builtin__.contentPacksMgr = ContentPacksManager(
     filepath=contentPacksFilepath, sortFilename=contentPacksSortFilename)
 contentPacksMgr.applyAll()
 
+languagePack = settings['language'].lower() + '.mf'
+
+if contentPacksMgr.isApplicable(languagePack):
+    contentPacksMgr.applyMultifile(languagePack)
 
 import time
 import sys
