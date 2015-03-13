@@ -104,11 +104,11 @@ class DistributedGolfHole(DistributedPhysicsWorld.DistributedPhysicsWorld, FSM, 
         self.__textGen = TextNode('golfHoleText')
         self.__textGen.setFont(ToontownGlobals.getSignFont())
         self.__textGen.setAlign(TextNode.ACenter)
-        if TTLocalizer.getLanguage() in ['castillian',
-         'japanese',
-         'german',
-         'portuguese',
-         'french']:
+        if TTLocalizer.getLanguage() in ['Castillian',
+         'Japanese',
+         'German',
+         'Portuguese',
+         'French']:
             self.__textGen.setGlyphScale(0.7)
         self.avIdList = []
         self.enterAimStart = 0

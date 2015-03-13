@@ -72,6 +72,8 @@ if 'loadDisplay' not in settings:
     settings['loadDisplay'] = 'pandagl'
 if 'toonChatSounds' not in settings:
     settings['toonChatSounds'] = True
+if 'language' not in settings:
+    settings['language'] = 'English'
 loadPrcFileData('Settings: res', 'win-size %d %d' % tuple(settings.get('res', (800, 600))))
 loadPrcFileData('Settings: fullscreen', 'fullscreen %s' % settings['fullscreen'])
 loadPrcFileData('Settings: music', 'audio-music-active %s' % settings['music'])
@@ -80,7 +82,7 @@ loadPrcFileData('Settings: musicVol', 'audio-master-music-volume %s' % settings[
 loadPrcFileData('Settings: sfxVol', 'audio-master-sfx-volume %s' % settings['sfxVol'])
 loadPrcFileData('Settings: loadDisplay', 'load-display %s' % settings['loadDisplay'])
 loadPrcFileData('Settings: toonChatSounds', 'toon-chat-sounds %s' % settings['toonChatSounds'])
-
+loadPrcFileData('Settings: language', 'language %s' % settings['language'])
 
 import os
 
