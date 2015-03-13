@@ -121,7 +121,7 @@ class PhotoAlbumPage(ShtikerPage.ShtikerPage):
             oldName = self.selectedFileName
             numUnders = oldName.count(separator)
             if numUnders == 0:
-                newName = oldName[0:18] + separator + str + separator + oldName[17:]
+                newName = oldName[0:21] + separator + str + separator + oldName[20:]
             elif numUnders == 2:
                 sp = oldName.split(separator)
                 newName = sp[0] + separator + str + separator + sp[2]
@@ -232,7 +232,7 @@ class PhotoAlbumPage(ShtikerPage.ShtikerPage):
         files = os.listdir(self.photoPath)
         photos = []
         for fileName in files:
-            if fileName[0:17] == 'united-screenshot' and fileName[-4:] == '.jpg':
+            if fileName[0:20] == 'united-screenshot' and fileName[-4:] == '.jpg':
                 photos.append(fileName)          
 
         return photos
