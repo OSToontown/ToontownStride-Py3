@@ -1,5 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
+from direct.distributed.PyDatagramIterator import *
+from direct.distributed.PyDatagram import *
 from toontown.toonbase import ToontownGlobals
 import HouseGlobals
 import time
@@ -235,7 +237,7 @@ class DistributedEstateAI(DistributedObjectAI):
         self.dawnTime = 0
         self.lastEpochTimestamp = 0
         self.rentalTimestamp = 0
-        self.houses = [None] * 6
+        self.houses = [None, None, None, None, None, None]
         self.rentalType = 0
         self.rentalHandle = None
         self.pond = None
@@ -258,7 +260,6 @@ class DistributedEstateAI(DistributedObjectAI):
             target.setPondDoId(self.pond.getDoId())
             target.generateWithRequired(self.zoneId)
             self.targets.append(target)
-
 
         spot = DistributedFishingSpotAI(self.air)
         spot.setPondDoId(self.pond.getDoId())
@@ -292,8 +293,8 @@ class DistributedEstateAI(DistributedObjectAI):
             started = garden[0]
             if started:
                 self.gardenManager.handleSingleGarden(self.toons[index], garden[1:])
+                self.placeStarterGarden(self.toons[index])
         self.__pendingGardens = {}
-        self.placeStarterGarden(100000001) #temporary
 
     def destroy(self):
         for house in self.houses:
@@ -377,7 +378,7 @@ class DistributedEstateAI(DistributedObjectAI):
     def getDecorData(self):
         return self.decorData
 
-    def setLastEpochTimeStamp(self, last): #how do I do this
+    def setLastEpochTimeStamp(self, last):
         self.lastEpochTimestamp = last
         
     def d_setLastEpochTimeStamp(self, last):
@@ -696,7 +697,6 @@ class DistributedEstateAI(DistributedObjectAI):
         av = self.air.doId2do.get(avId)
         if not av:
             return
-        av.b_setGardenStarted(1)
         self.notify.info('placeStarterGarden %d' % avId)
         self.gardenManager.placeGarden(avId)
         self.d_updateGarden()
