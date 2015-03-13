@@ -48,8 +48,13 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
         'gardening': {
             'items': [
                 CatalogGardenStarterItem.CatalogGardenStarterItem()
-            ]
-        }
+            ],
+        },
+        'xXx_WeedRab_420': {
+            'items': [
+                CatalogClothingItem.CatalogClothingItem(1822, 0)
+            ],
+        },
     }
 
     def announceGenerate(self):
