@@ -158,7 +158,6 @@ class PlayGame(StateData.StateData):
 
     def unloadDnaStore(self):
         if hasattr(self, 'dnaStore'):
-            self.dnaStore.cleanup()
             del self.dnaStore
             ModelPool.garbageCollect()
             TexturePool.garbageCollect()

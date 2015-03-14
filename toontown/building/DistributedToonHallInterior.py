@@ -3,7 +3,7 @@ from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
 from direct.showbase import Audio3DManager
 from toontown.toonbase import ToontownGlobals
-from toontown.dna.DNAParser import DNADoor
+from toontown.dna.DNAParser import *
 import cPickle
 from DistributedToonInterior import DistributedToonInterior
 from direct.directnotify import DirectNotifyGlobal
@@ -80,7 +80,7 @@ class DistributedToonHallInterior(DistributedToonInterior):
         door_origin.setScale(0.8, 0.8, 0.8)
         door_origin.setPos(door_origin, 0, -0.025, 0)
         color = self.randomGenerator.choice(self.colors['TI_door'])
-        DNADoor.setupDoor(doorNP, self.interior, door_origin, self.dnaStore, str(self.block), color)
+        setupDoor(doorNP, self.interior, door_origin, self.dnaStore, str(self.block), color)
         doorFrame = doorNP.find('door_*_flat')
         doorFrame.wrtReparentTo(self.interior)
         doorFrame.setColor(color)

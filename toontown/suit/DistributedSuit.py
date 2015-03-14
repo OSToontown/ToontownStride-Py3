@@ -24,7 +24,7 @@ from toontown.chat.ChatGlobals import *
 from toontown.distributed.DelayDeletable import DelayDeletable
 from toontown.nametag import NametagGlobals
 from toontown.nametag.NametagGlobals import *
-from toontown.suit.SuitLegList import *
+from libpandadna import *
 from toontown.toonbase import ToontownGlobals
 
 
@@ -56,7 +56,7 @@ class DistributedSuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):
         self.pathState = 0
         self.path = None
         self.localPathState = 0
-        self.currentLeg = -1
+        self.currentLeg = 0
         self.pathStartTime = 0.0
         self.legList = None
         self.initState = None
@@ -220,7 +220,7 @@ class DistributedSuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):
         self.maxPathLen = maxPathLen
         self.path = None
         self.pathLength = 0
-        self.currentLeg = -1
+        self.currentLeg = 0
         self.legList = None
         if self.maxPathLen == 0 or not self.verifySuitPlanner() or start not in self.sp.pointIndexes or end not in self.sp.pointIndexes:
             return
@@ -343,13 +343,13 @@ class DistributedSuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):
         return Task.done
 
     def doPathLeg(self, leg, time):
-        self.fsm.request(leg.getTypeName(), [leg, time])
+        self.fsm.request(SuitLeg.getTypeName(leg.getType()), [leg, time])
         return 0
 
     def stopPathNow(self):
         name = self.taskName('move')
         taskMgr.remove(name)
-        self.currentLeg = -1
+        self.currentLeg = 0
 
     def calculateHeading(self, a, b):
         xdelta = b[0] - a[0]

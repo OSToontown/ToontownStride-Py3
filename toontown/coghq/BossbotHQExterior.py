@@ -78,7 +78,7 @@ class BossbotHQExterior(CogHQExterior.CogHQExterior):
             visZoneId = ZoneUtil.getTrueZoneId(visZoneId, self.zoneId)
             visibles = []
             for i in xrange(visGroup.getNumVisibles()):
-                visibles.append(int(visGroup.visibles[i]))
+                visibles.append(int(visGroup.getVisible(i)))
             visibles.append(ZoneUtil.getBranchZone(visZoneId))
             self.zoneVisDict[visZoneId] = visibles
 

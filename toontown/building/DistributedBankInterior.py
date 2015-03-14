@@ -6,7 +6,7 @@ from pandac.PandaModules import *
 import random
 
 import ToonInteriorColors
-from toontown.dna.DNAParser import DNADoor
+from toontown.dna.DNAParser import *
 from toontown.hood import ZoneUtil
 from toontown.toon.DistributedNPCToonBase import DistributedNPCToonBase
 from toontown.toonbase.ToonBaseGlobal import *
@@ -210,7 +210,7 @@ class DistributedBankInterior(DistributedObject):
         doorOrigin.setScale(0.8, 0.8, 0.8)
         doorOrigin.setPos(doorOrigin, 0, -0.025, 0)
         doorColor = self.randomGenerator.choice(self.colors['TI_door'])
-        DNADoor.setupDoor(doorNP, self.interior, doorOrigin, self.dnaStore, str(self.block), doorColor)
+        setupDoor(doorNP, self.interior, doorOrigin, self.dnaStore, str(self.block), doorColor)
         doorFrame = doorNP.find('door_*_flat')
         doorFrame.wrtReparentTo(self.interior)
         doorFrame.setColor(doorColor)

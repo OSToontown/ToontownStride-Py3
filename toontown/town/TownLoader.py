@@ -254,7 +254,7 @@ class TownLoader(StateData.StateData):
             self.zoneDict[zoneId] = groupNode
             visibles = []
             for i in xrange(visGroup.getNumVisibles()):
-                visibles.append(int(visGroup.visibles[i]))
+                visibles.append(int(visGroup.getVisible(i)))
             visibles.append(ZoneUtil.getBranchZone(zoneId))
             self.zoneVisDict[zoneId] = visibles
             fadeDuration = 0.5

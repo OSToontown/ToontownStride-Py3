@@ -2,7 +2,7 @@ from direct.distributed.DistributedObject import DistributedObject
 import random
 
 from toontown.building import  ToonInteriorColors
-from toontown.dna.DNAParser import DNADoor
+from toontown.dna.DNAParser import *
 from toontown.hood import ZoneUtil
 from toontown.toon.DistributedNPCToonBase import DistributedNPCToonBase
 
@@ -27,7 +27,7 @@ class DistributedLibraryInterior(DistributedObject):
 
         hoodId = ZoneUtil.getCanonicalHoodId(self.zoneId)
         doorColor = ToonInteriorColors.colors[hoodId]['TI_door'][0]
-        DNADoor.setupDoor(
+        setupDoor(
             doorNodePath, self.interior, doorOrigin, self.cr.playGame.dnaStore,
             str(self.block), doorColor)
 

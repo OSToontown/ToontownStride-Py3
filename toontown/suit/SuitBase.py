@@ -1,5 +1,5 @@
 import SuitDNA
-from SuitLegList import *
+from libpandadna import *
 import SuitTimings
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import *
