@@ -10,7 +10,6 @@ from toontown.hood import ZoneUtil
 from toontown.pets import Pet, PetConstants
 from toontown.pets import PetDNA
 from toontown.pets import PetDetail
-from toontown.pets import PetNameGenerator
 from toontown.pets import PetTraits
 from toontown.pets import PetUtil
 from toontown.toonbase import TTLocalizer
@@ -66,14 +65,12 @@ class PetshopGUI(DirectObject):
             self.petModel.reparentTo(self.petView)
             self.petModel.setH(225)
             self.petModel.enterNeutralHappy()
-            self.ng = PetNameGenerator.PetNameGenerator()
-            if gender == 1:
-                self.allNames = self.ng.boyFirsts
+            self.allNames = TTLocalizer.NeutralPetNames
+            if gender == 0:
+                self.allNames += TTLocalizer.BoyPetNames
             else:
-                self.allNames = self.ng.girlFirsts
-            self.allNames += self.ng.neutralFirsts
+                self.allNames += TTLocalizer.GirlPetNames
             self.allNames.sort()
-            self.checkNames()
             self.letters = []
             for name in self.allNames:
                 if name[0:TTLocalizer.PGUIcharLength] not in self.letters:
@@ -87,19 +84,13 @@ class PetshopGUI(DirectObject):
             self.rebuildNameList()
             self.randomButton = DirectButton(parent=self, relief=None, image=(self.gui.find('**/RandomUpButton'), self.gui.find('**/RandomDownButton'), self.gui.find('**/RandomRolloverButton')), scale=self.guiScale, text=TTLocalizer.RandomButton, text_pos=(-0.8, -5.7), text_scale=0.8, text_fg=text2Color, pressEffect=False, command=self.randomName)
             self.nameResult = DirectLabel(parent=self, relief=None, scale=self.guiScale, text='', text_align=TextNode.ACenter, text_pos=(-1.85, 2.6), text_fg=text0Color, text_scale=0.6, text_wordwrap=8)
-            self.submitButton = DirectButton(parent=self, relief=None, image=(self.gui.find('**/SubmitUpButton'), self.gui.find('**/SubmitDownButton'), self.gui.find('**/SubmitRolloverButton')), scale=self.guiScale, text=TTLocalizer.PetshopAdopt, text_pos=(3.3, -5.7), text_scale=TTLocalizer.PGUIsubmitButton, text_fg=text0Color, pressEffect=False, command=lambda : messenger.send(doneEvent, [self.ng.returnUniqueID(self.curName)]))
+            self.submitButton = DirectButton(parent=self, relief=None, image=(self.gui.find('**/SubmitUpButton'), self.gui.find('**/SubmitDownButton'), self.gui.find('**/SubmitRolloverButton')), scale=self.guiScale, text=TTLocalizer.PetshopAdopt, text_pos=(3.3, -5.7), text_scale=TTLocalizer.PGUIsubmitButton, text_fg=text0Color, pressEffect=False, command=lambda : messenger.send(doneEvent, [TTLocalizer.getPetNameId(self.curName)]))
             model = loader.loadModel('phase_4/models/gui/PetShopInterface')
             modelScale = 0.1
             cancelImageList = (model.find('**/CancelButtonUp'), model.find('**/CancelButtonDown'), model.find('**/CancelButtonRollover'))
             cancelIcon = model.find('**/CancelIcon')
             self.cancelButton = DirectButton(parent=self, relief=None, pos=(-0.04, 0, -0.47), image=cancelImageList, geom=cancelIcon, scale=modelScale, pressEffect=False, command=lambda : messenger.send(doneEvent, [-1]))
             self.randomName()
-
-        def checkNames(self):
-            if __dev__:
-                for name in self.allNames:
-                    if not name.replace(' ', '').isalpha():
-                        self.notify.warning('Bad name:%s' % name)
 
         def destroy(self):
             self.petModel.delete()
@@ -208,7 +199,7 @@ class PetshopGUI(DirectObject):
         def __init__(self, doneEvent, petSeed, petNameIndex):
             zoneId = ZoneUtil.getCanonicalSafeZoneId(base.localAvatar.getZoneId())
             name, dna, traitSeed = PetUtil.getPetInfoFromSeed(petSeed, zoneId)
-            name = PetNameGenerator.PetNameGenerator().getName(petNameIndex)
+            name = TTLocalizer.getPetName(petNameIndex)
             cost = PetUtil.getPetCostFromSeed(petSeed, zoneId)
             model = loader.loadModel('phase_4/models/gui/AdoptPet')
             modelPos = (0, 0, -0.3)
