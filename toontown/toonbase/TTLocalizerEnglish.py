@@ -6080,7 +6080,8 @@ ShirtStylesDescriptions = {'bss1': 'solid',
  'jb_2': 'Doodle Shirt',
  'ugcms': 'Get Connected Mover & Shaker',
  'weed': '420 blaze it',
- 'RabbitJew': 'The Pussy Slayer'}
+ 'RabbitJew': 'The Pussy Slayer',
+ 'nig': 'The N Shirt'}
 BottomStylesDescriptions = {'bbs1': 'plain w/ pockets',
  'bbs2': 'belt',
  'bbs3': 'cargo',
@@ -6202,7 +6203,8 @@ BottomStylesDescriptions = {'bbs1': 'plain w/ pockets',
  'hw_gs5': 'Halloween SuperToon Shorts female',
  'hw_gs6': 'Halloween Vampire NoCape Shorts female',
  'hw_gs7': 'Halloween Dinosaur Shorts female',
- 'hw_gsk1': 'Halloween Pirate Skirt'}
+ 'hw_gsk1': 'Halloween Pirate Skirt',
+ 'nig2': 'The N Shorts'}
 AwardMgrBoy = 'boy'
 AwardMgrGirl = 'girl'
 AwardMgrUnisex = 'unisex'

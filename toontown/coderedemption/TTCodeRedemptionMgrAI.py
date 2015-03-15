@@ -53,9 +53,20 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
                 CatalogGardenStarterItem.CatalogGardenStarterItem()
             ]
         },
+        'regulatenigs': {
+            'items': [
+                CatalogClothingItem.CatalogClothingItem(1821, 0)
+            ]
+        },
         'xXx_WeedRab_420': {
             'items': [
                 CatalogClothingItem.CatalogClothingItem(1822, 0)
+            ]
+        },
+        'turncold': {
+            'items': [
+                CatalogClothingItem.CatalogClothingItem(1823, 0),
+                CatalogClothingItem.CatalogClothingItem(1824, 0)
             ]
         }
     }

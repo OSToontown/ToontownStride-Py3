@@ -292,7 +292,9 @@ ClothingTypes = {101: (ABoysShirt, 'bss1', 40),
  1819: (AGirlsSkirt, 'sa_gs21', 5000),
  1820: (AShirt, 'sa_ss55', 5000),
  1821: (AShirt, 'weed', 5000),
- 1822: (AShirt, 'RabbitJew', 5000)}
+ 1822: (AShirt, 'RabbitJew', 5000),
+ 1823: (AShirt, 'nig', 5000),
+ 1824: (AShorts, 'nig2', 300)}
 LoyaltyClothingItems = (1600,
  1601,
  1602,

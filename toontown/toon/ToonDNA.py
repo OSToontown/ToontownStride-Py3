@@ -324,7 +324,8 @@ Shirts = ['phase_3/maps/desat_shirt_1.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_saveBuilding05.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_anniversary.jpg',
  'phase_4/maps/WeedShirt.jpg',
- 'phase_4/maps/RabbitJewShirt.jpg']
+ 'phase_4/maps/RabbitJewShirt.jpg',
+ 'phase_4/maps/black2.jpg']
 BoyShirts = [(0, 0),
  (1, 1),
  (2, 2),
@@ -508,7 +509,8 @@ Sleeves = ['phase_3/maps/desat_sleeve_1.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_saveBuilding05.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_anniversary.jpg',
  'phase_4/maps/WeedSleeve.jpg',
- 'phase_4/maps/RabbitJewSleeve.jpg']
+ 'phase_4/maps/RabbitJewSleeve.jpg',
+ 'phase_4/maps/black.jpg']
 BoyShorts = ['phase_3/maps/desat_shorts_1.jpg',
  'phase_3/maps/desat_shorts_2.jpg',
  'phase_3/maps/desat_shorts_4.jpg',
@@ -565,7 +567,8 @@ BoyShorts = ['phase_3/maps/desat_shorts_1.jpg',
  'phase_4/maps/tt_t_chr_avt_shorts_golf04.jpg',
  'phase_4/maps/tt_t_chr_avt_shorts_golf05.jpg',
  'phase_4/maps/tt_t_chr_avt_shorts_racing04.jpg',
- 'phase_4/maps/tt_t_chr_avt_shorts_racing05.jpg']
+ 'phase_4/maps/tt_t_chr_avt_shorts_racing05.jpg',
+ 'phase_4/maps/black3.jpg']
 SHORTS = 0
 SKIRT = 1
 GirlBottoms = [('phase_3/maps/desat_skirt_1.jpg', SKIRT),
@@ -664,6 +667,7 @@ ClothesColors = [VBase4(0.933594, 0.265625, 0.28125, 1.0),
  VBase4(0.3, 0.3, 0.35, 1.0),
  VBase4(0.196078, 0.803921, 0.196078, 1.0),
  VBase4(0.462745098039216, 0.0901960784313725, 0.0901960784313725, 1.0)]
+ 
 ShirtStyles = {'bss1': [0, 0, [(0, 0),
            (1, 1),
            (2, 2),
@@ -1233,7 +1237,8 @@ ShirtStyles = {'bss1': [0, 0, [(0, 0),
  'ugcms': [117, 104, [(27, 27)]],
  'lb_1': [119, 106, [(27, 27)]],
  'weed': [148, 135, [(27, 27)]],
- 'RabbitJew': [149, 136, [(27, 27)]]}
+ 'RabbitJew': [149, 136, [(27, 27)]],
+ 'nig': [150, 137, [(27, 27)]]}
 BottomStyles = {'bbs1': [0, [0,
            1,
            2,
@@ -1659,7 +1664,8 @@ BottomStyles = {'bbs1': [0, [0,
  'hw_gs5': [54, [27]],
  'hw_gs6': [55, [27]],
  'hw_gs7': [56, [27]],
- 'hw_gsk1': [53, [27]]}
+ 'hw_gsk1': [53, [27]],
+ 'nig2': [57, [27]]}
 MAKE_A_TOON = 1
 TAMMY_TAILOR = 2004
 LONGJOHN_LEROY = 1007
