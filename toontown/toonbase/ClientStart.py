@@ -24,14 +24,15 @@ if __debug__:
     loadPrcFile('config/general.prc')
     loadPrcFile('config/release/dev.prc')
 
-    defaultText = '''door = base.cr.doFind('tedDoor')
-bldg = door.getBuilding()
-doorTrigger = bldg.find('**/door_' + str(door.doorIndex) + '/**/door_trigger*')
+    defaultText = '''door = base.cr.doFind('tedHouseDoor')
+
+doorTrigger = door.getBuilding().find('**/door_trigger*')
 doorTrigger.show()
-doorTrigger.node().setName(self.getTriggerName())
+
+doorTrigger.node().setName(door.getTriggerName())
 print doorTrigger
 print door.getEnterTriggerEvent()
-print messenger.whoAccepts('enterdoor_trigger_20')'''
+print messenger.whoAccepts(door.getEnterTriggerEvent())'''
 
     def __inject_wx(_):
         code = textbox.GetValue()

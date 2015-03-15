@@ -213,10 +213,11 @@ class DistributedEstateAI(DistributedObjectAI):
 
     def announceGenerate(self):
         DistributedObjectAI.announceGenerate(self)
-        for index, garden in self.__pendingGardens.items():
-            started = garden[0]
-            self.gardenManager.handleSingleGarden(self.toons[index], garden[1:])
-            self.placeStarterGarden(self.toons[index])
+        # Commented out because I had to reach estate to debug doors (Nacib)
+        #for index, garden in self.__pendingGardens.items():
+        #    started = garden[0]
+        #    self.gardenManager.handleSingleGarden(self.toons[index], garden[1:])
+        #    self.placeStarterGarden(self.toons[index])
         self.__pendingGardens = {}
 
     def destroy(self):

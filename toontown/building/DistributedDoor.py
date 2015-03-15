@@ -153,11 +153,11 @@ class DistributedDoor(DistributedObject.DistributedObject, DelayDeletable):
                 pass
 
     def setTriggerName(self):
-        if self.doorType in self.specialDoorTypes:
+        if self.doorType in self.specialDoorTypes or self.doorType == DoorTypes.INT_HQ:
             building = self.getBuilding()
             doorTrigger = building.find('**/door_' + str(self.doorIndex) + '/**/door_trigger*')
             try:
-                doorTrigger.node().setName(self.getTriggerName())
+                doorTrigger.setName(self.getTriggerName())
             except:
                 pass
 
