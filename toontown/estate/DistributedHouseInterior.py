@@ -13,7 +13,7 @@ from toontown.catalog import CatalogWallpaperItem
 from toontown.catalog import CatalogFlooringItem
 from toontown.catalog import CatalogMouldingItem
 from toontown.catalog import CatalogWainscotingItem
-from toontown.dna.DNAParser import DNADoor
+from toontown.dna.DNAParser import *
 WindowPlugNames = ('**/windowcut_a*', '**/windowcut_b*', '**/windowcut_c*', '**/windowcut_d*', '**/windowcut_e*', '**/windowcut_f*')
 RoomNames = ('**/group2', '**/group1')
 WallNames = ('ceiling*', 'wall_side_middle*', 'wall_front_middle*', 'windowcut_*')
@@ -66,7 +66,7 @@ class DistributedHouseInterior(DistributedObject.DistributedObject):
         doorNP = door.copyTo(door_origin)
         houseColor = HouseGlobals.atticWood
         color = Vec4(houseColor[0], houseColor[1], houseColor[2], 1)
-        DNADoor.setupDoor(doorNP, door_origin, door_origin, dnaStore, str(self.houseId), color)
+        setupDoor(doorNP, door_origin, door_origin, dnaStore, str(self.houseId), color)
         doorFrame = doorNP.find('door_*_flat')
         doorFrame.setColor(color)
         self.interior.flattenMedium()

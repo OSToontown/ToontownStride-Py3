@@ -11,7 +11,7 @@ from direct.fsm import State
 from direct.interval.IntervalGlobal import *
 from otp.speedchat import SpeedChatGlobals
 from pandac.PandaModules import *
-from toontown.dna.DNAParser import DNADoor
+from toontown.dna.DNAParser import *
 from toontown.hood import ZoneUtil
 from toontown.toon import ToonDNA
 from toontown.toon import ToonHead
@@ -113,7 +113,7 @@ class DistributedToonInterior(DistributedObject.DistributedObject):
         door_origin.setScale(0.8, 0.8, 0.8)
         door_origin.setPos(door_origin, 0, -0.025, 0)
         color = self.randomGenerator.choice(self.colors['TI_door'])
-        DNADoor.setupDoor(doorNP, self.interior, door_origin, self.dnaStore, str(self.block), color)
+        setupDoor(doorNP, self.interior, door_origin, self.dnaStore, str(self.block), color)
         doorFrame = doorNP.find('door_*_flat')
         doorFrame.wrtReparentTo(self.interior)
         doorFrame.setColor(color)

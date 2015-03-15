@@ -6,7 +6,7 @@ from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from direct.actor import Actor
 import ToonInteriorColors
-from toontown.dna.DNAParser import DNADoor
+from toontown.dna.DNAParser import *
 from toontown.hood import ZoneUtil
 from toontown.toon.DistributedNPCToonBase import DistributedNPCToonBase
 
@@ -90,7 +90,7 @@ class DistributedPetshopInterior(DistributedObject.DistributedObject):
         doorOrigin.setScale(0.8, 0.8, 0.8)
         doorOrigin.setPos(doorOrigin, 0, -0.25, 0)
         doorColor = self.randomGenerator.choice(self.colors['TI_door'])
-        DNADoor.setupDoor(doorNP, self.interior, doorOrigin, self.dnaStore, str(self.block), doorColor)
+        setupDoor(doorNP, self.interior, doorOrigin, self.dnaStore, str(self.block), doorColor)
         doorFrame = doorNP.find('door_*_flat')
         doorFrame.wrtReparentTo(self.interior)
         doorFrame.setColor(doorColor)
