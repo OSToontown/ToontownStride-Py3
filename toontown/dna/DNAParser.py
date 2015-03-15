@@ -31,7 +31,7 @@ def loadDNAFile(dnaStorage, file):
     try:
         node = dnaLoader.loadDNAFile(dnaStorage, fileu)
     except:
-        node = dnaLoader.loadDNAFile(dnaStorage, fileo
+        node = dnaLoader.loadDNAFile(dnaStorage, fileo)
     if node.node().getNumChildren() > 0:
         return node.node()
 
