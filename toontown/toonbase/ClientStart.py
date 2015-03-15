@@ -18,7 +18,8 @@ from panda3d.core import loadPrcFile
 
 
 if __debug__:
-    import wx, sys, threading
+    import wx, sys
+    from direct.stdpy import threading
     
     loadPrcFile('config/general.prc')
     loadPrcFile('config/release/dev.prc')
