@@ -953,6 +953,7 @@ dclass DistributedButterfly : DistributedObject {
 
 dclass DistributedMMPiano : DistributedObject {
   requestSpeedUp() airecv clsend;
+  requestSlowDown() airecv clsend;
   requestChangeDirection() airecv clsend;
   setSpeed(int16/1000, uint16/100, int16) broadcast ram;
   playSpeedUp(uint32) broadcast;
