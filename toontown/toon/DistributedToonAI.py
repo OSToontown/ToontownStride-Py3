@@ -2307,6 +2307,9 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def setImmortalMode(self, flag):
         self.immortalMode = flag
 
+    def setUnlimitedGags(self, flag):
+        self.unlimitedGags = flag
+
     def b_setSpeedChatStyleIndex(self, index):
         self.setSpeedChatStyleIndex(index)
         self.d_setSpeedChatStyleIndex(index)
@@ -5159,3 +5162,17 @@ def disguise(command, suitIndex, value):
         return 'Merits set.'
     else:
         return 'Unknow command: %s' % command
+
+@magicWord(category=CATEGORY_PROGRAMMER)
+def unlimitedGags():
+    """ Restock avatar's gags at the start of each round. """
+    av = spellbook.getTarget() if spellbook.getInvokerAccess() >= 500 else spellbook.getInvoker()
+    av.setUnlimitedGags(not av.unlimitedGags)
+    return 'Toggled unlimited gags %s for %s' % ('ON' if av.unlimitedGags else 'OFF', av.getName())
+
+@magicWord(category=CATEGORY_PROGRAMMER)    
+def immortal():
+    """ Make target (if 500+) or self (if 499-) immortal. """
+    av = spellbook.getTarget() if spellbook.getInvokerAccess() >= 500 else spellbook.getInvoker()
+    av.setImmortalMode(not av.immortalMode)
+    return 'Toggled immortal mode %s for %s' % ('ON' if av.immortalMode else 'OFF', av.getName())
