@@ -6,6 +6,7 @@ from direct.gui import DirectGui
 from toontown.toonbase import TTLocalizer
 from toontown.toon import Toon
 from direct.fsm import State
+from direct.actor.Actor import Actor
 import MegaCorpInterior
 import FactoryExterior
 import FactoryInterior
@@ -91,6 +92,14 @@ class SellbotCogHQLoader(CogHQLoader.CogHQLoader):
                 door.flattenMedium()
             cogSign.removeNode()
             self.geom.flattenMedium()
+            self.botcam1 = Actor("phase_9/models/char/BotCam-zero.bam",{"botcamneutral":"phase_9/models/char/BotCam-neutral.bam"})
+            self.botcam2 = Actor("phase_9/models/char/BotCam-zero.bam",{"botcamneutral":"phase_9/models/char/BotCam-neutral.bam"})
+            self.botcam1.reparentTo(self.geom)
+            self.botcam1.setPos(-28,-40.3,15)
+            self.botcam1.loop('botcamneutral')
+            self.botcam2.reparentTo(self.geom)
+            self.botcam2.setPos(28,-40.3,15)
+            self.botcam2.loop('botcamneutral')
         elif zoneId == ToontownGlobals.SellbotFactoryExt:
             self.geom = loader.loadModel(self.factoryExteriorModelPath)
             factoryLinkTunnel = self.geom.find('**/tunnel_group2')

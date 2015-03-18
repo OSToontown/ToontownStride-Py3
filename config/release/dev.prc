@@ -16,8 +16,7 @@ want-rpc-server #f
 rpc-server-endpoint http://localhost:8080/
 
 # DClass files (in reverse order):
-dc-file astron/dclass/toon.dc
-dc-file astron/dclass/otp.dc
+dc-file astron/dclass/united.dc
 
 # Core features:
 want-pets #t
