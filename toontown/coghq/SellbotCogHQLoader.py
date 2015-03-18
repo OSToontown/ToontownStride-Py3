@@ -92,7 +92,7 @@ class SellbotCogHQLoader(CogHQLoader.CogHQLoader):
                 door.flattenMedium()
             cogSign.removeNode()
             self.geom.flattenMedium()
-            self.botcam1 = Actor("phase_9/models/char/BotCam-zero.bam",{"botcamneutral":"phase_9/models/char/BotCam-neutral.bam"})tral.bam"})
+            self.botcam1 = Actor("phase_9/models/char/BotCam-zero.bam",{"botcamneutral":"phase_9/models/char/BotCam-neutral.bam"})
             self.botcam1.reparentTo(self.geom)
             self.botcam1.setPos(-0.01,-39.3,24)
             self.botcam1.loop('botcamneutral')
