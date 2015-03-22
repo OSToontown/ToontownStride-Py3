@@ -36,7 +36,6 @@ class NameShop(StateData.StateData):
         self.isPaid = isPaid
         self.avList = avList
         self.index = index
-        self.shopsVisited = []
         self.avId = -1
         self.avExists = 0
         self.names = ['',
@@ -553,9 +552,6 @@ class NameShop(StateData.StateData):
             return problem
         return None
 
-    def setShopsVisited(self, list):
-        self.shopsVisited = list
-
     def __handleDone(self):
         if self.fsm.getCurrentState().getName() == 'TypeAName':
             self.__typedAName()
@@ -949,7 +945,7 @@ class NameShop(StateData.StateData):
         self.newDNA = style.makeNetString()
         self.requestingSkipTutorial = skipTutorial
         if not self.avExists or self.avExists and self.avId == 'deleteMe':
-            base.cr.csm.sendCreateAvatar(style, '', self.index)
+            base.cr.csm.sendCreateAvatar(style, self.thirdTrack, self.index)
             self.accept('nameShopCreateAvatarDone', self.handleCreateAvatarResponse)
         else:
             self.checkNameTyped()

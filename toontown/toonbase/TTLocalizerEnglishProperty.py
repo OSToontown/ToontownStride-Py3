@@ -133,6 +133,7 @@ MATenterGenderShop = 0.18
 MATenterBodyShop = 0.18
 MATenterColorShop = 0.18
 MATenterClothesShop = 0.16
+MATenterTrackShop = 0.16
 MATenterNameShop = 0.15
 MATclothesGUIshirt_scale = 0.06
 MATclothesGUIshirt_posL = 0.01

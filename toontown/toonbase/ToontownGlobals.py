@@ -396,10 +396,6 @@ MinigamePlayerMatrix = {
     3: (CannonGameId, MazeGameId, TugOfWarGameId, PatternGameId, RaceGameId, TagGameId, VineGameId, RingGameId, IceGameId, CogThiefGameId, TwoDGameId, DivingGameId, PairingGameId, CatchGameId, TargetGameId, PhotoGameId),
     4: (CannonGameId, MazeGameId, TugOfWarGameId, PatternGameId, RaceGameId, TagGameId, VineGameId, RingGameId, IceGameId, CogThiefGameId, TwoDGameId, DivingGameId, PairingGameId, CatchGameId, TargetGameId, PhotoGameId),
 }
-MinigameReleaseDates = {IceGameId: (2008, 8, 5),
- PhotoGameId: (2008, 8, 13),
- TwoDGameId: (2008, 8, 20),
- CogThiefGameId: (2008, 8, 27)}
 KeyboardTimeout = 300
 phaseMap = {Tutorial: 4,
  ToontownCentral: 4,
@@ -1683,3 +1679,13 @@ BMovementSpeedMultiplier = 1.3
 
 BGagAccuracy = 1
 BGagAccuracyMultiplier = 1.3
+
+PropIdToColor = [
+    (0.772, 0.353, 0.91, 1),
+    (0.91, 0.9, 0.353, 1),
+    (0.2, 0.741, 0.207, 1),
+    (0.24, 0.364, 0.921, 1),
+    (0.93, 0.623, 0.196, 1),
+    (0.96, 0.356, 0.839, 1),
+    (0.196, 0.917, 0.929, 1)
+]

@@ -14,7 +14,6 @@ class GenderShop(StateData.StateData):
 
     def __init__(self, makeAToon, doneEvent):
         StateData.StateData.__init__(self, doneEvent)
-        self.shopsVisited = []
         self.toon = None
         self.gender = 'm'
         self.makeAToon = makeAToon

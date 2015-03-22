@@ -51,8 +51,8 @@ class ClientServicesManager(DistributedObjectGlobal):
         self.cr.handleAvatarsList(avList)
 
     # --- AVATAR CREATION/DELETION ---
-    def sendCreateAvatar(self, avDNA, _, index):
-        self.sendUpdate('createAvatar', [avDNA.makeNetString(), index])
+    def sendCreateAvatar(self, avDNA, thirdTrack, index):
+        self.sendUpdate('createAvatar', [avDNA.makeNetString(), thirdTrack, index])
 
     def createAvatarResp(self, avId):
         messenger.send('nameShopCreateAvatarDone', [avId])
