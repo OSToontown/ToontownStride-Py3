@@ -25,5 +25,5 @@ echo Username: %user%
 echo Gameserver: %server%
 echo ===============================
 
-%PPYTHON_PATH% -m toontown.toonbase.ClientStart %server% %user%
+%PPYTHON_PATH% -m toontown.toonbase.ClientStart %user% %server%
 pause
