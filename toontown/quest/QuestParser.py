@@ -322,10 +322,6 @@ class NPCMoviePlayer(DirectObject.DirectObject):
                     self.parseLoad(line)
                 elif command == 'LOAD_SFX':
                     self.parseLoadSfx(line)
-                elif command == 'LOAD_DIALOGUE':
-                    self.parseLoadDialogue(line)
-                elif command == 'LOAD_CC_DIALOGUE':
-                    self.parseLoadCCDialogue(line)
                 elif command == 'LOAD_CHAR':
                     self.parseLoadChar(line)
                 elif command == 'LOAD_CLASSIC_CHAR':
@@ -461,8 +457,6 @@ class NPCMoviePlayer(DirectObject.DirectObject):
                     self.closePreviousChapter(iList)
                     chapterList = []
                     self.currentEvent = nextEvent
-                elif command == 'SET_MUSIC_VOLUME':
-                    iList.append(self.parseSetMusicVolume(line))
                 else:
                     notify.warning('Unknown command token: %s for scriptId: %s on line: %s' % (command, self.scriptId, lineNum))
 
@@ -491,31 +485,6 @@ class NPCMoviePlayer(DirectObject.DirectObject):
         token, varName, fileName = line
         sfx = base.loadSfx(fileName)
         self.setVar(varName, sfx)
-
-    def parseLoadDialogue(self, line):
-        token, varName, fileName = line
-        if varName == 'tomDialogue_01':
-            notify.debug('VarName tomDialogue getting added. Tutorial Ack: %d' % base.localAvatar.tutorialAck)
-        if base.config.GetString('language', 'english') == 'japanese':
-            dialogue = base.loadSfx(fileName)
-        else:
-            dialogue = None
-        self.setVar(varName, dialogue)
-        return
-
-    def parseLoadCCDialogue(self, line):
-        token, varName, filenameTemplate = line
-        if self.toon.getStyle().gender == 'm':
-            classicChar = 'mickey'
-        else:
-            classicChar = 'minnie'
-        filename = filenameTemplate % classicChar
-        if base.config.GetString('language', 'english') == 'japanese':
-            dialogue = base.loadSfx(filename)
-        else:
-            dialogue = None
-        self.setVar(varName, dialogue)
-        return
 
     def parseLoadChar(self, line):
         token, name, charType = line
@@ -1047,42 +1016,6 @@ class NPCMoviePlayer(DirectObject.DirectObject):
              0])
 
         return Sequence(Func(grabCurTrackAccess), LerpFunctionInterval(updateGagLevel, fromData=1, toData=7, duration=0.3), WaitInterval(3.5), LerpFunctionInterval(updateGagLevel, fromData=7, toData=1, duration=0.3), Func(restoreTrackAccess), Func(messenger.send, 'doneThrowSquirtPreview'))
-
-    def parseSetMusicVolume(self, line):
-        if base.config.GetString('language', 'english') == 'japanese':
-            try:
-                loader = base.cr.playGame.place.loader
-                type = 'music'
-                duration = 0
-                fromLevel = 1.0
-                if len(line) == 2:
-                    token, level = line
-                elif len(line) == 3:
-                    token, level, type = line
-                elif len(line) == 4:
-                    token, level, type, duration = line
-                elif len(line) == 5:
-                    token, level, type, duration, fromLevel = line
-                if type == 'battleMusic':
-                    music = loader.battleMusic
-                elif type == 'activityMusic':
-                    music = loader.activityMusic
-                else:
-                    music = loader.music
-                if duration == 0:
-                    return Func(music.setVolume, level)
-                else:
-
-                    def setVolume(level):
-                        music.setVolume(level)
-
-                    return LerpFunctionInterval(setVolume, fromData=fromLevel, toData=level, duration=duration)
-            except AttributeError:
-                pass
-
-        else:
-            return Wait(0.0)
-
 
 searchPath = DSearchPath()
 if __debug__:	 
