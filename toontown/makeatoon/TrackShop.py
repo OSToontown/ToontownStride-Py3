@@ -1,10 +1,8 @@
 from pandac.PandaModules import *
 from direct.fsm import StateData
 from direct.gui.DirectGui import *
-from MakeAToonGlobals import *
 from toontown.toonbase import TTLocalizer, ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase.ToontownBattleGlobals import AvPropsNew
 
 class TrackShop(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('TrackShop')
@@ -21,18 +19,12 @@ class TrackShop(StateData.StateData):
         self.acceptOnce('next', self.__handleForward)
 
     def showButtons(self):
-        self.quest.show()
-        self.label.show()
-        self.leftButton.show()
-        self.rightButton.show()
-        self.track.show()
+        for element in [self.quest, self.label, self.leftButton, self.rightButton, self.track]:
+            element.show()
 
     def hideButtons(self):
-        self.quest.hide()
-        self.label.hide()
-        self.leftButton.hide()
-        self.rightButton.hide()
-        self.track.hide()
+        for element in [self.quest, self.label, self.leftButton, self.rightButton, self.track]:
+            element.hide()
 
     def exit(self):
         self.ignore('last')
@@ -49,10 +41,6 @@ class TrackShop(StateData.StateData):
         self.buttonGui = loader.loadModel('phase_3/models/gui/tt_m_gui_mat_mainGui')
         self.shuffleArrowUp = self.buttonGui.find('**/tt_t_gui_mat_shuffleArrowUp')
         self.shuffleArrowDown = self.buttonGui.find('**/tt_t_gui_mat_shuffleArrowDown')
-        self.inventoryModels = {}
-
-        for track in [0, 1, 2, 3, 6]:
-            self.inventoryModels[track] = self.inventoryGui.find('**/' + AvPropsNew[track][0])
 
         self.quest = DirectFrame(aspect2d, relief=None, image=self.questGui.find('**/questCard'),
                      pos=(-0.62, 0, 0), image_scale=1.5)
@@ -72,8 +60,6 @@ class TrackShop(StateData.StateData):
                      pos=(-0.64, 0, -0.08), text_shadow=(1, 1, 1, 1))
         
         self.updateGuiByIndex()
-        # Create GUI
-        return
 
     def unload(self):
         for element in [self.quest, self.label, self.leftButton, self.rightButton, self.track]:
