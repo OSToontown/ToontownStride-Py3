@@ -3,6 +3,7 @@ from direct.fsm import StateData
 from direct.gui.DirectGui import *
 from toontown.toonbase import TTLocalizer, ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
+from toontown.toonbase.ToontownBattleGlobals import AvPropsNew
 
 class TrackShop(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('TrackShop')
@@ -19,11 +20,11 @@ class TrackShop(StateData.StateData):
         self.acceptOnce('next', self.__handleForward)
 
     def showButtons(self):
-        for element in [self.quest, self.label, self.leftButton, self.rightButton, self.track]:
+        for element in [self.quest, self.label, self.leftButton, self.rightButton, self.track, self.icon]:
             element.show()
 
     def hideButtons(self):
-        for element in [self.quest, self.label, self.leftButton, self.rightButton, self.track]:
+        for element in [self.quest, self.label, self.leftButton, self.rightButton, self.track, self.icon]:
             element.hide()
 
     def exit(self):
@@ -59,10 +60,12 @@ class TrackShop(StateData.StateData):
                      text_scale=0.11, text_font=ToontownGlobals.getSignFont(),
                      pos=(-0.64, 0, -0.08), text_shadow=(1, 1, 1, 1))
         
+        self.icon = DirectFrame(aspect2d, relief=None, pos=(-0.65, 0, -0.3), image_scale=1.5)
+        
         self.updateGuiByIndex()
 
     def unload(self):
-        for element in [self.quest, self.label, self.leftButton, self.rightButton, self.track]:
+        for element in [self.quest, self.label, self.leftButton, self.rightButton, self.track, self.icon]:
             if element:
                 element.destroy()
                 del element
@@ -85,6 +88,7 @@ class TrackShop(StateData.StateData):
     def updateGuiByIndex(self):
         self.track['text'] = TTLocalizer.PropIdToName[self.index]
         self.track['text_fg'] = ToontownGlobals.PropIdToColor[self.index]
+        self.icon['image'] = self.inventoryGui.find('**/' + AvPropsNew[self.index][0])
     
     def __handleForward(self):
         self.doneStatus = 'next'
