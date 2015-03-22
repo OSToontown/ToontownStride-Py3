@@ -232,8 +232,6 @@ SCMenuResistance = 'UNITE!'
 SCMenuPets = 'PETS'
 SCMenuPetTricks = 'TRICKS'
 SCMenuCog = 'COG SPEAK'
-SCMenuTesting = 'TESTING'
-SCMenuBugs = 'BUGS'
 SCMenuHello = 'HELLO'
 SCMenuBye = 'GOODBYE'
 SCMenuConvo = 'CHIT CHAT'
@@ -1933,19 +1931,7 @@ SpeedChatStaticTextToontown = {100: 'Hi!',
  30418: "It's the Boss!",
  30450: "It's easy to be green!",
  30451: 'Visit Green Bean Jeans and you can be green too!',
- 30452: "It's on Oak Street in Daisy Gardens.",
- 30500: "Welcome to Toontown United!",
- 30501: "I like ponies!",
- 30502: "Are you livestreaming?",
- 30503: "I'm livestreaming right now!",
- 30504: "I can't wait until the next Toontown United update!",
- 30505: "Did you know the TTU team works overtime to make the experience the best it can be?",
- 30506: "I can't stand that bug!",
- 30507: "Have you found any bugs yet?",
- 30508: "I hope that bug gets fixed soon.",
- 30509: "What types of bugs have you ran into so far?",
- 30510: "Those bugs can get more obnoxious than the Cogs sometimes.",
- 30511: "You can report bugs by clicking the Report a Bug button on the Toontown United launcher."}
+ 30452: "It's on Oak Street in Daisy Gardens."}
 SpeedChatStaticTextPirates = {50001: 'Aye',
  50002: 'Nay',
  50003: 'Yes',

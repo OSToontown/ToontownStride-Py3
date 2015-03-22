@@ -22,7 +22,6 @@ echo ===============================
 echo Starting Toontown United...
 echo ppython: %PPYTHON_PATH%
 echo Username: %user%
-echo Password: %ttuPassword%
 echo Gameserver: %server%
 echo ===============================
 
