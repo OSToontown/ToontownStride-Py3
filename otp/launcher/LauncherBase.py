@@ -129,7 +129,6 @@ class LauncherBase(DirectObject):
         if sys.platform == 'darwin':
             os.system('/usr/sbin/system_profiler >>' + logfile)
         elif sys.platform == 'linux2':
-            os.system('cat /proc/cpuinfo >>' + logfile)
             os.system('cat /proc/meminfo >>' + logfile)
             os.system('/sbin/ifconfig -a >>' + logfile)
         print '\n\nStarting %s...' % self.GameName

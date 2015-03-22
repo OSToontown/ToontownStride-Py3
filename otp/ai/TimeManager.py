@@ -182,32 +182,6 @@ class TimeManager(DistributedObject.DistributedObject):
     def d_setSignature(self, signature, hash, pyc):
         self.sendUpdate('setSignature', [signature, hash, pyc])
 
-    def sendCpuInfo(self):
-        if not base.pipe:
-            return
-        di = base.pipe.getDisplayInformation()
-        if di.getNumCpuCores() == 0 and hasattr(base.pipe, 'lookupCpuData'):
-            base.pipe.lookupCpuData()
-            di = base.pipe.getDisplayInformation()
-        di.updateCpuFrequency(0)
-        try:
-            cacheStatus = preloadCache()
-        except NameError:
-            cacheStatus = ''
-
-        ooghz = 1e-09
-        cpuSpeed = (di.getMaximumCpuFrequency() * ooghz, di.getCurrentCpuFrequency() * ooghz)
-        numCpuCores = di.getNumCpuCores()
-        numLogicalCpus = di.getNumLogicalCpus()
-        info = '%s|%s|%d|%d|%s|%s cpus' % (di.getCpuVendorString(),
-         di.getCpuBrandString(),
-         di.getCpuVersionInformation(),
-         di.getCpuBrandIndex(),
-         '%0.03f,%0.03f' % cpuSpeed,
-         '%d,%d' % (numCpuCores, numLogicalCpus))
-        self.notify.debug('setCpuInfo: "%s"' % info)
-        self.sendUpdate('setCpuInfo', [info, cacheStatus])
-
     def setFrameRateInterval(self, frameRateInterval):
         if frameRateInterval == 0:
             return

@@ -1361,7 +1361,6 @@ class OTPClientRepository(ClientRepositoryBase):
             hashPrcVariables(h)
             pyc = HashVal()
             self.timeManager.d_setSignature(self.userSignature, h.asBin(), pyc.asBin())
-            self.timeManager.sendCpuInfo()
             if self.timeManager.synchronize('startup'):
                 self.accept('gotTimeSync', self.gotTimeSync)
                 self.waitForDatabaseTimeout(requestName='uberZoneInterest-timeSync')
