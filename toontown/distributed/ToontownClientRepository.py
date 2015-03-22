@@ -573,16 +573,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
     def dumpAllSubShardObjects(self):
         if self.KeepSubShardObjects:
             return
-        isNotLive = not base.cr.isLive()
-        if isNotLive:
-            try:
-                localAvatar
-            except:
-                self.notify.info('dumpAllSubShardObjects')
-            else:
-                self.notify.info('dumpAllSubShardObjects: defaultShard is %s' % localAvatar.defaultShard)
-
-            ignoredClasses = ('MagicWordManager', 'TimeManager', 'DistributedDistrict', 'FriendManager', 'NewsManager', 'ToontownMagicWordManager', 'WelcomeValleyManager', 'DistributedTrophyMgr', 'CatalogManager', 'DistributedBankMgr', 'EstateManager', 'RaceManager', 'SafeZoneManager', 'DeleteManager', 'TutorialManager', 'ToontownDistrict', 'DistributedDeliveryManager', 'DistributedPartyManager', 'AvatarFriendsManager', 'TTCodeRedemptionMgr')
         messenger.send('clientCleanup')
         for avId, pad in self.__queryAvatarMap.items():
             pad.delayDelete.destroy()
@@ -592,16 +582,8 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         doIds = self.doId2do.keys()
         for doId in doIds:
             obj = self.doId2do[doId]
-            if isNotLive:
-                ignoredClass = obj.__class__.__name__ in ignoredClasses
-                if not ignoredClass and obj.parentId != localAvatar.defaultShard:
-                    self.notify.info('dumpAllSubShardObjects: %s %s parent %s is not defaultShard' % (obj.__class__.__name__, obj.doId, obj.parentId))
             if obj.parentId == localAvatar.defaultShard and obj is not localAvatar:
-                if obj.neverDisable:
-                    if isNotLive:
-                        if not ignoredClass:
-                            self.notify.warning('dumpAllSubShardObjects: neverDisable set for %s %s' % (obj.__class__.__name__, obj.doId))
-                else:
+                if not obj.neverDisable:
                     self.deleteObject(doId)
                     self._deletedSubShardDoIds.add(doId)
                     if obj.getDelayDeleteCount() != 0:
@@ -618,8 +600,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
                 s += '\n  could not delete %s (%s), delayDeletes=%s' % (safeRepr(obj), itype(obj), obj.getDelayDeleteNames())
 
             self.notify.error(s)
-        if isNotLive:
-            self.notify.info('dumpAllSubShardObjects: doIds left: %s' % self.doId2do.keys())
 
     def _removeCurrentShardInterest(self, callback):
         if self.old_setzone_interest_handle is None:

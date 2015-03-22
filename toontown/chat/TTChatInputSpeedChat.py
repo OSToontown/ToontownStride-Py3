@@ -428,8 +428,7 @@ class TTChatInputSpeedChat(DirectObject.DirectObject):
 
     def createSpeedChat(self):
         structure = []
-        if launcher and not launcher.isTestServer() or __dev__:
-            structure.append([TTSCPromotionalMenu, OTPLocalizer.SCMenuPromotion])
+        structure.append([TTSCPromotionalMenu, OTPLocalizer.SCMenuPromotion])
         structure.append([SCEmoteMenu, OTPLocalizer.SCMenuEmotions])
         structure.append([SCCustomMenu, OTPLocalizer.SCMenuCustom])
         structure.append([TTSCResistanceMenu, OTPLocalizer.SCMenuResistance])

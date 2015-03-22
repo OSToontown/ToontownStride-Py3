@@ -172,8 +172,6 @@ class LauncherBase(DirectObject):
         self.notify = directNotify.newCategory('Launcher')
         self.clock = TrueClock.getGlobalPtr()
         self.logPrefix = logPrefix
-        self.testServerFlag = self.getTestServerFlag()
-        self.notify.info('isTestServer: %s' % self.testServerFlag)
         downloadServerString = launcherConfig.GetString('download-server', '')
         if downloadServerString:
             self.notify.info('Overriding downloadServer to %s.' % downloadServerString)
@@ -1517,9 +1515,6 @@ class LauncherBase(DirectObject):
         if msg != self.lastLauncherMsg:
             self.lastLauncherMsg = msg
             self.notify.info(msg)
-
-    def isTestServer(self):
-        return self.testServerFlag
 
     def recordPeriodTimeRemaining(self, secondsRemaining):
         self.setValue(self.PeriodTimeRemainingKey, int(secondsRemaining))

@@ -1,9 +1,7 @@
 from pandac.PandaModules import *
 from direct.directnotify import DirectNotifyGlobal
 from otp.launcher.LauncherBase import LauncherBase
-import os
-import sys
-import time
+import os, sys, time, argparse
 
 class LogAndOutput:
     def __init__(self, orig, log):
@@ -24,9 +22,13 @@ class TTULauncher(LauncherBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToontownDummyLauncher')
 
     def __init__(self):
-        self.http = HTTPClient()
-
         self.logPrefix = 'united-'
+        self.http = HTTPClient()
+        
+        parser = argparse.ArgumentParser()
+        parser.add_argument('token')
+        parser.add_argument('server')
+        self.args = parser.parse_args()
 
         ltime = 1 and time.localtime()
         logSuffix = '%02d%02d%02d_%02d%02d%02d' % (ltime[0] - 2000,  ltime[1], ltime[2],
@@ -46,10 +48,10 @@ class TTULauncher(LauncherBase):
         sys.stderr = logErr
 
     def getPlayToken(self):
-        return self.getValue('TTU_PLAYCOOKIE')
+        return self.args.token
 
     def getGameServer(self):
-        return self.getValue('TTU_GAMESERVER')
+        return self.args.server
 
     def setPandaErrorCode(self, code):
         pass
@@ -69,14 +71,8 @@ class TTULauncher(LauncherBase):
     def getVerifyFiles(self):
         return config.GetInt('launcher-verify', 0)
 
-    def getTestServerFlag(self):
-        return self.getValue('IS_TEST_SERVER', 0)
-
     def isDownloadComplete(self):
         return 1
-
-    def isTestServer(self):
-        return 0
 
     def getPhaseComplete(self, phase):
         return 1

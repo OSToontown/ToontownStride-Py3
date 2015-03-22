@@ -36,9 +36,6 @@ class DummyLauncherBase:
             self.downloadDoneTask(None)
         return
 
-    def isTestServer(self):
-        return base.config.GetBool('is-test-server', 0)
-
     def setPhaseCompleteArray(self, newPhaseComplete):
         self.phaseComplete = newPhaseComplete
 
