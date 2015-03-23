@@ -1735,6 +1735,9 @@ class TrackChoiceQuest(Quest):
                     second = i
                     break
         
+        if first is None or second is None:
+            return (0, 1)
+        
         return (first, second)
 
     def getCompletionStatus(self, av, questDesc, npc = None):
@@ -4062,6 +4065,7 @@ class TrackTrainingReward(Reward):
     def getTrack(self, av):
         track = self.reward[0]
         if track == None:
+            track = 0
             trackAccess = av.getTrackAccess()
             
             for i in xrange(len(trackAccess)):
