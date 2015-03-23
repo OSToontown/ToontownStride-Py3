@@ -432,12 +432,12 @@ class NPCMoviePlayer(DirectObject.DirectObject):
                     iList.append(self.parseFunction(line))
                 elif command == 'BLACK_CAT_LISTEN':
                     iList.append(self.parseBlackCatListen(line))
-                elif command == 'SHOW_THROW_SQUIRT_PREVIEW':
+                elif command == 'SHOW_PREVIEW':
                     if uponTimeout:
-                        self.notify.error('SHOW_THROW_SQUIRT_PREVIEW not allowed in an UPON_TIMEOUT')
-                    nextEvent = 'doneThrowSquirtPreview'
+                        self.notify.error('SHOW_PREVIEW not allowed in an UPON_TIMEOUT')
+                    nextEvent = 'donePreview'
                     iList.append(Func(self.acceptOnce, nextEvent, self.playNextChapter, [nextEvent]))
-                    iList.append(self.parseThrowSquirtPreview(line))
+                    iList.append(self.parsePreview(line))
                     self.closePreviousChapter(iList)
                     chapterList = []
                     self.currentEvent = nextEvent
@@ -989,14 +989,14 @@ class NPCMoviePlayer(DirectObject.DirectObject):
 
             return Func(disableBlackCatListen)
 
-    def parseThrowSquirtPreview(self, line):
-        oldTrackAccess = [None]
+    def parsePreview(self, line):
+        self.oldTrackAccess = None
 
-        def grabCurTrackAccess(oldTrackAccess = oldTrackAccess):
-            oldTrackAccess[0] = copy.deepcopy(base.localAvatar.getTrackAccess())
+        def grabCurTrackAccess():
+            self.oldTrackAccess = copy.deepcopy(base.localAvatar.getTrackAccess())
 
-        def restoreTrackAccess(oldTrackAccess = oldTrackAccess):
-            base.localAvatar.setTrackAccess(oldTrackAccess[0])
+        def restoreTrackAccess():
+            base.localAvatar.setTrackAccess(self.oldTrackAccess)
 
         minGagLevel = ToontownBattleGlobals.MIN_LEVEL_INDEX + 1
         maxGagLevel = ToontownBattleGlobals.MAX_LEVEL_INDEX + 1
@@ -1007,15 +1007,14 @@ class NPCMoviePlayer(DirectObject.DirectObject):
             if newGagLevel == curGagLevel:
                 return
             curGagLevel = newGagLevel
-            base.localAvatar.setTrackAccess([0,
-             0,
-             0,
-             0,
-             curGagLevel,
-             curGagLevel,
-             0])
+            access = []
+            
+            for i in xrange(len(self.oldTrackAccess)):
+                access[i] = 1 if self.oldTrackAccess[i] > 0 else 0
+            
+            base.localAvatar.setTrackAccess(access)
 
-        return Sequence(Func(grabCurTrackAccess), LerpFunctionInterval(updateGagLevel, fromData=1, toData=7, duration=0.3), WaitInterval(3.5), LerpFunctionInterval(updateGagLevel, fromData=7, toData=1, duration=0.3), Func(restoreTrackAccess), Func(messenger.send, 'doneThrowSquirtPreview'))
+        return Sequence(Func(grabCurTrackAccess), LerpFunctionInterval(updateGagLevel, fromData=1, toData=7, duration=0.3), WaitInterval(3.5), LerpFunctionInterval(updateGagLevel, fromData=7, toData=1, duration=0.3), Func(restoreTrackAccess), Func(messenger.send, 'donePreview'))
 
 searchPath = DSearchPath()
 if __debug__:	 

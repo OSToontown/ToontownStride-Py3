@@ -37,5 +37,5 @@ want-glove-npc #t
 
 # Developer options:
 show-population #t
-force-skip-tutorial #t
+force-skip-tutorial #f
 want-instant-parties #t
