@@ -91,17 +91,12 @@ class CatalogScreen(DirectFrame):
         taskMgr.doMethodLater(1.0, clarabelleGreeting, 'clarabelleGreeting')
         taskMgr.doMethodLater(12.0, clarabelleHelpText1, 'clarabelleHelpText1')
         if hasattr(self, 'giftToggle'):
-            self.giftToggle['state'] = DGG.DISABLED
-            self.giftToggle['text'] = TTLocalizer.CatalogGiftToggleWait
-        base.cr.deliveryManager.sendAck()
-        self.accept('DeliveryManagerAck', self.__handleUDack)
-        taskMgr.doMethodLater(10.0, self.__handleNoAck, 'ackTimeOut')
+            self.giftToggle['state'] = DGG.NORMAL
+            self.giftToggle['text'] = TTLocalizer.CatalogGiftToggleOn
 
     def hide(self):
         self.ignore('CatalogItemPurchaseRequest')
         self.ignore('CatalogItemGiftPurchaseRequest')
-        self.ignore('DeliveryManagerAck')
-        taskMgr.remove('ackTimeOut')
         self.ignore(localAvatar.uniqueName('moneyChange'))
         self.ignore(localAvatar.uniqueName('bankMoneyChange'))
         self.ignore(localAvatar.uniqueName('emblemsChange'))
@@ -1012,40 +1007,8 @@ class CatalogScreen(DirectFrame):
         return test
 
     def __makeFFlist(self):
-        for familyMember in base.cr.avList:
-            if familyMember.id != base.localAvatar.doId:
-                newFF = (familyMember.id, familyMember.name, NametagGlobals.CCNonPlayer)
-                self.ffList.append(newFF)
-
-        for friendPair in base.localAvatar.friendsList:
-            friendId, flags = friendPair
-            handle = base.cr.identifyFriend(friendId)
-            if handle and not self.checkFamily(friendId):
-                if hasattr(handle, 'getName'):
-                    colorCode = NametagGlobals.CCSpeedChat
-                    if flags & ToontownGlobals.FriendChat:
-                        colorCode = NametagGlobals.CCFreeChat
-                    newFF = (friendPair[0], handle.getName(), colorCode)
-                    self.ffList.append(newFF)
-                else:
-                    self.notify.warning('Bad Handle for getName in makeFFlist')
-
-        hasManager = hasattr(base.cr, 'playerFriendsManager')
-        if hasManager:
-            for avatarId in base.cr.playerFriendsManager.getAllOnlinePlayerAvatars():
-                handle = base.cr.playerFriendsManager.getAvHandleFromId(avatarId)
-                playerId = base.cr.playerFriendsManager.findPlayerIdFromAvId(avatarId)
-                playerInfo = base.cr.playerFriendsManager.getFriendInfo(playerId)
-                freeChat = playerInfo.understandableYesNo
-                if handle and not self.checkFamily(avatarId):
-                    if hasattr(handle, 'getName'):
-                        colorCode = NametagGlobals.CCSpeedChat
-                        if freeChat:
-                            colorCode = NametagGlobals.CCFreeChat
-                        newFF = (avatarId, handle.getName(), colorCode)
-                        self.ffList.append(newFF)
-                    else:
-                        self.notify.warning('Bad Handle for getName in makeFFlist')
+        for id, handle in base.cr.friendsMap.items():
+            self.ffList.append((id, handle.getName(), NametagGlobals.CCFreeChat))
 
     def __makeScrollList(self):
         for ff in self.ffList:
@@ -1128,13 +1091,3 @@ class CatalogScreen(DirectFrame):
             self.showEmblems()
             self.giftToggle['text'] = TTLocalizer.CatalogGiftToggleOff
             self.update()
-
-    def __handleUDack(self, caller = None):
-        taskMgr.remove('ackTimeOut')
-        if hasattr(self, 'giftToggle') and self.giftToggle:
-            self.giftToggle['state'] = DGG.NORMAL
-            self.giftToggle['text'] = TTLocalizer.CatalogGiftToggleOff
-
-    def __handleNoAck(self, caller = None):
-        if hasattr(self, 'giftToggle') and self.giftToggle:
-            self.giftToggle['text'] = TTLocalizer.CatalogGiftToggleNoAck
