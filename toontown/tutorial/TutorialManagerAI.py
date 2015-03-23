@@ -168,7 +168,7 @@ class TutorialManagerAI(DistributedObjectAI):
         av.inventory.zeroInv(killUber=True)
         access = av.getTrackAccess()
         
-        for i in len(access):
+        for i in xrange(len(access)):
             if access[i] == 1:
                 av.inventory.addItem(i, 1)
         

@@ -1009,7 +1009,7 @@ class NPCMoviePlayer(DirectObject.DirectObject):
             curGagLevel = newGagLevel
             access = [0, 0, 0, 0, 0, 0]
             
-            for i in len(access):
+            for i in xrange(len(access)):
                 if oldTrackAccess[i] == 1:
                     access[i] = newGagLevel
             
