@@ -990,13 +990,13 @@ class NPCMoviePlayer(DirectObject.DirectObject):
             return Func(disableBlackCatListen)
 
     def parsePreview(self, line):
-        oldTrackAccess = None
+        self.oldTrackAccess = None
 
-        def grabCurTrackAccess(oldTrackAccess = oldTrackAccess):
-            oldTrackAccess = copy.deepcopy(base.localAvatar.getTrackAccess())
+        def grabCurTrackAccess():
+            self.oldTrackAccess = copy.deepcopy(base.localAvatar.getTrackAccess())
 
-        def restoreTrackAccess(oldTrackAccess = oldTrackAccess):
-            base.localAvatar.setTrackAccess(oldTrackAccess)
+        def restoreTrackAccess():
+            base.localAvatar.setTrackAccess(self.oldTrackAccess)
 
         minGagLevel = ToontownBattleGlobals.MIN_LEVEL_INDEX + 1
         maxGagLevel = ToontownBattleGlobals.MAX_LEVEL_INDEX + 1
@@ -1007,11 +1007,10 @@ class NPCMoviePlayer(DirectObject.DirectObject):
             if newGagLevel == curGagLevel:
                 return
             curGagLevel = newGagLevel
-            access = [0, 0, 0, 0, 0, 0]
+            access = []
             
-            for i in xrange(len(access)):
-                if oldTrackAccess[i] == 1:
-                    access[i] = newGagLevel
+            for i in xrange(len(self.oldTrackAccess)):
+                access[i] = 1 if self.oldTrackAccess[i] > 0 else 0
             
             base.localAvatar.setTrackAccess(access)
 
