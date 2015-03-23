@@ -80,15 +80,6 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
 
     def show(self):
         if self.tutorialFlag:
-            self.tutArrows.arrowsOn(-0.43, -0.12, 180, -0.43, -0.24, 180, onTime=1.0, offTime=0.2)
-            if self.numItem(THROW_TRACK, 0) == 0:
-                self.tutArrows.arrow1.reparentTo(hidden)
-            else:
-                self.tutArrows.arrow1.reparentTo(self.battleFrame, 1)
-            if self.numItem(SQUIRT_TRACK, 0) == 0:
-                self.tutArrows.arrow2.reparentTo(hidden)
-            else:
-                self.tutArrows.arrow2.reparentTo(self.battleFrame, 1)
             self.tutText.show()
             self.tutText.reparentTo(self.battleFrame, 1)
         DirectFrame.show(self)
@@ -121,7 +112,6 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
 
     def hide(self):
         if self.tutorialFlag:
-            self.tutArrows.arrowsOff()
             self.tutText.hide()
         DirectFrame.hide(self)
 
@@ -1182,7 +1172,6 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.fireButton = DirectButton(parent=self.battleFrame, relief=None, pos=(0.73, 0, -0.242), text=TTLocalizer.InventoryFire, text_scale=TTLocalizer.INfireButton, text_pos=(0, -0.02), text_fg=Vec4(1, 1, 1, 1), textMayChange=0, image=(self.upButton, self.downButton, self.rolloverButton), image_scale=1.05, image_color=(0, 0.6, 1, 1), command=self.__handleFire)
         self.tutText = DirectFrame(parent=self.battleFrame, relief=None, pos=(0.05, 0, -0.1133), scale=0.143, image=DGG.getDefaultDialogGeom(), image_scale=5.125, image_pos=(0, 0, -0.65), image_color=ToontownGlobals.GlobalDialogColor, text_scale=TTLocalizer.INclickToAttack, text=TTLocalizer.InventoryClickToAttack, textMayChange=0)
         self.tutText.hide()
-        self.tutArrows = BlinkingArrows.BlinkingArrows(parent=self.battleFrame)
         battleModels.removeNode()
         self.battleFrame.hide()
         return
