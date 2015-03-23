@@ -80,7 +80,7 @@ class QuestManagerAI:
 
                 # If it's a TrackChoiceQuest then present their track choices.
                 if isinstance(questClass, Quests.TrackChoiceQuest):
-                    npc.presentTrackChoice(avId, questId, questClass.getChoices())
+                    npc.presentTrackChoice(avId, questId, questClass.getChoices(av))
                     break
                 # If there is another part to this quest then give them that.
                 if Quests.getNextQuest(questId, npc, av)[0] != Quests.NA:

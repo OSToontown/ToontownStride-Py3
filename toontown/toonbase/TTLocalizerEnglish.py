@@ -578,11 +578,11 @@ INCOMPLETE_WRONG_NPC = 4
 COMPLETE = 5
 LEAVING = 6
 TheBrrrghTrackQuestDict = {GREETING: '',
- QUEST: 'Now you are ready.\x07Go out and walk the earth until you know which track you would like to choose.\x07Choose wisely, because this is your final track.\x07When you are certain, return to me.',
+ QUEST: 'Now you are ready.\x07Go out and walk the earth until you know which track you would like to choose.\x07When you are certain, return to me.',
  INCOMPLETE_PROGRESS: 'Choose wisely.',
  INCOMPLETE_WRONG_NPC: 'Choose wisely.',
- COMPLETE: 'Very wise choice!',
- LEAVING: 'Good luck.  Return to me when you have mastered your new skill.'}
+ COMPLETE: 'Very wise choice!\x07Good luck.  Return to me when you have mastered your new skill.',
+ LEAVING: ''}
 QuestDialog_3225 = {QUEST: "Oh, thanks for coming, _avName_!\x07The Cogs in the neighborhood frightened away my delivery person.\x07I don't have anyone to deliver this salad to _toNpcName_!\x07Can you do it for me? Thanks so much!_where_"}
 QuestDialog_2910 = {QUEST: 'Back so soon?\x07Great job on the spring.\x07The final item is a counter weight.\x07Stop by and see _toNpcName_ and bring back whatever you can get._where_'}
 QuestDialogDict = {160: {GREETING: '',
@@ -624,7 +624,7 @@ QuestDialogDict = {160: {GREETING: '',
        COMPLETE: 'Hope you have fun ordering things from Clarabelle!\x07I just finished redecorating my house. It looks Toontastic!\x07Keep doing ToonTasks to get more rewards!',
        LEAVING: QuestsDefaultLeaving},
  400: {GREETING: '',
-       QUEST: 'Throw and Squirt are great, but you will need more gags to fight higher level Cogs.\x07When you team up with other Toons against the Cogs, you can combine attacks for even more damage.\x07Try different combinations of gags to see what works best.\x07For your next track, choose between Sound and Toonup.\x07Sound is special because when it hits, it damages all Cogs.\x07Toonup lets you heal other Toons in battle.\x07When you are ready to decide, come back here and choose.',
+       QUEST: 'You will need more gags to fight higher level Cogs.\x07When you team up with other Toons against the Cogs, you can combine attacks for even more damage.\x07Try different combinations of gags to see what works best.\x07When you are ready to decide, come back here and choose.',
        INCOMPLETE_PROGRESS: 'Back so soon?  Okay, are you ready to choose?',
        INCOMPLETE_WRONG_NPC: 'Think about your decision before choosing.',
        COMPLETE: 'Good decision.  Now before you can use those gags, you must train for them.\x07You must complete a series of ToonTasks for training.\x07Each task will give you a single frame of your gag attack animation.\x07When you collect all 15, you can get the Final Gag Training task that will allow you to use your new gags.\x07You can check your progress in the Shticker Book.',
@@ -9747,6 +9747,7 @@ LanguageSelectorConfirm = 'Are you sure you want to change your language to %s? 
 LanguageSelectorSameLanguage = "You're already using that language!"
 PickTrackTitle = 'Pick your third track!'
 PickTrackNotice = 'Choose a track!'
+UnknownTrack = 'None'
 
 # Buffs
 
