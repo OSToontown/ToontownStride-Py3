@@ -25,7 +25,4 @@ class CatalogManagerAI(DistributedObjectAI):
         av.b_setCatalog(monthlyCatalog, weeklyCatalog, backCatalog)
         av.b_setCatalogSchedule(newWeek, int((time.time() + 604800)/60))
         av.b_setCatalogNotify(ToontownGlobals.NewItems, av.mailboxNotify)
-    
-    def isItemReleased(self, accessory):
-        return 1
 
