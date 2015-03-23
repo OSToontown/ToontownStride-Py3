@@ -55,6 +55,9 @@ class CatalogNametagItem(CatalogItem.CatalogItem):
             avatar.b_setNametagStyle(self.nametagStyle)
         return ToontownGlobals.P_ItemAvailable
 
+    def getDeliveryTime(self):
+        return 0
+
     def getPicture(self, avatar):
         frame = self.makeFrame()
         if self.nametagStyle == 100:
