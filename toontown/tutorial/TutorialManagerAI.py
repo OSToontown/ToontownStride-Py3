@@ -170,7 +170,7 @@ class TutorialManagerAI(DistributedObjectAI):
         
         for i in xrange(len(access)):
             if access[i] == 1:
-                av.inventory.addItem(i, 1)
+                av.inventory.addItem(i, 0)
         
         av.d_setInventory(av.inventory.makeNetString())
         av.experience.zeroOutExp()
