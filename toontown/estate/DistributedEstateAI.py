@@ -1,22 +1,28 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
-from direct.distributed.PyDatagramIterator import *
-from direct.distributed.PyDatagram import *
+
 from toontown.toonbase import ToontownGlobals
+
 import HouseGlobals
+
 import time
 import random
+
 from toontown.fishing.DistributedFishingPondAI import DistributedFishingPondAI
 from toontown.fishing.DistributedFishingTargetAI import DistributedFishingTargetAI
 from toontown.fishing.DistributedPondBingoManagerAI import DistributedPondBingoManagerAI
 from toontown.fishing import FishingTargetGlobals
+
 from toontown.safezone.DistributedFishingSpotAI import DistributedFishingSpotAI
 from toontown.safezone.SZTreasurePlannerAI import SZTreasurePlannerAI
+from toontown.safezone import DistributedTreasureAI
 from toontown.safezone import TreasureGlobals
+
 from DistributedGardenBoxAI import *
 from DistributedGagTreeAI import *
 from DistributedFlowerAI import *
 import GardenGlobals
+
 from DistributedCannonAI import *
 from DistributedTargetAI import *
 import CannonGlobals
@@ -25,6 +31,9 @@ NULL_PLANT = [0, -1, 0, -1, 0]
 NULL_TREES = [NULL_PLANT] * 8
 NULL_FLOWERS = [NULL_PLANT] * 10
 NULL_STATUARY = 0
+
+from direct.distributed.PyDatagramIterator import *
+from direct.distributed.PyDatagram import *
 
 def unpackGardenSetter(f):
     def w(klass, data):
@@ -181,7 +190,7 @@ class CannonRental(Rental):
     def destroy(self):
         self.estate.b_setClouds(0)
         Rental.destroy(self)
-            
+ 
     def generateTreasures(self):
         doIds = []
         z = 35
@@ -189,13 +198,13 @@ class CannonRental(Rental):
         for i in xrange(20):
             x = random.randint(100, 300) - 200
             y = random.randint(100, 300) - 200
-            treasure = DistributedTreasureAI.DistributedTreasureAI(self.estate.air, self, 9, x, y, z)
+            treasure = DistributedTreasureAI.DistributedTreasureAI(self.estate.air, self, 7, x, y, z)
             treasure.generateWithRequired(self.estate.zoneId)
             self.objects.add(treasure)
             doIds.append(treasure.doId)
             
         self.estate.sendUpdate("setTreasureIds", [doIds])
-        
+    
     def grabAttempt(self, avId, treasureId):
         av = self.estate.air.doId2do.get(avId)
         if av == None:
