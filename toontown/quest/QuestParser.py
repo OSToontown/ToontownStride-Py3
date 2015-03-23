@@ -1007,10 +1007,10 @@ class NPCMoviePlayer(DirectObject.DirectObject):
             if newGagLevel == curGagLevel:
                 return
             curGagLevel = newGagLevel
-            access = []
+            access = [0, 0, 0, 0, 0, 0, 0]
             
             for i in xrange(len(self.oldTrackAccess)):
-                access[i] = 1 if self.oldTrackAccess[i] > 0 else 0
+                access[i] = curGagLevel if self.oldTrackAccess[i] > 0 else 0
             
             base.localAvatar.setTrackAccess(access)
 
