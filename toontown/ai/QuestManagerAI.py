@@ -11,7 +11,6 @@ QuestToNpcIdIndex = 2
 QuestRewardIdIndex = 3
 QuestProgressIndex = 4
 
-
 class QuestManagerAI:
     notify = directNotify.newCategory('QuestManagerAI')
 
