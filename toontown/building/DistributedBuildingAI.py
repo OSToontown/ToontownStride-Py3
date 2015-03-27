@@ -150,7 +150,7 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
         self.track = track
         self.realTrack = track
         self.difficulty = difficulty
-        self.numFloors = numFloors
+        self.numFloors = 0
         self.becameSuitTime = time.time()
         self.fsm.request('clearOutToonInteriorForCogdo')
 
@@ -321,25 +321,38 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
             toon = None
             if t:
                 toon = self.getToon(t)
-            if toon is not None:
+            
+            if toon != None:
                 activeToons.append(toon)
+                continue
+        
         for t in victorList:
             toon = None
             if t:
                 toon = self.getToon(t)
                 self.air.writeServerEvent('buildingDefeated', t, '%s|%s|%s|%s' % (self.track, self.numFloors, self.zoneId, victorList))
-            if toon is not None:
-                self.air.questManager.toonKilledCogdo(toon, self.difficulty, self.numFloors, self.zoneId, activeToons)
-        for i in xrange(0, 4):
+            
+            if toon != None:
+                #self.air.questManager.toonKilledCogdo(toon, self.track, self.difficulty, self.numFloors, self.zoneId, activeToons)
+                continue
+        
+        victorList.extend([None, None, None, None])
+        for i in range(0, 4):
             victor = victorList[i]
-            if (victor is None) or (victor not in self.air.doId2do):
+            if victor == None or not self.air.doId2do.has_key(victor):
                 victorList[i] = 0
                 continue
             event = self.air.getAvatarExitEvent(victor)
-            self.accept(event, self.setVictorExited, extraArgs = [victor])
-        self.b_setVictorList(victorList)
+            self.accept(event, self.setVictorExited, extraArgs = [
+                victor])
+        
+        self.b_setVictorList(victorList[:4])
         self.updateSavedBy(savedBy)
-        self.victorResponses = [0, 0, 0, 0]
+        self.victorResponses = [
+            0,
+            0,
+            0,
+            0]
         self.d_setState('waitForVictorsFromCogdo')
 
     def exitWaitForVictorsFromCogdo(self):

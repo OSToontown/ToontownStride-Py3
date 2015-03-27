@@ -1067,6 +1067,7 @@ dclass DistributedToon : DistributedPlayer {
   setAnimalSound(uint8 index) ram broadcast ownrecv;
   setBuffs(uint32[] = []) required ownrecv db;
   setRedeemedCodes(string [] = []) required ownrecv db;
+  setEmblems(uint32[] = [0, 0]) required ownrecv db;
 };
 
 dclass DistributedCCharBase : DistributedObject {
