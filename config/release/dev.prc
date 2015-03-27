@@ -21,7 +21,7 @@ dc-file astron/dclass/united.dc
 # Core features:
 want-pets #t
 want-parties #t
-want-cogdominiums #f
+want-cogdominiums #t
 want-achievements #f
 
 # Chat:
