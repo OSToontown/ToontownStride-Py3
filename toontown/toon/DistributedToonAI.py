@@ -5177,3 +5177,23 @@ def immortal():
     av = spellbook.getTarget() if spellbook.getInvokerAccess() >= 500 else spellbook.getInvoker()
     av.setImmortalMode(not av.immortalMode)
     return 'Toggled immortal mode %s for %s' % ('ON' if av.immortalMode else 'OFF', av.getName())
+    
+@magicWord(category=CATEGORY_PROGRAMMER, types=[str, int]) 
+def summoncogdo(track="s", difficulty=5):
+    tracks = ['s']
+    if config.GetBool('want-lawbot-cogdo', True):
+        tracks.append('l')
+    if track not in tracks:
+        return "Invalid track!"
+        
+    av = spellbook.getInvoker()
+    building = av.findClosestDoor()
+    if building == None:
+        return "No bldg found!"
+        
+    building.cogdoTakeOver(difficulty, 2, track)
+    
+@magicWord(category=CATEGORY_PROGRAMMER, types=[int, int]) 
+def emblems(silver=10, gold=10):
+    spellbook.getTarget().addEmblems((gold, silver))
+

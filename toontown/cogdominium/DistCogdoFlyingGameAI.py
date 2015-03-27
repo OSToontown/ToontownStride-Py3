@@ -119,8 +119,7 @@ class DistCogdoFlyingGameAI(DistCogdoGameAI):
         return self.totalMemos
 
 from otp.ai.MagicWordGlobal import *
-
-@magicWord(category=CATEGORY_MODERATOR)
+@magicWord(category=CATEGORY_PROGRAMMER)
 def endFly():
     if hasattr(simbase.air, 'cogdoGame'):
         game = simbase.air.cogdoGame

@@ -240,8 +240,7 @@ class DistCogdoMazeGameAI(DistCogdoGameAI):
         self.removeAll()
 
 from otp.ai.MagicWordGlobal import *
-
-@magicWord(category=CATEGORY_MODERATOR)
+@magicWord(category=CATEGORY_PROGRAMMER)
 def endMaze():
     if hasattr(simbase.air, 'cogdoGame'):
         maze = simbase.air.cogdoGame
