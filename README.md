@@ -14,4 +14,4 @@ And *only* push to **THIS** repository.
 
 Never **_ever_** force a git push.
 
-Always change the gitignore files unless you are adding something to them.
+Never change the gitignore files unless you are adding something to them.
