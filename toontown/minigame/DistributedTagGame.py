@@ -49,7 +49,7 @@ class DistributedTagGame(DistributedMinigame):
         self.itText = OnscreenText.OnscreenText('itText', fg=(0.95, 0.95, 0.65, 1), scale=0.14, font=ToontownGlobals.getSignFont(), pos=(0.0, -0.8), wordwrap=15, mayChange=1)
         self.itText.hide()
         self.sky = loader.loadModel('phase_3.5/models/props/TT_sky')
-        self.groundList = ['phase_4/models/minigames/tag_arena', 'phase_6/models/neighborhoods/minnies_melody_land', 'phase_8/models/neighborhoods/daisys_garden']
+        self.groundList = ['phase_4/models/minigames/tag_arena', 'phase_6/models/neighborhoods/minnies_melody_land', 'phase_8/models/neighborhoods/the_burrrgh' 'phase_8/models/neighborhoods/daisys_garden']
         self.ground = random.choice(loader.loadModel(self.groundList))
         self.music = base.loadMusic('phase_4/audio/bgm/MG_toontag.ogg')
         self.tagSfx = base.loadSfx('phase_4/audio/sfx/MG_Tag_C.ogg')
