@@ -1,5 +1,5 @@
 from direct.gui.DirectLabel import DirectLabel
-from direct.gui.DirectGui import DirectFrame, DGG
+from direct.gui.DirectGui import *
 from direct.task.Task import Task
 from direct.interval.MetaInterval import Sequence, Parallel
 from direct.interval.FunctionInterval import Wait, Func
@@ -19,6 +19,7 @@ class CogdoMazeMapGui(MazeMapGui):
         self._initModel()
         self.setPos(*Globals.MapGuiPos)
         self.setScale(Globals.MapGuiScale)
+        self.reparentTo(base.a2dBottomRight)
 
     def destroy(self):
         for marker in self._suit2marker.values():

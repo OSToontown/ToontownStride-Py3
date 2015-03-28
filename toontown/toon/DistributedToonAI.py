@@ -5194,8 +5194,10 @@ def summoncogdo(track="s", difficulty=5):
         return "No bldg found!"
         
     building.cogdoTakeOver(difficulty, 2, track)
+    return 'Successfully spawned cogdo with track %s and difficulty %d' % (track, difficulty)
     
 @magicWord(category=CATEGORY_PROGRAMMER, types=[int, int]) 
 def emblems(silver=10, gold=10):
     spellbook.getTarget().addEmblems((gold, silver))
+    return 'Restocked with Gold: %s Silver: %d' % (gold, silver)
 
