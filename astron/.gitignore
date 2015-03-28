@@ -1,4 +1,5 @@
 *.dll
+astrond.exe
 astrond
 astrond_debug
 astrond_debug.exe
