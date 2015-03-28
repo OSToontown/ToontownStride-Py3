@@ -13,3 +13,5 @@ Do **NOT** erase or revert another person's commit without first consulting them
 And *only* push to **THIS** repository.
 
 Never **_ever_** force a git push.
+
+Never change the gitignore files unless you are adding something to them.
