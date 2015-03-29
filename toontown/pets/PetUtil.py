@@ -1,12 +1,16 @@
 from toontown.pets import PetDNA, PetTraits, PetConstants
-from toontown.toonbase import TTLocalizer
 from direct.showbase import PythonUtil
+from toontown.toonbase import TTLocalizer
+import random
 
 def getPetInfoFromSeed(seed, safezoneId):
-    dnaArray = PetDNA.getRandomPetDNA(seed, safezoneId)
+    S = random.getstate()
+    random.seed(seed)
+    dnaArray = PetDNA.getRandomPetDNA(safezoneId)
     gender = PetDNA.getGender(dnaArray)
     nameString = TTLocalizer.getRandomPetName(gender=gender, seed=seed)
     traitSeed = PythonUtil.randUint31()
+    random.setstate(S)
     return (nameString, dnaArray, traitSeed)
 
 

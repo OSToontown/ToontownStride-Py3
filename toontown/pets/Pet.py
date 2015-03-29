@@ -9,7 +9,6 @@ from direct.actor import Actor
 from direct.task import Task
 from toontown.pets import PetDNA
 from PetDNA import HeadParts, EarParts, NoseParts, TailParts, BodyTypes, BodyTextures, AllPetColors, getColors, ColorScales, PetEyeColors, EarTextures, TailTextures, getFootTexture, getEarTexture, GiraffeTail, LeopardTail, PetGenders
-from toontown.toonbase.BitmaskGlobals import PieBitmask
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
 from direct.showbase import PythonUtil
@@ -30,7 +29,6 @@ Component2IconDict = {'boredom': 'Bored',
  
 from toontown.nametag import *
 from toontown.nametag.NametagGlobals import *
-from toontown.nametag.NametagGroup import *
 
 class Pet(Avatar.Avatar):
     notify = DirectNotifyGlobal.directNotify.newCategory('Pet')
@@ -268,7 +266,7 @@ class Pet(Avatar.Avatar):
     def initializeBodyCollisions(self, collIdStr):
         Avatar.Avatar.initializeBodyCollisions(self, collIdStr)
         if not self.ghostMode:
-            self.collNode.setCollideMask(self.collNode.getIntoCollideMask() | PieBitmask)
+            self.collNode.setCollideMask(self.collNode.getIntoCollideMask() | ToontownGlobals.PieBitmask)
 
     def amplifyColor(self, color, scale):
         color = color * scale

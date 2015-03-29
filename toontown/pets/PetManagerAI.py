@@ -1,10 +1,7 @@
-from direct.directnotify import DirectNotifyGlobal
 from direct.fsm.FSM import FSM
 import PetUtil, PetDNA
-from toontown.hood import ZoneUtil
-from toontown.building import PetshopBuildingAI
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-import random
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 import cPickle, time, random, os
 
 MINUTE = 60
@@ -15,8 +12,9 @@ def getDayId():
     return int(time.time() // DAY)
     
 class PetManagerAI:
-    NUM_DAILY_PETS = 5 
+    NUM_DAILY_PETS = 5 # per hood
     cachePath = config.GetString('air-pet-cache', 'astron/databases/air_cache/')
+    
     def __init__(self, air):
         self.air = air
         self.cacheFile = '%spets_%d.pets' % (self.cachePath, self.air.districtId)
@@ -29,28 +27,28 @@ class PetManagerAI:
                 self.generateSeeds()
             
         else:
-            self.generateSeeds()   
-        
+            self.generateSeeds()            
+
     def generateSeeds(self):
         seeds = range(0, 255)
         random.shuffle(seeds)
         
         self.seeds = {}
         for hood in (ToontownGlobals.ToontownCentral, ToontownGlobals.DonaldsDock, ToontownGlobals.DaisyGardens,
-                     ToontownGlobals.MinniesMelodyland, ToontownGlobals.TheBrrrgh, ToontownGlobals.DonaldsDreamland):
+                     ToontownGlobals.MinniesMelodyland, ToontownGlobals.TheBrrrgh, ToontownGlobals.DonaldsDreamland,
+                     ToontownGlobals.FunnyFarm):
             self.seeds[hood] = [seeds.pop() for _ in xrange(self.NUM_DAILY_PETS)]
             
         self.seeds['day'] = getDayId()
             
         with open(self.cacheFile, 'wb') as f:
-             f.write(cPickle.dumps(self.seeds))
+            f.write(cPickle.dumps(self.seeds))
 
-        
     def getAvailablePets(self, seed, safezoneId):
         if self.seeds.get('day', -1) != getDayId():
             self.generateSeeds()
             
-        return self.seeds.get(safezoneId, [seed])
+        return list(set(self.seeds.get(safezoneId, [seed])))
 
     def createNewPetFromSeed(self, avId, seed, nameIndex, gender, safeZoneId):
         av = self.air.doId2do[avId]
@@ -84,3 +82,5 @@ class PetManagerAI:
                 self.air.doId2do[pet].requestDelete()
                 
         av.b_setPetId(0)
+        # XXX to do: check for current pet and destroy it if generated
+        

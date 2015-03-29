@@ -9,6 +9,8 @@ estateCenter = (0, -40)
 houseRadius = 15
 houses = ((60, 10), (42, 75), (-37, 35),  (80, -80), (-70, -120), (-55, -40))
 
+dist = 2
+
 def inCircle(x, y, c=estateCenter, r=estateRadius):
     center_x, center_y = c
     square_dist = (center_x - x) ** 2 + (center_y - y) ** 2
@@ -77,6 +79,15 @@ def generatePath(start, end):
         if not houseCollision(next, end):
             points.append(end)
             return points
+            
+def angle(A, B):
+    ax = A.getX()
+    ay = A.getY()
+    
+    bx = B.getX()
+    by = B.getY()
+    
+    return math.atan2(by-ay, bx-ax)
     
 class PetMoverAI(FSM):    
     def __init__(self, pet):
@@ -96,10 +107,7 @@ class PetMoverAI(FSM):
         taskMgr.remove(self.pet.uniqueName('next-state'))
         
     def __moveFromStill(self, task=None):
-        choices = ["Wander"]
-        # if self.pet._getNearbyAvatarDict():
-        #     choices.append("Chase")
-            
+        choices = ["Wander"]            
         nextState = random.choice(choices)
         self.request(nextState)
         
@@ -113,9 +121,9 @@ class PetMoverAI(FSM):
         
     def walkToPoint(self, target):
         here = self.pet.getPos()
-        dist = Vec3((here - target)).length()
-        dist = dist * 0.9
-        self.__seq = Sequence(Func(self.pet.lookAt, target), self.pet.posInterval(dist / self.fwdSpeed, target, here),
+        dist = Vec3(here - target).length()
+        
+        self.__seq = Sequence(Func(self.pet.lookAt, target), Func(self.pet.setP, 0), self.pet.posInterval(dist / self.fwdSpeed, target, here),
                               Func(self.__stateComplete))
         self.__seq.start()
         
@@ -156,8 +164,12 @@ class PetMoverAI(FSM):
             target = hidden.attachNewNode('target')
             target.setPos(self.getPoint())
             
-        self.walkToPoint(target.getPos())
+        pos = target.getPos()
+        theta = angle(self.pet.getPos(), pos) * (math.pi / 180)
+        dx = dist * math.cos(theta)
+        dy = dist * math.sin(theta)
         
+        self.walkToPoint(Point3(pos.getX() - dx, pos.getY() - dy, pos.getZ()))
         
     def exitChase(self):
         if self.__chaseCallback:

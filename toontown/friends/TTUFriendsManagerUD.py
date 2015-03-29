@@ -261,7 +261,7 @@ class TTUFriendsManagerUD(DistributedObjectGlobalUD):
     def getPetDetails(self, avId):
         senderId = self.air.getAvatarIdFromSender()
         def handlePet(dclass, fields):
-            if dclass != self.air.dclassesByName['DistributedPetUD']:
+            if dclass != self.air.dclassesByName['DistributedPetAI']:
                 return
             dna = [fields.get(x, [0])[0] for x in ("setHead", "setEars", "setNose", "setTail", "setBodyTexture", "setColor",
                                                  "setColorScale", "setEyeColor", "setGender")]

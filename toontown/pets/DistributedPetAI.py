@@ -956,6 +956,9 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         self.__petMovieStart(avId)
 
     def enableLockMover(self):
+        if not hasattr(self, 'brain'):
+            return
+            
         if self.lockMoverEnabled == 0:
             self.brain._startMovie()
         self.lockMoverEnabled += 1
@@ -964,6 +967,9 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         return self.lockMoverEnabled > 0
 
     def disableLockMover(self):
+        if not hasattr(self, 'brain'):
+            return
+            
         if self.lockMoverEnabled > 0:
             self.lockMoverEnabled -= 1
             if self.lockMoverEnabled == 0:
