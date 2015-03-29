@@ -240,7 +240,7 @@ def getBodyRarity(bodyIndex):
     for zoneId in PetRarities['body']:
         for body in PetRarities['body'][zoneId]:
             totalWeight += PetRarities['body'][zoneId][body]
-            if body in weight:
+            if weight.has_key(body):
                 weight[body] += PetRarities['body'][zoneId][body]
             else:
                 weight[body] = PetRarities['body'][zoneId][body]

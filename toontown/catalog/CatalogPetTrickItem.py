@@ -44,7 +44,7 @@ class CatalogPetTrickItem(CatalogItem.CatalogItem):
     def getPicture(self, avatar):
         from toontown.pets import PetDNA, Pet
         pet = Pet.Pet(forGui=1)
-        dna = avatar.petDNA
+        dna = avatar.getPetDNA()
         if dna == None:
             dna = PetDNA.getRandomPetDNA()
         pet.setDNA(dna)

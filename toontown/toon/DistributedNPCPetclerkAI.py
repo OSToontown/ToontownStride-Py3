@@ -5,6 +5,7 @@ from toontown.toonbase import TTLocalizer
 from direct.task import Task
 from toontown.fishing import FishGlobals
 from toontown.pets import PetUtil, PetDNA, PetConstants
+from toontown.hood import ZoneUtil
 
 class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
 
@@ -20,13 +21,13 @@ class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
 
     def avatarEnter(self):
         avId = self.air.getAvatarIdFromSender()
-        if avId not in self.air.doId2do:
+        if not self.air.doId2do.has_key(avId):
             self.notify.warning('Avatar: %s not found' % avId)
             return
         if self.isBusy():
             self.freeAvatar(avId)
             return
-        self.petSeeds = simbase.air.petMgr.getAvailablePets(5)
+        self.petSeeds = self.petMgr.getAvailablePets(3, ZoneUtil.getCanonicalSafeZoneId(self.zoneId))
         numGenders = len(PetDNA.PetGenders)
         self.petSeeds *= numGenders
         self.petSeeds.sort()
@@ -125,6 +126,7 @@ class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
         if av:
             simbase.air.petMgr.deleteToonsPet(avId)
             self.transactionType = 'return'
+        self.transactionDone()
 
     def transactionDone(self):
         avId = self.air.getAvatarIdFromSender()
