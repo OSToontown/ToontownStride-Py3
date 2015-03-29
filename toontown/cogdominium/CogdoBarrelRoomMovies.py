@@ -39,7 +39,7 @@ class CogdoBarrelRoomIntro(CogdoGameMovie):
         suit.setStyle(dna)
         suit.isDisguised = 1
         suit.generateSuit()
-        suit.setScale(1, 1, 2)
+        suit.setScale(1.05, 1.05, 2.05)
         suit.setPos(0, 0, -4.4)
         suit.reparentTo(self.toonHead)
         for part in suit.getHeadParts():
@@ -86,13 +86,13 @@ class CogdoBarrelRoomIntro(CogdoGameMovie):
 
         def start():
             self.frame.show()
-            base.setCellsAvailable(base.bottomCells + base.leftCells + base.rightCells, 0)
+            base.setCellsActive(base.bottomCells + base.leftCells + base.rightCells, 0)
 
         def end():
             self._dialogueLabel.reparentTo(hidden)
             self.toonHead.reparentTo(hidden)
             self.frame.hide()
-            base.setCellsAvailable(base.bottomCells + base.leftCells + base.rightCells, 1)
+            base.setCellsActive(base.bottomCells + base.leftCells + base.rightCells, 1)
             self._stopUpdateTask()
 
         self._ival = Sequence(Func(start), Func(self.displayLine, dialogue), Wait(CogdoBarrelRoomConsts.BarrelRoomIntroTimeout), Func(end))

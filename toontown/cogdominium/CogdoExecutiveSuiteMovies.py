@@ -44,7 +44,7 @@ class CogdoExecutiveSuiteIntro(CogdoGameMovie):
         suit.setStyle(dna)
         suit.isDisguised = 1
         suit.generateSuit()
-        suit.setScale(1, 1, 2)
+        suit.setScale(1.05, 1.05, 2.05)
         suit.setPos(0, 0, -4.4)
         suit.reparentTo(self.toonHead)
         for part in suit.getHeadParts():
@@ -91,7 +91,7 @@ class CogdoExecutiveSuiteIntro(CogdoGameMovie):
 
         def start():
             self.frame.show()
-            base.setCellsAvailable(base.bottomCells + base.leftCells + base.rightCells, 0)
+            base.setCellsActive(base.bottomCells + base.leftCells + base.rightCells, 0)
 
         def showShopOwner():
             self._setCamTarget(self._shopOwner, -10, offset=Point3(0, 0, 5))
@@ -100,7 +100,7 @@ class CogdoExecutiveSuiteIntro(CogdoGameMovie):
             self._dialogueLabel.reparentTo(hidden)
             self.toonHead.reparentTo(hidden)
             self.frame.hide()
-            base.setCellsAvailable(base.bottomCells + base.leftCells + base.rightCells, 1)
+            base.setCellsActive(base.bottomCells + base.leftCells + base.rightCells, 1)
             self._stopUpdateTask()
 
         self._ival = Sequence(Func(start), Func(self.displayLine, dialogue), Func(showShopOwner), ParallelEndTogether(camera.posInterval(self.cameraMoveDuration, Point3(8, 0, 13), blendType='easeInOut'), camera.hprInterval(0.5, self._camHelperNode.getHpr(), blendType='easeInOut')), Wait(self.introDuration), Func(end))

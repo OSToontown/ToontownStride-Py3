@@ -41,7 +41,7 @@ class CogdoFlyingGameIntro(CogdoGameMovie):
         suit.setStyle(dna)
         suit.isDisguised = 1
         suit.generateSuit()
-        suit.setScale(1, 1, 2)
+        suit.setScale(1.05, 1.05, 2.05)
         suit.setPos(0, 0, -4.4)
         suit.reparentTo(self.toonHead)
         for part in suit.getHeadParts():
@@ -71,6 +71,7 @@ class CogdoFlyingGameIntro(CogdoGameMovie):
         self.cogHead.loop('neutral')
         self.cogHead.setPosHprScale(-0.74, 0, -1.79, 180, 0, 0, 0.12, 0.14, 0.14)
         self.cogHead.reparentTo(hidden)
+        self.cogHead.nametag3d.hide()
         self.clipPlane = self.toonHead.attachNewNode(PlaneNode('clip'))
         self.clipPlane.node().setPlane(Plane(0, 0, 1, 0))
         self.clipPlane.setPos(0, 0, 2.45)

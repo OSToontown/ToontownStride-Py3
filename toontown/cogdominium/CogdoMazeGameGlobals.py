@@ -201,7 +201,7 @@ MapGuiFgColor = (0.5,
  0.5,
  0.5,
  1)
-MapGuiPos = (1.05, 0.0, -0.71)
+MapGuiPos = (-0.283, 0, 0.29)
 MapGuiScale = 0.225
 MapGuiSuitMarkerFlashColor = (1.0, 0.0, 0.0)
 MapGuiSuitMarkerSize = 0.075
