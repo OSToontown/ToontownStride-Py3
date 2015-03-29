@@ -105,7 +105,7 @@ class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
             if av.petId != 0:
                 simbase.air.petMgr.deleteToonsPet(avId)
             gender = petNum % len(PetDNA.PetGenders)
-            if nameIndex not in xrange(0, TTLocalizer.PetNameIndexMAX):
+            if nameIndex not in xrange(0, len(TTLocalizer.PetNameDictionary) - 1):
                 self.air.writeServerEvent('avoid_crash', avId, "DistributedNPCPetclerkAI.petAdopted and didn't have valid nameIndex!")
                 self.notify.warning("somebody called petAdopted and didn't have valid nameIndex to adopt! avId: %s" % avId)
                 return

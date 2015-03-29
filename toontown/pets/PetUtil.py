@@ -3,9 +3,9 @@ from toontown.toonbase import TTLocalizer
 from direct.showbase import PythonUtil
 
 def getPetInfoFromSeed(seed, safezoneId):
-    dnaArray = PetDNA.getRandomPetDNA(safezoneId)
+    dnaArray = PetDNA.getRandomPetDNA(seed, safezoneId)
     gender = PetDNA.getGender(dnaArray)
-    nameString = TTLocalizer.getRandomPetName(gender=gender, seed=seed + safezoneId)
+    nameString = TTLocalizer.getRandomPetName(gender=gender, seed=seed)
     traitSeed = PythonUtil.randUint31()
     return (nameString, dnaArray, traitSeed)
 

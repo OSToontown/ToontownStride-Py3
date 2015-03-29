@@ -2,6 +2,7 @@ from toontown.toon import ToonDNA
 from pandac.PandaModules import VBase4
 from toontown.toonbase import TTLocalizer, ToontownGlobals
 from direct.showbase import PythonUtil
+import random
 NumFields = 9
 Fields = {'head': 0,
  'ears': 1,
@@ -179,17 +180,17 @@ PetEyeColors = (VBase4(0.29, 0.29, 0.69, 1.0),
  VBase4(0.49, 0.99, 0.49, 1.0))
 PetGenders = [0, 1]
 
-def getRandomPetDNA(zoneId = ToontownGlobals.DonaldsDreamland):
-    from random import choice
-    head = choice(range(-1, len(HeadParts)))
-    ears = choice(range(-1, len(EarParts)))
-    nose = choice(range(-1, len(NoseParts)))
-    tail = choice(range(-1, len(TailParts)))
+def getRandomPetDNA(seed = 0, zoneId = ToontownGlobals.DonaldsDreamland):
+    random.seed(seed + zoneId)
+    head = random.choice(range(-1, len(HeadParts)))
+    ears = random.choice(range(-1, len(EarParts)))
+    nose = random.choice(range(-1, len(NoseParts)))
+    tail = random.choice(range(-1, len(TailParts)))
     body = getSpecies(zoneId)
-    color = choice(range(0, len(getColors(body))))
-    colorScale = choice(range(0, len(ColorScales)))
-    eyes = choice(range(0, len(PetEyeColors)))
-    gender = choice(range(0, len(PetGenders)))
+    color = random.choice(range(0, len(getColors(body))))
+    colorScale = random.choice(range(0, len(ColorScales)))
+    eyes = random.choice(range(0, len(PetEyeColors)))
+    gender = random.choice(range(0, len(PetGenders)))
     return [head,
      ears,
      nose,
