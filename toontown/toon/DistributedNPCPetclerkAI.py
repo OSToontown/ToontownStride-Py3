@@ -27,7 +27,7 @@ class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
         if self.isBusy():
             self.freeAvatar(avId)
             return
-        self.petSeeds = self.petMgr.getAvailablePets(3, ZoneUtil.getCanonicalSafeZoneId(self.zoneId))
+        self.petSeeds = self.air.petMgr.getAvailablePets(3, ZoneUtil.getCanonicalHoodId(self.zoneId))
         numGenders = len(PetDNA.PetGenders)
         self.petSeeds *= numGenders
         self.petSeeds.sort()
@@ -40,7 +40,7 @@ class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
         self.d_setMovie(avId, flag)
         taskMgr.doMethodLater(PetConstants.PETCLERK_TIMER, self.sendTimeoutMovie, self.uniqueName('clearMovie'))
         DistributedNPCToonBaseAI.avatarEnter(self)
-
+        
     def rejectAvatar(self, avId):
         self.notify.warning('rejectAvatar: should not be called by a fisherman!')
 
@@ -105,11 +105,12 @@ class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
             if av.petId != 0:
                 simbase.air.petMgr.deleteToonsPet(avId)
             gender = petNum % len(PetDNA.PetGenders)
-            if nameIndex not in xrange(0, len(TTLocalizer.PetNameDictionary) - 1):
+            if nameIndex not in xrange(0, TTLocalizer.PetNameIndexMAX):
                 self.air.writeServerEvent('avoid_crash', avId, "DistributedNPCPetclerkAI.petAdopted and didn't have valid nameIndex!")
                 self.notify.warning("somebody called petAdopted and didn't have valid nameIndex to adopt! avId: %s" % avId)
                 return
             simbase.air.petMgr.createNewPetFromSeed(avId, self.petSeeds[petNum], nameIndex=nameIndex, gender=gender, safeZoneId=zoneId)
+            self.notify.warning("Created new pet from seed")
             self.transactionType = 'adopt'
             bankPrice = min(av.getBankMoney(), cost)
             walletPrice = cost - bankPrice
@@ -126,7 +127,8 @@ class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
         if av:
             simbase.air.petMgr.deleteToonsPet(avId)
             self.transactionType = 'return'
-        self.transactionDone()
+            
+        self.transactionDone() 
 
     def transactionDone(self):
         avId = self.air.getAvatarIdFromSender()
