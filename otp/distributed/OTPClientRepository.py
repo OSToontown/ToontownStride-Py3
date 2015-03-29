@@ -1899,10 +1899,12 @@ class OTPClientRepository(ClientRepositoryBase):
         pass
 
     def identifyAvatar(self, doId):
-        if self.doId2do.has_key(doId):
-            return self.doId2do[doId]
+        info = self.doId2do.get(doId)
+        if info:
+            return info
         else:
-            return self.identifyFriend(doId)
+            info = self.identifyFriend(doId)
+        return info
 
     def sendDisconnect(self):
         if self.isConnected():
