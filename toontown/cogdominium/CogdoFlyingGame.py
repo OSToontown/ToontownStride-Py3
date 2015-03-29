@@ -28,6 +28,7 @@ class CogdoFlyingGame(DirectObject):
         self.index2LegalEagle = {}
         self.legalEagles = []
         self.isGameComplete = False
+        self.localPlayer = None
         self._hints = {'targettedByEagle': False,
          'invulnerable': False}
 
@@ -169,7 +170,7 @@ class CogdoFlyingGame(DirectObject):
 
         self.guiMgr.onstage()
         if not Globals.Dev.InfiniteTimeLimit:
-            self.guiMgr.startTimer(Globals.Gameplay.SecondsUntilGameOver, self._handleTimerExpired, keepHidden=True)
+            self.guiMgr.startTimer(Globals.Gameplay.SecondsUntilGameOver, self._handleTimerExpired)
 
     def exit(self):
         self.ignore(CogdoFlyingObstacle.EnterEventName)

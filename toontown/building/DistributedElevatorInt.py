@@ -11,6 +11,8 @@ from direct.fsm import State
 from toontown.hood import ZoneUtil
 from toontown.toonbase import TTLocalizer
 
+from toontown.cogdominium.CogdoInterior import CogdoInterior
+
 class DistributedElevatorInt(DistributedElevator.DistributedElevator):
 
     def __init__(self, cr):
@@ -21,6 +23,9 @@ class DistributedElevatorInt(DistributedElevator.DistributedElevator):
         self.leftDoor = self.bldg.leftDoorOut
         self.rightDoor = self.bldg.rightDoorOut
         DistributedElevator.DistributedElevator.setupElevator(self)
+
+        if isinstance(base.cr.playGame.getPlace(), CogdoInterior):
+            self.elevatorSphereNodePath.setY(self.elevatorSphereNodePath, -3)
 
     def forcedExit(self, avId):
         target_sz = base.localAvatar.defaultZone

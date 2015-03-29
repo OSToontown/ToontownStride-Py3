@@ -18,8 +18,9 @@ from toontown.distributed import DelayDelete
 from toontown.toon import TTEmote
 from otp.avatar import Emote
 from toontown.hood import ZoneUtil
+import sys
 FO_DICT = {'s': 'tt_m_ara_cbe_fieldOfficeMoverShaker',
- 'l': 'tt_m_ara_cbe_fieldOfficeMoverShaker',
+ 'l': 'tt_m_ara_cbe_fieldOfficeLegalEagle',
  'm': 'tt_m_ara_cbe_fieldOfficeMoverShaker',
  'c': 'tt_m_ara_cbe_fieldOfficeMoverShaker'}
 
@@ -537,6 +538,8 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         dnaStore = self.cr.playGame.dnaStore
         level = int(self.difficulty / 2) + 1
         suitNP = dnaStore.findNode(FO_DICT[chr(self.track)])
+        if not suitNP:
+            suitNP = loader.loadModel('phase_5/models/cogdominium/%s' % FO_DICT[chr(self.track)])
         zoneId = dnaStore.getZoneFromBlockNumber(self.block)
         zoneId = ZoneUtil.getTrueZoneId(zoneId, self.interiorZoneId)
         newParentNP = base.cr.playGame.hood.loader.zoneDict[zoneId]
@@ -551,7 +554,7 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         textNode.setFont(ToontownGlobals.getSuitFont())
         textNode.setAlign(TextNode.ACenter)
         textNode.setWordwrap(12.0)
-        textNode.setText(buildingTitle)
+        textNode.setText(buildingTitle.decode(sys.getdefaultencoding()))
         textHeight = textNode.getHeight()
         zScale = (textHeight + 2) / 3.0
         signOrigin = suitBuildingNP.find('**/sign_origin;+s')
@@ -562,12 +565,12 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         signTextNodePath = backgroundNP.attachNewNode(textNode.generate())
         signTextNodePath.setPosHprScale(0.0, 0.0, -0.13 + textHeight * 0.1 / zScale, 0.0, 0.0, 0.0, 0.1 * 8.0 / 20.0, 0.1, 0.1 / zScale)
         signTextNodePath.setColor(1.0, 1.0, 1.0, 1.0)
-        frontNP = suitBuildingNP.find('**/*_front/+GeomNode;+s')
+        frontNP = suitBuildingNP.find('**/*_front')
         backgroundNP.wrtReparentTo(frontNP)
         frontNP.node().setEffect(DecalEffect.make())
         suitBuildingNP.setName('cb' + str(self.block) + ':_landmark__DNARoot')
         suitBuildingNP.setPosHprScale(nodePath, 15.463, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
-        suitBuildingNP.flattenMedium()
+        #suitBuildingNP.flattenMedium()
         suitBuildingNP.setColorScale(0.6, 0.6, 0.6, 1.0)
         self.loadElevator(suitBuildingNP, cogdo=True)
         return suitBuildingNP

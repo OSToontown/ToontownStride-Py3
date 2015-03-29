@@ -1067,6 +1067,7 @@ dclass DistributedToon : DistributedPlayer {
   setAnimalSound(uint8 index) ram broadcast ownrecv;
   setBuffs(uint32[] = []) required ownrecv db;
   setRedeemedCodes(string [] = []) required ownrecv db;
+  setEmblems(uint32[] = [0, 0]) required ownrecv db;
 };
 
 dclass DistributedCCharBase : DistributedObject {
@@ -2159,6 +2160,7 @@ dclass DistCogdoFlyingGame : DistCogdoGame {
 
 dclass DistCogdoBoardroomGame : DistCogdoLevelGame {
 };
+
 
 dclass DistributedHQInterior : DistributedObject {
   setZoneIdAndBlock(uint32, uint16) required broadcast ram;
