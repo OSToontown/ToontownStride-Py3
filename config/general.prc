@@ -81,7 +81,7 @@ want-donald-dock #t
 want-daisy #t
 want-minnie #t
 want-pluto #t
-want-donald-dreamland #f
+want-donald-dreamland #t
 want-chip-and-dale #t
 want-goofy #t
 
