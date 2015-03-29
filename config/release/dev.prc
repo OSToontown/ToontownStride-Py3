@@ -40,4 +40,4 @@ want-glove-npc #t
 show-population #t
 want-instant-parties #t
 cogdo-pop-factor 1.5
-cogdo-ratio DEFAULT_COGDO_RATIO
+cogdo-ratio 0.5
