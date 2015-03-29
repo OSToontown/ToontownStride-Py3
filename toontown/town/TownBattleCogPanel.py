@@ -82,6 +82,7 @@ class TownBattleCogPanel(DirectFrame):
         self.head = Suit.attachSuitHead(self, suitName)
         self.head.setX(0.1)
         self.head.setZ(0.01)
+        self.head.setScale(0.087)
 
     def generateHealthBar(self):
         model = loader.loadModel('phase_3.5/models/gui/matching_game_gui')
