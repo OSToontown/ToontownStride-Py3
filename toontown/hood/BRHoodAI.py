@@ -1,10 +1,8 @@
-from toontown.classicchars import DistributedPlutoAI
 from toontown.hood import HoodAI
 from toontown.safezone import DistributedTrolleyAI
 from toontown.toonbase import ToontownGlobals
 from toontown.ai import DistributedPolarPlaceEffectMgrAI
 from toontown.ai import DistributedTrickOrTreatTargetAI
-
 
 class BRHoodAI(HoodAI.HoodAI):
     def __init__(self, air):
@@ -13,7 +11,6 @@ class BRHoodAI(HoodAI.HoodAI):
                                ToontownGlobals.TheBrrrgh)
 
         self.trolley = None
-        self.classicChar = None
 
         self.startup()
 
@@ -22,9 +19,6 @@ class BRHoodAI(HoodAI.HoodAI):
 
         if simbase.config.GetBool('want-minigames', True):
             self.createTrolley()
-        if simbase.config.GetBool('want-classic-chars', True):
-            if simbase.config.GetBool('want-pluto', True):
-                self.createClassicChar()
 
         self.PolarPlaceEffectManager = DistributedPolarPlaceEffectMgrAI.DistributedPolarPlaceEffectMgrAI(self.air)
         self.PolarPlaceEffectManager.generateWithRequired(3821)
@@ -37,8 +31,3 @@ class BRHoodAI(HoodAI.HoodAI):
         self.trolley = DistributedTrolleyAI.DistributedTrolleyAI(self.air)
         self.trolley.generateWithRequired(self.zoneId)
         self.trolley.start()
-
-    def createClassicChar(self):
-        self.classicChar = DistributedPlutoAI.DistributedPlutoAI(self.air)
-        self.classicChar.generateWithRequired(self.zoneId)
-        self.classicChar.start()

@@ -1,10 +1,6 @@
 from direct.task.Task import Task
-import random
-
-from toontown.classicchars import CCharPaths
 from toontown.safezone import Playground
-from toontown.toonbase import TTLocalizer
-
+import random
 
 class BRPlayground(Playground.Playground):
     def enter(self, requestStatus):
@@ -14,9 +10,6 @@ class BRPlayground(Playground.Playground):
     def exit(self):
         Playground.Playground.exit(self)
         taskMgr.remove('BR-wind')
-
-    def showPaths(self):
-        self.showPathPoints(CCharPaths.getPaths(TTLocalizer.Pluto))
 
     def __windTask(self, task):
         base.playSfx(random.choice(self.loader.windSound))

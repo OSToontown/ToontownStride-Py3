@@ -2769,17 +2769,6 @@ PeriodOnlyAfterLetter = 'You can use a period in your name, but only after a let
 ApostropheOnlyAfterLetter = 'You can use an apostrophe in your name, but only after a letter.'
 NoNumbersInTheMiddle = 'Numeric digits may not appear in the middle of a word.'
 ThreeWordsOrLess = 'Your name must be three words or fewer.'
-CopyrightedNames = ('mickey',
- 'mickey mouse',
- 'mickeymouse',
- 'minnie',
- 'minnie mouse',
- 'minniemouse',
- 'donald',
- 'donald duck',
- 'donaldduck',
- 'pluto',
- 'goofy')
 NCTooShort = 'That name is too short.'
 NCNoDigits = 'Your name cannot contain numbers.'
 NCNeedLetters = 'Each word in your name must contain some letters.'

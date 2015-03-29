@@ -1,4 +1,3 @@
-from toontown.classicchars import DistributedDonaldAI
 from toontown.hood import HoodAI
 from toontown.safezone import DistributedTrolleyAI
 from toontown.toonbase import ToontownGlobals
@@ -13,7 +12,6 @@ class DLHoodAI(HoodAI.HoodAI):
                                ToontownGlobals.DonaldsDreamland)
 
         self.trolley = None
-        self.classicChar = None
 
         self.startup()
 
@@ -22,9 +20,6 @@ class DLHoodAI(HoodAI.HoodAI):
 
         if simbase.config.GetBool('want-minigames', True):
             self.createTrolley()
-        if simbase.config.GetBool('want-classic-chars', True):
-            if simbase.config.GetBool('want-donald-dreamland', True):
-                self.createClassicChar()
         self.resistanceEmoteManager = DistributedResistanceEmoteMgrAI.DistributedResistanceEmoteMgrAI(self.air)
         self.resistanceEmoteManager.generateWithRequired(9720)
         
@@ -36,8 +31,3 @@ class DLHoodAI(HoodAI.HoodAI):
         self.trolley = DistributedTrolleyAI.DistributedTrolleyAI(self.air)
         self.trolley.generateWithRequired(self.zoneId)
         self.trolley.start()
-
-    def createClassicChar(self):
-        self.classicChar = DistributedDonaldAI.DistributedDonaldAI(self.air)
-        self.classicChar.generateWithRequired(self.zoneId)
-        self.classicChar.start()

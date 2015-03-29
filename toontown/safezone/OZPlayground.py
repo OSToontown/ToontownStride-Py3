@@ -175,8 +175,3 @@ class OZPlayground(Playground.Playground):
             self.fsm.request('walk')
         else:
             self.notify.error('Unknown mode: ' + mode + ' in handlePicnicBasketDone')
-
-    def showPaths(self):
-        from toontown.classicchars import CCharPaths
-        from toontown.toonbase import TTLocalizer
-        self.showPathPoints(CCharPaths.getPaths(TTLocalizer.Chip))
