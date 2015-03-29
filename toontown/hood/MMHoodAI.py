@@ -1,11 +1,8 @@
-from toontown.classicchars import DistributedMinnieAI
 from toontown.hood import HoodAI
 from toontown.safezone import DistributedTrolleyAI
 from toontown.safezone import DistributedMMPianoAI
 from toontown.toonbase import ToontownGlobals
 from toontown.ai import DistributedTrickOrTreatTargetAI
-
-
 
 class MMHoodAI(HoodAI.HoodAI):
     def __init__(self, air):
@@ -15,7 +12,6 @@ class MMHoodAI(HoodAI.HoodAI):
 
         self.trolley = None
         self.piano = None
-        self.classicChar = None
 
         self.startup()
 
@@ -24,9 +20,6 @@ class MMHoodAI(HoodAI.HoodAI):
 
         if simbase.config.GetBool('want-minigames', True):
             self.createTrolley()
-        if simbase.config.GetBool('want-classic-chars', True):
-            if simbase.config.GetBool('want-minnie', True):
-                self.createClassicChar()
 
         self.piano = DistributedMMPianoAI.DistributedMMPianoAI(self.air)
         self.piano.generateWithRequired(self.zoneId)    
@@ -39,8 +32,3 @@ class MMHoodAI(HoodAI.HoodAI):
         self.trolley = DistributedTrolleyAI.DistributedTrolleyAI(self.air)
         self.trolley.generateWithRequired(self.zoneId)
         self.trolley.start()
-
-    def createClassicChar(self):
-        self.classicChar = DistributedMinnieAI.DistributedMinnieAI(self.air)
-        self.classicChar.generateWithRequired(self.zoneId)
-        self.classicChar.start()
