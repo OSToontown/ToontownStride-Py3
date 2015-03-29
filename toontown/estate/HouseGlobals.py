@@ -110,3 +110,12 @@ HALF_DAY_PERIOD = 1050
 HALF_NIGHT_PERIOD = 300
 FIREWORKS_MOVIE_CLEAR = 0
 FIREWORKS_MOVIE_GUI = 1
+
+HouseEmblemPrices = (
+                     (50, 20), # bungalo
+                     (200, 75), # tiki
+                     (200, 75), # tepee
+                     (500, 250), # castle
+                     (350, 150), # cupcake
+                     (400, 200) # cabin
+                    )

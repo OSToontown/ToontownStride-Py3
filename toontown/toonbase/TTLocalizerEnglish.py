@@ -9747,6 +9747,9 @@ PickTrackTitle = 'Pick your third track!'
 PickTrackNotice = 'Choose a track!'
 UnknownTrack = 'None'
 
+HouseNames = ("Bungalow", "Tiki", "Teepee", "Castle", "Cupcake", "Cabin")
+CatalogPurchaseHouseType = "When you buy a new house type, the current one is replaced by it. To recover the old type, you'll need to buy it back. Continue?"
+
 # Buffs
 
 buffIdStrings = {

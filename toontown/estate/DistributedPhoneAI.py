@@ -108,6 +108,27 @@ class DistributedPhoneAI(DistributedFurnitureItemAI):
         else:
             return
 
+        def _getEmblemPrices():
+            if config.GetBool('catalog-emblems-OR', False):
+                ep = list(item.getEmblemPrices())
+                if len(ep) != 2:
+                    return []
+                
+                if all(ep):
+                    ep[payMethod] = 0
+                    
+            else:
+                ep = item.getEmblemPrices()
+                
+            return ep
+            
+        def charge():
+            ep = _getEmblemPrices()
+            if ep:
+                av.subtractEmblems(ep)
+                
+            av.takeMoney(item.getPrice(priceType))
+        
         if item.getDeliveryTime():
             if len(av.onOrder) > 5:
                 self.sendUpdateToAvatarId(avId, 'requestPurchaseResponse', [context, ToontownGlobals.P_OnOrderListFull])
