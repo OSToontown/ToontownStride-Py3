@@ -1,24 +1,20 @@
-from direct.actor import Actor
+from pandac.PandaModules import *
 from direct.directnotify import DirectNotifyGlobal
-from direct.distributed.ClockDelta import globalClockDelta
+from direct.interval.IntervalGlobal import *
 from direct.fsm.ClassicFSM import *
 from direct.fsm.State import *
-from direct.interval.IntervalGlobal import *
-from direct.showbase import PythonUtil
-from direct.task import Task
-from pandac.PandaModules import *
-import random
-import types
-
-from PetDNA import HeadParts, EarParts, NoseParts, TailParts, BodyTypes, BodyTextures, AllPetColors, getColors, ColorScales, PetEyeColors, EarTextures, TailTextures, getFootTexture, getEarTexture, GiraffeTail, LeopardTail, PetGenders
+from direct.distributed.ClockDelta import globalClockDelta
 from otp.avatar import Avatar
-from toontown.chat.ChatGlobals import *
-from toontown.nametag import NametagGlobals
+from direct.actor import Actor
+from direct.task import Task
 from toontown.pets import PetDNA
+from PetDNA import HeadParts, EarParts, NoseParts, TailParts, BodyTypes, BodyTextures, AllPetColors, getColors, ColorScales, PetEyeColors, EarTextures, TailTextures, getFootTexture, getEarTexture, GiraffeTail, LeopardTail, PetGenders
+from toontown.toonbase.BitmaskGlobals import PieBitmask
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
-
-
+from direct.showbase import PythonUtil
+import random
+import types
 Component2IconDict = {'boredom': 'Bored',
  'restlessness': None,
  'playfulness': 'Play',
@@ -31,6 +27,10 @@ Component2IconDict = {'boredom': 'Bored',
  'anger': 'Angry',
  'surprise': 'Surprised',
  'affection': 'Love'}
+ 
+from toontown.nametag import *
+from toontown.nametag.NametagGlobals import *
+from toontown.nametag.NametagGroup import *
 
 class Pet(Avatar.Avatar):
     notify = DirectNotifyGlobal.directNotify.newCategory('Pet')
@@ -268,7 +268,7 @@ class Pet(Avatar.Avatar):
     def initializeBodyCollisions(self, collIdStr):
         Avatar.Avatar.initializeBodyCollisions(self, collIdStr)
         if not self.ghostMode:
-            self.collNode.setCollideMask(self.collNode.getIntoCollideMask() | ToontownGlobals.PieBitmask)
+            self.collNode.setCollideMask(self.collNode.getIntoCollideMask() | PieBitmask)
 
     def amplifyColor(self, color, scale):
         color = color * scale
@@ -284,7 +284,7 @@ class Pet(Avatar.Avatar):
         self.moodIcons.setScale(2.0)
         self.moodIcons.setZ(3.65)
         moods = moodIcons.findAllMatches('**/+GeomNode')
-        for moodNum in xrange(0, moods.getNumPaths()):
+        for moodNum in range(0, moods.getNumPaths()):
             mood = moods.getPath(moodNum)
             mood.reparentTo(self.moodIcons)
             mood.setBillboardPointEye()
@@ -327,9 +327,9 @@ class Pet(Avatar.Avatar):
         if self.moodModel:
             self.moodModel.hide()
         if base.config.GetBool('want-speech-bubble', 1):
-            self.nametag.setChatText(random.choice(TTLocalizer.SpokenMoods[mood]))
+            self.nametag.setChat(random.choice(TTLocalizer.SpokenMoods[mood]), CFSpeech)
         else:
-            self.nametag.setChatText(random.choice(TTLocalizer.SpokenMoods[mood]))
+            self.nametag.setChat(random.choice(TTLocalizer.SpokenMoods[mood]), CFThought)
 
     def getGenderString(self):
         if self.style:
@@ -653,7 +653,7 @@ def gridPets():
     offsetX = 0
     offsetY = 0
     startPos = base.localAvatar.getPos()
-    for body in xrange(0, len(BodyTypes)):
+    for body in range(0, len(BodyTypes)):
         colors = getColors(body)
         for color in colors:
             p = Pet()

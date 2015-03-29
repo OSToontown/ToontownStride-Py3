@@ -349,7 +349,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         pad.avatar = avatar
         pad.delayDelete = DelayDelete.DelayDelete(avatar, 'getAvatarDetails')
         self.__queryAvatarMap[avatar.doId] = pad
-        self.__sendGetAvatarDetails(avatar.doId)
+        self.__sendGetAvatarDetails(avatar.doId, pet=(args[0].endswith("Pet")))
 
     def cancelAvatarDetailsRequest(self, avatar):
         avId = avatar.doId
@@ -357,8 +357,11 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             pad = self.__queryAvatarMap.pop(avId)
             pad.delayDelete.destroy()
 
-    def __sendGetAvatarDetails(self, avId):
-        self.ttuFriendsManager.d_getAvatarDetails(avId)
+    def __sendGetAvatarDetails(self, avId, pet=0):
+        if pet:
+            self.ttuFriendsManager.d_getPetDetails(avId)
+        else:
+            self.ttuFriendsManager.d_getAvatarDetails(avId)
 
     def n_handleGetAvatarDetailsResp(self, avId, fields):
         self.notify.info('Query reponse for avId %d' % avId)
@@ -759,12 +762,13 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
 
     def addPetToFriendsMap(self, callback = None):
         doId = base.localAvatar.getPetId()
-        if doId not in self.friendsMap:
+        if not doId or doId in self.friendsMap:
             if callback:
                 callback()
             return
 
         def petDetailsCallback(petAvatar):
+            petAvatar.announceGenerate()
             handle = PetHandle.PetHandle(petAvatar)
             self.friendsMap[doId] = handle
             petAvatar.disable()

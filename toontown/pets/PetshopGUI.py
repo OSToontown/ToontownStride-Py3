@@ -254,6 +254,7 @@ class PetshopGUI(DirectObject):
                 self.okButton = DirectButton(parent=self, relief=None, image=okImageList, geom=checkIcon, scale=modelScale, text=('', TTLocalizer.PetshopReturn), text_pos=(5.8, 4.4), text_scale=0.7, pressEffect=False, command=lambda : messenger.send(doneEvent, [1]))
                 self.petView = self.attachNewNode('petView')
                 self.petView.setPos(-0.15, 0, 0.8)
+                avatar.announceGenerate()
                 self.petModel = Pet.Pet(forGui=1)
                 self.petModel.setDNA(avatar.getDNA())
                 self.petModel.fitAndCenterHead(0.395, forGui=1)
@@ -342,7 +343,7 @@ class PetshopGUI(DirectObject):
                     descList.append('\t%s' % trait)
 
                 descList.append(TTLocalizer.PetshopDescCost % cost)
-                self.petDesc.append(string.join(descList, '\n'))
+                self.petDesc.append('\n'.join(descList))
                 self.petCost.append(cost)
 
         def destroy(self):
