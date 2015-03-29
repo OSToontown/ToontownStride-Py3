@@ -33,7 +33,6 @@ from toontown.distributed import DelayDelete
 from toontown.friends import FriendHandle
 from toontown.friends import FriendsListPanel
 from toontown.friends import ToontownFriendSecret
-from toontown.login import DateObject
 from toontown.login import AvatarChooser
 from toontown.makeatoon import MakeAToon
 from toontown.pets import DistributedPet, PetDetail, PetHandle
@@ -105,7 +104,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.friendPendingChatSettings = {}
         self.elderFriendsMap = {}
         self.__queryAvatarMap = {}
-        self.dateObject = DateObject.DateObject()
         self.hoodMgr = HoodMgr.HoodMgr(self)
         self.setZonesEmulated = 0
         self.old_setzone_interest_handle = None
