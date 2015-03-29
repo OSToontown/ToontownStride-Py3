@@ -117,7 +117,7 @@ speedChatStyles = (
         (210 / 255.0, 200 / 255.0, 180 / 255.0)
     )
 )
-PageMode = PythonUtil.Enum('Options, Codes')
+PageMode = PythonUtil.Enum('Options, Codes, MoreOptions')
 
 
 class OptionsPage(ShtikerPage.ShtikerPage):
@@ -128,9 +128,11 @@ class OptionsPage(ShtikerPage.ShtikerPage):
 
         self.optionsTabPage = None
         self.codesTabPage = None
+        self.moreOptionsTabPage = None
         self.title = None
         self.optionsTab = None
         self.codesTab = None
+        self.moreOptionsTab = None
 
     def load(self):
         ShtikerPage.ShtikerPage.load(self)
@@ -139,6 +141,8 @@ class OptionsPage(ShtikerPage.ShtikerPage):
         self.optionsTabPage.hide()
         self.codesTabPage = CodesTabPage(self)
         self.codesTabPage.hide()
+        self.moreOptionsTabPage = MoreOptionsTabPage(self)
+        self.moreOptionsTabPage.hide()
 
         self.title = DirectLabel(
             parent=self, relief=None, text=TTLocalizer.OptionsPageTitle,
@@ -158,7 +162,7 @@ class OptionsPage(ShtikerPage.ShtikerPage):
             image1_color=clickColor, image2_color=rolloverColor,
             image3_color=diabledColor, text_fg=Vec4(0.2, 0.1, 0, 1),
             command=self.setMode, extraArgs=[PageMode.Options],
-            pos=(-0.36, 0, 0.77))
+            pos=(-0.64, 0, 0.77))
         self.codesTab = DirectButton(
             parent=self, relief=None, text=TTLocalizer.OptionsPageCodesTab,
             text_scale=TTLocalizer.OPoptionsTab, text_align=TextNode.ALeft,
@@ -168,7 +172,17 @@ class OptionsPage(ShtikerPage.ShtikerPage):
             image_color=normalColor, image1_color=clickColor,
             image2_color=rolloverColor, image3_color=diabledColor,
             text_fg=Vec4(0.2, 0.1, 0, 1), command=self.setMode,
-            extraArgs=[PageMode.Codes], pos=(0.11, 0, 0.77))
+            extraArgs=[PageMode.Codes], pos=(-0.12, 0, 0.77))
+        self.moreOptionsTab = DirectButton(
+            parent=self, relief=None, text=TTLocalizer.MoreOptionsPageTitle,
+            text_scale=TTLocalizer.OPmoreOptionsTab, text_align=TextNode.ALeft,
+            text_pos=(-0.035, 0.0, 0.0),
+            image=gui.find('**/tabs/polySurface2'), image_pos=(0.12, 1, -0.91),
+            image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.035),
+            image_color=normalColor, image1_color=clickColor,
+            image2_color=rolloverColor, image3_color=diabledColor,
+            text_fg=Vec4(0.2, 0.1, 0, 1), command=self.setMode,
+            extraArgs=[PageMode.MoreOptions], pos=(0.42, 0, 0.77))
         gui.removeNode()
 
     def enter(self):
@@ -220,13 +234,24 @@ class OptionsPage(ShtikerPage.ShtikerPage):
             self.optionsTabPage.enter()
             self.codesTab['state'] = DGG.NORMAL
             self.codesTabPage.exit()
+            self.moreOptionsTab['state'] = DGG.NORMAL
+            self.moreOptionsTabPage.exit()
         elif mode == PageMode.Codes:
             self.title['text'] = TTLocalizer.CdrPageTitle
             self.optionsTab['state'] = DGG.NORMAL
             self.optionsTabPage.exit()
+            self.moreOptionsTab['state'] = DGG.NORMAL
+            self.moreOptionsTabPage.exit()            
             self.codesTab['state'] = DGG.DISABLED
             self.codesTabPage.enter()
-
+        elif mode == PageMode.MoreOptions:
+            self.title['text'] = TTLocalizer.MoreOptionsPageTitle
+            self.optionsTab['state'] = DGG.NORMAL
+            self.optionsTabPage.exit()
+            self.codesTab['state'] = DGG.NORMAL
+            self.codesTabPage.exit()
+            self.moreOptionsTab['state'] = DGG.DISABLED
+            self.moreOptionsTabPage.enter()            
 
 class OptionsTabPage(DirectFrame):
     notify = directNotify.newCategory('OptionsTabPage')
@@ -676,3 +701,82 @@ class CodesTabPage(DirectFrame):
         self.codeInput['state'] = DGG.NORMAL
         self.codeInput['focus'] = 1
         self.submitButton['state'] = DGG.NORMAL
+
+class MoreOptionsTabPage(DirectFrame):
+    notify = directNotify.newCategory('MoreOptionsTabPage')
+
+    def __init__(self, parent = aspect2d):
+        self.parent = parent
+        self.currentSizeIndex = None
+
+        DirectFrame.__init__(self, parent=self.parent, relief=None, pos=(0.0, 0.0, 0.0), scale=(1.0, 1.0, 1.0))
+
+        self.load()
+
+    def destroy(self):
+        self.parent = None
+        
+        DirectFrame.destroy(self)
+
+    def load(self):
+        guiButton = loader.loadModel('phase_3/models/gui/quit_button')
+        gui = loader.loadModel('phase_3.5/models/gui/friendslist_gui')
+        titleHeight = 0.61
+        textStartHeight = 0.45
+        textRowHeight = 0.145
+        leftMargin = -0.72
+        buttonbase_xcoord = 0.35
+        buttonbase_ycoord = 0.45
+        button_image_scale = (0.7, 1, 1)
+        button_textpos = (0, -0.02)
+        options_text_scale = 0.052
+        disabled_arrow_color = Vec4(0.6, 0.6, 0.6, 1.0)
+        self.speed_chat_scale = 0.055    
+        self.CogLevel_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord), command=self.__doToggleCogLevelGui)
+        self.CogLevel_Label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight))
+        gui.removeNode()
+        guiButton.removeNode()
+
+    def enter(self):
+        self.show()
+        self.settingsChanged = 0
+        self.__setCogLevelGuiButton()
+
+    def exit(self):
+        self.ignore('confirmDone')
+        self.hide()
+
+    def unload(self):
+        self.CogLevel_Label.destroy()
+        del self.CogLevel_Label
+        self.CogLevel_toggleButton.destroy()
+        del self.CogLevel_toggleButton
+
+    def __doToggleCogLevelGui(self):
+        messenger.send('wakeup')
+        if base.wantCogLevelGui:
+            base.wantCogLevelGui = False
+            settings['want-Cog-Level-GUI'] = False        
+        else:
+            base.wantCogLevelGui = True
+            settings['want-Cog-Level-GUI'] = True
+        self.settingsChanged = 1
+        self.__setCogLevelGuiButton()
+
+    def __setCogLevelGuiButton(self):
+        if base.wantCogLevelGui:
+            self.CogLevel_Label['text'] = 'Cog Level GUI In-Battle:'
+            self.CogLevel_toggleButton['text'] = 'On'
+        else:
+            self.CogLevel_Label['text'] = 'Cog Level GUI In-Battle:'
+            self.CogLevel_toggleButton['text'] = 'Off'
+
+    def __doToggleAntialiasing(self):
+        # To toggle anti-aliasing in the future.
+        pass
+
+    def __setAntialiasingGuiButton(self):
+        # More anti-aliasing stuff.
+        pass
+
+

@@ -181,22 +181,32 @@ class BossCog(Avatar.Avatar):
         health = 1.0 - float(self.bossDamage) / float(self.bossMaxDamage)
         if health > 0.95:
             condition = 0
-        elif health > 0.7:
+        elif health > 0.9:
             condition = 1
-        elif health > 0.3:
+        elif health > 0.8:
             condition = 2
+        elif health > 0.7:
+            condition = 3#Yellow
+        elif health > 0.6:
+            condition = 4            
+        elif health > 0.5:
+            condition = 5           
+        elif health > 0.3:
+            condition = 6#Orange
+        elif health > 0.15:
+            condition = 7
         elif health > 0.05:
-            condition = 3
+            condition = 8#Red           
         elif health > 0.0:
-            condition = 4
+            condition = 9#Blinking Red
         else:
-            condition = 5
+            condition = 10
         if self.healthCondition != condition:
-            if condition == 4:
+            if condition == 9:
                 blinkTask = Task.loop(Task(self.__blinkRed), Task.pause(0.75), Task(self.__blinkGray), Task.pause(0.1))
                 taskMgr.add(blinkTask, self.uniqueName('blink-task'))
-            elif condition == 5:
-                if self.healthCondition == 4:
+            elif condition == 10:
+                if self.healthCondition == 9:
                     taskMgr.remove(self.uniqueName('blink-task'))
                 blinkTask = Task.loop(Task(self.__blinkRed), Task.pause(0.25), Task(self.__blinkGray), Task.pause(0.1))
                 taskMgr.add(blinkTask, self.uniqueName('blink-task'))
@@ -204,19 +214,22 @@ class BossCog(Avatar.Avatar):
                 self.healthBar.setColor(self.healthColors[condition], 1)
                 self.healthBarGlow.setColor(self.healthGlowColors[condition], 1)
             self.healthCondition = condition
-        return
-
+            
     def __blinkRed(self, task):
-        self.healthBar.setColor(self.healthColors[3], 1)
-        self.healthBarGlow.setColor(self.healthGlowColors[3], 1)
-        if self.healthCondition == 5:
+        if not self.healthBar:
+            return    
+        self.healthBar.setColor(self.healthColors[8], 1)
+        self.healthBarGlow.setColor(self.healthGlowColors[8], 1)
+        if self.healthCondition == 10:
             self.healthBar.setScale(1.17)
         return Task.done
 
     def __blinkGray(self, task):
-        self.healthBar.setColor(self.healthColors[4], 1)
-        self.healthBarGlow.setColor(self.healthGlowColors[4], 1)
-        if self.healthCondition == 5:
+        if not self.healthBar:
+            return
+        self.healthBar.setColor(self.healthColors[9], 1)
+        self.healthBarGlow.setColor(self.healthGlowColors[9], 1)
+        if self.healthCondition == 10:
             self.healthBar.setScale(1.0)
         return Task.done
 
@@ -224,7 +237,7 @@ class BossCog(Avatar.Avatar):
         if self.healthBar:
             self.healthBar.removeNode()
             self.healthBar = None
-        if self.healthCondition == 4 or self.healthCondition == 5:
+        if self.healthCondition == 9 or self.healthCondition == 10:
             taskMgr.remove(self.uniqueName('blink-task'))
         self.healthCondition = 0
         return
