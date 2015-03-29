@@ -251,7 +251,7 @@ class PlayerFriendsManager(DistributedObjectGlobal):
         return returnList
 
     def identifyAvatar(self, doId):
-        if base.cr.doId2do.has_key(doId)
+        if base.cr.doId2do.has_key(doId):
             return base.cr.doId2do[doId]
         else:
             return self.identifyFriend(doId)
