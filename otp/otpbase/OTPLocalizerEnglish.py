@@ -118,25 +118,6 @@ ActivateChat = "True Friends allows one member to chat with another member only 
 ActivateChatYes = 'Update'
 ActivateChatNo = lCancel
 ActivateChatMoreInfo = 'More Info'
-ActivateChatPrivacyPolicy = 'Privacy Policy'
-ActivateChatPrivacyPolicy_Button1A = 'Version 1'
-ActivateChatPrivacyPolicy_Button1K = 'Version 1'
-ActivateChatPrivacyPolicy_Button2A = 'Version 2'
-ActivateChatPrivacyPolicy_Button2K = 'Version 2'
-PrivacyPolicyText_1A = [' ']
-PrivacyPolicyText_1K = [' ']
-PrivacyPolicyText_2A = [' ']
-PrivacyPolicyText_2K = [' ']
-PrivacyPolicyText_Intro = [' ']
-PrivacyPolicyClose = lClose
-SecretFriendsInfoPanelOk = lOK
-SecretFriendsInfoPanelClose = lClose
-SecretFriendsInfoPanelText = ['\nThe Open Chat with True Friends Feature\n\nThe Open Chat with True Friends feature enables a member to chat directly with another member within Toontown United (the "Service") once the members establish a True Friends connection.  When your child attempts to use the Open Chat with True Friends feature, we will require that you indicate your consent to your child\'s use of this feature by entering your Parent Account Password.  Here is a detailed description of the process of creating an Open Chat with True Friends connection between members whom we will call "Sally" and "Mike."\n1. Sally\'s parent and Mike\'s parent each enable the Open Chat with True Friends feature by entering their respective Parent Account Passwords either (a) in the Account Options areas within the Service, or (b) when prompted within the game by a Parental Controls pop-up.\n2. Sally requests a True Friend Code (described below) from within the Service.\n',
- "\n3. Sally's True Friend Code is communicated to Mike outside of the Service. (Sally's True Friend Code may be communicated to Mike either directly by Sally, or indirectly through Sally's disclosure of the True Friend Code to another person.)\n4. Mike submits Sally's True Friend Code to the Service within 48 hours of the time that Sally requested the True Friend Code from the Service.\n5. The Service then notifies Mike that Sally has become Mike's True Friend.  The Service similarly notifies Sally that Mike has become Sally's True Friend.\n6. Sally and Mike can now open chat directly with each other until either one chooses to terminate the other as a True Friend, or until the Open Chat with True Friends feature is disabled for either Sally or Mike by their respective parent.  The True Friends connection can thus be disabled anytime by either: (a) a member removing the True Friend from his or her friends list (as described in the Service); or, (b) the parent of that member disabling the Open Chat with ",
- "\nTrue Friends feature by going to the Account Options area within the Service and following the steps set forth there.\n\nA True Friend Code is a computer-generated random code assigned to a particular member. The True Friend Code must be used to activate a True Friend connection within 48 hours of the time that the member requests the True Friend Code; otherwise, the True Friend Code expires and cannot be used.  Moreover, a single True Friend Code can only be used to establish one True Friend connection.  To make additional True Friend connections, a member must request an additional True Friend Code for each additional True Friend.\n\nTrue Friendships do not transfer.  For example, if Sally becomes a True Friend of Mike, and Mike becomes a True Friend of Jessica, Sally does not automatically become Jessica's True Friend.  In order for Sally and Jessica to\n",
- '\nbecome True Friends, one of them must request a new True Friend Code from the Service and communicate it to the other.\n\nTrue Friends communicate with one another in a free-form interactive open chat.  The content of this chat is directly entered by the participating member and is processed through the Service, which is monitored by the Toontown United team.  While we advise members not to exchange personal information such as first and last names, e-mail addresses, postal addresses, or phone numbers while using Open Chat with True Friends, we cannot guarantee that such exchanges of personal information will not happen. Although the True Friends chat is automatically filtered for most bad words, Open Chat with True Friends may be moderated, and we reserve the right to moderate any part of the Service that we,\n',
- "\nin our sole and absolute discretion, deems necessary. However, because Open Chat with True Friends will not always be moderated, if the Parent Account allows a child to use his or her account with the Open Chat with True Friends feature enabled, we strongly encourage parents to supervise their child or children while they play in the Service. By enabling the Open Chat with True Friends feature, the Parent Account acknowledges that there are some risks inherent in the Open Chat with True Friends feature and that the Parent Account has been informed of, and agrees to accept, any such risks, whether foreseeable or otherwise. \n\nWDIG does not use the content of True Friends chat for any purpose other than communicating that content to the member's true friend, and does not disclose that content to any third party except: (1) if required by law, for example, to comply with a court order or subpoena; (2) to enforce the Terms of Use\n",
- "\napplicable to the Service (which may be accessed on the home page of the Service); or, (3) to protect the safety and security of Members of the Service and the Service itself. In accordance with the Children's Online Privacy Protection Act, we are prohibited from conditioning, and do not condition, a child's participation in any activity (including Open Chat with True Friends) on the child's disclosing more personal information than is reasonably necessary to participate in such activity.\n\nIn addition, as noted above, we recognize the right of a parent to refuse to permit us to continue to allow a child to use the True Friends feature. By enabling the Open Chat with True Friends feature, you acknowledge that there are some risks inherent in the ability of members to open chat with one another through the Open Chat with True Friends feature, and that you have been informed of, and agree to accept, any such risks, whether foreseeable or otherwise.\n"]
 LeaveToSetParentPassword = 'In order to set parent account password, the game will exit to the Toontown website.'
 LeaveToSetParentPasswordYes = 'Set Password'
 LeaveToSetParentPasswordNo = lCancel
@@ -151,24 +132,6 @@ SecretChatActivatedOK = lOK
 SecretChatActivatedChange = 'Change Options'
 ProblemActivatingChat = 'Oops!  We were unable to activate the "True Friends" chat feature.\n\n%s\n\nPlease try again later.'
 ProblemActivatingChatOK = lOK
-MultiPageTextFrameNext = lNext
-MultiPageTextFramePrev = 'Previous'
-MultiPageTextFramePage = 'Page %s/%s'
-GuiScreenToontownUnavailable = 'The server appears to be temporarily unavailable, still trying...'
-GuiScreenCancel = lCancel
-CreateAccountScreenUserName = 'Account Name'
-CreateAccountScreenPassword = 'Password'
-CreateAccountScreenConfirmPassword = 'Confirm Password'
-CreateAccountScreenCancel = lCancel
-CreateAccountScreenSubmit = 'Submit'
-CreateAccountScreenConnectionErrorSuffix = '.\n\nPlease try again later.'
-CreateAccountScreenNoAccountName = 'Please enter an account name.'
-CreateAccountScreenAccountNameTooShort = 'Your account name must be at least %s characters long. Please try again.'
-CreateAccountScreenPasswordTooShort = 'Your password must be at least %s characters long. Please try again.'
-CreateAccountScreenPasswordMismatch = 'The passwords you typed did not match. Please try again.'
-CreateAccountScreenUserNameTaken = 'That user name is already taken. Please try again.'
-CreateAccountScreenInvalidUserName = 'Invalid user name.\nPlease try again.'
-CreateAccountScreenUserNameNotFound = 'User name not found.\nPlease try again or create a new account.'
 CRConnecting = 'Connecting...'
 CRNoConnectTryAgain = 'Could not connect to %s:%s. Try again?'
 CRNoConnectProxyNoPort = 'Could not connect to %s:%s.\n\nYou are communicating to the internet via a proxy, but your proxy does not permit connections on port %s.\n\nYou must open up this port, or disable your proxy, in order to play.  If your proxy has been provided by your ISP, you must contact your ISP to request them to open up this port.'
@@ -209,7 +172,6 @@ CREnteringToontown = 'Entering...'
 LoginScreenUserName = 'Account Name'
 LoginScreenPassword = 'Password'
 LoginScreenLogin = 'Login'
-LoginScreenCreateAccount = 'Create Account'
 LoginScreenQuit = lQuit
 LoginScreenLoginPrompt = 'Please enter a user name and password.'
 LoginScreenBadPassword = 'Bad password.\nPlease try again.'
@@ -2896,9 +2858,6 @@ WhiteListMenu = [-1, 'WHITELIST']
 SellbotInvasionMenuSections = [-1]
 SellbotFieldOfficeMenuSections = [-1, 'STRATEGY']
 IdesOfMarchMenuSections = [-1]
-TTAccountCallCustomerService = 'Please call Customer Service at %s.'
-TTAccountCustomerServiceHelp = '\nIf you need help, please call Customer Service at %s.'
-TTAccountIntractibleError = 'An error occurred.'
 
 def timeElapsedString(timeDelta):
     timeDelta = abs(timeDelta)

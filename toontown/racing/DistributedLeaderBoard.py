@@ -1,6 +1,5 @@
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
-from otp.otpbase import OTPTimer
 from toontown.toonbase import TTLocalizer
 from toontown.racing import KartShopGlobals
 from toontown.toonbase.ToonBaseGlobal import *
