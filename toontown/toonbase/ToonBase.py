@@ -387,7 +387,7 @@ class ToonBase(OTPBase.OTPBase):
     def startShow(self, cr, launcherServer = None):
         self.cr = cr
         base.graphicsEngine.renderFrame()
-        gameServer = os.environ.get('TTU_GAMESERVER', 'localhost')
+        gameServer = launcher.getGameServer()
         # Get the base port.
         serverPort = base.config.GetInt('server-port', 7199)
 
