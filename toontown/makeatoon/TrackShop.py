@@ -10,6 +10,12 @@ class TrackShop(StateData.StateData):
 
     def __init__(self, doneEvent):
         StateData.StateData.__init__(self, doneEvent)
+        self.quest = None
+        self.label = None
+        self.leftButton = None
+        self.rightButton = None
+        self.track = None
+        self.icon = None
         self.loaded = False
         self.index = 0
         return

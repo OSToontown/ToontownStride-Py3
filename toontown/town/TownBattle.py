@@ -268,7 +268,7 @@ class TownBattle(StateData.StateData):
         for cogPanel in self.cogPanels:
             cogPanel.hide()
             cogPanel.updateHealthBar()
-            cogPanel.setPos(0, 0, 0.75)
+            cogPanel.setPos(0, 0, 0.62)
 
         if num == 1:
             self.cogPanels[0].setX(self.oddPos[1])
