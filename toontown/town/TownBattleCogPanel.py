@@ -35,7 +35,7 @@ class TownBattleCogPanel(DirectFrame):
     
     def __init__(self, id):
         gui = loader.loadModel('phase_3.5/models/gui/battle_gui')
-        DirectFrame.__init__(self, relief=None, image=gui.find('**/ToonBtl_Status_BG'), image_color=Vec4(0.5, 0.5, 0.5, 0.7))
+        DirectFrame.__init__(self, relief=None, image=gui.find('**/ToonBtl_Status_BG'), image_color=Vec4(0.86, 0.86, 0.86, 0.7))
         self.setScale(0.8)
         self.initialiseoptions(TownBattleCogPanel)
         self.levelText = DirectLabel(parent=self, text='', pos=(-0.06, 0, -0.075), text_scale=0.055)
@@ -82,7 +82,7 @@ class TownBattleCogPanel(DirectFrame):
         self.head = Suit.attachSuitHead(self, suitName)
         self.head.setX(0.1)
         self.head.setZ(0.01)
-        self.head.setScale(0.087)
+        self.head.setScale(0.05)
 
     def generateHealthBar(self):
         model = loader.loadModel('phase_3.5/models/gui/matching_game_gui')
@@ -92,8 +92,8 @@ class TownBattleCogPanel(DirectFrame):
         button.setH(180.0)
         button.setColor(self.healthColors[0])
         button.reparentTo(self)
-        button.setX(-0.08)
-        button.setZ(0.02)
+        button.setX(-0.065)
+        button.setZ(0.05)
         self.healthBar = button
         glow = BattleProps.globalPropPool.getProp('glow')
         glow.reparentTo(self.healthBar)
