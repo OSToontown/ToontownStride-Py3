@@ -10,10 +10,9 @@ import string
 import ArrowKeys
 from DistributedMinigame import *
 import PatternGameGlobals
-from toontown.char import Char
-from toontown.char import CharDNA
 from toontown.chat.ChatGlobals import *
 from toontown.nametag.NametagGlobals import *
+from toontown.toon import NPCToons
 from toontown.toon import ToonHead
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
@@ -37,10 +36,6 @@ class DistributedPatternGame(DistributedMinigame):
     strWaitingOtherPlayers = TTLocalizer.PatternGameWaitingOtherPlayers
     strPleaseWait = TTLocalizer.PatternGamePleaseWait
     strRound = TTLocalizer.PatternGameRound
-    minnieAnimNames = ['up',
-     'left',
-     'down',
-     'right']
     toonAnimNames = ['up',
      'left',
      'down',
@@ -129,18 +124,13 @@ class DistributedPatternGame(DistributedMinigame):
         minnieX.removeNode()
         minnieCircle.removeNode()
         matchingGameGui.removeNode()
-        self.minnie = Char.Char()
-        m = self.minnie
-        dna = CharDNA.CharDNA()
-        dna.newChar('mn')
-        m.setDNA(dna)
-        m.setName(TTLocalizer.Minnie)
-        m.reparentTo(hidden)
+        self.blinky = NPCToons.createLocalNPC(7010)
+        self.blinky.reparentTo(hidden)
         self.backRowHome = Point3(3, 11, 0)
         self.backRowXSpacing = 1.8
         self.frontRowHome = Point3(0, 18, 0)
         self.frontRowXSpacing = 3.0
-        self.stdNumDanceStepPingFrames = self.minnie.getNumFrames(self.minnieAnimNames[0])
+        self.stdNumDanceStepPingFrames = self.blinky.getNumFrames(self.toonAnimNames[0])
         self.stdNumDanceStepPingPongFrames = self.__numPingPongFrames(self.stdNumDanceStepPingFrames)
         self.buttonPressDelayPercent = (self.stdNumDanceStepPingFrames - 1.0) / self.stdNumDanceStepPingPongFrames
         self.animPlayRates = []
@@ -197,8 +187,8 @@ class DistributedPatternGame(DistributedMinigame):
         del self.statusBalls
         self.room.removeNode()
         del self.room
-        self.minnie.delete()
-        del self.minnie
+        self.blinky.delete()
+        del self.blinky
         self.removeChildGameFSM(self.gameFSM)
         del self.gameFSM
 
@@ -215,18 +205,12 @@ class DistributedPatternGame(DistributedMinigame):
         self.room.reparentTo(render)
         self.room.setPosHpr(0.0, 18.39, -ToontownGlobals.FloorOffset, 0.0, 0.0, 0.0)
         self.room.setScale(1)
-        for anim in self.minnieAnimNames:
-            self.minnie.pose(anim, 0)
 
         for anim in self.toonAnimNames:
             self.lt.pose(anim, 0)
 
-        self.minnieAnimSpeedMult = {}
         self.toonAnimSpeedMult = {}
-        for anim in self.minnieAnimNames:
-            numFrames = self.minnie.getNumFrames(anim)
-            self.minnieAnimSpeedMult[anim] = float(self.__numPingPongFrames(numFrames)) / float(self.stdNumDanceStepPingPongFrames)
-
+        
         for anim in self.toonAnimNames:
             numFrames = self.lt.getNumFrames(anim)
             self.toonAnimSpeedMult[anim] = float(self.__numPingPongFrames(numFrames)) / float(self.stdNumDanceStepPingPongFrames)
@@ -245,7 +229,7 @@ class DistributedPatternGame(DistributedMinigame):
         for k in xrange(0, 2):
             self.arrowDict['lt'][k].setBillboardAxis()
             self.arrowDict['lt'][k].setBin('fixed', 100)
-            self.arrowDict['lt'][k].reparentTo(jj)
+            self.arrowDict['lt'][k].reparentTo(self.lt.nametag3d)
             if k == 0:
                 self.arrowDict['lt'][k].setScale(2.5)
                 self.arrowDict['lt'][k].setColor(self.arrowColor)
@@ -254,25 +238,20 @@ class DistributedPatternGame(DistributedMinigame):
                 self.arrowDict['lt'][k].setColor(self.xColor)
             self.arrowDict['lt'][k].setPos(0, 0, 1)
 
-        self.formatStatusBalls(self.arrowDict['lt'][2], jj)
-        m = self.minnie
-        m.reparentTo(render)
-        m.setPos(-1.6, 20, 0)
-        m.setScale(1)
-        self.makeToonLookatCamera(m)
-        m.loop('neutral')
-        m.startBlink()
-        self.minnie.nametag.manage(base.marginManager)
-        self.minnie.startEarTask()
-        self.minnie.setPickable(0)
-        self.minnie.nametag.getNametag3d().setChatWordWrap(8)
+        self.formatStatusBalls(self.arrowDict['lt'][2], self.lt.nametag3d)
+        self.blinky.reparentTo(render)
+        self.blinky.setPos(-1.6, 20, 0)
+        self.blinky.setScale(1)
+        self.makeToonLookatCamera(self.blinky)
+        self.blinky.loop('neutral')
+        self.blinky.nametag.manage(base.marginManager)
+        self.blinky.nametag.getNametag3d().setChatWordWrap(8)
         self.arrowDict['m'] = [self.arrows.pop(), self.xs.pop()]
-        jj = self.minnie.nametag3d
         for k in xrange(0, 2):
             self.arrowDict['m'][k].setBillboardAxis()
             self.arrowDict['m'][k].setBin('fixed', 100)
             self.arrowDict['m'][k].setColor(self.arrowColor)
-            self.arrowDict['m'][k].reparentTo(jj)
+            self.arrowDict['m'][k].reparentTo(self.blinky.nametag3d)
             self.arrowDict['m'][k].setScale(4)
             self.arrowDict['m'][k].setPos(0, 0, 1.7)
 
@@ -288,11 +267,9 @@ class DistributedPatternGame(DistributedMinigame):
         del self.arrowKeys
         self.room.reparentTo(hidden)
         self.roundText.hide()
-        self.minnie.nametag.unmanage(base.marginManager)
-        self.minnie.stopEarTask()
-        self.minnie.stop()
-        self.minnie.stopBlink()
-        self.minnie.reparentTo(hidden)
+        self.blinky.nametag.unmanage(base.marginManager)
+        self.blinky.stop()
+        self.blinky.reparentTo(hidden)
         self.lt.setScale(1)
         for avId in self.remoteAvIdList:
             toon = self.getAvatar(avId)
@@ -410,15 +387,11 @@ class DistributedPatternGame(DistributedMinigame):
 
     def getDanceStepDuration(self):
         numFrames = self.stdNumDanceStepPingPongFrames
-        return numFrames / abs(self.animPlayRate * self.minnieAnimSpeedMult[self.minnieAnimNames[0]] * self.minnie.getFrameRate(self.minnieAnimNames[0]))
+        return numFrames / abs(self.animPlayRate * self.toonAnimSpeedMult[self.toonAnimNames[0]] * self.blinky.getFrameRate(self.toonAnimNames[0]))
 
     def __getDanceStepAnimTrack(self, toon, anim, speedScale):
         numFrames = toon.getNumFrames(anim)
         return Sequence(Func(toon.pingpong, anim, fromFrame=0, toFrame=numFrames - 1), Wait(self.getDanceStepDuration()))
-
-    def __getMinnieDanceStepAnimTrack(self, minnie, direction):
-        animName = self.minnieAnimNames[direction]
-        return self.__getDanceStepAnimTrack(minnie, animName, self.minnieAnimSpeedMult[animName])
 
     def __getToonDanceStepAnimTrack(self, toon, direction):
         animName = self.toonAnimNames[direction]
@@ -516,8 +489,6 @@ class DistributedPatternGame(DistributedMinigame):
 
     def getDanceSequenceAnimTrack(self, toon, pattern):
         getDanceStepTrack = self.__getToonDanceStepAnimTrack
-        if toon == self.minnie:
-            getDanceStepTrack = self.__getMinnieDanceStepAnimTrack
         tracks = Sequence()
         for direction in pattern:
             tracks.append(getDanceStepTrack(toon, direction))
@@ -545,14 +516,12 @@ class DistributedPatternGame(DistributedMinigame):
         index = self.avIdList.index(avId)
         return self.__getRowPos(self.frontRowHome, self.frontRowXSpacing, index, len(self.avIdList))
 
-    def __setMinnieChat(self, str, giggle):
+    def __setBlinkyChat(self, str, giggle):
         str = str.replace('%s', self.getAvatar(self.localAvId).getName())
-        self.minnie.setChatAbsolute(str, CFSpeech)
-        if giggle:
-            self.minnie.playDialogue('statementA', 1)
+        self.blinky.setChatAbsolute(str, CFSpeech)
 
-    def __clearMinnieChat(self):
-        self.minnie.clearChat()
+    def __clearBlinkyChat(self):
+        self.blinky.clearChat()
 
     def enterOff(self):
         self.notify.debug('enterOff')
@@ -587,14 +556,14 @@ class DistributedPatternGame(DistributedMinigame):
                 for anim in self.toonAnimNames:
                     toon.setPlayRate(self.animPlayRate * self.toonAnimSpeedMult[anim], anim)
 
-        for anim in self.minnieAnimNames:
-            self.minnie.setPlayRate(self.animPlayRate * self.minnieAnimSpeedMult[anim], anim)
+        for anim in self.toonAnimNames:
+            self.blinky.setPlayRate(self.animPlayRate * self.toonAnimSpeedMult[anim], anim)
 
         text = self.strWatch
-        danceTrack = self.getDanceSequenceAnimTrack(self.minnie, self.__serverPattern)
+        danceTrack = self.getDanceSequenceAnimTrack(self.blinky, self.__serverPattern)
         arrowTrack = self.getDanceArrowAnimTrack('m', self.__serverPattern, 0)
         soundTrack = self.getDanceSequenceButtonSoundTrack(self.__serverPattern)
-        self.showTrack = Sequence(Func(self.__setMinnieChat, text, 1), Wait(0.5), Parallel(danceTrack, soundTrack, arrowTrack), Wait(0.2), Func(self.__clearMinnieChat), Func(self.gameFSM.request, 'getUserInput'))
+        self.showTrack = Sequence(Func(self.__setBlinkyChat, text, 1), Wait(0.5), Parallel(danceTrack, soundTrack, arrowTrack), Wait(0.2), Func(self.__clearBlinkyChat), Func(self.gameFSM.request, 'getUserInput'))
         self.showTrack.start()
 
     def exitShowServerPattern(self):
@@ -636,7 +605,7 @@ class DistributedPatternGame(DistributedMinigame):
             self.showStatusBalls(avId)
             self.__otherToonIndex[avId] = 0
 
-        self.setupTrack = Sequence(Func(self.__setMinnieChat, self.strGo, 0), Func(self.setText, self.roundText, TTLocalizer.PatternGameGo), Func(self.roundText.setScale, 0.3), Func(enableKeys), Func(startTimer), Wait(0.8), Func(self.__clearMinnieChat), Func(self.setText, self.roundText, ' '), Func(self.roundText.setScale, 0.12), Func(self.setTextFG, self.roundText, self.normalTextColor))
+        self.setupTrack = Sequence(Func(self.__setBlinkyChat, self.strGo, 0), Func(self.setText, self.roundText, TTLocalizer.PatternGameGo), Func(self.roundText.setScale, 0.3), Func(enableKeys), Func(startTimer), Wait(0.8), Func(self.__clearBlinkyChat), Func(self.setText, self.roundText, ' '), Func(self.roundText.setScale, 0.12), Func(self.setTextFG, self.roundText, self.normalTextColor))
         self.setupTrack.start()
         return
 
@@ -716,7 +685,7 @@ class DistributedPatternGame(DistributedMinigame):
             self.proceedTrack.pause()
         del self.setupTrack
         del self.proceedTrack
-        self.__clearMinnieChat()
+        self.__clearBlinkyChat()
 
     def enterWaitForPlayerPatterns(self):
         self.notify.debug('enterWaitForPlayerPatterns')
@@ -782,7 +751,7 @@ class DistributedPatternGame(DistributedMinigame):
             sound = self.incorrectSound
             text = self.strWrong
         soundTrack = Sequence(Func(base.playSfx, sound), Wait(1.6))
-        textTrack = Sequence(Wait(0.2), Func(self.__setMinnieChat, text, 0), Wait(1.3), Func(self.__clearMinnieChat))
+        textTrack = Sequence(Wait(0.2), Func(self.__setBlinkyChat, text, 0), Wait(1.3), Func(self.__clearBlinkyChat))
         self.playBackPatternsTrack = Sequence(Parallel(soundTrack, textTrack, jumpTrack), Func(self.gameFSM.request, 'checkGameOver'))
         self.playBackPatternsTrack.start()
 
@@ -806,9 +775,9 @@ class DistributedPatternGame(DistributedMinigame):
                 delay = 2.2
             if self.celebrate:
                 text = TTLocalizer.PatternGameImprov
-                self.__winTrack = Sequence(Func(self.__setMinnieChat, text, 1), Func(base.playSfx, self.perfectSound), Sequence(self.returnCelebrationIntervals(1)), Sequence(self.returnCelebrationIntervals(0)), Func(self.__clearMinnieChat), Func(self.gameOver))
+                self.__winTrack = Sequence(Func(self.__setBlinkyChat, text, 1), Func(base.playSfx, self.perfectSound), Sequence(self.returnCelebrationIntervals(1)), Sequence(self.returnCelebrationIntervals(0)), Func(self.__clearBlinkyChat), Func(self.gameOver))
             else:
-                self.__winTrack = Sequence(Func(self.__setMinnieChat, text, 1), Func(base.playSfx, sound), Wait(delay), Func(self.__clearMinnieChat), Func(self.gameOver))
+                self.__winTrack = Sequence(Func(self.__setBlinkyChat, text, 1), Func(base.playSfx, sound), Wait(delay), Func(self.__clearBlinkyChat), Func(self.gameOver))
             self.__winTrack.start()
         return
 

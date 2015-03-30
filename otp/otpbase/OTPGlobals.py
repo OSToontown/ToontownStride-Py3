@@ -220,11 +220,6 @@ ToonForwardSlowSpeed = 6.0
 ToonJumpSlowForce = 4.0
 ToonReverseSlowSpeed = 2.5
 ToonRotateSlowSpeed = 33.0
-MickeySpeed = 5.0
-MinnieSpeed = 3.2
-DonaldSpeed = 3.68
-GoofySpeed = 5.2
-PlutoSpeed = 5.5
 ThinkPosHotkey = 'shift-f1'
 PlaceMarkerHotkey = 'f2'
 FriendsListHotkey = 'f7'
@@ -337,17 +332,6 @@ PeriodOnlyAfterLetter = 'You can use a period in your name, but only after a let
 ApostropheOnlyAfterLetter = 'You can use an apostrophe in your name, but only after a letter.'
 NoNumbersInTheMiddle = 'Numeric digits may not appear in the middle of a word.'
 ThreeWordsOrLess = 'Your name must be three words or fewer.'
-CopyrightedNames = ('mickey',
- 'mickey mouse',
- 'mickeymouse',
- 'minnie',
- 'minnie mouse',
- 'minniemouse',
- 'donald',
- 'donald duck',
- 'donaldduck',
- 'pluto',
- 'goofy')
 GuildUpdateMembersEvent = 'guildUpdateMembersEvent'
 GuildInvitationEvent = 'guildInvitationEvent'
 GuildAcceptInviteEvent = 'guildAcceptInviteEvent'

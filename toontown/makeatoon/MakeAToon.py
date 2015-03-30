@@ -10,8 +10,6 @@ from pandac.PandaModules import *
 import random, BodyShop, ColorShop, GenderShop, MakeClothesGUI, TrackShop, NameShop
 from MakeAToonGlobals import *
 from otp.avatar import Avatar
-from toontown.char import Char
-from toontown.char import CharDNA
 from toontown.chat.ChatGlobals import *
 from toontown.distributed.ToontownMsgTypes import *
 from toontown.toon import LocalToon
@@ -428,11 +426,6 @@ class MakeAToon(StateData.StateData):
             self.fsm.request('ClothesShop')
         elif self.shop == NAMESHOP:
             self.fsm.request('TrackShop')
-
-    def charSez(self, char, statement, dialogue = None):
-        import pdb
-        pdb.set_trace()
-        char.setChatAbsolute(statement, CFSpeech, dialogue)
 
     def enterInit(self):
         pass

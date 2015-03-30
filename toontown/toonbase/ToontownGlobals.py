@@ -514,20 +514,6 @@ TrophyStarColors = (Vec4(0.9, 0.6, 0.2, 1),
  Vec4(0.8, 0.8, 0.8, 1),
  Vec4(1, 1, 0, 1),
  Vec4(1, 1, 0, 1))
-MickeySpeed = 5.0
-VampireMickeySpeed = 1.15
-MinnieSpeed = 3.2
-WitchMinnieSpeed = 1.8
-DonaldSpeed = 3.68
-FrankenDonaldSpeed = 0.9
-DaisySpeed = 2.3
-GoofySpeed = 5.2
-SuperGoofySpeed = 1.6
-PlutoSpeed = 5.5
-WesternPlutoSpeed = 3.2
-ChipSpeed = 3
-DaleSpeed = 3.5
-DaleOrbitDistance = 3
 SuitWalkSpeed = 4.8
 PieThrowArc = 0
 PieThrowLinear = 1

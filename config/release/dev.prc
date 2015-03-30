@@ -22,6 +22,7 @@ dc-file astron/dclass/united.dc
 want-pets #t
 want-parties #t
 want-cogdominiums #t
+want-lawbot-cogdo #t
 want-achievements #f
 
 # Chat:
@@ -38,3 +39,5 @@ want-glove-npc #t
 # Developer options:
 show-population #t
 want-instant-parties #t
+cogdo-pop-factor 1.5
+cogdo-ratio 0.5

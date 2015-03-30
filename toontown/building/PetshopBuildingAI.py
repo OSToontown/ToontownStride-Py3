@@ -1,14 +1,17 @@
+from pandac.PandaModules import *
+from direct.directnotify import DirectNotifyGlobal
 import DistributedDoorAI
 import DistributedPetshopInteriorAI
+import FADoorCodes
 import DoorTypes
-from pandac.PandaModules import *
-from toontown.hood import ZoneUtil
-# from toontown.pets import DistributedPetAI, PetTraits, PetUtil
 from toontown.toon import NPCToons
 from toontown.toonbase import ToontownGlobals
-
+from toontown.quest import Quests
+from toontown.hood import ZoneUtil
 
 class PetshopBuildingAI:
+    notify = DirectNotifyGlobal.directNotify.newCategory('PetshopBuildingAI')
+
     def __init__(self, air, exteriorZone, interiorZone, blockNumber):
         self.air = air
         self.exteriorZone = exteriorZone
@@ -33,6 +36,8 @@ class PetshopBuildingAI:
 
         self.npcs = NPCToons.createNpcsInZone(self.air, self.interiorZone)
 
+        seeds = self.air.petMgr.getAvailablePets(1, len(self.npcs))
+        
         door = DistributedDoorAI.DistributedDoorAI(
             self.air, blockNumber, DoorTypes.EXT_STANDARD)
         insideDoor = DistributedDoorAI.DistributedDoorAI(
@@ -47,13 +52,4 @@ class PetshopBuildingAI:
         self.insideDoor = insideDoor
 
     def createPet(self, ownerId, seed):
-        zoneId = self.interiorZone
-        safeZoneId = ZoneUtil.getCanonicalSafeZoneId(zoneId)
-        (name, dna, traitSeed) = PetUtil.getPetInfoFromSeed(seed, safeZoneId)
-        pet = DistributedPetAI.DistributedPetAI(self.air, dna=dna)
-        pet.setOwnerId(ownerId)
-        pet.setPetName(name)
-        pet.traits = PetTraits.PetTraits(traitSeed=traitSeed, safeZoneId=safeZoneId)
-        pet.generateWithRequired(zoneId)
-        pet.setPos(0, 0, 0)
-        pet.b_setParent(ToontownGlobals.SPRender)
+        return

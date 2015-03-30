@@ -140,6 +140,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.shovelRelatedDoId = 0
             self.shovelAbility = ''
             self.plantToWater = 0
+            self.petId = 0
             self.shovelButtonActiveCount = 0
             self.wateringCanButtonActiveCount = 0
             self.showingWateringCan = 0
@@ -1877,10 +1878,23 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.questMap.stop()
 
     def getPetId(self):
-        return False
+        return self.petId
 
     def hasPet(self):
-        return False
+        return self.petId != 0
+    
+    def getPetDNA(self):
+        if self.hasPet():
+            pet = base.cr.doId2do(self.petId)
+            return pet.petDNA
+        return None
+    
+    def setPetId(self, petId):
+        self.petId = petId
+        if petId == 0:
+            self.petDNA = None
+        elif self.isLocal():
+            base.cr.addPetToFriendsMap()
 
     def setAchievements(self, achievements):
         if base.wantAchievements:

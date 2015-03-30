@@ -14,8 +14,6 @@ import tokenize
 import BlinkingArrows
 from otp.speedchat import SpeedChatGlobals
 from toontown.ai import DistributedBlackCatMgr
-from toontown.char import Char
-from toontown.char import CharDNA
 from toontown.chat.ChatGlobals import *
 from toontown.suit import Suit
 from toontown.suit import SuitDNA
@@ -136,7 +134,6 @@ class NPCMoviePlayer(DirectObject.DirectObject):
         self.npc = npc
         self.privateVarDict = {}
         self.toonHeads = {}
-        self.chars = []
         self.uniqueId = 'scriptMovie_' + str(self.scriptId) + '_' + str(toon.getDoId()) + '_' + str(npc.getDoId())
         self.setVar('toon', self.toon)
         self.setVar('npc', self.npc)
@@ -177,9 +174,6 @@ class NPCMoviePlayer(DirectObject.DirectObject):
         for toonHeadFrame in self.toonHeads.values():
             toonHeadFrame.destroy()
 
-        while self.chars:
-            self.__unloadChar(self.chars[0])
-
         del self.toonHeads
         del self.privateVarDict
         del self.chapterDict
@@ -187,13 +181,6 @@ class NPCMoviePlayer(DirectObject.DirectObject):
         del self.npc
         del self.timeoutTrack
         return
-
-    def __unloadChar(self, char):
-        char.removeActive()
-        if char.style.name == 'mk' or char.style.name == 'mn':
-            char.stopEarTask()
-        char.delete()
-        self.chars.remove(char)
 
     def timeout(self, fFinish = 0):
         if self.timeoutTrack:
@@ -293,41 +280,11 @@ class NPCMoviePlayer(DirectObject.DirectObject):
                 chapterList = []
                 self.currentEvent = nextEvent
                 continue
-            elif command == 'CC_CHAT_CONFIRM':
-                if uponTimeout:
-                    self.notify.error('CC_CHAT_CONFIRM not allowed in an UPON_TIMEOUT')
-                avatarName = line[1]
-                avatar = self.getVar(avatarName)
-                nextEvent = avatar.uniqueName('doneChatPage')
-                iList.append(Func(self.acceptOnce, nextEvent, self.playNextChapter, [nextEvent]))
-                iList.append(self.parseCCChatConfirm(line))
-                self.closePreviousChapter(iList)
-                chapterList = []
-                self.currentEvent = nextEvent
-                continue
-            elif command == 'CC_CHAT_TO_CONFIRM':
-                if uponTimeout:
-                    self.notify.error('CC_CHAT_TO_CONFIRM not allowed in an UPON_TIMEOUT')
-                avatarName = line[1]
-                avatar = self.getVar(avatarName)
-                nextEvent = avatar.uniqueName('doneChatPage')
-                iList.append(Func(self.acceptOnce, nextEvent, self.playNextChapter, [nextEvent]))
-                iList.append(self.parseCCChatToConfirm(line))
-                self.closePreviousChapter(iList)
-                chapterList = []
-                self.currentEvent = nextEvent
-                continue
             if self.isLocalToon:
                 if command == 'LOAD':
                     self.parseLoad(line)
                 elif command == 'LOAD_SFX':
                     self.parseLoadSfx(line)
-                elif command == 'LOAD_CHAR':
-                    self.parseLoadChar(line)
-                elif command == 'LOAD_CLASSIC_CHAR':
-                    self.parseLoadClassicChar(line)
-                elif command == 'UNLOAD_CHAR':
-                    iList.append(self.parseUnloadChar(line))
                 elif command == 'LOAD_SUIT':
                     self.parseLoadSuit(line)
                 elif command == 'SET':
@@ -485,44 +442,6 @@ class NPCMoviePlayer(DirectObject.DirectObject):
         token, varName, fileName = line
         sfx = base.loadSfx(fileName)
         self.setVar(varName, sfx)
-
-    def parseLoadChar(self, line):
-        token, name, charType = line
-        char = Char.Char()
-        dna = CharDNA.CharDNA()
-        dna.newChar(charType)
-        char.setDNA(dna)
-        if charType == 'mk' or charType == 'mn':
-            char.startEarTask()
-        char.nametag.manage(base.marginManager)
-        char.addActive()
-        char.hideName()
-        self.setVar(name, char)
-
-    def parseLoadClassicChar(self, line):
-        token, name = line
-        char = Char.Char()
-        dna = CharDNA.CharDNA()
-        if self.toon.getStyle().gender == 'm':
-            charType = 'mk'
-        else:
-            charType = 'mn'
-        dna.newChar(charType)
-        char.setDNA(dna)
-        char.startEarTask()
-        char.nametag.manage(base.marginManager)
-        char.addActive()
-        char.hideName()
-        self.setVar(name, char)
-        self.chars.append(char)
-
-    def parseUnloadChar(self, line):
-        token, name = line
-        char = self.getVar(name)
-        track = Sequence()
-        track.append(Func(self.__unloadChar, char))
-        track.append(Func(self.delVar, name))
-        return track
 
     def parseLoadSuit(self, line):
         token, name, suitType = line
@@ -699,33 +618,6 @@ class NPCMoviePlayer(DirectObject.DirectObject):
         localizerAvatarName = toAvatar.getName().capitalize()
         toAvatarName = eval('TTLocalizer.' + localizerAvatarName)
         chatString = eval('TTLocalizer.' + line[3])
-        chatString = chatString.replace('%s', toAvatarName)
-        quitButton, extraChatFlags, dialogueList = self.parseExtraChatArgs(line[4:])
-        return Func(avatar.setLocalPageChat, chatString, quitButton, extraChatFlags, dialogueList)
-
-    def parseCCChatConfirm(self, line):
-        lineLength = len(line)
-        avatarName = line[1]
-        avatar = self.getVar(avatarName)
-        if self.toon.getStyle().gender == 'm':
-            chatString = eval('TTLocalizer.' + line[2] % 'Mickey')
-        else:
-            chatString = eval('TTLocalizer.' + line[2] % 'Minnie')
-        quitButton, extraChatFlags, dialogueList = self.parseExtraChatArgs(line[3:])
-        return Func(avatar.setLocalPageChat, chatString, quitButton, extraChatFlags, dialogueList)
-
-    def parseCCChatToConfirm(self, line):
-        lineLength = len(line)
-        avatarKey = line[1]
-        avatar = self.getVar(avatarKey)
-        toAvatarKey = line[2]
-        toAvatar = self.getVar(toAvatarKey)
-        localizerAvatarName = toAvatar.getName().capitalize()
-        toAvatarName = eval('TTLocalizer.' + localizerAvatarName)
-        if self.toon.getStyle().gender == 'm':
-            chatString = eval('TTLocalizer.' + line[3] % 'Mickey')
-        else:
-            chatString = eval('TTLocalizer.' + line[3] % 'Minnie')
         chatString = chatString.replace('%s', toAvatarName)
         quitButton, extraChatFlags, dialogueList = self.parseExtraChatArgs(line[4:])
         return Func(avatar.setLocalPageChat, chatString, quitButton, extraChatFlags, dialogueList)

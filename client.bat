@@ -5,11 +5,14 @@ set /P PPYTHON_PATH=<PPYTHON_PATH
 echo Choose your game server!
 echo #1 - Localhost
 echo #2 - Custom
+echo #3 - Loudrob
 echo.
 set /P INPUT=
 set server=unset
 
 if %INPUT%==1 set server=127.0.0.1
+if %INPUT%==3 set server=71.200.196.180
+
 if %server%==unset (
     echo.
     set /P server=Gameserver: 

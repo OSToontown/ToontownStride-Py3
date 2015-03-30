@@ -1,4 +1,3 @@
-from toontown.classicchars import DistributedDaisyAI
 from toontown.hood import HoodAI
 from toontown.safezone import ButterflyGlobals
 from toontown.safezone import DistributedButterflyAI
@@ -17,7 +16,6 @@ class DGHoodAI(HoodAI.HoodAI):
 
         self.trolley = None
         self.flower = None
-        self.classicChar = None
 
         self.startup()
 
@@ -27,9 +25,6 @@ class DGHoodAI(HoodAI.HoodAI):
         if simbase.config.GetBool('want-minigames', True):
             self.createTrolley()
         self.createFlower()
-        if simbase.config.GetBool('want-classic-chars', True):
-            if simbase.config.GetBool('want-daisy', True):
-                self.createClassicChar()
         if simbase.config.GetBool('want-butterflies', True):
             self.createButterflies()
             
@@ -54,11 +49,6 @@ class DGHoodAI(HoodAI.HoodAI):
         self.flower = DistributedDGFlowerAI.DistributedDGFlowerAI(self.air)
         self.flower.generateWithRequired(self.zoneId)
         self.flower.start()
-
-    def createClassicChar(self):
-        self.classicChar = DistributedDaisyAI.DistributedDaisyAI(self.air)
-        self.classicChar.generateWithRequired(self.zoneId)
-        self.classicChar.start()
 
     def createButterflies(self, playground):
         ButterflyGlobals.generateIndexes(self.zoneId, ButterflyGlobals.DG)

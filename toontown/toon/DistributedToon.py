@@ -1153,6 +1153,9 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.monthlyCatalog = CatalogItemList.CatalogItemList(monthlyCatalog)
         self.weeklyCatalog = CatalogItemList.CatalogItemList(weeklyCatalog)
         self.backCatalog = CatalogItemList.CatalogItemList(backCatalog)
+        if config.GetBool('want-house-types', False):
+            from toontown.catalog import CatalogHouseItem
+            self.backCatalog.extend(CatalogHouseItem.getAllHouses())
         if self.catalogNotify == ToontownGlobals.NewItems:
             self.catalogNotify = ToontownGlobals.OldItems
 
@@ -1751,9 +1754,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             elif self.isLocal():
                 base.cr.addPetToFriendsMap()
             return
-
-        def getPetId(self):
-            return self.petId
 
         def getPetId(self):
             return self.petId

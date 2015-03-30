@@ -1,7 +1,6 @@
 from pandac.PandaModules import *
 from toontown.toonbase import ToontownGlobals
 import Playground
-from toontown.launcher import DownloadForceAcknowledge
 from toontown.building import Elevator
 from toontown.toontowngui import TTDialog
 from toontown.toonbase import TTLocalizer
@@ -108,8 +107,3 @@ class GSPlayground(Playground.Playground):
             messenger.send(self.doneEvent)
         else:
             self.notify.error('Unknown mode: ' + where + ' in handleStartingBlockDone')
-
-    def showPaths(self):
-        from toontown.classicchars import CCharPaths
-        from toontown.toonbase import TTLocalizer
-        self.showPathPoints(CCharPaths.getPaths(TTLocalizer.Goofy, 1))

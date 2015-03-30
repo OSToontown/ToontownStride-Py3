@@ -1,4 +1,3 @@
-from toontown.classicchars import DistributedGoofySpeedwayAI
 from toontown.dna.DNAParser import DNAGroup, DNAVisGroup
 from toontown.hood import HoodAI
 from toontown.hood import ZoneUtil
@@ -21,7 +20,6 @@ class GSHoodAI(HoodAI.HoodAI):
         self.viewingBlocks = []
         self.startingBlocks = []
         self.leaderBoards = []
-        self.classicChar = None
 
         self.startup()
 
@@ -31,8 +29,6 @@ class GSHoodAI(HoodAI.HoodAI):
         self.createStartingBlocks()
         self.createLeaderBoards()
         self.cycleLeaderBoards()
-        if simbase.config.GetBool('want-goofy', True):
-            self.createClassicChar()
 
     def shutdown(self):
         HoodAI.HoodAI.shutdown(self)
@@ -147,8 +143,3 @@ class GSHoodAI(HoodAI.HoodAI):
     def cycleLeaderBoards(self, task=None):
         messenger.send('leaderBoardSwap-' + str(self.zoneId))
         taskMgr.doMethodLater(10, self.cycleLeaderBoards, 'leaderBoardSwitch')
-
-    def createClassicChar(self):
-        self.classicChar = DistributedGoofySpeedwayAI.DistributedGoofySpeedwayAI(self.air)
-        self.classicChar.generateWithRequired(self.zoneId)
-        self.classicChar.start()

@@ -33,7 +33,6 @@ from toontown.distributed import DelayDelete
 from toontown.friends import FriendHandle
 from toontown.friends import FriendsListPanel
 from toontown.friends import ToontownFriendSecret
-from toontown.login import DateObject
 from toontown.login import AvatarChooser
 from toontown.makeatoon import MakeAToon
 from toontown.pets import DistributedPet, PetDetail, PetHandle
@@ -105,7 +104,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.friendPendingChatSettings = {}
         self.elderFriendsMap = {}
         self.__queryAvatarMap = {}
-        self.dateObject = DateObject.DateObject()
         self.hoodMgr = HoodMgr.HoodMgr(self)
         self.setZonesEmulated = 0
         self.old_setzone_interest_handle = None
@@ -351,7 +349,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         pad.avatar = avatar
         pad.delayDelete = DelayDelete.DelayDelete(avatar, 'getAvatarDetails')
         self.__queryAvatarMap[avatar.doId] = pad
-        self.__sendGetAvatarDetails(avatar.doId)
+        self.__sendGetAvatarDetails(avatar.doId, pet=(args[0].endswith("Pet")))
 
     def cancelAvatarDetailsRequest(self, avatar):
         avId = avatar.doId
@@ -359,8 +357,11 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             pad = self.__queryAvatarMap.pop(avId)
             pad.delayDelete.destroy()
 
-    def __sendGetAvatarDetails(self, avId):
-        self.ttuFriendsManager.d_getAvatarDetails(avId)
+    def __sendGetAvatarDetails(self, avId, pet=0):
+        if pet:
+            self.ttuFriendsManager.d_getPetDetails(avId)
+        else:
+            self.ttuFriendsManager.d_getAvatarDetails(avId)
 
     def n_handleGetAvatarDetailsResp(self, avId, fields):
         self.notify.info('Query reponse for avId %d' % avId)
@@ -761,12 +762,13 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
 
     def addPetToFriendsMap(self, callback = None):
         doId = base.localAvatar.getPetId()
-        if doId not in self.friendsMap:
+        if not doId or doId in self.friendsMap:
             if callback:
                 callback()
             return
 
         def petDetailsCallback(petAvatar):
+            petAvatar.announceGenerate()
             handle = PetHandle.PetHandle(petAvatar)
             self.friendsMap[doId] = handle
             petAvatar.disable()

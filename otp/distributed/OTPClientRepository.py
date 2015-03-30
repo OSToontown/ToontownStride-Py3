@@ -33,7 +33,6 @@ from otp.distributed.OtpDoGlobals import *
 from otp.distributed.TelemetryLimiter import TelemetryLimiter
 from otp.login import HTTPUtil
 from otp.login import LoginTTUAccount
-from otp.login.CreateAccountScreen import CreateAccountScreen
 from otp.otpbase import OTPGlobals
 from otp.otpbase import OTPLocalizer
 from otp.otpgui import OTPDialog
@@ -257,16 +256,6 @@ class OTPClientRepository(ClientRepositoryBase):
                   self.exitLogin, [
                       'noConnection',
                       'waitForGameList',
-                      'createAccount',
-                      'reject',
-                      'failedToConnect',
-                      'shutdown']),
-            State('createAccount',
-                  self.enterCreateAccount,
-                  self.exitCreateAccount, [
-                      'noConnection',
-                      'waitForGameList',
-                      'login',
                       'reject',
                       'failedToConnect',
                       'shutdown']),
@@ -596,9 +585,6 @@ class OTPClientRepository(ClientRepositoryBase):
             self.loginFSM.request('parentPassword')
         elif mode == 'freeTimeExpired':
             self.loginFSM.request('freeTimeInform')
-        elif mode == 'createAccount':
-            self.loginFSM.request('createAccount', [{'back': 'login',
-              'backArgs': []}])
         elif mode == 'reject':
             self.loginFSM.request('reject')
         elif mode == 'quit':
@@ -613,47 +599,6 @@ class OTPClientRepository(ClientRepositoryBase):
         self.cleanupWaitingForDatabase()
         self.ignore(self.loginDoneEvent)
         del self.loginDoneEvent
-        self.handler = None
-        return
-
-    @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
-    def enterCreateAccount(self, createAccountDoneData = {'back': 'login',
- 'backArgs': []}):
-        self.createAccountDoneData = createAccountDoneData
-        self.createAccountDoneEvent = 'createAccountDone'
-        self.createAccountScreen = None
-        self.createAccountScreen = CreateAccountScreen(self, self.createAccountDoneEvent)
-        self.accept(self.createAccountDoneEvent, self.__handleCreateAccountDone)
-        self.createAccountScreen.load()
-        self.createAccountScreen.enter()
-        return
-
-    @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
-    def __handleCreateAccountDone(self, doneStatus):
-        mode = doneStatus['mode']
-        if mode == 'success':
-            self.setIsNotNewInstallation()
-            self.loginFSM.request('waitForGameList')
-        elif mode == 'reject':
-            self.loginFSM.request('reject')
-        elif mode == 'cancel':
-            self.loginFSM.request(self.createAccountDoneData['back'], self.createAccountDoneData['backArgs'])
-        elif mode == 'failure':
-            self.loginFSM.request(self.createAccountDoneData['back'], self.createAccountDoneData['backArgs'])
-        elif mode == 'quit':
-            self.loginFSM.request('shutdown')
-        else:
-            self.notify.error('Invalid doneStatus mode from CreateAccountScreen: ' + str(mode))
-
-    @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
-    def exitCreateAccount(self):
-        if self.createAccountScreen:
-            self.createAccountScreen.exit()
-            self.createAccountScreen.unload()
-            self.createAccountScreen = None
-            self.renderFrame()
-        self.ignore(self.createAccountDoneEvent)
-        del self.createAccountDoneEvent
         self.handler = None
         return
 

@@ -74,17 +74,6 @@ want-treasure-planners #t
 want-suit-planners #t
 want-butterflies #f
 
-# Classic characters:
-want-classic-chars #t
-want-mickey #t
-want-donald-dock #t
-want-daisy #t
-want-minnie #t
-want-pluto #t
-want-donald-dreamland #t
-want-chip-and-dale #t
-want-goofy #t
-
 # Trolley minigames:
 want-minigames #t
 want-photo-game #f

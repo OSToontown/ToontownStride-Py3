@@ -1,10 +1,6 @@
 from direct.task.Task import Task
-import random
-
-from toontown.classicchars import CCharPaths
 from toontown.safezone import Playground
-from toontown.toonbase import TTLocalizer
-
+import random
 
 class TTPlayground(Playground.Playground):
     def enter(self, requestStatus):
@@ -14,9 +10,6 @@ class TTPlayground(Playground.Playground):
     def exit(self):
         Playground.Playground.exit(self)
         taskMgr.remove('TT-birds')
-
-    def showPaths(self):
-        self.showPathPoints(CCharPaths.getPaths(TTLocalizer.Mickey))
 
     def __birds(self, task):
         base.playSfx(random.choice(self.loader.birdSound))
