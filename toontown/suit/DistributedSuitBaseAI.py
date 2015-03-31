@@ -117,6 +117,7 @@ class DistributedSuitBaseAI(DistributedAvatarAI.DistributedAvatarAI, SuitBase.Su
     def useSkeleRevive(self):
         self.skeleRevives -= 1
         self.currHP = self.maxHP
+        self.d_setHP(self.currHP)
         self.reviveFlag = 1
 
     def reviveCheckAndClear(self):

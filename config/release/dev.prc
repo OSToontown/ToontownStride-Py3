@@ -27,6 +27,7 @@ want-achievements #f
 
 # Chat:
 want-whitelist #f
+want-blacklist-sequence #f
 
 # Cashbot boss:
 want-resistance-toonup #t
