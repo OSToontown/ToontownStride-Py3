@@ -4,6 +4,10 @@ from direct.fsm import State
 from direct.gui.DirectGui import *
 from direct.showbase import DirectObject
 from pandac.PandaModules import *
+
+from otp.login import LeaveToPayDialog
+from otp.login import PrivacyPolicyPanel
+from otp.login import SecretFriendsInfoPanel
 from otp.otpbase import OTPLocalizer
 from toontown.chat.ChatGlobals import *
 
@@ -45,13 +49,17 @@ class ChatManager(DirectObject.DirectObject):
         self.__normalObscured = 0
         self.openChatWarning = None
         self.unpaidChatWarning = None
+        self.teaser = None
         self.paidNoParentPassword = None
         self.noSecretChatAtAll = None
         self.noSecretChatAtAllAndNoWhitelist = None
         self.noSecretChatWarning = None
         self.activateChatGui = None
+        self.chatMoreInfo = None
+        self.chatPrivacyPolicy = None
         self.secretChatActivated = None
         self.problemActivatingChat = None
+        self.leaveToPayDialog = None
         self.fsm = ClassicFSM.ClassicFSM('chatManager', [State.State('off', self.enterOff, self.exitOff),
          State.State('mainMenu', self.enterMainMenu, self.exitMainMenu),
          State.State('speedChat', self.enterSpeedChat, self.exitSpeedChat),
@@ -62,6 +70,7 @@ class ChatManager(DirectObject.DirectObject):
          State.State('whisperSpeedChat', self.enterWhisperSpeedChat, self.exitWhisperSpeedChat),
          State.State('whisperSpeedChatPlayer', self.enterWhisperSpeedChatPlayer, self.exitWhisperSpeedChatPlayer),
          State.State('openChatWarning', self.enterOpenChatWarning, self.exitOpenChatWarning),
+         State.State('leaveToPayDialog', self.enterLeaveToPayDialog, self.exitLeaveToPayDialog),
          State.State('unpaidChatWarning', self.enterUnpaidChatWarning, self.exitUnpaidChatWarning),
          State.State('noSecretChatAtAll', self.enterNoSecretChatAtAll, self.exitNoSecretChatAtAll),
          State.State('noSecretChatAtAllAndNoWhitelist', self.enterNoSecretChatAtAllAndNoWhitelist, self.exitNoSecretChatAtAllAndNoWhitelist),
@@ -69,11 +78,14 @@ class ChatManager(DirectObject.DirectObject):
          State.State('noFriendsWarning', self.enterNoFriendsWarning, self.exitNoFriendsWarning),
          State.State('otherDialog', self.enterOtherDialog, self.exitOtherDialog),
          State.State('activateChat', self.enterActivateChat, self.exitActivateChat),
+         State.State('chatMoreInfo', self.enterChatMoreInfo, self.exitChatMoreInfo),
+         State.State('chatPrivacyPolicy', self.enterChatPrivacyPolicy, self.exitChatPrivacyPolicy),
          State.State('secretChatActivated', self.enterSecretChatActivated, self.exitSecretChatActivated),
          State.State('problemActivatingChat', self.enterProblemActivatingChat, self.exitProblemActivatingChat),
          State.State('whiteListOpenChat', self.enterWhiteListOpenChat, self.exitWhiteListOpenChat),
          State.State('whiteListAvatarChat', self.enterWhiteListAvatarChat, self.exitWhiteListAvatarChat),
-         State.State('whiteListPlayerChat', self.enterWhiteListPlayerChat, self.exitWhiteListPlayerChat)], 'off', 'off')
+         State.State('whiteListPlayerChat', self.enterWhiteListPlayerChat, self.exitWhiteListPlayerChat),
+         State.State('trueFriendTeaserPanel', self.enterTrueFriendTeaserPanel, self.exitTrueFriendTeaserPanel)], 'off', 'off')
         self.fsm.enterInitialState()
         return
 
@@ -93,6 +105,10 @@ class ChatManager(DirectObject.DirectObject):
             self.payButton = None
             self.unpaidChatWarning.destroy()
             self.unpaidChatWarning = None
+        if self.teaser:
+            self.teaser.cleanup()
+            self.teaser.unload()
+            self.teaser = None
         if self.noSecretChatAtAll:
             self.noSecretChatAtAll.destroy()
             self.noSecretChatAtAll = None
@@ -105,6 +121,12 @@ class ChatManager(DirectObject.DirectObject):
         if self.activateChatGui:
             self.activateChatGui.destroy()
             self.activateChatGui = None
+        if self.chatMoreInfo:
+            self.chatMoreInfo.destroy()
+            self.chatMoreInfo = None
+        if self.chatPrivacyPolicy:
+            self.chatPrivacyPolicy.destroy()
+            self.chatPrivacyPolicy = None
         if self.secretChatActivated:
             self.secretChatActivated.destroy()
             self.secretChatActivated = None
@@ -196,6 +218,8 @@ class ChatManager(DirectObject.DirectObject):
             if self.wantBackgroundFocus:
                 self.chatInputNormal.chatEntry['backgroundFocus'] = 1
             self.acceptOnce('enterNormalChat', self.fsm.request, ['normalChat'])
+            if not self.wantBackgroundFocus:
+                self.accept('t', messenger.send, ['enterNormalChat'])
 
     def checkObscurred(self):
         if not self.__scObscured:
@@ -387,6 +411,19 @@ class ChatManager(DirectObject.DirectObject):
     def exitOpenChatWarning(self):
         self.notify.error('called exitOpenChatWarning() on parent class')
 
+    def enterLeaveToPayDialog(self):
+        if self.leaveToPayDialog == None:
+            self.leaveToPayDialog = LeaveToPayDialog.LeaveToPayDialog(self.paidNoParentPassword)
+            self.leaveToPayDialog.setCancel(self.__handleLeaveToPayCancel)
+        self.leaveToPayDialog.show()
+        return
+
+    def exitLeaveToPayDialog(self):
+        if self.leaveToPayDialog:
+            self.leaveToPayDialog.destroy()
+            self.leaveToPayDialog = None
+        return
+
     def enterUnpaidChatWarning(self):
         self.notify.error('called enterUnpaidChatWarning() on parent class')
 
@@ -429,6 +466,30 @@ class ChatManager(DirectObject.DirectObject):
     def exitOtherDialog(self):
         pass
 
+    def enterChatMoreInfo(self):
+        if self.chatMoreInfo == None:
+            self.chatMoreInfo = SecretFriendsInfoPanel.SecretFriendsInfoPanel('secretFriendsInfoDone')
+        self.chatMoreInfo.show()
+        self.accept('secretFriendsInfoDone', self.__secretFriendsInfoDone)
+        return
+
+    def exitChatMoreInfo(self):
+        self.chatMoreInfo.hide()
+        self.ignore('secretFriendsInfoDone')
+
+    def enterChatPrivacyPolicy(self):
+        if self.chatPrivacyPolicy == None:
+            self.chatPrivacyPolicy = PrivacyPolicyPanel.PrivacyPolicyPanel('privacyPolicyDone')
+        self.chatPrivacyPolicy.show()
+        self.accept('privacyPolicyDone', self.__privacyPolicyDone)
+        return
+
+    def exitChatPrivacyPolicy(self):
+        cleanupDialog('privacyPolicyDialog')
+        self.chatPrivacyPolicy = None
+        self.ignore('privacyPolicyDone')
+        return
+
     def enterSecretChatActivated(self):
         self.notify.error('called enterSecretChatActivated() on parent class')
 
@@ -440,3 +501,18 @@ class ChatManager(DirectObject.DirectObject):
 
     def exitProblemActivatingChat(self):
         self.notify.error('called exitProblemActivatingChat() on parent class')
+
+    def enterTrueFriendTeaserPanel(self):
+        self.notify.error('called enterTrueFriendTeaserPanel () on parent class')
+
+    def exitTrueFriendTeaserPanel(self):
+        self.notify.error('called exitTrueFriendTeaserPanel () on parent class')
+
+    def __handleLeaveToPayCancel(self):
+        self.fsm.request('mainMenu')
+
+    def __secretFriendsInfoDone(self):
+        self.fsm.request('activateChat')
+
+    def __privacyPolicyDone(self):
+        self.fsm.request('activateChat')

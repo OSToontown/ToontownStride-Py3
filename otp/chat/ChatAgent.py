@@ -43,9 +43,9 @@ def chatmode(mode=-1):
         return "You are currently talking in the %s chat mode." % mode2name.get(base.cr.chatAgent.chatMode, "N/A")
     if not 0 <= mode <= 3:
         return "Invalid chat mode specified."
-    if mode == 3 and spellbook.getInvoker().getAdminAccess() < 500:
+    if mode == 3 and spellbook.getInvoker().getAdminAccess() < 600:
         return "Chat mode 3 is reserved for system administrators."
-    if mode == 2 and spellbook.getInvoker().getAdminAccess() < 400:
+    if mode == 2 and spellbook.getInvoker().getAdminAccess() < 500:
         return "Chat mode 2 is reserved for administrators."
     if mode == 1 and spellbook.getInvoker().getAdminAccess() < 200:
         # Like this will ever happen, but whatever.
