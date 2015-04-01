@@ -142,10 +142,10 @@ class DistributedBattleBldgAI(DistributedBattleBaseAI.DistributedBattleBaseAI):
         self.resumeLastActiveSuitDied = 0
 
     def enterReservesJoining(self, ts=0):
-        pass
+        return None
 
     def exitReservesJoining(self, ts=0):
-        pass
+        return None
 
     def enterReward(self):
         self.timer.startCallback(FLOOR_REWARD_TIMEOUT, self.serverRewardDone)
