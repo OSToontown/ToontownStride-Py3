@@ -12,53 +12,6 @@ LOADING_SCREEN_SORT_INDEX = 4000
 class ToontownLoadingScreen:
 
     defaultTex = 'phase_3.5/maps/loading/default.jpg'
-    zone2picture = {
-        ToontownGlobals.GoofySpeedway : 'phase_3.5/maps/loading/gs.jpg',
-        ToontownGlobals.ToontownCentral : 'phase_3.5/maps/loading/ttc.jpg',
-        ToontownGlobals.SillyStreet : 'phase_3.5/maps/loading/ttc_ss.jpg',
-        ToontownGlobals.LoopyLane : 'phase_3.5/maps/loading/ttc_ll.jpg',
-        ToontownGlobals.PunchlinePlace : 'phase_3.5/maps/loading/ttc_pp.jpg',
-        ToontownGlobals.DonaldsDock : 'phase_3.5/maps/loading/dd.jpg',
-        ToontownGlobals.BarnacleBoulevard : 'phase_3.5/maps/loading/dd_bb.jpg',
-        ToontownGlobals.SeaweedStreet : 'phase_3.5/maps/loading/dd_ss.jpg',
-        ToontownGlobals.LighthouseLane : 'phase_3.5/maps/loading/dd_ll.jpg',
-        ToontownGlobals.DaisyGardens : 'phase_3.5/maps/loading/dg.jpg',
-        ToontownGlobals.ElmStreet : 'phase_3.5/maps/loading/dg_es.jpg',
-        ToontownGlobals.MapleStreet : 'phase_3.5/maps/loading/dg_ms.jpg',
-        ToontownGlobals.OakStreet : 'phase_3.5/maps/loading/dg_os.jpg',
-        ToontownGlobals.MinniesMelodyland : 'phase_3.5/maps/loading/mml.jpg',
-        ToontownGlobals.AltoAvenue : 'phase_3.5/maps/loading/mml_aa.jpg',
-        ToontownGlobals.BaritoneBoulevard : 'phase_3.5/maps/loading/mml_bb.jpg',
-        ToontownGlobals.TenorTerrace : 'phase_3.5/maps/loading/mml_tt.jpg',
-        ToontownGlobals.TheBrrrgh : 'phase_3.5/maps/loading/tb.jpg',
-        ToontownGlobals.WalrusWay : 'phase_3.5/maps/loading/tb_ww.jpg',
-        ToontownGlobals.SleetStreet : 'phase_3.5/maps/loading/tb_ss.jpg',
-        ToontownGlobals.PolarPlace : 'phase_3.5/maps/loading/tb_pp.jpg',
-        ToontownGlobals.DonaldsDreamland : 'phase_3.5/maps/loading/ddl.jpg',
-        ToontownGlobals.LullabyLane : 'phase_3.5/maps/loading/ddl_ll.jpg',
-        ToontownGlobals.PajamaPlace : 'phase_3.5/maps/loading/ddl_pp.jpg',
-        ToontownGlobals.OutdoorZone : 'phase_3.5/maps/loading/oz.jpg',
-        ToontownGlobals.GolfZone : 'phase_3.5/maps/loading/gz.jpg',
-        ToontownGlobals.SellbotHQ : 'phase_3.5/maps/loading/sbhq.jpg',
-        ToontownGlobals.CashbotHQ : 'phase_3.5/maps/loading/cbhq.jpg',
-        ToontownGlobals.LawbotHQ : 'phase_3.5/maps/loading/lbhq.jpg',
-        ToontownGlobals.BossbotHQ : 'phase_3.5/maps/loading/bbhq.jpg'
-    }
-    emotes = [
-        {'emote': 'bored', 'frame': 135},
-        {'emote': 'run', 'frame': 7},
-        {'emote': 'victory', 'frame': 10},
-        {'emote': 'applause', 'frame': 23},
-        {'emote': 'sprinkle-dust', 'frame': 40},
-        {'emote': 'hypnotize', 'frame': 25},
-        {'emote': 'cringe', 'frame': 25},
-        {'emote': 'wave', 'frame': 25},
-        {'emote': 'shrug', 'frame': 30},
-        {'emote': 'duck', 'frame': 40},
-        {'emote': 'up', 'frame': 60},
-        {'emote': 'down', 'frame': 23},
-        {'emote': 'bow', 'frame': 45}
-    ]
 
     def __init__(self):
         self.__expectedCount = 0
@@ -75,13 +28,10 @@ class ToontownLoadingScreen:
         scale = self.logo.getScale()
         # self.logo.setPos(scale[0], 0, -scale[2])
         self.logo.setPos(0, 0, -scale[2])
-        self.toon = None
 
     def destroy(self):
         self.title.destroy()
         self.gui.removeNode()
-        if self.toon:
-            self.toon.delete()
         self.logo.removeNode()
 
     def getTip(self, tipCategory):
@@ -90,25 +40,11 @@ class ToontownLoadingScreen:
     def begin(self, range, label, gui, tipCategory, zoneId):
         self.waitBar['range'] = range
         self.title['text'] = label
-        loadingScreenTex = self.zone2picture.get(ZoneUtil.getBranchZone(zoneId), self.defaultTex)
+        loadingScreenTex = self.defaultTex
         self.background = loader.loadTexture(loadingScreenTex)
         self.__count = 0
         self.__expectedCount = range
         if gui:
-            if base.localAvatarStyle:
-                from toontown.toon import Toon
-                emote = random.choice(self.emotes)
-                self.toon = Toon.Toon()
-                self.toon.setDNA(base.localAvatarStyle)
-                try: self.toon.pose(*emote.values())
-                except: self.toon.pose(emote['emote'], emote['frame'])
-                self.toon.getGeomNode().setDepthWrite(1)
-                self.toon.getGeomNode().setDepthTest(1)
-                self.toon.setHpr(205, 0, 0)
-                self.toon.setScale(0.18)
-                self.toon.setPos(base.a2dBottomRight.getX()/1.25, 0, -0.034)
-                self.toon.reparentTo(self.waitBar)
-                self.waitBar['frameSize'] = (base.a2dLeft+(base.a2dRight/8.15), base.a2dRight-(base.a2dRight/2.57), -0.03, 0.03)
             self.title.reparentTo(base.a2dpBottomLeft, LOADING_SCREEN_SORT_INDEX)
             self.title.setPos(0.24, 0, 0.23)
             self.gui.setPos(0, -0.1, 0)
@@ -128,8 +64,6 @@ class ToontownLoadingScreen:
         self.waitBar.reparentTo(self.gui)
         self.title.reparentTo(self.gui)
         self.gui.reparentTo(hidden)
-        if self.toon:
-            self.toon.reparentTo(hidden)
         self.logo.reparentTo(hidden)
         return (self.__expectedCount, self.__count)
 
