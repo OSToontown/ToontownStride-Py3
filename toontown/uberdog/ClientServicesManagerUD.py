@@ -101,12 +101,6 @@ class AccountDB:
     def lookup(self, username, callback):
         pass  # Inheritors should override this.
 
-    def persistMessage(self, category, description, sender, receiver):
-        print ['persistMessage', category, description, sender, receiver]
-
-    def persistChat(self, sender, message, channel):
-        pass
-
     def storeAccountID(self, userId, accountId, callback):
         self.dbm[str(userId)] = str(accountId)  # anydbm only allows strings.
         if getattr(self.dbm, 'sync', None):
