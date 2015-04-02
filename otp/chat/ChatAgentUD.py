@@ -2,8 +2,8 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectGlobalUD import DistributedObjectGlobalUD
 # TODO: OTP should not depend on Toontown... Hrrm.
 from toontown.chat.TTWhiteList import TTWhiteList
-from toontown.chat.TTSequenceList import TTSequenceList
 from otp.distributed import OtpDoGlobals
+import SequenceList
 
 class ChatAgentUD(DistributedObjectGlobalUD):
     notify = DirectNotifyGlobal.directNotify.newCategory("ChatAgentUD")
@@ -15,7 +15,7 @@ class ChatAgentUD(DistributedObjectGlobalUD):
         if self.wantWhitelist:
             self.whiteList = TTWhiteList()
             if self.wantBlacklistSequence:
-                self.sequenceList = TTSequenceList()
+                self.sequenceList = SequenceList.SequenceList()
         self.chatMode2channel = {
             1 : OtpDoGlobals.OTP_MOD_CHANNEL,
             2 : OtpDoGlobals.OTP_ADMIN_CHANNEL,

@@ -1,13 +1,6 @@
 # Python artifacts:
 *.pyc
 
-# Windows
-cmd.exe
-
-# Eclipse IDE:
-.project
-.pydevproject
-
 # PyCharm
 .idea
 
