@@ -17,6 +17,7 @@ cmd.exe
 # Game-specific files and directories:
 preferences.json
 *.json
+*.pets
 logs/
 screenshots/
 backups/
