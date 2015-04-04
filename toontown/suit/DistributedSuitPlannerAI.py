@@ -24,6 +24,12 @@ from toontown.toonbase import ToontownGlobals
 ALLOWED_FO_TRACKS = 's'
 if config.GetBool('want-lawbot-cogdo', True):
     ALLOWED_FO_TRACKS += 'l'
+if config.GetBool('want-cashbot-cogdo', False):
+    ALLOWED_FO_TRACKS += 'c'
+if config.GetBool('want-bossbot-cogdo', False):
+    ALLOWED_FO_TRACKS += 'b'
+if config.GetBool('want-omni-cogdo', False):
+    ALLOWED_FO_TRACKS += 'slcb'
     
 DEFAULT_COGDO_RATIO = .5
 
