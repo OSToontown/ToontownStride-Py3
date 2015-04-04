@@ -10,7 +10,6 @@ import MovieCamera
 import MovieUtil
 from toontown.chat.ChatGlobals import *
 from toontown.nametag.NametagGlobals import *
-from toontown.toon import LaughingManGlobals
 from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownBattleGlobals
@@ -93,8 +92,7 @@ def __getSoundTrack(level, delay, duration = None, node = None):
 
 def teleportIn(attack, npc, pos = Point3(0, 0, 0), hpr = Vec3(180.0, 0.0, 0.0)):
     if npc.getName() == 'Magic Cat':
-        LaughingManGlobals.addToonEffect(npc)
-        npc.nametag3d.hide()
+        npc.generateLaughingMan(True)
     a = Func(npc.reparentTo, attack['battle'])
     b = Func(npc.setPos, pos)
     c = Func(npc.setHpr, hpr)

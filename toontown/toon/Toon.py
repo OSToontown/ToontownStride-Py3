@@ -968,8 +968,8 @@ class Toon(Avatar.Avatar, ToonHead):
 
         return swappedTorso
 
-    def generateLaughingMan(self):
-        if not self.getHasLaughingMan() and self.getWantLaughingMan():
+    def generateLaughingMan(self, force=False):
+        if force or (not self.getHasLaughingMan() and self.getWantLaughingMan()):
             LaughingManGlobals.addToonEffect(self)
     
     def generateHat(self, fromRTM = False):
