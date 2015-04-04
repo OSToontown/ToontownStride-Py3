@@ -828,7 +828,7 @@ class Toon(Avatar.Avatar, ToonHead):
         if headStyle > -1:
             self.style.head = headStyle
         if laughingMan > -1:
-            self.style.laughingMan = True if laughingMan else self.getWantLaughingMan()
+            self.style.laughingMan = True if laughingMan else self.getWantLaughingManHoliday()
         self.generateToonHead(copy)
         self.generateToonColor()
         self.parentToonParts()
@@ -1149,7 +1149,10 @@ class Toon(Avatar.Avatar, ToonHead):
         return self.hat
     
     def getWantLaughingMan(self):
-        return self.style.laughingMan or (base.cr.newsManager and base.cr.newsManager.isHolidayRunning(ToontownGlobals.LAUGHING_MAN))
+        return self.style.laughingMan or self.getWantLaughingManHoliday()
+    
+    def getWantLaughingManHoliday(self):
+        return base.cr.newsManager and base.cr.newsManager.isHolidayRunning(ToontownGlobals.LAUGHING_MAN)
     
     def setGlasses(self, glassesIdx, textureIdx, colorIdx, fromRTM = False):
         self.glasses = (glassesIdx, textureIdx, colorIdx)

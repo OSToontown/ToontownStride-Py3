@@ -732,8 +732,8 @@ class MoreOptionsTabPage(DirectFrame):
         options_text_scale = 0.052
         disabled_arrow_color = Vec4(0.6, 0.6, 0.6, 1.0)
         self.speed_chat_scale = 0.055    
-        self.CogLevel_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord), command=self.__doToggleCogLevelGui)
-        self.CogLevel_Label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight))
+        self.cogLevel_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord), command=self.__doToggleCogLevelGui)
+        self.cogLevel_label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight))
         gui.removeNode()
         guiButton.removeNode()
 
@@ -747,36 +747,17 @@ class MoreOptionsTabPage(DirectFrame):
         self.hide()
 
     def unload(self):
-        self.CogLevel_Label.destroy()
-        del self.CogLevel_Label
-        self.CogLevel_toggleButton.destroy()
-        del self.CogLevel_toggleButton
+        self.cogLevel_label.destroy()
+        del self.cogLevel_label
+        self.cogLevel_toggleButton.destroy()
+        del self.cogLevel_toggleButton
 
     def __doToggleCogLevelGui(self):
         messenger.send('wakeup')
-        if base.wantCogLevelGui:
-            base.wantCogLevelGui = False
-            settings['want-Cog-Level-GUI'] = False        
-        else:
-            base.wantCogLevelGui = True
-            settings['want-Cog-Level-GUI'] = True
+        settings['cogLevel'] = not settings['cogLevel']
         self.settingsChanged = 1
         self.__setCogLevelGuiButton()
 
     def __setCogLevelGuiButton(self):
-        if base.wantCogLevelGui:
-            self.CogLevel_Label['text'] = 'Cog Level GUI In-Battle:'
-            self.CogLevel_toggleButton['text'] = 'On'
-        else:
-            self.CogLevel_Label['text'] = 'Cog Level GUI In-Battle:'
-            self.CogLevel_toggleButton['text'] = 'Off'
-
-    def __doToggleAntialiasing(self):
-        # To toggle anti-aliasing in the future.
-        pass
-
-    def __setAntialiasingGuiButton(self):
-        # More anti-aliasing stuff.
-        pass
-
-
+        self.cogLevel_label['text'] = TTLocalizer.CogLevelLabelOn if settings['cogLevel'] else TTLocalizer.CogLevelLabelOff
+        self.cogLevel_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff if settings['cogLevel'] else TTLocalizer.OptionsPageToggleOn

@@ -235,8 +235,6 @@ class ToonBase(OTPBase.OTPBase):
 
         self.filters = CommonFilters(self.win, self.cam)
 
-        self.wantCogLevelGui = settings.get('want-Cog-Level-GUI', True)
-
     def openMainWindow(self, *args, **kw):
         result = OTPBase.OTPBase.openMainWindow(self, *args, **kw)
         self.setCursorAndIcon()
