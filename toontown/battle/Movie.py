@@ -338,7 +338,7 @@ class Movie(DirectObject.DirectObject):
 
         self.tutorialTom = Toon.Toon()
         dna = ToonDNA.ToonDNA()
-        dna.newToonFromProperties(*('dls', 'ms', 'm', 'm', 7, 0, 7, 7, 2, 6, 2, 6, 2, 16))
+        dna.newToonFromProperties(*('dls', 'ms', 'm', 'm', 7, 0, 7, 7, 2, 6, 2, 6, 2, 16, 0))
         self.tutorialTom.setDNA(dna)
         self.tutorialTom.setName(TTLocalizer.NPCToonNames[20000])
         self.tutorialTom.setPickable(0)

@@ -146,7 +146,7 @@ class OZSafeZoneLoader(SafeZoneLoader):
                 self.painterPete.setPlayerType(NametagGlobals.CCNonPlayer)
 
                 dna = ToonDNA.ToonDNA()
-                dna.newToonFromProperties('hls', 'ss', 'm', 'm', 18, 0, 13, 9, 0, 0, 0, 0, 2, 15)
+                dna.newToonFromProperties('hls', 'ss', 'm', 'm', 18, 0, 13, 9, 0, 0, 0, 0, 2, 15, 0)
                 self.painterPete.setDNA(dna)
 
                 self.painterPete.setHat(43, 0, 0)

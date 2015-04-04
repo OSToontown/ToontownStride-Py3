@@ -434,8 +434,6 @@ class Toon(Avatar.Avatar, ToonHead):
         self.hatNodes = []
         self.glassesNodes = []
         self.backpackNodes = []
-        self.wantLaughingMan = False
-        self.hasLaughingMan = False
         self.hat = (0, 0, 0)
         self.glasses = (0, 0, 0)
         self.backpack = (0, 0, 0)
@@ -552,8 +550,8 @@ class Toon(Avatar.Avatar, ToonHead):
     def updateToonDNA(self, newDNA, fForce = 0):
         self.style.gender = newDNA.getGender()
         oldDNA = self.style
-        if fForce or newDNA.head != oldDNA.head:
-            self.swapToonHead(newDNA.head)
+        if fForce or newDNA.head != oldDNA.head or newDNA.laughingMan != oldDNA.laughingMan:
+            self.swapToonHead(newDNA.head, newDNA.laughingMan)
         if fForce or newDNA.torso != oldDNA.torso:
             self.swapToonTorso(newDNA.torso, genClothes=0)
             self.loop('neutral')
@@ -817,7 +815,7 @@ class Toon(Avatar.Avatar, ToonHead):
             self.loadAnims(HeadAnimDict[self.style.head], 'head', '500')
             self.loadAnims(HeadAnimDict[self.style.head], 'head', '250')
 
-    def swapToonHead(self, headStyle, copy = 1):
+    def swapToonHead(self, headStyle=-1, laughingMan=-1, copy = 1):
         self.stopLookAroundNow()
         self.eyelids.request('open')
         self.unparentToonParts()
@@ -827,7 +825,10 @@ class Toon(Avatar.Avatar, ToonHead):
         # Bugfix: Until upstream Panda3D includes this, we have to do it here.
         if 'head' in self._Actor__commonBundleHandles:
             del self._Actor__commonBundleHandles['head']
-        self.style.head = headStyle
+        if headStyle > -1:
+            self.style.head = headStyle
+        if laughingMan > -1:
+            self.style.laughingMan = laughingMan
         self.generateToonHead(copy)
         self.generateToonColor()
         self.parentToonParts()
@@ -835,6 +836,8 @@ class Toon(Avatar.Avatar, ToonHead):
         self.resetHeight()
         self.eyelids.request('open')
         self.startLookAround()
+        if self.style.laughingMan:
+            LaughingManGlobals.addToonEffect(self)
 
     def generateToonColor(self):
         ToonHead.generateToonColor(self, self.style)
@@ -969,8 +972,8 @@ class Toon(Avatar.Avatar, ToonHead):
         return swappedTorso
 
     def generateLaughingMan(self, force=False):
-        if force or (not self.getHasLaughingMan() and self.getWantLaughingMan()):
-            LaughingManGlobals.addToonEffect(self)
+        if force or self.getWantLaughingMan():
+            self.swapToonHead(laughingMan=True)
     
     def generateHat(self, fromRTM = False):
         hat = self.getHat()
@@ -1146,10 +1149,7 @@ class Toon(Avatar.Avatar, ToonHead):
         return self.hat
     
     def getWantLaughingMan(self):
-        return self.wantLaughingMan or (base.cr.newsManager and base.cr.newsManager.isHolidayRunning(ToontownGlobals.LAUGHING_MAN))
-    
-    def getHasLaughingMan(self):
-        return self.hasLaughingMan
+        return self.style.laughingMan or (base.cr.newsManager and base.cr.newsManager.isHolidayRunning(ToontownGlobals.LAUGHING_MAN))
     
     def setGlasses(self, glassesIdx, textureIdx, colorIdx, fromRTM = False):
         self.glasses = (glassesIdx, textureIdx, colorIdx)

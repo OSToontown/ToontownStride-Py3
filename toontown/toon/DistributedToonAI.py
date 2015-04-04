@@ -4988,6 +4988,16 @@ def dna(part, value):
         invoker.b_setDNAString(dna.makeNetString())
         return 'Bottom texture color index set to: ' + str(dna.botTexColor)
 
+    if part == 'laughingman':
+        if not value.isdigit():
+            return 'Laughing Man can only be 0 or 1.'
+        value = int(value)
+        if value != 0 and value != 1:
+            return 'Laughing Man can only be 0 or 1.'
+        dna.laughingMan = value
+        invoker.b_setDNAString(dna.makeNetString())
+        return 'Laughing Man set to: ' + str(dna.laughingMan)
+    
     if part == 'save':
         backup = simbase.backups.load('toon', (invoker.doId,), default={})
         backup.setdefault('dna', {})[value] = invoker.getDNAString()

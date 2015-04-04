@@ -217,8 +217,6 @@ class NPCFriendCard(DirectFrame):
         head = ToonHead.ToonHead()
         head.setupHead(dna, forGui=1)
         self.fitGeometry(head, fFlip=1, dimension=dimension)
-        if NPCID == 91917:
-            LaughingManGlobals.addHeadEffect(head, book=True)
         return head
 
     def fitGeometry(self, geom, fFlip = 0, dimension = 0.5):

@@ -371,6 +371,9 @@ class NewsManager(DistributedObject.DistributedObject):
             elif holidayId == ToontownGlobals.SPOOKY_BLACK_CAT:
                 if hasattr(base, 'localAvatar') and base.localAvatar and hasattr(base.localAvatar, 'chatMgr') and base.localAvatar.chatMgr:
                     self.setSpookyBlackCatHolidayEnd()
+            elif holidayId == ToontownGlobals.LAUGHING_MAN:
+                if hasattr(base, 'localAvatar') and base.localAvatar:
+                    self.setLaughingManHolidayEnd()
             elif holidayId == ToontownGlobals.TOP_TOONS_MARATHON:
                 if hasattr(base, 'localAvatar') and base.localAvatar and hasattr(base.localAvatar, 'chatMgr') and base.localAvatar.chatMgr:
                     self.setTopToonsMarathonEnd()
@@ -543,6 +546,10 @@ class NewsManager(DistributedObject.DistributedObject):
         base.localAvatar.setSystemMessage(0, TTLocalizer.LaughingManHolidayStart)
         for currToon in base.cr.toons.values():
             currToon.generateLaughingMan()
+    
+    def setLaughingManHolidayEnd(self):
+        for currToon in base.cr.toons.values():
+            currToon.swapToonHead(laughingMan=False)
     
     def setTopToonsMarathonStart(self):
         base.localAvatar.setSystemMessage(0, TTLocalizer.TopToonsMarathonStart)

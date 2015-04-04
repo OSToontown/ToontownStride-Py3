@@ -2510,6 +2510,7 @@ class ToonDNA(AvatarDNA.AvatarDNA):
         string = string + 'sleeve texture color = %d\n' % self.sleeveTexColor
         string = string + 'bottom texture = %d\n' % self.botTex
         string = string + 'bottom texture color = %d\n' % self.botTexColor
+        string = string + 'laughing man = %d\n' % self.laughingMan
         return string
 
     def clone(self):
@@ -2541,16 +2542,23 @@ class ToonDNA(AvatarDNA.AvatarDNA):
             dg.addUint8(self.gloveColor)
             dg.addUint8(self.legColor)
             dg.addUint8(self.headColor)
+            dg.addUint8(self.laughingMan)
         elif self.type == 'u':
             notify.error('undefined avatar')
         else:
             notify.error('unknown avatar type: ', self.type)
         return dg.getMessage()
 
+    def getDatagramWithFallback(self, dgi, fallback=0):
+        try:
+            return dgi.getUint8()
+        except:
+            return fallback
+    
     def isValidNetString(self, string):
         dg = PyDatagram(string)
         dgi = PyDatagramIterator(dg)
-        if dgi.getRemainingSize() != 15:
+        if dgi.getRemainingSize() not in [15, 16]:
             return False
         type = dgi.getFixedString(1)
         if type not in ('t',):
@@ -2579,6 +2587,7 @@ class ToonDNA(AvatarDNA.AvatarDNA):
         gloveColor = dgi.getUint8()
         legColor = dgi.getUint8()
         headColor = dgi.getUint8()
+        laughingMan = self.getDatagramWithFallback(dgi, 0)
         if topTex >= len(Shirts):
             return False
         if topTexColor >= len(ClothesColors):
@@ -2596,6 +2605,8 @@ class ToonDNA(AvatarDNA.AvatarDNA):
         if legColor >= len(allColorsList):
             return False
         if headColor >= len(allColorsList):
+            return False
+        if laughingMan != 0 and laughingMan != 1:
             return False
         return True
 
@@ -2625,6 +2636,7 @@ class ToonDNA(AvatarDNA.AvatarDNA):
             self.gloveColor = dgi.getUint8()
             self.legColor = dgi.getUint8()
             self.headColor = dgi.getUint8()
+            self.laughingMan = self.getDatagramWithFallback(dgi, 0)
         else:
             notify.error('unknown avatar type: ', self.type)
         return None
@@ -2658,11 +2670,12 @@ class ToonDNA(AvatarDNA.AvatarDNA):
             self.legColor = color
             self.headColor = color
             self.gloveColor = 0
+            self.laughingMan = 0
         else:
             notify.error("tuple must be in format ('%s', '%s', '%s', '%s')")
         return
 
-    def newToonFromProperties(self, head, torso, legs, gender, armColor, gloveColor, legColor, headColor, topTexture, topTextureColor, sleeveTexture, sleeveTextureColor, bottomTexture, bottomTextureColor):
+    def newToonFromProperties(self, head, torso, legs, gender, armColor, gloveColor, legColor, headColor, topTexture, topTextureColor, sleeveTexture, sleeveTextureColor, bottomTexture, bottomTextureColor, laughingMan=0):
         self.type = 't'
         self.head = head
         self.torso = torso
@@ -2678,8 +2691,9 @@ class ToonDNA(AvatarDNA.AvatarDNA):
         self.sleeveTexColor = sleeveTextureColor
         self.botTex = bottomTexture
         self.botTexColor = bottomTextureColor
+        self.laughingMan = laughingMan
 
-    def updateToonProperties(self, head = None, torso = None, legs = None, gender = None, armColor = None, gloveColor = None, legColor = None, headColor = None, topTexture = None, topTextureColor = None, sleeveTexture = None, sleeveTextureColor = None, bottomTexture = None, bottomTextureColor = None, shirt = None, bottom = None):
+    def updateToonProperties(self, head = None, torso = None, legs = None, gender = None, armColor = None, gloveColor = None, legColor = None, headColor = None, topTexture = None, topTextureColor = None, sleeveTexture = None, sleeveTextureColor = None, bottomTexture = None, bottomTextureColor = None, shirt = None, bottom = None, laughingMan = None):
         if head:
             self.head = head
         if torso:
@@ -2708,6 +2722,8 @@ class ToonDNA(AvatarDNA.AvatarDNA):
             self.botTex = bottomTexture
         if bottomTextureColor:
             self.botTexColor = bottomTextureColor
+        if laughingMan:
+            self.laughingMan = laughingMan
         if shirt:
             str, colorIndex = shirt
             defn = ShirtStyles[str]
@@ -2776,6 +2792,7 @@ class ToonDNA(AvatarDNA.AvatarDNA):
             self.legColor = color
             self.headColor = color
         self.gloveColor = 0
+        self.laughingMan = 0
 
     def asTuple(self):
         return (self.head,
@@ -2791,7 +2808,8 @@ class ToonDNA(AvatarDNA.AvatarDNA):
          self.sleeveTex,
          self.sleeveTexColor,
          self.botTex,
-         self.botTexColor)
+         self.botTexColor,
+         self.laughingMan)
 
     def getType(self):
         if self.type == 't':
@@ -2903,7 +2921,10 @@ class ToonDNA(AvatarDNA.AvatarDNA):
 
     def getWhiteColor(self):
         return allColorsList[0]
-
+    
+    def isLaughingMan(self):
+        return self.laughingMan
+    
     def setTemporary(self, newHead, newArmColor, newLegColor, newHeadColor):
         if not self.cache and self.getArmColor != newArmColor:
             self.cache = (self.head,
