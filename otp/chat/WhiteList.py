@@ -20,3 +20,21 @@ class WhiteList:
             return False
 
         return self.words[i].startswith(text)
+
+    def prefixCount(self, text):
+        text = self.cleanText(text)
+        i = bisect_left(self.words, text)
+        j = i
+        while j < self.numWords and self.words[j].startswith(text):
+            j += 1
+
+        return j - i
+
+    def prefixList(self, text):
+        text = self.cleanText(text)
+        i = bisect_left(self.words, text)
+        j = i
+        while j < self.numWords and self.words[j].startswith(text):
+            j += 1
+
+        return self.words[i:j]        

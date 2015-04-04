@@ -1,13 +1,6 @@
 # Python artifacts:
 *.pyc
 
-# Windows
-cmd.exe
-
-# Eclipse IDE:
-.project
-.pydevproject
-
 # PyCharm
 .idea
 
@@ -17,9 +10,11 @@ cmd.exe
 # Game-specific files and directories:
 preferences.json
 *.json
+*.pets
 logs/
 screenshots/
 backups/
 contentpacks/
 resources/
 save.dat
+ai-crash.txt
