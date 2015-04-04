@@ -27,7 +27,7 @@ from toontown.nametag.NametagGlobals import *
 from toontown.suit import SuitDNA
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
-
+from toontown.toon import LaughingManGlobals
 
 def teleportDebug(requestStatus, msg, onlyIfToAv = True):
     if teleportNotify.getDebug():
@@ -434,6 +434,8 @@ class Toon(Avatar.Avatar, ToonHead):
         self.hatNodes = []
         self.glassesNodes = []
         self.backpackNodes = []
+        self.wantLaughingMan = False
+        self.hasLaughingMan = False
         self.hat = (0, 0, 0)
         self.glasses = (0, 0, 0)
         self.backpack = (0, 0, 0)
@@ -630,6 +632,7 @@ class Toon(Avatar.Avatar, ToonHead):
         self.rescaleToon()
         self.resetHeight()
         self.setupToonNodes()
+        self.generateLaughingMan()
 
     def setupToonNodes(self):
         rightHand = NodePath('rightHand')
@@ -965,6 +968,10 @@ class Toon(Avatar.Avatar, ToonHead):
 
         return swappedTorso
 
+    def generateLaughingMan(self):
+        if not self.getHasLaughingMan() and self.getWantLaughingMan():
+            LaughingManGlobals.addToonEffect(self)
+    
     def generateHat(self, fromRTM = False):
         hat = self.getHat()
         if hat[0] >= len(ToonDNA.HatModels):
@@ -1137,7 +1144,13 @@ class Toon(Avatar.Avatar, ToonHead):
 
     def getHat(self):
         return self.hat
-
+    
+    def getWantLaughingMan(self):
+        return self.wantLaughingMan or (base.cr.newsManager and base.cr.newsManager.isHolidayRunning(ToontownGlobals.LAUGHING_MAN))
+    
+    def getHasLaughingMan(self):
+        return self.hasLaughingMan
+    
     def setGlasses(self, glassesIdx, textureIdx, colorIdx, fromRTM = False):
         self.glasses = (glassesIdx, textureIdx, colorIdx)
         self.generateGlasses(fromRTM=fromRTM)

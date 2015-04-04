@@ -12,6 +12,7 @@ from direct.interval.IntervalGlobal import *
 import calendar
 from copy import deepcopy
 from toontown.suit import SuitDNA
+from otp.ai.MagicWordGlobal import *
 
 
 decorationHolidays = [ToontownGlobals.WINTER_DECORATIONS,
@@ -258,6 +259,9 @@ class NewsManager(DistributedObject.DistributedObject):
             elif holidayId == ToontownGlobals.SPOOKY_BLACK_CAT:
                 if hasattr(base, 'localAvatar') and base.localAvatar and hasattr(base.localAvatar, 'chatMgr') and base.localAvatar.chatMgr:
                     self.setSpookyBlackCatHolidayStart()
+            elif holidayId == ToontownGlobals.LAUGHING_MAN:
+                if hasattr(base, 'localAvatar') and base.localAvatar:
+                    self.setLaughingManHolidayStart()
             elif holidayId == ToontownGlobals.TOP_TOONS_MARATHON:
                 if hasattr(base, 'localAvatar') and base.localAvatar and hasattr(base.localAvatar, 'chatMgr') and base.localAvatar.chatMgr:
                     self.setTopToonsMarathonStart()
@@ -275,6 +279,8 @@ class NewsManager(DistributedObject.DistributedObject):
                 self.setExpandedClosetsStart()
             elif holidayId == ToontownGlobals.KARTING_TICKETS_HOLIDAY:
                 self.setKartingTicketsHolidayStart()
+            return True
+        return False
 
     def endHoliday(self, holidayId):
         if holidayId in self.holidayIdList:
@@ -377,6 +383,8 @@ class NewsManager(DistributedObject.DistributedObject):
             elif holidayId == ToontownGlobals.IDES_OF_MARCH:
                 if hasattr(base, 'localAvatar') and base.localAvatar and hasattr(base.localAvatar, 'chatMgr') and base.localAvatar.chatMgr:
                     base.localAvatar.chatMgr.chatInputSpeedChat.removeIdesOfMarchMenu()
+            return True
+        return False
 
     def setHolidayIdList(self, holidayIdList):
 
@@ -531,6 +539,11 @@ class NewsManager(DistributedObject.DistributedObject):
         for currToon in base.cr.toons.values():
             currToon.setDNA(currToon.style.clone())
 
+    def setLaughingManHolidayStart(self):
+        base.localAvatar.setSystemMessage(0, TTLocalizer.LaughingManHolidayStart)
+        for currToon in base.cr.toons.values():
+            currToon.generateLaughingMan()
+    
     def setTopToonsMarathonStart(self):
         base.localAvatar.setSystemMessage(0, TTLocalizer.TopToonsMarathonStart)
 
@@ -725,5 +738,42 @@ class NewsManager(DistributedObject.DistributedObject):
             startingWeekDay = (startingWeekDay + 1) % 7
 
     def isHolidayRunning(self, holidayId):
-        result = holidayId in self.holidayIdList
-        return result
+        return holidayId in self.holidayIdList
+
+def getHoliday(id):
+    if id.isdigit():
+        return int(id)
+    elif hasattr(ToontownGlobals, id):
+        return getattr(ToontownGlobals, id)
+    
+    return -1
+    
+@magicWord(category=CATEGORY_PROGRAMMER, types=[str])
+def startHoliday(id):
+    """
+    Start a holiday.
+    """
+    holiday = getHoliday(id.upper())
+    
+    if holiday < 0:
+        return "Couldn't find holiday " + id + '!'
+    
+    if base.cr.newsManager.startHoliday(holiday):
+        return 'Successfully started holiday ' + id + '!'
+    else:
+        return id + ' is already running!'
+
+@magicWord(category=CATEGORY_PROGRAMMER, types=[str])
+def endHoliday(id):
+    """
+    End a holiday.
+    """
+    holiday = getHoliday(id.upper())
+    
+    if holiday < 0:
+        return "Couldn't find holiday " + id + '!'
+    
+    if base.cr.newsManager.endHoliday(holiday):
+        return 'Successfully stopped holiday ' + id + '!'
+    else:
+        return id + ' is not running!'

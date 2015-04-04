@@ -1,6 +1,5 @@
 from pandac.PandaModules import *
 
-
 def makeCard(book=False):
     cardMaker = CardMaker('laughing-man-cm')
     cardMaker.setHasUvs(1)
@@ -27,17 +26,16 @@ def makeCard(book=False):
 
     return nodePath
 
-
 def addHeadEffect(head, book=False):
     card = makeCard(book=book)
     card.setScale(1.45 if book else 2.5)
     card.setZ(0.05 if book else 0.5)
+    
     for nodePath in head.getChildren():
-        nodePath.removeNode()
+        nodePath.hide()
+    
     card.instanceTo(head)
 
-
 def addToonEffect(toon):
-    toon.getDialogueArray = lambda *args, **kwargs: []
     for lod in toon.getLODNames():
         addHeadEffect(toon.getPart('head', lod))

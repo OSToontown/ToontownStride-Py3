@@ -17,8 +17,7 @@ class HolidayManagerAI:
             simbase.air.newsManager.setHolidayIdList([self.currentHolidays])
 
     def isHolidayRunning(self, holidayId):
-        if holidayId in self.currentHolidays:
-            return True
+        return holidayId in self.currentHolidays
 
     def isMoreXpHolidayRunning(self):
         if ToontownGlobals.MORE_XP_HOLIDAY in self.currentHolidays:

@@ -8579,6 +8579,7 @@ SpookyPropsHolidayStart = 'Silly Meter spins Toontown into spooky mode!'
 BlackCatHolidayStart = 'Create a Black Cat - Today only!'
 BlackCatHolidayEnd = 'Black Cat day has ended!'
 SpookyBlackCatHolidayStart = 'Friday 13th means a Black Cat blast!'
+LaughingManHolidayStart = 'Today is the day of the Laughing Man!'
 TopToonsMarathonStart = "The Top Toons New Year's Day Marathon has begun!"
 TopToonsMarathonEnd = "The Top Toons New Year's Day Marathon has ended."
 WinterDecorationsStart = "It's Winter Holiday time in Toontown!"
