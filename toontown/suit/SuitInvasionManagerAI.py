@@ -81,8 +81,8 @@ class SuitInvasionManagerAI:
             self.total = 1000
         elif type == INVASION_TYPE_MEGA:
             self.total = 5000
-		elif type == INVASION_TYPE_BRUTAL:
-		    self.total = 10000
+        elif type == INVASION_TYPE_BRUTAL:
+            self.total = 10000
         self.remaining = self.total
 
         self.flySuits()
@@ -99,16 +99,16 @@ class SuitInvasionManagerAI:
         if type == INVASION_TYPE_NORMAL:
             timeout = config.GetInt('invasion-timeout', 1800)
             taskMgr.doMethodLater(timeout, self.stopInvasion, 'invasionTimeout')
-			
-		# If this is a mega invasion, and the players take to long to defeat
-		# all of the cogs, we want the invasion to take a bit longer to timeout:
-		if type == INVASION_TYPE_MEGA:
-		    timeout = config.GetInt('invasion-timeout', 3200)
-			
-		# If this is a brutal invasion, the players will have a very long time to
-		# Defeat the cogs before the invasion times out:
-		if type == INVASION_TYPE_BRUTAL:
-		    timeout = config.GetInt('invasion-timeout', 10000)
+            
+        # If this is a mega invasion, and the players take to long to defeat
+        # all of the cogs, we want the invasion to take a bit longer to timeout:
+        if type == INVASION_TYPE_MEGA:
+            timeout = config.GetInt('invasion-timeout', 3200)
+            
+        # If this is a brutal invasion, the players will have a very long time to
+        # Defeat the cogs before the invasion times out:
+        if type == INVASION_TYPE_BRUTAL:
+            timeout = config.GetInt('invasion-timeout', 10000)
 
         self.sendInvasionStatus()
         return True

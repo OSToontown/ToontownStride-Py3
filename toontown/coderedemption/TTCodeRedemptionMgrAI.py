@@ -117,7 +117,7 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
         for item in items:
             if item in av.onOrder:
                 continue
-			
+            
             item.deliveryDate = int(time.time() / 60) + 0.01
             av.onOrder.append(item)
 
