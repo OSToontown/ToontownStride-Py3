@@ -828,7 +828,7 @@ class Toon(Avatar.Avatar, ToonHead):
         if headStyle > -1:
             self.style.head = headStyle
         if laughingMan > -1:
-            self.style.laughingMan = laughingMan
+            self.style.laughingMan = True if laughingMan else self.getWantLaughingMan()
         self.generateToonHead(copy)
         self.generateToonColor()
         self.parentToonParts()

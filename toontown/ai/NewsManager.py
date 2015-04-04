@@ -549,7 +549,7 @@ class NewsManager(DistributedObject.DistributedObject):
     
     def setLaughingManHolidayEnd(self):
         for currToon in base.cr.toons.values():
-            currToon.swapToonHead(laughingMan=False)
+            currToon.swapToonHead(laughingMan=currToon.getWantLaughingMan())
     
     def setTopToonsMarathonStart(self):
         base.localAvatar.setSystemMessage(0, TTLocalizer.TopToonsMarathonStart)
