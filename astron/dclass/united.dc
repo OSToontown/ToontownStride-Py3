@@ -711,8 +711,6 @@ from toontown.uberdog.DistributedMailManager/AI/UD import DistributedMailManager
 from toontown.uberdog.DistributedPartyManager/AI/UD import DistributedPartyManager/AI/UD
 from toontown.rpc.AwardManager/UD import AwardManager/UD
 from toontown.coderedemption.TTCodeRedemptionMgr/AI import TTCodeRedemptionMgr/AI
-from toontown.distributed.NonRepeatableRandomSourceAI import NonRepeatableRandomSourceAI
-from toontown.distributed.NonRepeatableRandomSourceUD import NonRepeatableRandomSourceUD
 from toontown.ai.DistributedPhaseEventMgr/AI import DistributedPhaseEventMgr/AI
 from toontown.ai.DistributedHydrantZeroMgr/AI import DistributedHydrantZeroMgr/AI
 from toontown.ai.DistributedMailboxZeroMgr/AI import DistributedMailboxZeroMgr/AI
@@ -3615,19 +3613,9 @@ dclass AwardManager : DistributedObjectGlobal {
   giveAwardToToon(uint32, DoId, string, DoId, uint32, uint32);
 };
 
-dclass NonRepeatableRandomSourceClient {
-  getRandomSamplesReply(uint32, uint32 []) airecv;
-};
-
-dclass TTCodeRedemptionMgr : DistributedObject, NonRepeatableRandomSourceClient {
-  redeemCode(uint32, char [0-256]) airecv clsend;
-  redeemCodeResult(uint32, uint32, uint32);
-};
-
-dclass NonRepeatableRandomSource : DistributedObject, NonRepeatableRandomSourceClient {
-  getRandomSamples(DoId, string, uint32, uint32);
-  randomSample(DoId, uint32);
-  randomSampleAck() airecv;
+dclass TTCodeRedemptionMgr : DistributedObject {
+  redeemCode(char [0-256]) airecv clsend;
+  redeemCodeResult(uint32);
 };
 
 struct Friend

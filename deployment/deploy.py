@@ -206,8 +206,6 @@ cmd = (pythonPath + ' ../tools/prepare_client.py' +
        ' --build-mfs' +
        ' --resources-dir src/resources' +
        ' --config-dir ' + configDir +
-       ' --include NonRepeatableRandomSourceUD.py' +
-       ' --include NonRepeatableRandomSourceAI.py' +
        ' --exclude ServiceStart.py')
 for vfsMount in vfsMounts:
     cmd += ' --vfs ' + vfsMount

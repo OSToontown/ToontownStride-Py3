@@ -82,8 +82,8 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
                 count += 1
 
         return count
-                
-    def redeemCode(self, context, code):
+
+    def redeemCode(self, code):
         avId = self.air.getAvatarIdFromSender()
         av = self.air.doId2do.get(avId)
 
@@ -92,26 +92,26 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
 
         if code in self.codes:
             if av.isCodeRedeemed(code):
-                self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [context, 3, 2])
+                self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [4])
                 return
 
             codeInfo = self.codes[code]
             date = datetime.now()
 
             if ('month' in codeInfo and date.month is not codeInfo['month']) or ('day' in codeInfo and date.day is not codeInfo['day']) or ('expirationDate' in codeInfo and codeInfo['expirationDate'] - date < timedelta(hours = 1)):
-                self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [context, 2, 0])
+                self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [2])
                 return
 
             av.redeemCode(code)
-            self.requestCodeRedeem(context, avId, av, codeInfo['items'])
+            self.requestCodeRedeem(avId, av, codeInfo['items'])
         else:
-            self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [context, 1, 0])
+            self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [1])
         
-    def requestCodeRedeem(self, context, avId, av, items):
+    def requestCodeRedeem(self, avId, av, items):
         count = self.getMailboxCount(items)
 
         if len(av.onOrder) + count > 5 or len(av.mailboxContents) + len(av.onOrder) + count >= ToontownGlobals.MaxMailboxContents:
-            self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [context, 3, 1])
+            self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [3])
             return
 
         for item in items:
@@ -122,4 +122,4 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
             av.onOrder.append(item)
 
         av.b_setDeliverySchedule(av.onOrder)
-        self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [context, 0, 0])
+        self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [0])

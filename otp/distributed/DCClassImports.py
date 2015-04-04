@@ -2,7 +2,7 @@
 from pandac.PandaModules import *
 
 
-hashVal = 4270694562L
+hashVal = 2680034445L
 
 
 from toontown.coghq import DistributedCashbotBossSafe, DistributedCashbotBossCrane, DistributedBattleFactory, DistributedCashbotBossTreasure, DistributedCogHQDoor, DistributedSellbotHQDoor, DistributedFactoryElevatorExt, DistributedMintElevatorExt, DistributedLawOfficeElevatorExt, DistributedLawOfficeElevatorInt, LobbyManager, DistributedMegaCorp, DistributedFactory, DistributedLawOffice, DistributedLawOfficeFloor, DistributedLift, DistributedDoorEntity, DistributedSwitch, DistributedButton, DistributedTrigger, DistributedCrushableEntity, DistributedCrusherEntity, DistributedStomper, DistributedStomperPair, DistributedLaserField, DistributedGolfGreenGame, DistributedSecurityCamera, DistributedMover, DistributedElevatorMarker, DistributedBarrelBase, DistributedGagBarrel, DistributedBeanBarrel, DistributedHealBarrel, DistributedGrid, ActiveCell, DirectionalCell, CrusherCell, DistributedCrate, DistributedSinkingPlatform, BattleBlocker, DistributedMint, DistributedMintRoom, DistributedMintBattle, DistributedStage, DistributedStageRoom, DistributedStageBattle, DistributedLawbotBossGavel, DistributedLawbotCannon, DistributedLawbotChair, DistributedCogKart, DistributedCountryClub, DistributedCountryClubRoom, DistributedMoleField, DistributedCountryClubBattle, DistributedMaze, DistributedFoodBelt, DistributedBanquetTable, DistributedGolfSpot
@@ -30,7 +30,6 @@ from toontown.safezone import DistributedTrolley, DistributedPartyGate, Distribu
 from toontown.fishing import DistributedFishingPond, DistributedFishingTarget, DistributedPondBingoManager
 from toontown.minigame import DistributedMinigame, DistributedMinigameTemplate, DistributedRaceGame, DistributedCannonGame, DistributedPhotoGame, DistributedPatternGame, DistributedRingGame, DistributedTagGame, DistributedMazeGame, DistributedTugOfWarGame, DistributedCatchGame, DistributedDivingGame, DistributedTargetGame, DistributedTravelGame, DistributedPairingGame, DistributedVineGame, DistributedIceGame, DistributedCogThiefGame, DistributedTwoDGame
 from toontown.racing import DistributedVehicle, DistributedStartingBlock, DistributedRace, DistributedKartPad, DistributedRacePad, DistributedViewPad, DistributedStartingBlock, DistributedLeaderBoard, DistributedGag, DistributedProjectile
-from toontown.distributed.NonRepeatableRandomSourceUD import NonRepeatableRandomSourceUD
 from toontown.catalog import CatalogManager, AccountDate
 from toontown.ai.DistributedHydrantZeroMgr import DistributedHydrantZeroMgr
 from toontown.rpc.AwardManager import AwardManager
@@ -44,7 +43,6 @@ from toontown.toon import DistributedToon, DistributedNPCToonBase, DistributedNP
 from toontown.tutorial import DistributedBattleTutorial, TutorialManager
 from toontown.pets import DistributedPetProxy
 from toontown.coderedemption.TTCodeRedemptionMgr import TTCodeRedemptionMgr
-from toontown.distributed.NonRepeatableRandomSourceAI import NonRepeatableRandomSourceAI
 from toontown.ai.DistributedMailboxZeroMgr import DistributedMailboxZeroMgr
 from toontown.uberdog.DistributedDeliveryManager import DistributedDeliveryManager
 from direct.distributed import DistributedObject, DistributedNode, DistributedSmoothNode, DistributedCartesianGrid, DistributedCamera, DistributedObjectGlobal

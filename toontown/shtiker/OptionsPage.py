@@ -665,9 +665,8 @@ class CodesTabPage(DirectFrame):
         self.__disableCodeEntry()
         return
 
-    def __getCodeResult(self, result, awardMgrResult):
+    def __getCodeResult(self, result):
         self.notify.debug('result = %s' % result)
-        self.notify.debug('awardMgrResult = %s' % awardMgrResult)
         self.__enableCodeEntry()
         if result == 0:
             self.resultPanel['image'] = self.resultPanelSuccessGui
@@ -680,10 +679,9 @@ class CodesTabPage(DirectFrame):
             self.resultPanel['text'] = TTLocalizer.CdrResultExpiredCode
         elif result == 3:
             self.resultPanel['image'] = self.resultPanelErrorGui
-            if awardMgrResult == 1:
-                self.resultPanel['text'] = TTLocalizer.CdrResultMailboxFull
-            elif awardMgrResult == 2:
-                self.resultPanel['text'] = TTLocalizer.CdrResultAlreadyRedeemed
+        elif result == 4:
+            self.resultPanel['image'] = self.resultPanelErrorGui
+            self.resultPanel['text'] = TTLocalizer.CdrResultAlreadyRedeemed
         if result == 0:
             self.successSfx.play()
         else:
