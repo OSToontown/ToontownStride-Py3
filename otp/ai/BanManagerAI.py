@@ -44,7 +44,7 @@ class BanFSM(FSM):
         self.accountId = fields.get('ACCOUNT_ID')
 
         if self.accountId:
-            self.performBan(0 if self.duration < 0 else datetime.date.now() + (self.duration * 3600000))
+            self.performBan(0 if self.duration < 0 else datetime.datetime.now() + (self.duration * 3600000))
 
     def getAvatarDetails(self):
         av = self.air.doId2do.get(self.avId)
