@@ -29,7 +29,7 @@ if accountDBType == 'remote':
 minAccessLevel = simbase.config.GetInt('min-access-level', 100)
 
 accountServerEndpoint = simbase.config.GetString('account-server-endpoint', 'http://127.0.0.1:45749/')
-accountServerSecret = simbase.config.GetString('account-server-secret', '69')
+accountServerSecret = simbase.config.GetString('account-server-secret', '1X5oN69^#0^fCw7s#uyQTWYJ!8m9z!6Midphf90gMQYl*L5Uy!Ri5KTP6@BbZ5#Tlm37bJAI')
 
 
 http = HTTPClient()
