@@ -47,6 +47,24 @@ def executeHttpRequest(url, **extras):
     except:
         return None
 
+def executeHttpRequestAndLog(url, **extras):
+    response = executeHttpRequest(url, extras)
+    
+    if response is None:
+        self.notify.error('A request to ' + url + ' went wrong.')
+        return None
+    
+    try:
+        json = json.loads(response)
+    except:
+        self.notify.error('Malformed response from ' + url + '.')
+        return None
+    
+    if json['error']:
+        self.notify.warning('Error from ' + url + ':' + json['error'])
+        return None
+    
+    return json
 
 #blacklist = executeHttpRequest('names/blacklist.json')
 #if blacklist:
@@ -85,13 +103,13 @@ class AccountDB:
         self.dbm = anydbm.open(filename, 'c')
 
     def addNameRequest(self, avId, name):
-        return 'Success'
+        return True
 
     def getNameStatus(self, avId):
         return 'APPROVED'
 
     def removeNameRequest(self, avId):
-        return 'Success'
+        pass
 
     def lookup(self, username, callback):
         pass  # Inheritors should override this.
@@ -112,7 +130,6 @@ class DeveloperAccountDB(AccountDB):
     def lookup(self, username, callback):
         # Let's check if this user's ID is in your account database bridge:
         if str(username) not in self.dbm:
-
             # Nope. Let's associate them with a brand new Account object! We
             # will assign them with 700 access just because they are a
             # developer:
@@ -122,31 +139,32 @@ class DeveloperAccountDB(AccountDB):
                 'accountId': 0,
                 'accessLevel': max(700, minAccessLevel)
             }
-            callback(response)
-            return response
-
         else:
-
             # We have an account already, let's return what we've got:
             response = {
                 'success': True,
                 'userId': username,
                 'accountId': int(self.dbm[str(username)]),
             }
-            callback(response)
-            return response
+        callback(response)
+        return response
 
 class RemoteAccountDB(AccountDB):
     notify = directNotify.newCategory('RemoteAccountDB')
 
     def addNameRequest(self, avId, name):
-        return None#executeHttpRequest('names/append', ID=str(avId), Name=name)
+        executeHttpRequestAndLog('nameadd', id=avId, name=name)
 
     def getNameStatus(self, avId):
-        return None#executeHttpRequest('names/status/?Id=' + str(avId))
+        json = executeHttpRequestAndLog('nameget', id=avId)
+        
+        if json is None:
+            return 'PENDING'
+        
+        return json['state']
 
     def removeNameRequest(self, avId):
-        return None#executeHttpRequest('names/remove', ID=str(avId))
+        executeHttpRequestAndLog('nameremove', id=avId)
 
     def lookup(self, token, callback):
         if (not token) or (len(token) != 36):
@@ -171,12 +189,11 @@ class RemoteAccountDB(AccountDB):
             return response
 
         username = str(cookie['username'])
-        accessLevel = max(cookie['accessLevel'], minAccessLevel)
         response = {
             'success': True,
             'userId': username,
             'accountId': int(self.dbm[username]) if username in self.dbm else 0,
-            'accessLevel': accessLevel
+            'accessLevel': max(cookie['accessLevel'], minAccessLevel)
         }
         callback(response)
         return response
@@ -654,16 +671,15 @@ class SetNameTypedFSM(AvatarOperationFSM):
         status = judgeName(self.name)
 
         if self.avId and status:
-            resp = self.csm.accountDB.addNameRequest(self.avId, self.name)
-            if resp != 'Success':
-                status = False
-            else:
+            if self.csm.accountDB.addNameRequest(self.avId, self.name):
                 self.csm.air.dbInterface.updateObject(
                     self.csm.air.dbId,
                     self.avId,
                     self.csm.air.dclassesByName['DistributedToonUD'],
                     {'WishNameState': ('PENDING',),
                      'WishName': (self.name,)})
+            else:
+                status = False
 
         if self.avId:
             self.csm.air.writeServerEvent('avatarWishname', self.avId, self.name)
