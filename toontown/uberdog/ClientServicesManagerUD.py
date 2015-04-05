@@ -16,6 +16,7 @@ from otp.distributed import OtpDoGlobals
 from toontown.makeatoon.NameGenerator import NameGenerator
 from toontown.toon.ToonDNA import ToonDNA
 from toontown.toonbase import TTLocalizer
+from toontown.uberdog import NameJudgeBlacklist
 
 
 # Import from PyCrypto only if we are using a database that requires it. This
@@ -36,7 +37,7 @@ http = HTTPClient()
 http.setVerifySsl(0)
 
 
-def executeHttpRequest(url, **extras):
+def executeHttpRequest(url, extras):
     request = urllib2.Request(accountServerEndpoint + url)
     request.add_header('User-Agent', 'TTU-Uberdog')
     request.add_header('Secret-Key', accountServerSecret)
@@ -55,33 +56,29 @@ def executeHttpRequestAndLog(url, **extras):
         return None
     
     try:
-        json = json.loads(response)
+        data = json.loads(response)
     except:
         self.notify.error('Malformed response from ' + url + '.')
         return None
     
-    if json['error']:
-        self.notify.warning('Error from ' + url + ':' + json['error'])
+    if 'error' in data:
+        self.notify.warning('Error from ' + url + ':' + data['error'])
         return None
     
-    return json
-
-#blacklist = executeHttpRequest('names/blacklist.json')
-#if blacklist:
-#    blacklist = json.loads(blacklist)
-
+    return data
 
 def judgeName(name):
     if not name:
         return False
-    if blacklist:
-        for namePart in name.split(' '):
-            namePart = namePart.lower()
-            if len(namePart) < 1:
-                return False
-            for banned in blacklist.get(namePart[0], []):
-                if banned in namePart:
-                    return False
+
+    for namePart in name.split(' '):
+        namePart = namePart.lower()
+      
+        if len(namePart) < 1:
+            return False
+        
+        if namePart in NameJudgeBlacklist.blacklist:
+            return False
     return True
 
 
@@ -156,12 +153,12 @@ class RemoteAccountDB(AccountDB):
         executeHttpRequestAndLog('nameadd', id=avId, name=name)
 
     def getNameStatus(self, avId):
-        json = executeHttpRequestAndLog('nameget', id=avId)
+        data = executeHttpRequestAndLog('nameget', id=avId)
         
-        if json is None:
+        if data is None:
             return 'PENDING'
         
-        return json['state']
+        return data['state']
 
     def removeNameRequest(self, avId):
         executeHttpRequestAndLog('nameremove', id=avId)
@@ -176,14 +173,12 @@ class RemoteAccountDB(AccountDB):
             callback(response)
             return response
         
-        cookie = json.loads(executeHttpRequest('cookie', Cookie=token))
+        cookie = executeHttpRequestAndLog('cookie', cookie=token)
         
-        if 'error' in cookie:
-            reason = cookie['error']
-            self.notify.warning(reason)
+        if cookie is None:
             response = {
                 'success': False,
-                'reason': reason
+                'reason': "Couldn't contact login server."
             }
             callback(response)
             return response
