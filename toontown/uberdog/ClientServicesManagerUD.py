@@ -48,21 +48,23 @@ def executeHttpRequest(url, extras):
     except:
         return None
 
+notify = directNotify.newCategory('ClientServicesManagerUD')
+
 def executeHttpRequestAndLog(url, **extras):
     response = executeHttpRequest(url, extras)
     
     if response is None:
-        self.notify.error('A request to ' + url + ' went wrong.')
+        notify.error('A request to ' + url + ' went wrong.')
         return None
     
     try:
         data = json.loads(response)
     except:
-        self.notify.error('Malformed response from ' + url + '.')
+        notify.error('Malformed response from ' + url + '.')
         return None
     
     if 'error' in data:
-        self.notify.warning('Error from ' + url + ':' + data['error'])
+        notify.warning('Error from ' + url + ':' + data['error'])
         return None
     
     return data
@@ -151,6 +153,7 @@ class RemoteAccountDB(AccountDB):
 
     def addNameRequest(self, avId, name):
         executeHttpRequestAndLog('nameadd', id=avId, name=name)
+        return True
 
     def getNameStatus(self, avId):
         data = executeHttpRequestAndLog('nameget', id=avId)

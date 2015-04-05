@@ -94,7 +94,10 @@ class MakeAToon(StateData.StateData):
                 self.toon.gender = 'd'
             self.toon.reparentTo(render)
             self.toon.loop('neutral')
-            self.toon.setPosHpr(-4.1, -2, 0, 200, 0, 0)
+            self.toon.setScale(self.toonScale)
+            self.spotlight.setPos(2, -1.95, 0.41)
+            self.toon.setPos(Point3(1.5, -4, 0))
+            self.toon.setH(120)
         self.guiTopBar.show()
         self.guiBottomBar.show()
         self.guiCancelButton.show()
