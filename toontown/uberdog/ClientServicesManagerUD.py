@@ -39,7 +39,7 @@ http.setVerifySsl(0)
 
 def executeHttpRequest(url, extras):
     request = urllib2.Request(accountServerEndpoint + url)
-    request.add_header('User-Agent', 'TTU-Uberdog')
+    request.add_header('User-Agent', 'TTU-Game')
     request.add_header('Secret-Key', accountServerSecret)
     for k, v in extras.items():
         request.add_header(k, v)
