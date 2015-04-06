@@ -4,28 +4,28 @@ from direct.distributed.DistributedNodeAI import DistributedNodeAI
 class DistributedLawnDecorAI(DistributedNodeAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedLawnDecorAI")
 
-    def getPlot(self):
-        pass
-
     def setPlot(self, todo0):
         pass
 
-    def getHeading(self):
+    def getPlot(self, todo0):
         pass
 
     def setHeading(self, todo0):
         pass
 
-    def getPosition(self):
+    def getHeading(self, todo0):
         pass
 
     def setPosition(self, todo0, todo1, todo2):
         pass
 
-    def getOwnerIndex(self):
+    def getPosition(self, todo0, todo1, todo2):
         pass
 
     def setOwnerIndex(self, todo0):
+        pass
+
+    def getOwnerIndex(self, todo1):
         pass
 
     def plotEntered(self):
