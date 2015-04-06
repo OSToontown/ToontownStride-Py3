@@ -94,16 +94,7 @@ class DummyLauncherBase:
     def getAccountServer(self):
         return ''
 
-    def getDeployment(self):
-        return 'US'
-
-    def getBlue(self):
-        return None
-
     def getPlayToken(self):
-        return None
-
-    def getDISLToken(self):
         return None
 
     def fakeDownloadPhaseTask(self, task):

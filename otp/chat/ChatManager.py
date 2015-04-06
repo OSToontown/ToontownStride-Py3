@@ -43,15 +43,8 @@ class ChatManager(DirectObject.DirectObject):
         self.wantBackgroundFocus = 1
         self.__scObscured = 0
         self.__normalObscured = 0
-        self.openChatWarning = None
-        self.unpaidChatWarning = None
-        self.paidNoParentPassword = None
         self.noSecretChatAtAll = None
         self.noSecretChatAtAllAndNoWhitelist = None
-        self.noSecretChatWarning = None
-        self.activateChatGui = None
-        self.secretChatActivated = None
-        self.problemActivatingChat = None
         self.fsm = ClassicFSM.ClassicFSM('chatManager', [State.State('off', self.enterOff, self.exitOff),
          State.State('mainMenu', self.enterMainMenu, self.exitMainMenu),
          State.State('speedChat', self.enterSpeedChat, self.exitSpeedChat),
@@ -61,16 +54,9 @@ class ChatManager(DirectObject.DirectObject):
          State.State('whisperChatPlayer', self.enterWhisperChatPlayer, self.exitWhisperChatPlayer),
          State.State('whisperSpeedChat', self.enterWhisperSpeedChat, self.exitWhisperSpeedChat),
          State.State('whisperSpeedChatPlayer', self.enterWhisperSpeedChatPlayer, self.exitWhisperSpeedChatPlayer),
-         State.State('openChatWarning', self.enterOpenChatWarning, self.exitOpenChatWarning),
-         State.State('unpaidChatWarning', self.enterUnpaidChatWarning, self.exitUnpaidChatWarning),
          State.State('noSecretChatAtAll', self.enterNoSecretChatAtAll, self.exitNoSecretChatAtAll),
          State.State('noSecretChatAtAllAndNoWhitelist', self.enterNoSecretChatAtAllAndNoWhitelist, self.exitNoSecretChatAtAllAndNoWhitelist),
-         State.State('noSecretChatWarning', self.enterNoSecretChatWarning, self.exitNoSecretChatWarning),
-         State.State('noFriendsWarning', self.enterNoFriendsWarning, self.exitNoFriendsWarning),
          State.State('otherDialog', self.enterOtherDialog, self.exitOtherDialog),
-         State.State('activateChat', self.enterActivateChat, self.exitActivateChat),
-         State.State('secretChatActivated', self.enterSecretChatActivated, self.exitSecretChatActivated),
-         State.State('problemActivatingChat', self.enterProblemActivatingChat, self.exitProblemActivatingChat),
          State.State('whiteListOpenChat', self.enterWhiteListOpenChat, self.exitWhiteListOpenChat),
          State.State('whiteListAvatarChat', self.enterWhiteListAvatarChat, self.exitWhiteListAvatarChat),
          State.State('whiteListPlayerChat', self.enterWhiteListPlayerChat, self.exitWhiteListPlayerChat)], 'off', 'off')
@@ -86,31 +72,12 @@ class ChatManager(DirectObject.DirectObject):
         del self.chatInputNormal
         self.chatInputSpeedChat.delete()
         del self.chatInputSpeedChat
-        if self.openChatWarning:
-            self.openChatWarning.destroy()
-            self.openChatWarning = None
-        if self.unpaidChatWarning:
-            self.payButton = None
-            self.unpaidChatWarning.destroy()
-            self.unpaidChatWarning = None
         if self.noSecretChatAtAll:
             self.noSecretChatAtAll.destroy()
             self.noSecretChatAtAll = None
         if self.noSecretChatAtAllAndNoWhitelist:
             self.noSecretChatAtAllAndNoWhitelist.destroy()
             self.noSecretChatAtAllAndNoWhitelist = None
-        if self.noSecretChatWarning:
-            self.noSecretChatWarning.destroy()
-            self.noSecretChatWarning = None
-        if self.activateChatGui:
-            self.activateChatGui.destroy()
-            self.activateChatGui = None
-        if self.secretChatActivated:
-            self.secretChatActivated.destroy()
-            self.secretChatActivated = None
-        if self.problemActivatingChat:
-            self.problemActivatingChat.destroy()
-            self.problemActivatingChat = None
         del self.localAvatar
         del self.cr
         return
@@ -381,18 +348,6 @@ class ChatManager(DirectObject.DirectObject):
     def exitNormalChat(self):
         self.chatInputNormal.deactivate()
 
-    def enterOpenChatWarning(self):
-        self.notify.error('called enterOpenChatWarning() on parent class')
-
-    def exitOpenChatWarning(self):
-        self.notify.error('called exitOpenChatWarning() on parent class')
-
-    def enterUnpaidChatWarning(self):
-        self.notify.error('called enterUnpaidChatWarning() on parent class')
-
-    def exitUnpaidChatWarning(self):
-        self.notify.error('called exitUnpaidChatWarning() on parent class')
-
     def enterNoSecretChatAtAll(self):
         self.notify.error('called enterNoSecretChatAtAll() on parent class')
 
@@ -405,38 +360,8 @@ class ChatManager(DirectObject.DirectObject):
     def exitNoSecretChatAtAllAndNoWhitelist(self):
         self.notify.error('called exitNoSecretChatAtAllAndNoWhitelist() on parent class')
 
-    def enterNoSecretChatWarning(self):
-        self.notify.error('called enterNoSecretChatWarning() on parent class')
-
-    def exitNoSecretChatWarning(self):
-        self.notify.error('called exitNoSecretChatWarning() on parent class')
-
-    def enterNoFriendsWarning(self):
-        self.notify.error('called enterNoFriendsWarning() on parent class')
-
-    def exitNoFriendsWarning(self):
-        self.notify.error('called exitNoFriendsWarning() on parent class')
-
-    def enterActivateChat(self):
-        self.notify.error('called enterActivateChat() on parent class')
-
-    def exitActivateChat(self):
-        self.notify.error('called exitActivateChat() on parent class')
-
     def enterOtherDialog(self):
         pass
 
     def exitOtherDialog(self):
         pass
-
-    def enterSecretChatActivated(self):
-        self.notify.error('called enterSecretChatActivated() on parent class')
-
-    def exitSecretChatActivated(self):
-        self.notify.error('called exitSecretChatActivated() on parent class')
-
-    def enterProblemActivatingChat(self):
-        self.notify.error('called enterProblemActivatingChat() on parent class')
-
-    def exitProblemActivatingChat(self):
-        self.notify.error('called exitProblemActivatingChat() on parent class')

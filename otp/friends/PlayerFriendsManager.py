@@ -30,13 +30,7 @@ class PlayerFriendsManager(DistributedObjectGlobal):
     def sendRequestUnlimitedSecret(self):
         self.sendUpdate('requestUnlimitedSecret', [0])
 
-    def sendRequestLimitedSecret(self, username, password):
-        self.sendUpdate('requestLimitedSecret', [0, username, password])
-
     def sendRequestUseUnlimitedSecret(self, secret):
-        pass
-
-    def sendRequestUseLimitedSecret(self, secret, username, password):
         pass
 
     def sendSCWhisper(self, recipientId, msgId):

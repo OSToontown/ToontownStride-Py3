@@ -211,7 +211,6 @@ class Estate(Place.Place):
     def enterMailbox(self):
         Place.Place.enterPurchase(self)
         base.localAvatar.startSleepWatch(self.__handleFallingAsleepMailbox)
-        self.enablePeriodTimer()
 
     def __handleFallingAsleepMailbox(self, arg):
         if hasattr(self, 'fsm'):
@@ -222,7 +221,6 @@ class Estate(Place.Place):
     def exitMailbox(self):
         Place.Place.exitPurchase(self)
         base.localAvatar.stopSleepWatch()
-        self.disablePeriodTimer()
 
     def enterTeleportIn(self, requestStatus):
         self._etiToken = self.addSetZoneCompleteCallback(Functor(self._teleportToHouse, requestStatus))

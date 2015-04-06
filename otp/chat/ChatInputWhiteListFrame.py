@@ -198,8 +198,6 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
             self.sendChatBySwitch(text)
             if self.wantHistory:
                 self.addToHistory(text)
-        else:
-            localAvatar.chatMgr.deactivateChat()
 
         if not overflow:
             self.hide()

@@ -97,9 +97,6 @@ class SuitInterior(Place.Place):
     def enterZone(self, zoneId):
         pass
 
-    def isPeriodTimerEffective(self):
-        return 0
-
     def handleDSIDoneEvent(self, requestStatus):
         self.doneStatus = requestStatus
         messenger.send(self.doneEvent)

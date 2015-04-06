@@ -168,7 +168,6 @@ class AvatarChoice(DirectButton):
             self.verifyDeleteWithPassword()
 
     def verifyDeleteWithPassword(self):
-        self.deleteWithPassword = 0
         deleteText = TTLocalizer.AvatarChoiceDeleteConfirmText % {
             'name': self.name,
             'confirm': TTLocalizer.AvatarChoiceDeleteConfirmUserTypes}
@@ -179,13 +178,8 @@ class AvatarChoice(DirectButton):
             cancelButtonImage = (buttons.find('**/CloseBtn_UP'), buttons.find('**/CloseBtn_DN'), buttons.find('**/CloseBtn_Rllvr'))
             self.deleteWithPasswordFrame = DirectFrame(pos=(0.0, 0.1, 0.2), parent=aspect2dp, relief=None, image=DGG.getDefaultDialogGeom(), image_color=ToontownGlobals.GlobalDialogColor, image_scale=(1.4, 1.0, 1.0), text=deleteText, text_wordwrap=19, text_scale=TTLocalizer.ACdeleteWithPasswordFrame, text_pos=(0, 0.25), textMayChange=1, sortOrder=NO_FADE_SORT_INDEX)
             self.deleteWithPasswordFrame.hide()
-            if self.deleteWithPassword:
-                self.passwordLabel = DirectLabel(parent=self.deleteWithPasswordFrame, relief=None, pos=(-0.07, 0.0, -0.2), text=TTLocalizer.AvatarChoicePassword, text_scale=0.08, text_align=TextNode.ARight, textMayChange=0)
-                self.passwordEntry = DirectEntry(parent=self.deleteWithPasswordFrame, relief=None, image=nameBalloon, image1_color=(0.8, 0.8, 0.8, 1.0), image_pos=(0.0, 0.0, -0.45), scale=0.064, pos=(0.0, 0.0, -0.2), width=ToontownGlobals.maxLoginWidth, numLines=2, focus=1, cursorKeys=1, obscured=1, command=self.__handleDeleteWithPasswordOK)
-                DirectButton(parent=self.deleteWithPasswordFrame, image=okButtonImage, relief=None, text=TTLocalizer.AvatarChoiceDeletePasswordOK, text_scale=0.05, text_pos=(0.0, -0.1), textMayChange=0, pos=(-0.22, 0.0, -0.35), command=self.__handleDeleteWithPasswordOK)
-            else:
-                self.passwordEntry = DirectEntry(parent=self.deleteWithPasswordFrame, relief=None, image=nameBalloon, image1_color=(0.8, 0.8, 0.8, 1.0), scale=0.064, pos=(-0.3, 0.0, -0.2), width=10, numLines=1, focus=1, cursorKeys=1, command=self.__handleDeleteWithConfirmOK)
-                DirectButton(parent=self.deleteWithPasswordFrame, image=okButtonImage, relief=None, text=TTLocalizer.AvatarChoiceDeletePasswordOK, text_scale=0.05, text_pos=(0.0, -0.1), textMayChange=0, pos=(-0.22, 0.0, -0.35), command=self.__handleDeleteWithConfirmOK)
+            self.passwordEntry = DirectEntry(parent=self.deleteWithPasswordFrame, relief=None, image=nameBalloon, image1_color=(0.8, 0.8, 0.8, 1.0), scale=0.064, pos=(-0.3, 0.0, -0.2), width=10, numLines=1, focus=1, cursorKeys=1, command=self.__handleDeleteWithConfirmOK)
+            DirectButton(parent=self.deleteWithPasswordFrame, image=okButtonImage, relief=None, text=TTLocalizer.AvatarChoiceDeletePasswordOK, text_scale=0.05, text_pos=(0.0, -0.1), textMayChange=0, pos=(-0.22, 0.0, -0.35), command=self.__handleDeleteWithConfirmOK)
             DirectLabel(parent=self.deleteWithPasswordFrame, relief=None, pos=(0, 0, 0.35), text=TTLocalizer.AvatarChoiceDeletePasswordTitle, textMayChange=0, text_scale=0.08)
             DirectButton(parent=self.deleteWithPasswordFrame, image=cancelButtonImage, relief=None, text=TTLocalizer.AvatarChoiceDeletePasswordCancel, text_scale=0.05, text_pos=(0.0, -0.1), textMayChange=1, pos=(0.2, 0.0, -0.35), command=self.__handleDeleteWithPasswordCancel)
             buttons.removeNode()
@@ -198,35 +192,11 @@ class AvatarChoice(DirectButton):
         self.deleteWithPasswordFrame.show()
         return
 
-    def __handleDeleteWithPasswordOK(self, *args):
-        password = self.passwordEntry.get()
-        tt = base.cr.loginInterface
-        okFlag, errorMsg = tt.authenticateDelete(base.cr.userName, password)
-        if okFlag:
-            self.deleteWithPasswordFrame.hide()
-            base.transitions.noTransitions()
-            messenger.send(self.doneEvent, ['delete', self.position])
-            if config.GetBool('want-qa-regression', 0):
-                self.notify.info('QA-REGRESSION: DELETEATOON: Deleting A Toon')
-        else:
-            if errorMsg is not None:
-                self.notify.warning('authenticateDelete returned unexpected error: %s' % errorMsg)
-            self.deleteWithPasswordFrame['text'] = TTLocalizer.AvatarChoiceDeleteWrongPassword
-            self.passwordEntry['focus'] = 1
-            self.passwordEntry.enterText('')
-        return
-
     def __handleDeleteWithConfirmOK(self, *args):
-        password = self.passwordEntry.get()
-        passwordMatch = TTLocalizer.AvatarChoiceDeleteConfirmUserTypes
-        password = TextEncoder.lower(password)
-        passwordMatch = TextEncoder.lower(passwordMatch)
-        if password == passwordMatch:
+        if self.passwordEntry.get().lower() == TTLocalizer.AvatarChoiceDeleteConfirmUserTypes:
             self.deleteWithPasswordFrame.hide()
             base.transitions.noTransitions()
             messenger.send(self.doneEvent, ['delete', self.position])
-            if config.GetBool('want-qa-regression', 0):
-                self.notify.info('QA-REGRESSION: DELETEATOON: Deleting A Toon')
         else:
             self.deleteWithPasswordFrame['text'] = TTLocalizer.AvatarChoiceDeleteWrongConfirm % {'name': self.name,
              'confirm': TTLocalizer.AvatarChoiceDeleteConfirmUserTypes}

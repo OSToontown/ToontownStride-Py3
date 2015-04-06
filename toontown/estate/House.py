@@ -158,7 +158,6 @@ class House(Place.Place):
         base.localAvatar.laffMeter.start()
         base.localAvatar.obscureMoveFurnitureButton(1)
         base.localAvatar.startSleepWatch(self.__handleFallingAsleepCloset)
-        self.enablePeriodTimer()
 
     def __handleFallingAsleepCloset(self, arg):
         if hasattr(self, 'fsm'):
@@ -172,7 +171,6 @@ class House(Place.Place):
         base.localAvatar.laffMeter.stop()
         base.localAvatar.obscureMoveFurnitureButton(-1)
         base.localAvatar.stopSleepWatch()
-        self.disablePeriodTimer()
 
     def enterBanking(self):
         Place.Place.enterBanking(self)

@@ -89,11 +89,9 @@ class LauncherBase(DirectObject):
     UserLoggedInKey = 'USER_LOGGED_IN'
     PaidUserLoggedInKey = 'PAID_USER_LOGGED_IN'
     ReferrerKey = 'REFERRER_CODE'
-    PeriodTimeRemainingKey = 'PERIOD_TIME_REMAINING'
     PeriodNameKey = 'PERIOD_NAME'
     SwidKey = 'SWID'
     PatchCDKey = 'FROM_CD'
-    DISLTokenKey = 'DISLTOKEN'
     ProxyServerKey = 'PROXY_SERVER'
     ProxyDirectHostsKey = 'PROXY_DIRECT_HOSTS'
     launcherFileDbFilename = 'launcherFileDb'
@@ -198,7 +196,6 @@ class LauncherBase(DirectObject):
         self.extractPercentage = 4
         self.lastLauncherMsg = None
         self.topDir = Filename.fromOsSpecific(self.getValue(self.InstallDirKey, '.'))
-        self.setRegistry(self.GameLogFilenameKey, logfile)
         tmpVal = self.getValue(self.PatchCDKey)
         if tmpVal == None:
             self.fromCD = 0
@@ -219,7 +216,6 @@ class LauncherBase(DirectObject):
         self.overallComplete = 0
         self.progressSoFar = 0
         self.patchExtension = 'pch'
-        self.scanForHacks()
         self.firstPhase = self.LauncherPhases[0]
         self.finalPhase = self.LauncherPhases[-1]
         self.showPhase = 3.5
@@ -235,8 +231,6 @@ class LauncherBase(DirectObject):
             0.003]
         phaseIdx = 0
         for phase in self.LauncherPhases:
-            percentPhaseCompleteKey = 'PERCENT_PHASE_COMPLETE_' + `phase`
-            self.setRegistry(percentPhaseCompleteKey, 0)
             self.phaseComplete[phase] = 0
             self.phaseNewDownload[phase] = 0
             self.phaseOverallMap[phase] = tmpOverallMap[phaseIdx]
@@ -319,15 +313,6 @@ class LauncherBase(DirectObject):
         self.nextDownloadServerIndex += 1
         return 1
 
-    def getProductName(self):
-        config = getConfigExpress()
-        productName = config.GetString('product-name', '')
-        if productName and productName != 'DisneyOnline-US':
-            productName = '_%s' % productName
-        else:
-            productName = ''
-        return productName
-
     def background(self):
         self.notify.info('background: Launcher now operating in background')
         self.backgrounded = 1
@@ -335,13 +320,6 @@ class LauncherBase(DirectObject):
     def foreground(self):
         self.notify.info('foreground: Launcher now operating in foreground')
         self.backgrounded = 0
-
-    def setRegistry(self, key, value):
-        self.notify.info('DEPRECATED setRegistry: %s = %s' % (key, value))
-
-    def getRegistry(self, key):
-        self.notify.info('DEPRECATED getRegistry: %s' % key)
-        return None
 
     def handleInitiateFatalError(self, errorCode):
         self.notify.warning('handleInitiateFatalError: ' + errorToText(errorCode))
@@ -1515,9 +1493,6 @@ class LauncherBase(DirectObject):
             self.lastLauncherMsg = msg
             self.notify.info(msg)
 
-    def recordPeriodTimeRemaining(self, secondsRemaining):
-        self.setValue(self.PeriodTimeRemainingKey, int(secondsRemaining))
-
     def recordPeriodName(self, periodName):
         self.setValue(self.PeriodNameKey, periodName)
 
@@ -1599,10 +1574,7 @@ class LauncherBase(DirectObject):
              percent,
              self.getBandwidth(),
              self.byteRate])
-            percentPhaseCompleteKey = 'PERCENT_PHASE_COMPLETE_' + `phase`
-            self.setRegistry(percentPhaseCompleteKey, percent)
             self.overallComplete = int(round(percent * self.phaseOverallMap[phase])) + self.progressSoFar
-            self.setRegistry('PERCENT_OVERALL_COMPLETE', self.overallComplete)
 
     def getPercentPhaseComplete(self, phase):
         return self.phaseComplete[phase]
@@ -1776,89 +1748,5 @@ class LauncherBase(DirectObject):
         del self.httpChannel
         del self.http
 
-    def scanForHacks(self):
-        if not self.WIN32:
-            return
-        import _winreg
-        hacksInstalled = {}
-        hacksRunning = {}
-        hackName = ['!xSpeed.net', 'A Speeder', 'Speed Gear']
-        knownHacksRegistryKeys = {
-            hackName[0] : [
-                [_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Windows\\CurrentVersion\\Run\\!xSpeed'],
-                [_winreg.HKEY_CURRENT_USER, 'Software\\!xSpeednethy'],
-                [_winreg.HKEY_CURRENT_USER, 'Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\MenuOrder\\Start Menu\\Programs\\!xSpeednet'],
-                [_winreg.HKEY_LOCAL_MACHINE, 'Software\\Gentee\\Paths\\!xSpeednet'],
-                [_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\!xSpeed.net 2.0']],
-            hackName[1] : [
-                [_winreg.HKEY_CURRENT_USER, 'Software\\aspeeder'],
-                [_winreg.HKEY_LOCAL_MACHINE, 'Software\\aspeeder'],
-                [_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\aspeeder']]
-        }
-        try:
-            for prog in knownHacksRegistryKeys.keys():
-                for key in knownHacksRegistryKeys[prog]:
-                    try:
-                        h = _winreg.OpenKey(key[0], key[1])
-                        hacksInstalled[prog] = 1
-                        _winreg.CloseKey(h)
-                        break
-                    except:
-                        pass
-        except:
-            pass
-        knownHacksMUI = {'!xspeednet': hackName[0], 'aspeeder': hackName[1], 'speed gear': hackName[2]}
-        i = 0
-        try:
-            rh = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, 'Software\\Microsoft\\Windows\\ShellNoRoam\\MUICache')
-            while 1:
-                name, value, type = _winreg.EnumValue(rh, i)
-                i += 1
-                if type == 1:
-                    val = value.lower()
-                    for hackprog in knownHacksMUI:
-                        if val.find(hackprog) != -1:
-                            hacksInstalled[knownHacksMUI[hackprog]] = 1
-                            break
-            _winreg.CloseKey(rh)
-        except:
-            pass
-
-        try:
-            import otp.launcher.procapi
-        except:
-            pass
-        else:
-            knownHacksExe = {'!xspeednet.exe': hackName[0], 'aspeeder.exe': hackName[1], 'speedgear.exe': hackName[2]}
-            try:
-                for p in procapi.getProcessList():
-                    pname = p.name
-                    if pname in knownHacksExe:
-                        hacksRunning[knownHacksExe[pname]] = 1
-            except:
-                pass
-
-        if len(hacksInstalled) > 0:
-            self.notify.info("Third party programs installed:")
-            for hack in hacksInstalled.keys():
-                self.notify.info(hack)
-
-        if len(hacksRunning) > 0:
-            self.notify.info("Third party programs running:")
-            for hack in hacksRunning.keys():
-                self.notify.info(hack)
-            self.setPandaErrorCode(8)
-            sys.exit()
-
-    def getBlue(self):
-        return None
-
     def getPlayToken(self):
         return None
-
-    def getDISLToken(self):
-        DISLToken = self.getValue(self.DISLTokenKey)
-        self.setValue(self.DISLTokenKey, '')
-        if DISLToken == 'NO DISLTOKEN':
-            DISLToken = None
-        return DISLToken

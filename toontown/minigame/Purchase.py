@@ -636,9 +636,6 @@ class Purchase(PurchaseBase):
             headFrame[1].show()
             headFrame[1].reparentTo(self.toon.inventory.purchaseFrame)
 
-        if base.cr.periodTimerExpired:
-            base.cr.loginFSM.request('periodTimeout')
-            return
         if not self.tutorialMode:
             if not config.GetBool('disable-purchase-timer', 0):
                 self.timer.show()

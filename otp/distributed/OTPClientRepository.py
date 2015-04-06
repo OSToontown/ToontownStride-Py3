@@ -54,163 +54,30 @@ class OTPClientRepository(ClientRepositoryBase):
         self.launcher = launcher
         base.launcher = launcher
         self.__currentAvId = 0
-        self.productName = config.GetString('product-name', 'DisneyOnline-US')
         self.createAvatarClass = None
         self.systemMessageSfx = None
-        reg_deployment = ''
-        if self.productName == 'DisneyOnline-US':
-            if self.launcher:
-                if self.launcher.isDummy():
-                    reg_deployment = self.launcher.getDeployment()
-                else:
-                    reg_deployment = self.launcher.getRegistry('DEPLOYMENT')
-                    if reg_deployment != 'UK' and reg_deployment != 'AP':
-
-                        reg_deployment = self.launcher.getRegistry('GAME_DEPLOYMENT')
-                    self.notify.info('reg_deployment=%s' % reg_deployment)
-
-                if reg_deployment == 'UK':
-                    self.productName = 'DisneyOnline-UK'
-                elif reg_deployment == 'AP':
-                    self.productName = 'DisneyOnline-AP'
-
-
-        self.blue = None
-        if self.launcher:
-            self.blue = self.launcher.getBlue()
-
-        fakeBlue = config.GetString('fake-blue', '')
-        if fakeBlue:
-            self.blue = fakeBlue
-
-
-        self.playToken = None
+        
         if self.launcher:
             self.playToken = self.launcher.getPlayToken()
-
-        fakePlayToken = config.GetString('fake-playtoken', '')
-        if fakePlayToken:
-            self.playToken = fakePlayToken
-
-
-        self.DISLToken = None
-        if self.launcher:
-            self.DISLToken = self.launcher.getDISLToken()
-
-        fakeDISLToken = config.GetString('fake-DISLToken', '')
-        fakeDISLPlayerName = config.GetString('fake-DISL-PlayerName', '')
-        if fakeDISLToken:
-            self.DISLToken = fakeDISLToken
-        elif fakeDISLPlayerName:
-            defaultId = 42
-            defaultNumAvatars = 4
-            defaultNumAvatarSlots = 4
-            defaultNumConcur = 1
-            subCount = config.GetInt('fake-DISL-NumSubscriptions', 1)
-            playerAccountId = config.GetInt('fake-DISL-PlayerAccountId', defaultId)
-            self.DISLToken = ('ACCOUNT_NAME=%s' % fakeDISLPlayerName +
-                              '&ACCOUNT_NUMBER=%s' % playerAccountId +
-                              '&ACCOUNT_NAME_APPROVAL=%s' % config.GetString('fake-DISL-PlayerNameApproved', 'YES') +
-                              '&SWID=%s' % config.GetString('fake-DISL-SWID', '{1763AC36-D73F-41C2-A54A-B579E58B69C8}') +
-                              '&FAMILY_NUMBER=%s' % config.GetString('fake-DISL-FamilyAccountId', '-1') +
-                              '&familyAdmin=%s' % config.GetString('fake-DISL-FamilyAdmin', '1') +
-                              '&PIRATES_ACCESS=%s' % config.GetString('fake-DISL-PiratesAccess', 'FULL') +
-                              '&PIRATES_MAX_NUM_AVATARS=%s' % config.GetInt('fake-DISL-MaxAvatars', defaultNumAvatars) +
-                              '&PIRATES_NUM_AVATAR_SLOTS=%s' % config.GetInt('fake-DISL-MaxAvatarSlots', defaultNumAvatarSlots) +
-                              '&expires=%s' % config.GetString('fake-DISL-expire', '1577898000') +
-                              '&OPEN_CHAT_ENABLED=%s' % config.GetString('fake-DISL-OpenChatEnabled', 'YES') +
-                              '&CREATE_FRIENDS_WITH_CHAT=%s' % config.GetString('fake-DISL-CreateFriendsWithChat', 'YES') +
-                              '&CHAT_CODE_CREATION_RULE=%s' % config.GetString('fake-DISL-ChatCodeCreation', 'YES') +
-                              '&FAMILY_MEMBERS=%s' % config.GetString('fake-DISL-FamilyMembers') + '&PIRATES_SUB_COUNT=%s' % subCount)
-
-            for i in xrange(subCount):
-                self.DISLToken += ('&PIRATES_SUB_%s_ACCESS=%s' % (i, config.GetString('fake-DISL-Sub-%s-Access' % i, 'FULL')) +
-                                   '&PIRATES_SUB_%s_ACTIVE=%s' % (i, config.GetString('fake-DISL-Sub-%s-Active' % i, 'YES')) +
-                                   '&PIRATES_SUB_%s_ID=%s' % (i, config.GetInt('fake-DISL-Sub-%s-Id' % i, playerAccountId) +  config.GetInt('fake-DISL-Sub-Id-Offset', 0)) +
-                                   '&PIRATES_SUB_%s_LEVEL=%s' % (i, config.GetInt('fake-DISL-Sub-%s-Level' % i, 3)) +
-                                   '&PIRATES_SUB_%s_NAME=%s' % (i, config.GetString('fake-DISL-Sub-%s-Name' % i, fakeDISLPlayerName)) +
-                                   '&PIRATES_SUB_%s_NUM_AVATARS=%s' % (i, config.GetInt('fake-DISL-Sub-%s-NumAvatars' % i, defaultNumAvatars)) +
-                                   '&PIRATES_SUB_%s_NUM_CONCUR=%s' % (i, config.GetInt('fake-DISL-Sub-%s-NumConcur' % i, defaultNumConcur)) +
-                                   '&PIRATES_SUB_%s_OWNERID=%s' % (i, config.GetInt('fake-DISL-Sub-%s-OwnerId' % i, playerAccountId)) +
-                                   '&PIRATES_SUB_%s_FOUNDER=%s' % (i, config.GetString('fake-DISL-Sub-%s-Founder' % i, 'YES')))
-
-            self.DISLToken += ('&WL_CHAT_ENABLED=%s' % config.GetString('fake-DISL-WLChatEnabled', 'YES') +
-                               '&valid=true')
-            if base.logPrivateInfo:
-                print self.DISLToken
-
-
-        self.requiredLogin = config.GetString('required-login', 'auto')
-        if self.requiredLogin == 'auto':
-
-            self.notify.info('required-login auto.')
-        elif self.requiredLogin == 'green':
-            self.notify.error('The green code is out of date')
-        elif self.requiredLogin == 'blue':
-            if not self.blue:
-                self.notify.error('The tcr does not have the required blue login')
-        elif self.requiredLogin == 'playToken':
-            if not self.playToken:
-                self.notify.error('The tcr does not have the required playToken login')
-        elif self.requiredLogin == 'DISLToken':
-            if not self.DISLToken:
-                self.notify.error('The tcr does not have the required DISL token login')
-        elif self.requiredLogin == 'gameServer':
-            self.notify.info('Using game server name/password.')
-            self.DISLToken = None
         else:
-            self.notify.error('The required-login was not recognized.')
-
-
+            self.playToken = None
+            self.notify.error('The client repository does not have the required playToken login')
+        
         self.wantMagicWords = False
 
-
-
+        # TODO: HTTP
         if self.launcher and hasattr(self.launcher, 'http'):
             self.http = self.launcher.http
         else:
             self.http = HTTPClient()
 
-
-        self.accountOldAuth = config.GetBool('account-old-auth', 0)
-
-        self.accountOldAuth = config.GetBool('%s-account-old-auth' % process,
-                                             self.accountOldAuth)
-
         self.loginInterface = LoginTTUAccount.LoginTTUAccount(self)
-
-
         self.secretChatAllowed = base.config.GetBool('allow-secret-chat', True)
         self.openChatAllowed = base.config.GetBool('allow-open-chat', True)
-
-
-        self.secretChatNeedsParentPassword = base.config.GetBool('secret-chat-needs-parent-password', 0)
-
-
-
-
-        self.parentPasswordSet = base.config.GetBool('parent-password-set', True)
-
-
         self.userSignature = base.config.GetString('signature', 'none')
-
-
-
-        self.freeTimeExpiresAt = -1
         self.__isPaid = 1
-
-
-
-        self.periodTimerExpired = 0
-        self.periodTimerStarted = None
-        self.periodTimerSecondsRemaining = None
-
-
         self.parentMgr.registerParent(OTPGlobals.SPRender, base.render)
-
-
         self.parentMgr.registerParent(OTPGlobals.SPHidden, NodePath())
-
         self.timeManager = None
 
         if config.GetBool('detect-leaks', 0) or config.GetBool('client-detect-leaks', 0):
@@ -218,7 +85,7 @@ class OTPClientRepository(ClientRepositoryBase):
 
         if config.GetBool('detect-messenger-leaks', 0) or config.GetBool('ai-detect-messenger-leaks', 0):
             self.messengerLeakDetector = MessengerLeakDetector.MessengerLeakDetector('client messenger leak detector')
-
+            
             if config.GetBool('leak-messages', 0):
                 MessengerLeakDetector._leakMessengerObject()
 
@@ -317,10 +184,6 @@ class OTPClientRepository(ClientRepositoryBase):
                   self.exitAfkTimeout, [
                       'waitForAvatarList',
                       'shutdown']),
-            State('periodTimeout',
-                  self.enterPeriodTimeout,
-                  self.exitPeriodTimeout, [
-                      'shutdown']),
             State('waitForAvatarList',
                   self.enterWaitForAvatarList,
                   self.exitWaitForAvatarList, [
@@ -370,7 +233,6 @@ class OTPClientRepository(ClientRepositoryBase):
                       'login',
                       'shutdown',
                       'afkTimeout',
-                      'periodTimeout',
                       'noShards'])],
             'loginOff', 'loginOff')
         self.gameFSM = ClassicFSM('gameFSM', [
@@ -424,19 +286,19 @@ class OTPClientRepository(ClientRepositoryBase):
         self.chatAgent = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_CHAT_MANAGER, 'ChatAgent')
         self.csm = None # To be set by subclass.
 
+    def hasPlayToken():
+        return self.playToken != None
+    
     def readDCFile(self, dcFileNames=None):
         dcFile = self.getDcFile()
         dcFile.clear()
         self.dclassesByName = {}
         self.dclassesByNumber = {}
         self.hashVal = 0
-
         try:
             dcStream
-
         except:
             pass
-
         else:
             self.notify.info('Detected DC file stream, reading it...')
             dcFileNames = [dcStream]
@@ -480,6 +342,7 @@ class OTPClientRepository(ClientRepositoryBase):
     def startLeakDetector(self):
         if hasattr(self, 'leakDetector'):
             return False
+
         firstCheckDelay = config.GetFloat('leak-detector-first-check-delay', 2 * 60.0)
         self.leakDetector = ContainerLeakDetector('client container leak detector', firstCheckDelay=firstCheckDelay)
         self.objectTypesLeakDetector = LeakDetectors.ObjectTypesLeakDetector()
@@ -581,10 +444,6 @@ class OTPClientRepository(ClientRepositoryBase):
                 dateString = time.strftime(self.toontownTimeManager.formatStr, timestamp)
                 self.lastLoggedIn = self.toontownTimeManager.convertStrToToontownTime(dateString)
             self.loginFSM.request('waitForGameList')
-        elif mode == 'getChatPassword':
-            self.loginFSM.request('parentPassword')
-        elif mode == 'freeTimeExpired':
-            self.loginFSM.request('freeTimeInform')
         elif mode == 'reject':
             self.loginFSM.request('reject')
         elif mode == 'quit':
@@ -868,7 +727,7 @@ class OTPClientRepository(ClientRepositoryBase):
             message = message % {'name': self.bootedText}
         self.launcher.setDisconnectDetails(self.bootedIndex, message)
         style = OTPDialog.Acknowledge
-        if reconnect and self.loginInterface.supportsRelogin():
+        if reconnect:
             message += OTPLocalizer.CRTryConnectAgain
             style = OTPDialog.TwoChoice
         dialogClass = OTPGlobals.getGlobalDialogClass()
@@ -880,7 +739,7 @@ class OTPClientRepository(ClientRepositoryBase):
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def __handleLostConnectionAck(self):
-        if self.lostConnectionBox.doneStatus == 'ok' and self.loginInterface.supportsRelogin():
+        if self.lostConnectionBox.doneStatus == 'ok':
             self.loginFSM.request('connect', [self.serverList])
         else:
             self.loginFSM.request('shutdown')
@@ -910,27 +769,6 @@ class OTPClientRepository(ClientRepositoryBase):
         if self.afkDialog:
             self.afkDialog.cleanup()
             self.afkDialog = None
-        self.handler = None
-        return
-
-    @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
-    def enterPeriodTimeout(self):
-        self.sendSetAvatarIdMsg(0)
-        self.sendDisconnect()
-        msg = OTPLocalizer.PeriodForceAcknowledgeMessage
-        dialogClass = OTPGlobals.getDialogClass()
-        self.periodDialog = dialogClass(text=msg, command=self.__handlePeriodOk, style=OTPDialog.Acknowledge)
-        self.handler = self.handleMessageType
-
-    @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
-    def __handlePeriodOk(self, value):
-        base.exitShow()
-
-    @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
-    def exitPeriodTimeout(self):
-        if self.periodDialog:
-            self.periodDialog.cleanup()
-            self.periodDialog = None
         self.handler = None
         return
 
@@ -1020,10 +858,6 @@ class OTPClientRepository(ClientRepositoryBase):
         if avId != self.__currentAvId:
             self.__currentAvId = avId
             self.csm.sendChooseAvatar(avId)
-            if avId == 0:
-                self.stopPeriodTimer()
-            else:
-                self.startPeriodTimer()
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def handleAvatarResponseMsg(self, avatarId, di):
@@ -1506,36 +1340,6 @@ class OTPClientRepository(ClientRepositoryBase):
     def exitSwitchShards(self):
         pass
 
-    def isFreeTimeExpired(self):
-        if self.accountOldAuth:
-            return 0
-        if base.config.GetBool('free-time-expired', 0):
-            return 1
-        if base.config.GetBool('unlimited-free-time', 0):
-            return 0
-        if self.freeTimeExpiresAt == -1:
-            return 0
-        if self.freeTimeExpiresAt == 0:
-            return 1
-        if self.freeTimeExpiresAt < -1:
-            self.notify.warning('freeTimeExpiresAt is less than -1 (%s)' % self.freeTimeExpiresAt)
-        if self.freeTimeExpiresAt < time.time():
-            return 1
-        else:
-            return 0
-
-    def freeTimeLeft(self):
-        if self.freeTimeExpiresAt == -1 or self.freeTimeExpiresAt == 0:
-            return 0
-        secsLeft = self.freeTimeExpiresAt - time.time()
-        return max(0, secsLeft)
-
-    def isWebPlayToken(self):
-        return self.playToken != None
-
-    def isBlue(self):
-        return self.blue != None
-
     def isPaid(self):
         paidStatus = base.config.GetString('force-paid-status', '')
         if not paidStatus:
@@ -1555,46 +1359,18 @@ class OTPClientRepository(ClientRepositoryBase):
     def allowFreeNames(self):
         return base.config.GetInt('allow-free-names', 1)
 
+    # TODO: Login Server for all those
     def allowSecretChat(self):
-        return self.secretChatAllowed or self.productName == 'Terra-DMC' and self.isBlue() and self.secretChatAllowed
+        return self.secretChatAllowed
 
     def allowWhiteListChat(self):
-        if hasattr(self, 'whiteListChatEnabled') and self.whiteListChatEnabled:
-            return True
-        else:
-            return False
+        return hasattr(self, 'whiteListChatEnabled') and self.whiteListChatEnabled
 
     def allowAnyTypedChat(self):
-        if self.allowSecretChat() or self.allowWhiteListChat() or self.allowOpenChat():
-            return True
-        else:
-            return False
+        return self.allowSecretChat() or self.allowWhiteListChat() or self.allowOpenChat()
 
     def allowOpenChat(self):
         return self.openChatAllowed
-
-    def isParentPasswordSet(self):
-        return self.parentPasswordSet
-
-    def needParentPasswordForSecretChat(self):
-        return self.isPaid() and self.secretChatNeedsParentPassword or self.productName == 'Terra-DMC' and self.isBlue() and self.secretChatNeedsParentPassword
-
-    def logAccountInfo(self):
-        self.notify.info('*** ACCOUNT INFO ***')
-        if base.logPrivateInfo:
-            if self.blue:
-                self.notify.info('paid: %s (blue)' % self.isPaid())
-            else:
-                self.notify.info('paid: %s' % self.isPaid())
-            if not self.isPaid():
-                if self.isFreeTimeExpired():
-                    self.notify.info('free time is expired')
-                else:
-                    secs = self.freeTimeLeft()
-                    self.notify.info('free time left: %s' % PythonUtil.formatElapsedSeconds(secs))
-            if self.periodTimerSecondsRemaining != None:
-                self.notify.info('period time left: %s' % PythonUtil.formatElapsedSeconds(self.periodTimerSecondsRemaining))
-        return
 
     def getStartingDistrict(self):
         district = None
@@ -1697,53 +1473,6 @@ class OTPClientRepository(ClientRepositoryBase):
         if gsg:
             render2d.prepareScene(gsg)
         base.graphicsEngine.renderFrame()
-
-    def resetPeriodTimer(self, secondsRemaining):
-        self.periodTimerExpired = 0
-        self.periodTimerSecondsRemaining = secondsRemaining
-
-    def recordPeriodTimer(self, task):
-        freq = 60.0
-        elapsed = globalClock.getRealTime() - self.periodTimerStarted
-        self.runningPeriodTimeRemaining = self.periodTimerSecondsRemaining - elapsed
-        self.notify.debug('periodTimeRemaining: %s' % self.runningPeriodTimeRemaining)
-        launcher.recordPeriodTimeRemaining(self.runningPeriodTimeRemaining)
-        taskMgr.doMethodLater(freq, self.recordPeriodTimer, 'periodTimerRecorder')
-        return Task.done
-
-    def startPeriodTimer(self):
-        if self.periodTimerStarted == None and self.periodTimerSecondsRemaining != None:
-            self.periodTimerStarted = globalClock.getRealTime()
-            taskMgr.doMethodLater(self.periodTimerSecondsRemaining, self.__periodTimerExpired, 'periodTimerCountdown')
-            for warning in OTPGlobals.PeriodTimerWarningTime:
-                if self.periodTimerSecondsRemaining > warning:
-                    taskMgr.doMethodLater(self.periodTimerSecondsRemaining - warning, self.__periodTimerWarning, 'periodTimerCountdown')
-
-            self.runningPeriodTimeRemaining = self.periodTimerSecondsRemaining
-            self.recordPeriodTimer(None)
-        return
-
-    def stopPeriodTimer(self):
-        if self.periodTimerStarted != None:
-            elapsed = globalClock.getRealTime() - self.periodTimerStarted
-            self.periodTimerSecondsRemaining -= elapsed
-            self.periodTimerStarted = None
-        taskMgr.remove('periodTimerCountdown')
-        taskMgr.remove('periodTimerRecorder')
-        return
-
-    def __periodTimerWarning(self, task):
-        base.localAvatar.setSystemMessage(0, OTPLocalizer.PeriodTimerWarning)
-        return Task.done
-
-    def __periodTimerExpired(self, task):
-        self.notify.info("User's period timer has just expired!")
-        self.stopPeriodTimer()
-        self.periodTimerExpired = 1
-        self.periodTimerStarted = None
-        self.periodTimerSecondsRemaining = None
-        messenger.send('periodTimerExpired')
-        return Task.done
 
     def handleMessageType(self, msgType, di):
         if self.__recordObjectMessage(msgType, di):

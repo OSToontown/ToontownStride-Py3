@@ -143,9 +143,6 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
     def getTaskZoneId(self):
         return self.getZoneId()
 
-    def isPeriodTimerEffective(self):
-        return 1
-
     def handleTeleportQuery(self, fromAvatar, toAvatar):
         if base.config.GetBool('want-tptrack', False):
             if toAvatar == localAvatar:
@@ -154,37 +151,6 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
                 self.notify.warning('handleTeleportQuery toAvatar.doId != localAvatar.doId' % (toAvatar.doId, localAvatar.doId))
         else:
             fromAvatar.d_teleportResponse(toAvatar.doId, 1, toAvatar.defaultShard, base.cr.playGame.getPlaceId(), self.getZoneId())
-
-    def enablePeriodTimer(self):
-        if self.isPeriodTimerEffective():
-            if base.cr.periodTimerExpired:
-                taskMgr.doMethodLater(5, self.redoPeriodTimer, 'redoPeriodTimer')
-            self.accept('periodTimerExpired', self.periodTimerExpired)
-
-    def disablePeriodTimer(self):
-        taskMgr.remove('redoPeriodTimer')
-        self.ignore('periodTimerExpired')
-
-    def redoPeriodTimer(self, task):
-        messenger.send('periodTimerExpired')
-        return Task.done
-
-    def periodTimerExpired(self):
-        self.fsm.request('final')
-        if base.localAvatar.book.isEntered:
-            base.localAvatar.book.exit()
-            base.localAvatar.b_setAnimState('CloseBook', 1, callback=self.__handlePeriodTimerBookClose)
-        else:
-            base.localAvatar.b_setAnimState('TeleportOut', 1, self.__handlePeriodTimerExitTeleport)
-
-    def exitPeriodTimerExpired(self):
-        pass
-
-    def __handlePeriodTimerBookClose(self):
-        base.localAvatar.b_setAnimState('TeleportOut', 1, self.__handlePeriodTimerExitTeleport)
-
-    def __handlePeriodTimerExitTeleport(self):
-        base.cr.loginFSM.request('periodTimeout')
 
     def detectedPhoneCollision(self):
         self.fsm.request('phone')
@@ -210,7 +176,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         if teleportIn == 0:
             self.walkStateData.fsm.request('walking')
         self.acceptOnce(self.walkDoneEvent, self.handleWalkDone)
-        if base.cr.productName in ['DisneyOnline-US', 'ES'] and not base.cr.isPaid() and base.localAvatar.tutorialAck:
+        if not base.cr.isPaid() and base.localAvatar.tutorialAck:
             base.localAvatar.chatMgr.obscure(0, 0)
             base.localAvatar.chatMgr.normalButton.show()
         self.accept('teleportQuery', self.handleTeleportQuery)
@@ -219,13 +185,11 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         base.localAvatar.invPage.acceptOnscreenHooks()
         base.localAvatar.questMap.acceptOnscreenHooks()
         self.walkStateData.fsm.request('walking')
-        self.enablePeriodTimer()
 
     def exitWalk(self):
         self.exitFLM()
-        if base.cr.productName in ['DisneyOnline-US', 'ES'] and not base.cr.isPaid() and base.localAvatar.tutorialAck and not base.cr.whiteListChatEnabled:
+        if not base.cr.isPaid() and base.localAvatar.tutorialAck and not base.cr.whiteListChatEnabled:
             base.localAvatar.chatMgr.obscure(1, 0)
-        self.disablePeriodTimer()
         messenger.send('wakeup')
         self.walkStateData.exit()
         self.ignore(self.walkDoneEvent)
@@ -323,7 +287,6 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         base.localAvatar.startSleepWatch(self.__handleFallingAsleep)
         self.accept('bookDone', self.__handleBook)
         base.localAvatar.b_setAnimState('ReadBook', 1)
-        self.enablePeriodTimer()
 
     def __handleFallingAsleep(self, task):
         base.localAvatar.book.exit()
@@ -337,7 +300,6 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
 
     def exitStickerBook(self):
         base.localAvatar.stopSleepWatch()
-        self.disablePeriodTimer()
         self.exitFLM()
         base.localAvatar.laffMeter.stop()
         base.localAvatar.setGuiConflict(0)
@@ -830,7 +792,6 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         base.localAvatar.laffMeter.start()
         base.localAvatar.obscureMoveFurnitureButton(1)
         base.localAvatar.startSleepWatch(self.__handleFallingAsleepBanking)
-        self.enablePeriodTimer()
 
     def __handleFallingAsleepBanking(self, arg):
         if hasattr(self, 'fsm'):
@@ -844,7 +805,6 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         base.localAvatar.laffMeter.stop()
         base.localAvatar.obscureMoveFurnitureButton(-1)
         base.localAvatar.stopSleepWatch()
-        self.disablePeriodTimer()
 
     def enterPhone(self):
         base.localAvatar.b_setAnimState('neutral', 1)
@@ -853,7 +813,6 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         base.localAvatar.laffMeter.start()
         base.localAvatar.obscureMoveFurnitureButton(1)
         base.localAvatar.startSleepWatch(self.__handleFallingAsleepPhone)
-        self.enablePeriodTimer()
 
     def __handleFallingAsleepPhone(self, arg):
         if hasattr(self, 'fsm'):
@@ -867,7 +826,6 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         base.localAvatar.laffMeter.stop()
         base.localAvatar.obscureMoveFurnitureButton(-1)
         base.localAvatar.stopSleepWatch()
-        self.disablePeriodTimer()
 
     def enterStopped(self):
         base.localAvatar.b_setAnimState('neutral', 1)
@@ -880,7 +838,6 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         base.localAvatar.laffMeter.start()
         base.localAvatar.obscureMoveFurnitureButton(1)
         base.localAvatar.startSleepWatch(self.__handleFallingAsleepStopped)
-        self.enablePeriodTimer()
 
     def __handleFallingAsleepStopped(self, arg):
         if hasattr(self, 'fsm'):
@@ -895,7 +852,6 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         base.localAvatar.laffMeter.stop()
         base.localAvatar.obscureMoveFurnitureButton(-1)
         base.localAvatar.stopSleepWatch()
-        self.disablePeriodTimer()
         messenger.send('exitingStoppedState')
 
     def enterPet(self):
