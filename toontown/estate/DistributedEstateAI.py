@@ -110,7 +110,7 @@ class Garden:
             box.setPos(x, y, 0)
             box.setH(h)
             box.setOwnerIndex(houseIndex)
-            box.generate()#WithRequired(estateMgr.zoneId)
+            box.generateWithRequired(estateMgr.zoneId)
             self.objects.append(box)
                 
         plots = GardenGlobals.estatePlots[houseIndex]
@@ -127,7 +127,7 @@ class Garden:
                     tree.setWaterLevel(waterLevel)
                     tree.setGrowthLevel(growthLevel)
                     tree.calculate(nextGrowth, nextLevelDecrease)
-                    tree.generate()#WithRequired(estateMgr.zoneId)
+                    tree.generateWithRequired(estateMgr.zoneId)
                     self.trees.append(tree)
 
 class GardenManager:
