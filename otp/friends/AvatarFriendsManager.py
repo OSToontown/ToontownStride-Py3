@@ -1,6 +1,5 @@
 from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
 from direct.directnotify.DirectNotifyGlobal import directNotify
-from otp.uberdog.RejectCode import RejectCode
 from otp.otpbase import OTPGlobals
 from otp.otpbase import OTPLocalizer
 

@@ -296,6 +296,14 @@ TPhaveFun = 0.1
 TPjoinUs = 0.1
 TBSOSPSPenter = 0.1
 TexitButton = 0.8
+FSenterSecretTextPos = (0, 0, -0.25)
+FSgotSecretPos = (0, 0, 0.47)
+FSgetSecretButton = 0.06
+FSnextText = 1.0
+FSgetSecret = (1.55, 1, 1)
+FSok1 = (1.55, 1, 1)
+FSok2 = (0.6, 1, 1)
+FScancel = (0.6, 1, 1)
 #Some languages need to change the word order
 SellbotFactoryPosPart1 = (0, -0.25)
 SellbotFactoryScalePart1 = 0.075

@@ -7,6 +7,9 @@
 # Mac directory info:
 .DS_Store
 
+# Shortcuts:
+*.lnk
+
 # Game-specific files and directories:
 preferences.json
 *.json

@@ -463,6 +463,11 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     
     def isTrueFriend(self, doId):
         return doId in self.trueFriends
+    
+    def addTrueFriend(self, doId):
+        if not isTrueFriend(doId):
+            self.trueFriends.append(doId)
+            self.d_setTrueFriends(self.trueFriends)
 
     def b_setInventory(self, inventory):
         self.setInventory(inventory)

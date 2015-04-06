@@ -711,6 +711,7 @@ from toontown.uberdog.DistributedMailManager/AI/UD import DistributedMailManager
 from toontown.uberdog.DistributedPartyManager/AI/UD import DistributedPartyManager/AI/UD
 from toontown.rpc.AwardManager/UD import AwardManager/UD
 from toontown.coderedemption.TTCodeRedemptionMgr/AI import TTCodeRedemptionMgr/AI
+from toontown.friends.TrueFriendsMgr/AI import TrueFriendsMgr/AI
 from toontown.ai.DistributedPhaseEventMgr/AI import DistributedPhaseEventMgr/AI
 from toontown.ai.DistributedHydrantZeroMgr/AI import DistributedHydrantZeroMgr/AI
 from toontown.ai.DistributedMailboxZeroMgr/AI import DistributedMailboxZeroMgr/AI
@@ -3615,8 +3616,12 @@ dclass AwardManager : DistributedObjectGlobal {
 };
 
 dclass TTCodeRedemptionMgr : DistributedObject {
-  redeemCode(char [0-256]) airecv clsend;
   redeemCodeResult(uint32);
+};
+
+dclass TrueFriendsMgr : DistributedObject {
+  requestIdResult(uint32, string, string);
+  redeemIdResult(uint32, string);
 };
 
 struct Friend

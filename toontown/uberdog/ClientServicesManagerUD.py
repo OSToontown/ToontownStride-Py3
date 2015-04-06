@@ -65,7 +65,6 @@ def executeHttpRequestAndLog(url, **extras):
     
     if 'error' in data:
         notify.warning('Error from ' + url + ':' + data['error'])
-        return None
     
     return data
 
@@ -178,7 +177,7 @@ class RemoteAccountDB(AccountDB):
         
         cookie = executeHttpRequestAndLog('cookie', cookie=token)
         
-        if cookie is None:
+        if cookie is None or 'error' in cookie:
             response = {
                 'success': False,
                 'reason': "Couldn't contact login server."

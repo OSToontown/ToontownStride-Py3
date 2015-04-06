@@ -395,7 +395,7 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
 
     def __handleSecrets(self):
         base.localAvatar.chatMgr.noWhisper()
-        ToontownFriendSecret.showFriendSecret(ToontownFriendSecret.AvatarSecret)
+        ToontownFriendSecret.showFriendSecret()
 
     def __handleFriend(self):
         base.localAvatar.chatMgr.noWhisper()
