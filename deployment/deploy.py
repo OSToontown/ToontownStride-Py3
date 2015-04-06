@@ -346,7 +346,7 @@ for filepath in updatedFiles:
     print 'Compressing %s...' % filepath
     compressFile(os.path.join('build', filepath))
 
-print 'Uploading files to download.toontownunlimited.com...'
+print 'Uploading files to download.toontownunited.com...'
 ftp = ftplib.FTP(ftpAddress, ftpUsername, ftpPassword)
 ftp.cwd(deployToken)
 
