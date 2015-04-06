@@ -188,8 +188,6 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
 
     def exitWalk(self):
         self.exitFLM()
-        if not base.cr.isPaid() and base.localAvatar.tutorialAck and not base.cr.whiteListChatEnabled:
-            base.localAvatar.chatMgr.obscure(1, 0)
         messenger.send('wakeup')
         self.walkStateData.exit()
         self.ignore(self.walkDoneEvent)

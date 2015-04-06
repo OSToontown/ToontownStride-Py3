@@ -3616,11 +3616,14 @@ dclass AwardManager : DistributedObjectGlobal {
 };
 
 dclass TTCodeRedemptionMgr : DistributedObject {
+  redeemCode(char [0-256]) airecv clsend;
   redeemCodeResult(uint32);
 };
 
 dclass TrueFriendsMgr : DistributedObject {
+  requestId() airecv clsend;
   requestIdResult(uint32, string, string);
+  redeemId(string) airecv clsend;
   redeemIdResult(uint32, string);
 };
 

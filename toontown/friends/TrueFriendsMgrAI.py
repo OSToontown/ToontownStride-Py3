@@ -1,6 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
-from toontown.uberdog.ClientServiceManagerUD import executeHttpRequestAndLog
+from toontown.uberdog.ClientServicesManagerUD import executeHttpRequestAndLog
 
 class TrueFriendsMgrAI(DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("TrueFriendsMgrAI")
