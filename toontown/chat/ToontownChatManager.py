@@ -7,7 +7,6 @@ from direct.gui.DirectGui import *
 from pandac.PandaModules import *
 from otp.chat import ChatManager
 from TTChatInputSpeedChat import TTChatInputSpeedChat
-from TTChatInputNormal import TTChatInputNormal
 from TTChatInputWhiteList import TTChatInputWhiteList
 
 class ToontownChatManager(ChatManager.ChatManager):
@@ -34,19 +33,15 @@ class ToontownChatManager(ChatManager.ChatManager):
         self.whisperCancelButton = DirectButton(parent=self.whisperFrame, image=(gui.find('**/CloseBtn_UP'), gui.find('**/CloseBtn_DN'), gui.find('**/CloseBtn_Rllvr')), pos=(0.125, 0, -0.1), scale=1.179, relief=None, text=('', OTPLocalizer.ChatManagerCancel, OTPLocalizer.ChatManagerCancel), text_scale=0.05, text_fg=(0, 0, 0, 1), text_pos=(0, -0.09), textMayChange=0, command=self.__whisperCancelPressed)
         gui.removeNode()
         ChatManager.ChatManager.__init__(self, cr, localAvatar)
-        self.defaultToWhiteList = base.config.GetBool('white-list-is-default', 1)
         self.chatInputSpeedChat = TTChatInputSpeedChat(self)
         self.normalPos = Vec3(0.25, 0, -0.196)
         self.whisperPos = Vec3(0, 0, -0.296)
         self.speedChatPlusPos = Vec3(-0.35, 0, 0.71)
         self.SCWhisperPos = Vec3(0, 0, 0)
         self.chatInputWhiteList = TTChatInputWhiteList()
-        if self.defaultToWhiteList:
-            self.chatInputNormal = self.chatInputWhiteList
-            self.chatInputNormal.setPos(self.normalPos)
-            self.chatInputNormal.desc = 'chatInputNormal'
-        else:
-            self.chatInputNormal = TTChatInputNormal(self)
+        self.chatInputNormal = self.chatInputWhiteList
+        self.chatInputNormal.setPos(self.normalPos)
+        self.chatInputNormal.desc = 'chatInputNormal'
         self.chatInputWhiteList.setPos(self.speedChatPlusPos)
         self.chatInputWhiteList.reparentTo(base.a2dTopLeft)
         self.chatInputWhiteList.desc = 'chatInputWhiteList'
@@ -129,8 +124,6 @@ class ToontownChatManager(ChatManager.ChatManager):
         self.fsm.request('normalChat')
 
     def __scButtonPressed(self):
-        if base.config.GetBool('want-qa-regression', 0):
-            self.notify.info('QA-REGRESSION: CHAT: Speedchat')
         messenger.send('wakeup')
         if self.fsm.getCurrentState().getName() == 'speedChat':
             self.fsm.request('mainMenu')
@@ -185,8 +178,6 @@ class ToontownChatManager(ChatManager.ChatManager):
         self.noSecretChatAtAllAndNoWhitelist.hide()
 
     def __whisperScButtonPressed(self, avatarName, avatarId, playerId):
-        if base.config.GetBool('want-qa-regression', 0):
-            self.notify.info('QA-REGRESSION: CHAT: Whisper')
         messenger.send('wakeup')
         hasManager = hasattr(base.cr, 'playerFriendsManager')
         transientFriend = 0

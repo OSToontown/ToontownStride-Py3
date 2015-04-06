@@ -189,7 +189,7 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
                     flag = 1
 
             for word in words:
-                if word == '' or self.whiteList.isWord(word) or not base.cr.whiteListChatEnabled:
+                if word == '' or self.whiteList.isWord(word) or not settings['speedchatPlus']:
                     newwords.append(word)
                 else:
                     if self.checkBeforeSend:
@@ -204,7 +204,7 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
             if not strict:
                 lastword = words[-1]
                 try:
-                    if lastword == '' or self.whiteList.isPrefix(lastword) or not base.cr.whiteListChatEnabled:
+                    if lastword == '' or self.whiteList.isPrefix(lastword) or not settings['speedchatPlus']:
                         newwords[-1] = lastword
                     elif flag:
                         newwords[-1] = '\x01WLDisplay\x01' + lastword + '\x02'

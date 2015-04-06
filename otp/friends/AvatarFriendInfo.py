@@ -30,7 +30,7 @@ class AvatarFriendInfo(AvatarHandle):
                 result = True
             elif self.openChatEnabledYesNo and base.cr.openChatEnabled:
                 result = True
-            elif self.wlChatEnabledYesNo and base.cr.whiteListChatEnabled:
+            elif self.wlChatEnabledYesNo and settings['speedchatPlus']:
                 result = True
         except:
             pass

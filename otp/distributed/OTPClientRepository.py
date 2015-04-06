@@ -32,7 +32,6 @@ from otp.distributed import OtpDoGlobals
 from otp.distributed.OtpDoGlobals import *
 from otp.distributed.TelemetryLimiter import TelemetryLimiter
 from otp.login import HTTPUtil
-from otp.login import LoginTTUAccount
 from otp.otpbase import OTPGlobals
 from otp.otpbase import OTPLocalizer
 from otp.otpgui import OTPDialog
@@ -46,7 +45,6 @@ class OTPClientRepository(ClientRepositoryBase):
      'PendingApproval',
      'Approved',
      'Rejected'])
-    whiteListChatEnabled = 1 # TODO: Have server set this on localAvatar on login.
 
     def __init__(self, serverVersion, launcher = None, playGame = None):
         ClientRepositoryBase.__init__(self)
@@ -71,9 +69,6 @@ class OTPClientRepository(ClientRepositoryBase):
         else:
             self.http = HTTPClient()
 
-        self.loginInterface = LoginTTUAccount.LoginTTUAccount(self)
-        self.secretChatAllowed = base.config.GetBool('allow-secret-chat', True)
-        self.openChatAllowed = base.config.GetBool('allow-open-chat', True)
         self.userSignature = base.config.GetString('signature', 'none')
         self.__isPaid = 1
         self.parentMgr.registerParent(OTPGlobals.SPRender, base.render)
@@ -1358,19 +1353,6 @@ class OTPClientRepository(ClientRepositoryBase):
 
     def allowFreeNames(self):
         return base.config.GetInt('allow-free-names', 1)
-
-    # TODO: Login Server for all those
-    def allowSecretChat(self):
-        return self.secretChatAllowed
-
-    def allowWhiteListChat(self):
-        return hasattr(self, 'whiteListChatEnabled') and self.whiteListChatEnabled
-
-    def allowAnyTypedChat(self):
-        return self.allowSecretChat() or self.allowWhiteListChat() or self.allowOpenChat()
-
-    def allowOpenChat(self):
-        return self.openChatAllowed
 
     def getStartingDistrict(self):
         district = None

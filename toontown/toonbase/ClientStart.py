@@ -85,6 +85,10 @@ if 'language' not in settings:
     settings['language'] = 'English'
 if 'cogLevel' not in settings:
     settings['cogLevel'] = True
+if 'speedchatPlus' not in settings:
+    settings['speedchatPlus'] = True
+if 'trueFriends' not in settings:
+    settings['trueFriends'] = True
 loadPrcFileData('Settings: res', 'win-size %d %d' % tuple(settings.get('res', (800, 600))))
 loadPrcFileData('Settings: fullscreen', 'fullscreen %s' % settings['fullscreen'])
 loadPrcFileData('Settings: music', 'audio-music-active %s' % settings['music'])
@@ -92,9 +96,6 @@ loadPrcFileData('Settings: sfx', 'audio-sfx-active %s' % settings['sfx'])
 loadPrcFileData('Settings: musicVol', 'audio-master-music-volume %s' % settings['musicVol'])
 loadPrcFileData('Settings: sfxVol', 'audio-master-sfx-volume %s' % settings['sfxVol'])
 loadPrcFileData('Settings: loadDisplay', 'load-display %s' % settings['loadDisplay'])
-loadPrcFileData('Settings: toonChatSounds', 'toon-chat-sounds %s' % settings['toonChatSounds'])
-loadPrcFileData('Settings: language', 'language %s' % settings['language'])
-loadPrcFileData('Settings: cogLevel', 'cogLevel %s' % settings['cogLevel'])
 
 import os
 

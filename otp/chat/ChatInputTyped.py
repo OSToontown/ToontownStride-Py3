@@ -90,9 +90,6 @@ class ChatInputTyped(DirectObject.DirectObject):
             elif not base.talkAssistant.checkWhisperTypedChatAvatar(self.whisperId):
                 messenger.send('Chat-Failed avatar typed chat test')
                 self.deactivate()
-        elif not base.talkAssistant.checkOpenTypedChat():
-            messenger.send('Chat-Failed open typed chat test')
-            self.deactivate()
 
     def deactivate(self):
         self.chatEntry.set('')

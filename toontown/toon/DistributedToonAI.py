@@ -195,6 +195,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.promotionStatus = [0, 0, 0, 0]
         self.buffs = []
         self.redeemedCodes = []
+        self.trueFriends = []
 
     def generate(self):
         DistributedPlayerAI.DistributedPlayerAI.generate(self)
@@ -446,6 +447,22 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def getExperience(self):
         return self.experience.makeNetString()
+    
+    def b_setTrueFriends(self, trueFriends):
+        self.d_setTrueFriends(trueFriends)
+        self.setTrueFriends(trueFriends)
+    
+    def d_setTrueFriends(self, trueFriends):
+        self.sendUpdate('setTrueFriends', [trueFriends])
+    
+    def setTrueFriends(self, trueFriends):
+        self.trueFriends = trueFriends
+    
+    def getTrueFriends(self):
+        return self.trueFriends
+    
+    def isTrueFriend(self, doId):
+        return doId in self.trueFriends
 
     def b_setInventory(self, inventory):
         self.setInventory(inventory)

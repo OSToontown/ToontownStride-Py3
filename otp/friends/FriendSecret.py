@@ -14,7 +14,7 @@ BothSecrets = 2
 
 def showFriendSecret(secretType = AvatarSecret):
     global globalFriendSecret
-    if not base.cr.allowSecretChat():
+    if not settings['trueFriends']:
         chatMgr = base.localAvatar.chatMgr
         chatMgr.fsm.request('noSecretChatAtAll')
     else:
