@@ -53,7 +53,7 @@ class PetshopGUI(DirectObject):
         notify = DirectNotifyGlobal.directNotify.newCategory('PetshopGUI.NamePicker')
 
         def __init__(self, doneEvent, petSeed, gender):
-            zoneId = ZoneUtil.getSafeZoneId(base.localAvatar.getZoneId())
+            zoneId = ZoneUtil.getCanonicalSafeZoneId(base.localAvatar.getZoneId())
             name, dna, traitSeed = PetUtil.getPetInfoFromSeed(petSeed, zoneId)
             self.gui = loader.loadModel('phase_4/models/gui/PetNamePanel')
             self.guiScale = 0.09
@@ -201,7 +201,7 @@ class PetshopGUI(DirectObject):
         notify = DirectNotifyGlobal.directNotify.newCategory('PetshopGUI.AdoptPetDlg')
 
         def __init__(self, doneEvent, petSeed, petNameIndex):
-            zoneId = ZoneUtil.getSafeZoneId(base.localAvatar.getZoneId())
+            zoneId = ZoneUtil.getCanonicalSafeZoneId(base.localAvatar.getZoneId())
             name, dna, traitSeed = PetUtil.getPetInfoFromSeed(petSeed, zoneId)
             name = TTLocalizer.getPetName(petNameIndex)
             cost = PetUtil.getPetCostFromSeed(petSeed, zoneId)
@@ -326,7 +326,7 @@ class PetshopGUI(DirectObject):
             self.petCost = []
             for i in range(self.numPets):
                 random.seed(self.petSeeds[i])
-                zoneId = ZoneUtil.getSafeZoneId(base.localAvatar.getZoneId())
+                zoneId = ZoneUtil.getCanonicalSafeZoneId(base.localAvatar.getZoneId())
                 name, dna, traitSeed = PetUtil.getPetInfoFromSeed(self.petSeeds[i], zoneId)
                 cost = PetUtil.getPetCostFromSeed(self.petSeeds[i], zoneId)
                 traits = PetTraits.PetTraits(traitSeed, zoneId)

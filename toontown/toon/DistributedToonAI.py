@@ -3104,6 +3104,9 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.air.writeServerEvent('suspicious', self.doId, 'bogus cog summons')
             self.sendUpdate('cogSummonsResponse', ['fail', suitIndex, 0])
             return
+        if ZoneUtil.isWelcomeValley(self.zoneId):
+            self.sendUpdate('cogSummonsResponse', ['fail', suitIndex, 0])
+            return
         returnCode = None
         if type == 'single':
             returnCode = self.doSummonSingleCog(suitIndex)

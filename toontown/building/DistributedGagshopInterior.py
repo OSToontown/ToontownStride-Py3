@@ -73,7 +73,7 @@ class DistributedGagshopInterior(DistributedObject.DistributedObject):
         self.randomGenerator.seed(self.zoneId)
         self.interior = loader.loadModel('phase_4/models/modules/gagShop_interior')
         self.interior.reparentTo(render)
-        hoodId = ZoneUtil.getHoodId(self.zoneId)
+        hoodId = ZoneUtil.getCanonicalHoodId(self.zoneId)
         self.colors = ToonInteriorColors.colors[hoodId]
         self.replaceRandomInModel(self.interior)
         door = self.chooseDoor()

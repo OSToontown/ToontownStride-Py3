@@ -79,6 +79,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.bankManager = None
         self.catalogManager = None
         self.tutorialManager = None
+        self.welcomeValleyManager = None
         self.newsManager = None
         self.streetSign = None
         self.distributedDistrict = None

@@ -237,7 +237,7 @@ class HoodMgr(DirectObject.DirectObject):
         return p
 
     def getPhaseFromHood(self, hoodId):
-        hoodId = ZoneUtil.getHoodId(hoodId)
+        hoodId = ZoneUtil.getCanonicalHoodId(hoodId)
         return ToontownGlobals.phaseMap[hoodId]
 
     def getPlaygroundCenterFromId(self, hoodId):
@@ -263,6 +263,7 @@ class HoodMgr(DirectObject.DirectObject):
             self.notify.error('No such hood id as: %s' % hoodId)
 
     def getFullnameFromId(self, hoodId):
+        hoodId = ZoneUtil.getCanonicalZoneId(hoodId)
         return ToontownGlobals.hoodNameMap[hoodId][-1]
 
     def addLinkTunnelHooks(self, hoodPart, nodeList, currentZoneId):
@@ -277,6 +278,8 @@ class HoodMgr(DirectObject.DirectObject):
                 zoneStr = nameParts[2]
                 hoodId = self.getIdFromName(hoodStr)
                 zoneId = int(zoneStr)
+                hoodId = ZoneUtil.getTrueZoneId(hoodId, currentZoneId)
+                zoneId = ZoneUtil.getTrueZoneId(zoneId, currentZoneId)
                 linkSphere = linkTunnel.find('**/tunnel_trigger')
                 if linkSphere.isEmpty():
                     linkSphere = linkTunnel.find('**/tunnel_sphere')

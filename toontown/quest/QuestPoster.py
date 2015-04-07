@@ -176,9 +176,9 @@ class QuestPoster(DirectFrame):
 
     def teleportToShop(self, npcId):
         npcZone = NPCToons.getNPCZone(npcId)
-        npcHood = ZoneUtil.getHoodId(npcZone)
+        npcHood = ZoneUtil.getCanonicalHoodId(npcZone)
         avZone = base.localAvatar.getZoneId()
-        avHood = ZoneUtil.getHoodId(avZone)
+        avHood = ZoneUtil.getCanonicalHoodId(avZone)
         avShard = base.localAvatar.defaultShard
         avPlace = base.cr.playGame.getPlace()
         hqZone = {2000:2520, 1000:1507, 3000:3508, 4000:4504, 5000:5502, 7000:7503, 9000:9505}
@@ -263,7 +263,7 @@ class QuestPoster(DirectFrame):
             self.chooseButton = DirectButton(parent=self.questFrame, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=(0.7, 1, 1), text=TTLocalizer.QuestPageChoose, text_scale=0.06, text_pos=(0, -0.02), pos=(0.285, 0, 0.245), scale=0.65)
             guiButton.removeNode()
         npcZone = NPCToons.getNPCZone(toNpcId)
-        hoodId = ZoneUtil.getHoodId(npcZone)
+        hoodId = ZoneUtil.getCanonicalHoodId(npcZone)
         self.chooseButton['command'] = callback
         self.chooseButton['extraArgs'] = [questId]
         self.unbind(DGG.WITHIN)
@@ -331,7 +331,7 @@ class QuestPoster(DirectFrame):
             self.teleportButton.setPos(0.285, 0, -0.15)
             toNpcName = NPCToons.getNPCName(toNpcId)
             toNpcZone = NPCToons.getNPCZone(toNpcId)
-            toNpcHoodId = ZoneUtil.getHoodId(toNpcZone)
+            toNpcHoodId = ZoneUtil.getCanonicalHoodId(toNpcZone)
             toNpcLocationName = base.cr.hoodMgr.getFullnameFromId(toNpcHoodId)
             toNpcBuildingName = NPCToons.getBuildingTitle(toNpcZone)
             toNpcBranchId = ZoneUtil.getBranchZone(toNpcZone)

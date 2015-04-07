@@ -27,7 +27,7 @@ class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
         if self.isBusy():
             self.freeAvatar(avId)
             return
-        self.petSeeds = self.air.petMgr.getAvailablePets(3, ZoneUtil.getHoodId(self.zoneId))
+        self.petSeeds = self.air.petMgr.getAvailablePets(3, ZoneUtil.getCanonicalHoodId(self.zoneId))
         numGenders = len(PetDNA.PetGenders)
         self.petSeeds *= numGenders
         self.petSeeds.sort()
@@ -92,7 +92,7 @@ class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
         av = simbase.air.doId2do.get(avId)
         if av:
             from toontown.hood import ZoneUtil
-            zoneId = ZoneUtil.getSafeZoneId(self.zoneId)
+            zoneId = ZoneUtil.getCanonicalSafeZoneId(self.zoneId)
             if petNum not in xrange(0, len(self.petSeeds)):
                 self.air.writeServerEvent('suspicious', avId, 'DistributedNPCPetshopAI.petAdopted and no such pet!')
                 self.notify.warning('somebody called petAdopted on a non-existent pet! avId: %s' % avId)

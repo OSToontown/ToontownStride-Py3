@@ -392,11 +392,11 @@ class LocationBasedQuest(Quest):
         if loc is Anywhere:
             return 1
         if ZoneUtil.isPlayground(loc):
-            if loc == ZoneUtil.getHoodId(zoneId):
+            if loc == ZoneUtil.getCanonicalHoodId(zoneId):
                 return 1
             else:
                 return 0
-        elif loc == ZoneUtil.getBranchZone(zoneId):
+        elif loc == ZoneUtil.getCanonicalBranchZone(zoneId):
             return 1
         elif loc == zoneId:
             return 1
@@ -3795,11 +3795,11 @@ def chooseQuestDialogTierNotDone():
 def getNpcInfo(npcId):
     npcName = NPCToons.getNPCName(npcId)
     npcZone = NPCToons.getNPCZone(npcId)
-    hoodId = ZoneUtil.getHoodId(npcZone)
+    hoodId = ZoneUtil.getCanonicalHoodId(npcZone)
     hoodName = base.cr.hoodMgr.getFullnameFromId(hoodId)
     buildingArticle = NPCToons.getBuildingArticle(npcZone)
     buildingName = NPCToons.getBuildingTitle(npcZone)
-    branchId = ZoneUtil.getBranchZone(npcZone)
+    branchId = ZoneUtil.getCanonicalBranchZone(npcZone)
     toStreet = ToontownGlobals.StreetNames[branchId][0]
     streetName = ToontownGlobals.StreetNames[branchId][-1]
     isInPlayground = ZoneUtil.isPlayground(branchId)
@@ -3819,9 +3819,9 @@ def getNpcLocationDialog(fromNpcId, toNpcId):
     fromBranchId = None
     if fromNpcId:
         fromNpcZone = NPCToons.getNPCZone(fromNpcId)
-        fromBranchId = ZoneUtil.getBranchZone(fromNpcZone)
+        fromBranchId = ZoneUtil.getCanonicalBranchZone(fromNpcZone)
     toNpcZone = NPCToons.getNPCZone(toNpcId)
-    toBranchId = ZoneUtil.getBranchZone(toNpcZone)
+    toBranchId = ZoneUtil.getCanonicalBranchZone(toNpcZone)
     toNpcName, toHoodName, toBuildingArticle, toBuildingName, toStreetTo, toStreetName, isInPlayground = getNpcInfo(toNpcId)
     if fromBranchId == toBranchId:
         if isInPlayground:

@@ -62,6 +62,7 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
         SuitPlannerBase.SuitPlannerBase.__init__(self)
         self.air = air
         self.zoneId = zoneId
+        self.canonicalZoneId = ZoneUtil.getCanonicalZoneId(zoneId)
         if simbase.air.wantCogdominiums:
             if not hasattr(self.__class__, 'CogdoPopAdjusted'):
                 self.__class__.CogdoPopAdjusted = True
@@ -71,13 +72,15 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
         self.hoodInfoIdx = -1
         for index in xrange(len(self.SuitHoodInfo)):
             currHoodInfo = self.SuitHoodInfo[index]
-            if currHoodInfo[self.SUIT_HOOD_INFO_ZONE] == self.zoneId:
+            if currHoodInfo[self.SUIT_HOOD_INFO_ZONE] == self.canonicalZoneId:
                 self.hoodInfoIdx = index
         self.currDesired = None
         self.baseNumSuits = (
             self.SuitHoodInfo[self.hoodInfoIdx][self.SUIT_HOOD_INFO_MIN] +
             self.SuitHoodInfo[self.hoodInfoIdx][self.SUIT_HOOD_INFO_MAX]) / 2
         self.targetNumSuitBuildings = SuitBuildingGlobals.buildingMinMax[self.zoneId][0]
+        if ZoneUtil.isWelcomeValley(self.zoneId):
+            self.targetNumSuitBuildings = 0
         self.pendingBuildingTracks = []
         self.pendingBuildingHeights = []
         self.suitList = []
@@ -357,9 +360,13 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
             return False
         numSuitBuildings = len(self.buildingMgr.getSuitBlocks())
         if (random.random() * 100) < SuitBuildingGlobals.buildingChance[self.zoneId]:
-            return SuitBuildingGlobals.buildingMinMax[self.zoneId][1] - numSuitBuildings
+            bmax = SuitBuildingGlobals.buildingMinMax[self.zoneId][1]
+            if ZoneUtil.isWelcomeValley(self.zoneId):
+                bmax = 0
+            numNeeded = bmax - numSuitBuildings
         else:
-            return self.targetNumSuitBuildings - numSuitBuildings
+            numNeeded = self.targetNumSuitBuildings - numSuitBuildings
+        return numNeeded
 
     def newSuitShouldAttemptTakeover(self):
         if not self.SUITS_ENTER_BUILDINGS:
@@ -837,7 +844,8 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
 
     def requestBattle(self, zoneId, suit, toonId):
         self.notify.debug('requestBattle() - zone: %s suit: %s toon: %s' % (zoneId, suit.doId, toonId))
-        if zoneId not in self.battlePosDict:
+        canonicalZoneId = ZoneUtil.getCanonicalZoneId(zoneId)
+        if canonicalZoneId not in self.battlePosDict:
             return 0
         toon = self.air.doId2do.get(toonId)
         if toon.getBattleId() > 0:
@@ -846,7 +854,7 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
         if toon:
             if hasattr(toon, 'doId'):
                 toon.b_setBattleId(toonId)
-        pos = self.battlePosDict[zoneId]
+        pos = self.battlePosDict[canonicalZoneId]
         interactivePropTrackBonus = -1
         self.battleMgr.newBattle(
             zoneId, zoneId, pos, suit, toonId, self.__battleFinished,

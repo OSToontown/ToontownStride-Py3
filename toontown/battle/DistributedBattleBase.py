@@ -832,7 +832,7 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
 
     def __teleportToSafeZone(self, toon):
         self.notify.debug('teleportToSafeZone(%d)' % toon.doId)
-        hoodId = ZoneUtil.getHoodId(self.zoneId)
+        hoodId = ZoneUtil.getCanonicalHoodId(self.zoneId)
         if hoodId in base.localAvatar.hoodsVisited:
             target_sz = ZoneUtil.getSafeZoneId(self.zoneId)
         else:

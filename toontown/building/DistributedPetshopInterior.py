@@ -81,7 +81,7 @@ class DistributedPetshopInterior(DistributedObject.DistributedObject):
         self.fish.setPos(0, 6, -4)
         self.fish.setPlayRate(0.7, 'swim')
         self.fish.loop('swim')
-        hoodId = ZoneUtil.getHoodId(self.zoneId)
+        hoodId = ZoneUtil.getCanonicalHoodId(self.zoneId)
         self.colors = ToonInteriorColors.colors[hoodId]
         self.replaceRandomInModel(self.interior)
         door = self.chooseDoor()

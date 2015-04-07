@@ -211,7 +211,29 @@ class QuietZoneState(StateData.StateData):
             base.cr.handlerArgs = self._requestStatus
             base.cr.setInQuietZone(True)
         self.waitForDatabase('WaitForZoneRedirect')
-        self.gotZoneRedirect(self._requestStatus['zoneId'])
+        zoneId = self._requestStatus['zoneId']
+        avId = self._requestStatus.get('avId', -1)
+        allowRedirect = self._requestStatus.get('allowRedirect', 1)
+        if avId != -1:
+            allowRedirect = 0
+        if not base.cr.welcomeValleyManager:
+            newZoneId = ZoneUtil.getCanonicalZoneId(zoneId)
+            if newZoneId != zoneId:
+                self.gotZoneRedirect(newZoneId)
+                return
+        if allowRedirect and ZoneUtil.isWelcomeValley(zoneId):
+            self.notify.info('Requesting AI redirect from zone %s.' % zoneId)
+            if base.slowQuietZone:
+
+                def rZI(task, zoneId = zoneId, self = self):
+                    base.cr.welcomeValleyManager.requestZoneId(zoneId, self.gotZoneRedirect)
+                    return Task.done
+
+                taskMgr.doMethodLater(base.slowQuietZoneDelay, rZI, 'slowQuietZone-welcomeValleyRedirect')
+            else:
+                base.cr.welcomeValleyManager.requestZoneId(zoneId, self.gotZoneRedirect)
+        else:
+            self.fsm.request('waitForSetZoneResponse')
 
     def gotZoneRedirect(self, zoneId):
         self.notify.info('Redirecting to zone %s.' % zoneId)

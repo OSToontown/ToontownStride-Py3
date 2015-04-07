@@ -27,7 +27,7 @@ def getDifficulty(trolleyZone):
 
 
 def getSafezoneId(trolleyZone):
-    return ZoneUtil.getHoodId(trolleyZone)
+    return ZoneUtil.getCanonicalHoodId(trolleyZone)
 
 
 def getScoreMult(trolleyZone):

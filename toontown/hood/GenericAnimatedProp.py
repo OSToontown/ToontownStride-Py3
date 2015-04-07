@@ -84,7 +84,7 @@ class GenericAnimatedProp(AnimatedProp.AnimatedProp):
         try:
             visId = int(splits[2])
             self.visId = visId
-            self.hoodId = ZoneUtil.getHoodId(visId)
+            self.hoodId = ZoneUtil.getCanonicalHoodId(visId)
             self.notify.debug('calcHoodId %d from %s' % (self.hoodId, fullString))
         except Exception, generic:
             if 'Editor' not in fullString:

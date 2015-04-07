@@ -25,7 +25,7 @@ class DistributedLibraryInterior(DistributedObject):
         door = self.cr.playGame.dnaStore.findNode('door_double_round_ur')
         doorNodePath = door.copyTo(doorOrigin)
 
-        hoodId = ZoneUtil.getHoodId(self.zoneId)
+        hoodId = ZoneUtil.getCanonicalHoodId(self.zoneId)
         doorColor = ToonInteriorColors.colors[hoodId]['TI_door'][0]
         setupDoor(
             doorNodePath, self.interior, doorOrigin, self.cr.playGame.dnaStore,
@@ -68,6 +68,6 @@ class DistributedLibraryInterior(DistributedObject):
                     _nodePath = nodePath
 
             if name[8] == 'c':
-                hoodId = ZoneUtil.getHoodId(self.zoneId)
+                hoodId = ZoneUtil.getCanonicalHoodId(self.zoneId)
                 colors = ToonInteriorColors.colors[hoodId]
                 _nodePath.setColorScale(generator.choice(colors[category]))

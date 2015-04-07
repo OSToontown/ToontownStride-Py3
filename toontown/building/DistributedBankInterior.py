@@ -200,7 +200,7 @@ class DistributedBankInterior(DistributedObject):
         self.vaultOpenSfx = loader.loadSfx('phase_4/audio/sfx/vault_door_open.ogg')
         self.vaultCloseSfx = loader.loadSfx('phase_4/audio/sfx/vault_door_close.ogg')
 
-        hoodId = ZoneUtil.getHoodId(self.zoneId)
+        hoodId = ZoneUtil.getCanonicalHoodId(self.zoneId)
         self.colors = ToonInteriorColors.colors[hoodId]
         self.replaceRandomInModel(self.interior)
 

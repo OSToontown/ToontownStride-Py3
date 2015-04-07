@@ -97,7 +97,7 @@ def createNPC(air, npcId, desc, zoneId, posIndex = 0, questCallback = None):
     import DistributedSmartNPCAI
     import DistributedNPCBankerAI
     import DistributedNPCGloveAI
-    zoneId, name, dnaType, gender, protected, type = desc
+    canonicalZoneId, name, dnaType, gender, protected, type = desc
     if type == NPC_REGULAR:
         npc = DistributedNPCToonAI.DistributedNPCToonAI(air, npcId, questCallback=questCallback)
     elif type == NPC_HQ:
@@ -176,7 +176,8 @@ def createNPC(air, npcId, desc, zoneId, posIndex = 0, questCallback = None):
 
 def createNpcsInZone(air, zoneId):
     npcs = []
-    npcIdList = zone2NpcDict.get(zoneId, [])
+    canonicalZoneId = ZoneUtil.getCanonicalZoneId(zoneId)
+    npcIdList = zone2NpcDict.get(canonicalZoneId, [])
     for npcId in npcIdList:
         while npcIdList.count(npcId) > 1:
             npcIdList.remove(npcId)
@@ -201,7 +202,7 @@ def createLocalNPC(npcId):
     if npcId not in NPCToonDict:
         return None
     desc = NPCToonDict[npcId]
-    zoneId, name, dnaType, gender, protected, type = desc
+    canonicalZoneId, name, dnaType, gender, protected, type = desc
     npc = Toon.Toon()
     npc.setName(name)
     npc.setPickable(0)

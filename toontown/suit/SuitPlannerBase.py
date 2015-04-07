@@ -514,8 +514,8 @@ class SuitPlannerBase:
         self.initDNAInfo()
 
     def genDNAFileName(self):
-        zoneId = self.getZoneId()
-        hoodId = ZoneUtil.getHoodId(zoneId)
+        zoneId = ZoneUtil.getCanonicalZoneId(self.getZoneId())
+        hoodId = ZoneUtil.getCanonicalHoodId(zoneId)
         hood = ToontownGlobals.dnaMap[hoodId]
         phase = ToontownGlobals.streetPhaseMap[hoodId]
         if hoodId == zoneId:

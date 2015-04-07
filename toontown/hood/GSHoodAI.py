@@ -62,7 +62,7 @@ class GSHoodAI(HoodAI.HoodAI):
 
             racingPads.append(racingPad)
         elif isinstance(dnaGroup, DNAVisGroup):
-            zoneId = int(dnaGroup.getName().split(':')[0])
+            zoneId = ZoneUtil.getTrueZoneId(int(dnaGroup.getName().split(':')[0]), zoneId)
         for i in xrange(dnaGroup.getNumChildren()):
             (foundRacingPads, foundRacingPadGroups) = self.findRacingPads(dnaGroup.at(i), zoneId, area, padType=padType)
             racingPads.extend(foundRacingPads)
@@ -98,9 +98,11 @@ class GSHoodAI(HoodAI.HoodAI):
         viewingPadGroups = []
         for zoneId in self.getZoneTable():
             dnaData = self.air.dnaDataMap.get(zoneId, None)
+            zoneId = ZoneUtil.getTrueZoneId(zoneId, self.zoneId)
             if dnaData.getName() == 'root':
-                (foundRacingPads, foundRacingPadGroups) = self.findRacingPads(dnaData, zoneId, zoneId, padType='racing_pad')
-                (foundViewingPads, foundViewingPadGroups) = self.findRacingPads(dnaData, zoneId, zoneId, padType='viewing_pad')
+                area = ZoneUtil.getCanonicalZoneId(zoneId)
+                (foundRacingPads, foundRacingPadGroups) = self.findRacingPads(dnaData, zoneId, area, padType='racing_pad')
+                (foundViewingPads, foundViewingPadGroups) = self.findRacingPads(dnaData, zoneId, area, padType='viewing_pad')
                 self.racingPads.extend(foundRacingPads)
                 racingPadGroups.extend(foundRacingPadGroups)
                 self.viewingPads.extend(foundViewingPads)
