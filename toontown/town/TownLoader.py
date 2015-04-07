@@ -51,7 +51,7 @@ class TownLoader(StateData.StateData):
         self.parentFSMState.addChild(self.fsm)
         self.loadBattleAnims()
         self.branchZone = ZoneUtil.getBranchZone(zoneId)
-        self.canonicalBranchZone = ZoneUtil.getCanonicalBranchZone(zoneId)
+        self.canonicalBranchZone = ZoneUtil.getBranchZone(zoneId)
         self.music = base.loadMusic(self.musicFile)
         self.activityMusic = base.loadMusic(self.activityMusicFile)
         self.battleMusic = base.loadMusic('phase_3.5/audio/bgm/encntr_general_bg.ogg')
@@ -238,7 +238,6 @@ class TownLoader(StateData.StateData):
             visGroup = dnaStore.getDNAVisGroupAI(i)
             groupName = base.cr.hoodMgr.extractGroupName(groupFullName)
             zoneId = int(groupName)
-            zoneId = ZoneUtil.getTrueZoneId(zoneId, self.zoneId)
             groupNode = self.geom.find('**/' + groupFullName)
             if groupNode.isEmpty():
                 self.notify.error('Could not find visgroup')
@@ -264,12 +263,10 @@ class TownLoader(StateData.StateData):
         for i in xrange(numVisGroups):
             groupFullName = dnaStore.getDNAVisGroupName(i)
             zoneId = int(base.cr.hoodMgr.extractGroupName(groupFullName))
-            zoneId = ZoneUtil.getTrueZoneId(zoneId, self.zoneId)
             for j in xrange(dnaStore.getNumVisiblesInDNAVisGroup(i)):
                 visName = dnaStore.getVisibleName(i, j)
                 groupName = base.cr.hoodMgr.extractGroupName(visName)
                 nextZoneId = int(groupName)
-                nextZoneId = ZoneUtil.getTrueZoneId(nextZoneId, self.zoneId)
                 visNode = self.zoneDict[nextZoneId]
                 self.nodeDict[zoneId].append(visNode)
 

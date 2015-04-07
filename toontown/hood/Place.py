@@ -546,10 +546,9 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         zoneId = requestStatus['zoneId']
         how = requestStatus['how']
         tunnelOrigin = requestStatus['tunnelOrigin']
-        fromZoneId = ZoneUtil.getCanonicalZoneId(self.getZoneId())
         tunnelName = requestStatus.get('tunnelName')
         if tunnelName == None:
-            tunnelName = base.cr.hoodMgr.makeLinkTunnelName(self.loader.hood.id, fromZoneId)
+            tunnelName = base.cr.hoodMgr.makeLinkTunnelName(self.loader.hood.id, self.getZoneId())
         self.doneStatus = {'loader': ZoneUtil.getLoaderName(zoneId),
          'where': ZoneUtil.getToonWhereName(zoneId),
          'how': how,

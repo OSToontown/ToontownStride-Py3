@@ -20,7 +20,6 @@ def canAccess(avatarId, zoneId, function = ''):
 
 def openToAll(zoneId, avatar):
     allowed = False
-    canonicalZoneId = ZoneUtil.getCanonicalHoodId(zoneId)
     allowedZones = [ToontownGlobals.ToontownCentral,
      ToontownGlobals.MyEstate,
      ToontownGlobals.GoofySpeedway,
@@ -33,11 +32,11 @@ def openToAll(zoneId, avatar):
         for zone in simbase.air.estateMgr.getEstateZones(ownerId):
             specialZones.append(zone)
 
-    if canonicalZoneId in allowedZones or avatar.isInEstate():
+    if zoneId in allowedZones or avatar.isInEstate():
         allowed = True
     elif zoneId in specialZones:
         allowed = True
-    elif canonicalZoneId >= ToontownGlobals.DynamicZonesBegin and not avatar.getTutorialAck():
+    elif zoneId >= ToontownGlobals.DynamicZonesBegin and not avatar.getTutorialAck():
         zoneDict = simbase.air.tutorialManager.playerDict.get(avatar.doId)
         if zoneDict:
             allowed = True
@@ -45,12 +44,11 @@ def openToAll(zoneId, avatar):
 
 
 def canWearSuit(avatarId, zoneId):
-    canonicalZoneId = ZoneUtil.getCanonicalHoodId(zoneId)
     allowedSuitZones = [ToontownGlobals.LawbotHQ,
      ToontownGlobals.CashbotHQ,
      ToontownGlobals.SellbotHQ,
      ToontownGlobals.BossbotHQ]
-    if canonicalZoneId in allowedSuitZones:
+    if zoneId in allowedSuitZones:
         return True
     elif zoneId >= ToontownGlobals.DynamicZonesBegin:
         return True

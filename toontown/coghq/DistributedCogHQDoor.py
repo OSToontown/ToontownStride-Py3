@@ -28,7 +28,6 @@ class DistributedCogHQDoor(DistributedDoor.DistributedDoor):
          'zoneId': zoneId,
          'shardId': None,
          'avId': -1,
-         'allowRedirect': 0,
          'doorDoId': self.otherDoId}
         return request
 
@@ -75,8 +74,7 @@ class DistributedCogHQDoor(DistributedDoor.DistributedDoor):
     def setZoneIdAndBlock(self, zoneId, block):
         self.zoneId = zoneId
         self.block = block
-        canonicalZoneId = ZoneUtil.getCanonicalZoneId(zoneId)
-        if canonicalZoneId in (ToontownGlobals.BossbotHQ, ToontownGlobals.BossbotLobby):
+        if zoneId in (ToontownGlobals.BossbotHQ, ToontownGlobals.BossbotLobby):
             self.doorX = 1.0
 
     def enterDoor(self):

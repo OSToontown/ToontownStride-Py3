@@ -507,7 +507,6 @@ class DistributedDoor(DistributedObject.DistributedObject, DelayDeletable):
             'zoneId': zoneId,
             'shardId': None,
             'avId': -1,
-            'allowRedirect': 0,
             'doorDoId': self.otherDoId
         }
         return request

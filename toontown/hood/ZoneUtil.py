@@ -1,25 +1,19 @@
 from toontown.toonbase.ToontownGlobals import *
 
-
 zoneUtilNotify = directNotify.newCategory('ZoneUtil')
 tutorialDict = None
-
 
 def isGoofySpeedwayZone(zoneId):
     return zoneId == 8000
 
-
 def isCogHQZone(zoneId):
     return zoneId >= 10000 and zoneId < 15000
-
 
 def isMintInteriorZone(zoneId):
     return zoneId in (CashbotMintIntA, CashbotMintIntB, CashbotMintIntC)
 
-
 def isDynamicZone(zoneId):
     return zoneId >= DynamicZonesBegin and zoneId < DynamicZonesEnd
-
 
 def getStreetName(branchId):
     global tutorialDict
@@ -27,7 +21,6 @@ def getStreetName(branchId):
         return StreetNames[20000][-1]
     else:
         return StreetNames[branchId][-1]
-
 
 def getLoaderName(zoneId):
     if tutorialDict:
@@ -47,20 +40,16 @@ def getLoaderName(zoneId):
             loaderName = 'townLoader'
     return loaderName
 
-
 def getBranchLoaderName(zoneId):
     return getLoaderName(getBranchZone(zoneId))
-
 
 def getSuitWhereName(zoneId):
     where = getWhereName(zoneId, 0)
     return where
 
-
 def getToonWhereName(zoneId):
     where = getWhereName(zoneId, 1)
     return where
-
 
 def isPlayground(zoneId):
     whereName = getWhereName(zoneId, False)
@@ -68,7 +57,6 @@ def isPlayground(zoneId):
         return True
     else:
         return zoneId % 1000 == 0 and zoneId < DynamicZonesBegin
-
 
 def isHQ(zoneId):
     if zoneId == 2520 or zoneId == 1507 or zoneId == 3508 or zoneId == 4504 or zoneId == 5502 or zoneId == 7503 or zoneId == 9505:
@@ -80,14 +68,13 @@ def isPetshop(zoneId):
         return True
     return False
 
-
 def getWhereName(zoneId, isToon):
     if tutorialDict:
         if zoneId in tutorialDict['interiors']:
             where = 'toonInterior'
         elif zoneId in tutorialDict['exteriors']:
             where = 'street'
-        elif zoneId == ToontownCentral or zoneId == WelcomeValleyToken:
+        elif zoneId == ToontownCentral:
             where = 'playground'
         else:
             zoneUtilNotify.error('No known zone: ' + str(zoneId))
@@ -128,7 +115,6 @@ def getWhereName(zoneId, isToon):
             where = 'street'
     return where
 
-
 def getBranchZone(zoneId):
     if tutorialDict:
         branchId = tutorialDict['branch']
@@ -139,40 +125,6 @@ def getBranchZone(zoneId):
                 branchId -= 500
     return branchId
 
-
-def getCanonicalBranchZone(zoneId):
-    return getBranchZone(getCanonicalZoneId(zoneId))
-
-
-def isWelcomeValley(zoneId):
-    return zoneId == WelcomeValleyToken or zoneId >= WelcomeValleyBegin and zoneId < WelcomeValleyEnd
-
-
-def getCanonicalZoneId(zoneId):
-    if zoneId == WelcomeValleyToken:
-        zoneId = ToontownCentral
-    elif zoneId >= WelcomeValleyBegin and zoneId < WelcomeValleyEnd:
-        zoneId = zoneId % 2000
-        if zoneId < 1000:
-            zoneId = zoneId + ToontownCentral
-        else:
-            zoneId = zoneId - 1000 + GoofySpeedway
-    return zoneId
-
-
-def getTrueZoneId(zoneId, currentZoneId):
-    if zoneId >= WelcomeValleyBegin and zoneId < WelcomeValleyEnd or zoneId == WelcomeValleyToken:
-        zoneId = getCanonicalZoneId(zoneId)
-    if currentZoneId >= WelcomeValleyBegin and currentZoneId < WelcomeValleyEnd:
-        hoodId = getHoodId(zoneId)
-        offset = currentZoneId - currentZoneId % 2000
-        if hoodId == ToontownCentral:
-            return zoneId - ToontownCentral + offset
-        elif hoodId == GoofySpeedway:
-            return zoneId - GoofySpeedway + offset + 1000
-    return zoneId
-
-
 def getHoodId(zoneId):
     if tutorialDict:
         hoodId = Tutorial
@@ -180,21 +132,11 @@ def getHoodId(zoneId):
         hoodId = zoneId - zoneId % 1000
     return hoodId
 
-
 def getSafeZoneId(zoneId):
     hoodId = getHoodId(zoneId)
     if hoodId in HQToSafezone:
         hoodId = HQToSafezone[hoodId]
     return hoodId
-
-
-def getCanonicalHoodId(zoneId):
-    return getHoodId(getCanonicalZoneId(zoneId))
-
-
-def getCanonicalSafeZoneId(zoneId):
-    return getSafeZoneId(getCanonicalZoneId(zoneId))
-
 
 def isInterior(zoneId):
     if tutorialDict:
@@ -206,7 +148,6 @@ def isInterior(zoneId):
         r = zoneId % 1000 >= 500
     return r
 
-
 def overrideOn(branch, exteriorList, interiorList):
     global tutorialDict
     if tutorialDict:
@@ -215,12 +156,10 @@ def overrideOn(branch, exteriorList, interiorList):
      'exteriors': exteriorList,
      'interiors': interiorList}
 
-
 def overrideOff():
     global tutorialDict
     tutorialDict = None
     return
-
 
 def getWakeInfo(hoodId = None, zoneId = None):
     wakeWaterHeight = 0
@@ -230,14 +169,13 @@ def getWakeInfo(hoodId = None, zoneId = None):
             hoodId = base.cr.playGame.getPlaceId()
         if zoneId is None:
             zoneId = base.cr.playGame.getPlace().getZoneId()
-        canonicalZoneId = getCanonicalZoneId(zoneId)
-        if canonicalZoneId == DonaldsDock:
+        if zoneId == DonaldsDock:
             wakeWaterHeight = DDWakeWaterHeight
             showWake = 1
-        elif canonicalZoneId == ToontownCentral:
+        elif zoneId == ToontownCentral:
             wakeWaterHeight = TTWakeWaterHeight
             showWake = 1
-        elif canonicalZoneId == OutdoorZone:
+        elif zoneId == OutdoorZone:
             wakeWaterHeight = OZWakeWaterHeight
             showWake = 1
         elif hoodId == MyEstate:

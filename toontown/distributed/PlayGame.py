@@ -224,20 +224,19 @@ class PlayGame(StateData.StateData):
 
     def handleWaitForSetZoneResponse(self, requestStatus):
         hoodId = requestStatus['hoodId']
-        canonicalHoodId = ZoneUtil.getCanonicalZoneId(hoodId)
-        toHoodPhrase = ToontownGlobals.hoodNameMap[canonicalHoodId][0]
-        hoodName = ToontownGlobals.hoodNameMap[canonicalHoodId][-1]
+        toHoodPhrase = ToontownGlobals.hoodNameMap[hoodId][0]
+        hoodName = ToontownGlobals.hoodNameMap[hoodId][-1]
         zoneId = requestStatus['zoneId']
         loaderName = requestStatus['loader']
         avId = requestStatus.get('avId', -1)
         ownerId = requestStatus.get('ownerId', avId)
         if base.config.GetBool('want-qa-regression', 0):
             self.notify.info('QA-REGRESSION: NEIGHBORHOODS: Visit %s' % hoodName)
-        count = ToontownGlobals.hoodCountMap[canonicalHoodId]
+        count = ToontownGlobals.hoodCountMap[hoodId]
         if loaderName == 'safeZoneLoader':
-            count += ToontownGlobals.safeZoneCountMap[canonicalHoodId]
+            count += ToontownGlobals.safeZoneCountMap[hoodId]
         elif loaderName == 'townLoader':
-            count += ToontownGlobals.townCountMap[canonicalHoodId]
+            count += ToontownGlobals.townCountMap[hoodId]
         if not loader.inBulkBlock:
             if hoodId == ToontownGlobals.MyEstate:
                 if avId == -1:
@@ -269,7 +268,7 @@ class PlayGame(StateData.StateData):
         else:
             if not hasattr(self, 'dnaStore'):
                 self.loadDnaStore()
-        hoodClass = self.getHoodClassByNumber(canonicalHoodId)
+        hoodClass = self.getHoodClassByNumber(hoodId)
         self.hood = hoodClass(self.fsm, self.hoodDoneEvent, self.dnaStore, hoodId)
         self.hood.load()
         self.hood.loadLoader(requestStatus)
@@ -279,8 +278,7 @@ class PlayGame(StateData.StateData):
 
     def handleLeftQuietZone(self):
         status = self.quietZoneStateData.getRequestStatus()
-        hoodId = ZoneUtil.getCanonicalZoneId(status['hoodId'])
-        hoodState = self.getHoodStateByNumber(hoodId)
+        hoodState = self.getHoodStateByNumber(status['hoodId'])
         self.fsm.request(hoodState, [status])
 
     def handleQuietZoneDone(self):

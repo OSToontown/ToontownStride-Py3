@@ -180,8 +180,8 @@ class MapPage(ShtikerPage.ShtikerPage):
                     self.hoodLabel['text'] = TTLocalizer.MapPageYouAreAtSomeonesHome % TTLocalizer.GetPossesive(avName)
                     self.hoodLabel.show()
         elif zone:
-            hoodName = ToontownGlobals.hoodNameMap.get(ZoneUtil.getCanonicalHoodId(zone), ('',))[-1]
-            streetName = ToontownGlobals.StreetNames.get(ZoneUtil.getCanonicalBranchZone(zone), ('',))[-1]
+            hoodName = ToontownGlobals.hoodNameMap.get(ZoneUtil.getHoodId(zone), ('',))[-1]
+            streetName = ToontownGlobals.StreetNames.get(ZoneUtil.getBranchZone(zone), ('',))[-1]
             if hoodName:
                 self.hoodLabel['text'] = TTLocalizer.MapPageYouAreHere % (hoodName, streetName)
                 self.hoodLabel.show()

@@ -38,9 +38,7 @@ class DistributedBoardingParty(DistributedObject.DistributedObject, BoardingPart
         localAvatar.boardingParty = self
 
     def announceGenerate(self):
-        canonicalZoneId = ZoneUtil.getCanonicalZoneId(self.zoneId)
-        self.notify.debug('canonicalZoneId = %s' % canonicalZoneId)
-        localAvatar.chatMgr.chatInputSpeedChat.addBoardingGroupMenu(canonicalZoneId)
+        localAvatar.chatMgr.chatInputSpeedChat.addBoardingGroupMenu(self.zoneId)
         if base.config.GetBool('want-singing', 0):
             localAvatar.chatMgr.chatInputSpeedChat.addSingingGroupMenu()
 

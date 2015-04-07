@@ -104,8 +104,7 @@ class BattlePlace(Place.Place):
             self.zoneId = newZoneId
 
     def genDNAFileName(self, zoneId):
-        zoneId = ZoneUtil.getCanonicalZoneId(zoneId)
-        hoodId = ZoneUtil.getCanonicalHoodId(zoneId)
+        hoodId = ZoneUtil.getHoodId(zoneId)
         hood = ToontownGlobals.dnaMap[hoodId]
         phase = ToontownGlobals.streetPhaseMap[hoodId]
         if hoodId == zoneId:

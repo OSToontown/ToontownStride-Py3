@@ -218,8 +218,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.send(datagram)
 
     def lookupDNAFileName(self, zoneId):
-        zoneId = ZoneUtil.getCanonicalZoneId(zoneId)
-        hoodId = ZoneUtil.getCanonicalHoodId(zoneId)
+        hoodId = ZoneUtil.getHoodId(zoneId)
         hood = ToontownGlobals.dnaMap[hoodId]
         if hoodId == zoneId:
             zoneId = 'sz'

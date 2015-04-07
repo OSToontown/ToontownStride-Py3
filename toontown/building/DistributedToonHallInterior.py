@@ -66,7 +66,7 @@ class DistributedToonHallInterior(DistributedToonInterior):
         self.randomGenerator.seed(self.zoneId)
         interior = self.randomDNAItem('TI_hall', self.dnaStore.findNode)
         self.interior = interior.copyTo(render)
-        hoodId = ZoneUtil.getCanonicalHoodId(self.zoneId)
+        hoodId = ZoneUtil.getHoodId(self.zoneId)
         self.colors = ToonInteriorColors.colors[hoodId]
         self.replaceRandomInModel(self.interior)
         doorModelName = 'door_double_round_ul'

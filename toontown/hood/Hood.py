@@ -44,7 +44,7 @@ class Hood(StateData.StateData):
     def getHoodText(self, zoneId):
         hoodText = base.cr.hoodMgr.getFullnameFromId(self.id)
         if self.id != Tutorial:
-            streetName = StreetNames.get(ZoneUtil.getCanonicalBranchZone(zoneId))
+            streetName = StreetNames.get(ZoneUtil.getBranchZone(zoneId))
             if streetName:
                 hoodText = hoodText + '\n' + streetName[-1]
         return hoodText
@@ -168,8 +168,8 @@ class Hood(StateData.StateData):
         elif loaderName == 'townLoader':
             if not loader.inBulkBlock:
                 zoneId = requestStatus['zoneId']
-                toPhrase = StreetNames[ZoneUtil.getCanonicalBranchZone(zoneId)][0]
-                streetName = StreetNames[ZoneUtil.getCanonicalBranchZone(zoneId)][-1]
+                toPhrase = StreetNames[ZoneUtil.getBranchZone(zoneId)][0]
+                streetName = StreetNames[ZoneUtil.getBranchZone(zoneId)][-1]
                 loader.beginBulkLoad('hood', TTLocalizer.HeadingToStreet % {'to': toPhrase,
                  'street': streetName}, townCountMap[self.id], 1, TTLocalizer.TIP_STREET, zoneId)
             self.loadLoader(requestStatus)

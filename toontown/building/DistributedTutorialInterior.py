@@ -98,7 +98,7 @@ class DistributedTutorialInterior(DistributedObject.DistributedObject):
         self.sky.setDepthWrite(0)
         self.sky.setBin('background', 100)
         self.sky.find('**/Sky').reparentTo(self.sky, -1)
-        hoodId = ZoneUtil.getCanonicalHoodId(self.zoneId)
+        hoodId = ZoneUtil.getHoodId(self.zoneId)
         self.colors = ToonInteriorColors.colors[hoodId]
         self.replaceRandomInModel(self.interior)
         doorModelName = 'door_double_round_ul'

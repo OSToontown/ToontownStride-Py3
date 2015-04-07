@@ -149,8 +149,8 @@ class QuestMap(DirectFrame):
                 continue
 
             npcZoneId = NPCToons.getNPCZone(toNpcId)
-            hoodId = ZoneUtil.getCanonicalHoodId(npcZoneId)
-            branchId = ZoneUtil.getCanonicalBranchZone(npcZoneId)
+            hoodId = ZoneUtil.getHoodId(npcZoneId)
+            branchId = ZoneUtil.getBranchZone(npcZoneId)
 
             if (self.hoodId != hoodId) or (self.zoneId != branchId):
                 continue
@@ -189,8 +189,8 @@ class QuestMap(DirectFrame):
 
     def updateMap(self):
         if self.av:
-            hoodId = ZoneUtil.getCanonicalHoodId(self.av.getLocation()[1])
-            zoneId = ZoneUtil.getCanonicalBranchZone(self.av.getLocation()[1])
+            hoodId = ZoneUtil.getHoodId(self.av.getLocation()[1])
+            zoneId = ZoneUtil.getBranchZone(self.av.getLocation()[1])
             try:
                 mapsGeom = loader.loadModel('phase_4/models/questmap/%s_maps' % ToontownGlobals.dnaMap[hoodId])
             except:

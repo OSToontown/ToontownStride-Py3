@@ -438,7 +438,6 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         level = int(self.difficulty / 2) + 1
         suitNP = dnaStore.findNode('suit_landmark_' + chr(self.track) + str(level))
         zoneId = dnaStore.getZoneFromBlockNumber(self.block)
-        zoneId = ZoneUtil.getTrueZoneId(zoneId, self.interiorZoneId)
         newParentNP = base.cr.playGame.hood.loader.zoneDict[zoneId]
         suitBuildingNP = suitNP.copyTo(newParentNP)
         buildingTitle = dnaStore.getTitleFromBlockNumber(self.block)
@@ -541,7 +540,6 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         if not suitNP:
             suitNP = loader.loadModel('phase_5/models/cogdominium/%s' % FO_DICT[chr(self.track)])
         zoneId = dnaStore.getZoneFromBlockNumber(self.block)
-        zoneId = ZoneUtil.getTrueZoneId(zoneId, self.interiorZoneId)
         newParentNP = base.cr.playGame.hood.loader.zoneDict[zoneId]
         suitBuildingNP = suitNP.copyTo(newParentNP)
         buildingTitle = dnaStore.getTitleFromBlockNumber(self.block)
@@ -930,8 +928,7 @@ class DistributedBuilding(DistributedObject.DistributedObject):
 
     def getVisZoneId(self):
         exteriorZoneId = base.cr.playGame.hood.dnaStore.getZoneFromBlockNumber(self.block)
-        visZoneId = ZoneUtil.getTrueZoneId(exteriorZoneId, self.zoneId)
-        return visZoneId
+        return exteriorZoneId
 
     def getInteractiveProp(self):
         result = None

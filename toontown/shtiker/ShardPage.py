@@ -454,18 +454,9 @@ class ShardPage(ShtikerPage.ShtikerPage):
 
     def getCurrentZoneId(self):
         try:
-            zoneId = base.cr.playGame.getPlace().getZoneId()
+            return base.cr.playGame.getPlace().getZoneId()
         except:
-            zoneId = None
-        return zoneId
-
-    def getCurrentShardId(self):
-        zoneId = self.getCurrentZoneId()
-
-        if zoneId != None and ZoneUtil.isWelcomeValley(zoneId):
-            return ToontownGlobals.WelcomeValleyToken
-        else:
-            return base.localAvatar.defaultShard
+            return None
 
     def createSuitHead(self, suitName):
         suitDNA = SuitDNA.SuitDNA()
@@ -580,7 +571,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
 
     def choseShard(self, shardId):
         zoneId = self.getCurrentZoneId()
-        canonicalHoodId = ZoneUtil.getCanonicalHoodId(base.localAvatar.lastHood)
+        canonicalHoodId = ZoneUtil.getHoodId(base.localAvatar.lastHood)
         currentShardId = self.getCurrentShardId()
 
         if self.currentGroupJoined:

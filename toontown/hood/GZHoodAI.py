@@ -37,7 +37,7 @@ class GZHoodAI(HoodAI.HoodAI):
                     golfKart.generateWithRequired(zoneId)
                     golfKarts.append(golfKart)
         elif isinstance(dnaGroup, DNAVisGroup) and (not overrideDNAZone):
-            zoneId = ZoneUtil.getTrueZoneId(int(dnaGroup.getName().split(':')[0]), zoneId)
+            zoneId = int(dnaGroup.getName().split(':')[0])
         for i in xrange(dnaGroup.getNumChildren()):
             foundGolfKarts = self.findGolfKarts(dnaGroup.at(i), zoneId, area, overrideDNAZone=overrideDNAZone)
             golfKarts.extend(foundGolfKarts)
@@ -47,10 +47,8 @@ class GZHoodAI(HoodAI.HoodAI):
         self.golfKarts = []
         for zoneId in self.getZoneTable():
             dnaData = self.air.dnaDataMap.get(zoneId, None)
-            zoneId = ZoneUtil.getTrueZoneId(zoneId, self.zoneId)
             if dnaData.getName() == 'root':
-                area = ZoneUtil.getCanonicalZoneId(zoneId)
-                foundGolfKarts = self.findGolfKarts(dnaData, zoneId, area, overrideDNAZone=True)
+                foundGolfKarts = self.findGolfKarts(dnaData, zoneId, zoneId, overrideDNAZone=True)
                 self.golfKarts.extend(foundGolfKarts)
         for golfKart in self.golfKarts:
             golfKart.start()

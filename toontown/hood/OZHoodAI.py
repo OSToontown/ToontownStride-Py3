@@ -46,7 +46,7 @@ class OZHoodAI(HoodAI.HoodAI):
                     picnicTable.generateWithRequired(zoneId)
                     picnicTables.append(picnicTable)
         elif isinstance(dnaGroup, DNAVisGroup) and (not overrideDNAZone):
-            zoneId = ZoneUtil.getTrueZoneId(int(dnaGroup.getName().split(':')[0]), zoneId)
+            zoneId = int(dnaGroup.getName().split(':')[0])
         for i in xrange(dnaGroup.getNumChildren()):
             foundPicnicTables = self.findPicnicTables(
                 dnaGroup.at(i), zoneId, area, overrideDNAZone=overrideDNAZone)
@@ -57,11 +57,9 @@ class OZHoodAI(HoodAI.HoodAI):
         self.picnicTables = []
         for zoneId in self.getZoneTable():
             dnaData = self.air.dnaDataMap.get(zoneId, None)
-            zoneId = ZoneUtil.getTrueZoneId(zoneId, self.zoneId)
             if dnaData.getName() == 'root':
-                area = ZoneUtil.getCanonicalZoneId(zoneId)
                 foundPicnicTables = self.findPicnicTables(
-                    dnaData, zoneId, area, overrideDNAZone=True)
+                    dnaData, zoneId, zoneId, overrideDNAZone=True)
                 self.picnicTables.extend(foundPicnicTables)
         for picnicTable in self.picnicTables:
             picnicTable.start()
@@ -78,7 +76,7 @@ class OZHoodAI(HoodAI.HoodAI):
                     gameTable.setPosHpr(pos[0], pos[1], pos[2], hpr[0], hpr[1], hpr[2])
                     gameTable.generateWithRequired(zoneId)
         elif isinstance(dnaGroup, DNAVisGroup) and (not overrideDNAZone):
-            zoneId = ZoneUtil.getTrueZoneId(int(dnaGroup.getName().split(':')[0]), zoneId)
+            zoneId = int(dnaGroup.getName().split(':')[0])
         for i in xrange(dnaGroup.getNumChildren()):
             foundGameTables = self.findGameTables(
                 dnaGroup.at(i), zoneId, area, overrideDNAZone=overrideDNAZone)
@@ -89,9 +87,7 @@ class OZHoodAI(HoodAI.HoodAI):
         self.gameTables = []
         for zoneId in self.getZoneTable():
             dnaData = self.air.dnaDataMap.get(zoneId, None)
-            zoneId = ZoneUtil.getTrueZoneId(zoneId, self.zoneId)
             if dnaData.getName() == 'root':
-                area = ZoneUtil.getCanonicalZoneId(zoneId)
                 foundGameTables = self.findGameTables(
-                    dnaData, zoneId, area, overrideDNAZone=True)
+                    dnaData, zoneId, zoneId, overrideDNAZone=True)
                 self.gameTables.extend(foundGameTables)
