@@ -2,7 +2,7 @@
 from pandac.PandaModules import *
 
 
-hashVal = 1846521813
+hashVal = 660566761
 
 
 from toontown.coghq import DistributedCashbotBossSafe, DistributedCashbotBossCrane, DistributedBattleFactory, DistributedCashbotBossTreasure, DistributedCogHQDoor, DistributedSellbotHQDoor, DistributedFactoryElevatorExt, DistributedMintElevatorExt, DistributedLawOfficeElevatorExt, DistributedLawOfficeElevatorInt, LobbyManager, DistributedMegaCorp, DistributedFactory, DistributedLawOffice, DistributedLawOfficeFloor, DistributedLift, DistributedDoorEntity, DistributedSwitch, DistributedButton, DistributedTrigger, DistributedCrushableEntity, DistributedCrusherEntity, DistributedStomper, DistributedStomperPair, DistributedLaserField, DistributedGolfGreenGame, DistributedSecurityCamera, DistributedMover, DistributedElevatorMarker, DistributedBarrelBase, DistributedGagBarrel, DistributedBeanBarrel, DistributedHealBarrel, DistributedGrid, ActiveCell, DirectionalCell, CrusherCell, DistributedCrate, DistributedSinkingPlatform, BattleBlocker, DistributedMint, DistributedMintRoom, DistributedMintBattle, DistributedStage, DistributedStageRoom, DistributedStageBattle, DistributedLawbotBossGavel, DistributedLawbotCannon, DistributedLawbotChair, DistributedCogKart, DistributedCountryClub, DistributedCountryClubRoom, DistributedMoleField, DistributedCountryClubBattle, DistributedMaze, DistributedFoodBelt, DistributedBanquetTable, DistributedGolfSpot
@@ -15,7 +15,6 @@ from toontown.shtiker import DeleteManager, PurchaseManager, NewbiePurchaseManag
 from toontown.groups import GroupManager
 from toontown.uberdog.ClientServicesManager import ClientServicesManager
 from toontown.ai import WelcomeValleyManager, NewsManager, DistributedAprilToonsMgr, DistributedBlackCatMgr, DistributedPolarBearMgr, DistributedPolarPlaceEffectMgr, DistributedGreenToonEffectMgr, DistributedResistanceEmoteMgr, DistributedScavengerHuntTarget, DistributedTrickOrTreatTarget, DistributedWinterCarolingTarget, DistributedSillyMeterMgr
-from toontown.uberdog.DistributedMailManager import DistributedMailManager
 from otp.chat import ChatAgent
 from toontown.parties.GlobalPartyManager import GlobalPartyManager
 from toontown.racing.DistributedStartingBlock import DistributedViewingBlock
@@ -23,7 +22,6 @@ from toontown.pets.PetDCImports import *
 from toontown.suit import DistributedSuitPlanner, DistributedSuitBase, DistributedSuit, DistributedTutorialSuit, DistributedFactorySuit, DistributedMintSuit, DistributedStageSuit, DistributedSellbotBoss, DistributedCashbotBoss, DistributedCashbotBossGoon, DistributedGoon, DistributedGridGoon, DistributedLawbotBoss, DistributedLawbotBossSuit, DistributedBossbotBoss
 from toontown.distributed import ToontownDistrict, ToontownDistrictStats, DistributedTimer
 from toontown.effects import DistributedFireworkShow
-from toontown.uberdog.DistributedDataStoreManager import DistributedDataStoreManager
 from toontown.safezone import DistributedTrolley, DistributedPartyGate, DistributedBoat, DistributedButterfly, DistributedMMPiano, DistributedDGFlower, DistributedFishingSpot, SafeZoneManager, DistributedTreasure, DistributedGolfKart, DistributedPicnicBasket, DistributedGameTable, DistributedChineseCheckers, DistributedCheckers, DistributedFindFour
 from toontown.fishing import DistributedFishingPond, DistributedFishingTarget, DistributedPondBingoManager
 from toontown.minigame import DistributedMinigame, DistributedMinigameTemplate, DistributedRaceGame, DistributedCannonGame, DistributedPhotoGame, DistributedPatternGame, DistributedRingGame, DistributedTagGame, DistributedMazeGame, DistributedTugOfWarGame, DistributedCatchGame, DistributedDivingGame, DistributedTargetGame, DistributedTravelGame, DistributedPairingGame, DistributedVineGame, DistributedIceGame, DistributedCogThiefGame, DistributedTwoDGame
@@ -41,7 +39,6 @@ from toontown.toon import DistributedToon, DistributedNPCToonBase, DistributedNP
 from toontown.tutorial import DistributedBattleTutorial, TutorialManager
 from toontown.pets import DistributedPetProxy
 from toontown.coderedemption.TTCodeRedemptionMgr import TTCodeRedemptionMgr
-from toontown.uberdog.DistributedDeliveryManager import DistributedDeliveryManager
 from direct.distributed import DistributedObject, DistributedNode, DistributedSmoothNode, DistributedCartesianGrid, DistributedCamera, DistributedObjectGlobal
 from otp.ai import TimeManager, MagicWordManager
 from otp.avatar import DistributedAvatar, DistributedPlayer, AvatarHandle

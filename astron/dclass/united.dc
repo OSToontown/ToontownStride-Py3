@@ -616,8 +616,6 @@ from toontown.racing import DistributedGag/AI
 from toontown.racing import DistributedProjectile/AI
 from toontown.racing.DistributedStartingBlock/AI import DistributedViewingBlock/AI
 from toontown.uberdog.ClientServicesManager/UD import ClientServicesManager/UD
-from toontown.uberdog.DistributedDeliveryManager/AI/UD import DistributedDeliveryManager/AI/UD
-from toontown.uberdog.DistributedDataStoreManager/AI/UD import DistributedDataStoreManager/AI/UD
 from toontown.suit import DistributedLawbotBoss/AI
 from toontown.coghq import DistributedLawbotBossGavel/AI
 from toontown.suit import DistributedLawbotBossSuit/AI
@@ -690,7 +688,6 @@ from toontown.minigame import DistributedTwoDGame/AI
 from toontown.safezone import DistributedChineseCheckers/AI
 from toontown.safezone import DistributedCheckers/AI
 from toontown.safezone import DistributedFindFour/AI
-from toontown.uberdog.DistributedMailManager/AI/UD import DistributedMailManager/AI/UD
 from toontown.uberdog.DistributedPartyManager/AI/UD import DistributedPartyManager/AI/UD
 from toontown.rpc.AwardManager/UD import AwardManager/UD
 from toontown.coderedemption.TTCodeRedemptionMgr/AI import TTCodeRedemptionMgr/AI
@@ -2804,14 +2801,6 @@ dclass DistributedWinterCarolingTarget : DistributedObject {
   requestScavengerHunt() airecv clsend;
 };
 
-dclass DistributedDataStoreManager : DistributedObject {
-  startStore(uint8);
-  stopStore(uint8);
-  queryStore(uint8, string);
-  receiveResults(uint8, string);
-  deleteBackupStores();
-};
-
 dclass DistributedVehicle : DistributedSmoothNode {
   setOwner(uint32) required broadcast ram;
   setState(char, uint32) broadcast ram;
@@ -2914,33 +2903,6 @@ dclass DistributedViewingBlock : DistributedStartingBlock {
 dclass DistributedLeaderBoard : DistributedObject {
   setPosHpr(int16/10, int16/10, int16/10, int16/10, int16/10, int16/10) required broadcast ram;
   setDisplay(blob) broadcast ram;
-};
-
-dclass DistributedDeliveryManager : DistributedObject {
-  hello(string) clsend;
-  rejectHello(string);
-  helloResponse(string);
-  getName(uint32);
-  receiveRejectGetName(string);
-  receiveAcceptGetName(string);
-  addName(uint32, string);
-  receiveRejectAddName(uint32);
-  receiveAcceptAddName(uint32);
-  addGift(uint32, blob, uint32, uint32, uint32);
-  receiveRejectAddGift(uint32);
-  receiveAcceptAddGift(uint32, uint32, uint32, uint32);
-  deliverGifts(uint32, uint32);
-  receiveAcceptDeliverGifts(uint32, string);
-  receiveRejectDeliverGifts(uint32, string);
-  receiveRequestPayForGift(blob, uint32, uint32) airecv clsend;
-  receiveRequestPurchaseGift(blob, uint32, uint32, uint32) airecv;
-  receiveAcceptPurchaseGift(uint32, uint32, int16);
-  receiveRejectPurchaseGift(uint32, uint32, int16, uint16);
-  heartbeat() airecv;
-  giveBeanBonus(uint32, uint16);
-  requestAck() clsend;
-  returnAck();
-  givePartyRefund(uint32, uint32, uint64, int8, uint16);
 };
 
 dclass DistributedLawbotBoss : DistributedBossCog {
@@ -3475,11 +3437,6 @@ dclass DistributedFindFour : DistributedNode {
   announceWinnerPosition(uint8, uint8, uint8, uint8) broadcast;
   illegalMove() broadcast;
   tie() broadcast;
-};
-
-dclass DistributedMailManager : DistributedObject {
-  sendSimpleMail(uint32, uint32, string);
-  setNumMailItems(uint32, uint32) airecv;
 };
 
 dclass DistributedPartyManager : DistributedObject {

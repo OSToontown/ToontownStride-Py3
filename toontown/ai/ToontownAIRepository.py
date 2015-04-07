@@ -139,8 +139,6 @@ class ToontownAIRepository(ToontownInternalRepository):
             self.estateManager.generateWithRequired(2)
             self.catalogManager = CatalogManagerAI(self)
             self.catalogManager.generateWithRequired(2)
-            self.deliveryManager = self.generateGlobalObject(
-                OTP_DO_ID_TOONTOWN_DELIVERY_MANAGER, 'DistributedDeliveryManager')
         if self.wantPets:
             self.petMgr = PetManagerAI(self)
         if self.wantParties:

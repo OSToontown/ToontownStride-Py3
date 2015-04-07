@@ -90,7 +90,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.csm = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_CLIENT_SERVICES_MANAGER, 'ClientServicesManager')
         self.playerFriendsManager = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_PLAYER_FRIENDS_MANAGER, 'TTPlayerFriendsManager')
         self.ttuFriendsManager = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_TTU_FRIENDS_MANAGER, 'TTUFriendsManager')
-        self.deliveryManager = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_TOONTOWN_DELIVERY_MANAGER, 'DistributedDeliveryManager')
 
         self.streetSign = None
         self.furnitureManager = None

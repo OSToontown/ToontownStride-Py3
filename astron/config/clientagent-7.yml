@@ -32,10 +32,6 @@ uberdogs:
       id: 4666
       anonymous: false
 
-    - class: DistributedDeliveryManager
-      id: 4683
-      anonymous: false
-
     - class: TTCodeRedemptionMgr
       id: 4695
       anonymous: false
