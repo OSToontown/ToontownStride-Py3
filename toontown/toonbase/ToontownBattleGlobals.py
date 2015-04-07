@@ -34,7 +34,6 @@ MIN_TRACK_INDEX = 0
 MAX_TRACK_INDEX = 6
 MIN_LEVEL_INDEX = 0
 MAX_LEVEL_INDEX = 6
-MAX_UNPAID_LEVEL_INDEX = 4
 LAST_REGULAR_GAG_LEVEL = 5
 UBER_GAG_LEVEL_INDEX = 6
 NUM_GAG_TRACKS = 7
@@ -93,13 +92,6 @@ Levels = [[0,
 regMaxSkill = 10000
 UberSkill = 500
 MaxSkill = UberSkill + regMaxSkill
-UnpaidMaxSkills = [Levels[0][1] - 1,
- Levels[1][1] - 1,
- Levels[2][1] - 1,
- Levels[3][1] - 1,
- Levels[4][4] - 1,
- Levels[5][4] - 1,
- Levels[6][1] - 1]
 ExperienceCap = 300
 
 

@@ -39,19 +39,15 @@ class CogdoInterior(Place.Place):
           'teleportOut',
           'Elevator',
           'crane',
-          'DFA',
-          'trialerFA']),
+          'DFA']),
          State.State('sit', self.enterSit, self.exitSit, ['walk']),
          State.State('stickerBook', self.enterStickerBook, self.exitStickerBook, ['walk',
           'stopped',
           'sit',
           'died',
           'DFA',
-          'trialerFA',
           'teleportOut',
           'Elevator']),
-         State.State('trialerFA', self.enterTrialerFA, self.exitTrialerFA, ['trialerFAReject', 'DFA']),
-         State.State('trialerFAReject', self.enterTrialerFAReject, self.exitTrialerFAReject, ['walk']),
          State.State('DFA', self.enterDFA, self.exitDFA, ['DFAReject', 'teleportOut']),
          State.State('DFAReject', self.enterDFAReject, self.exitDFAReject, ['walk']),
          State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk']),
@@ -110,7 +106,7 @@ class CogdoInterior(Place.Place):
         messenger.send(self.doneEvent)
 
     def doRequestLeave(self, requestStatus):
-        self.fsm.request('trialerFA', [requestStatus])
+        self.fsm.request('DFA', [requestStatus])
 
     def enterEntrance(self):
         pass

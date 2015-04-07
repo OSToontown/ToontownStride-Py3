@@ -32,7 +32,7 @@ class DistributedStartingBlockAI(DistributedObjectAI):
     def getPadLocationId(self):
         return self.padLocationId
 
-    def requestEnter(self, isPaid):
+    def requestEnter(self):
         avId = self.air.getAvatarIdFromSender()
         av = self.air.doId2do.get(avId)
         if not av:
@@ -104,7 +104,7 @@ class DistributedViewingBlockAI(DistributedStartingBlockAI):
         DistributedStartingBlockAI.__init__(self, air)
         self.air = air
         
-    def requestEnter(self, isPaid):
+    def requestEnter(self):
         avId = self.air.getAvatarIdFromSender()
         av = self.air.doId2do[avId]
         if not av.hasKart():

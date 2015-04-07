@@ -1020,7 +1020,6 @@ dclass DistributedToon : DistributedPlayer {
   announcePartyStarted(uint64) ownrecv;
   setAchievements(uint16[] = []) required broadcast ownrecv db;
   setNeverStartedPartyRefunded(uint64, int8, uint16) ownrecv;
-  setModuleInfo(string []) airecv clsend;
   setDISLname(string) ram;
   setDISLid(uint32) ram db airecv;
   flagAv(uint32, uint16, string []) airecv ownsend;
@@ -2889,7 +2888,7 @@ dclass DistributedStartingBlock : DistributedObject {
   setPadDoId(uint32) required broadcast ram;
   setPosHpr(int16/10, int16/10, int16/10, int16/10, int16/10, int16/10) required broadcast ram;
   setPadLocationId(uint8) required broadcast ram;
-  requestEnter(uint8) airecv clsend;
+  requestEnter() airecv clsend;
   rejectEnter(uint8);
   requestExit() airecv clsend;
   setOccupied(uint32) broadcast ram;

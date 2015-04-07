@@ -41,7 +41,7 @@ class OZPlayground(Playground.Playground):
         self.loader.hood.setNoFog()
 
     def doRequestLeave(self, requestStatus):
-        self.fsm.request('trialerFA', [requestStatus])
+        self.fsm.request('DFA', [requestStatus])
 
     def enterDFA(self, requestStatus):
         doneEvent = 'dfaDoneEvent'

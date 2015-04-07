@@ -4306,7 +4306,7 @@ def getReward(id):
 def getNextRewards(numChoices, tier, av):
     rewardTier = list(getRewardsInTier(tier))
     optRewards = list(getOptionalRewardsInTier(tier))
-    if av.getGameAccess() == OTPGlobals.AccessFull and tier == TT_TIER + 3:
+    if tier == TT_TIER + 3:
         optRewards = []
     if isLoopingFinalTier(tier):
         rewardHistory = map(lambda questDesc: questDesc[3], av.quests)

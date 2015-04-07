@@ -4,6 +4,7 @@ from toontown.toonbase import TTLocalizer
 from direct.showbase import PythonUtil
 from otp.otpbase import OTPGlobals
 from toontown.battle import SuitBattleGlobals
+
 PartsPerSuit = (10,
  10,
  10,
@@ -120,7 +121,6 @@ PartsQueryNames = ({1: PartNameStrings[0],
   65536: PartNameStrings[15]})
 suitTypes = PythonUtil.Enum(('NoSuit', 'NoMerits', 'FullSuit'))
 
-
 def makeMeritHierarchy(baseMerits):
     meritHierarchy = []
     for _ in xrange(SuitDNA.suitsPerDept):
@@ -131,7 +131,6 @@ def makeMeritHierarchy(baseMerits):
         meritHierarchy.append(tuple(meritTier))
         baseMerits /= 2
     return meritHierarchy
-
 
 MeritsPerLevel = makeMeritHierarchy(100)  # Bossbot
 MeritsPerLevel += makeMeritHierarchy(75)  # Lawbot
@@ -147,14 +146,12 @@ def getNextPart(parts, partIndex, dept):
     nextPart = nextPart + 1 >> 1
     return nextPart
 
-
 def getPartName(partArray):
     index = 0
     for part in partArray:
         if part:
             return PartsQueryNames[index][part]
         index += 1
-
 
 def isSuitComplete(parts, dept):
     dept = dept2deptIndex(dept)
@@ -163,18 +160,6 @@ def isSuitComplete(parts, dept):
             return 0
 
     return 1
-
-
-def isPaidSuitComplete(av, parts, dept):
-    isPaid = 0
-    base = getBase()
-    if av and av.getGameAccess() == OTPGlobals.AccessFull:
-        isPaid = 1
-    if isPaid:
-        if isSuitComplete(parts, dept):
-            return 1
-    return 0
-
 
 def getTotalMerits(toon, index):
     from toontown.battle import SuitBattleGlobals
@@ -185,14 +170,12 @@ def getTotalMerits(toon, index):
     cogLevel = max(min(cogLevel, len(MeritsPerLevel[cogIndex]) - 1), 0)
     return MeritsPerLevel[cogIndex][cogLevel]
 
-
 def getTotalParts(bitString, shiftWidth = 32):
     sum = 0
     for shift in xrange(0, shiftWidth):
         sum = sum + (bitString >> shift & 1)
 
     return sum
-
 
 def asBitstring(number):
     array = []
@@ -212,7 +195,6 @@ def asBitstring(number):
 
     return str
 
-
 def asNumber(bitstring):
     num = 0
     for i in xrange(0, len(bitstring)):
@@ -220,7 +202,6 @@ def asNumber(bitstring):
             num += pow(2, len(bitstring) - 1 - i)
 
     return num
-
 
 def dept2deptIndex(dept):
     if type(dept) == types.StringType:

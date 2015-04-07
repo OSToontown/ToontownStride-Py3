@@ -235,12 +235,7 @@ class RewardPanel(DirectFrame):
             trackIncLabel.hide()
             if toon.hasTrackAccess(i):
                 trackBar.show()
-                if curExp >= ToontownBattleGlobals.UnpaidMaxSkills[i] and toon.getGameAccess() != OTPGlobals.AccessFull:
-                    nextExp = self.getNextExpValue(curExp, i)
-                    trackBar['range'] = nextExp
-                    trackBar['value'] = ToontownBattleGlobals.UnpaidMaxSkills[i]
-                    trackBar['text'] = TTLocalizer.InventoryGuestExp
-                elif curExp >= ToontownBattleGlobals.regMaxSkill:
+                if curExp >= ToontownBattleGlobals.regMaxSkill:
                     nextExp = self.getNextExpValueUber(curExp, i)
                     trackBar['range'] = nextExp
                     uberCurrExp = curExp - ToontownBattleGlobals.regMaxSkill
@@ -260,10 +255,7 @@ class RewardPanel(DirectFrame):
         oldValue = trackBar['value']
         newValue = min(ToontownBattleGlobals.MaxSkill, newValue)
         nextExp = self.getNextExpValue(newValue, track)
-        if newValue >= ToontownBattleGlobals.UnpaidMaxSkills[track] and toon.getGameAccess() != OTPGlobals.AccessFull:
-            newValue = oldValue
-            trackBar['text'] = TTLocalizer.GuestLostExp
-        elif newValue >= ToontownBattleGlobals.regMaxSkill:
+        if newValue >= ToontownBattleGlobals.regMaxSkill:
             newValue = newValue - ToontownBattleGlobals.regMaxSkill
             nextExp = self.getNextExpValueUber(newValue, track)
             trackBar['text'] = TTLocalizer.InventoryUberTrackExp % {'nextExp': ToontownBattleGlobals.UberSkill - newValue}
@@ -428,10 +420,8 @@ class RewardPanel(DirectFrame):
         intervalList = [Func(self.endTrack, toon, toonList, track), Wait(2.0), Func(self.cleanIcon)]
         return intervalList
 
-    def showTrackIncLabel(self, track, earnedSkill, guestWaste = 0):
-        if guestWaste:
-            self.trackIncLabels[track]['text'] = ''
-        elif earnedSkill > 0:
+    def showTrackIncLabel(self, track, earnedSkill):
+        if earnedSkill > 0:
             self.trackIncLabels[track]['text'] = '+ ' + str(earnedSkill)
         elif earnedSkill < 0:
             self.trackIncLabels[track]['text'] = ' ' + str(earnedSkill)
@@ -441,16 +431,12 @@ class RewardPanel(DirectFrame):
         self.meritIncLabels[dept]['text'] = '+ ' + str(earnedMerits)
         self.meritIncLabels[dept].show()
 
-    def getTrackIntervalList(self, toon, track, origSkill, earnedSkill, hasUber, guestWaste = 0):
+    def getTrackIntervalList(self, toon, track, origSkill, earnedSkill, hasUber):
         if hasUber < 0:
             print (toon.doId, 'Reward Panel received an invalid hasUber from an uberList')
         tickDelay = 1.0 / 60
         intervalList = []
-        if origSkill + earnedSkill >= ToontownBattleGlobals.UnpaidMaxSkills[track] and toon.getGameAccess() != OTPGlobals.AccessFull:
-            lostExp = origSkill + earnedSkill - ToontownBattleGlobals.UnpaidMaxSkills[track]
-            intervalList.append(Func(self.showTrackIncLabel, track, lostExp, 1))
-        else:
-            intervalList.append(Func(self.showTrackIncLabel, track, earnedSkill))
+        intervalList.append(Func(self.showTrackIncLabel, track, earnedSkill))
         barTime = 0.5
         numTicks = int(math.ceil(barTime / tickDelay))
         for i in xrange(numTicks):
@@ -464,9 +450,7 @@ class RewardPanel(DirectFrame):
         nextExpValue = self.getNextExpValue(origSkill, track)
         finalGagFlag = 0
         while origSkill + earnedSkill >= nextExpValue and origSkill < nextExpValue and not finalGagFlag:
-            if newValue >= ToontownBattleGlobals.UnpaidMaxSkills[track] and toon.getGameAccess() != OTPGlobals.AccessFull:
-                pass
-            elif nextExpValue != ToontownBattleGlobals.MaxSkill:
+            if nextExpValue != ToontownBattleGlobals.MaxSkill:
                 intervalList += self.getNewGagIntervalList(toon, track, ToontownBattleGlobals.Levels[track].index(nextExpValue))
             newNextExpValue = self.getNextExpValue(nextExpValue, track)
             if newNextExpValue == nextExpValue:

@@ -11,7 +11,6 @@ import re
 
 import Experience
 import InventoryBase
-import ModuleListAI
 from NPCToons import npcFriends
 import ToonDNA
 from otp.ai.AIBaseGlobal import *
@@ -47,7 +46,6 @@ from toontown.shtiker import CogPageGlobals
 from toontown.suit import SuitDNA
 from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownAccessAI
 from toontown.toonbase import ToontownBattleGlobals
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase.ToontownGlobals import *
@@ -78,8 +76,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     lastFlagAvTime = globalClock.getFrameTime()
     flagCounts = {}
     WantTpTrack = simbase.config.GetBool('want-tptrack', False)
-    DbCheckPeriodPaid = simbase.config.GetInt('toon-db-check-period-paid', 10 * 60)
-    DbCheckPeriodUnpaid = simbase.config.GetInt('toon-db-check-period-unpaid', 1 * 60)
     BanOnDbCheckFail = simbase.config.GetBool('want-ban-dbcheck', 0)
     DbCheckAccountDateEnable = config.GetBool('account-blackout-enable', 1)
     DbCheckAccountDateBegin = config.GetString('account-blackout-start', '2013-08-20 12:30:00')
@@ -180,7 +176,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.golfHoleBest = None
         self.golfCourseBest = None
         self.unlimitedSwing = False
-        self.previousAccess = None
         self.numMailItems = 0
         self.simpleMailNotify = ToontownGlobals.NoItems
         self.inviteMailNotify = ToontownGlobals.NoItems
@@ -188,7 +183,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.hostedParties = []
         self.partiesInvitedTo = []
         self.partyReplyInfoBases = []
-        self.modulelist = ModuleListAI.ModuleList()
         self._dbCheckDoLater = None
         self.teleportOverride = 0
         self._gmDisabled = False
@@ -1406,7 +1400,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.d_setCogIndex(index)
 
     def setCogIndex(self, index):
-        if index != -1 and not ToontownAccessAI.canWearSuit(self.doId, self.zoneId):
+        if index != -1 and not ZoneUtil.canWearSuit(self.zoneId):
             if not simbase.air.cogSuitMessageSent:
                 self.notify.warning('%s setCogIndex invalid: %s' % (self.doId, index))
                 if simbase.config.GetBool('want-ban-wrong-suit-place', False):
@@ -3720,30 +3714,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         pinkSlips = max(self.pinkSlips - amount, 0)
         self.b_setPinkSlips(pinkSlips)
 
-    def setPreviousAccess(self, access):
-        self.previousAccess = access
-
-    def b_setAccess(self, access):
-        self.setAccess(access)
-        self.d_setAccess(access)
-
-    def d_setAccess(self, access):
-        self.sendUpdate('setAccess', [access])
-
-    def setAccess(self, access):
-        paidStatus = simbase.config.GetString('force-paid-status', 'none')
-        if paidStatus == 'unpaid':
-            access = 1
-        if access == OTPGlobals.AccessInvalid:
-            access = OTPGlobals.AccessFull
-        self.setGameAccess(access)
-
-    def setGameAccess(self, access):
-        self.gameAccess = access
-
-    def getGameAccess(self):
-        return self.gameAccess
-
     def b_setNametagStyle(self, nametagStyle):
         self.d_setNametagStyle(nametagStyle)
         self.setNametagStyle(nametagStyle)
@@ -4058,31 +4028,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
                 self.ban('invalid name: %s' % self.name)
             else:
                 self.air.writeServerEvent('suspicious', self.doId, '$ found in toon name')
-
-    def setModuleInfo(self, info):
-        avId = self.air.getAvatarIdFromSender()
-        key = 'outrageous'
-        self.moduleWhitelist = self.modulelist.loadWhitelistFile()
-        self.moduleBlacklist = self.modulelist.loadBlacklistFile()
-        for obfuscatedModule in info:
-            module = ''
-            p = 0
-            for ch in obfuscatedModule:
-                ic = ord(ch) ^ ord(key[p])
-                p += 1
-                if p >= len(key):
-                    p = 0
-                module += chr(ic)
-
-            if module not in self.moduleWhitelist:
-                if module in self.moduleBlacklist:
-                    self.air.writeServerEvent('suspicious', avId, 'Black List module %s loaded into process.' % module)
-                    if simbase.config.GetBool('want-ban-blacklist-module', False):
-                        commentStr = 'User has blacklist module: %s attached to their game process' % module
-                        dislId = self.DISLid
-                        simbase.air.banManager.ban(self.doId, dislId, commentStr)
-                else:
-                    self.air.writeServerEvent('suspicious', avId, 'Unknown module %s loaded into process.' % module)
 
     def teleportResponseToAI(self, toAvId, available, shardId, hoodId, zoneId, fromAvId):
         if not self.WantTpTrack:

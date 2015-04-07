@@ -191,10 +191,8 @@ def getSafeZoneId(zoneId):
 def getCanonicalHoodId(zoneId):
     return getHoodId(getCanonicalZoneId(zoneId))
 
-
 def getCanonicalSafeZoneId(zoneId):
     return getSafeZoneId(getCanonicalZoneId(zoneId))
-
 
 def isInterior(zoneId):
     if tutorialDict:
@@ -206,7 +204,6 @@ def isInterior(zoneId):
         r = zoneId % 1000 >= 500
     return r
 
-
 def overrideOn(branch, exteriorList, interiorList):
     global tutorialDict
     if tutorialDict:
@@ -215,12 +212,10 @@ def overrideOn(branch, exteriorList, interiorList):
      'exteriors': exteriorList,
      'interiors': interiorList}
 
-
 def overrideOff():
     global tutorialDict
     tutorialDict = None
     return
-
 
 def getWakeInfo(hoodId = None, zoneId = None):
     wakeWaterHeight = 0
@@ -247,3 +242,8 @@ def getWakeInfo(hoodId = None, zoneId = None):
         pass
 
     return (showWake, wakeWaterHeight)
+
+def canWearSuit(zoneId):
+    zoneId = getCanonicalHoodId(zoneId)
+        
+    return zoneId >= DynamicZonesBegin or zoneId in [LawbotHQ, CashbotHQ, SellbotHQ, BossbotHQ]

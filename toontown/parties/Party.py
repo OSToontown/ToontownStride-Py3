@@ -36,7 +36,6 @@ class Party(Place.Place):
           'fishing',
           'stopped',
           'DFA',
-          'trialerFA',
           'push',
           'activity']),
          State.State('stopped', self.enterStopped, self.exitStopped, ['walk', 'teleportOut']),
@@ -50,8 +49,7 @@ class Party(Place.Place):
           'stopped',
           'activity',
           'push',
-          'DFA',
-          'trialerFA']),
+          'DFA']),
          State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk', 'partyPlanning']),
          State.State('teleportOut', self.enterTeleportOut, self.exitTeleportOut, ['teleportIn', 'walk', 'final']),
          State.State('died', self.enterDied, self.exitDied, ['walk', 'final']),
@@ -60,8 +58,6 @@ class Party(Place.Place):
          State.State('fishing', self.enterFishing, self.exitFishing, ['walk', 'stopped']),
          State.State('activity', self.enterActivity, self.exitActivity, ['walk', 'stopped']),
          State.State('stopped', self.enterStopped, self.exitStopped, ['walk']),
-         State.State('trialerFA', self.enterTrialerFA, self.exitTrialerFA, ['trialerFAReject', 'DFA']),
-         State.State('trialerFAReject', self.enterTrialerFAReject, self.exitTrialerFAReject, ['walk']),
          State.State('DFA', self.enterDFA, self.exitDFA, ['DFAReject', 'teleportOut']),
          State.State('DFAReject', self.enterDFAReject, self.exitDFAReject, ['walk'])], 'init', 'final')
         self.fsm.enterInitialState()
@@ -137,7 +133,7 @@ class Party(Place.Place):
         self.zoneId = zoneId
 
     def doRequestLeave(self, requestStatus):
-        self.fsm.request('trialerFA', [requestStatus])
+        self.fsm.request('DFA', [requestStatus])
 
     def enterInit(self):
         pass

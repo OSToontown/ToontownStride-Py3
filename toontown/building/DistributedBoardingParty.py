@@ -225,8 +225,6 @@ class DistributedBoardingParty(DistributedObject.DistributedObject, BoardingPart
                 rejectText = TTLocalizer.BoardingInvitePromotionInvitee % avatarNameText
             if reason == BoardingPartyBase.BOARDCODE_BATTLE:
                 rejectText = TTLocalizer.TeleportPanelNotAvailable % avatarNameText
-            if reason == BoardingPartyBase.BOARDCODE_NOT_PAID:
-                rejectText = TTLocalizer.BoardingInviteNotPaidInvitee % avatarNameText
             if reason == BoardingPartyBase.BOARDCODE_DIFF_GROUP:
                 rejectText = TTLocalizer.BoardingInviteeInDiffGroup % avatarNameText
             if reason == BoardingPartyBase.BOARDCODE_PENDING_INVITE:

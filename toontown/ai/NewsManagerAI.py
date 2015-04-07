@@ -44,12 +44,6 @@ class NewsManagerAI(DistributedObjectAI):
     def setTrolleyWeekendEnd(self):
         pass
 
-    def setRoamingTrialerWeekendStart(self):
-        pass
-
-    def setRoamingTrialerWeekendEnd(self):
-        pass
-
     def setInvasionStatus(self, msgType, cogType, numRemaining, skeleton):
         self.sendUpdate('setInvasionStatus', args=[msgType, cogType, numRemaining, skeleton])
 

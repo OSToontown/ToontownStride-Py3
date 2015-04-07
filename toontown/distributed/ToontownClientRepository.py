@@ -274,7 +274,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
              ''], newDNA.makeNetString(), index, 1)
             avList.append(self.newPotAv)
         base.transitions.noFade()
-        self.avCreate = MakeAToon.MakeAToon(self.loginFSM, avList, 'makeAToonComplete', index, self.isPaid())
+        self.avCreate = MakeAToon.MakeAToon(self.loginFSM, avList, 'makeAToonComplete', index)
         self.avCreate.load()
         self.avCreate.enter()
         self.accept('makeAToonComplete', self.__handleMakeAToon, [avList, index])

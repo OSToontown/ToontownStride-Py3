@@ -5,7 +5,6 @@ from direct.fsm import StateData
 from direct.showbase.PythonUtil import PriorityCallbacks
 from toontown.safezone import PublicWalk
 from toontown.launcher import DownloadForceAcknowledge
-import TrialerForceAcknowledge
 import ZoneUtil
 from toontown.friends import FriendsListManager
 from toontown.toonbase import ToontownGlobals
@@ -27,9 +26,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         FriendsListManager.FriendsListManager.__init__(self)
         self.loader = loader
         self.dfaDoneEvent = 'dfaDoneEvent'
-        self.trialerFADoneEvent = 'trialerFADoneEvent'
         self.zoneId = None
-        self.trialerFA = None
         self._tiToken = None
         self._leftQuietZoneLocalCallbacks = PriorityCallbacks()
         self._leftQuietZoneSubframeCall = None
@@ -63,9 +60,6 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         self.walkStateData.unload()
         del self.walkStateData
         del self.loader
-        if self.trialerFA:
-            self.trialerFA.exit()
-            del self.trialerFA
         return
 
     def _getQZState(self):
@@ -176,9 +170,6 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         if teleportIn == 0:
             self.walkStateData.fsm.request('walking')
         self.acceptOnce(self.walkDoneEvent, self.handleWalkDone)
-        if not base.cr.isPaid() and base.localAvatar.tutorialAck:
-            base.localAvatar.chatMgr.obscure(0, 0)
-            base.localAvatar.chatMgr.normalButton.show()
         self.accept('teleportQuery', self.handleTeleportQuery)
         base.localAvatar.setTeleportAvailable(1)
         base.localAvatar.questPage.acceptOnscreenHooks()
@@ -475,29 +466,6 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         self.fsm.request('walk')
 
     def exitDFAReject(self):
-        pass
-
-    def enterTrialerFA(self, requestStatus):
-        teleportDebug(requestStatus, 'enterTrialerFA(%s)' % requestStatus)
-        self.acceptOnce(self.trialerFADoneEvent, self.trialerFACallback, [requestStatus])
-        self.trialerFA = TrialerForceAcknowledge.TrialerForceAcknowledge(self.trialerFADoneEvent)
-        self.trialerFA.enter(requestStatus['hoodId'])
-
-    def exitTrialerFA(self):
-        pass
-
-    def trialerFACallback(self, requestStatus, doneStatus):
-        if doneStatus['mode'] == 'pass':
-            self.fsm.request('DFA', [requestStatus])
-        elif doneStatus['mode'] == 'fail':
-            self.fsm.request('trialerFAReject')
-        else:
-            Place.notify.error('Unknown done status for TrialerForceAcknowledge: %s' % doneStatus)
-
-    def enterTrialerFAReject(self):
-        self.fsm.request('walk')
-
-    def exitTrialerFAReject(self):
         pass
 
     def enterDoorIn(self, requestStatus):

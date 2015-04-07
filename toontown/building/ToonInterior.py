@@ -38,7 +38,6 @@ class ToonInterior(Place.Place):
           'stickerBook',
           'doorOut',
           'DFA',
-          'trialerFA',
           'teleportOut',
           'quest',
           'purchase',
@@ -48,7 +47,6 @@ class ToonInterior(Place.Place):
          State.State('sit', self.enterSit, self.exitSit, ['walk']),
          State.State('stickerBook', self.enterStickerBook, self.exitStickerBook, ['walk',
           'DFA',
-          'trialerFA',
           'sit',
           'doorOut',
           'teleportOut',
@@ -57,8 +55,6 @@ class ToonInterior(Place.Place):
           'phone',
           'stopped',
           'pet']),
-         State.State('trialerFA', self.enterTrialerFA, self.exitTrialerFA, ['trialerFAReject', 'DFA']),
-         State.State('trialerFAReject', self.enterTrialerFAReject, self.exitTrialerFAReject, ['walk']),
          State.State('DFA', self.enterDFA, self.exitDFA, ['DFAReject',
           'HFA',
           'NPCFA',
@@ -128,7 +124,7 @@ class ToonInterior(Place.Place):
         pass
 
     def doRequestLeave(self, requestStatus):
-        self.fsm.request('trialerFA', [requestStatus])
+        self.fsm.request('DFA', [requestStatus])
 
     def enterDFACallback(self, requestStatus, doneStatus):
         self.dfa.exit()

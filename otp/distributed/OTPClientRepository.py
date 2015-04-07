@@ -70,7 +70,6 @@ class OTPClientRepository(ClientRepositoryBase):
             self.http = HTTPClient()
 
         self.userSignature = base.config.GetString('signature', 'none')
-        self.__isPaid = 1
         self.parentMgr.registerParent(OTPGlobals.SPRender, base.render)
         self.parentMgr.registerParent(OTPGlobals.SPHidden, NodePath())
         self.timeManager = None
@@ -1334,25 +1333,6 @@ class OTPClientRepository(ClientRepositoryBase):
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def exitSwitchShards(self):
         pass
-
-    def isPaid(self):
-        paidStatus = base.config.GetString('force-paid-status', '')
-        if not paidStatus:
-            return self.__isPaid
-        elif paidStatus == 'paid':
-            return 1
-        elif paidStatus == 'unpaid':
-            return 0
-        elif paidStatus == 'FULL':
-            return OTPGlobals.AccessFull
-        else:
-            return 0
-
-    def setIsPaid(self, isPaid):
-        self.__isPaid = isPaid
-
-    def allowFreeNames(self):
-        return base.config.GetInt('allow-free-names', 1)
 
     def getStartingDistrict(self):
         district = None

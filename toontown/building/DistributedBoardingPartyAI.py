@@ -149,11 +149,6 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
         # Lets see what the invitee is currently doing
         inviteeOkay = self.checkBoard(inviteeId, self.elevatorIdList[0])
         reason = 0
-        # Oh, for the days when we are charging for this game.. :)
-        if inviteeOkay == REJECT_NOTPAID:
-            reason = BoardingPartyBase.BOARDCODE_NOT_PAID
-            self.sendUpdateToAvatarId(inviterId, 'postInviteNotQualify', [inviteeId, reason, 0])
-            return
         # I know there is an unexpected issue here when we are merging groups... lets think about this really hard..
         if len(self.elevatorIdList) == 1:
             if inviteeOkay:
@@ -354,11 +349,8 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
     def checkBoard(self, avId, elevatorId):
         elevator = simbase.air.doId2do.get(elevatorId)
         avatar = simbase.air.doId2do.get(avId)
-        if avatar:
-            if not avatar.getGameAccess() == OTPGlobals.AccessFull:
-                return REJECT_NOTPAID
-            elif elevator:
-                return elevator.checkBoard(avatar)
+        if avatar and elevator:
+            return elevator.checkBoard(avatar)
         return REJECT_BOARDINGPARTY
 
     def testBoard(self, leaderId, elevatorId, needSpace = 0):

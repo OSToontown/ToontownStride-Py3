@@ -449,18 +449,6 @@ class NewsManager(DistributedObject.DistributedObject):
     def setTrolleyWeekendEnd(self):
         base.localAvatar.setSystemMessage(0, TTLocalizer.TrolleyWeekendEnd)
 
-    def setRoamingTrialerWeekendStart(self):
-        base.localAvatar.setSystemMessage(0, TTLocalizer.RoamingTrialerWeekendStart)
-        base.roamingTrialers = True
-
-    def setRoamingTrialerWeekendOngoing(self):
-        base.localAvatar.setSystemMessage(0, TTLocalizer.RoamingTrialerWeekendOngoing)
-        base.roamingTrialers = True
-
-    def setRoamingTrialerWeekendEnd(self):
-        base.localAvatar.setSystemMessage(0, TTLocalizer.RoamingTrialerWeekendEnd)
-        base.roamingTrialers = False
-
     def setMoreXpHolidayStart(self):
         base.localAvatar.setSystemMessage(0, TTLocalizer.MoreXpHolidayStart)
 
@@ -586,8 +574,6 @@ class NewsManager(DistributedObject.DistributedObject):
                 self.setCircuitRaceOngoing()
             elif id == 21:
                 self.setTrolleyHolidayOngoing()
-            elif id == 22:
-                self.setRoamingTrialerWeekendOngoing()
 
     def setWeeklyCalendarHolidays(self, weeklyCalendarHolidays):
         self.weeklyCalendarHolidays = weeklyCalendarHolidays

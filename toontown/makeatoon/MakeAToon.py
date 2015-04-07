@@ -23,8 +23,7 @@ from toontown.toontowngui import TTDialog
 class MakeAToon(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('MakeAToon')
 
-    def __init__(self, parentFSM, avList, doneEvent, index, isPaid):
-        self.isPaid = isPaid
+    def __init__(self, parentFSM, avList, doneEvent, index):
         StateData.StateData.__init__(self, doneEvent)
         self.phase = 3
         self.names = ['',
@@ -64,7 +63,7 @@ class MakeAToon(StateData.StateData):
         self.cos = ColorShop.ColorShop('ColorShop-done')
         self.cls = MakeClothesGUI.MakeClothesGUI('ClothesShop-done')
         self.ts = TrackShop.TrackShop('TrackShop-done')
-        self.ns = NameShop.NameShop(self, 'NameShop-done', avList, index, self.isPaid, )
+        self.ns = NameShop.NameShop(self, 'NameShop-done', avList, index)
         self.shop = GENDERSHOP
         self.music = None
         self.soundBack = None
@@ -651,9 +650,6 @@ class MakeAToon(StateData.StateData):
         if self.ns.getDoneStatus() == 'last':
             self.ns.hideAll()
             self.goToLastShop()
-        elif self.ns.getDoneStatus() == 'paynow':
-            self.doneStatus = 'paynow'
-            base.transitions.fadeOut(finishIval=EventInterval(self.doneEvent))
         else:
             self.doneStatus = 'created'
             base.transitions.fadeOut(finishIval=EventInterval(self.doneEvent))

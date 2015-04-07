@@ -43,7 +43,7 @@ class GSPlayground(Playground.Playground):
         self.rotateBlimp.finish()
 
     def doRequestLeave(self, requestStatus):
-        self.fsm.request('trialerFA', [requestStatus])
+        self.fsm.request('DFA', [requestStatus])
 
     def enterDFA(self, requestStatus):
         doneEvent = 'dfaDoneEvent'

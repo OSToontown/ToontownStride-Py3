@@ -45,7 +45,6 @@ class Playground(Place.Place):
                             'stickerBook',
                             'TFA',
                             'DFA',
-                            'trialerFA',
                             'trolley',
                             'final',
                             'doorOut',
@@ -66,20 +65,17 @@ class Playground(Place.Place):
                             'quest',
                             'purchase',
                             'stopped',
-                            'fishing',
-                            'trialerFA']),
+                            'fishing']),
             State.State('sit',
                         self.enterSit,
                         self.exitSit, [
                             'walk',
-                            'DFA',
-                            'trialerFA']),
+                            'DFA']),
             State.State('drive',
                         self.enterDrive,
                         self.exitDrive, [
                             'walk',
-                            'DFA',
-                            'trialerFA']),
+                            'DFA']),
             State.State('trolley',
                         self.enterTrolley,
                         self.exitTrolley, [
@@ -100,15 +96,6 @@ class Playground(Place.Place):
             State.State('TFAReject',
                         self.enterTFAReject,
                         self.exitTFAReject, [
-                            'walk']),
-            State.State('trialerFA',
-                        self.enterTrialerFA,
-                        self.exitTrialerFA, [
-                            'trialerFAReject',
-                            'DFA']),
-            State.State('trialerFAReject',
-                        self.enterTrialerFAReject,
-                        self.exitTrialerFAReject, [
                             'walk']),
             State.State('DFA',
                         self.enterDFA,

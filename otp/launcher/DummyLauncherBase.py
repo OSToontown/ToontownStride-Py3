@@ -85,9 +85,6 @@ class DummyLauncherBase:
     def setUserLoggedIn(self):
         self.userLoggedIn = 1
 
-    def setPaidUserLoggedIn(self):
-        self.paidUserLoggedIn = 1
-
     def getGameServer(self):
         return '206.16.11.19'
 

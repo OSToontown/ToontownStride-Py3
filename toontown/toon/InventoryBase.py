@@ -211,9 +211,6 @@ class InventoryBase(DirectObject.DirectObject):
 
         return 1
 
-    def validateItemsBasedOnAccess(self, newInventory):
-        return 1
-
     def getMinCostOfPurchase(self, newInventory):
         return self.countPropsInList(newInventory) - self.totalProps
 
@@ -235,14 +232,10 @@ class InventoryBase(DirectObject.DirectObject):
         if not self.validateItemsBasedOnExp(newInventory):
             self.notify.warning('Somebody is trying to buy forbidden items! ' + 'Rejecting purchase.')
             return 0
-        if not self.validateItemsBasedOnAccess(newInventory):
-            simbase.air.writeServerEvent('suspicious', self.toon.doId, 'non-paid av trying to purchase paid gags')
-            return 0
         self.updateInventory(newInventory)
         return 1
 
     def maxOutInv(self, filterUberGags = 0):
-        unpaid = self.toon.getGameAccess() != ToontownGlobals.AccessFull
         for track in xrange(len(Tracks)):
             if self.toon.hasTrackAccess(track):
                 for level in xrange(len(Levels[track])):

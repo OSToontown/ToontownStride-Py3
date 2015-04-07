@@ -147,7 +147,7 @@ class DistributedStartingBlock(DistributedObject.DistributedObject, FSM):
             def handleEnterRequest(self = self):
                 self.ignore('stoppedAsleep')
                 if hasattr(self.dialog, 'doneStatus') and self.dialog.doneStatus == 'ok':
-                    self.d_requestEnter(base.cr.isPaid())
+                    self.d_requestEnter()
                 elif self.cr and not self.isDisabled():
                     self.cr.playGame.getPlace().setState('walk')
                 else:
@@ -172,9 +172,9 @@ class DistributedStartingBlock(DistributedObject.DistributedObject, FSM):
         self.notify.debugStateCall(self)
         self.sendUpdate('movieFinished', [])
 
-    def d_requestEnter(self, paid):
+    def d_requestEnter(self):
         self.notify.debugStateCall(self)
-        self.sendUpdate('requestEnter', [paid])
+        self.sendUpdate('requestEnter')
 
     def d_requestExit(self):
         self.notify.debugStateCall(self)
@@ -619,7 +619,7 @@ class DistributedViewingBlock(DistributedStartingBlock):
             def handleEnterRequest(self = self):
                 self.ignore('stoppedAsleep')
                 if hasattr(self.dialog, 'doneStatus') and self.dialog.doneStatus == 'ok':
-                    self.d_requestEnter(base.cr.isPaid())
+                    self.d_requestEnter()
                 else:
                     self.cr.playGame.getPlace().setState('walk')
                 self.dialog.ignoreAll()

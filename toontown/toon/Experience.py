@@ -44,17 +44,10 @@ class Experience:
         if type(track) == type(''):
             track = Tracks.index(track)
         self.notify.debug('adding %d exp to track %d' % (amount, track))
-        if self.owner.getGameAccess() == OTPGlobals.AccessFull:
-            if self.experience[track] + amount <= MaxSkill:
-                self.experience[track] += amount
-            else:
-                self.experience[track] = MaxSkill
-        elif self.experience[track] + amount <= UnpaidMaxSkills[track]:
+        if self.experience[track] + amount <= MaxSkill:
             self.experience[track] += amount
-        elif self.experience[track] > UnpaidMaxSkills[track]:
-            self.experience[track] += 0
         else:
-            self.experience[track] = UnpaidMaxSkills[track]
+            self.experience[track] = MaxSkill
 
     def maxOutExp(self):
         for track in xrange(0, len(Tracks)):

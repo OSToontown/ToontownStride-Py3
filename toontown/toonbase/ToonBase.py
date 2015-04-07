@@ -24,7 +24,6 @@ from toontown.margins import MarginGlobals
 from toontown.margins.MarginManager import MarginManager
 from toontown.nametag import NametagGlobals
 from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownAccess
 from toontown.toonbase import ToontownBattleGlobals
 from toontown.toontowngui import TTDialog
 
@@ -210,8 +209,6 @@ class ToonBase(OTPBase.OTPBase):
         self.cloudPlatformsEnabled = self.config.GetBool('estate-clouds', 0)
         self.greySpacing = self.config.GetBool('allow-greyspacing', 0)
         self.goonsEnabled = self.config.GetBool('estate-goon', 0)
-        self.restrictTrialers = self.config.GetBool('restrict-trialers', 1)
-        self.roamingTrialers = self.config.GetBool('roaming-trialers', 1)
         self.slowQuietZone = self.config.GetBool('slow-quiet-zone', 0)
         self.slowQuietZoneDelay = self.config.GetFloat('slow-quiet-zone-delay', 5)
         self.killInterestResponse = self.config.GetBool('kill-interest-response', 0)
@@ -421,8 +418,6 @@ class ToonBase(OTPBase.OTPBase):
                     serverList.append(url)
 
         cr.loginFSM.request('connect', [serverList])
-        self.ttAccess = ToontownAccess.ToontownAccess()
-        self.ttAccess.initModuleInfo()
 
         # Start detecting speed hacks:
         self.lastSpeedHackCheck = time.time()
@@ -468,8 +463,6 @@ class ToonBase(OTPBase.OTPBase):
         except:
             pass
 
-        if hasattr(self, 'ttAccess'):
-            self.ttAccess.delete()
         if self.cr.timeManager:
             self.cr.timeManager.setDisconnectReason(ToontownGlobals.DisconnectCloseWindow)
         base.cr._userLoggingOut = False

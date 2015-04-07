@@ -529,9 +529,6 @@ class DistributedToonUD(DistributedObjectUD):
     def setNeverStartedPartyRefunded(self, todo0, todo1, todo2):
         pass
 
-    def setModuleInfo(self, todo0):
-        pass
-
     def setDISLname(self, todo0):
         pass
 

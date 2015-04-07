@@ -35,7 +35,7 @@ class CatalogNametagItem(CatalogItem.CatalogItem):
 
     def getName(self):
         if self.nametagStyle == 100:
-            name = TTLocalizer.UnpaidNameTag
+            name = TTLocalizer.BasicNametag
         else:
             name = TTLocalizer.NametagFontNames[self.nametagStyle]
         if TTLocalizer.NametagReverse:
@@ -44,7 +44,7 @@ class CatalogNametagItem(CatalogItem.CatalogItem):
             name = name + TTLocalizer.NametagLabel
         return name
         if self.nametagStyle == 0:
-            name = TTLocalizer.NametagPaid
+            name = TTLocalizer.NametagCitizen
         elif self.nametagStyle == 1:
             name = TTLocalizer.NametagAction
         elif self.nametagStyle == 2:

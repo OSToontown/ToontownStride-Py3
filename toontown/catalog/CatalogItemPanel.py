@@ -293,14 +293,7 @@ class CatalogItemPanel(DirectFrame):
         else:
             auxText = ''
         isNameTag = typeCode == CatalogItemTypes.NAMETAG_ITEM
-        if isNameTag and not base.localAvatar.getGameAccess() == OTPGlobals.AccessFull:
-            if self['item'].nametagStyle == 100:
-                if base.localAvatar.getFont() == ToontownGlobals.getToonFont():
-                    auxText = TTLocalizer.CatalogCurrent
-                    self.buyButton['state'] = DGG.DISABLED
-            elif self['item'].getPrice(self['type']) > base.localAvatar.getMoney() + base.localAvatar.getBankMoney():
-                self.buyButton['state'] = DGG.DISABLED
-        elif isNameTag and self['item'].nametagStyle == base.localAvatar.getNametagStyle():
+        if isNameTag and self['item'].nametagStyle == base.localAvatar.getNametagStyle():
             auxText = TTLocalizer.CatalogCurrent
             self.buyButton['state'] = DGG.DISABLED
         elif self['item'].reachedPurchaseLimit(base.localAvatar):
