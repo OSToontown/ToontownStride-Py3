@@ -103,12 +103,6 @@ toonHeadAnimalIndices = [0,
  22,
  26,
  30]
-toonHeadAnimalIndicesTrial = [0,
- 4,
- 12,
- 14,
- 18,
- 30]
 allToonHeadAnimalIndices = [0,
  1,
  2,
