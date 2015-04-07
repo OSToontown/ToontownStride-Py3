@@ -1,21 +1,23 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from toontown.toon.ToonDNA import ToonDNA
+from toontown.toonbase import ToontownGlobals
 
 class DistributedBlackCatMgrAI(DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedBlackCatMgrAI")
 
     def requestBlackCatTransformation(self):
+        if not self.air.holidayManager.isHolidayRunning(ToontownGlobals.BLACK_CAT_DAY):
+            return
+        
         avId = self.air.getAvatarIdFromSender()
         av = self.air.doId2do.get(avId)
-        if not av: return
-
-        if av.dna.getAnimal() == 'cat' and av.dna.headColor != 0x1a:
-            newDNA = ToonDNA()
-            newDNA.makeFromNetString(av.getDNAString())
-            newDNA.headColor = 0x1a
-            newDNA.armColor = 0x1a
-            newDNA.legColor = 0x1a
-            taskMgr.doMethodLater(1.0, lambda task: av.b_setDNAString(newDNA.makeNetString()), 'transform-%d' % avId)
-
-            self.sendUpdate('doBlackCatTransformation', [avId])
+        
+        if not av or av.dna.getAnimal() != 'cat' or av.dna.headColor == 0x1a:
+            return
+        
+        newDNA = ToonDNA()
+        newDNA.makeFromNetString(av.getDNAString())
+        newDNA.updateToonProperties(armColor=26, legColor=26, headColor=26)
+        taskMgr.doMethodLater(1.0, lambda task: av.b_setDNAString(newDNA.makeNetString()), 'transform-%d' % avId)
+        self.sendUpdateToAvatarId(avId, 'doBlackCatTransformation', [])

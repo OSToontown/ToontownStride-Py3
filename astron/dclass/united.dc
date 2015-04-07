@@ -2789,7 +2789,7 @@ dclass DistributedAprilToonsMgr : DistributedObject {
 };
 
 dclass DistributedBlackCatMgr : DistributedObject {
-  doBlackCatTransformation(uint32 avId) broadcast;
+  doBlackCatTransformation() broadcast;
   requestBlackCatTransformation() airecv clsend;
 };
 

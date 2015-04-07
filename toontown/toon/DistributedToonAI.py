@@ -2515,17 +2515,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def isToonedUp(self):
         return self.hp >= self.maxHp
 
-    def makeBlackCat(self):
-        if self.dna.getAnimal() != 'cat':
-            return 'not a cat'
-        self.air.writeServerEvent('blackCat', self.doId, '')
-        newDna = ToonDNA.ToonDNA()
-        newDna.makeFromNetString(self.dna.makeNetString())
-        black = 26
-        newDna.updateToonProperties(armColor=black, legColor=black, headColor=black)
-        self.b_setDNAString(newDna.makeNetString())
-        return None
-
     def b_announceBingo(self):
         self.d_announceBingo()
         self.announceBingo

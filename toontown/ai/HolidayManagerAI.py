@@ -1,4 +1,5 @@
 from toontown.toonbase import ToontownGlobals
+from datetime import datetime
 
 class HolidayManagerAI:
 
@@ -10,11 +11,19 @@ class HolidayManagerAI:
 
     def setup(self):
         holidays = config.GetString('active-holidays','')
+        
         if holidays != '':
             for holiday in holidays.split(","):
                 holiday = int(holiday)
                 self.currentHolidays.append(holiday)
-            simbase.air.newsManager.setHolidayIdList([self.currentHolidays])
+        
+        date = datetime.now()
+        
+        if date.month == 10 and date.day == 31:
+            # Halloween: Black Cat Day
+            self.currentHolidays.append(ToontownGlobals.BLACK_CAT_DAY)
+        
+        simbase.air.newsManager.setHolidayIdList([self.currentHolidays])
 
     def isHolidayRunning(self, holidayId):
         return holidayId in self.currentHolidays

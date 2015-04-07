@@ -8340,7 +8340,6 @@ WHITELIST = [
     'crazycorner',
     "crazycorner's",
     'crazycorners',
-    'crazyknucklesthebestblackcat',
     'crazyquilt',
     "crazyquilt's",
     'crazyquilts',

@@ -2682,3 +2682,10 @@ def promote(deptIndex):
     invoker = spellbook.getInvoker()
     invoker.sendUpdate('requestPromotion', [deptIndex])
     return 'Your promotion request has been sent.'
+
+@magicWord(category=CATEGORY_ADMINISTRATOR)
+def blackCat():
+    """
+    Ask the black cat manager to turn you into a cat.
+    """
+    base.cr.blackCatMgr.requestBlackCatTransformation()
