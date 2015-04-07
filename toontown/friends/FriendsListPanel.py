@@ -269,7 +269,6 @@ class FriendsListPanel(DirectFrame, StateData.StateData):
         self.accept('friendPlayers', self.__friendPlayers)
         self.accept('friendOffline', self.__friendOffline)
         self.accept('friendsListChanged', self.__friendsListChanged)
-        self.accept('ignoreListChanged', self.__ignoreListChanged)
         self.accept('friendsMapComplete', self.__friendsListChanged)
         self.accept(OTPGlobals.PlayerFriendAddEvent, self.__friendsListChanged)
         self.accept(OTPGlobals.PlayerFriendUpdateEvent, self.__friendsListChanged)
@@ -285,7 +284,6 @@ class FriendsListPanel(DirectFrame, StateData.StateData):
         self.ignore('friendOnline')
         self.ignore('friendOffline')
         self.ignore('friendsListChanged')
-        self.ignore('ignoreListChanged')
         self.ignore('friendsMapComplete')
         self.ignore(OTPGlobals.PlayerFriendAddEvent)
         self.ignore(OTPGlobals.PlayerFriendUpdateEvent)
@@ -482,14 +480,6 @@ class FriendsListPanel(DirectFrame, StateData.StateData):
                                  playerId,
                                  0))
 
-            elif base.friendMode == 1:
-                for friendId in base.cr.avatarFriendsManager.avatarFriendsList:
-                    playerId = base.cr.playerFriendsManager.findPlayerIdFromAvId(friendId)
-                    newFriends.append((friendId,
-                     0,
-                     playerId,
-                     0))
-
         if self.panelType == FLPOnline:
             if base.friendMode == 0:
                 for friendPair in base.localAvatar.friendsList:
@@ -538,26 +528,12 @@ class FriendsListPanel(DirectFrame, StateData.StateData):
                                  playerId,
                                  0))
 
-            elif base.friendMode == 1:
-                for friendId in base.cr.avatarFriendsManager.avatarFriendsList:
-                    friendInfo = base.cr.avatarFriendsManager.avatarId2Info[friendId]
-                    playerId = base.cr.playerFriendsManager.findPlayerIdFromAvId(friendPair[0])
-                    if friendInfo.onlineYesNo:
-                        newFriends.insert(0, (friendId,
-                         0,
-                         playerId,
-                         0))
-
         if self.panelType == FLPPets:
             for objId, obj in base.cr.doId2do.items():
                 from toontown.pets import DistributedPet
                 if isinstance(obj, DistributedPet.DistributedPet):
                     friendPair = (objId, 0)
                     petFriends.append(friendPair)
-
-        if self.panelType == FLPEnemies:
-            for ignored in base.localAvatar.ignoreList:
-                newFriends.append((ignored, 0))
 
         if self.panelType == FLPAll or self.panelType == FLPOnline:
             if base.wantPets and base.localAvatar.hasPet():
@@ -666,8 +642,4 @@ class FriendsListPanel(DirectFrame, StateData.StateData):
 
     def __friendsListChanged(self, arg1 = None, arg2 = None):
         if self.panelType != FLPEnemies:
-            self.__updateScrollList()
-
-    def __ignoreListChanged(self):
-        if self.panelType == FLPEnemies:
             self.__updateScrollList()

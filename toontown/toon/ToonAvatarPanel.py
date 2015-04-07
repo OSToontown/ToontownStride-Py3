@@ -134,7 +134,7 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
             self.friendButton['state'] = DGG.DISABLED
 
 
-        if base.cr.avatarFriendsManager.checkIgnored(self.avId):
+        if base.localAvatar.isIgnored(self.avId):
             self.friendButton['state'] = DGG.DISABLED
 
         self.goToButton = DirectButton(
@@ -160,7 +160,7 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
 
 
 
-        if base.cr.avatarFriendsManager.checkIgnored(self.avId):
+        if base.localAvatar.isIgnored(self.avId):
             self.goToButton['state'] = DGG.DISABLED
 
         self.whisperButton = DirectButton(
@@ -186,7 +186,7 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
 
 
 
-        if base.cr.avatarFriendsManager.checkIgnored(self.avId):
+        if base.localAvatar.isIgnored(self.avId):
             self.whisperButton['state'] = DGG.DISABLED
 
         self.secretsButton = DirectButton(
@@ -212,7 +212,7 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
 
 
 
-        if base.cr.avatarFriendsManager.checkIgnored(self.avId):
+        if base.localAvatar.isIgnored(self.avId):
             self.secretsButton['state'] = DGG.DISABLED
 
 

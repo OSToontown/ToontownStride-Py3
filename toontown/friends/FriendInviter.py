@@ -448,9 +448,6 @@ class FriendInviter(DirectFrame):
         unloadFriendInviter()
 
     def __handleCancel(self):
-        if base.friendMode == 1:
-            if self.avId:
-                base.cr.avatarFriendsManager.sendRequestRemove(self.avId)
         unloadFriendInviter()
 
     def __handleStop(self):

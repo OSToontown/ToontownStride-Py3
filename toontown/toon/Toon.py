@@ -2056,7 +2056,7 @@ class Toon(Avatar.Avatar, ToonHead):
 
     def doEmote(self, emoteIndex, animMultiplier = 1, ts = 0, callback = None, extraArgs = []):
         if not self.isLocal():
-            if base.cr.avatarFriendsManager.checkIgnored(self.doId):
+            if base.localAvatar.isIgnored(self.doId):
                 return
         duration = 0
         if self.isLocal():

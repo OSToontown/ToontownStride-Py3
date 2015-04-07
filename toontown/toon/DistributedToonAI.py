@@ -196,6 +196,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.buffs = []
         self.redeemedCodes = []
         self.trueFriends = []
+        self.ignored = []
 
     def generate(self):
         DistributedPlayerAI.DistributedPlayerAI.generate(self)
@@ -465,9 +466,25 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         return doId in self.trueFriends
     
     def addTrueFriend(self, doId):
-        if not isTrueFriend(doId):
+        if not self.isTrueFriend(doId):
             self.trueFriends.append(doId)
             self.d_setTrueFriends(self.trueFriends)
+    
+    def b_setIgnored(self, ignored):
+        self.d_setIgnored(ignored)
+        self.setIgnored(ignored)
+    
+    def d_setIgnored(self, ignored):
+        self.sendUpdate('setIgnored', [ignored])
+    
+    def setIgnored(self, ignored):
+        self.ignored = ignored
+    
+    def getIgnored(self):
+        return self.ignored
+    
+    def isIgnored(self, doId):
+        return doId in self.ignored
 
     def b_setInventory(self, inventory):
         self.setInventory(inventory)

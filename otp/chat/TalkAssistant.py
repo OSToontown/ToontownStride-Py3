@@ -270,10 +270,6 @@ class TalkAssistant(DirectObject.DirectObject):
         if info:
             if info.understandableYesNo:
                 return True
-        info = base.cr.avatarFriendsManager.getFriendInfo(avatarId)
-        if info:
-            if info.understandableYesNo:
-                return True
         if base.cr.getFriendFlags(avatarId) & OTPGlobals.FriendChat:
             return True
         return False

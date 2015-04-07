@@ -36,6 +36,8 @@ class TalkHandle(AvatarHandle):
                 self.accountName = message.getReceiverAccountName()
 
     def setTalkWhisper(self, fromAV, fromAC, avatarName, chat, mods, flags):
+        if base.localAvatar.isIgnored(fromAV):
+            return
         newText, scrubbed = localAvatar.scrubTalk(chat, mods)
         base.talkAssistant.receiveWhisperTalk(fromAV, avatarName, fromAC, None, self.avatarId, self.getName(), newText, scrubbed)
         return

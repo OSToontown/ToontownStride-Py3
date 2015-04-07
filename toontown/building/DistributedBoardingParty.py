@@ -160,7 +160,7 @@ class DistributedBoardingParty(DistributedObject.DistributedObject, BoardingPart
 
     def postInvite(self, leaderId, inviterId, merger):
         self.notify.debug('post Invite')
-        if not base.cr.avatarFriendsManager.checkIgnored(inviterId):
+        if not base.localAvatar.isIgnored(inviterId):
             inviter = base.cr.doId2do.get(inviterId)
             if inviter:
                 if self.inviterPanels.isInvitingPanelUp() or self.inviterPanels.isInvitationRejectedPanelUp():

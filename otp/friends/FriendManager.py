@@ -85,7 +85,7 @@ class FriendManager(DistributedObject.DistributedObject):
         if not hasattr(base, 'localAvatar'):
             self.up_inviteeFriendConsidering(0, context)
             return
-        if inviterId in base.localAvatar.ignoreList:
+        if base.localAvatar.isIgnored(inviterId):
             self.up_inviteeFriendConsidering(4, context)
             return
         if not base.localAvatar.acceptingNewFriends:

@@ -186,6 +186,8 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.promotionStatus = [0, 0, 0, 0]
         self.buffs = []
         self.redeemedCodes = []
+        self.trueFriends = []
+        self.ignored = []
 
     def disable(self):
         for soundSequence in self.soundSequenceList:
@@ -337,7 +339,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
          msgIndex])
 
     def setSCToontask(self, taskId, toNpcId, toonProgress, msgIndex):
-        if self.doId in base.localAvatar.ignoreList:
+        if base.localAvatar.isIgnored(self.doId):
             return
         chatString = TTSCDecoders.decodeTTSCToontaskMsg(taskId, toNpcId, toonProgress, msgIndex)
         if chatString:
@@ -479,18 +481,13 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             return Task.cont
 
     def setTalk(self, fromAV, fromAC, avatarName, chat, mods, flags):
+        if base.localAvatar.isIgnored(fromAV):
+            return
         timestamp = time.strftime('%m-%d-%Y %H:%M:%S', time.localtime())
         if fromAV == 0:
             print ':%s: setTalk: %r, %r, %r' % (timestamp, self.doId, self.name, chat)
         else:
             print ':%s: setTalk: %r, %r, %r' % (timestamp, fromAV, avatarName, chat)
-
-        if base.cr.avatarFriendsManager.checkIgnored(fromAV):
-            self.d_setWhisperIgnored(fromAV)
-            return
-        if fromAV in self.ignoreList:
-            self.d_setWhisperIgnored(fromAV)
-            return
         if base.config.GetBool('want-sleep-reply-on-regular-chat', 0):
             if base.localAvatar.sleepFlag == 1:
                 base.cr.ttuFriendsManager.d_sleepAutoReply(fromAV)
@@ -505,11 +502,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         if not localAvatar.acceptingNonFriendWhispers:
             if not self.isAvFriend(fromAV):
                 return
-        if base.cr.avatarFriendsManager.checkIgnored(fromAV):
-            self.d_setWhisperIgnored(fromAV)
-            return
-        if fromAV in self.ignoreList:
-            self.d_setWhisperIgnored(fromAV)
+        if base.localAvatar.isIgnored(fromAV):
             return
         if base.config.GetBool('ignore-whispers', 0):
             return
@@ -538,8 +531,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         if not localAvatar.acceptingNonFriendWhispers:
             if not self.isAvFriend(fromId):
                 return
-        if base.cr.avatarFriendsManager.checkIgnored(fromId):
-            self.d_setWhisperIgnored(fromId)
+        if base.localAvatar.isIgnored(fromId):
             return
         if base.localAvatar.sleepFlag == 1:
             if not base.cr.identifyAvatar(fromId) == base.localAvatar:
@@ -560,11 +552,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         if not localAvatar.acceptingNonFriendWhispers:
             if not self.isAvFriend(fromId):
                 return
-        if base.cr.avatarFriendsManager.checkIgnored(fromId):
-            self.d_setWhisperIgnored(fromId)
-            return
-        if fromId in self.ignoreList:
-            self.d_setWhisperIgnored(fromId)
+        if base.localAvatar.isIgnored(fromId):
             return
         if base.localAvatar.sleepFlag == 1:
             if not base.cr.identifyAvatar(fromId) == base.localAvatar:
@@ -600,8 +588,8 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             if not self.isAvFriend(fromId):
                 return
 
-        if fromId in self.ignoreList:
-            self.d_setWhisperIgnored(fromId)
+        if base.localAvatar.isIgnored(fromId):
+            return
 
         chatString = TTSCDecoders.decodeTTSCToontaskMsg(taskId, toNpcId, toonProgress, msgIndex)
         if chatString:
@@ -2638,6 +2626,35 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def setRedeemedCodes(self, redeemedCodes):
         self.redeemedCodes = redeemedCodes
+    
+    def setTrueFriends(self, trueFriends):
+        self.trueFriends = trueFriends
+    
+    def isTrueFriend(self, doId):
+        return doId in self.trueFriends
+    
+    def b_setIgnored(self, ignored):
+        self.setIgnored(ignored)
+        self.d_setIgnored(ignored)
+    
+    def setIgnored(self, ignored):
+        self.ignored = ignored
+    
+    def d_setIgnored(self, ignored):
+        self.sendUpdate('setIgnored', [ignored])
+    
+    def isIgnored(self, doId):
+        return doId in self.ignored
+    
+    def addIgnore(self, doId):
+        if not self.isIgnored(doId):
+            self.ignored.append(doId)
+            self.d_setIgnored(self.ignored)
+    
+    def removeIgnore(self, doId):
+        if self.isIgnored(doId):
+            self.ignored.remove(doId)
+            self.d_setIgnored(self.ignored)
 
     def applyBuffs(self):
         for id, timestamp in enumerate(self.buffs):

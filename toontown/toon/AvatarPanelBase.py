@@ -17,7 +17,7 @@ class AvatarPanelBase(AvatarPanel.AvatarPanel):
         return
 
     def getIgnoreButtonInfo(self):
-        if base.cr.avatarFriendsManager.checkIgnored(self.avId):
+        if base.localAvatar.isIgnored(self.avId):
             return (TTLocalizer.AvatarPanelStopIgnoring, self.handleStopIgnoring, STOP_IGNORE_SCALE)
         else:
             return (TTLocalizer.AvatarPanelIgnore, self.handleIgnore, IGNORE_SCALE)
@@ -69,7 +69,7 @@ class AvatarPanelBase(AvatarPanel.AvatarPanel):
         if value == -1:
             self.freeLocalAvatar()
             return
-        base.cr.avatarFriendsManager.addIgnore(self.avId)
+        base.localAvatar.addIgnore(self.avId)
         self.dialog = TTDialog.TTGlobalDialog(style=TTDialog.Acknowledge, text=TTLocalizer.IgnorePanelIgnore % self.avName, text_wordwrap=18.5, text_scale=0.06, topPad=0.1, doneEvent='IgnoreComplete', command=self.handleDoneIgnoring)
         DirectLabel(parent=self.dialog, relief=None, pos=(0, TTLocalizer.APBdirectLabelPosY, 0.15), text=TTLocalizer.IgnorePanelTitle, textMayChange=0, text_scale=0.08)
         self.dialog.show()
@@ -81,7 +81,7 @@ class AvatarPanelBase(AvatarPanel.AvatarPanel):
         if value == -1:
             self.freeLocalAvatar()
             return
-        base.cr.avatarFriendsManager.removeIgnore(self.avId)
+        base.localAvatar.removeIgnore(self.avId)
         self.dialog = TTDialog.TTGlobalDialog(style=TTDialog.Acknowledge, text=TTLocalizer.IgnorePanelEndIgnore % self.avName, text_wordwrap=18.5, text_scale=0.06, topPad=0.1, doneEvent='StopIgnoringComplete', command=self.handleDoneIgnoring)
         DirectLabel(parent=self.dialog, relief=None, pos=(0, TTLocalizer.APBdirectLabelPosY, 0.15), text=TTLocalizer.IgnorePanelTitle, textMayChange=0, text_scale=0.08)
         self.dialog.show()

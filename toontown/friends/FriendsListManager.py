@@ -138,7 +138,7 @@ class FriendsListManager:
     def __handleFriendInvitation(self, avId, avName, inviterDna, context):
         dna = ToonDNA.ToonDNA()
         dna.makeFromNetString(inviterDna)
-        if not base.cr.avatarFriendsManager.checkIgnored(avId):
+        if not base.localAvatar.isIgnored(avId):
             FriendInvitee.FriendInvitee(avId, avName, dna, context)
 
     def __handlePlayerFriendInvitation(self, avId, avName, inviterDna = None, context = None):
@@ -161,7 +161,7 @@ class FriendsListManager:
         if askerToon:
             self.notify.debug('got toon')
             dna = askerToon.getStyle()
-            if not base.cr.avatarFriendsManager.checkIgnored(avId):
+            if not base.localAvatar.isIgnored(avId):
                 FriendInvitee.FriendInvitee(avId, avName, dna, context)
         else:
             self.notify.debug('no toon')

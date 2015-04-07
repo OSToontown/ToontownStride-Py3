@@ -29,7 +29,6 @@ WhisperComingToVisit = '%s is coming to visit you.'
 WhisperFailedVisit = '%s tried to visit you.'
 WhisperTargetLeftVisit = '%s has gone somewhere else. Try again!'
 WhisperGiveupVisit = "%s couldn't find you because you're moving around!"
-WhisperIgnored = '%s is ignoring you!'
 TeleportGreeting = 'Hi, %s.'
 WhisperFriendComingOnline = '%s is coming online!'
 WhisperFriendLoggedOut = '%s has logged out.'
