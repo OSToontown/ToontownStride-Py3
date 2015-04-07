@@ -1,7 +1,7 @@
 
 """Undocumented Module"""
 
-__all__ = ['unique', 'indent', 'nonRepeatingRandomList',
+__all__ = ['enumerate', 'unique', 'indent', 'nonRepeatingRandomList',
 'writeFsmTree', 'StackTrace', 'traceFunctionCall', 'traceParentCall',
 'printThisCall', 'tron', 'trace', 'troff', 'getClassLineage', 'pdir',
 '_pdir', '_is_variadic', '_has_keywordargs', '_varnames', '_getcode',
@@ -45,6 +45,7 @@ import os
 import sys
 import random
 import time
+import new
 import gc
 #if __debug__:
 import traceback
@@ -60,9 +61,30 @@ import bisect
 __report_indent = 3
 
 from direct.directutil import Verify
+# Don't import libpandaexpressModules, which doesn't get built until
+# genPyCode.
+# import direct.extensions_native.extension_native_helpers
 from panda3d.core import ConfigVariableBool
 
 ScalarTypes = (types.FloatType, types.IntType, types.LongType)
+
+import __builtin__
+if not hasattr(__builtin__, 'enumerate'):
+    def enumerate(L):
+        """Returns (0, L[0]), (1, L[1]), etc., allowing this syntax:
+        for i, item in enumerate(L):
+           ...
+
+        enumerate is a built-in feature in Python 2.3, which implements it
+        using an iterator. For now, we can use this quick & dirty
+        implementation that returns a list of tuples that is completely
+        constructed every time enumerate() is called.
+        """
+        return zip(xrange(len(L)), L)
+
+    __builtin__.enumerate = enumerate
+else:
+    enumerate = __builtin__.enumerate
 
 """
 # with one integer positional arg, this uses about 4/5 of the memory of the Functor class below
@@ -165,7 +187,7 @@ class Queue:
     def __len__(self):
         return len(self.__list)
 
-if __debug__ and __name__ == '__main__':
+if __debug__:
     q = Queue()
     assert q.isEmpty()
     q.clear()
@@ -612,7 +634,7 @@ class Signature:
                 l.append('*' + specials['positional'])
             if 'keyword' in specials:
                 l.append('**' + specials['keyword'])
-            return "%s(%s)" % (self.name, ', '.join(l))
+            return "%s(%s)" % (self.name, string.join(l, ', '))
         else:
             return "%s(?)" % self.name
 
@@ -905,7 +927,7 @@ def binaryRepr(number, max_length = 32):
     digits = map (operator.mod, shifts, max_length * [2])
     if not digits.count (1): return 0
     digits = digits [digits.index (1):]
-    return ''.join([repr(digit) for digit in digits])
+    return string.join (map (repr, digits), '')
 
 class StdoutCapture:
     # redirects stdout to a string
@@ -1191,7 +1213,7 @@ def extractProfile(*args, **kArgs):
 def getSetterName(valueName, prefix='set'):
     # getSetterName('color') -> 'setColor'
     # getSetterName('color', 'get') -> 'getColor'
-    return '%s%s%s' % (prefix, valueName[0].upper(), valueName[1:])
+    return '%s%s%s' % (prefix, string.upper(valueName[0]), valueName[1:])
 def getSetter(targetObj, valueName, prefix='set'):
     # getSetter(smiley, 'pos') -> smiley.setPos
     return getattr(targetObj, getSetterName(valueName, prefix))
@@ -1199,15 +1221,16 @@ def getSetter(targetObj, valueName, prefix='set'):
 def mostDerivedLast(classList):
     """pass in list of classes. sorts list in-place, with derived classes
     appearing after their bases"""
-
-    class ClassSortKey(object):
-        __slots__ = 'classobj',
-        def __init__(self, classobj):
-            self.classobj = classobj
-        def __lt__(self, other):
-            return issubclass(other.classobj, self.classobj)
-
-    classList.sort(key=ClassSortKey)
+    def compare(a, b):
+        if issubclass(a, b):
+            result=1
+        elif issubclass(b, a):
+            result=-1
+        else:
+            result=0
+        #print a, b, result
+        return result
+    classList.sort(compare)
 
 """
 ParamObj/ParamSet
@@ -1424,8 +1447,6 @@ class ParamObj:
                 # we've already compiled the defaults for this class
                 return
             bases = list(cls.__bases__)
-            if object in bases:
-                bases.remove(object)
             # bring less-derived classes to the front
             mostDerivedLast(bases)
             cls._Params = {}
@@ -1506,7 +1527,7 @@ class ParamObj:
                 # then the applier, or b) call the setter and queue the
                 # applier, depending on whether our params are locked
                 """
-                setattr(self, setterName, types.MethodType(
+                setattr(self, setterName, new.instancemethod(
                     Functor(setterStub, param, setterFunc), self, self.__class__))
                     """
                 def setterStub(self, value, param=param, origSetterName=origSetterName):
@@ -1611,7 +1632,7 @@ class ParamObj:
             argStr += '%s=%s,' % (param, repr(value))
         return '%s(%s)' % (self.__class__.__name__, argStr)
 
-if __debug__ and __name__ == '__main__':
+if __debug__:
     class ParamObjTest(ParamObj):
         class ParamSet(ParamObj.ParamSet):
             Params = {
@@ -1808,7 +1829,7 @@ class POD:
             argStr += '%s=%s,' % (name, repr(getSetter(self, name, 'get')()))
         return '%s(%s)' % (self.__class__.__name__, argStr)
 
-if __debug__ and __name__ == '__main__':
+if __debug__:
     class PODtest(POD):
         DataSet = {
             'foo': dict,
@@ -2138,7 +2159,7 @@ def pivotScalar(scalar, pivot):
     # reflect scalar about pivot; see tests below
     return pivot + (pivot - scalar)
 
-if __debug__ and __name__ == '__main__':
+if __debug__:
     assert pivotScalar(1, 0) == -1
     assert pivotScalar(-1, 0) == 1
     assert pivotScalar(3, 5) == 7
@@ -2458,9 +2479,7 @@ def _getDtoolSuperBase():
     global dtoolSuperBase
     from pandac.PandaModules import PandaNode
     dtoolSuperBase = PandaNode('').__class__.__bases__[0].__bases__[0].__bases__[0]
-    assert repr(dtoolSuperBase) == "<type 'libdtoolconfig.DTOOL_SUPER_BASE111'>" \
-        or repr(dtoolSuperBase) == "<type 'libdtoolconfig.DTOOL_SUPPER_BASE111'>" \
-        or repr(dtoolSuperBase) == "<type 'dtoolconfig.DTOOL_SUPER_BASE111'>"
+    assert repr(dtoolSuperBase) == "<type 'libdtoolconfig.DTOOL_SUPPER_BASE111'>"
     
 safeReprNotify = None
 
@@ -2732,7 +2751,7 @@ def tagRepr(obj, tag):
             return s
         oldRepr = Functor(stringer, repr(obj))
         stringer = None
-    obj.__repr__ = types.MethodType(Functor(reprWithTag, oldRepr, tag), obj, obj.__class__)
+    obj.__repr__ = new.instancemethod(Functor(reprWithTag, oldRepr, tag), obj, obj.__class__)
     reprWithTag = None
     return obj
 
@@ -2759,7 +2778,7 @@ def appendStr(obj, st):
             return s
         oldStr = Functor(stringer, str(obj))
         stringer = None
-    obj.__str__ = types.MethodType(Functor(appendedStr, oldStr, st), obj, obj.__class__)
+    obj.__str__ = new.instancemethod(Functor(appendedStr, oldStr, st), obj, obj.__class__)
     appendedStr = None
     return obj
 
@@ -3596,9 +3615,9 @@ def recordCreationStackStr(cls):
         self._creationStackTraceStrLst = StackTrace(start=1).compact().split(',')
         return self.__moved_init__(*args, **kArgs)
     def getCreationStackTraceCompactStr(self):
-        return ','.join(self._creationStackTraceStrLst)
+        return string.join(self._creationStackTraceStrLst, ',')
     def printCreationStackTrace(self):
-        print ','.join(self._creationStackTraceStrLst)
+        print string.join(self._creationStackTraceStrLst, ',')
     cls.__init__ = __recordCreationStackStr_init__
     cls.getCreationStackTraceCompactStr = getCreationStackTraceCompactStr
     cls.printCreationStackTrace = printCreationStackTrace
@@ -3750,7 +3769,7 @@ def flywheel(*args, **kArgs):
         pass
     return flywheel
 
-if __debug__ and __name__ == '__main__':
+if __debug__:
     f = flywheel(['a','b','c','d'], countList=[11,20,3,4])
     obj2count = {}
     for obj in f:
@@ -3944,7 +3963,7 @@ def formatTimeCompact(seconds):
     result += '%ss' % seconds
     return result
 
-if __debug__ and __name__ == '__main__':
+if __debug__:
     ftc = formatTimeCompact
     assert ftc(0) == '0s'
     assert ftc(1) == '1s'
@@ -3980,7 +3999,7 @@ def formatTimeExact(seconds):
         result += '%ss' % seconds
     return result
 
-if __debug__ and __name__ == '__main__':
+if __debug__:
     fte = formatTimeExact
     assert fte(0) == '0s'
     assert fte(1) == '1s'
@@ -4019,7 +4038,7 @@ class AlphabetCounter:
                 break
         return result
 
-if __debug__ and __name__ == '__main__':
+if __debug__:
     def testAlphabetCounter():
         tempList = []
         ac = AlphabetCounter()
@@ -4188,14 +4207,14 @@ def unescapeHtmlString(s):
             char = ' '
         elif char == '%':
             if i < (len(s)-2):
-                num = int(s[i+1:i+3], 16)
+                num = eval('0x' + s[i+1:i+3])
                 char = chr(num)
                 i += 2
         i += 1
         result += char
     return result
 
-if __debug__ and __name__ == '__main__':
+if __debug__:
     assert unescapeHtmlString('asdf') == 'asdf'
     assert unescapeHtmlString('as+df') == 'as df'
     assert unescapeHtmlString('as%32df') == 'as2df'
@@ -4252,7 +4271,7 @@ class HTMLStringToElements(HTMLParser):
 def str2elements(str):
     return HTMLStringToElements(str).getElements()
 
-if __debug__ and __name__ == '__main__':
+if __debug__:
     s = ScratchPad()
     assert len(str2elements('')) == 0
     s.br = str2elements('<br>')
@@ -4292,7 +4311,7 @@ def repeatableRepr(obj):
         return repeatableRepr(l)
     return repr(obj)
 
-if __debug__ and __name__ == '__main__':
+if __debug__:
     assert repeatableRepr({1: 'a', 2: 'b'}) == repeatableRepr({2: 'b', 1: 'a'})
     assert repeatableRepr(set([1,2,3])) == repeatableRepr(set([3,2,1]))
 
@@ -4349,7 +4368,7 @@ class PriorityCallbacks:
         for priority, callback in self._callbacks:
             callback()
 
-if __debug__ and __name__ == '__main__':
+if __debug__:
     l = []
     def a(l=l):
         l.append('a')

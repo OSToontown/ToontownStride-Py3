@@ -101,8 +101,8 @@ def Dtool_PreloadDLL(module):
 # Nowadays, we can compile libpandaexpress with libpanda into a
 # .pyd file called panda3d/core.pyd which can be imported without
 # any difficulty.  Let's see if this is the case.
-if Dtool_FindModule("panda.panda3d.core"):
-    from panda.panda3d.core import *
+if Dtool_FindModule("panda3d.core"):
+    from panda3d.core import *
 else:
     Dtool_PreloadDLL("libpandaexpress")
     from libpandaexpress import *

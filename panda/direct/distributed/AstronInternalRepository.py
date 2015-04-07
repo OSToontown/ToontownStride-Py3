@@ -233,6 +233,8 @@ class AstronInternalRepository(ConnectionRepository):
             self.handleObjLocation(di)
         elif msgType in (DBSERVER_CREATE_OBJECT_RESP,
                          DBSERVER_OBJECT_GET_ALL_RESP,
+                         DBSERVER_OBJECT_GET_FIELDS_RESP,
+                         DBSERVER_OBJECT_GET_FIELD_RESP,
                          DBSERVER_OBJECT_SET_FIELD_IF_EQUALS_RESP,
                          DBSERVER_OBJECT_SET_FIELDS_IF_EQUALS_RESP):
             self.dbInterface.handleDatagram(msgType, di)
@@ -327,7 +329,8 @@ class AstronInternalRepository(ConnectionRepository):
         """
         Send a field update for the given object.
 
-        You should probably use do.sendUpdate(...) instead.
+        You should use do.sendUpdate(...) instead. This is not meant to be
+        called directly unless you really know what you are doing.
         """
 
         self.sendUpdateToChannel(do, do.doId, fieldName, args)
@@ -339,7 +342,8 @@ class AstronInternalRepository(ConnectionRepository):
         This is useful for directing the update to a specific client or node,
         rather than at the State Server managing the object.
 
-        You should probably use do.sendUpdateToChannel(...) instead.
+        You should use do.sendUpdateToChannel(...) instead. This is not meant
+        to be called directly unless you really know what you are doing.
         """
 
         dclass = do.dclass
@@ -410,7 +414,8 @@ class AstronInternalRepository(ConnectionRepository):
         """
         Generate an object onto the State Server, choosing an ID from the pool.
 
-        You should probably use do.generateWithRequired(...) instead.
+        You should use do.generateWithRequired(...) instead. This is not meant
+        to be called directly unless you really know what you are doing.
         """
 
         doId = self.allocateChannel()
@@ -420,7 +425,8 @@ class AstronInternalRepository(ConnectionRepository):
         """
         Generate an object onto the State Server, specifying its ID and location.
 
-        You should probably use do.generateWithRequiredAndId(...) instead.
+        You should use do.generateWithRequiredAndId(...) instead. This is not
+        meant to be called directly unless you really know what you are doing.
         """
 
         do.doId = doId
@@ -431,7 +437,8 @@ class AstronInternalRepository(ConnectionRepository):
         """
         Request the deletion of an object that already exists on the State Server.
 
-        You should probably use do.requestDelete() instead.
+        You should use do.requestDelete() instead. This is not meant to be
+        called directly unless you really know what you are doing.
         """
 
         dg = PyDatagram()
@@ -540,3 +547,73 @@ class AstronInternalRepository(ConnectionRepository):
         dg = PyDatagram()
         msgpack_encode(dg, log)
         self.eventSocket.Send(dg.getMessage())
+
+    def setAI(self, doId, aiChannel):
+        """
+        Sets the AI of the specified DistributedObjectAI to be the specified channel.
+        Generally, you should not call this method, and instead call DistributedObjectAI.setAI.
+        """
+
+        dg = PyDatagram()
+        dg.addServerHeader(doId, aiChannel, STATESERVER_OBJECT_SET_AI)
+        dg.add_uint64(aiChannel)
+        self.send(dg)
+
+    def eject(self, clientChannel, reasonCode, reason):
+        """
+        Kicks the client residing at the specified clientChannel, using the specifed reasoning.
+        """
+
+        dg = PyDatagram()
+        dg.addServerHeader(clientChannel, self.ourChannel, CLIENTAGENT_EJECT)
+        dg.add_uint16(reasonCode)
+        dg.addString(reason)
+        self.send(dg)
+        
+    def setClientState(self, clientChannel, state):
+        """
+        Sets the state of the client on the CA.
+        Useful for logging in and logging out, and for little else.
+        """
+
+        dg = PyDatagram()
+        dg.addServerHeader(clientChannel, self.ourChannel, CLIENTAGENT_SET_STATE)
+        dg.add_uint16(state)
+        self.send(dg)
+
+    def clientAddSessionObject(self, clientChannel, doId):
+        """
+        Declares the specified DistributedObject to be a "session object",
+        meaning that it is destroyed when the client disconnects.
+        Generally used for avatars owned by the client.
+        """
+
+        dg = PyDatagram()
+        dg.addServerHeader(clientChannel, self.ourChannel, CLIENTAGENT_ADD_SESSION_OBJECT)
+        dg.add_uint32(doId)
+        self.send(dg)
+
+    def clientAddInterest(self, clientChannel, interestId, parentId, zoneId):
+        """
+        Opens an interest on the behalf of the client. This, used in conjunction
+        with add_interest: visible (or preferably, disabled altogether), will mitigate
+        possible security risks.
+        """
+
+        dg = PyDatagram()
+        dg.addServerHeader(clientChannel, self.ourChannel, CLIENTAGENT_ADD_INTEREST)
+        dg.add_uint16(interestId)
+        dg.add_uint32(parentId)
+        dg.add_uint32(zoneId)
+        self.send(dg)
+
+    def setOwner(self, doId, newOwner):
+        """
+        Sets the owner of a DistributedObject. This will enable the new owner to send "ownsend" fields,
+        and will generate an OwnerView.
+        """
+
+        dg = PyDatagram()
+        dg.addServerHeader(doId, self.ourChannel, STATESERVER_OBJECT_SET_OWNER)
+        dg.add_uint64(newOwner)
+        self.send(dg)

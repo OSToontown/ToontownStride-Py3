@@ -6,6 +6,13 @@ __all__ = ['SfxPlayer']
 import math
 from pandac.PandaModules import *
 
+class Unior:
+    pass
+
+UNIOR = Unior()
+STUPID = not Unior()
+WANT_FUCKING_AUDIO_CRASH = UNIOR is STUPID
+
 class SfxPlayer:
     """
     Play sound effects, potentially localized.
@@ -93,9 +100,7 @@ class SfxPlayer:
                 finalVolume = 1
             if volume is not None:
                 finalVolume *= volume
-            if node is not None:
+            if node is not None and WANT_FUCKING_AUDIO_CRASH:
                 finalVolume *= node.getNetAudioVolume()
             sfx.setVolume(finalVolume)
-        
-    
         
