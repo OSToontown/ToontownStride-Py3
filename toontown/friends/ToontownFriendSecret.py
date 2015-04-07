@@ -79,7 +79,7 @@ class ToontownFriendSecret(DirectFrame):
         self.cancel.hide()
         self.nextText = DirectLabel(parent=self, relief=None, pos=(0, 0, 0.3), scale=0.06, text='', text_scale=TTLocalizer.FSnextText, text_fg=(0, 0, 0, 1), text_wordwrap=25.5)
         self.nextText.hide()
-        self.secretText = DirectLabel(parent=self, relief=None, pos=(0, 0, -0.42), scale=0.05, text='', text_fg=(0, 0, 0, 1), text_wordwrap=30)
+        self.secretText = DirectLabel(parent=self, relief=None, pos=(0, 0, -0.42), scale=0.08, text='', text_fg=(0, 0, 0, 1), text_wordwrap=30)
         self.secretText.hide()
         guiButton.removeNode()
 
@@ -124,7 +124,7 @@ class ToontownFriendSecret(DirectFrame):
         if id == 0:
             self.rejectGetSecret(TTLocalizer.FriendSecretNoServer)
         elif id == 1:
-            self.rejectGetSecret(TTLocalizer.FriendSecretNoServerResponse if result1 is None else result1)
+            self.rejectGetSecret(TTLocalizer.FriendSecretNoServerResponse if not result1 else result1)
         elif id == 2:
             self.successGetSecret(result1, result2)
     
@@ -167,7 +167,7 @@ class ToontownFriendSecret(DirectFrame):
         if id == 0:
             self.nextText['text'] = TTLocalizer.FriendSecretNoServer
         elif id == 1:
-            self.nextText['text'] = TTLocalizer.FriendSecretNoServerResponse if result1 is None else result1
+            self.nextText['text'] = TTLocalizer.FriendSecretNoServerResponse if not result1 else result1
         elif id == 2:
             self.nextText['text'] = TTLocalizer.FriendSecretEnteredCodeSelf
         elif id == 3:

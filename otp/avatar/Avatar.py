@@ -389,7 +389,7 @@ class Avatar(Actor, ShadowCaster):
         pass
 
     def displayTalk(self, chatString):
-        if not base.cr.avatarFriendsManager.checkIgnored(self.doId):
+        if not base.localAvatar.isIgnored(self.doId):
             self.clearChat()
             self.nametag.setChatType(NametagGlobals.CHAT)
             self.nametag.setChatButton(NametagGlobals.noButton)
