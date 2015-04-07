@@ -481,7 +481,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             return Task.cont
 
     def setTalk(self, fromAV, fromAC, avatarName, chat, mods, flags):
-        if base.localAvatar.isIgnored(fromAV):
+        if base.localAvatar.isIgnored(self.doId if fromAV == 0 else fromAV):
             return
         timestamp = time.strftime('%m-%d-%Y %H:%M:%S', time.localtime())
         if fromAV == 0:
