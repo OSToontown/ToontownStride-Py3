@@ -1,3 +1,4 @@
+
 """MsgTypes module: contains distributed object message types"""
 
 from direct.showbase.PythonUtil import invertDictLossless
@@ -15,12 +16,10 @@ MsgName2Id = {
     'CLIENT_HEARTBEAT':                              5,
 
     'CLIENT_OBJECT_SET_FIELD':                       120,
-    'CLIENT_OBJECT_SET_FIELDS':                      121,
     'CLIENT_OBJECT_LEAVING':                         132,
     'CLIENT_OBJECT_LEAVING_OWNER':                   161,
     'CLIENT_ENTER_OBJECT_REQUIRED':                  142,
     'CLIENT_ENTER_OBJECT_REQUIRED_OTHER':            143,
-    'CLIENT_ENTER_OBJECT_REQUIRED_OWNER':            172,
     'CLIENT_ENTER_OBJECT_REQUIRED_OTHER_OWNER':      173,
 
     'CLIENT_DONE_INTEREST_RESP':                     204,
@@ -40,7 +39,7 @@ MsgName2Id = {
     'CONTROL_ADD_RANGE':                                9002,
     'CONTROL_REMOVE_RANGE':                             9003,
     'CONTROL_ADD_POST_REMOVE':                          9010,
-    'CONTROL_CLEAR_POST_REMOVES':                        9011,
+    'CONTROL_CLEAR_POST_REMOVE':                        9011,
 
     # State Server control messages:
     'STATESERVER_CREATE_OBJECT_WITH_REQUIRED':          2000,
@@ -90,11 +89,10 @@ MsgName2Id = {
     # DBSS-backed-object messages:
     'DBSS_OBJECT_ACTIVATE_WITH_DEFAULTS':        2200,
     'DBSS_OBJECT_ACTIVATE_WITH_DEFAULTS_OTHER':  2201,
-    'DBSS_OBJECT_GET_ACTIVATED':                 2207,
-    'DBSS_OBJECT_GET_ACTIVATED_RESP':            2208,
     'DBSS_OBJECT_DELETE_FIELD_DISK':             2230,
     'DBSS_OBJECT_DELETE_FIELDS_DISK':            2231,
     'DBSS_OBJECT_DELETE_DISK':                   2232,
+    'DBSS_OBJECT_GET_ACTIVATED_RESP':            2208,
 
     # Database Server control messages:
     'DBSERVER_CREATE_OBJECT':                       3000,
@@ -139,9 +137,11 @@ MsgName2Id = {
 
 # create id->name table for debugging
 MsgId2Names = invertDictLossless(MsgName2Id)
-
+    
 # put msg names in module scope, assigned to msg value
-globals().update(MsgName2Id)
+for name, value in MsgName2Id.items():
+    exec '%s = %s' % (name, value)
+del name, value
 
 # These messages are ignored when the client is headed to the quiet zone
 QUIET_ZONE_IGNORED_LIST = [
@@ -149,7 +149,7 @@ QUIET_ZONE_IGNORED_LIST = [
     # We mustn't ignore updates, because some updates for localToon
     # are always important.
     #CLIENT_OBJECT_UPDATE_FIELD,
-
+    
     # These are now handled. If it is a create for a class that is in the
     # uber zone, we should create it.
     #CLIENT_CREATE_OBJECT_REQUIRED,

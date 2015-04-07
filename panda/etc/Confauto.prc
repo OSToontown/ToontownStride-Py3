@@ -122,7 +122,7 @@ cull-bin gui-popup 60 unsorted
 # This default only comes into play if you try to load a model
 # and don't specify an extension.
 
-default-model-extension .bam
+default-model-extension .egg
 
 # If we have the SpeedTree library available, we'll want to use it for
 # loading compiled SpeedTree tree objects, and SpeedTree forest
