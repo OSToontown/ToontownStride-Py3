@@ -21,12 +21,12 @@ disable-sos-card 91917
 disable-sos-card 91918
 
 # Optional:
-want-chestnut-park-construction #t
+want-chestnut-park-construction #f
 cogdo-pop-factor 1.5
 cogdo-ratio 0.4
 
 # Temporary:
-want-phone-quest #f
+want-phone-quest #t
 
 # Staff events:
-cfo-staff-event #t
+cfo-staff-event #f
