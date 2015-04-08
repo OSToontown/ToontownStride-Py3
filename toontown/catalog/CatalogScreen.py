@@ -611,7 +611,7 @@ class CatalogScreen(DirectFrame):
                 break
 
         for item in itemList:
-            if item.furnitureType == CatalogFurnitureItem.MaxBankId:
+            if item in allBankItems and item.furnitureType == CatalogFurnitureItem.MaxBankId:
                 isMaxBankOffered = True
                 break
                 
