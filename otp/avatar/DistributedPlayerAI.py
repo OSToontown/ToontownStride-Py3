@@ -7,15 +7,13 @@ from otp.ai.MagicWordGlobal import *
 from otp.avatar import DistributedAvatarAI
 from otp.avatar import PlayerBase
 from otp.distributed import OtpDoGlobals
-from otp.distributed.ClsendTracker import ClsendTracker
 from otp.otpbase import OTPLocalizer
 
 
-class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.PlayerBase, ClsendTracker):
+class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.PlayerBase):
     def __init__(self, air):
         DistributedAvatarAI.DistributedAvatarAI.__init__(self, air)
         PlayerBase.PlayerBase.__init__(self)
-        ClsendTracker.__init__(self)
         self.friendsList = []
         self.DISLname = ''
         self.DISLid = 0
@@ -29,7 +27,6 @@ class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.Pl
 
     def announceGenerate(self):
         DistributedAvatarAI.DistributedAvatarAI.announceGenerate(self)
-        ClsendTracker.announceGenerate(self)
         self._doPlayerEnter()
 
     def _announceArrival(self):
@@ -47,7 +44,6 @@ class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.Pl
         if __dev__:
             del self._sentExitServerEvent
         self._doPlayerExit()
-        ClsendTracker.destroy(self)
         if __dev__:
             GarbageReport.checkForGarbageLeaks()
         DistributedAvatarAI.DistributedAvatarAI.delete(self)

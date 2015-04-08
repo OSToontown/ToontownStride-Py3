@@ -1,7 +1,6 @@
 from direct.distributed.PyDatagram import *
 import urlparse
 
-from otp.distributed.DistributedDirectoryAI import DistributedDirectoryAI
 from otp.distributed.OtpDoGlobals import *
 from toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
 import toontown.minigame.MinigameCreatorAI
@@ -32,9 +31,6 @@ class ToontownUberRepository(ToontownInternalRepository):
         self.notify.setInfo(True)
 
     def handleConnected(self):
-        rootObj = DistributedDirectoryAI(self)
-        rootObj.generateWithRequiredAndId(self.getGameDoId(), 0, 0)
-
         if config.GetBool('want-rpc-server', False):
             endpoint = config.GetString('rpc-server-endpoint', 'http://localhost:8080/')
             self.rpcServer = ToontownRPCServer(endpoint, ToontownRPCHandler(self))
