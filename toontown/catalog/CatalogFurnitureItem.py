@@ -1018,9 +1018,10 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
                 avatar.b_setMaxClothes(self.getMaxClothes())
             if self.getFlags() & FLTrunk:
                 avatar.b_setMaxAccessories(self.getMaxAccessories())
-            house.addAtticItem(self)
             if self.getFlags() & FLBank:
                 avatar.b_setMaxBankMoney(self.getMaxBankMoney())
+                return retcode
+            house.addAtticItem(self)
         return retcode
 
     def getDeliveryTime(self):
