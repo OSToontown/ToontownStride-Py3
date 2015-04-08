@@ -606,7 +606,7 @@ FurnitureTypes = {
  1300: ('phase_5.5/models/estate/jellybeanBank',
         None,
         None,
-        0,
+        5000,
         FLBank,
         1.0),
  1310: ('phase_5.5/models/estate/jellybeanBank',
