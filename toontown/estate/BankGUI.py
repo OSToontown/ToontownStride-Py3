@@ -16,7 +16,7 @@ class BankGui(DirectFrame):
         buttons = loader.loadModel('phase_3/models/gui/dialog_box_buttons_gui')
         jarGui = loader.loadModel('phase_3.5/models/gui/jar_gui')
         arrowGui = loader.loadModel('phase_3/models/gui/create_a_toon_gui')
-        bankModel = loader.loadModel('phase_5.5/models/estate/jellybeanBank')
+        bankModel = loader.loadModel('phase_5.5/models/estate/jellybeanBank.bam')
         bankModel.setDepthWrite(1)
         bankModel.setDepthTest(1)
         bankModel.find('**/jellybeans').setDepthWrite(0)
@@ -70,7 +70,7 @@ class BankGui(DirectFrame):
         jarMoney = base.localAvatar.getMoney()
         maxJarMoney = base.localAvatar.getMaxMoney()
         bankMoney = base.localAvatar.getBankMoney()
-        maxBankMoney = base.localAvatar.getMaxBankMoney()
+        maxBankMoney = ToontownGlobals.MaxBankMoney
         self.__transactionAmount = min(self.__transactionAmount, jarMoney)
         self.__transactionAmount = min(self.__transactionAmount, maxBankMoney - bankMoney)
         self.__transactionAmount = -min(-self.__transactionAmount, maxJarMoney - jarMoney)
@@ -97,14 +97,19 @@ class BankGui(DirectFrame):
     def __runCounter(self, task):
         if task.time - task.prevTime < task.delayTime:
             return Task.cont
-        else:
-            task.delayTime = max(0.05, task.delayTime * 0.75)
-            task.prevTime = task.time
-            hitLimit, jar, bank, trans = self.__updateTransaction(task.delta)
-            if hitLimit:
-                return Task.done
-            else:
-                return Task.cont
+        
+        task.delayTime /= 2
+        task.prevTime = task.time
+        
+        if task.delayTime < 0.005:
+            task.amount *= 1.1
+        
+        hitLimit = self.__updateTransaction(int(task.amount))[0]
+        
+        if hitLimit:
+            return Task.done
+        
+        return Task.cont
 
     def __depositButtonUp(self, event):
         messenger.send('wakeup')
@@ -112,11 +117,13 @@ class BankGui(DirectFrame):
 
     def __depositButtonDown(self, event):
         messenger.send('wakeup')
+        
         task = Task(self.__runCounter)
-        task.delayTime = 0.4
+        task.delayTime = 0.2
         task.prevTime = 0.0
-        task.delta = 1
-        hitLimit, jar, bank, trans = self.__updateTransaction(task.delta)
+        task.amount = 1.0
+        hitLimit = self.__updateTransaction(int(task.amount))[0]
+        
         if not hitLimit:
             taskMgr.add(task, self.taskName('runCounter'))
 
@@ -126,11 +133,13 @@ class BankGui(DirectFrame):
 
     def __withdrawButtonDown(self, event):
         messenger.send('wakeup')
+        
         task = Task(self.__runCounter)
-        task.delayTime = 0.4
+        task.delayTime = 0.2
         task.prevTime = 0.0
-        task.delta = -1
-        hitLimit, jar, bank, trans = self.__updateTransaction(task.delta)
+        task.amount = 1.0
+        hitLimit = self.__updateTransaction(int(task.amount))[0]
+        
         if not hitLimit:
             taskMgr.add(task, self.taskName('runCounter'))
 
