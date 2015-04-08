@@ -14,6 +14,7 @@ from otp.friends import GuildManager/AI/UD
 from otp.friends import FriendInfo
 from otp.friends import AvatarFriendInfo
 from otp.distributed import DistributedDistrict/AI/UD
+from otp.distributed import DistributedDirectory/AI
 from otp.chat import ChatAgent/UD
 from otp.avatar import AvatarHandle
 
@@ -84,6 +85,10 @@ dclass TimeManager : DistributedObject {
   setClientGarbageLeak(uint32, string(0-1024)) airecv clsend;
   checkAvOnDistrict(uint32 context, DoId avatar) clsend airecv;
   checkAvOnDistrictResult(uint32 context, DoId av, bool isOnDistrict);
+};
+
+dclass DistributedDirectory : DistributedObject {
+  setParentingRules(string, string) broadcast ram;
 };
 
 dclass DistributedDistrict : DistributedObject {
