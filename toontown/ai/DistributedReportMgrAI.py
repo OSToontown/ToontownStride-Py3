@@ -23,14 +23,15 @@ class DistributedReportMgrAI(DistributedObjectAI):
         
         if not reporter or reporter.isReported(avId):
             return
-        
+            
         timestamp = int(round(time.time() * 1000))
         self.reports.append('%s|%s|%s|%s' % (timestamp, reporter.doId, avId, category))
     
     def sendAllReports(self):
+        self.scheduleReport()
+        
         if not self.reports or config.GetString('accountdb-type', 'developer') != 'remote':
             return
         
         executeHttpRequestAndLog('report', reports=','.join(self.reports))
         self.reports = []
-        self.scheduleReport()
