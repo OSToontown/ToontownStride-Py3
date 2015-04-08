@@ -939,7 +939,6 @@ SELLBOT_NERF_HOLIDAY = 96
 JELLYBEAN_TROLLEY_HOLIDAY = 97
 JELLYBEAN_FISHING_HOLIDAY = 98
 JELLYBEAN_PARTIES_HOLIDAY = 99
-BANK_UPGRADE_HOLIDAY = 100
 TOP_TOONS_MARATHON = 101
 SELLBOT_INVASION = 102
 SELLBOT_FIELD_OFFICE = 103
@@ -1602,8 +1601,8 @@ AnimPropTypes = Enum(('Unknown',
  'Trashcan'), start=-1)
 EmblemTypes = Enum(('Silver', 'Gold'))
 NumEmblemTypes = 2
-MaxBankMoney = 50000
-DefaultBankItemId = 1350
+MaxBankMoney = 25000
+DefaultBankItemId = 1300
 ToonAnimStates = set(['off',
  'neutral',
  'victory',

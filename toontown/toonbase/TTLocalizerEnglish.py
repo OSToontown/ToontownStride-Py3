@@ -4675,7 +4675,6 @@ STOREOWNER_CONFIRM_LOSS = 'Your closet is full.  You will lose the clothes you w
 STOREOWNER_OK = lOK
 STOREOWNER_CANCEL = lCancel
 STOREOWNER_TROPHY = 'Wow! You collected %s of %s fish. That deserves a trophy and a Laff boost!'
-STOREOWNER_BANKING = 'Welcome to The Toontown Bank! How may I help you?'
 SuitInvasionBegin1 = lToonHQ + ': A Cog invasion has begun!!!'
 SuitInvasionBegin2 = lToonHQ + ': %s have taken over Toontown!!!'
 SuitInvasionEnd1 = lToonHQ + ': The %s invasion has ended!!!'
@@ -5508,12 +5507,11 @@ FurnitureNames = {100: 'Armchair',
  1240: "Snorkeler's Table",
  1250: 'Cookie Table',
  1260: 'Bedroom Table',
- 1300: '1000 Bean Bank',
- 1310: '2500 Bean Bank',
- 1320: '5000 Bean Bank',
- 1330: '7500 Bean Bank',
- 1340: '10000 Bean Bank',
- 1350: '12000 Bean Bank',
+ 1300: '10000 Bean Bank',
+ 1310: '15000 Bean Bank',
+ 1320: '20000 Bean Bank',
+ 1330: '25000 Bean Bank',
+ 1340: '30000 Bean Bank',
  1399: 'Telephone',
  1400: 'Cezanne Toon',
  1410: 'Flowers',
@@ -5653,12 +5651,11 @@ AwardManagerFurnitureNames = {100: 'Armchair A - Series 1',
  1240: "Snorkeler's Table",
  1250: 'Cookie Table',
  1260: 'Bedroom Table',
- 1300: '1000 Bean Bank',
- 1310: '2500 Bean Bank',
- 1320: '5000 Bean Bank',
- 1330: '7500 Bean Bank',
- 1340: '10000 Bean Bank',
- 1350: '12000 Bean Bank',
+ 1300: '10000 Bean Bank',
+ 1310: '15000 Bean Bank',
+ 1320: '20000 Bean Bank',
+ 1330: '25000 Bean Bank',
+ 1340: '30000 Bean Bank',
  1399: 'Telephone',
  1400: 'Cezanne Toon',
  1410: 'Flowers',

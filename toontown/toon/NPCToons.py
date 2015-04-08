@@ -68,8 +68,7 @@ NPC_SPECIALQUESTGIVER = 9
 NPC_FLIPPYTOONHALL = 10
 NPC_SCIENTIST = 11
 NPC_SMART = 13
-NPC_BANKER = 14
-NPC_GLOVE = 15
+NPC_GLOVE = 14
 CLERK_COUNTDOWN_TIME = 120
 TAILOR_COUNTDOWN_TIME = 300
 RTDNAFile = '/RTDNAFile.txt'
@@ -94,7 +93,6 @@ def createNPC(air, npcId, desc, zoneId, posIndex = 0, questCallback = None):
     import DistributedNPCFlippyInToonHallAI
     import DistributedNPCScientistAI
     import DistributedSmartNPCAI
-    import DistributedNPCBankerAI
     import DistributedNPCGloveAI
     canonicalZoneId, name, dnaType, gender, protected, type = desc
     if type == NPC_REGULAR:
@@ -123,8 +121,6 @@ def createNPC(air, npcId, desc, zoneId, posIndex = 0, questCallback = None):
         npc = DistributedNPCScientistAI.DistributedNPCScientistAI(air, npcId)
     elif type == NPC_SMART:
         npc = DistributedSmartNPCAI.DistributedSmartNPCAI(air, npcId)
-    elif type == NPC_BANKER:
-        npc = DistributedNPCBankerAI.DistributedNPCBankerAI(air, npcId)
     elif type == NPC_GLOVE and simbase.air.wantGloveNpc:
         npc = DistributedNPCGloveAI.DistributedNPCGloveAI(air, npcId)
     else:
@@ -327,7 +323,7 @@ NPCToonDict = {20000: (-1,
          18),
         'm',
         1,
-        NPC_BANKER),
+        NPC_REGULAR),
  2003: (2516,
         lnames[2003],
         ('cll',

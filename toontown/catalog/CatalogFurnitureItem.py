@@ -37,18 +37,17 @@ woodColors = [
   (0.5451, 0.4118, 0.4118, 1.0)
 ]
 BankToMoney = {
- 1300: 15000,
+ 1300: 10000,
  1310: 15000,
- 1320: 15000,
- 1330: 15000,
- 1340: 15000,
- 1350: 15000
+ 1320: 20000,
+ 1330: 25000,
+ 1340: 30000
 }
 MoneyToBank = {}
 for bankId, maxMoney in BankToMoney.items():
     MoneyToBank[maxMoney] = bankId
 
-MaxBankId = 1350
+MaxBankId = 1340
 ClosetToClothes = {
  500: 10,
  502: 15,
@@ -634,12 +633,6 @@ FurnitureTypes = {
         0,
         FLBank,
         1.0),
- 1350: ('phase_5.5/models/estate/jellybeanBank',
-        None,
-        None,
-        0,
-        FLBank,
-        1.0),
  1399: ('phase_5.5/models/estate/prop_phone-mod',
         None,
         None,
@@ -1134,6 +1127,16 @@ def nextAvailableCloset(avatar, duplicateItems):
 
     return item
 
+def nextAvailableBank(avatar, duplicateItems):
+    if not avatar.getMaxBankMoney() in MoneyToBank:
+        return CatalogFurnitureItem(1300)
+    
+    currentBank = MoneyToBank[avatar.getMaxBankMoney()]
+    
+    if currentBank == MaxBankId:
+        return
+    
+    return CatalogFurnitureItem(currentBank + 10)
 
 def get50ItemCloset(avatar, duplicateItems):
     if avatar.getStyle().getGender() == 'm':
@@ -1162,6 +1165,13 @@ def getAllClosets():
 
     return list
 
+def getAllBanks():
+    list = []
+    
+    for bankId in BankToMoney.keys():
+        list.append(CatalogFurnitureItem(bankId))
+    
+    return list
 
 def get50ItemTrunk(avatar, duplicateItems):
     if config.GetBool('want-accessories', 1):

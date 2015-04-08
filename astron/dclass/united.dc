@@ -41,7 +41,6 @@ dclass Account {
   string LAST_LOGIN db;
   string ACCOUNT_ID db;
   uint16 ACCESS_LEVEL db;
-  uint32 MONEY db;
 };
 
 struct BarrierData {
@@ -498,8 +497,6 @@ from toontown.building import DistributedHQInterior/AI
 from toontown.building import DistributedGagshopInterior/AI
 from toontown.building import DistributedPetshopInterior/AI
 from toontown.building import DistributedKartShopInterior/AI
-from toontown.building import DistributedBankInterior/AI
-from toontown.building import DistributedBankCollectable/AI
 from toontown.building import DistributedLibraryInterior/AI
 from toontown.building import DistributedDoor/AI
 from toontown.building import DistributedAnimDoor/AI
@@ -538,12 +535,10 @@ from toontown.building import DistributedCJElevator/AI
 from toontown.building import DistributedBBElevator/AI
 from toontown.building import DistributedBoardingParty/AI
 from toontown.building import DistributedTutorialInterior/AI
-from toontown.estate import DistributedBankMgr/AI
 from toontown.estate import DistributedMailbox/AI
 from toontown.estate import DistributedFurnitureManager/AI
 from toontown.estate import DistributedFurnitureItem/AI
 from toontown.estate import DistributedBank/AI
-from toontown.toon import DistributedNPCBanker/AI
 from toontown.estate import DistributedCloset/AI
 from toontown.estate import DistributedTrunk/AI
 from toontown.estate import DistributedPhone/AI
@@ -844,6 +839,8 @@ dclass DistributedToon : DistributedPlayer {
   setGM(uint16 = 0) required broadcast ownrecv db;
   setMoney(int16 = 0) required ownrecv db;
   setBankMoney(int32 = 0) required ownrecv;
+  setMaxMoney(int16 = 40) required broadcast ownrecv db;
+  setBankMaxMoney(int32 = 10000) required broadcast ownrecv db;
   setMaxHp(int16 = 15) required broadcast ownrecv db;
   setHp(int16 = 15) required broadcast ownrecv db;
   toonUp(uint16) broadcast ownrecv;
@@ -2065,11 +2062,6 @@ dclass DistributedKartShopInterior : DistributedObject {
   setZoneIdAndBlock(uint32, uint16) required broadcast ram;
 };
 
-dclass DistributedBankInterior : DistributedObject {
-  setZoneIdAndBlock(uint32, uint16) required broadcast ram;
-  setState(string, int16) broadcast ram;
-};
-
 dclass DistributedLibraryInterior : DistributedObject {
   setZoneIdAndBlock(uint32, uint16) required broadcast ram;
 };
@@ -2128,12 +2120,6 @@ dclass DistributedSmartNPC : DistributedNPCToonBase {
   talkMessage(uint32, string) airecv clsend;
   respond(uint32, string, uint32) broadcast ram;
   dismiss(uint32, uint16) broadcast ram;
-};
-
-dclass DistributedNPCBanker : DistributedNPCToonBase {
-  setMovie(uint8, uint32, int16) broadcast ram;
-  setMovieDone() airecv clsend;
-  transferMoney(int16) airecv clsend;
 };
 
 dclass DistributedNPCSpecialQuestGiver : DistributedNPCToonBase {
@@ -2357,10 +2343,6 @@ dclass DistributedTutorialInterior : DistributedObject {
   setTutorialNpcId(uint32) required broadcast ram;
 };
 
-dclass DistributedBankMgr : DistributedObject {
-  transferMoney(int16) airecv clsend;
-};
-
 dclass DistributedMailbox : DistributedObject {
   setHouseId(uint32) required broadcast ram;
   setHousePos(uint8) required broadcast ram;
@@ -2426,11 +2408,6 @@ dclass DistributedBank : DistributedFurnitureItem {
   freeAvatar();
   setMovie(uint8, uint32, int16) broadcast ram;
   transferMoney(int16) airecv clsend;
-};
-
-dclass DistributedBankCollectable : DistributedObject {
-  requestGrab() airecv clsend;
-  grab(uint32) broadcast ram;
 };
 
 dclass DistributedCloset : DistributedFurnitureItem {

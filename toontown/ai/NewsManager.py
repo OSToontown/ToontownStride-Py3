@@ -250,9 +250,6 @@ class NewsManager(DistributedObject.DistributedObject):
             elif holidayId == ToontownGlobals.JELLYBEAN_PARTIES_HOLIDAY_MONTH:
                 if hasattr(base, 'localAvatar') and base.localAvatar and hasattr(base.localAvatar, 'chatMgr') and base.localAvatar.chatMgr:
                     self.setJellybeanMonthHolidayStart()
-            elif holidayId == ToontownGlobals.BANK_UPGRADE_HOLIDAY:
-                if hasattr(base, 'localAvatar') and base.localAvatar and hasattr(base.localAvatar, 'chatMgr') and base.localAvatar.chatMgr:
-                    self.setBankUpgradeHolidayStart()
             elif holidayId == ToontownGlobals.BLACK_CAT_DAY:
                 if hasattr(base, 'localAvatar') and base.localAvatar and hasattr(base.localAvatar, 'chatMgr') and base.localAvatar.chatMgr:
                     self.setBlackCatHolidayStart()
@@ -499,9 +496,6 @@ class NewsManager(DistributedObject.DistributedObject):
 
     def setJellybeanPartiesHolidayEnd(self):
         base.localAvatar.setSystemMessage(0, TTLocalizer.JellybeanPartiesHolidayEnd)
-
-    def setBankUpgradeHolidayStart(self):
-        base.localAvatar.setSystemMessage(0, TTLocalizer.BankUpgradeHolidayStart)
 
     def setHalloweenPropsHolidayStart(self):
         base.localAvatar.setSystemMessage(0, TTLocalizer.HalloweenPropsHolidayStart)

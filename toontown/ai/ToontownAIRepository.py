@@ -16,7 +16,6 @@ from toontown.ai.HolidayManagerAI import HolidayManagerAI
 from toontown.ai.NewsManagerAI import NewsManagerAI
 from toontown.ai.QuestManagerAI import QuestManagerAI
 from toontown.ai.DistributedBlackCatMgrAI import DistributedBlackCatMgrAI
-from toontown.ai import BankManagerAI
 from toontown.catalog.AccountDateAI import AccountDateAI
 from toontown.building.DistributedBuildingQueryMgrAI import DistributedBuildingQueryMgrAI
 from toontown.building.DistributedTrophyMgrAI import DistributedTrophyMgrAI
@@ -121,7 +120,6 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.cogSuitMgr = CogSuitManagerAI.CogSuitManagerAI(self)
         self.promotionMgr = PromotionManagerAI.PromotionManagerAI(self)
         self.cogPageManager = CogPageManagerAI.CogPageManagerAI()
-        self.bankManager = BankManagerAI.BankManagerAI(self)
         self.holidayManager = HolidayManagerAI(self)
         self.codeRedemptionMgr = TTCodeRedemptionMgrAI(self)
         self.codeRedemptionMgr.generateWithRequired(2)

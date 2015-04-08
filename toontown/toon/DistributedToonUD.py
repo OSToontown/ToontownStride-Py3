@@ -15,6 +15,12 @@ class DistributedToonUD(DistributedObjectUD):
 
     def setBankMoney(self, todo0):
         pass
+    
+    def setMaxMoney(self, todo0):
+        pass
+    
+    def setBankMaxMoney(self, todo0):
+        pass
 
     def setMoney(self, todo0):
         pass

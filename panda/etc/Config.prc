@@ -13,6 +13,7 @@
 # when that fails, the next aux-display line, and so on.
 
 load-display pandagl
+no-singular-invert 1
 #load-display pandadx9
 #load-display pandadx8
 #load-display pandagles

@@ -72,7 +72,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.__forbidCheesyEffects = 0
         self.friendManager = None
         self.trophyManager = None
-        self.bankManager = None
         self.catalogManager = None
         self.tutorialManager = None
         self.welcomeValleyManager = None

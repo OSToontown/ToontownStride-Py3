@@ -602,17 +602,26 @@ class CatalogScreen(DirectFrame):
         itemList.sort(lambda a, b: priceSort(a, b, CatalogItem.CatalogTypeWeekly))
         itemList.reverse()
         allClosetItems = CatalogFurnitureItem.getAllClosets()
+        allBankItems = CatalogFurnitureItem.getAllBanks()
         isMaxClosetOfferred = False
+        isMaxBankOffered = False
         for item in itemList:
             if item in allClosetItems and item.furnitureType in CatalogFurnitureItem.MaxClosetIds:
                 isMaxClosetOfferred = True
                 break
 
         for item in itemList:
+            if item.furnitureType == CatalogFurnitureItem.MaxBankId:
+                isMaxBankOffered = True
+                break
+                
+        for item in itemList:
             if isinstance(item, CatalogInvalidItem.CatalogInvalidItem):
                 self.notify.warning('skipping catalog invalid item %s' % item)
                 continue
             if isMaxClosetOfferred and item in allClosetItems and item.furnitureType not in CatalogFurnitureItem.MaxClosetIds:
+                continue
+            if isMaxBankOffered and item in allBankItems and item.furnitureType != CatalogFurnitureItem.MaxBankId:
                 continue
             if item.loyaltyRequirement() != 0:
                 self.loyaltyPanelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeLoyalty, parentCatalogScreen=self))
@@ -629,6 +638,8 @@ class CatalogScreen(DirectFrame):
                 self.notify.warning('skipping catalog invalid item %s' % item)
                 continue
             if isMaxClosetOfferred and item in allClosetItems and item.furnitureType not in CatalogFurnitureItem.MaxClosetIds:
+                continue
+            if isMaxBankOffered and item in allBankItems and item.furnitureType != CatalogFurnitureItem.MaxBankId:
                 continue
             if item.loyaltyRequirement() != 0:
                 self.loyaltyPanelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeLoyalty, parentCatalogScreen=self))
