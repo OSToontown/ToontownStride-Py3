@@ -4,7 +4,6 @@ from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from pandac.PandaModules import *
 from toontown.hood import ZoneUtil
-from toontown.launcher import DownloadForceAcknowledge
 from toontown.safezone.SafeZoneLoader import SafeZoneLoader
 from toontown.safezone.GZPlayground import GZPlayground
 from toontown.toonbase import TTLocalizer

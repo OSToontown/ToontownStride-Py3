@@ -105,7 +105,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.furnitureDirector = None
             self.gotCatalogNotify = 0
             self.__catalogNotifyDialog = None
-            self.accept('phaseComplete-5.5', self.loadPhase55Stuff)
             Toon.loadDialog()
             self.isIt = 0
             self.cantLeaveGame = 0
@@ -412,9 +411,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             if self.hasKart():
                 if hasattr(self, 'kartPage') and self.kartPage != None:
                     return
-                if not launcher.getPhaseComplete(6):
-                    self.acceptOnce('phaseComplete-6', self.addKartPage)
-                    return
                 self.kartPage = KartPage.KartPage()
                 self.kartPage.setAvatar(self)
                 self.kartPage.load()
@@ -426,9 +422,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
 
     def loadDisguisePages(self):
         if self.disguisePage != None:
-            return
-        if not launcher.getPhaseComplete(9):
-            self.acceptOnce('phaseComplete-9', self.loadDisguisePages)
             return
         self.disguisePage = DisguisePage.DisguisePage()
         self.disguisePage.load()
@@ -447,22 +440,9 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
     def loadGardenPages(self):
         if self.gardenPage != None:
             return
-        if not launcher.getPhaseComplete(5.5):
-            self.acceptOnce('phaseComplete-5.5', self.loadPhase55Stuff)
-            return
         self.gardenPage = GardenPage.GardenPage()
         self.gardenPage.load()
         self.book.addPage(self.gardenPage, pageName=TTLocalizer.GardenPageTitle)
-        return
-
-    def loadPhase55Stuff(self):
-        if self.gardenPage == None:
-            self.gardenPage = GardenPage.GardenPage()
-            self.gardenPage.load()
-            self.book.addPage(self.gardenPage, pageName=TTLocalizer.GardenPageTitle)
-        elif not launcher.getPhaseComplete(5.5):
-            self.acceptOnce('phaseComplete-5.5', self.loadPhase55Stuff)
-        self.refreshOnscreenButtons()
         return
 
     def setAsGM(self, state):
@@ -833,8 +813,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         wantButton = 0
         if self.allowPies and self.numPies > 0:
             wantButton = 1
-        if not launcher.getPhaseComplete(5):
-            wantButton = 0
         haveButton = self.__pieButton != None
         if not haveButton and not wantButton:
             return
@@ -1115,7 +1093,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.accept(ToontownGlobals.FriendsListHotkey, self.sendFriendsListEvent)
             if self.clarabelleButtonObscured <= 0 and self.isTeleportAllowed():
                 if self.catalogNotify == ToontownGlobals.NewItems or self.mailboxNotify == ToontownGlobals.NewItems or self.simpleMailNotify == ToontownGlobals.NewItems or self.inviteMailNotify == ToontownGlobals.NewItems or self.awardNotify == ToontownGlobals.NewItems:
-                    showClarabelle = not launcher or launcher.getPhaseComplete(5.5)
+                    showClarabelle = 1
                     for quest in self.quests:
                         if quest[0] in Quests.PreClarabelleQuestIds and self.mailboxNotify != ToontownGlobals.NewItems and self.awardNotify != ToontownGlobals.NewItems:
                             showClarabelle = 0
@@ -1157,9 +1135,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
 
     def newCatalogNotify(self):
         if not self.gotCatalogNotify:
-            return
-        hasPhase = not launcher or launcher.getPhaseComplete(5.5)
-        if not hasPhase:
             return
         if not self.friendsListButtonActive or self.friendsListButtonObscured > 0:
             return
@@ -1748,9 +1723,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         if self.hasPlayedGolf():
             if hasattr(self, 'golfPage') and self.golfPage != None:
                 return
-            if not launcher.getPhaseComplete(6):
-                self.acceptOnce('phaseComplete-6', self.addGolfPage)
-                return
             self.golfPage = GolfPage.GolfPage()
             self.golfPage.setAvatar(self)
             self.golfPage.load()
@@ -1759,9 +1731,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
 
     def addEventsPage(self):
         if hasattr(self, 'eventsPage') and self.eventsPage != None:
-            return
-        if not launcher.getPhaseComplete(4):
-            self.acceptOnce('phaseComplete-4', self.addEventsPage)
             return
         self.eventsPage = EventsPage.EventsPage()
         self.eventsPage.load()

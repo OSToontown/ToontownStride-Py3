@@ -75,7 +75,6 @@ EHpopupInfo = 0.08
 HtitleText = 0.16
 ACplayThisToon = 0.12
 ACmakeAToon = 0.12
-ACsubscribersOnly = 0.115
 ACdeleteWithPasswordFrame = 0.06
 ACstatusText = 1.0
 ACtitle = 0.15

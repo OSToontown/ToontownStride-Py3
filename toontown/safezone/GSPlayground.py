@@ -42,18 +42,6 @@ class GSPlayground(Playground.Playground):
         Playground.Playground.exit(self)
         self.rotateBlimp.finish()
 
-    def doRequestLeave(self, requestStatus):
-        self.fsm.request('DFA', [requestStatus])
-
-    def enterDFA(self, requestStatus):
-        doneEvent = 'dfaDoneEvent'
-        self.accept(doneEvent, self.enterDFACallback, [requestStatus])
-        self.dfa = DownloadForceAcknowledge.DownloadForceAcknowledge(doneEvent)
-        if requestStatus['hoodId'] == ToontownGlobals.MyEstate:
-            self.dfa.enter(base.cr.hoodMgr.getPhaseFromHood(ToontownGlobals.MyEstate))
-        else:
-            self.dfa.enter(5)
-
     def enterTeleportIn(self, requestStatus):
         reason = requestStatus.get('reason')
         if reason == RaceGlobals.Exit_Barrier:

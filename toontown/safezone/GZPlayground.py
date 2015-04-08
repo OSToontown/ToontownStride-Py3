@@ -1,7 +1,6 @@
 from pandac.PandaModules import *
 from toontown.toonbase import ToontownGlobals
 import Playground
-from toontown.launcher import DownloadForceAcknowledge
 from toontown.building import Elevator
 from toontown.toontowngui import TTDialog
 from toontown.toonbase import TTLocalizer
@@ -54,18 +53,6 @@ class GZPlayground(Playground.Playground):
         Playground.Playground.exit(self)
         if hasattr(self, 'rotateBlimp'):
             self.rotateBlimp.finish()
-
-    def doRequestLeave(self, requestStatus):
-        self.fsm.request('DFA', [requestStatus])
-
-    def enterDFA(self, requestStatus):
-        doneEvent = 'dfaDoneEvent'
-        self.accept(doneEvent, self.enterDFACallback, [requestStatus])
-        self.dfa = DownloadForceAcknowledge.DownloadForceAcknowledge(doneEvent)
-        if requestStatus['hoodId'] == ToontownGlobals.MyEstate:
-            self.dfa.enter(base.cr.hoodMgr.getPhaseFromHood(ToontownGlobals.MyEstate))
-        else:
-            self.dfa.enter(5)
 
     def enterTeleportIn(self, requestStatus):
         reason = requestStatus.get('reason')

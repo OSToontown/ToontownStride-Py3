@@ -219,23 +219,6 @@ class HoodMgr(DirectObject.DirectObject):
             self.currentDropPoint = (self.currentDropPoint + 1) % len(dropPointList)
             return dropPointList[droppnt]
 
-    def getAvailableZones(self):
-        if base.launcher == None:
-            return self.getZonesInPhase(4) + self.getZonesInPhase(6) + self.getZonesInPhase(8) + self.getZonesInPhase(9) + self.getZonesInPhase(10) + self.getZonesInPhase(11) + self.getZonesInPhase(12) + self.getZonesInPhase(13)
-        else:
-            zones = []
-            for phase in set(ToontownGlobals.phaseMap.values()):
-                if base.launcher.getPhaseComplete(phase):
-                    zones = zones + self.getZonesInPhase(phase)
-            return zones
-
-    def getZonesInPhase(self, phase):
-        p = []
-        for i in ToontownGlobals.phaseMap.items():
-            if i[1] == phase:
-                p.append(i[0])
-        return p
-
     def getPhaseFromHood(self, hoodId):
         hoodId = ZoneUtil.getCanonicalHoodId(hoodId)
         return ToontownGlobals.phaseMap[hoodId]

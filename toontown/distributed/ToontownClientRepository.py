@@ -16,7 +16,6 @@ from direct.showbase.InputStateGlobal import inputState
 from otp.avatar import Avatar
 from otp.avatar import DistributedAvatar
 from otp.friends import FriendManager
-from otp.login import HTTPUtil
 from otp.distributed import OTPClientRepository
 from otp.distributed import PotentialAvatar
 from otp.distributed import PotentialShard
@@ -28,7 +27,6 @@ from otp.otpbase import OTPLocalizer
 from otp.avatar.Avatar import teleportNotify
 from toontown.toonbase.ToonBaseGlobal import *
 from toontown.toonbase.ToontownGlobals import *
-from toontown.launcher.DownloadForceAcknowledge import *
 from toontown.distributed import DelayDelete
 from toontown.friends import FriendHandle
 from toontown.friends import FriendsListPanel
@@ -61,8 +59,8 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
     ClearInterestDoneEvent = 'TCRClearInterestDone'
     KeepSubShardObjects = False
 
-    def __init__(self, serverVersion, launcher = None):
-        OTPClientRepository.OTPClientRepository.__init__(self, serverVersion, launcher, playGame=PlayGame.PlayGame)
+    def __init__(self, serverVersion):
+        OTPClientRepository.OTPClientRepository.__init__(self, serverVersion, playGame=PlayGame.PlayGame)
         self._playerAvDclass = self.dclassesByName['DistributedToon']
         setInterfaceFont(TTLocalizer.InterfaceFont)
         setSignFont(TTLocalizer.SignFont)
@@ -71,8 +69,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             setNametagFont(i, TTLocalizer.NametagFonts[i])
 
         self.toons = {}
-        if self.http.getVerifySsl() != HTTPClient.VSNoVerify:
-            self.http.setVerifySsl(HTTPClient.VSNoDateCheck)
         self.__forbidCheesyEffects = 0
         self.friendManager = None
         self.trophyManager = None
@@ -202,7 +198,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         base.playMusic(self.music, looping=1, volume=0.9, interrupt=None)
         self.handler = self.handleMessageType
         self.avChoiceDoneEvent = 'avatarChooserDone'
-        self.avChoice = AvatarChooser.AvatarChooser(avList, self.loginFSM, self.avChoiceDoneEvent)
+        self.avChoice = AvatarChooser.AvatarChooser(avList, self.avChoiceDoneEvent)
         self.avChoice.load()
         self.avChoice.enter()
         self.accept(self.avChoiceDoneEvent, self.__handleAvatarChooserDone, [avList])
@@ -232,24 +228,10 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
                 base.localAvatarStyle = dna
                 base.localAvatarName = avatarChoice.name
                 self.loginFSM.request('waitForSetAvatarResponse', [avatarChoice])
-        elif done == 'nameIt':
-            self.accept('downloadAck-response', self.__handleDownloadAck, [avList, index])
-            self.downloadAck = DownloadForceAcknowledge('downloadAck-response')
-            self.downloadAck.enter(4)
         elif done == 'create':
             self.loginFSM.request('createAvatar', [avList, index])
         elif done == 'delete':
             self.loginFSM.request('waitForDeleteAvatarResponse', [avatarChoice])
-
-    def __handleDownloadAck(self, avList, index, doneStatus):
-        if doneStatus['mode'] == 'complete':
-            self.goToPickAName(avList, index)
-        else:
-            self.loginFSM.request('chooseAvatar', [avList])
-        self.downloadAck.exit()
-        self.downloadAck = None
-        self.ignore('downloadAck-response')
-        return
 
     def exitChooseAvatar(self):
         self.handler = None
@@ -294,14 +276,11 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             self.loginFSM.request('chooseAvatar', [avList])
         elif done == 'created':
             self.avCreate.exit()
-            if not base.launcher or base.launcher.getPhaseComplete(3.5):
-                for i in avList:
-                    if i.position == avPosition:
-                        newPotAv = i
+            for i in avList:
+                if i.position == avPosition:
+                    newPotAv = i
 
-                self.loginFSM.request('waitForSetAvatarResponse', [newPotAv])
-            else:
-                self.loginFSM.request('chooseAvatar', [avList])
+            self.loginFSM.request('waitForSetAvatarResponse', [newPotAv])
         else:
             self.notify.error('Invalid doneStatus from MakeAToon: ' + str(done))
 

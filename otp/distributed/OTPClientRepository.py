@@ -31,7 +31,6 @@ from otp.distributed import DCClassImports
 from otp.distributed import OtpDoGlobals
 from otp.distributed.OtpDoGlobals import *
 from otp.distributed.TelemetryLimiter import TelemetryLimiter
-from otp.login import HTTPUtil
 from otp.otpbase import OTPGlobals
 from otp.otpbase import OTPLocalizer
 from otp.otpgui import OTPDialog
@@ -46,28 +45,14 @@ class OTPClientRepository(ClientRepositoryBase):
      'Approved',
      'Rejected'])
 
-    def __init__(self, serverVersion, launcher = None, playGame = None):
+    def __init__(self, serverVersion, playGame = None):
         ClientRepositoryBase.__init__(self)
         self.handler = None
-        self.launcher = launcher
-        base.launcher = launcher
         self.__currentAvId = 0
         self.createAvatarClass = None
         self.systemMessageSfx = None
-        
-        if self.launcher:
-            self.playToken = self.launcher.getPlayToken()
-        else:
-            self.playToken = None
-            self.notify.error('The client repository does not have the required playToken login')
-        
+        self.playToken = launcher.getPlayToken()
         self.wantMagicWords = False
-
-        # TODO: HTTP
-        if self.launcher and hasattr(self.launcher, 'http'):
-            self.http = self.launcher.http
-        else:
-            self.http = HTTPClient()
 
         self.userSignature = base.config.GetString('signature', 'none')
         self.parentMgr.registerParent(OTPGlobals.SPRender, base.render)
@@ -411,7 +396,7 @@ class OTPClientRepository(ClientRepositoryBase):
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def _handleConnected(self):
-        self.launcher.setDisconnectDetailsNormal()
+        launcher.setDisconnectDetailsNormal()
         messenger.send(self.getConnectedEvent())
         self.gotoFirstScreen()
 
@@ -432,7 +417,6 @@ class OTPClientRepository(ClientRepositoryBase):
     def __handleLoginDone(self, doneStatus):
         mode = doneStatus['mode']
         if mode == 'success':
-            self.setIsNotNewInstallation()
             if hasattr(self, 'toontownTimeManager'):
                 timestamp = time.gmtime(doneStatus['timestamp'])
                 dateString = time.strftime(self.toontownTimeManager.formatStr, timestamp)
@@ -496,21 +480,8 @@ class OTPClientRepository(ClientRepositoryBase):
     def enterFailedToGetServerConstants(self, e):
         self.handler = self.handleMessageType
         messenger.send('connectionIssue')
-        statusCode = 0
-        if isinstance(e, HTTPUtil.ConnectionError):
-            statusCode = e.statusCode
-            self.notify.warning('Got status code %s from connection to %s.' % (statusCode, url.cStr()))
-        else:
-            self.notify.warning("Didn't get status code from connection to %s." % url.cStr())
-        if statusCode == 1403 or statusCode == 1400:
-            message = OTPLocalizer.CRServerConstantsProxyNoPort % (url.cStr(), url.getPort())
-            style = OTPDialog.CancelOnly
-        elif statusCode == 1405:
-            message = OTPLocalizer.CRServerConstantsProxyNoCONNECT % url.cStr()
-            style = OTPDialog.CancelOnly
-        else:
-            message = OTPLocalizer.CRServerConstantsTryAgain % url.cStr()
-            style = OTPDialog.TwoChoice
+        message = OTPLocalizer.CRServerConstantsTryAgain % url.cStr()
+        style = OTPDialog.TwoChoice
         dialogClass = OTPGlobals.getGlobalDialogClass()
         self.failedToGetConstantsBox = dialogClass(message=message, doneEvent='failedToGetConstantsAck', text_wordwrap=18, style=style)
         self.failedToGetConstantsBox.show()
@@ -689,7 +660,6 @@ class OTPClientRepository(ClientRepositoryBase):
     def enterReject(self):
         self.handler = self.handleMessageType
         self.notify.warning('Connection Rejected')
-        launcher.setPandaErrorCode(13)
         sys.exit()
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
@@ -719,7 +689,7 @@ class OTPClientRepository(ClientRepositoryBase):
             reconnect = 0
         if self.bootedIndex == 152:
             message = message % {'name': self.bootedText}
-        self.launcher.setDisconnectDetails(self.bootedIndex, message)
+        launcher.setDisconnectDetails(self.bootedIndex, message)
         style = OTPDialog.Acknowledge
         if reconnect:
             message += OTPLocalizer.CRTryConnectAgain
@@ -929,12 +899,6 @@ class OTPClientRepository(ClientRepositoryBase):
          'ivalLoop',
          'downloadSequence',
          'patchAndHash',
-         'launcher-download',
-         'launcher-download-multifile',
-         'launcher-decompressFile',
-         'launcher-decompressMultifile',
-         'launcher-extract',
-         'launcher-patch',
          'slowCloseShardCallback',
          'tkLoop',
          'manager-update',
@@ -980,15 +944,12 @@ class OTPClientRepository(ClientRepositoryBase):
          'meta-h',
          'meta-h-repeat',
          'control-f9',
-         'launcherAllPhasesComplete',
-         'launcherPercentPhaseComplete',
          'newDistributedDirectory',
          'page_down',
          'page_up',
          'panda3d-render-error',
          'PandaPaused',
          'PandaRestarted',
-         'phaseComplete-3',
          'press-mouse2-fade',
          'print-fade',
          'release-mouse2-fade',
@@ -1426,9 +1387,6 @@ class OTPClientRepository(ClientRepositoryBase):
 
     def __handleCancelWaiting(self, value):
         self.loginFSM.request('shutdown')
-
-    def setIsNotNewInstallation(self):
-        launcher.setIsNotNewInstallation()
 
     def renderFrame(self):
         gsg = base.win.getGsg()

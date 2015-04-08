@@ -123,19 +123,11 @@ import time
 import sys
 import random
 import __builtin__
-try:
-    launcher
-except:
-    from toontown.launcher.TTULauncher import TTULauncher
-    launcher = TTULauncher()
-    __builtin__.launcher = launcher
+from toontown.launcher.TTULauncher import TTULauncher
 
+__builtin__.launcher = TTULauncher()
 
 notify.info('Starting the game...')
-if launcher.isDummy():
-    http = HTTPClient()
-else:
-    http = launcher.http
 tempLoader = Loader()
 backgroundNode = tempLoader.loadSync(Filename('phase_3/models/gui/loading-background'))
 from direct.gui import DirectGuiGlobals
@@ -143,14 +135,11 @@ from direct.gui.DirectGui import *
 notify.info('Setting the default font...')
 import ToontownGlobals
 DirectGuiGlobals.setDefaultFontFunc(ToontownGlobals.getInterfaceFont)
-launcher.setPandaErrorCode(7)
 import ToonBase
 ToonBase.ToonBase()
 from pandac.PandaModules import *
 if base.win is None:
     notify.error('Unable to open window; aborting.')
-launcher.setPandaErrorCode(0)
-launcher.setPandaWindowOpen()
 ConfigVariableDouble('decompressor-step-time').setValue(0.01)
 ConfigVariableDouble('extractor-step-time').setValue(0.01)
 backgroundNodePath = aspect2d.attachNewNode(backgroundNode, 0)
@@ -195,7 +184,7 @@ loader.beginBulkLoad('init', TTLocalizer.LoaderLabel, 138, 0, TTLocalizer.TIP_NO
 from ToonBaseGlobal import *
 from direct.showbase.MessengerGlobal import *
 from toontown.distributed import ToontownClientRepository
-cr = ToontownClientRepository.ToontownClientRepository(serverVersion, launcher)
+cr = ToontownClientRepository.ToontownClientRepository(serverVersion)
 cr.music = music
 del music
 base.initNametagGlobals()
@@ -204,10 +193,7 @@ loader.endBulkLoad('init')
 from otp.friends import FriendManager
 from otp.distributed.OtpDoGlobals import *
 cr.generateGlobalObject(OTP_DO_ID_FRIEND_MANAGER, 'FriendManager')
-if not launcher.isDummy():
-    base.startShow(cr, launcher.getGameServer())
-else:
-    base.startShow(cr)
+base.startShow(cr)
 backgroundNodePath.reparentTo(hidden)
 backgroundNodePath.removeNode()
 del backgroundNodePath

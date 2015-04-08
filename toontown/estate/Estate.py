@@ -41,7 +41,7 @@ class Estate(Place.Place):
           'fishing',
           'mailbox',
           'stopped',
-          'DFA',
+          'teleportOut',
           'doorOut',
           'push',
           'pet']),
@@ -57,7 +57,7 @@ class Estate(Place.Place):
           'doorOut',
           'push',
           'pet',
-          'DFA']),
+          'teleportOut']),
          State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk', 'petTutorial']),
          State.State('teleportOut', self.enterTeleportOut, self.exitTeleportOut, ['teleportIn', 'walk', 'final']),
          State.State('doorIn', self.enterDoorIn, self.exitDoorIn, ['walk']),
@@ -67,9 +67,7 @@ class Estate(Place.Place):
          State.State('fishing', self.enterFishing, self.exitFishing, ['walk', 'stopped']),
          State.State('mailbox', self.enterMailbox, self.exitMailbox, ['walk', 'stopped']),
          State.State('stopped', self.enterStopped, self.exitStopped, ['walk']),
-         State.State('pet', self.enterPet, self.exitPet, ['walk', 'DFA']),
-         State.State('DFA', self.enterDFA, self.exitDFA, ['DFAReject', 'teleportOut']),
-         State.State('DFAReject', self.enterDFAReject, self.exitDFAReject, ['walk'])], 'init', 'final')
+         State.State('pet', self.enterPet, self.exitPet, ['walk', 'teleportOut'])], 'init', 'final')
         self.fsm.enterInitialState()
         self.doneEvent = doneEvent
         self.parentFSMState = parentFSMState
@@ -172,9 +170,6 @@ class Estate(Place.Place):
     def detectedFlowerSellDone(self):
         if hasattr(self, 'fsm'):
             self.fsm.request('walk')
-
-    def doRequestLeave(self, requestStatus):
-        self.fsm.request('DFA', [requestStatus])
 
     def enterInit(self):
         pass

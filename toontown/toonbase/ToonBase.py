@@ -138,8 +138,6 @@ class ToonBase(OTPBase.OTPBase):
         self.transitions.IrisModelName = 'phase_3/models/misc/iris'
         self.transitions.FadeModelName = 'phase_3/models/misc/fade'
         self.exitFunc = self.userExit
-        if 'launcher' in __builtins__ and launcher:
-            launcher.setPandaErrorCode(11)
         globalClock.setMaxDt(0.2)
         if self.config.GetBool('want-particles', 1) == 1:
             self.notify.debug('Enabling particles')
@@ -381,10 +379,9 @@ class ToonBase(OTPBase.OTPBase):
             cell.setActive(active)
         self.marginManager.reorganize()
 
-    def startShow(self, cr, launcherServer = None):
+    def startShow(self, cr):
         self.cr = cr
         base.graphicsEngine.renderFrame()
-        gameServer = launcher.getGameServer()
         # Get the base port.
         serverPort = base.config.GetInt('server-port', 7199)
 
@@ -395,7 +392,7 @@ class ToonBase(OTPBase.OTPBase):
         serverPort += (random.randint(0, clientagents) * 100)
 
         serverList = []
-        for name in gameServer.split(';'):
+        for name in launcher.getGameServer().split(';'):
             url = URLSpec(name, 1)
             if base.config.GetBool('server-force-ssl', False):
                 url.setScheme('s')
@@ -445,10 +442,6 @@ class ToonBase(OTPBase.OTPBase):
 
     def exitShow(self, errorCode = None):
         self.notify.info('Exiting Toontown: errorCode = %s' % errorCode)
-        if errorCode:
-            launcher.setPandaErrorCode(errorCode)
-        else:
-            launcher.setPandaErrorCode(0)
         sys.exit()
 
     def setExitErrorCode(self, code):
@@ -485,7 +478,6 @@ class ToonBase(OTPBase.OTPBase):
         self.exitShow()
 
     def panda3dRenderError(self):
-        launcher.setPandaErrorCode(14)
         if self.cr.timeManager:
             self.cr.timeManager.setDisconnectReason(ToontownGlobals.DisconnectGraphicsError)
         self.cr.sendDisconnect()

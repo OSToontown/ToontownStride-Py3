@@ -430,65 +430,59 @@ class ToonHead(Actor.Actor):
         return headHeight
 
     def loadPumpkin(self, headStyle, lod, copy):
-        if hasattr(base, 'launcher') and (not base.launcher or base.launcher and base.launcher.getPhaseComplete(4)):
-            if not hasattr(self, 'pumpkins'):
-                self.pumpkins = NodePathCollection()
-            ppath = 'phase_4/models/estate/pumpkin_'
-            if headStyle is 'l':
-                if copy:
-                    pmodel = loader.loadModel(ppath + 'tall')
-                else:
-                    pmodel = loader.loadModel(ppath + 'tall')
-                ptype = 'tall'
+        if not hasattr(self, 'pumpkins'):
+            self.pumpkins = NodePathCollection()
+        ppath = 'phase_4/models/estate/pumpkin_'
+        if headStyle is 'l':
+            if copy:
+                pmodel = loader.loadModel(ppath + 'tall')
             else:
-                if copy:
-                    pmodel = loader.loadModel(ppath + 'short')
-                else:
-                    pmodel = loader.loadModel(ppath + 'short')
-                ptype = 'short'
-            if pmodel:
-                p = pmodel.find('**/pumpkin_' + ptype + '*')
-                p.setScale(0.5)
-                p.setZ(-0.5)
-                p.setH(180)
-                if lod:
-                    p.reparentTo(self.find('**/' + lod + '/**/__Actor_head'))
-                else:
-                    p.reparentTo(self.find('**/__Actor_head'))
-                self.pumpkins.addPath(p)
-                pmodel.removeNode()
-                return True
-            else:
-                del self.pumpkins
-                return False
+                pmodel = loader.loadModel(ppath + 'tall')
+            ptype = 'tall'
         else:
-            ToonHead.notify.debug('phase_4 not complete yet. Postponing pumpkin head load.')
+            if copy:
+                pmodel = loader.loadModel(ppath + 'short')
+            else:
+                pmodel = loader.loadModel(ppath + 'short')
+            ptype = 'short'
+        if pmodel:
+            p = pmodel.find('**/pumpkin_' + ptype + '*')
+            p.setScale(0.5)
+            p.setZ(-0.5)
+            p.setH(180)
+            if lod:
+                p.reparentTo(self.find('**/' + lod + '/**/__Actor_head'))
+            else:
+                p.reparentTo(self.find('**/__Actor_head'))
+            self.pumpkins.addPath(p)
+            pmodel.removeNode()
+            return True
+        else:
+            del self.pumpkins
+            return False
 
     def loadSnowMan(self, headStyle, lod, copy):
-        if hasattr(base, 'launcher') and (not base.launcher or base.launcher and base.launcher.getPhaseComplete(4)):
-            if not hasattr(self, 'snowMen'):
-                self.snowMen = NodePathCollection()
-            snowManPath = 'phase_4/models/props/tt_m_efx_snowmanHead_'
-            if headStyle is 'l':
-                snowManPath = snowManPath + 'tall'
-            else:
-                snowManPath = snowManPath + 'short'
-            model = loader.loadModel(snowManPath)
-            if model:
-                model.setZ(-0.5)
-                model.setH(180)
-                if lod:
-                    model.reparentTo(self.getPart('head', lod))
-                else:
-                    model.reparentTo(self.find('**/__Actor_head'))
-                self.snowMen.addPath(model)
-                model.stash()
-                return True
-            else:
-                del self.snowMen
-                return False
+        if not hasattr(self, 'snowMen'):
+            self.snowMen = NodePathCollection()
+        snowManPath = 'phase_4/models/props/tt_m_efx_snowmanHead_'
+        if headStyle is 'l':
+            snowManPath = snowManPath + 'tall'
         else:
-            ToonHead.notify.debug('phase_4 not loaded yet.')
+            snowManPath = snowManPath + 'short'
+        model = loader.loadModel(snowManPath)
+        if model:
+            model.setZ(-0.5)
+            model.setH(180)
+            if lod:
+                model.reparentTo(self.getPart('head', lod))
+            else:
+                model.reparentTo(self.find('**/__Actor_head'))
+            self.snowMen.addPath(model)
+            model.stash()
+            return True
+        else:
+            del self.snowMen
+            return False
 
     def __fixPumpkin(self, style, lodName = None, copy = 1):
         if lodName == None:

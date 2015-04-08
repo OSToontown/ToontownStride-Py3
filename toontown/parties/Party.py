@@ -35,13 +35,13 @@ class Party(Place.Place):
           'quest',
           'fishing',
           'stopped',
-          'DFA',
           'push',
-          'activity']),
+          'activity',
+          'teleportOut']),
          State.State('stopped', self.enterStopped, self.exitStopped, ['walk', 'teleportOut']),
          State.State('sit', self.enterSit, self.exitSit, ['walk']),
          State.State('push', self.enterPush, self.exitPush, ['walk']),
-         State.State('partyPlanning', self.enterPartyPlanning, self.exitPartyPlanning, ['DFA', 'teleportOut']),
+         State.State('partyPlanning', self.enterPartyPlanning, self.exitPartyPlanning, ['teleportOut']),
          State.State('stickerBook', self.enterStickerBook, self.exitStickerBook, ['walk',
           'sit',
           'quest',
@@ -49,7 +49,7 @@ class Party(Place.Place):
           'stopped',
           'activity',
           'push',
-          'DFA']),
+          'teleportOut']),
          State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk', 'partyPlanning']),
          State.State('teleportOut', self.enterTeleportOut, self.exitTeleportOut, ['teleportIn', 'walk', 'final']),
          State.State('died', self.enterDied, self.exitDied, ['walk', 'final']),
@@ -57,9 +57,7 @@ class Party(Place.Place):
          State.State('quest', self.enterQuest, self.exitQuest, ['walk']),
          State.State('fishing', self.enterFishing, self.exitFishing, ['walk', 'stopped']),
          State.State('activity', self.enterActivity, self.exitActivity, ['walk', 'stopped']),
-         State.State('stopped', self.enterStopped, self.exitStopped, ['walk']),
-         State.State('DFA', self.enterDFA, self.exitDFA, ['DFAReject', 'teleportOut']),
-         State.State('DFAReject', self.enterDFAReject, self.exitDFAReject, ['walk'])], 'init', 'final')
+         State.State('stopped', self.enterStopped, self.exitStopped, ['walk'])], 'init', 'final')
         self.fsm.enterInitialState()
         self.doneEvent = doneEvent
         self.parentFSMState = parentFSMState
@@ -131,9 +129,6 @@ class Party(Place.Place):
 
     def __setZoneId(self, zoneId):
         self.zoneId = zoneId
-
-    def doRequestLeave(self, requestStatus):
-        self.fsm.request('DFA', [requestStatus])
 
     def enterInit(self):
         pass

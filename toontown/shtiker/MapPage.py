@@ -190,13 +190,11 @@ class MapPage(ShtikerPage.ShtikerPage):
         else:
             self.hoodLabel.hide()
         safeZonesVisited = base.localAvatar.hoodsVisited
-        hoodsAvailable = base.cr.hoodMgr.getAvailableZones()
-        hoodVisibleList = PythonUtil.intersection(safeZonesVisited, hoodsAvailable)
         hoodTeleportList = base.localAvatar.getTeleportAccess()
         for hood in self.allZones:
             label = self.labels[self.allZones.index(hood)]
             clouds = self.clouds[self.allZones.index(hood)]
-            if not self.book.safeMode and hood in hoodVisibleList:
+            if not self.book.safeMode and hood in safeZonesVisited:
                 label['text_fg'] = (0, 0, 0, 1)
                 label.show()
                 for cloud in clouds:
@@ -229,7 +227,7 @@ class MapPage(ShtikerPage.ShtikerPage):
         messenger.send(self.doneEvent)
 
     def __buttonCallback(self, hood):
-        if hood in base.localAvatar.getTeleportAccess() and hood in base.cr.hoodMgr.getAvailableZones():
+        if hood in base.localAvatar.getTeleportAccess():
             base.localAvatar.sendUpdate('checkTeleportAccess', [hood])
             self.doneStatus = {'mode': 'teleport',
              'hood': hood}

@@ -6,7 +6,6 @@ from direct.interval.IntervalGlobal import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.fsm import StateData
-from toontown.launcher import DownloadForceAcknowledge
 from toontown.toonbase import TTLocalizer
 from direct.showbase import PythonUtil
 
@@ -14,8 +13,7 @@ class Elevator(StateData.StateData):
 
     def __init__(self, elevatorState, doneEvent, distElevator):
         StateData.StateData.__init__(self, doneEvent)
-        self.fsm = ClassicFSM.ClassicFSM('Elevator', [State.State('start', self.enterStart, self.exitStart, ['elevatorDFA']),
-         State.State('elevatorDFA', self.enterElevatorDFA, self.exitElevatorDFA, ['requestBoard', 'final']),
+        self.fsm = ClassicFSM.ClassicFSM('Elevator', [State.State('start', self.enterStart, self.exitStart, ['requestBoard', 'final']),
          State.State('requestBoard', self.enterRequestBoard, self.exitRequestBoard, ['boarding']),
          State.State('boarding', self.enterBoarding, self.exitBoarding, ['boarded']),
          State.State('boarded', self.enterBoarded, self.exitBoarded, ['requestExit', 'elevatorClosing', 'final']),
@@ -23,12 +21,10 @@ class Elevator(StateData.StateData):
          State.State('elevatorClosing', self.enterElevatorClosing, self.exitElevatorClosing, ['final']),
          State.State('exiting', self.enterExiting, self.exitExiting, ['final']),
          State.State('final', self.enterFinal, self.exitFinal, ['start'])], 'start', 'final')
-        self.dfaDoneEvent = 'elevatorDfaDoneEvent'
         self.elevatorState = elevatorState
         self.distElevator = distElevator
         distElevator.elevatorFSM = self
         self.reverseBoardingCamera = False
-        self.skipDFABoard = 0
 
     def load(self):
         self.elevatorState.addChild(self.fsm)
@@ -52,7 +48,7 @@ class Elevator(StateData.StateData):
 
     def enter(self):
         self.fsm.enterInitialState()
-        self.fsm.request('elevatorDFA')
+        self.fsm.request('requestBoard')
 
     def exit(self):
         self.ignoreAll()
@@ -65,29 +61,6 @@ class Elevator(StateData.StateData):
 
     def exitStart(self):
         pass
-
-    def enterElevatorDFA(self):
-        self.acceptOnce(self.dfaDoneEvent, self.enterDFACallback)
-        self.dfa = DownloadForceAcknowledge.DownloadForceAcknowledge(self.dfaDoneEvent)
-        self.dfa.enter(7)
-
-    def enterDFACallback(self, DFAdoneStatus):
-        self.dfa.exit()
-        del self.dfa
-        if DFAdoneStatus['mode'] == 'complete':
-            if self.skipDFABoard:
-                self.skipDFABoard = 0
-            else:
-                self.fsm.request('requestBoard')
-        elif DFAdoneStatus['mode'] == 'incomplete':
-            elevatorDoneStatus = {}
-            elevatorDoneStatus['where'] = 'reject'
-            messenger.send(self.doneEvent, [elevatorDoneStatus])
-        else:
-            self.notify.error('Unrecognized doneStatus: ' + str(DFAdoneStatus))
-
-    def exitElevatorDFA(self):
-        self.ignore(self.dfaDoneEvent)
 
     def enterRequestBoard(self):
         messenger.send(self.distElevator.uniqueName('enterElevatorOK'))

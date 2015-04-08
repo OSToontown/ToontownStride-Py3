@@ -9,10 +9,8 @@ from direct.fsm import StateData
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.task import Task
-from toontown.launcher import DownloadForceAcknowledge
 from toontown.toon import HealthForceAcknowledge
 from toontown.toon.Toon import teleportDebug
-from toontown.tutorial import TutorialForceAcknowledge
 from toontown.toonbase.ToontownGlobals import *
 from toontown.building import ToonInterior
 from toontown.hood import QuietZoneState

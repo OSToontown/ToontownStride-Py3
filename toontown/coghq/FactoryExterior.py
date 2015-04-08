@@ -27,7 +27,6 @@ class FactoryExterior(BattlePlace.BattlePlace):
          State.State('walk', self.enterWalk, self.exitWalk, ['stickerBook',
           'teleportOut',
           'tunnelOut',
-          'DFA',
           'doorOut',
           'elevator',
           'stopped',
@@ -35,14 +34,13 @@ class FactoryExterior(BattlePlace.BattlePlace):
           'battle']),
          State.State('stopped', self.enterStopped, self.exitStopped, ['walk', 'teleportOut', 'elevator']),
          State.State('stickerBook', self.enterStickerBook, self.exitStickerBook, ['walk',
-          'DFA',
           'WaitForBattle',
           'battle',
-          'elevator']),
+          'elevator',
+          'tunnelOut',
+          'teleportOut']),
          State.State('WaitForBattle', self.enterWaitForBattle, self.exitWaitForBattle, ['battle', 'walk']),
          State.State('battle', self.enterBattle, self.exitBattle, ['walk', 'teleportOut', 'died']),
-         State.State('DFA', self.enterDFA, self.exitDFA, ['DFAReject', 'teleportOut', 'tunnelOut']),
-         State.State('DFAReject', self.enterDFAReject, self.exitDFAReject, ['walk']),
          State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk']),
          State.State('teleportOut', self.enterTeleportOut, self.exitTeleportOut, ['teleportIn', 'final', 'WaitForBattle']),
          State.State('doorIn', self.enterDoorIn, self.exitDoorIn, ['walk']),
@@ -145,11 +143,9 @@ class FactoryExterior(BattlePlace.BattlePlace):
     def exitTeleportOut(self):
         BattlePlace.BattlePlace.exitTeleportOut(self)
 
-    def enterElevator(self, distElevator, skipDFABoard = 0):
+    def enterElevator(self, distElevator):
         self.accept(self.elevatorDoneEvent, self.handleElevatorDone)
         self.elevator = Elevator.Elevator(self.fsm.getStateNamed('elevator'), self.elevatorDoneEvent, distElevator)
-        if skipDFABoard:
-            self.elevator.skipDFABoard = 1
         distElevator.elevatorFSM = self.elevator
         self.elevator.load()
         self.elevator.enter()

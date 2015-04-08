@@ -10,7 +10,6 @@ from direct.fsm import State
 from direct.task import Task
 from toontown.toon import DeathForceAcknowledge
 from toontown.toon import HealthForceAcknowledge
-from toontown.tutorial import TutorialForceAcknowledge
 from toontown.toon import NPCForceAcknowledge
 from toontown.trolley import Trolley
 from toontown.toontowngui import TTDialog
@@ -28,7 +27,6 @@ class Playground(Place.Place):
 
     def __init__(self, loader, parentFSM, doneEvent):
         Place.Place.__init__(self, loader, doneEvent)
-        self.tfaDoneEvent = 'tfaDoneEvent'
         self.fsm = ClassicFSM.ClassicFSM('Playground', [
             State.State('start',
                         self.enterStart,
@@ -43,8 +41,7 @@ class Playground(Place.Place):
                             'drive',
                             'sit',
                             'stickerBook',
-                            'TFA',
-                            'DFA',
+                            'NPCFA',
                             'trolley',
                             'final',
                             'doorOut',
@@ -57,25 +54,20 @@ class Playground(Place.Place):
                         self.enterStickerBook,
                         self.exitStickerBook, [
                             'walk',
-                            'DFA',
-                            'TFA',
                             'trolley',
                             'final',
                             'doorOut',
                             'quest',
                             'purchase',
                             'stopped',
-                            'fishing']),
+                            'fishing',
+                            'NPCFA']),
             State.State('sit',
                         self.enterSit,
-                        self.exitSit, [
-                            'walk',
-                            'DFA']),
+                        self.exitSit, ['walk']),
             State.State('drive',
                         self.enterDrive,
-                        self.exitDrive, [
-                            'walk',
-                            'DFA']),
+                        self.exitDrive, ['walk']),
             State.State('trolley',
                         self.enterTrolley,
                         self.exitTrolley, [
@@ -87,25 +79,6 @@ class Playground(Place.Place):
             State.State('doorOut',
                         self.enterDoorOut,
                         self.exitDoorOut, [
-                            'walk']),
-            State.State('TFA',
-                        self.enterTFA,
-                        self.exitTFA, [
-                            'TFAReject',
-                            'DFA']),
-            State.State('TFAReject',
-                        self.enterTFAReject,
-                        self.exitTFAReject, [
-                            'walk']),
-            State.State('DFA',
-                        self.enterDFA,
-                        self.exitDFA, [
-                            'DFAReject',
-                            'NPCFA',
-                            'HFA']),
-            State.State('DFAReject',
-                        self.enterDFAReject,
-                        self.exitDFAReject, [
                             'walk']),
             State.State('NPCFA',
                         self.enterNPCFA,
@@ -382,27 +355,8 @@ class Playground(Place.Place):
         messenger.send(self.doneEvent)
         return
 
-    def enterTFACallback(self, requestStatus, doneStatus):
-        self.tfa.exit()
-        del self.tfa
-        doneStatusMode = doneStatus['mode']
-        if doneStatusMode == 'complete':
-            self.requestLeave(requestStatus)
-        elif doneStatusMode == 'incomplete':
-            self.fsm.request('TFAReject')
-        else:
-            self.notify.error('Unknown mode: %s' % doneStatusMode)
-
-    def enterDFACallback(self, requestStatus, doneStatus):
-        self.dfa.exit()
-        del self.dfa
-        ds = doneStatus['mode']
-        if ds == 'complete':
-            self.fsm.request('NPCFA', [requestStatus])
-        elif ds == 'incomplete':
-            self.fsm.request('DFAReject')
-        else:
-            self.notify.error('Unknown done status for DownloadForceAcknowledge: ' + `doneStatus`)
+    def doRequestLeave(self, requestStatus):
+        self.fsm.request('NPCFA', [requestStatus])
 
     def enterHFA(self, requestStatus):
         self.acceptOnce(self.hfaDoneEvent, self.enterHFACallback, [requestStatus])
@@ -433,7 +387,7 @@ class Playground(Place.Place):
 
     def exitHFAReject(self):
         pass
-
+    
     def enterNPCFA(self, requestStatus):
         self.acceptOnce(self.npcfaDoneEvent, self.enterNPCFACallback, [requestStatus])
         self.npcfa = NPCForceAcknowledge.NPCForceAcknowledge(self.npcfaDoneEvent)
@@ -647,17 +601,3 @@ class Playground(Place.Place):
         npc = self.geom.findAllMatches('**/suit_building_origin')
         for i in xrange(npc.getNumPaths()):
             npc.getPath(i).removeNode()
-
-    def enterTFA(self, requestStatus):
-        self.acceptOnce(self.tfaDoneEvent, self.enterTFACallback, [requestStatus])
-        self.tfa = TutorialForceAcknowledge.TutorialForceAcknowledge(self.tfaDoneEvent)
-        self.tfa.enter()
-
-    def exitTFA(self):
-        self.ignore(self.tfaDoneEvent)
-
-    def enterTFAReject(self):
-        self.fsm.request('walk')
-
-    def exitTFAReject(self):
-        pass

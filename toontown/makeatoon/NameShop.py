@@ -915,7 +915,6 @@ class NameShop(StateData.StateData):
         self.notify.debug('avatar with default name accepted')
         self.avId = avId
         self.avExists = 1
-        self.logAvatarCreation()
         if self.nameAction == 0:
             self.toon.setName(self.names[0])
             newPotAv = PotentialAvatar.PotentialAvatar(self.avId, self.names, self.newDNA, self.index, 1)
@@ -977,29 +976,3 @@ class NameShop(StateData.StateData):
                 self.notify.info('QA-REGRESSION: SKIPTUTORIAL: Skip Tutorial')
             self.__handleSkipTutorial()
         self.promptTutorialDialog.destroy()
-
-    def logAvatarCreation(self):
-        dislId = 0
-        try:
-            dislId = launcher.getValue('GAME_DISL_ID')
-        except:
-            pass
-
-        if not dislId:
-            self.notify.warning('No dislId, using 0')
-            dislId = 0
-        gameSource = '0'
-        try:
-            gameSource = launcher.getValue('GAME_SOURCE')
-        except:
-            pass
-
-        if not gameSource:
-            gameSource = '0'
-        else:
-            self.notify.info('got GAME_SOURCE=%s' % gameSource)
-        if self.avId > 0:
-            base.cr.centralLogger.writeClientEvent('createAvatar %s-%s-%s' % (self.avId, dislId, gameSource))
-            self.notify.debug('createAvatar %s-%s-%s' % (self.avId, dislId, gameSource))
-        else:
-            self.notify.warning('logAvatarCreation got self.avId =%s' % self.avId)

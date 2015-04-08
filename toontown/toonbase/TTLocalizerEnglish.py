@@ -3328,53 +3328,8 @@ FriendInviterEndFriendshipToon = 'Are you sure you want to stop being toon frien
 FriendInviterEndFriendshipPlayer = 'Are you sure you want to stop being player friends with %s?'
 FriendInviterRemainToon = '\n(You will still be toon friends with %s)'
 FriendInviterRemainPlayer = '\n(You will still be player friends with %s)'
-DownloadForceAcknowledgeVerbList = ['painted',
- 'unpacked',
- 'unfolded',
- 'drawn',
- 'inflated',
- 'built']
-DownloadForceAcknowledgeMsg = 'Sorry, the %(phase)s area is still being %(verb)s, and will be ready for you in a minute.'
-LauncherPhaseNames = {0: 'Initialization',
- 1: 'Panda',
- 2: 'Engine',
- 3: 'Make-A-Toon',
- 3.5: 'Toontorial',
- 4: 'Playground',
- 5: 'Streets',
- 5.5: 'Estates',
- 6: 'Neighborhoods I',
- 7: Cog + ' Buildings',
- 8: 'Neighborhoods II',
- 9: Sellbot + ' HQ',
- 10: Cashbot + ' HQ',
- 11: Lawbot + ' HQ',
- 12: Bossbot + ' HQ',
- 13: 'Parties'}
-LauncherProgress = '%(name)s (%(current)s of %(total)s)'
-LauncherStartingMessage = "Starting Toontown United... "
-LauncherDownloadFile = 'Downloading update for ' + LauncherProgress + '...'
-LauncherDownloadFileBytes = 'Downloading update for ' + LauncherProgress + ': %(bytes)s'
-LauncherDownloadFilePercent = 'Downloading update for ' + LauncherProgress + ': %(percent)s%%'
-LauncherDecompressingFile = 'Decompressing update for ' + LauncherProgress + '...'
-LauncherDecompressingPercent = 'Decompressing update for ' + LauncherProgress + ': %(percent)s%%'
-LauncherExtractingFile = 'Extracting update for ' + LauncherProgress + '...'
-LauncherExtractingPercent = 'Extracting update for ' + LauncherProgress + ': %(percent)s%%'
-LauncherPatchingFile = 'Applying update for ' + LauncherProgress + '...'
-LauncherPatchingPercent = 'Applying update for ' + LauncherProgress + ': %(percent)s%%'
-LauncherConnectProxyAttempt = 'Connecting to Toontown United: %s (proxy: %s) attempt: %s'
-LauncherConnectAttempt = 'Connecting to Toontown United: %s attempt %s'
-LauncherDownloadServerFileList = 'Updating Toontown United...'
-LauncherCreatingDownloadDb = 'Updating Toontown United...'
-LauncherDownloadClientFileList = 'Updating Toontown United...'
-LauncherFinishedDownloadDb = 'Updating Toontown United... '
-LauncherStartingGame = 'Starting Toontown United...'
-LauncherRecoverFiles = 'Updating Toontown United. Recovering files...'
-LauncherCheckUpdates = 'Checking for updates for ' + LauncherProgress
-LauncherVerifyPhase = 'Updating Toontown United...'
 AvatarChoiceMakeAToon = 'Make A\nToon'
 AvatarChoicePlayThisToon = 'Play\nThis Toon'
-AvatarChoiceSubscribersOnly = 'Subscribe'
 AvatarChoiceDelete = 'Delete'
 AvatarChoiceDeleteConfirm = 'This will delete %s forever.'
 AvatarChoiceNameRejected = 'Name\nRejected'
@@ -4372,7 +4327,6 @@ FishPokerPair = 'Pair'
 TutorialGreeting1 = 'Hi %s!'
 TutorialGreeting2 = 'Hi %s!\nCome over here!'
 TutorialGreeting3 = 'Hi %s!\nCome over here!\nUse the arrow keys!'
-TutorialForceAcknowledgeMessage = 'You are going the wrong way! Go find Flippy!'
 PetTutorialTitle1 = 'The Doodle Panel'
 PetTutorialTitle2 = 'Doodle SpeedChat'
 PetTutorialTitle3 = 'Doodle Cattlelog'
@@ -4407,7 +4361,7 @@ ForcedLeaveMintAckMsg = 'The Mint Floor Supervisor was defeated before you could
 HeadingToFactoryTitle = '%s'
 ForemanConfrontedMsg = '%s is battling the ' + Foreman + '!'
 MintBossConfrontedMsg = '%s is battling the Supervisor!'
-StageBossConfrontedMsg = '%s is battling the Clerk!'
+StageBossConfrontedMsg = '%s is battling the District Attorney!'
 stageToonEnterElevator = '%s \nhas entered the elevator'
 ForcedLeaveStageAckMsg = 'The Law Clerk was defeated before you could reach him. You did not recover any Jury Notices.'
 MinigameWaitingForOtherPlayers = 'Waiting for other players to join...'

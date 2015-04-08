@@ -20,13 +20,11 @@ class House(Place.Place):
         self.ownersAvId = avId
         self.dnaFile = 'phase_7/models/modules/toon_interior'
         self.isInterior = 1
-        self.tfaDoneEvent = 'tfaDoneEvent'
         self.oldStyle = None
         self.fsm = ClassicFSM.ClassicFSM('House', [State.State('start', self.enterStart, self.exitStart, ['doorIn', 'teleportIn', 'tutorial']),
          State.State('walk', self.enterWalk, self.exitWalk, ['sit',
           'stickerBook',
           'doorOut',
-          'DFA',
           'teleportOut',
           'quest',
           'purchase',
@@ -36,7 +34,6 @@ class House(Place.Place):
           'stopped']),
          State.State('sit', self.enterSit, self.exitSit, ['walk']),
          State.State('stickerBook', self.enterStickerBook, self.exitStickerBook, ['walk',
-          'DFA',
           'sit',
           'doorOut',
           'teleportOut',
@@ -46,8 +43,6 @@ class House(Place.Place):
           'banking',
           'phone',
           'stopped']),
-         State.State('DFA', self.enterDFA, self.exitDFA, ['DFAReject', 'teleportOut', 'doorOut']),
-         State.State('DFAReject', self.enterDFAReject, self.exitDFAReject, ['walk']),
          State.State('doorIn', self.enterDoorIn, self.exitDoorIn, ['walk']),
          State.State('doorOut', self.enterDoorOut, self.exitDoorOut, ['walk']),
          State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk']),

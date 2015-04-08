@@ -30,23 +30,21 @@ class ToonInterior(Place.Place):
         Place.Place.__init__(self, loader, doneEvent)
         self.dnaFile = 'phase_7/models/modules/toon_interior'
         self.isInterior = 1
-        self.tfaDoneEvent = 'tfaDoneEvent'
         self.hfaDoneEvent = 'hfaDoneEvent'
         self.npcfaDoneEvent = 'npcfaDoneEvent'
         self.fsm = ClassicFSM.ClassicFSM('ToonInterior', [State.State('start', self.enterStart, self.exitStart, ['doorIn', 'teleportIn', 'tutorial']),
          State.State('walk', self.enterWalk, self.exitWalk, ['sit',
           'stickerBook',
           'doorOut',
-          'DFA',
           'teleportOut',
           'quest',
           'purchase',
           'phone',
           'stopped',
-          'pet']),
+          'pet',
+          'NPCFA']),
          State.State('sit', self.enterSit, self.exitSit, ['walk']),
          State.State('stickerBook', self.enterStickerBook, self.exitStickerBook, ['walk',
-          'DFA',
           'sit',
           'doorOut',
           'teleportOut',
@@ -54,14 +52,9 @@ class ToonInterior(Place.Place):
           'purchase',
           'phone',
           'stopped',
-          'pet']),
-         State.State('DFA', self.enterDFA, self.exitDFA, ['DFAReject',
-          'HFA',
-          'NPCFA',
-          'teleportOut',
-          'doorOut']),
-         State.State('DFAReject', self.enterDFAReject, self.exitDFAReject, ['walk']),
-         State.State('NPCFA', self.enterNPCFA, self.exitNPCFA, ['NPCFAReject', 'HFA', 'teleportOut']),
+          'pet',
+          'NPCFA']),
+         State.State('NPCFA', self.enterNPCFA, self.exitNPCFA, ['NPCFAReject', 'HFA', 'teleportOut', 'doorOut']),
          State.State('NPCFAReject', self.enterNPCFAReject, self.exitNPCFAReject, ['walk']),
          State.State('HFA', self.enterHFA, self.exitHFA, ['HFAReject', 'teleportOut', 'tunnelOut']),
          State.State('HFAReject', self.enterHFAReject, self.exitHFAReject, ['walk']),
@@ -124,18 +117,7 @@ class ToonInterior(Place.Place):
         pass
 
     def doRequestLeave(self, requestStatus):
-        self.fsm.request('DFA', [requestStatus])
-
-    def enterDFACallback(self, requestStatus, doneStatus):
-        self.dfa.exit()
-        del self.dfa
-        ds = doneStatus['mode']
-        if ds == 'complete':
-            self.fsm.request('NPCFA', [requestStatus])
-        elif ds == 'incomplete':
-            self.fsm.request('DFAReject')
-        else:
-            self.notify.error('Unknown done status for DownloadForceAcknowledge: ' + `doneStatus`)
+        self.fsm.request('NPCFA', [requestStatus])
 
     def enterNPCFA(self, requestStatus):
         self.acceptOnce(self.npcfaDoneEvent, self.enterNPCFACallback, [requestStatus])

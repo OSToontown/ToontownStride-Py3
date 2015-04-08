@@ -1,7 +1,6 @@
 from pandac.PandaModules import *
 from toontown.toonbase import ToontownGlobals
 import Playground
-from toontown.launcher import DownloadForceAcknowledge
 from toontown.building import Elevator
 from toontown.toontowngui import TTDialog
 from toontown.toonbase import TTLocalizer
@@ -39,18 +38,6 @@ class OZPlayground(Playground.Playground):
         taskMgr.remove('oz-check-toon-underwater')
         taskMgr.remove('oz-check-cam-underwater')
         self.loader.hood.setNoFog()
-
-    def doRequestLeave(self, requestStatus):
-        self.fsm.request('DFA', [requestStatus])
-
-    def enterDFA(self, requestStatus):
-        doneEvent = 'dfaDoneEvent'
-        self.accept(doneEvent, self.enterDFACallback, [requestStatus])
-        self.dfa = DownloadForceAcknowledge.DownloadForceAcknowledge(doneEvent)
-        if requestStatus['hoodId'] == ToontownGlobals.MyEstate:
-            self.dfa.enter(base.cr.hoodMgr.getPhaseFromHood(ToontownGlobals.MyEstate))
-        else:
-            self.dfa.enter(5)
 
     def enterStart(self):
         self.cameraSubmerged = 0

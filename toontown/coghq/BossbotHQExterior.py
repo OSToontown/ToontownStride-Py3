@@ -27,11 +27,9 @@ class BossbotHQExterior(CogHQExterior.CogHQExterior):
         state = self.fsm.getStateNamed('stickerBook')
         state.addTransition('elevator')
 
-    def enterElevator(self, distElevator, skipDFABoard = 0):
+    def enterElevator(self, distElevator):
         self.accept(self.elevatorDoneEvent, self.handleElevatorDone)
         self.elevator = Elevator.Elevator(self.fsm.getStateNamed('elevator'), self.elevatorDoneEvent, distElevator)
-        if skipDFABoard:
-            self.elevator.skipDFABoard = 1
         self.elevator.setReverseBoardingCamera(True)
         self.elevator.load()
         self.elevator.enter()

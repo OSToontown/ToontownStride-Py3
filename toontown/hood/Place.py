@@ -4,7 +4,6 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
 from direct.showbase.PythonUtil import PriorityCallbacks
 from toontown.safezone import PublicWalk
-from toontown.launcher import DownloadForceAcknowledge
 import ZoneUtil
 from toontown.friends import FriendsListManager
 from toontown.toonbase import ToontownGlobals
@@ -25,7 +24,6 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         StateData.StateData.__init__(self, doneEvent)
         FriendsListManager.FriendsListManager.__init__(self)
         self.loader = loader
-        self.dfaDoneEvent = 'dfaDoneEvent'
         self.zoneId = None
         self._tiToken = None
         self._leftQuietZoneLocalCallbacks = PriorityCallbacks()
@@ -413,19 +411,6 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         if hasattr(self, 'fsm'):
             self.doRequestLeave(requestStatus)
 
-    def doRequestLeave(self, requestStatus):
-        teleportDebug(requestStatus, 'requestLeave(%s)' % (requestStatus,))
-        self.fsm.request('DFA', [requestStatus])
-
-    def enterDFA(self, requestStatus):
-        teleportDebug(requestStatus, 'enterDFA(%s)' % (requestStatus,))
-        self.acceptOnce(self.dfaDoneEvent, self.enterDFACallback, [requestStatus])
-        self.dfa = DownloadForceAcknowledge.DownloadForceAcknowledge(self.dfaDoneEvent)
-        self.dfa.enter(base.cr.hoodMgr.getPhaseFromHood(requestStatus['hoodId']))
-
-    def exitDFA(self):
-        self.ignore(self.dfaDoneEvent)
-
     def handleEnterTunnel(self, requestStatus, collEntry):
         if localAvatar.hasActiveBoardingGroup():
             rejectText = TTLocalizer.BoardingCannotLeaveZone
@@ -442,31 +427,16 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
             return
         self.requestLeave(requestStatus)
 
-    def enterDFACallback(self, requestStatus, doneStatus):
-        teleportDebug(requestStatus, 'enterDFACallback%s' % ((requestStatus, doneStatus),))
-        self.dfa.exit()
-        del self.dfa
-        if doneStatus['mode'] == 'complete':
-            if requestStatus.get('tutorial', 0):
-                out = {'teleportIn': 'tunnelOut'}
-                requestStatus['zoneId'] = 22000
-                requestStatus['hoodId'] = 22000
-            else:
-                out = {'teleportIn': 'teleportOut',
-                 'tunnelIn': 'tunnelOut',
-                 'doorIn': 'doorOut'}
-            teleportDebug(requestStatus, 'requesting %s, requestStatus=%s' % (out[requestStatus['how']], requestStatus))
-            self.fsm.request(out[requestStatus['how']], [requestStatus])
-        elif doneStatus['mode'] == 'incomplete':
-            self.fsm.request('DFAReject')
+    def doRequestLeave(self, requestStatus):
+        if requestStatus.get('tutorial', 0):
+            out = {'teleportIn': 'tunnelOut'}
+            requestStatus['zoneId'] = 22000
+            requestStatus['hoodId'] = 22000
         else:
-            Place.notify.error('Unknown done status for DownloadForceAcknowledge: ' + `doneStatus`)
-
-    def enterDFAReject(self):
-        self.fsm.request('walk')
-
-    def exitDFAReject(self):
-        pass
+            out = {'teleportIn': 'teleportOut',
+             'tunnelIn': 'tunnelOut',
+             'doorIn': 'doorOut'}
+        self.fsm.request(out[requestStatus['how']], [requestStatus])
 
     def enterDoorIn(self, requestStatus):
         NametagGlobals.setWant2dNametags(False)

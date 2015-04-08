@@ -1395,8 +1395,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def presentPie(self, x, y, z, h, timestamp32):
         if self.numPies <= 0:
             return
-        if not launcher.getPhaseComplete(5):
-            return
         lastTossTrack = Sequence()
         if self.tossTrack:
             lastTossTrack = self.tossTrack
@@ -1422,8 +1420,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         if self.numPies != ToontownGlobals.FullPies:
             self.setNumPies(self.numPies - 1)
         self.lastTossedPie = globalClock.getFrameTime()
-        if not launcher.getPhaseComplete(5):
-            return
         lastTossTrack = Sequence()
         if self.tossTrack:
             lastTossTrack = self.tossTrack
@@ -1465,8 +1461,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             return
         elapsed = globalClock.getFrameTime() - self.lastTossedPie
         if elapsed > 30:
-            return
-        if not launcher.getPhaseComplete(5):
             return
         lastPieTrack = Sequence()
         if sequence in self.pieTracks:

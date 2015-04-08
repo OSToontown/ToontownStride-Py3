@@ -19,7 +19,6 @@ class CogHQLobby(Place.Place):
           'teleportIn',
           'doorIn']),
          State.State('walk', self.enterWalk, self.exitWalk, ['elevator',
-          'DFA',
           'doorOut',
           'stopped']),
          State.State('stopped', self.enterStopped, self.exitStopped, ['walk', 'teleportOut', 'elevator']),
@@ -27,8 +26,6 @@ class CogHQLobby(Place.Place):
          State.State('doorOut', self.enterDoorOut, self.exitDoorOut, ['walk']),
          State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk']),
          State.State('elevator', self.enterElevator, self.exitElevator, ['walk', 'stopped']),
-         State.State('DFA', self.enterDFA, self.exitDFA, ['DFAReject']),
-         State.State('DFAReject', self.enterDFAReject, self.exitDFAReject, ['walk']),
          State.State('final', self.enterFinal, self.exitFinal, ['start'])], 'start', 'final')
 
     def load(self):
@@ -69,11 +66,9 @@ class CogHQLobby(Place.Place):
         self.ignore('teleportQuery')
         base.localAvatar.setTeleportAvailable(0)
 
-    def enterElevator(self, distElevator, skipDFABoard = 0):
+    def enterElevator(self, distElevator):
         self.accept(self.elevatorDoneEvent, self.handleElevatorDone)
         self.elevator = Elevator.Elevator(self.fsm.getStateNamed('elevator'), self.elevatorDoneEvent, distElevator)
-        if skipDFABoard:
-            self.elevator.skipDFABoard = 1
         distElevator.elevatorFSM = self.elevator
         self.elevator.load()
         self.elevator.enter()

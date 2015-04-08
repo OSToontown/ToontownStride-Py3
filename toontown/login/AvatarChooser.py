@@ -1,17 +1,14 @@
 from pandac.PandaModules import *
 from toontown.toonbase import ToontownGlobals
-import AvatarChoice
-from direct.fsm import StateData
-from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-from toontown.launcher import DownloadForceAcknowledge
 from toontown.language import LanguageSelector
+from direct.fsm import StateData
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
 from toontown.toonbase import TTLocalizer
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
-import random
+import random, AvatarChoice
+
 MAX_AVATARS = 6
 POSITIONS = (Vec3(-0.840167, 0, 0.359333),
  Vec3(0.00933349, 0, 0.306533),
@@ -29,14 +26,10 @@ chooser_notify = DirectNotifyGlobal.directNotify.newCategory('AvatarChooser')
 
 class AvatarChooser(StateData.StateData):
 
-    def __init__(self, avatarList, parentFSM, doneEvent):
+    def __init__(self, avatarList, doneEvent):
         StateData.StateData.__init__(self, doneEvent)
         self.choice = None
         self.avatarList = avatarList
-        self.fsm = ClassicFSM.ClassicFSM('AvatarChooser', [State.State('Choose', self.enterChoose, self.exitChoose, ['CheckDownload']), State.State('CheckDownload', self.enterCheckDownload, self.exitCheckDownload, ['Choose'])], 'Choose', 'Choose')
-        self.fsm.enterInitialState()
-        self.parentFSM = parentFSM
-        self.parentFSM.getCurrentState().addChild(self.fsm)
         return
 
     def enter(self):
@@ -203,9 +196,6 @@ class AvatarChooser(StateData.StateData):
         self.pickAToonBG.removeNode()
         del self.pickAToonBG
         del self.avatarList
-        self.parentFSM.getCurrentState().removeChild(self.fsm)
-        del self.parentFSM
-        del self.fsm
         self.ignoreAll()
         self.isLoaded = 0
         ModelPool.garbageCollect()
@@ -220,52 +210,23 @@ class AvatarChooser(StateData.StateData):
         if panelDoneStatus == 'chose':
             self.__handleChoice()
         elif panelDoneStatus == 'nameIt':
-            self.__handleCreate()
+            self.__handleChoice()
         elif panelDoneStatus == 'delete':
-            self.__handleDelete()
+            self.__handleChoice()
         elif panelDoneStatus == 'create':
-            self.__handleCreate()
-
-    def getChoice(self):
-        return self.choice
+            self.__handleChoice()
 
     def __handleChoice(self):
-        self.fsm.request('CheckDownload')
-
-    def __handleCreate(self):
         base.transitions.fadeOut(finishIval=EventInterval(self.doneEvent, [self.doneStatus]))
-
-    def __handleDelete(self):
-        messenger.send(self.doneEvent, [self.doneStatus])
 
     def __handleQuit(self):
         cleanupDialog('globalDialog')
         self.doneStatus = {'mode': 'exit'}
         messenger.send(self.doneEvent, [self.doneStatus])
 
-    def enterChoose(self):
-        pass
-
-    def exitChoose(self):
-        pass
-
-    def enterCheckDownload(self):
-        self.accept('downloadAck-response', self.__handleDownloadAck)
-        self.downloadAck = DownloadForceAcknowledge.DownloadForceAcknowledge('downloadAck-response')
-        self.downloadAck.enter(4)
-
-    def exitCheckDownload(self):
-        self.downloadAck.exit()
-        self.downloadAck = None
-        self.ignore('downloadAck-response')
-        return
-
-    def __handleDownloadAck(self, doneStatus):
-        if doneStatus['mode'] == 'complete':
-            base.transitions.fadeOut(finishIval=EventInterval(self.doneEvent, [self.doneStatus]))
-        else:
-            self.fsm.request('Choose')
-
+    def getChoice(self):
+        return self.choice
+    
     def openLanguageGui(self):
         self.exit()
         LanguageSelector.LanguageSelector(self.enter).create()

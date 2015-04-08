@@ -1,6 +1,5 @@
 from pandac.PandaModules import *
 from direct.directnotify import DirectNotifyGlobal
-from otp.launcher.LauncherBase import LauncherBase
 import os, sys, time, argparse
 
 class LogAndOutput:
@@ -18,8 +17,8 @@ class LogAndOutput:
         self.log.flush()
         self.orig.flush()
 
-class TTULauncher(LauncherBase):
-    notify = DirectNotifyGlobal.directNotify.newCategory('ToontownDummyLauncher')
+class TTULauncher:
+    notify = DirectNotifyGlobal.directNotify.newCategory('TTULauncher')
 
     def __init__(self):
         self.logPrefix = 'united-'
@@ -31,9 +30,7 @@ class TTULauncher(LauncherBase):
         self.args = parser.parse_args()
 
         ltime = 1 and time.localtime()
-        logSuffix = '%02d%02d%02d_%02d%02d%02d' % (ltime[0] - 2000,  ltime[1], ltime[2],
-                                                   ltime[3], ltime[4], ltime[5])
-
+        logSuffix = '%02d%02d%02d_%02d%02d%02d' % (ltime[0] - 2000,  ltime[1], ltime[2], ltime[3], ltime[4], ltime[5])
 
         if not os.path.exists('logs/'):
             os.mkdir('logs/')
@@ -52,32 +49,13 @@ class TTULauncher(LauncherBase):
 
     def getGameServer(self):
         return self.args.server
-
-    def setPandaErrorCode(self, code):
+    
+    def setPandaErrorCode(self):
         pass
-
-    def getGame2Done(self):
-        return True
-
-    def getLogFileName(self):
-        return 'toontown'
-
-    def getValue(self, key, default = None):
-        return os.environ.get(key, default)
-
-    def setValue(self, key, value):
-        os.environ[key] = str(value)
-
-    def getVerifyFiles(self):
-        return config.GetInt('launcher-verify', 0)
-
-    def isDownloadComplete(self):
-        return 1
-
-    def getPhaseComplete(self, phase):
-        return 1
-
-    def startGame(self):
-        self.newTaskManager()
-        eventMgr.restart()
-        from toontown.toonbase import ToontownStart
+    
+    def setDisconnectDetails(self, disconnectCode, disconnectMsg):
+        self.disconnectCode = disconnectCode
+        self.disconnectMsg = disconnectMsg
+    
+    def setDisconnectDetailsNormal(self):
+        self.setDisconnectDetails(0, 'normal')

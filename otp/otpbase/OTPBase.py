@@ -208,8 +208,6 @@ class OTPBase(ShowBase):
                 self.errorAccumulatorBuffer += 'file not in phase (%s, %s)\n' % (file, path)
                 return
         basePhase = float(match.groups()[0])
-        if not launcher.getPhaseComplete(basePhase):
-            self.errorAccumulatorBuffer += 'phase is not loaded for this model %s\n' % path
         model = loader.loader.loadSync(Filename(path), loaderOptions)
         if model:
             model = NodePath(model)

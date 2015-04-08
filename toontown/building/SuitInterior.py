@@ -27,18 +27,14 @@ class SuitInterior(Place.Place):
           'sit',
           'died',
           'teleportOut',
-          'Elevator',
-          'DFA']),
+          'Elevator']),
          State.State('sit', self.enterSit, self.exitSit, ['walk']),
          State.State('stickerBook', self.enterStickerBook, self.exitStickerBook, ['walk',
           'stopped',
           'sit',
           'died',
-          'DFA',
           'teleportOut',
           'Elevator']),
-         State.State('DFA', self.enterDFA, self.exitDFA, ['DFAReject', 'teleportOut']),
-         State.State('DFAReject', self.enterDFAReject, self.exitDFAReject, ['walk']),
          State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk']),
          State.State('teleportOut', self.enterTeleportOut, self.exitTeleportOut, ['teleportIn']),
          State.State('stopped', self.enterStopped, self.exitStopped, ['walk', 'elevatorOut']),
@@ -96,9 +92,6 @@ class SuitInterior(Place.Place):
     def handleDSIDoneEvent(self, requestStatus):
         self.doneStatus = requestStatus
         messenger.send(self.doneEvent)
-
-    def doRequestLeave(self, requestStatus):
-        self.fsm.request('DFA', [requestStatus])
 
     def enterEntrance(self):
         pass

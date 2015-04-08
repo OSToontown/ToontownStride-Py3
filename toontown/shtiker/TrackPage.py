@@ -41,10 +41,7 @@ class TrackFrame(DirectFrame):
             self.ignore('nametagAmbientLightChanged')
 
     def play(self, trackId):
-        if not base.launcher or base.launcher and base.launcher.getPhaseComplete(5):
-            anim = Track2Anim[trackId]
-        else:
-            anim = 'neutral'
+        anim = Track2Anim[trackId]
         if self.toon:
             numFrames = self.toon.getNumFrames(anim) - 1
             fromFrame = 0
@@ -55,12 +52,8 @@ class TrackFrame(DirectFrame):
     def setTrained(self, trackId):
         if self.toon == None:
             self.makeToon()
-        if not base.launcher or base.launcher and base.launcher.getPhaseComplete(5):
-            anim = Track2Anim[trackId]
-            frame = (self.toon.getNumFrames(anim) - 1) / MAX_FRAMES * self.index
-        else:
-            anim = 'neutral'
-            frame = 0
+        anim = Track2Anim[trackId]
+        frame = (self.toon.getNumFrames(anim) - 1) / MAX_FRAMES * self.index
         self.toon.pose(anim, frame)
         self.toon.show()
         self.question.hide()
