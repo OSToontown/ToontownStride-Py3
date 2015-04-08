@@ -2372,21 +2372,21 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def getMaxMoney(self):
         return self.maxMoney
     
-    def b_setBankMaxMoney(self, bankMaxMoney):
-        self.d_setBankMaxMoney(bankMaxMoney)
-        self.setBankMaxMoney(bankMaxMoney)
+    def b_setMaxBankMoney(self, maxBankMoney):
+        self.d_setMaxBankMoney(maxBankMoney)
+        self.setMaxBankMoney(maxBankMoney)
         
-        if self.getBankMoney() > bankMaxMoney:
-            self.b_setBankMoney(bankMaxMoney)
+        if self.getBankMoney() > maxBankMoney:
+            self.b_setBankMoney(maxBankMoney)
     
-    def d_setBankMaxMoney(self, bankMaxMoney):
-        self.sendUpdate('setBankMaxMoney', [bankMaxMoney])
+    def d_setMaxBankMoney(self, maxBankMoney):
+        self.sendUpdate('setMaxBankMoney', [maxBankMoney])
     
-    def setBankMaxMoney(self, bankMaxMoney):
-        self.bankMaxMoney = bankMaxMoney
+    def setMaxBankMoney(self, maxBankMoney):
+        self.maxBankMoney = maxBankMoney
     
-    def getBankMaxMoney(self):
-        return self.bankMaxMoney
+    def getMaxBankMoney(self):
+        return self.maxBankMoney
 
     def addMoney(self, deltaMoney):
         money = deltaMoney + self.money
