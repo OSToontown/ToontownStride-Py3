@@ -5225,3 +5225,7 @@ def emblems(silver=10, gold=10):
     spellbook.getTarget().addEmblems((gold, silver))
     return 'Restocked with Gold: %s Silver: %d' % (gold, silver)
 
+@magicWord(category=CATEGORY_PROGRAMMER)
+def catalog():
+    simbase.air.catalogManager.deliverCatalogFor(spellbook.getTarget())
+
