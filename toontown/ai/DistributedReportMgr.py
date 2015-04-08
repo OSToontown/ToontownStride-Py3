@@ -5,9 +5,6 @@ class DistributedReportMgr(DistributedObject.DistributedObject):
     neverDisable = 1
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedReportMgr')
 
-    def __init__(self, cr):
-        DistributedObject.DistributedObject.__init__(self, cr)
-
     def announceGenerate(self):
         DistributedObject.DistributedObject.announceGenerate(self)
         base.cr.reportMgr = self

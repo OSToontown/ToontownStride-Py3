@@ -29,7 +29,7 @@ class DistributedReportMgrAI(DistributedObjectAI):
         self.reports.append('%s|%s|%s|%s' % (timestamp, reporterId, avId, category))
     
     def sendAllReports(self):
-        if not self.reports or config.GetString('accountdb-type', 'developer') != 'remote'::
+        if not self.reports or config.GetString('accountdb-type', 'developer') != 'remote':
             return
         
         executeHttpRequestAndLog('report', reports=','.join(self.reports))

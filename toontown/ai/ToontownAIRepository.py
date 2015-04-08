@@ -16,6 +16,7 @@ from toontown.ai.HolidayManagerAI import HolidayManagerAI
 from toontown.ai.NewsManagerAI import NewsManagerAI
 from toontown.ai.QuestManagerAI import QuestManagerAI
 from toontown.ai.DistributedBlackCatMgrAI import DistributedBlackCatMgrAI
+from toontown.ai.DistributedReportMgrAI import DistributedReportMgrAI
 from toontown.catalog.AccountDateAI import AccountDateAI
 from toontown.building.DistributedBuildingQueryMgrAI import DistributedBuildingQueryMgrAI
 from toontown.building.DistributedTrophyMgrAI import DistributedTrophyMgrAI
@@ -115,6 +116,8 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.suitInvasionManager = SuitInvasionManagerAI(self)
         self.blackCatMgr = DistributedBlackCatMgrAI(self)
         self.blackCatMgr.generateWithRequired(2)
+        self.reportMgr = DistributedReportMgrAI(self)
+        self.reportMgr.generateWithRequired(2)
         self.trophyMgr = DistributedTrophyMgrAI(self)
         self.trophyMgr.generateWithRequired(2)
         self.cogSuitMgr = CogSuitManagerAI.CogSuitManagerAI(self)
