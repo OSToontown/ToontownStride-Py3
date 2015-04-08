@@ -1,0 +1,12 @@
+diff a/astron/config/clientagent-0.yml b/astron/config/clientagent-0.yml	(rejected hunks)
+@@ -8,10 +8,6 @@
+         - ../dclass/toon.dc
+ 
+ uberdogs:
+-    - class: CentralLogger
+-      id: 4688
+-      anonymous: false
+-
+     - class: ClientServicesManager
+       id: 4665
+       anonymous: true

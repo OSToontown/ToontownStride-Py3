@@ -1,0 +1,14 @@
+diff a/astron/dclass/united.dc b/astron/dclass/united.dc	(rejected hunks)
+@@ -13,12 +13,9 @@
+ from otp.friends import GuildManager/AI/UD
+ from otp.friends import FriendInfo
+ from otp.friends import AvatarFriendInfo
+-from otp.distributed import ObjectServer/AI/UD
+ from otp.distributed import DistributedDistrict/AI/UD
+ from otp.distributed import DistributedDirectory/AI
+-from otp.distributed import DistributedTestObject/AI
+ from otp.chat import ChatAgent/UD
+-from otp.distributed import CentralLogger/AI/UD
+ from otp.avatar import AvatarHandle
+ 
+ typedef uint8 bool;
