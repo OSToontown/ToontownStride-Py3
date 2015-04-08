@@ -16,7 +16,7 @@ class BankGui(DirectFrame):
         buttons = loader.loadModel('phase_3/models/gui/dialog_box_buttons_gui')
         jarGui = loader.loadModel('phase_3.5/models/gui/jar_gui')
         arrowGui = loader.loadModel('phase_3/models/gui/create_a_toon_gui')
-        bankModel = loader.loadModel('phase_5.5/models/estate/jellybeanBank.bam')
+        bankModel = loader.loadModel('phase_5.5/models/estate/jellybeanBank')
         bankModel.setDepthWrite(1)
         bankModel.setDepthTest(1)
         bankModel.find('**/jellybeans').setDepthWrite(0)
@@ -70,7 +70,7 @@ class BankGui(DirectFrame):
         jarMoney = base.localAvatar.getMoney()
         maxJarMoney = base.localAvatar.getMaxMoney()
         bankMoney = base.localAvatar.getBankMoney()
-        maxBankMoney = ToontownGlobals.MaxBankMoney
+        maxBankMoney = base.localAvatar.getMaxBankMoney()
         self.__transactionAmount = min(self.__transactionAmount, jarMoney)
         self.__transactionAmount = min(self.__transactionAmount, maxBankMoney - bankMoney)
         self.__transactionAmount = -min(-self.__transactionAmount, maxJarMoney - jarMoney)
