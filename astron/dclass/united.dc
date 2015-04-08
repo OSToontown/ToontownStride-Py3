@@ -2722,7 +2722,7 @@ dclass DistributedBlackCatMgr : DistributedObject {
 };
 
 dclass DistributedReportMgr : DistributedObject {
-  sendRequest(uint32, string) airecv;
+  sendReport(uint32, string) airecv clsend;
 };
 
 dclass DistributedPolarBearMgr : DistributedObject {
