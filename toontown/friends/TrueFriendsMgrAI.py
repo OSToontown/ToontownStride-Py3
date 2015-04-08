@@ -15,7 +15,7 @@ class TrueFriendsMgrAI(DistributedObjectAI):
         if not av:
             return
 
-        if simbase.config.GetString('accountdb-type', 'developer') != 'remote':
+        if config.GetString('accountdb-type', 'developer') != 'remote':
             self.sendUpdateToAvatarId(avId, 'requestIdResult', [0, None, None])
             return
         
