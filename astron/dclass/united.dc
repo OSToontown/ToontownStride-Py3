@@ -13,12 +13,9 @@ from otp.friends import PlayerFriendsManager/UD
 from otp.friends import GuildManager/AI/UD
 from otp.friends import FriendInfo
 from otp.friends import AvatarFriendInfo
-from otp.distributed import ObjectServer/AI/UD
 from otp.distributed import DistributedDistrict/AI/UD
 from otp.distributed import DistributedDirectory/AI
-from otp.distributed import DistributedTestObject/AI
 from otp.chat import ChatAgent/UD
-from otp.distributed import CentralLogger/AI/UD
 from otp.avatar import AvatarHandle
 
 typedef uint8 bool;
@@ -57,19 +54,6 @@ dclass DistributedObject {
   broadcastMessage() broadcast;
 };
 
-dclass DistributedTestObject : DistributedObject {
-  uint32 AutoInterest[];
-  setParentingRules(string, string) broadcast ram;
-  setRequiredField(uint32) required broadcast ram;
-  setB(uint32) broadcast;
-  setBA(uint32) broadcast airecv;
-  setBO(uint32) broadcast ownsend;
-  setBR(uint32) broadcast ram;
-  setBRA(uint32) broadcast ram airecv;
-  setBRO(uint32) broadcast ram ownsend;
-  setBROA(uint32) broadcast ram ownsend airecv;
-};
-
 struct OSInfo {
   string name;
   int16 platform;
@@ -101,12 +85,6 @@ dclass TimeManager : DistributedObject {
   setClientGarbageLeak(uint32, string(0-1024)) airecv clsend;
   checkAvOnDistrict(uint32 context, DoId avatar) clsend airecv;
   checkAvOnDistrictResult(uint32 context, DoId av, bool isOnDistrict);
-};
-
-dclass ObjectServer {
-  setName(string) airecv ram required;
-  setDcHash(uint32) ram required;
-  setDateCreated(uint32) airecv;
 };
 
 dclass DistributedDirectory : DistributedObject {
@@ -414,11 +392,6 @@ dclass PlayerFriendsManager : DistributedObject, TalkPath_account {
   removePlayerFriend(uint32);
 };
 
-dclass CentralLogger : DistributedObject {
-  sendMessage(string(0-256), string(0-1024), uint32, uint32) clsend;
-  logAIGarbage() airecv;
-};
-
 dclass CallbackObject {
   callback(uint32, bool, uint8);
 };
@@ -581,6 +554,7 @@ from toontown.suit import DistributedGridGoon/AI
 from toontown.coghq import BattleBlocker/AI
 from toontown.ai import DistributedAprilToonsMgr/AI
 from toontown.ai import DistributedBlackCatMgr/AI
+from toontown.ai import DistributedReportMgr/AI
 from toontown.ai import DistributedPolarBearMgr/AI
 from toontown.ai import DistributedPolarPlaceEffectMgr/AI
 from toontown.ai import DistributedGreenToonEffectMgr/AI
@@ -849,6 +823,7 @@ dclass DistributedToon : DistributedPlayer {
   setExperience(blob = [0*14]) required broadcast db;
   setTrueFriends(uint32[]) required ownrecv db;
   setIgnored(uint32[]) required clsend airecv ownrecv db;
+  setReported(uint32[]) required clrecv db;
   setMaxCarry(uint8 = 20) required ownrecv db;
   setTrackAccess(uint16[] = [0,0,0,0,1,1,0]) required broadcast ownrecv db;
   setTrackProgress(int8 = -1, uint32 = 0) required ownrecv db;
@@ -2744,6 +2719,10 @@ dclass DistributedAprilToonsMgr : DistributedObject {
 dclass DistributedBlackCatMgr : DistributedObject {
   doBlackCatTransformation() broadcast;
   requestBlackCatTransformation() airecv clsend;
+};
+
+dclass DistributedReportMgr : DistributedObject {
+  sendRequest(uint32, string) airecv;
 };
 
 dclass DistributedPolarBearMgr : DistributedObject {

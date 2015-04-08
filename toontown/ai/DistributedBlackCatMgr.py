@@ -24,9 +24,6 @@ class DistributedBlackCatMgr(DistributedObject.DistributedObject):
     neverDisable = 1
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBlackCatMgr')
 
-    def __init__(self, cr):
-        DistributedObject.DistributedObject.__init__(self, cr)
-
     def announceGenerate(self):
         DistributedObject.DistributedObject.announceGenerate(self)
         base.cr.blackCatMgr = self

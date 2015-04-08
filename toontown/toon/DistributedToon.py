@@ -188,6 +188,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.redeemedCodes = []
         self.trueFriends = []
         self.ignored = []
+        self.reported = []
 
     def disable(self):
         for soundSequence in self.soundSequenceList:
@@ -2635,6 +2636,16 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         if self.isIgnored(doId):
             self.ignored.remove(doId)
             self.d_setIgnored(self.ignored)
+    
+    def setReported(self, reported):
+        self.reported = reported
+    
+    def isReported(self, doId):
+        return doId in self.reported
+    
+    def addReport(self, doId):
+        if not self.isReported(doId):
+            self.reported.append(doId)
 
     def applyBuffs(self):
         for id, timestamp in enumerate(self.buffs):

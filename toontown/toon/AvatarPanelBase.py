@@ -4,7 +4,7 @@ from direct.showbase import DirectObject
 from otp.avatar import AvatarPanel
 from toontown.toonbase import TTLocalizer
 from toontown.toontowngui import TTDialog
-from otp.distributed import CentralLogger
+from toontown.ai import ReportGlobals
 IGNORE_SCALE = 0.06
 STOP_IGNORE_SCALE = 0.04
 
@@ -24,9 +24,7 @@ class AvatarPanelBase(AvatarPanel.AvatarPanel):
 
     def handleIgnore(self):
         isAvatarFriend = base.cr.isFriend(self.avatar.doId)
-        isPlayerFriend = base.cr.playerFriendsManager.isAvatarOwnerPlayerFriend(self.avatar.doId)
-        isFriend = isAvatarFriend or isPlayerFriend
-        if isFriend:
+        if isAvatarFriend:
             self.dialog = TTDialog.TTGlobalDialog(
                 style=TTDialog.CancelOnly,
                 text=TTLocalizer.IgnorePanelAddFriendAvatar % self.avName,
@@ -93,13 +91,13 @@ class AvatarPanelBase(AvatarPanel.AvatarPanel):
         self.freeLocalAvatar()
 
     def handleReport(self):
-        if base.cr.centralLogger.hasReportedPlayer(self.playerId, self.avId):
+        if base.localAvatar.isReported(self.avId):
             self.alreadyReported()
         else:
             self.confirmReport()
 
     def confirmReport(self):
-        if base.cr.isFriend(self.avId) or base.cr.playerFriendsManager.isPlayerFriend(self.avId):
+        if base.cr.isFriend(self.avId):
             string = TTLocalizer.ReportPanelBodyFriends
             titlePos = 0.41
         else:
@@ -135,7 +133,7 @@ class AvatarPanelBase(AvatarPanel.AvatarPanel):
         DirectLabel(parent=self.dialog, relief=None, pos=(0, 0, 0.225), text=TTLocalizer.ReportPanelTitle, textMayChange=0, text_scale=0.08)
         guiButton = loader.loadModel('phase_3/models/gui/quit_button')
         DirectButton(parent=self.dialog, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=(2.125, 1.0, 1.0), text=TTLocalizer.ReportPanelCategoryLanguage, text_scale=0.06, text_pos=(0, -0.0124), pos=(0, 0, -0.3), command=self.handleReportCategory, extraArgs=[0])
-        DirectButton(parent=self.dialog, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=(2.15, 1.0, 1.0), text=TTLocalizer.ReportPanelCategoryPii, text_scale=0.06, text_pos=(0, -0.0125), pos=(0, 0, -0.425), command=self.handleReportCategory, extraArgs=[1])
+        DirectButton(parent=self.dialog, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=(2.15, 1.0, 1.0), text=TTLocalizer.ReportPanelCategoryGreening, text_scale=0.06, text_pos=(0, -0.0125), pos=(0, 0, -0.425), command=self.handleReportCategory, extraArgs=[1])
         DirectButton(parent=self.dialog, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=(2.125, 1.0, 1.0), text=TTLocalizer.ReportPanelCategoryRude, text_scale=0.06, text_pos=(0, -0.0125), pos=(0, 0, -0.55), command=self.handleReportCategory, extraArgs=[2])
         DirectButton(parent=self.dialog, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=(2.125, 1.0, 1.0), text=TTLocalizer.ReportPanelCategoryName, text_scale=0.06, text_pos=(0, -0.0125), pos=(0, 0, -0.675), command=self.handleReportCategory, extraArgs=[3])
         DirectButton(parent=self.dialog, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=(2.125, 1.0, 1.0), text=TTLocalizer.ReportPanelCategoryHacking, text_scale=0.06, text_pos=(0, -0.0125), pos=(0, 0, -0.8), command=self.handleReportCategory, extraArgs=[4])
@@ -147,13 +145,8 @@ class AvatarPanelBase(AvatarPanel.AvatarPanel):
 
     def handleReportCategory(self, value):
         self.cleanupDialog()
-        if value >= 0:
-            cat = [CentralLogger.ReportFoulLanguage,
-             CentralLogger.ReportPersonalInfo,
-             CentralLogger.ReportRudeBehavior,
-             CentralLogger.ReportBadName,
-             CentralLogger.ReportHacking]
-            self.category = cat[value]
+        if value >= 0 and ReportGlobals.isValidCategory(value):
+            self.category = ReportGlobals.getCategory(value)
             self.confirmReportCategory(value)
         else:
             self.requestWalk()
@@ -170,32 +163,22 @@ class AvatarPanelBase(AvatarPanel.AvatarPanel):
     def handleReportCategoryConfirm(self, value):
         self.cleanupDialog()
         removed = 0
-        isPlayer = 0
+        
         if value > 0:
-            if self.category == CentralLogger.ReportHacking:
-                base.cr.centralLogger.reportPlayer(self.category, self.playerId, self.avId)
-                self.category = CentralLogger.ReportRudeBehavior
-            base.cr.centralLogger.reportPlayer(self.category, self.playerId, self.avId)
             if base.cr.isFriend(self.avId):
                 base.cr.removeFriend(self.avId)
                 removed = 1
-            if base.cr.playerFriendsManager.isPlayerFriend(self.playerId):
-                if self.playerId:
-                    base.cr.playerFriendsManager.sendRequestRemove(self.playerId)
-                    removed = 1
-                    isPlayer = 1
-            self.reportComplete(removed, isPlayer)
+            
+            base.cr.reportMgr.sendReport(self.avId, self.category)
+            self.reportComplete(removed)
         else:
             self.requestWalk()
 
-    def reportComplete(self, removed, isPlayer):
+    def reportComplete(self, removed):
         string = TTLocalizer.ReportPanelThanks
         titlePos = 0.25
         if removed:
-            if isPlayer:
-                string += ' ' + TTLocalizer.ReportPanelRemovedPlayerFriend % self.playerId
-            else:
-                string += ' ' + TTLocalizer.ReportPanelRemovedFriend % self.avName
+            string += ' ' + TTLocalizer.ReportPanelRemovedFriend % self.avName
             titlePos = 0.3
         self.dialog = TTDialog.TTGlobalDialog(style=TTDialog.Acknowledge, text=string, text_wordwrap=18.5, text_scale=0.06, topPad=0.1, doneEvent='ReportComplete', command=self.handleReportComplete)
         DirectLabel(parent=self.dialog, relief=None, pos=(0, 0, titlePos), text=TTLocalizer.ReportPanelTitle, textMayChange=0, text_scale=0.08)

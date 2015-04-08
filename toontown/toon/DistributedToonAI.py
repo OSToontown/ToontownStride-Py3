@@ -191,6 +191,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.redeemedCodes = []
         self.trueFriends = []
         self.ignored = []
+        self.reported = []
 
     def generate(self):
         DistributedPlayerAI.DistributedPlayerAI.generate(self)
@@ -477,8 +478,14 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def getIgnored(self):
         return self.ignored
     
-    def isIgnored(self, doId):
-        return doId in self.ignored
+    def setReported(self, reported):
+        self.reported = reported
+    
+    def getReported(self):
+        return self.reported
+    
+    def isReported(self, doId):
+        return doId in self.reported
 
     def b_setInventory(self, inventory):
         self.setInventory(inventory)

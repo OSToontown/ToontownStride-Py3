@@ -1924,33 +1924,30 @@ AvatarPanelGroupMerge = 'Resulting in'
 AvatarPanelGroupRetract = 'Retract Invitation'
 AvatarPanelGroupMember = 'Already In Group'
 AvatarPanelGroupMemberKick = 'Remove'
-ReportPanelTitle = 'Report A Player'
+ReportPanelTitle = 'Report A Toon'
 ReportPanelBody = 'This feature will send a complete report to a Moderator. Instead of sending a report, you might choose to do one of the following:\n\n  - Teleport to another district\n  - Use "Ignore" on the toon\'s panel\n\nDo you really want to report %s to a Moderator?'
 ReportPanelBodyFriends = 'This feature will send a complete report to a Moderator. Instead of sending a report, you might choose to do one of the following:\n\n  - Teleport to another district\n  - Break your friendship\n\nDo you really want to report %s to a Moderator?\n\n(This will also break your friendship)'
 ReportPanelCategoryBody = 'You are about to report %s. A Moderator will be alerted to your complaint and will take appropriate action for anyone breaking our rules. Please choose the reason you are reporting %s:'
-ReportPanelBodyPlayer = 'This feature is stilling being worked on and will be coming soon. In the meantime you can do the following:\n\n  - Go to DXD and break the friendship there.\n - Tell a parent about what happened.'
-ReportPanelCategoryLanguage = 'Foul Language'
-ReportPanelCategoryPii = 'Sharing/Requesting Personal Info'
+ReportPanelCategoryLanguage = 'Inappropriate Language'
 ReportPanelCategoryRude = 'Rude or Mean Behavior'
 ReportPanelCategoryName = 'Bad Name'
 ReportPanelCategoryHacking = 'Hacking'
+ReportPanelCategoryGreening = 'Greening'
 ReportPanelConfirmations = ('You are about to report that %s has used obscene, bigoted or sexually explicit language.',
- 'You are about to report that %s is being unsafe by giving out or requesting a phone number, address, last name, email address, password or account name.',
+ 'You are about to report that %s has disrupted your experience by intentionally causing your toon to go sad.',
  'You are about to report that %s is bullying, harassing, or using extreme behavior to disrupt the game.',
- "You are about to report that %s has created a name that does not follow the Toontown United rules.",
+ "You are about to report that %s has created a name that does not follow the rules.",
  'You are about to report that %s has hacked/tampered with the game or used third party software.')
-ReportPanelWarning = "We take reporting very seriously. Your report will be viewed by a Moderator who will take appropriate action for anyone breaking our rules. If your account is found to have participated in breaking the rules, or if you make false reports or abuse the 'Report a Player' system, a Moderator may take action against your account. Are you absolutely sure you want to report this player?"
-ReportPanelThanks = 'Thank you! Your report has been sent to a Moderator for review. There is no need to contact us again about the issue. The moderation team will take appropriate action for a player found breaking our rules.'
+ReportPanelWarning = "We take reporting very seriously. Your report will be viewed by a Moderator who will take appropriate action for anyone breaking our rules. If your account is found to have participated in breaking the rules, or if you make false reports or abuse the 'Report a Toon' system, a Moderator may take action against your account. Are you absolutely sure you want to report this toon?"
+ReportPanelThanks = 'Thank you! Your report has been sent to a Moderator for review. There is no need to contact us again about the issue. The moderation team will take appropriate action for a toon found breaking our rules.'
 ReportPanelRemovedFriend = 'We have automatically removed %s from your Toon Friends List.'
-ReportPanelRemovedPlayerFriend = 'We have automatically removed %s as a Player friend so as such you will not see them as your friend in any Toontown United product.'
 ReportPanelAlreadyReported = 'You have already reported %s during this session. A Moderator will review your previous report.'
-IgnorePanelTitle = 'Ignore A Player'
+IgnorePanelTitle = 'Ignore A PToon'
 IgnorePanelAddIgnore = 'Would you like to ignore %s?'
 IgnorePanelIgnore = 'You are now ignoring %s.'
 IgnorePanelRemoveIgnore = 'Would you like to stop ignoring %s?'
 IgnorePanelEndIgnore = 'You are no longer ignoring %s.'
 IgnorePanelAddFriendAvatar = '%s is your friend, you cannot ignore them while you are friends.'
-IgnorePanelAddFriendPlayer = '%s (%s)is your friend, you cannot ignore them while you are friends.'
 PetPanelFeed = 'Feed'
 PetPanelCall = 'Call'
 PetPanelGoTo = 'Go To'

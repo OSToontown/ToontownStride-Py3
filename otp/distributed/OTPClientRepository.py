@@ -261,7 +261,6 @@ class OTPClientRepository(ClientRepositoryBase):
         self.__pendingMessages = {}
         self.__doId2pendingInterest = {}
 
-        self.centralLogger = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_CENTRAL_LOGGER, 'CentralLogger')
         self.chatAgent = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_CHAT_MANAGER, 'ChatAgent')
         self.csm = None # To be set by subclass.
 
@@ -530,9 +529,6 @@ class OTPClientRepository(ClientRepositoryBase):
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def waitForGetGameListResponse(self):
         if self.isGameListCorrect():
-            if base.config.GetBool('game-server-tests', 0):
-                from otp.distributed import GameServerTestSuite
-                GameServerTestSuite.GameServerTestSuite(self)
             self.loginFSM.request('waitForShardList')
         else:
             self.loginFSM.request('missingGameRootObject')
