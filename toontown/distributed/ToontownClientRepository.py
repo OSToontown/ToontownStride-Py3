@@ -1,5 +1,3 @@
-import types
-import time
 from direct.distributed.ClockDelta import *
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
@@ -43,11 +41,7 @@ from toontown.makeatoon import TTPickANamePattern
 from toontown.parties import ToontownTimeManager
 from toontown.toon import Toon, DistributedToon
 from ToontownMsgTypes import *
-import HoodMgr
-import PlayGame
-from toontown.hood import StreetSign
-import random
-
+import types, time, random, HoodMgr, PlayGame
 
 class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
     SupportTutorial = 1
@@ -76,7 +70,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.tutorialManager = None
         self.welcomeValleyManager = None
         self.newsManager = None
-        self.streetSign = None
         self.distributedDistrict = None
         self.partyManager = None
 
@@ -86,7 +79,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.playerFriendsManager = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_PLAYER_FRIENDS_MANAGER, 'TTPlayerFriendsManager')
         self.ttuFriendsManager = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_TTU_FRIENDS_MANAGER, 'TTUFriendsManager')
 
-        self.streetSign = None
         self.furnitureManager = None
         self.objectManager = None
         self.openAvatarPanels = set()
@@ -406,8 +398,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
          base.localAvatar.defaultZone,
          -1])
         self._userLoggingOut = False
-        if not self.streetSign:
-            self.streetSign = StreetSign.StreetSign()
         return
 
     def exitPlayingGame(self):
