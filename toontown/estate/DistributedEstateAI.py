@@ -20,7 +20,6 @@ class DistributedEstateAI(DistributedObjectAI):
         self.toons = [0, 0, 0, 0, 0, 0]
         self.items = [[], [], [], [], [], []]
         self.decorData = []
-        self.estateType = 0 # NOT SURE IF THIS HAS ANY USE BUT THANKS DISNEY
         self.cloudType = 0
         self.dawnTime = 0
         self.lastEpochTimestamp = 0
@@ -97,19 +96,6 @@ class DistributedEstateAI(DistributedObjectAI):
 
     def setClientReady(self):
         self.sendUpdate('setEstateReady', [])
-
-    def setEstateType(self, type):
-        self.estateType = type
-        
-    def d_setEstateType(self, type):
-        self.sendUpdate('setEstateType', [type])
-        
-    def b_setEstateType(self, type):
-        self.setEstateType(type)
-        self.d_setEstateType(type)
-
-    def getEstateType(self):
-        return self.estateType
         
     def setClosestHouse(self, todo0):
         pass

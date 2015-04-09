@@ -178,9 +178,6 @@ class DistributedEstate(DistributedObject.DistributedObject):
         initCamPos = VBase3(0, -10, 5)
         initCamHpr = VBase3(0, -10, 0)
 
-    def setEstateType(self, index):
-        self.estateType = index
-
     def setHouseInfo(self, houseInfo):
         self.notify.debug('setHouseInfo')
         houseType, housePos = cPickle.loads(houseInfo)

@@ -1484,7 +1484,6 @@ dclass DistributedEstate : DistributedObject {
   string DcObjectType db;
   setEstateReady() broadcast;
   setClientReady() airecv clsend;
-  setEstateType(uint8 type = 0) required broadcast db;
   setClosestHouse(uint8) airecv clsend;
   setTreasureIds(uint32[]) broadcast ram;
   requestServerTime() airecv clsend;
