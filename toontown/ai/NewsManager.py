@@ -1,4 +1,5 @@
 from direct.distributed.DistributedObject import DistributedObject
+from toontown.estate import Estate
 from toontown.toonbase import ToontownGlobals
 import HolidayGlobals
 
@@ -54,8 +55,18 @@ class NewsManager(DistributedObject):
         if id == ToontownGlobals.LAUGHING_MAN:
             for toon in base.cr.toons.values():
                 toon.generateLaughingMan()
+        elif id == ToontownGlobals.APRIL_TOONS_WEEK:
+            if isinstance(base.cr.playGame.getPlace(), Estate.Estate):
+                base.localAvatar.startAprilToonsControls()
+
+            base.localAvatar.chatMgr.chatInputSpeedChat.addAprilToonsMenu()
 
     def endSpecialHoliday(self, id):
         if id == ToontownGlobals.LAUGHING_MAN:
             for toon in base.cr.toons.values():
                 toon.swapToonHead(laughingMan=toon.getWantLaughingMan())
+        elif id == ToontownGlobals.APRIL_TOONS_WEEK:
+            if isinstance(base.cr.playGame.getPlace(), Estate.Estate):
+                base.localAvatar.stopAprilToonsControls()
+
+            base.localAvatar.chatMgr.chatInputSpeedChat.removeAprilToonsMenu()

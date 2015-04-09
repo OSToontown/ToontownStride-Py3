@@ -1187,7 +1187,10 @@ class Toon(Avatar.Avatar, ToonHead):
         return self.shoes
 
     def getDialogueArray(self):
-        animalType = self.style.getType()
+        if base.cr.newsManager.isHolidayRunning(ToontownGlobals.APRIL_TOONS_WEEK):
+            animalType = random.choice(TTLocalizer.AnimalToSpecies.keys())
+        else:
+            animalType = self.style.getType()
         if animalType == 'dog':
             dialogueArray = DogDialogueArray
         elif animalType == 'cat':

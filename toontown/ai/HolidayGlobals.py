@@ -34,6 +34,15 @@ Holidays = {
         'startMessage': TTLocalizer.BlackCatHolidayStart,
         'ongoingMessage': TTLocalizer.BlackCatHolidayStart,
         'endMessage': TTLocalizer.BlackCatHolidayEnd
+    },
+    ToontownGlobals.APRIL_TOONS_WEEK: {
+        'startMonth': 4,
+        'startDay': 1,
+        'endMonth': 4,
+        'endDay': 7,
+        'startMessage': TTLocalizer.AprilToonsWeekStart,
+        'ongoingMessage': TTLocalizer.AprilToonsWeekStart,
+        'endMessage': TTLocalizer.AprilToonsWeekEnd
     }
 }
 

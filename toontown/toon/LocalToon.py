@@ -1763,3 +1763,9 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.petId = petId
         if self.isLocal():
             base.cr.addPetToFriendsMap()
+
+    def startAprilToonsControls(self):
+        self.controlManager.currentControls.setGravity(ToontownGlobals.GravityValue * 0.75)
+
+    def stopAprilToonsControls(self):
+        self.controlManager.currentControls.setGravity(ToontownGlobals.GravityValue * 2.0)
