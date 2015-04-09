@@ -239,12 +239,12 @@ class Nametag2d(Nametag, Clickable2d, MarginVisible):
         self.panelWidth = self.textNode.getWidth() + self.PANEL_X_PADDING
         self.panelHeight = self.textNode.getHeight() + self.PANEL_Z_PADDING
         self.panel.setScale(self.panelWidth, 1, self.panelHeight)
-
+        
         # Add an arrow:
         self.arrow = NametagGlobals.arrowModel.copyTo(self.contents)
         self.arrow.setZ(self.ARROW_OFFSET + self.textNode.getBottom())
         self.arrow.setScale(self.ARROW_SCALE)
-        self.arrow.setColor(self.nametagColor[0][0])
+        self.arrow.setColor(self.nametagColor[4] if len(self.nametagColor) >= 5 else self.nametagColor[0][0])
 
     def marginVisibilityChanged(self):
         if self.cell is not None:
