@@ -97,11 +97,8 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
             self.notify.debug('Creating a building manager AI in zone' + str(self.zoneId))
         self.buildingMgr = self.air.buildingManagers.get(self.zoneId)
         if self.buildingMgr:
-            (blocks, hqBlocks, gagshopBlocks, petshopBlocks, kartshopBlocks, libraryBlocks, animBldgBlocks) = self.buildingMgr.getDNABlockLists()
+            (blocks, hqBlocks, gagshopBlocks, petshopBlocks, kartshopBlocks, libraryBlocks) = self.buildingMgr.getDNABlockLists()
             for currBlock in blocks:
-                bldg = self.buildingMgr.getBuilding(currBlock)
-                bldg.setSuitPlannerExt(self)
-            for currBlock in animBldgBlocks:
                 bldg = self.buildingMgr.getBuilding(currBlock)
                 bldg.setSuitPlannerExt(self)
         self.dnaStore.resetBlockNumbers()
@@ -855,7 +852,11 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
             if hasattr(toon, 'doId'):
                 toon.b_setBattleId(toonId)
         pos = self.battlePosDict[canonicalZoneId]
+        
+        # TODO
         interactivePropTrackBonus = -1
+        # TODO
+        
         self.battleMgr.newBattle(
             zoneId, zoneId, pos, suit, toonId, self.__battleFinished,
             self.SuitHoodInfo[self.hoodInfoIdx][self.SUIT_HOOD_INFO_SMAX],

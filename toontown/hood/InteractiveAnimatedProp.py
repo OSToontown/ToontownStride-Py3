@@ -30,9 +30,8 @@ class InteractiveAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
     HpTextGenerator = TextNode('HpTextGenerator')
     BattleCheerText = '+'
 
-    def __init__(self, node, holidayId = -1):
+    def __init__(self, node):
         FSM.FSM.__init__(self, 'InteractiveProp-%s' % str(node))
-        self.holidayId = holidayId
         self.numIdles = 0
         self.numFightAnims = 0
         self.idleInterval = None
@@ -49,7 +48,6 @@ class InteractiveAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
         self.lastPlayingAnimPhase = 0
         self.buildingsMakingMeSad = set()
         GenericAnimatedProp.GenericAnimatedProp.__init__(self, node)
-        return
 
     def delete(self):
         self.exit()
@@ -58,7 +56,6 @@ class InteractiveAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
         self.battleCheerInterval = None
         self.sadInterval = None
         self.victoryInterval = None
-        return
 
     def getCellIndex(self):
         return self.cellIndex
@@ -114,7 +111,6 @@ class InteractiveAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
         self.battleCheerInterval = self.createBattleCheerInterval()
         self.victoryInterval = self.createVictoryInterval()
         self.sadInterval = self.createSadInterval()
-        return
 
     def createIdleInterval(self):
         result = Sequence()
@@ -202,18 +198,9 @@ class InteractiveAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
         GenericAnimatedProp.GenericAnimatedProp.enter(self)
         if base.config.GetBool('props-buff-battles', True):
             self.notify.debug('props buff battles is true')
-            if base.cr.newsManager.isHolidayRunning(self.holidayId):
-                self.notify.debug('holiday is running, doing idle interval')
-                self.node.stop()
-                self.node.pose('idle0', 0)
-                if base.config.GetBool('interactive-prop-random-idles', 1):
-                    self.requestIdleOrSad()
-                else:
-                    self.idleInterval.loop()
-            else:
-                self.notify.debug('holiday is NOT running, doing nothing')
-                self.node.stop()
-                self.node.pose('idle0', 0)
+            self.node.stop()
+            self.node.pose('idle0', 0)
+            self.idleInterval.loop()
         else:
             self.notify.debug('props do not buff battles')
             self.node.stop()
@@ -343,39 +330,24 @@ class InteractiveAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
 
     def gotoFaceoff(self):
         self.notify.debugStateCall(self)
-        if base.cr.newsManager.isHolidayRunning(self.holidayId):
-            self.request('Faceoff')
-        else:
-            self.notify.debug('not going to faceoff because holiday %d is not running' % self.holidayId)
+        self.request('Faceoff')
 
     def gotoBattleCheer(self):
         self.notify.debugStateCall(self)
-        if base.cr.newsManager.isHolidayRunning(self.holidayId):
-            self.request('BattleCheer')
-        else:
-            self.notify.debug('not going to battleCheer because holiday %d is not running' % self.holidayId)
+        self.request('BattleCheer')
 
     def gotoIdle(self):
         self.notify.debugStateCall(self)
-        if base.cr.newsManager.isHolidayRunning(self.holidayId):
-            self.request('DoIdleAnim')
-        else:
-            self.notify.debug('not going to idle because holiday %d is not running' % self.holidayId)
+        self.request('DoIdleAnim')
 
     def gotoVictory(self):
         self.notify.debugStateCall(self)
-        if base.cr.newsManager.isHolidayRunning(self.holidayId):
-            self.request('Victory')
-        else:
-            self.notify.debug('not going to victory because holiday %d is not running' % self.holidayId)
+        self.request('Victory')
 
     def gotoSad(self, buildingDoId):
         self.notify.debugStateCall(self)
         self.buildingsMakingMeSad.add(buildingDoId)
-        if base.cr.newsManager.isHolidayRunning(self.holidayId):
-            self.request('Sad')
-        else:
-            self.notify.debug('not going to sad because holiday %d is not running' % self.holidayId)
+        self.request('Sad')
 
     def buildingLiberated(self, buildingDoId):
         self.buildingsMakingMeSad.discard(buildingDoId)
@@ -391,7 +363,6 @@ class InteractiveAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
         self.notify.debugStateCall(self)
         self.curIval.pause()
         self.curIval = None
-        return
 
     def calcWhichIdleAnim(self, animName):
         result = 0
@@ -505,4 +476,3 @@ class InteractiveAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
             self.curIval.finish()
         clearPythonIvals(self.curIval)
         self.curIval = None
-        return

@@ -4537,6 +4537,18 @@ def maxMoney(maxMoney):
     return "Set {0}'s max money value to {1}!".format(target.getName(), maxMoney)
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+def maxBankMoney(maxBankMoney):
+    """
+    Modifies the target's max bank money value.
+    """
+    
+    if not 10000 <= maxBankMoney <= 30000:
+        return 'Max bank money value must be in xrange (10000-30000).'
+    target = spellbook.getTarget()
+    spellbook.getTarget().b_setMaxBankMoney(maxBankMoney)
+    return "Set {0}'s max bank money value to {1}!".format(target.getName(), maxBankMoney)
+
+@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
 def money(money):
     """
     Modifies the target's current money value.
@@ -4548,39 +4560,18 @@ def money(money):
     target.b_setMoney(money)
     return "Set %s's money value to %d!" % (target.getName(), money)
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[str, int])
-def bank(command, value):
+@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+def bank(money):
     """
-    Modifies the target's bank money values.
+    Modifies the target's current bank money value.
     """
-    command = command.lower()
     target = spellbook.getTarget()
-    if command == 'transfer':
-        if value == 0:
-            return 'Invalid bank transfer.'
-        bankMoney = target.getBankMoney()
-        maxBankMoney = target.getMaxBankMoney()
-        money = target.getMoney()
-        maxMoney = target.getMaxMoney()
-        if value > 0:
-            maxDeposit = money
-            maxDeposit = min(maxDeposit, maxBankMoney - money)
-            deposit = min(value, maxDeposit)
-            bankMoney += deposit
-            money -= deposit
-            target.b_setBankMoney(bankMoney)
-            target.b_setMoney(money)
-        else:
-            maxWithdrawl = maxMoney - money
-            maxWithdrawl = min(maxWithdrawl, bankMoney)
-            withdrawl = min(value, maxWithdrawl)
-            bankMoney -= withdrawl
-            money += withdrawl
-            target.b_setBankMoney(bankMoney)
-            target.b_setMoney(money)
-        return 'Bank transfer successful!'
-    else:
-        return 'Invalid command!'
+    maxMoney = target.getMaxBankMoney()
+    
+    if not 0 <= money <= maxMoney:
+        return 'Bank money must be in xrange (0-%d.)' % maxMoney
+    target.b_setBankMoney(money)
+    return "Set %s's bank money value to %d!" % (target.getName(), money)
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[int])
 def fishingRod(rod):

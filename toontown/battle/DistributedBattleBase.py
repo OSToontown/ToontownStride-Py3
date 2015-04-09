@@ -317,12 +317,23 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
 
     def setBattleCellId(self, battleCellId):
         pass
-
-    def setInteractivePropTrackBonus(self, trackBonus):
-        self.interactivePropTrackBonus = trackBonus
-
+    
+    def getInteractiveProp(self):
+        if self.interactiveProp:
+            return self.interactiveProp
+        elif base.cr.playGame.hood:
+            loader = base.cr.playGame.hood.loader
+            
+            if hasattr(loader, 'getInteractiveProp'):
+                self.interactiveProp = base.cr.playGame.hood.loader.getInteractiveProp(self.zoneId)
+                
+                return self.interactiveProp
+        return None
+    
     def getInteractivePropTrackBonus(self):
-        return self.interactivePropTrackBonus
+        prop = self.getInteractiveProp()
+        
+        return prop.BattleTrack if prop else -1
 
     def setPosition(self, x, y, z):
         self.notify.debug('setPosition() - %d %d %d' % (x, y, z))
@@ -363,12 +374,17 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
         oldsuits = self.suits
         self.suits = []
         suitGone = 0
+        prop = self.getInteractiveProp()
+        
         for s in suits:
             if s in self.cr.doId2do:
                 suit = self.cr.doId2do[s]
                 suit.setState('Battle')
                 self.suits.append(suit)
-                suit.interactivePropTrackBonus = self.interactivePropTrackBonus
+                
+                if prop:
+                    suit.interactivePropTrackBonus = prop.BattleTrack
+                
                 try:
                     suit.battleTrap
                 except:
@@ -1048,9 +1064,10 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
         return Task.done
 
     def enterWaitForInput(self, ts = 0):
-        self.notify.debug('enterWaitForInput()')
-        if self.interactiveProp:
-            self.interactiveProp.gotoBattleCheer()
+        prop = self.getInteractiveProp()
+        
+        if prop:
+            prop.gotoBattleCheer()
         self.choseAttackAlready = 0
         if self.localToonActive():
             self.__enterLocalToonWaitForInput()
@@ -1242,7 +1259,10 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
         if base.cr.playGame.getPlace() != None:
             base.cr.playGame.getPlace().setState('battle', self.localToonBattleEvent)
             if localAvatar and hasattr(localAvatar, 'inventory') and localAvatar.inventory:
-                localAvatar.inventory.setInteractivePropTrackBonus(self.interactivePropTrackBonus)
+                prop = self.getInteractiveProp()
+                
+                if prop:
+                    localAvatar.inventory.setInteractivePropTrackBonus(prop.BattleTrack)
         camera.wrtReparentTo(self)
         base.camLens.setMinFov(self.camFov/(4./3.))
         return

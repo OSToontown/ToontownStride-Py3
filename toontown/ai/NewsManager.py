@@ -201,8 +201,6 @@ class NewsManager(DistributedObject.DistributedObject):
                 pass
             elif holidayId == ToontownGlobals.CIRCUIT_RACING_EVENT:
                 self.setGrandPrixWeekendStart()
-            elif holidayId == ToontownGlobals.HYDRANT_ZERO_HOLIDAY:
-                self.setHydrantZeroHolidayStart()
             elif holidayId == ToontownGlobals.APRIL_FOOLS_COSTUMES:
                 if hasattr(base, 'localAvatar') and base.localAvatar and hasattr(base.localAvatar, 'chatMgr') and base.localAvatar.chatMgr:
                     base.localAvatar.chatMgr.chatInputSpeedChat.addAprilToonsMenu()
@@ -466,9 +464,6 @@ class NewsManager(DistributedObject.DistributedObject):
 
     def setGrandPrixWeekendEnd(self):
         base.localAvatar.setSystemMessage(0, TTLocalizer.GrandPrixWeekendHolidayEnd)
-
-    def setHydrantZeroHolidayStart(self):
-        messenger.send('HydrantZeroIsRunning', [True])
 
     def setSellbotNerfHolidayStart(self):
         base.localAvatar.setSystemMessage(0, TTLocalizer.SellbotNerfHolidayStart)

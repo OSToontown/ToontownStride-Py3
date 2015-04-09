@@ -23,8 +23,6 @@ class GenericAnimatedProp(AnimatedProp.AnimatedProp):
             nextUnderscore = tempStr.find('_')
             finalStr = tempStr[nextUnderscore + 1:]
             pathStr = finalStr.split('__')[0]
-        elif code.startswith('animated_building_'):
-            pathStr = code[len('animated_building_'):].split('__')[0]
         phaseDelimeter = len('phase_') + pathStr[len('phase_'):].find('_')
         phaseStr = pathStr[:phaseDelimeter]
         pathTokens = pathStr[phaseDelimeter + 1:].split('_')
@@ -48,19 +46,7 @@ class GenericAnimatedProp(AnimatedProp.AnimatedProp):
     def enter(self):
         self.node.postFlatten()
         AnimatedProp.AnimatedProp.enter(self)
-        doAnimLoop = True
-        try:
-            if type(self).__name__ == 'instance':
-                if self.__class__.__name__ == 'GenericAnimatedProp':
-                    if base.cr.newsManager.isHolidayRunning(ToontownGlobals.HYDRANTS_BUFF_BATTLES):
-                        doAnimLoop = True
-                    else:
-                        doAnimLoop = False
-        except:
-            pass
-
-        if doAnimLoop:
-            self.node.loop('anim')
+        self.node.loop('anim')
 
     def exit(self):
         AnimatedProp.AnimatedProp.exit(self)
@@ -81,14 +67,13 @@ class GenericAnimatedProp(AnimatedProp.AnimatedProp):
         self.hoodId = ToontownGlobals.ToontownCentral
         fullString = str(node)
         splits = fullString.split('/')
-        try:
-            visId = int(splits[2])
+        if len(splits) >= 5:
+            visId = int(splits[4])
             self.visId = visId
             self.hoodId = ZoneUtil.getCanonicalHoodId(visId)
             self.notify.debug('calcHoodId %d from %s' % (self.hoodId, fullString))
-        except Exception, generic:
-            if 'Editor' not in fullString:
-                self.notify.warning("calcHoodId couldn't parse %s using 0" % fullString)
+        else:
+            self.notify.warning("calcHoodId couldn't parse %s using 0" % fullString)
             self.hoodId = 0
             self.visId = 0
 

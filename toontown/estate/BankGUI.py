@@ -62,6 +62,8 @@ class BankGui(DirectFrame):
         messenger.send(self.doneEvent, [0])
 
     def __requestTransaction(self):
+        self.ignore(localAvatar.uniqueName('moneyChange'))
+        self.ignore(localAvatar.uniqueName('bankMoneyChange'))
         messenger.send(self.doneEvent, [self.__transactionAmount])
 
     def __updateTransaction(self, amount):

@@ -42,7 +42,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.__battleCreditMultiplier = base.baseXpMultiplier
         self.__invasionCreditMultiplier = base.baseXpMultiplier
         self.__respectInvasions = 1
-        self._interactivePropTrackBonus = -1
+        self.interactivePropTrackBonus = -1
         self.tutorialFlag = 0
         self.gagTutMode = 0
         self.showSuperGags = ShowSuperGags
@@ -61,10 +61,10 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         return self.__battleCreditMultiplier
 
     def setInteractivePropTrackBonus(self, trackBonus):
-        self._interactivePropTrackBonus = trackBonus
+        self.interactivePropTrackBonus = trackBonus
 
     def getInteractivePropTrackBonus(self):
-        return self._interactivePropTrackBonus
+        return self.interactivePropTrackBonus
 
     def setInvasionCreditMultiplier(self, mult):
         self.__invasionCreditMultiplier = mult
@@ -996,7 +996,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         else:
             shadowColor = self.ShadowColor
         button.configure(image0_image=self.upButton, image2_image=self.rolloverButton, text_shadow=shadowColor, geom_color=self.PressableGeomColor, commandButtons=(DGG.LMB,))
-        if self._interactivePropTrackBonus == track:
+        if self.interactivePropTrackBonus == track:
             button.configure(image_color=self.PropBonusPressableImageColor)
             self.addToPropBonusIval(button)
         else:
@@ -1022,7 +1022,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         else:
             shadowColor = self.ShadowColor
         button.configure(image0_image=self.upButton, image2_image=self.rolloverButton, text_shadow=shadowColor, geom_color=self.PressableGeomColor, commandButtons=(DGG.LMB,))
-        if self._interactivePropTrackBonus == track:
+        if self.interactivePropTrackBonus == track:
             button.configure(image_color=self.PropBonusNoncreditPressableImageColor)
             self.addToPropBonusIval(button)
         else:
@@ -1187,10 +1187,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         messenger.send('exitTrackFrame', [track])
 
     def checkPropBonus(self, track):
-        result = False
-        if track == self._interactivePropTrackBonus:
-            result = True
-        return result
+        return track == self.interactivePropTrackBonus
 
     def stopAndClearPropBonusIval(self):
         if self.propBonusIval and self.propBonusIval.isPlaying():

@@ -461,7 +461,6 @@ from toontown.safezone import DistributedTreasure/AI
 from toontown.coghq import DistributedCashbotBossTreasure/AI
 from toontown.building import DistributedTrophyMgr/AI
 from toontown.building import DistributedBuilding/AI
-from toontown.building import DistributedAnimBuilding/AI
 from toontown.building import DistributedBuildingQueryMgr/AI
 from toontown.building import DistributedToonInterior/AI
 from toontown.building import DistributedToonHallInterior/AI
@@ -472,7 +471,6 @@ from toontown.building import DistributedPetshopInterior/AI
 from toontown.building import DistributedKartShopInterior/AI
 from toontown.building import DistributedLibraryInterior/AI
 from toontown.building import DistributedDoor/AI
-from toontown.building import DistributedAnimDoor/AI
 from toontown.estate import DistributedHouseDoor/AI
 from toontown.coghq import DistributedCogHQDoor/AI
 from toontown.coghq import DistributedSellbotHQDoor/AI
@@ -1903,9 +1901,6 @@ dclass DistributedBuilding : DistributedObject {
   setVictorReady() airecv clsend;
 };
 
-dclass DistributedAnimBuilding : DistributedBuilding {
-};
-
 dclass DistributedBuildingQueryMgr : DistributedObject {
   isSuit(uint8, uint32) airecv clsend;
   response(uint8, bool);
@@ -2053,9 +2048,6 @@ dclass DistributedDoor : DistributedObject {
   avatarExit(uint32) broadcast;
   setState(string, int16) required broadcast ram;
   setExitDoorState(string, int16) required broadcast ram;
-};
-
-dclass DistributedAnimDoor : DistributedDoor {
 };
 
 dclass DistributedHouseDoor : DistributedDoor {

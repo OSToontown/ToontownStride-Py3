@@ -8,7 +8,6 @@ from toontown.building import KartShopBuildingAI
 from toontown.building import PetshopBuildingAI
 from toontown.building import LibraryBuildingAI
 from toontown.hood import ZoneUtil
-# from toontown.building import DistributedAnimBuildingAI
 
 
 class DistributedBuildingMgrAI:
@@ -93,7 +92,6 @@ class DistributedBuildingMgrAI:
         petshopBlocks = []
         kartshopBlocks = []
         libraryBlocks = []
-        animBldgBlocks = []
         for i in xrange(self.dnaStore.getNumBlockNumbers()):
             blockNumber = self.dnaStore.getBlockNumberAt(i)
             buildingType = self.dnaStore.getBlockBuildingType(blockNumber)
@@ -108,19 +106,15 @@ class DistributedBuildingMgrAI:
                 kartshopBlocks.append(blockNumber)
             elif buildingType == 'library':
                 libraryBlocks.append(blockNumber)
-            elif buildingType == 'animbldg':
-                animBldgBlocks.append(blockNumber)
             else:
                 blocks.append(blockNumber)
-        return (blocks, hqBlocks, gagshopBlocks, petshopBlocks, kartshopBlocks, libraryBlocks, animBldgBlocks)
+        return (blocks, hqBlocks, gagshopBlocks, petshopBlocks, kartshopBlocks, libraryBlocks)
 
     def findAllLandmarkBuildings(self):
         backups = simbase.backups.load('block-info', (self.air.districtId, self.branchId), default={})
-        (blocks, hqBlocks, gagshopBlocks, petshopBlocks, kartshopBlocks, libraryBlocks, animBldgBlocks) = self.getDNABlockLists()
+        (blocks, hqBlocks, gagshopBlocks, petshopBlocks, kartshopBlocks, libraryBlocks) = self.getDNABlockLists()
         for blockNumber in blocks:
             self.newBuilding(blockNumber, backup=backups.get(blockNumber, None))
-        for blockNumber in animBldgBlocks:
-            self.newAnimBuilding(blockNumber, backup=backups.get(blockNumber, None))
         for blockNumber in hqBlocks:
             self.newHQBuilding(blockNumber)
         for blockNumber in gagshopBlocks:
@@ -157,9 +151,6 @@ class DistributedBuildingMgrAI:
             building.setState('toon')
         self.__buildings[blockNumber] = building
         return building
-
-    def newAnimBuilding(self, blockNumber, backup=None):
-        return self.newBuilding(blockNumber, backup=backup)
 
     def newHQBuilding(self, blockNumber):
         dnaStore = self.air.dnaStoreMap[self.canonicalBranchId]
