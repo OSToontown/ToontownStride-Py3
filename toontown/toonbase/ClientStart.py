@@ -160,7 +160,6 @@ DirectGuiGlobals.setDefaultClickSound(base.loadSfx('phase_3/audio/sfx/GUI_create
 DirectGuiGlobals.setDefaultDialogGeom(loader.loadModel('phase_3/models/gui/dialog_box_gui'))
 import TTLocalizer
 from otp.otpbase import OTPGlobals
-OTPGlobals.setDefaultProductPrefix(TTLocalizer.ProductPrefix)
 if base.musicManagerIsValid:
     music = base.loadMusic('phase_3/audio/bgm/tt_theme.ogg')
     if music:

@@ -5,17 +5,15 @@ from direct.showbase import PythonUtil
 from otp.otpbase import OTPGlobals
 from toontown.battle import SuitBattleGlobals
 
-PartsPerSuit = (10,
- 10,
- 10,
+PartsPerSuit = (17,
+ 14,
+ 12,
  10)
-PartsPerSuitBitmasks = (56411,
- 56411,
- 56411,
+PartsPerSuitBitmasks = (131071,
+ 130175,
+ 56447,
  56411)
-AllBits = 56411
-MinPartLoss = 1
-MaxPartLoss = 2
+AllBits = 131071
 leftLegUpper = 1
 leftLegLower = 2
 leftLegFoot = 4

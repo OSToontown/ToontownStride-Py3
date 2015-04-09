@@ -1344,22 +1344,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             parts[dept] = parts[dept] ^ part
             self.b_setCogParts(parts)
 
-    def loseCogParts(self, dept):
-        loseCount = random.randrange(CogDisguiseGlobals.MinPartLoss, CogDisguiseGlobals.MaxPartLoss + 1)
-        parts = self.getCogParts()
-        partBitmask = parts[dept]
-        partList = range(17)
-        while loseCount > 0 and partList:
-            losePart = random.choice(partList)
-            partList.remove(losePart)
-            losePartBit = 1 << losePart
-            if partBitmask & losePartBit:
-                partBitmask &= ~losePartBit
-                loseCount -= 1
-
-        parts[dept] = partBitmask
-        self.b_setCogParts(parts)
-
     def b_setCogMerits(self, merits):
         self.setCogMerits(merits)
         self.d_setCogMerits(merits)

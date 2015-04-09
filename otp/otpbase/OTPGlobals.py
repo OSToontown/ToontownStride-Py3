@@ -97,7 +97,6 @@ NametagFonts = {}
 NametagFontPaths = {}
 DialogClass = None
 GlobalDialogClass = None
-ProductPrefix = None
 
 def getInterfaceFont():
     global InterfaceFontPath
@@ -109,14 +108,12 @@ def getInterfaceFont():
             InterfaceFont = loader.loadFont(InterfaceFontPath, lineHeight=1.0)
     return InterfaceFont
 
-
 def setInterfaceFont(path):
     global InterfaceFontPath
     global InterfaceFont
     InterfaceFontPath = path
     InterfaceFont = None
     return
-
 
 def getSignFont():
     global SignFont
@@ -129,11 +126,9 @@ def getSignFont():
             SignFont = loader.loadFont(SignFontPath, lineHeight=1.0)
     return SignFont
 
-
 def setSignFont(path):
     global SignFontPath
     SignFontPath = path
-
 
 def getFancyFont():
     global FancyFontPath
@@ -146,11 +141,9 @@ def getFancyFont():
             FancyFont = loader.loadFont(FancyFontPath, lineHeight=1.0)
     return FancyFont
 
-
 def setFancyFont(path):
     global FancyFontPath
     FancyFontPath = path
-
 
 def getNametagFont(index):
     global NametagFontPaths
@@ -163,10 +156,8 @@ def getNametagFont(index):
             NametagFonts[index] = loader.loadFont(NametagFontPaths[index], lineHeight=1.0)
     return NametagFonts[index]
 
-
 def setNametagFont(index, path):
     NametagFontPaths[index] = path
-
 
 def getDialogClass():
     global DialogClass
@@ -175,7 +166,6 @@ def getDialogClass():
         DialogClass = OTPDialog
     return DialogClass
 
-
 def getGlobalDialogClass():
     global GlobalDialogClass
     if DialogClass == None:
@@ -183,23 +173,11 @@ def getGlobalDialogClass():
         GlobalDialogClass = GlobalDialog
     return GlobalDialogClass
 
-
 def setDialogClasses(dialogClass, globalDialogClass):
     global DialogClass
     global GlobalDialogClass
     DialogClass = dialogClass
     GlobalDialogClass = globalDialogClass
-
-
-def getDefaultProductPrefix():
-    global ProductPrefix
-    return ProductPrefix
-
-
-def setDefaultProductPrefix(prefix):
-    global ProductPrefix
-    ProductPrefix = prefix
-
 
 NetworkLatency = 1.0
 maxLoginWidth = 9.1
