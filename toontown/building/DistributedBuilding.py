@@ -259,7 +259,11 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         pass
 
     def enterSuit(self, ts):
-        self.makePropSad()
+        prop = self.getInteractiveProp()
+        
+        if prop and not prop.state == 'Sad':
+            prop.gotoSad(self.doId)
+        
         self.setToSuit()
 
     def exitSuit(self):
@@ -946,9 +950,3 @@ class DistributedBuilding(DistributedObject.DistributedObject):
                 
                 return self.interactiveProp
         return None
-
-    def makePropSad(self):
-        prop = self.getInteractiveProp()
-        
-        if prop and not prop.state == 'Sad':
-            prop.gotoSad(self.doId)

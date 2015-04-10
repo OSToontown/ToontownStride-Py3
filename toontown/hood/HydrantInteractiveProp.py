@@ -111,8 +111,8 @@ class HydrantInteractiveProp(InteractiveAnimatedProp.InteractiveAnimatedProp):
         
         if self.hasOverrideIval(origAnimName):
             result.append(Func(self.showWater))
-            animAndSound = self.createAnimAndSoundIval('fight0' if 'fightBoost' in origAnimName else 'fight1')
-            result.append(animAndSound)
+            anim = self.createAnimIval('fight0' if 'fightBoost' in origAnimName else 'fight1')
+            result.append(anim)
             result.append(Func(self.hideWater))
 
         return result
