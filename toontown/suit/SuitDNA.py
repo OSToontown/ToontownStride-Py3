@@ -1,7 +1,7 @@
 import random
 from pandac.PandaModules import *
 from direct.directnotify.DirectNotifyGlobal import *
-from toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer, ToontownGlobals
 import random
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
@@ -75,6 +75,10 @@ suitDepts = ['c',
  'l',
  'm',
  's']
+suitDeptZones = [ToontownGlobals.BossbotHQ,
+ ToontownGlobals.LawbotHQ,
+ ToontownGlobals.CashbotHQ,
+ ToontownGlobals.SellbotHQ]
 suitDeptFullnames = {'c': TTLocalizer.Bossbot,
  'l': TTLocalizer.Lawbot,
  'm': TTLocalizer.Cashbot,

@@ -1223,6 +1223,14 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
              0,
              0]
         else:
+            for i in xrange(len(types)):
+                if types[i] == SuitDNA.suitsPerDept - 1:
+                    zoneId = SuitDNA.suitDeptZones[i]
+                    tpAccess = self.getTeleportAccess()
+                    
+                    if zoneId not in tpAccess:
+                        tpAccess.append(zoneId)
+                        self.b_setTeleportAccess(tpAccess)
             self.cogTypes = types
 
     def d_setCogTypes(self, types):
