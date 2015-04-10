@@ -18,15 +18,10 @@ boarding-group-merges #t
 
 # Sellbot boss:
 disable-sos-card 91917
-disable-sos-card 91918
 
 # Optional:
-want-chestnut-park-construction #f
 cogdo-pop-factor 1.5
 cogdo-ratio 0.4
-
-# Temporary:
-want-phone-quest #t
 
 # Staff events:
 cfo-staff-event #f

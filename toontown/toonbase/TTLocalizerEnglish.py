@@ -8934,7 +8934,7 @@ CatalogPurchaseHouseType = "When you buy a new house type, the current one is re
 buffIdStrings = {
   0: ('Your movement speed will be slightly increased for the next %d %s.',
       'Reward: Increased movement speed'),
-  1: ('Your gag accuracy will be slight increased for the next %d %s.',
+  1: ('Your gag accuracy will be slightly increased for the next %d %s.',
       'Reward: Increased gag accuracy')
 }
 
