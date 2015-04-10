@@ -122,11 +122,6 @@ class DistributedToonInterior(DistributedObject.DistributedObject):
             signOrigin = self.interior.find('**/sign_origin;+s')
             newSignNP = sign.copyTo(signOrigin)
             newSignNP.setDepthWrite(1, 1)
-            #TODO: getSignTransform
-            #mat = self.dnaStore.getSignTransformFromBlockNumber(int(self.block))
-            inv = Mat4(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-            #inv.invertFrom(mat)
-            newSignNP.setMat(inv)
             newSignNP.flattenLight()
             ll = Point3()
             ur = Point3()
