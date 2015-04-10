@@ -5158,6 +5158,11 @@ def getZone():
     zone = invoker.zoneId
     return 'ZoneID: %s' % (zone)
 
+@magicWord(category=CATEGORY_PROGRAMMER)
+def getPos():
+    invoker = spellbook.getInvoker()
+    return 'Pos: %s, PosIndex: %s' % (invoker.getPos(), invoker.getPosIndex())
+
 @magicWord(category=CATEGORY_MODERATOR, types=[int])
 def nametagStyle(nametagStyle):
     currentAccess = spellbook.getInvokerAccess()
