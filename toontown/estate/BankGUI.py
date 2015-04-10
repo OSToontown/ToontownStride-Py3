@@ -62,8 +62,6 @@ class BankGui(DirectFrame):
         messenger.send(self.doneEvent, [0])
 
     def __requestTransaction(self):
-        self.ignore(localAvatar.uniqueName('moneyChange'))
-        self.ignore(localAvatar.uniqueName('bankMoneyChange'))
         messenger.send(self.doneEvent, [self.__transactionAmount])
 
     def __updateTransaction(self, amount):
@@ -99,19 +97,14 @@ class BankGui(DirectFrame):
     def __runCounter(self, task):
         if task.time - task.prevTime < task.delayTime:
             return Task.cont
-        
-        task.delayTime /= 2
-        task.prevTime = task.time
-        
-        if task.delayTime < 0.005:
-            task.amount *= 1.1
-        
-        hitLimit = self.__updateTransaction(int(task.amount))[0]
-        
-        if hitLimit:
-            return Task.done
-        
-        return Task.cont
+        else:
+            task.delayTime = max(0.05, task.delayTime * 0.75)
+            task.prevTime = task.time
+            hitLimit, jar, bank, trans = self.__updateTransaction(task.delta)
+            if hitLimit:
+                return Task.done
+            else:
+                return Task.cont
 
     def __depositButtonUp(self, event):
         messenger.send('wakeup')
@@ -119,13 +112,11 @@ class BankGui(DirectFrame):
 
     def __depositButtonDown(self, event):
         messenger.send('wakeup')
-        
         task = Task(self.__runCounter)
-        task.delayTime = 0.2
+        task.delayTime = 0.4
         task.prevTime = 0.0
-        task.amount = 1.0
-        hitLimit = self.__updateTransaction(int(task.amount))[0]
-        
+        task.delta = 1
+        hitLimit, jar, bank, trans = self.__updateTransaction(task.delta)
         if not hitLimit:
             taskMgr.add(task, self.taskName('runCounter'))
 
@@ -135,13 +126,11 @@ class BankGui(DirectFrame):
 
     def __withdrawButtonDown(self, event):
         messenger.send('wakeup')
-        
         task = Task(self.__runCounter)
-        task.delayTime = 0.2
+        task.delayTime = 0.4
         task.prevTime = 0.0
-        task.amount = 1.0
-        hitLimit = self.__updateTransaction(int(task.amount))[0]
-        
+        task.delta = -1
+        hitLimit, jar, bank, trans = self.__updateTransaction(task.delta)
         if not hitLimit:
             taskMgr.add(task, self.taskName('runCounter'))
 
