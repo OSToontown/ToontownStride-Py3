@@ -487,7 +487,7 @@ class DistributedCogdoInteriorAI(DistributedObjectAI, FSM.FSM):
             toon = self.air.doId2do.get(v)
             if toon:
                 if self.FOType == 's':
-                    if not toon.attemptAddNPCFriend(self.sosNPC, numCalls=1):
+                    if not toon.attemptAddNPCFriend(self.sosNPC):
                         self.notify.info('%s unable to add NPCFriend %s to %s.' % (self.doId, self.sosNPC, v))
                         
                 elif self.FOType == 'l':

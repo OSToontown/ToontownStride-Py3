@@ -96,6 +96,9 @@ want-resistance-dance #f
 # Cog battles:
 base-xp-multiplier 1.0
 
+# SOS toons:
+sos-card-reward 2
+
 # Cog Dominiums
 want-emblems #t
 cogdo-want-barrel-room #t
