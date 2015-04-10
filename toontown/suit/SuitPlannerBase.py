@@ -1,9 +1,9 @@
 from pandac.PandaModules import *
 from direct.directnotify.DirectNotifyGlobal import *
-from toontown.hood import ZoneUtil
-from toontown.toonbase import ToontownGlobals
+from toontown.hood import ZoneUtil, HoodUtil
+from toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
 from toontown.building import SuitBuildingGlobals
-from toontown.dna.DNAParser import DNASuitPoint, DNAStorage, loadDNAFileAI
+from toontown.dna.DNAParser import DNASuitPoint, DNAInteractiveProp, DNAStorage, loadDNAFileAI
 
 class SuitPlannerBase:
     notify = directNotify.newCategory('SuitPlannerBase')
@@ -539,14 +539,24 @@ class SuitPlannerBase:
             self.notify.info('zone %s has %s disconnected suit paths.' % (self.zoneId, numGraphs))
         self.battlePosDict = {}
         self.cellToGagBonusDict = {}
+
         for i in xrange(self.dnaStore.getNumDNAVisGroupsAI()):
             vg = self.dnaStore.getDNAVisGroupAI(i)
             zoneId = int(self.extractGroupName(vg.getName()))
-            if vg.getNumBattleCells() == 1:
-                self.battlePosDict[zoneId] = vg.getBattleCell(0).getPos()
-            elif vg.getNumBattleCells() > 1:
-                self.notify.warning('multiple battle cells for zone: %d' % zoneId)
-                self.battlePosDict[zoneId] = vg.getBattleCell(0).getPos()
+            
+            if vg.getNumBattleCells() >= 1:
+                battleCell = vg.getBattleCell(0)
+                self.battlePosDict[zoneId] = battleCell.getPos()
+            
+            for i in xrange(vg.getNumChildren()):
+                childDnaGroup = vg.at(i)
+                
+                if isinstance(childDnaGroup, DNAInteractiveProp) and not zoneId in self.cellToGagBonusDict:
+                    propType = HoodUtil.calcPropType(childDnaGroup.getName())
+                            
+                    if propType in ToontownBattleGlobals.PropTypeToTrackBonus:
+                        self.cellToGagBonusDict[zoneId] = ToontownBattleGlobals.PropTypeToTrackBonus[propType]
+
         self.dnaStore.resetDNAGroups()
         self.dnaStore.resetDNAVisGroups()
         self.dnaStore.resetDNAVisGroupsAI()
