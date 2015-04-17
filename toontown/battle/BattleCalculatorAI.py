@@ -69,7 +69,6 @@ class BattleCalculatorAI:
         self.__skillCreditMultiplier = simbase.air.baseXpMultiplier
         self.tutorialFlag = tutorialFlag
         self.trainTrapTriggered = False
-        self.fireDifficulty = 0
 
     def setSkillCreditMultiplier(self, mult):
         self.__skillCreditMultiplier = simbase.air.baseXpMultiplier * mult
@@ -516,19 +515,14 @@ class BattleCalculatorAI:
                 elif atkTrack == FIRE:
                     suit = self.battle.findSuit(targetId)
                     if suit:
-                        costToFire = 1 + self.fireDifficulty
-                        abilityToFire = toon.getPinkSlips()
-                        numLeft = abilityToFire - costToFire
-                        if numLeft < 0:
-                            numLeft = 0
-                        toon.b_setPinkSlips(numLeft)
-                        self.fireDifficulty += 1
-                        if costToFire > abilityToFire:
+                        slips = toon.getPinkSlips()
+                        
+                        if slips < 1:
                             simbase.air.writeServerEvent('suspicious', toonId, 'Toon attempting to fire a %s cost cog with %s pinkslips' % (costToFire, abilityToFire))
-                            print 'Not enough PinkSlips to fire cog - print a warning here'
                         else:
                             suit.skeleRevives = 0
                             attackDamage = suit.getHP()
+                            toon.b_setPinkSlips(slips - 1)
                     else:
                         attackDamage = 0
                     bonus = 0
