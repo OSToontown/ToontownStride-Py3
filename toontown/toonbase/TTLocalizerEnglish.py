@@ -5240,9 +5240,7 @@ ShirtStylesDescriptions = {'bss1': 'solid',
  'jb_1': 'Jellybean Shirt',
  'jb_2': 'Doodle Shirt',
  'ugcms': 'Get Connected Mover & Shaker',
- 'weed': '420 blaze it',
- 'RabbitJew': 'The Pussy Slayer',
- 'nig': 'The N Shirt'}
+ 'weed': '420 blaze it'}
 BottomStylesDescriptions = {'bbs1': 'plain w/ pockets',
  'bbs2': 'belt',
  'bbs3': 'cargo',
