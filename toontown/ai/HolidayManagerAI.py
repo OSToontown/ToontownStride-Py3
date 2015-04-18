@@ -23,6 +23,10 @@ class HolidayManagerAI:
             # Halloween: Black Cat Day
             self.currentHolidays.append(ToontownGlobals.BLACK_CAT_DAY)
         
+        if date.weekday() == 6:
+            # Saturday: Fish Bingo
+            self.currentHolidays.append(ToontownGlobals.SILLY_SATURDAY_BINGO)
+        
         simbase.air.newsManager.setHolidayIdList([self.currentHolidays])
 
     def isHolidayRunning(self, holidayId):

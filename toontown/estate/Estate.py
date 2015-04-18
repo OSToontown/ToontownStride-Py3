@@ -234,7 +234,7 @@ class Estate(Place.Place):
         self.notify.info('remove estate-check-toon-underwater to TaskMgr in enterTeleportIn()')
         taskMgr.remove('estate-check-toon-underwater')
         if base.wantPets:
-            if base.localAvatar.hasPet() and not base.localAvatar.bPetTutorialDone:
+            if base.localAvatar.hasPet() and not base.localAvatar.petTutorialDone:
                 self.nextState = 'petTutorial'
 
     def teleportInDone(self):

@@ -127,13 +127,13 @@ class PicnicBasket(StateData.StateData):
         del self.noTrolleyBox
 
     def __handleNoTrolleyAck(self):
-        ntbDoneStatus = self.noTrolleyBox.doneStatus
-        if ntbDoneStatus == 'ok':
+        ntdoneStatus = self.noTrolleyBox.doneStatus
+        if ntdoneStatus == 'ok':
             doneStatus = {}
             doneStatus['mode'] = 'reject'
             messenger.send(self.doneEvent, [doneStatus])
         else:
-            self.notify.error('Unrecognized doneStatus: ' + str(ntbDoneStatus))
+            self.notify.error('Unrecognized doneStatus: ' + str(ntdoneStatus))
 
     def enterRequestBoard(self):
         return None

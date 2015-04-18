@@ -195,6 +195,8 @@ class NewsManager(DistributedObject.DistributedObject):
             elif holidayId in promotionalSpeedChatHolidays:
                 if hasattr(base, 'TTSCPromotionalMenu'):
                     base.TTSCPromotionalMenu.startHoliday(holidayId)
+            elif holidayId == ToontownGlobals.SILLY_SATURDAY_BINGO:
+                self.setBingoOngoing()
             elif holidayId == ToontownGlobals.MORE_XP_HOLIDAY:
                 self.setMoreXpHolidayStart()
             elif holidayId == ToontownGlobals.JELLYBEAN_DAY:
@@ -310,6 +312,8 @@ class NewsManager(DistributedObject.DistributedObject):
             elif holidayId in promotionalSpeedChatHolidays:
                 if hasattr(base, 'TTSCPromotionalMenu'):
                     base.TTSCPromotionalMenu.endHoliday(holidayId)
+            elif holidayId == ToontownGlobals.SILLY_SATURDAY_BINGO:
+                self.setBingoEnd()
             elif holidayId == ToontownGlobals.MORE_XP_HOLIDAY:
                 self.setMoreXpHolidayEnd()
             elif holidayId == ToontownGlobals.JELLYBEAN_DAY:
@@ -557,9 +561,7 @@ class NewsManager(DistributedObject.DistributedObject):
 
     def holidayNotify(self):
         for id in self.holidayIdList:
-            if id == 19:
-                self.setBingoOngoing()
-            elif id == 20:
+            if id == 20:
                 self.setCircuitRaceOngoing()
             elif id == 21:
                 self.setTrolleyHolidayOngoing()

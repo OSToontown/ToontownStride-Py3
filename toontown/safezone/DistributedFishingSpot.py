@@ -443,11 +443,9 @@ class DistributedFishingSpot(DistributedObject.DistributedObject):
         self.castButton.bind(DGG.B3RELEASE, requestLocalCasting)
         if self.firstCast and len(self.av.fishCollection) == 0 and len(self.av.fishTank) == 0:
             self.__showHowTo(TTLocalizer.FishingHowToFirstTime)
-        elif base.wantBingo and self.pond.hasPondBingoManager() and not self.av.bFishBingoTutorialDone:
-            pass
-            #todo: fix b_setFishBingoTutorialDone crash
-            #self.__showHowTo(TTLocalizer.FishBingoHelpMain)
-            #self.av.b_setFishBingoTutorialDone(True)
+        elif base.wantBingo and self.pond.hasPondBingoManager() and not self.av.fishBingoTutorialDone:
+            self.__showHowTo(TTLocalizer.FishBingoHelpMain)
+            self.av.b_setFishBingoTutorialDone(True)
 
     def __moneyChange(self, money):
         self.jar['text'] = str(money)

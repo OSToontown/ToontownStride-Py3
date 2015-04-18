@@ -136,13 +136,10 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         return self.getZoneId()
 
     def handleTeleportQuery(self, fromAvatar, toAvatar):
-        if base.config.GetBool('want-tptrack', False):
-            if toAvatar == localAvatar:
-                toAvatar.doTeleportResponse(fromAvatar, toAvatar, toAvatar.doId, 1, toAvatar.defaultShard, base.cr.playGame.getPlaceId(), self.getZoneId(), fromAvatar.doId)
-            else:
-                self.notify.warning('handleTeleportQuery toAvatar.doId != localAvatar.doId' % (toAvatar.doId, localAvatar.doId))
+        if toAvatar == localAvatar:
+            toAvatar.doTeleportResponse(fromAvatar, toAvatar, toAvatar.doId, 1, toAvatar.defaultShard, base.cr.playGame.getPlaceId(), self.getZoneId(), fromAvatar.doId)
         else:
-            fromAvatar.d_teleportResponse(toAvatar.doId, 1, toAvatar.defaultShard, base.cr.playGame.getPlaceId(), self.getZoneId())
+            self.notify.warning('handleTeleportQuery toAvatar.doId != localAvatar.doId' % (toAvatar.doId, localAvatar.doId))
 
     def detectedPhoneCollision(self):
         self.fsm.request('phone')

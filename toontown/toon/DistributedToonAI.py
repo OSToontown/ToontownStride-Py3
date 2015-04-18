@@ -75,12 +75,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
      ToontownGlobals.FT_Torso: (CogDisguiseGlobals.torsoIndex,)}
     lastFlagAvTime = globalClock.getFrameTime()
     flagCounts = {}
-    WantTpTrack = simbase.config.GetBool('want-tptrack', False)
-    BanOnDbCheckFail = simbase.config.GetBool('want-ban-dbcheck', 0)
-    DbCheckAccountDateEnable = config.GetBool('account-blackout-enable', 1)
-    DbCheckAccountDateBegin = config.GetString('account-blackout-start', '2013-08-20 12:30:00')
-    DbCheckAccountDateDisconnect = config.GetBool('account-blackout-disconnect', 0)
-    WantOldGMNameBan = simbase.config.GetBool('want-old-gm-name-ban', 1)
     petId = None
 
     def __init__(self, air):
@@ -183,7 +177,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.hostedParties = []
         self.partiesInvitedTo = []
         self.partyReplyInfoBases = []
-        self._dbCheckDoLater = None
         self.teleportOverride = 0
         self._gmDisabled = False
         self.promotionStatus = [0, 0, 0, 0]
@@ -241,9 +234,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         DistributedAvatarAI.DistributedAvatarAI.sendDeleteEvent(self)
 
     def delete(self):
-        if self._dbCheckDoLater:
-            taskMgr.remove(self._dbCheckDoLater)
-            self._dbCheckDoLater = None
         if self.isPlayerControlled():
             messenger.send('avatarExited', [self])
         if simbase.wantPets:
@@ -306,7 +296,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def handleLogicalZoneChange(self, newZoneId, oldZoneId):
         DistributedAvatarAI.DistributedAvatarAI.handleLogicalZoneChange(self, newZoneId, oldZoneId)
 
-        if self.isPlayerControlled() and self.WantTpTrack:
+        if self.isPlayerControlled():
             messenger.send(self.staticGetLogicalZoneChangeAllEvent(), [newZoneId, oldZoneId, self])
 
     def announceZoneChange(self, newZoneId, oldZoneId):
@@ -3038,17 +3028,14 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
                     self.air.writeServerEvent('suspicious', self.doId, 'setPetMovie: playing pet movie %s on non-pet object %s' % (flag, petId))
             return
 
-        def setPetTutorialDone(self, bDone):
-            self.notify.debug('setPetTutorialDone')
-            self.bPetTutorialDone = True
+        def setPetTutorialDone(self, done):
+            self.petTutorialDone = True
 
-        def setFishBingoTutorialDone(self, bDone):
-            self.notify.debug('setFishBingoTutorialDone')
-            self.bFishBingoTutorialDone = True
+        def setFishBingoTutorialDone(self, done):
+            self.fishBingoTutorialDone = True
 
-        def setFishBingoMarkTutorialDone(self, bDone):
-            self.notify.debug('setFishBingoMarkTutorialDone')
-            self.bFishBingoMarkTutorialDone = True
+        def setFishBingoMarkTutorialDone(self, done):
+            self.fishBingoMarkTutorialDone = True
 
         def enterEstate(self, ownerId, zoneId):
             DistributedToonAI.notify.debug('enterEstate: %s %s %s' % (self.doId, ownerId, zoneId))
@@ -4064,21 +4051,9 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def setName(self, name):
         DistributedPlayerAI.DistributedPlayerAI.setName(self, name)
-        if self.WantOldGMNameBan:
-            if self.isGenerated():
-                self._checkOldGMName()
         self._updateGMName()
 
-    def _checkOldGMName(self):
-        if '$' in set(self.name):
-            if config.GetBool('want-ban-old-gm-name', 0):
-                self.ban('invalid name: %s' % self.name)
-            else:
-                self.air.writeServerEvent('suspicious', self.doId, '$ found in toon name')
-
     def teleportResponseToAI(self, toAvId, available, shardId, hoodId, zoneId, fromAvId):
-        if not self.WantTpTrack:
-            return
         senderId = self.air.getAvatarIdFromSender()
         if toAvId != self.doId:
             self.air.writeServerEvent('suspicious', self.doId, 'toAvId=%d is not equal to self.doId' % toAvId)
@@ -5225,4 +5200,3 @@ def emblems(silver=10, gold=10):
 @magicWord(category=CATEGORY_PROGRAMMER)
 def catalog():
     simbase.air.catalogManager.deliverCatalogFor(spellbook.getTarget())
-
