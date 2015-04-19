@@ -543,3 +543,6 @@ class DistributedToonUD(DistributedObjectUD):
 
     def setAchievements(self, achievements):
         pass
+
+    def setRedeemedCodes(self, redeemedCodes):
+        pass

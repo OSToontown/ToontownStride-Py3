@@ -566,19 +566,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def getMaxNPCFriends(self):
         return self.maxNPCFriends
 
-    def b_setRedeemedCodes(self, redeemedCodes):
-        self.redeemedCodes = redeemedCodes
-
-    def getRedeemedCodes(self, redeemedCodes):
-        return self.redeemedCodes
-
-    def isCodeRedeemed(self, code):
-        return code in self.redeemedCodes
-
-    def redeemCode(self, code):
-        if not isCodeReedemed(code):
-            self.redeemedCodes.append(code)
-
     def getBattleId(self):
         if self.battleId >= 0:
             return self.battleId
@@ -4291,6 +4278,27 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def b_setBuffs(self, buffs):
         self.setBuffs(buffs)
         self.d_setBuffs(buffs)
+
+    def setRedeemedCodes(self, redeemedCodes):
+        self.redeemedCodes = redeemedCodes
+
+    def d_setRedeemedCodes(self, redeemedCodes):
+        self.sendUpdate('setRedeemedCodes', [redeemedCodes])
+
+    def b_setRedeemedCodes(self, redeemedCodes):
+        self.setRedeemedCodes(redeemedCodes)
+        self.d_setRedeemedCodes(redeemedCodes)
+
+    def getRedeemedCodes(self, redeemedCodes):
+        return self.redeemedCodes
+
+    def isCodeRedeemed(self, code):
+        return code in self.redeemedCodes
+
+    def redeemCode(self, code):
+        if not self.isCodeRedeemed(code):
+            self.redeemedCodes.append(code)
+            self.b_setRedeemedCodes(self.redeemedCodes)
 
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[str, int, int])

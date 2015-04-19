@@ -657,10 +657,6 @@ class CodesTabPage(DirectFrame):
             if awardMgrResult == 1:
                 self.resultPanel['text'] = TTLocalizer.CdrResultMailboxFull
             elif awardMgrResult == 2:
-                self.resultPanel['text'] = TTLocalizer.CdrResultAlreadyInMailbox
-            elif awardMgrResult == 3:
-                self.resultPanel['text'] = TTLocalizer.CdrResultReachedLimit
-            elif awardMgrResult == 4:
                 self.resultPanel['text'] = TTLocalizer.CdrResultAlreadyRedeemed
         if result == 0:
             self.successSfx.play()
