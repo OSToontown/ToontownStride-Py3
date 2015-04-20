@@ -287,7 +287,7 @@ from toontown.uberdog.DistributedPartyManager/AI/UD import DistributedPartyManag
 from toontown.rpc.AwardManager/UD import AwardManager/UD
 from toontown.uberdog.DistributedCpuInfoMgr/AI/UD import DistributedCpuInfoMgr/AI/UD
 from toontown.uberdog.DistributedInGameNewsMgr/AI/UD import DistributedInGameNewsMgr/AI/UD
-from toontown.coderedemption.TTCodeRedemptionMgr/AI/UD import TTCodeRedemptionMgr/AI/UD
+from toontown.coderedemption.TTCodeRedemptionMgr/AI import TTCodeRedemptionMgr/AI
 from toontown.distributed.NonRepeatableRandomSourceAI import NonRepeatableRandomSourceAI
 from toontown.distributed.NonRepeatableRandomSourceUD import NonRepeatableRandomSourceUD
 from toontown.ai.DistributedPhaseEventMgr/AI import DistributedPhaseEventMgr/AI
@@ -3310,10 +3310,7 @@ dclass NonRepeatableRandomSourceClient {
 };
 
 dclass TTCodeRedemptionMgr : DistributedObject, NonRepeatableRandomSourceClient {
-  giveAwardToToonResult(uint32, uint32);
   redeemCode(uint32, char [0-256]) airecv clsend;
-  redeemCodeAiToUd(uint32, DoId, uint32, string, uint32);
-  redeemCodeResultUdToAi(uint32, uint32, uint32, uint32, uint32) airecv;
   redeemCodeResult(uint32, uint32, uint32);
 };
 
