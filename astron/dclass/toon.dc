@@ -1264,7 +1264,7 @@ dclass DistributedPartyActivity : DistributedObject {
   exitRequestDenied(uint8);
   setToonsPlaying(uint32 []) broadcast ram;
   setState(string, int16) broadcast ram;
-  showJellybeanReward(uint32, uint8, string);
+  showJellybeanReward(uint32, uint32, string);
 };
 
 dclass DistributedPartyTeamActivity : DistributedPartyActivity {
