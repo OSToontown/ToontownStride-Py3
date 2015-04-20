@@ -6135,7 +6135,8 @@ ShirtStylesDescriptions = {'bss1': 'solid',
  'lb_1': 'Lawbot Icon Shirt',
  'jb_1': 'Jellybean Shirt',
  'jb_2': 'Doodle Shirt',
- 'ugcms': 'Get Connected Mover & Shaker'}
+ 'ugcms': 'Get Connected Mover & Shaker',
+ 'weed': '420 BlazeIt Shirt'}
 BottomStylesDescriptions = {'bbs1': 'plain w/ pockets',
  'bbs2': 'belt',
  'bbs3': 'cargo',
@@ -6675,7 +6676,8 @@ ClothingTypeNames = {1001: 'Ghost Shirt',
  1783: 'Racing Shorts 1',
  1784: 'Racing Skirt 1',
  1801: 'Batty Moon Shirt',
- 1802: 'Mittens Shirt'}
+ 1802: 'Mittens Shirt',
+ 1821: '420 BlazeIt Shirt'}
 AccessoryArticleNames = ('Hat',
  'Glasses',
  'Backpack',

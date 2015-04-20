@@ -322,7 +322,8 @@ Shirts = ['phase_3/maps/desat_shirt_1.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_trolley05.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_saveBuilding4.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_saveBuilding05.jpg',
- 'phase_4/maps/tt_t_chr_avt_shirt_anniversary.jpg']
+ 'phase_4/maps/tt_t_chr_avt_shirt_anniversary.jpg',
+ 'phase_4/maps/WeedShirt.jpg']
 BoyShirts = [(0, 0),
  (1, 1),
  (2, 2),
@@ -657,7 +658,8 @@ ClothesColors = [VBase4(0.933594, 0.265625, 0.28125, 1.0),
  VBase4(0.0, 0.2, 0.956862, 1.0),
  VBase4(0.972549, 0.094117, 0.094117, 1.0),
  VBase4(0.447058, 0.0, 0.90196, 1.0),
- VBase4(0.3, 0.3, 0.35, 1.0)]
+ VBase4(0.3, 0.3, 0.35, 1.0),
+ VBase4(0.196078, 0.803921, 0.196078, 1.0)]
 ShirtStyles = {'bss1': [0, 0, [(0, 0),
            (1, 1),
            (2, 2),
@@ -1225,7 +1227,8 @@ ShirtStyles = {'bss1': [0, 0, [(0, 0),
  'jb_1': [112, 99, [(27, 27)]],
  'jb_2': [113, 100, [(27, 27)]],
  'ugcms': [117, 104, [(27, 27)]],
- 'lb_1': [119, 106, [(27, 27)]]}
+ 'lb_1': [119, 106, [(27, 27)]],
+ 'weed': [148, 0, [(27, 32)]]}
 BottomStyles = {'bbs1': [0, [0,
            1,
            2,
