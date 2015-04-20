@@ -209,6 +209,7 @@ from toontown.racing import DistributedProjectile/AI
 from toontown.racing.DistributedStartingBlock/AI import DistributedViewingBlock/AI
 from toontown.uberdog.ClientServicesManager/UD import ClientServicesManager/UD
 from toontown.uberdog.DistributedDeliveryManager/AI/UD import DistributedDeliveryManager/AI/UD
+from toontown.uberdog.DistributedDataStoreManager/AI/UD import DistributedDataStoreManager/AI/UD
 from toontown.suit import DistributedLawbotBoss/AI
 from toontown.coghq import DistributedLawbotBossGavel/AI
 from toontown.suit import DistributedLawbotBossSuit/AI
@@ -284,6 +285,7 @@ from toontown.safezone import DistributedFindFour/AI
 from toontown.uberdog.DistributedMailManager/AI/UD import DistributedMailManager/AI/UD
 from toontown.uberdog.DistributedPartyManager/AI/UD import DistributedPartyManager/AI/UD
 from toontown.rpc.AwardManager/UD import AwardManager/UD
+from toontown.uberdog.DistributedCpuInfoMgr/AI/UD import DistributedCpuInfoMgr/AI/UD
 from toontown.uberdog.DistributedInGameNewsMgr/AI/UD import DistributedInGameNewsMgr/AI/UD
 from toontown.coderedemption.TTCodeRedemptionMgr/AI import TTCodeRedemptionMgr/AI
 from toontown.distributed.NonRepeatableRandomSourceAI import NonRepeatableRandomSourceAI
@@ -2514,6 +2516,14 @@ dclass DistributedWinterCarolingTarget : DistributedObject {
   requestScavengerHunt() airecv clsend;
 };
 
+dclass DistributedDataStoreManager : DistributedObject {
+  startStore(uint8);
+  stopStore(uint8);
+  queryStore(uint8, string);
+  receiveResults(uint8, string);
+  deleteBackupStores();
+};
+
 dclass DistributedVehicle : DistributedSmoothNode {
   setOwner(uint32) required broadcast ram;
   setState(char, uint32) broadcast ram;
@@ -3289,6 +3299,10 @@ dclass ClientServicesManager : DistributedObjectGlobal {
 
 dclass AwardManager : DistributedObjectGlobal {
   giveAwardToToon(uint32, DoId, string, DoId, uint32, uint32);
+};
+
+dclass DistributedCpuInfoMgr : DistributedObjectGlobal {
+  setCpuInfoToUd(uint32, uint32, string, string);
 };
 
 dclass NonRepeatableRandomSourceClient {
