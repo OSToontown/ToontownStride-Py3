@@ -518,7 +518,7 @@ class BattleCalculatorAI:
                         slips = toon.getPinkSlips()
                         
                         if slips < 1:
-                            simbase.air.writeServerEvent('suspicious', toonId, 'Toon attempting to fire a %s cost cog with %s pinkslips' % (costToFire, abilityToFire))
+                            simbase.air.writeServerEvent('suspicious', toonId, 'Toon attempting to fire a cog without any pinkslips')
                         else:
                             suit.skeleRevives = 0
                             attackDamage = suit.getHP()
