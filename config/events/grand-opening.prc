@@ -32,7 +32,7 @@ punchline-place-building-chance 100.0
 want-fishing #f
 want-housing #f
 want-pets #f
-want-parties #f
+want-parties #t
 
 # Optional:
 want-talkative-tyler #f
