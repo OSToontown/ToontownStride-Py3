@@ -2,14 +2,14 @@
 from pandac.PandaModules import *
 
 
-hashVal = 2712424547L
+hashVal = 1239960628
 
 
 from toontown.coghq import DistributedCashbotBossSafe, DistributedCashbotBossCrane, DistributedBattleFactory, DistributedCashbotBossTreasure, DistributedCogHQDoor, DistributedSellbotHQDoor, DistributedFactoryElevatorExt, DistributedMintElevatorExt, DistributedLawOfficeElevatorExt, DistributedLawOfficeElevatorInt, LobbyManager, DistributedMegaCorp, DistributedFactory, DistributedLawOffice, DistributedLawOfficeFloor, DistributedLift, DistributedDoorEntity, DistributedSwitch, DistributedButton, DistributedTrigger, DistributedCrushableEntity, DistributedCrusherEntity, DistributedStomper, DistributedStomperPair, DistributedLaserField, DistributedGolfGreenGame, DistributedSecurityCamera, DistributedMover, DistributedElevatorMarker, DistributedBarrelBase, DistributedGagBarrel, DistributedBeanBarrel, DistributedHealBarrel, DistributedGrid, ActiveCell, DirectionalCell, CrusherCell, DistributedCrate, DistributedSinkingPlatform, BattleBlocker, DistributedMint, DistributedMintRoom, DistributedMintBattle, DistributedStage, DistributedStageRoom, DistributedStageBattle, DistributedLawbotBossGavel, DistributedLawbotCannon, DistributedLawbotChair, DistributedCogKart, DistributedCountryClub, DistributedCountryClubRoom, DistributedMoleField, DistributedCountryClubBattle, DistributedMaze, DistributedFoodBelt, DistributedBanquetTable, DistributedGolfSpot
 from toontown.golf import DistributedPhysicsWorld, DistributedGolfHole, DistributedGolfCourse
 from toontown.building import DistributedAnimatedProp, DistributedTrophyMgr, DistributedBuilding, DistributedBuildingQueryMgr, DistributedToonInterior, DistributedToonHallInterior, DistributedSuitInterior, DistributedHQInterior, DistributedGagshopInterior, DistributedPetshopInterior, DistributedKartShopInterior, DistributedLibraryInterior, DistributedDoor, DistributedKnockKnockDoor, DistributedElevator, DistributedElevatorFSM, DistributedElevatorExt, DistributedElevatorInt, DistributedElevatorFloor, DistributedBossElevator, DistributedVPElevator, DistributedCFOElevator, DistributedCJElevator, DistributedBBElevator, DistributedBoardingParty, DistributedTutorialInterior, DistributedClubElevator
 from toontown.uberdog.DistributedPartyManager import DistributedPartyManager
-from otp.friends import FriendManager, PlayerFriendsManager, GuildManager, FriendInfo, AvatarFriendInfo
+from otp.friends import FriendManager, PlayerFriendsManager, FriendInfo, AvatarFriendInfo
 from otp.level import DistributedLevel, DistributedEntity, DistributedInteractiveEntity
 from toontown.shtiker import DeleteManager, PurchaseManager, NewbiePurchaseManager
 from toontown.groups import GroupManager

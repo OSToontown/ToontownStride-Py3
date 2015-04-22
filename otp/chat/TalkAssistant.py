@@ -40,12 +40,10 @@ class TalkAssistant(DirectObject.DirectObject):
         self.historyComplete = []
         self.historyOpen = []
         self.historyUpdates = []
-        self.historyGuild = []
         self.historyByDoId = {}
         self.historyByDISLId = {}
         self.floodDataByDoId = {}
         self.spamDictByDoId = {}
-        self.labelGuild = OTPLocalizer.TalkGuild
         self.handleDict = {}
         self.messageCount = 0
         self.shownWhiteListWarning = 0
@@ -300,16 +298,6 @@ class TalkAssistant(DirectObject.DirectObject):
             return True
         return False
 
-    def checkGuildTypedChat(self):
-        if localAvatar.guildId:
-            return True
-        return False
-
-    def checkGuildSpeedChat(self):
-        if localAvatar.guildId:
-            return True
-        return False
-
     def receiveOpenTalk(self, senderAvId, avatarName, accountId, accountName, message, scrubbed = 0):
         error = None
         if not avatarName and senderAvId:
@@ -373,26 +361,6 @@ class TalkAssistant(DirectObject.DirectObject):
         if accountId:
             self.addToHistoryDISLId(newMessage, accountId, scrubbed)
         messenger.send('NewOpenMessage', [newMessage])
-        return error
-
-    def receiveGuildTalk(self, senderAvId, fromAC, avatarName, message, scrubbed = 0):
-        error = None
-        if not self.isThought(message):
-            accountName = self.findName(fromAC, 1)
-            newMessage = TalkMessage(self.countMessage(), self.stampTime(), message, senderAvId, avatarName, fromAC, accountName, None, None, None, None, TALK_GUILD, None)
-            reject = self.addToHistoryDoId(newMessage, senderAvId)
-            if reject == 1:
-                newMessage.setBody(OTPLocalizer.AntiSpamInChat)
-            if reject != 2:
-                isSpam = self.spamDictByDoId.get(senderAvId) and reject
-                if not isSpam:
-                    self.historyComplete.append(newMessage)
-                    self.historyGuild.append(newMessage)
-                    messenger.send('NewOpenMessage', [newMessage])
-                if newMessage.getBody() == OTPLocalizer.AntiSpamInChat:
-                    self.spamDictByDoId[senderAvId] = 1
-                else:
-                    self.spamDictByDoId[senderAvId] = 0
         return error
 
     def receiveGMTalk(self, avatarId, avatarName, accountId, accountName, message, scrubbed = 0):
@@ -459,24 +427,6 @@ class TalkAssistant(DirectObject.DirectObject):
         messenger.send('NewOpenMessage', [newMessage])
         return error
 
-    def receiveGuildMessage(self, message, senderAvId, senderName):
-        error = None
-        if not self.isThought(message):
-            newMessage = TalkMessage(self.countMessage(), self.stampTime(), message, senderAvId, senderName, None, None, None, None, None, None, TALK_GUILD, None)
-            self.historyComplete.append(newMessage)
-            self.historyGuild.append(newMessage)
-        messenger.send('NewOpenMessage', [newMessage])
-        return error
-
-    def receiveGuildUpdateMessage(self, message, senderId, senderName, receiverId, receiverName, extraInfo = None):
-        error = None
-        if not self.isThought(message):
-            newMessage = TalkMessage(self.countMessage(), self.stampTime(), message, senderId, senderName, None, None, receiverId, receiverName, None, None, INFO_GUILD, extraInfo)
-            self.historyComplete.append(newMessage)
-            self.historyGuild.append(newMessage)
-        messenger.send('NewOpenMessage', [newMessage])
-        return error
-
     def receiveFriendUpdate(self, friendId, friendName, isOnline):
         if isOnline:
             onlineMessage = OTPLocalizer.FriendOnline
@@ -498,20 +448,6 @@ class TalkAssistant(DirectObject.DirectObject):
         self.historyComplete.append(newMessage)
         self.historyUpdates.append(newMessage)
         messenger.send('NewOpenMessage', [newMessage])
-        return
-
-    def receiveGuildUpdate(self, memberId, memberName, isOnline):
-        if base.cr.identifyFriend(memberId) is None:
-            if isOnline:
-                onlineMessage = OTPLocalizer.GuildMemberOnline
-            else:
-                onlineMessage = OTPLocalizer.GuildMemberOffline
-            newMessage = TalkMessage(self.countMessage(), self.stampTime(), onlineMessage, memberId, memberName, None, None, None, None, None, None, UPDATE_GUILD, None)
-            self.addHandle(memberId, newMessage)
-            self.historyComplete.append(newMessage)
-            self.historyUpdates.append(newMessage)
-            self.historyGuild.append(newMessage)
-            messenger.send('NewOpenMessage', [newMessage])
         return
 
     def receiveOpenSpeedChat(self, type, messageIndex, senderAvId, name = None):
@@ -614,15 +550,6 @@ class TalkAssistant(DirectObject.DirectObject):
          0])
         return error
 
-    def sendGuildTalk(self, message):
-        error = None
-        if self.checkGuildTypedChat():
-            base.cr.guildManager.sendTalk(message)
-        else:
-            print 'Guild chat error'
-            error = ERROR_NO_GUILD_CHAT
-        return error
-
     def sendOpenSpeedChat(self, type, messageIndex):
         error = None
         if type == SPEEDCHAT_NORMAL:
@@ -665,15 +592,6 @@ class TalkAssistant(DirectObject.DirectObject):
     def sendPlayerWhisperSpeedChat(self, type, messageIndex, receiverId):
         # TODO: Remove Player system
         return None
-
-    def sendGuildSpeedChat(self, type, msgIndex):
-        error = None
-        if self.checkGuildSpeedChat():
-            base.cr.guildManager.sendSC(msgIndex)
-        else:
-            print 'Guild Speedchat error'
-            error = ERROR_NO_GUILD_CHAT
-        return error
 
     def getWhisperReplyId(self):
         if self.lastWhisper:

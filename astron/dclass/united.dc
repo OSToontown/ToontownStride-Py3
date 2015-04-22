@@ -10,7 +10,6 @@ from otp.avatar import DistributedAvatar/AI/UD
 from otp.avatar import DistributedPlayer/AI
 from otp.friends import FriendManager/AI
 from otp.friends import PlayerFriendsManager/UD
-from otp.friends import GuildManager/AI/UD
 from otp.friends import FriendInfo
 from otp.friends import AvatarFriendInfo
 from otp.distributed import DistributedDistrict/AI/UD
@@ -311,70 +310,6 @@ dclass LeaderBoard : LeaderBoardReceiver {
   getTopTen(string);
   getValuesRespondTo(string, uint32 [], uint32);
   getTopTenRespondTo(string, uint32);
-};
-
-dclass GuildManager : DistributedObject, LeaderBoardReceiver, TalkPath_group {
-  online();
-  guildRejectInvite(uint32, uint32);
-  invitationFrom(uint32, string, uint32, string);
-  requestInvite(uint32) airecv clsend;
-  memberList() airecv clsend;
-  createGuild() airecv clsend;
-  acceptInvite() airecv clsend;
-  declineInvite() airecv clsend;
-  setWantName(string(0-256)) airecv clsend;
-  removeMember(uint32) airecv clsend;
-  changeRank(uint32, uint8) airecv clsend;
-  changeRankAvocate(uint32) airecv clsend;
-  statusRequest() airecv clsend;
-  requestLeaderboardTopTen() airecv clsend;
-  guildStatusUpdate(uint32, string(0-256), uint8);
-  guildNameReject(uint32);
-  guildNameChange(string, uint8);
-  receiveMember(MemberInfo);
-  receiveMembersDone();
-  guildAcceptInvite(uint32);
-  guildDeclineInvite(uint32);
-  updateRep(uint32, uint32);
-  leaderboardTopTen(leaderBoardRecord []);
-  recvAvatarOnline(uint32, string, uint32, uint32);
-  recvAvatarOffline(uint32, string);
-  sendChat(string(0-256), uint8, uint32) airecv clsend;
-  sendWLChat(string(0-256), uint8, uint32) airecv clsend;
-  sendSC(uint16) airecv clsend;
-  sendSCQuest(uint16, uint16, uint16) airecv clsend;
-  recvChat(uint32, string, uint8, uint32);
-  recvWLChat(uint32, string, uint8, uint32);
-  recvSC(uint32, uint16);
-  recvSCQuest(uint32, uint16, uint16, uint16);
-  sendTokenRequest() airecv clsend;
-  recvTokenGenerated(string);
-  recvTokenInviteValue(string, int8);
-  sendTokenForJoinRequest(string(0-256), string(0-256)) airecv clsend;
-  recvTokenRedeemMessage(string);
-  recvTokenRedeemedByPlayerMessage(string);
-  sendTokenRValue(string(0-256), int8) airecv clsend;
-  sendPermToken() airecv clsend;
-  sendNonPermTokenCount() airecv clsend;
-  recvPermToken(string);
-  recvNonPermTokenCount(uint8);
-  sendClearTokens(uint8) airecv clsend;
-  sendAvatarBandId(uint32, uint32, uint32);
-  recvMemberAdded(MemberInfo, uint32, string);
-  notifyGuildKicksMaxed();
-  recvMemberRemoved(uint32, uint32, string, string);
-  recvMemberUpdateName(uint32, string);
-  recvMemberUpdateRank(uint32, uint32, string, string, uint8, bool);
-  recvMemberUpdateBandId(uint32, uint32, uint32);
-  avatarOnline(uint32, uint16);
-  avatarOffline(uint32);
-  reflectTeleportQuery(uint32, uint32, uint32, uint32, uint32) clsend airecv;
-  teleportQuery(uint32, uint32, uint32, uint32, uint32);
-  reflectTeleportResponse(uint32, int8, uint32, uint32, uint32) clsend airecv;
-  teleportResponse(uint32, int8, uint32, uint32, uint32);
-  requestGuildMatesList(uint32, uint32, uint32);
-  updateAvatarName(uint32, string);
-  avatarDeleted(uint32);
 };
 
 dclass PlayerFriendsManager : DistributedObject, TalkPath_account {
