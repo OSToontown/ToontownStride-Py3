@@ -117,13 +117,6 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
     def exitAllChat(self):
         pass
 
-    def enterCrewChat(self):
-        self['focus'] = 1
-        self.show()
-
-    def exitCrewChat(self):
-        pass
-
     def enterPlayerWhisper(self):
         self.tempText = self.chatEntry.get()
         self.activate()
@@ -214,8 +207,6 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
             base.talkAssistant.sendOpenTalk(text)
         elif self.receiverId and not self.toPlayer:
             base.talkAssistant.sendWhisperTalk(text, self.receiverId)
-        elif self.receiverId and self.toPlayer:
-            base.talkAssistant.sendAccountTalk(text, self.receiverId)
 
     def sendChatByMode(self, text):
         state = self.getCurrentOrNextState()
@@ -224,10 +215,6 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
             base.talkAssistant.sendPlayerWhisperWLChat(text, self.whisperId)
         elif state == 'AvatarWhisper':
             base.talkAssistant.sendAvatarWhisperWLChat(text, self.whisperId)
-        elif state == 'CrewChat':
-            base.talkAssistant.sendAvatarCrewWLChat(text)
-        elif len(text) > 0 and text[0] == '~':
-            base.talkAssistant.sendOpenTalk(text)
         else:
             base.talkAssistant.sendOpenTalk(text)
 

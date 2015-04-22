@@ -471,29 +471,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         whisper.manage(base.marginManager)
         base.playSfx(sfx)
 
-    def displayTalkAccount(self, fromId, senderName, rawString, mods):
-        sender = None
-        playerInfo = None
-        sfx = self.soundWhisper
-        playerInfo = base.cr.playerFriendsManager.playerId2Info.get(fromId, None)
-        if playerInfo == None:
-            return
-        senderAvId = base.cr.playerFriendsManager.findAvIdFromPlayerId(fromId)
-        if not senderName and base.cr.playerFriendsManager.playerId2Info.get(fromId):
-            senderName = base.cr.playerFriendsManager.playerId2Info.get(fromId).playerName
-        senderAvatar = base.cr.identifyAvatar(senderAvId)
-        if sender:
-            chatString, scrubbed = senderAvatar.scrubTalk(rawString, mods)
-        else:
-            chatString, scrubbed = self.scrubTalk(rawString, mods)
-        chatString = senderName + ': ' + chatString
-        whisper = WhisperPopup(chatString, OTPGlobals.getInterfaceFont(), WTNormal)
-        if playerInfo != None:
-            whisper.setClickable(senderName, fromId, 1)
-        whisper.manage(base.marginManager)
-        base.playSfx(sfx)
-        return
-
     def isLocal(self):
         return 1
 

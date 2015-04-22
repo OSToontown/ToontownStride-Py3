@@ -1,3 +1,0 @@
-class RejectCode:
-    FRIENDS_LIST_FULL = 60005
-    INVITATION_DECLINED = 60008

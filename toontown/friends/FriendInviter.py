@@ -13,7 +13,6 @@ from toontown.suit import Suit
 from toontown.pets import Pet
 from otp.otpbase import OTPLocalizer
 from otp.otpbase import OTPGlobals
-from otp.uberdog import RejectCode
 globalFriendInviter = None
 
 def showFriendInviter(avId, avName, avDisableName):
@@ -517,14 +516,7 @@ class FriendInviter(DirectFrame):
             self.fsm.request('maybe')
 
     def __playerFriendRejectResponse(self, avId, reason):
-        self.notify.debug('Got reject response to friendResponse: %s' % reason)
-        if reason == RejectCode.RejectCode.INVITATION_DECLINED:
-            self.fsm.request('no')
-        elif reason == RejectCode.RejectCode.FRIENDS_LIST_FULL:
-            self.fsm.request('otherTooMany')
-        else:
-            self.notify.warning('Got unexpected response to friendResponse: %s' % reason)
-            self.fsm.request('maybe')
+        self.fsm.request('maybe')
 
     def __playerFriendAcceptResponse(self):
         self.fsm.request('yes')

@@ -42,17 +42,6 @@ class PlayerFriendsManager(DistributedObjectGlobal):
     def sendSCEmoteWhisper(self, recipientId, msgId):
         self.sendUpdate('whisperSCEmoteTo', [0, recipientId, msgId])
 
-    def setTalkAccount(self, toAc, fromAc, fromName, message, mods, flags):
-        localAvatar.displayTalkAccount(fromAc, fromName, message, mods)
-        toName = None
-        friendInfo = self.getFriendInfo(toAc)
-        if friendInfo:
-            toName = friendInfo.playerName
-        elif toAc == localAvatar.DISLid:
-            toName = localAvatar.getName()
-        base.talkAssistant.receiveAccountTalk(None, None, fromAc, fromName, toAc, toName, message)
-        return
-
     def invitationFrom(self, playerId, avatarName):
         messenger.send(OTPGlobals.PlayerFriendInvitationEvent, [playerId, avatarName])
 

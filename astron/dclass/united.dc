@@ -178,11 +178,6 @@ dclass TalkPath_group {
                string(0-400) chat, TalkModification [], uint8 flags) clsend airecv;
 };
 
-dclass TalkPath_account {
-  setTalkAccount(DoId toAcc, DoId fromAcc, string(0-256) avName,
-                 string(0-400) msg, TalkModification [], uint8 flags) airecv clsend;
-};
-
 dclass AvatarHandle : TalkPath_whisper {
 };
 
@@ -312,7 +307,7 @@ dclass LeaderBoard : LeaderBoardReceiver {
   getTopTenRespondTo(string, uint32);
 };
 
-dclass PlayerFriendsManager : DistributedObject, TalkPath_account {
+dclass PlayerFriendsManager : DistributedObject {
   requestInvite(uint32, uint32, uint8) airecv clsend;
   invitationFrom(uint32, string);
   retractInvite(uint32);
@@ -411,7 +406,6 @@ from toontown.coghq import DistributedCogHQDoor/AI
 from toontown.coghq import DistributedSellbotHQDoor/AI
 from toontown.toon import DistributedNPCToonBase/AI
 from toontown.toon import DistributedNPCToon/AI
-from toontown.toon import DistributedSmartNPC/AI
 from toontown.toon import DistributedSmartNPC/AI
 from toontown.toon import DistributedNPCSpecialQuestGiver/AI
 from toontown.toon import DistributedNPCFlippyInToonHall/AI

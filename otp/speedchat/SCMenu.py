@@ -94,7 +94,7 @@ class SCMenu(SCObject, NodePath):
         self.appendFromStructure(structure)
 
     def appendFromStructure(self, structure):
-        from SpeedChatTypes import SCMenuHolder, SCStaticTextTerminal, SCGMTextTerminal
+        from SpeedChatTypes import SCMenuHolder, SCStaticTextTerminal
         from otp.otpbase import OTPLocalizer
 
         def addChildren(menu, childList):
@@ -123,9 +123,6 @@ class SCMenu(SCObject, NodePath):
                     holder = SCMenuHolder(holderTitle, menu=subMenu)
                     menu.append(holder)
                     addChildren(subMenu, subMenuChildren)
-                elif type(child) == type('') and child[:2] == 'gm':
-                    terminal = SCGMTextTerminal(child)
-                    menu.append(terminal)
                 else:
                     raise 'error parsing speedchat structure. invalid child: %s' % child
 

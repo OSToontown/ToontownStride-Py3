@@ -117,8 +117,6 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
             base.talkAssistant.sendOpenTalk(text)
         elif self.receiverId and not self.toPlayer:
             base.talkAssistant.sendWhisperTalk(text, self.receiverId)
-        elif self.receiverId and self.toPlayer:
-            base.talkAssistant.sendAccountTalk(text, self.receiverId)
 
     def sendWhisperByFriend(self, avatarId, text):
         online = 0
