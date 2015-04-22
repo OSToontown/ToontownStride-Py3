@@ -24,6 +24,7 @@ want-parties #t
 want-cogdominiums #t
 want-lawbot-cogdo #t
 want-achievements #f
+want-anim-props #f
 
 # Chat:
 want-whitelist #f
