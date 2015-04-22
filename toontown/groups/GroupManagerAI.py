@@ -37,7 +37,7 @@ class GroupManagerAI(DistributedObjectAI.DistributedObjectAI):
     def announceGenerate(self):
         DistributedObjectAI.DistributedObjectAI.announceGenerate(self)
         self.air.groupManager = self
-        self.confirmActiveToons = taskMgr.doMethodLater(30, self.confirmToonsInGroup, 'confirmActiveToons')
+        self.confirmActiveToons = taskMgr.doMethodLater(45, self.confirmToonsInGroup, 'confirmActiveToons')
 
     def delete(self):
         DistributedObjectAI.DistributedObjectAI.delete(self)
@@ -66,8 +66,8 @@ class GroupManagerAI(DistributedObjectAI.DistributedObjectAI):
     def confirmToonsInGroup(self, task):
         for groupId, group in self.groupPlayers.items():
             for player in group:
-                toon = base.cr.doId2do.get(player)
-                if toon.getZoneId() != groupId:
+                toon = simbase.air.doId2do.get(player)
+                if toon.zoneId != groupId:
                     self.removePlayerFromGroup(groupId, player)
         return task.again
 
