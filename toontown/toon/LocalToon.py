@@ -869,9 +869,9 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         base.playSfx(sfx)
         return
 
-    def clickedWhisper(self, doId, isPlayer = None):
+    def clickedWhisper(self, doId):
         if doId > 0:
-            LocalAvatar.LocalAvatar.clickedWhisper(self, doId, isPlayer)
+            LocalAvatar.LocalAvatar.clickedWhisper(self, doId)
         else:
             foundCanStart = False
             for partyInfo in self.hostedParties:

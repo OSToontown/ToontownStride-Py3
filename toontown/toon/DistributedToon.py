@@ -2407,9 +2407,9 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
                     if base.cr.isFriend(toonId):
                         if base.cr.isFriendOnline(toonId):
                             if singleReply.status == InviteStatus.Accepted:
-                                self.whisperSCTo(5302, toonId, 0)
+                                self.whisperSCTo(5302, toonId)
                             else:
-                                self.whisperSCTo(5302, toonId, 0)
+                                self.whisperSCTo(5302, toonId)
 
     def updateInvite(self, inviteKey, newStatus):
         DistributedToon.partyNotify.debug('updateInvite( inviteKey=%d, newStatus=%s )' % (inviteKey, InviteStatus.getString(newStatus)))

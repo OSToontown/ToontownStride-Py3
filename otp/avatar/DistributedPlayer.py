@@ -305,7 +305,22 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
         base.cr.ttuFriendsManager.d_teleportQuery(sendToId)
 
     def teleportQuery(self, requesterId):
-        pass
+        avatar = base.cr.identifyFriend(requesterId)
+        
+        if avatar is None:
+            self.d_teleportResponse(self.doId, 0, 0, 0, 0, sendToId=requesterId)
+        elif base.localAvatar.isIgnored(requesterId):
+            self.d_teleportResponse(self.doId, 2, 0, 0, 0, sendToId=requesterId)
+        elif hasattr(base, 'distributedParty') and ((base.distributedParty.partyInfo.isPrivate and requesterId not in base.distributedParty.inviteeIds) or base.distributedParty.isPartyEnding):
+            self.d_teleportResponse(self.doId, 0, 0, 0, 0, sendToId=requesterId)
+        elif self.__teleportAvailable and not self.ghostMode:
+            self.setSystemMessage(requesterId, OTPLocalizer.WhisperComingToVisit % avatar.getName())
+            messenger.send('teleportQuery', [avatar, self])
+        else:
+            if self.failedTeleportMessageOk(requesterId):
+                self.setSystemMessage(requesterId, OTPLocalizer.WhisperFailedVisit % avatar.getName())
+            
+            self.d_teleportResponse(self.doId, 0, 0, 0, 0, sendToId=requesterId)
 
     def failedTeleportMessageOk(self, fromId):
         now = globalClock.getFrameTime()

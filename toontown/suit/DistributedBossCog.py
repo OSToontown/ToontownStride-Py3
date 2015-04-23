@@ -1038,10 +1038,7 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
             return
         if not self.allowClickedNameTag:
             return
-        if self.cr:
-            place = self.cr.playGame.getPlace()
-            if place and hasattr(place, 'fsm'):
-                FriendsListManager.FriendsListManager._FriendsListManager__handleClickedNametag(place, avatar)
+        FriendsListManager.FriendsListManager._FriendsListManager__handleClickedNametag(avatar)
 
     def __handleFriendAvatar(self, avId, avName, avDisableName):
         self.notify.debug('__handleFriendAvatar')

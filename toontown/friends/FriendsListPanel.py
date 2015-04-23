@@ -162,17 +162,14 @@ class FriendsListPanel(DirectFrame, StateData.StateData):
         return None
 
     def makeFriendButton(self, friendTuple, colorChoice = None, bold = 0):
-        toonName = None
-        if len(friendTuple) == 2:
-            avId, flags = friendTuple
+        avId, flags = friendTuple
         command = self.__choseFriend
         handle = base.cr.identifyFriend(avId)
         if handle:
             toonName = handle.getName()
-        if not toonName:
+        else:
             base.cr.fillUpFriendsMap()
             return
-        thing = avId
         fg = ToontownGlobals.ColorNoChat
         if flags & ToontownGlobals.FriendChat:
             fg = ToontownGlobals.ColorAvatar
@@ -277,33 +274,23 @@ class FriendsListPanel(DirectFrame, StateData.StateData):
                     if base.cr.isFriendOnline(friendPair[0]):
                         if friendPair[1] & ToontownGlobals.FriendChat:
                             freeChatOneRef.insert(0, (friendPair[0],
-                             friendPair[1],
-                             0,
-                             0))
+                             friendPair[1]))
                         else:
                             speedChatOneRef.insert(0, (friendPair[0],
-                             friendPair[1],
-                             0,
-                             0))
+                             friendPair[1]))
                     elif friendPair[1] & ToontownGlobals.FriendChat:
                         freeChatOneRef.insert(0, (friendPair[0],
-                         friendPair[1],
-                         0,
-                         0))
+                         friendPair[1]))
                     else:
                         speedChatOneRef.insert(0, (friendPair[0],
-                         friendPair[1],
-                         0,
-                         0))
+                         friendPair[1]))
 
         if self.panelType == FLPOnline:
             if True:
                 for friendPair in base.localAvatar.friendsList:
                     if base.cr.isFriendOnline(friendPair[0]):
                         offlineFriends.append((friendPair[0],
-                         friendPair[1],
-                         0,
-                         0))
+                         friendPair[1]))
 
         if self.panelType == FLPPets:
             for objId, obj in base.cr.doId2do.items():

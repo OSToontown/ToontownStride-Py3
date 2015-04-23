@@ -365,8 +365,7 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
             messenger.send('clickedNametag', [avatar])
 
     def __handleWhisper(self):
-        base.localAvatar.chatMgr.whisperTo(self.avName, self.avId, None)
-        return
+        base.localAvatar.chatMgr.whisperTo(self.avName, self.avId)
 
     def __handleSecrets(self):
         base.localAvatar.chatMgr.noWhisper()

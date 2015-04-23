@@ -439,13 +439,13 @@ class TalkAssistant(DirectObject.DirectObject):
     def sendAvatarWhisperSpeedChat(self, type, messageIndex, receiverId):
         error = None
         if type == SPEEDCHAT_NORMAL:
-            base.localAvatar.whisperSCTo(messageIndex, receiverId, 0)
+            base.localAvatar.whisperSCTo(messageIndex, receiverId)
             message = self.SCDecoder.decodeSCStaticTextMsg(messageIndex)
         elif type == SPEEDCHAT_EMOTE:
-            base.localAvatar.whisperSCEmoteTo(messageIndex, receiverId, 0)
+            base.localAvatar.whisperSCEmoteTo(messageIndex, receiverId)
             message = self.SCDecoder.decodeSCEmoteWhisperMsg(messageIndex, localAvatar.getName())
         elif type == SPEEDCHAT_CUSTOM:
-            base.localAvatar.whisperSCCustomTo(messageIndex, receiverId, 0)
+            base.localAvatar.whisperSCCustomTo(messageIndex, receiverId)
             message = self.SCDecoder.decodeSCCustomMsg(messageIndex)
         if self.logWhispers:
             avatarName = None

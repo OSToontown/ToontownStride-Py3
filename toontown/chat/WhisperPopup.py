@@ -113,7 +113,6 @@ class WhisperPopup(Clickable2d, MarginVisible):
 
         self.senderName = ''
         self.fromId = 0
-        self.isPlayer = 0
 
         self.contents.setScale(self.CONTENTS_SCALE)
 
@@ -234,11 +233,10 @@ class WhisperPopup(Clickable2d, MarginVisible):
 
         self.destroy()
 
-    def setClickable(self, senderName, fromId, isPlayer=0):
+    def setClickable(self, senderName, fromId):
         self.senderName = senderName
         self.fromId = fromId
-        self.isPlayer = isPlayer
-        self.setClickEvent('clickedWhisper', extraArgs=[fromId, isPlayer])
+        self.setClickEvent('clickedWhisper', extraArgs=[fromId])
         self.setActive(True)
 
     def applyClickState(self, clickState):
