@@ -163,7 +163,7 @@ class DistributedBuilding(DistributedObject.DistributedObject):
                     anyOthers = 1
 
             if anyOthers:
-                self.waitingMessage = DirectLabel(text=TTLocalizer.BuildingWaitingForVictors, text_fg=VBase4(1, 1, 1, 1), text_align=TextNode.ACenter, relief=None, pos=(0, 0, 0.35), scale=0.1)
+                self.waitingMessage = DirectLabel(text=TTLocalizer.WaitingForOtherToons, text_fg=VBase4(1, 1, 1, 1), text_align=TextNode.ACenter, relief=None, pos=(0, 0, 0.35), scale=0.1)
         elif victorCount == 0:
             pass
         else:
@@ -201,7 +201,7 @@ class DistributedBuilding(DistributedObject.DistributedObject):
                     anyOthers = 1
 
             if anyOthers:
-                self.waitingMessage = DirectLabel(text=TTLocalizer.BuildingWaitingForVictors, text_fg=VBase4(1, 1, 1, 1), text_align=TextNode.ACenter, relief=None, pos=(0, 0, 0.35), scale=0.1)
+                self.waitingMessage = DirectLabel(text=TTLocalizer.WaitingForOtherToons, text_fg=VBase4(1, 1, 1, 1), text_align=TextNode.ACenter, relief=None, pos=(0, 0, 0.35), scale=0.1)
         elif victorCount == 0:
             pass
         else:

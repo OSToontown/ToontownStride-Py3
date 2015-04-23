@@ -19,7 +19,7 @@ from otp.otpbase import OTPGlobals
 class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToonAvatarPanel')
 
-    def __init__(self, avatar, playerId = None):
+    def __init__(self, avatar):
         from toontown.friends import FriendsListPanel
 
         if base.cr.doId2do.get(avatar.getDoId()):
@@ -27,18 +27,6 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
         AvatarPanelBase.AvatarPanelBase.__init__(self, avatar, FriendsListPanel=FriendsListPanel)
 
         self.notify.debug('Opening toon panel, avId=%d' % self.avId)
-        self.playerId = playerId
-
-        if not self.playerId:
-            av = base.cr.doId2do.get(self.avId)
-            if av:
-                self.playerId = avatar.DISLid
-            else:
-                self.playerId = 0
-
-        self.playerInfo = None
-        if self.playerId:
-            self.playerInfo = base.cr.playerFriendsManager.playerId2Info.get(playerId)
 
         self.laffMeter = None
         wantsLaffMeter = hasattr(avatar, 'hp')
@@ -127,12 +115,6 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
             text_pos=(0.06, -0.02),
             text_align=TextNode.ALeft,
             command=self.__handleFriend)
-
-
-
-        if base.cr.playerFriendsManager.askTransientFriend(self.avId) and self.avId not in base.cr.doId2do:
-            self.friendButton['state'] = DGG.DISABLED
-
 
         if base.localAvatar.isIgnored(self.avId):
             self.friendButton['state'] = DGG.DISABLED
@@ -396,7 +378,7 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
 
     def __handleDetails(self):
         base.localAvatar.chatMgr.noWhisper()
-        messenger.send('avatarDetails', [self.avId, self.avName, self.playerId])
+        messenger.send('avatarDetails', [self.avId, self.avName])
 
     def __handleDisableAvatar(self):
         if not base.cr.isFriend(self.avId):
@@ -448,11 +430,6 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
         if hasattr(self, 'avatar'):
             if self.avatar:
                 return self.avatar.doId
-        return None
-
-    def getPlayerId(self):
-        if hasattr(self, 'playerId'):
-            return self.playerId
         return None
 
     def isHidden(self):

@@ -14,14 +14,12 @@ from toontown.hood import ZoneUtil
 from toontown.toonbase.ToontownBattleGlobals import Tracks, Levels
 globalAvatarDetail = None
 
-def showAvatarDetail(avId, avName, playerId = None):
+def showAvatarDetail(avId, avName):
     global globalAvatarDetail
     if globalAvatarDetail != None:
         globalAvatarDetail.cleanup()
         globalAvatarDetail = None
-    playerId = base.cr.playerFriendsManager.findPlayerIdFromAvId(avId)
-    globalAvatarDetail = ToonAvatarDetailPanel(avId, avName, playerId)
-    return
+    globalAvatarDetail = ToonAvatarDetailPanel(avId, avName)
 
 
 def hideAvatarDetail():
@@ -43,16 +41,12 @@ def unloadAvatarDetail():
 class ToonAvatarDetailPanel(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToonAvatarDetailPanel')
 
-    def __init__(self, avId, avName, playerId = None, parent = base.a2dTopRight, **kw):
+    def __init__(self, avId, avName, parent = base.a2dTopRight, **kw):
         buttons = loader.loadModel('phase_3/models/gui/dialog_box_buttons_gui')
         gui = loader.loadModel('phase_3.5/models/gui/avatar_panel_gui')
         detailPanel = gui.find('**/avatarInfoPanel')
-        self.playerId = playerId
         textScale = 0.095
         textWrap = 16.4
-        self.playerInfo = None
-        if self.playerId:
-            self.playerInfo = base.cr.playerFriendsManager.playerId2Info.get(playerId)
         optiondefs = (('pos', (-0.79, 0.0, -0.47), None),
          ('scale', 0.5, None),
          ('relief', None, None),
@@ -166,35 +160,13 @@ class ToonAvatarDetailPanel(DirectFrame):
         if online:
             shardName = base.cr.getShardName(av.defaultShard)
             hoodName = base.cr.hoodMgr.getFullnameFromId(av.lastHood)
-            if ZoneUtil.isWelcomeValley(av.lastHood):
-                shardName = '%s (%s)' % (TTLocalizer.WelcomeValley[-1], shardName)
-            if self.playerInfo:
-                guiButton = loader.loadModel('phase_3/models/gui/quit_button')
-                self.gotoAvatarButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=1.1, text=TTLocalizer.AvatarShowPlayer, text_scale=0.07, text_pos=(0.0, -0.02), textMayChange=0, pos=(0.44, 0, 0.41), command=self.__showAvatar)
-                text = TTLocalizer.AvatarDetailPanelOnlinePlayer % {'district': shardName,
-                 'location': hoodName,
-                 'player': self.playerInfo.playerName}
-            else:
-                text = TTLocalizer.AvatarDetailPanelOnline % {'district': shardName,
-                 'location': hoodName}
+            text = TTLocalizer.AvatarDetailPanelOnline % {'district': shardName, 'location': hoodName}
         else:
             text = TTLocalizer.AvatarDetailPanelOffline
         self.dataText['text'] = text
         self.__updateTrackInfo()
         self.__updateTrophyInfo()
         self.__updateLaffInfo()
-        return
-
-    def __showAvatar(self):
-        messenger.send('wakeup')
-        hasManager = hasattr(base.cr, 'playerFriendsManager')
-        handle = base.cr.identifyFriend(self.avId)
-        if not handle and hasManager:
-            handle = base.cr.playerFriendsManager.getAvHandleFromId(self.avId)
-        if handle != None:
-            self.notify.info("Clicked on name in friend's list. doId = %s" % handle.doId)
-            messenger.send('clickedNametagPlayer', [handle, self.playerId, 1])
-        return
 
     def __updateLaffInfo(self):
         avatar = self.avatar

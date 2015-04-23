@@ -24,10 +24,6 @@ class TTTalkAssistant(TalkAssistant):
     def clearHistory(self):
         TalkAssistant.clearHistory(self)
 
-    def sendPlayerWhisperToonTaskSpeedChat(self, taskId, toNpcId, toonProgress, msgIndex, receiverId):
-        # TODO: Remove Player system.
-        return None
-
     def sendToonTaskSpeedChat(self, taskId, toNpcId, toonProgress, msgIndex):
         error = None
         messenger.send(SCChatEvent)

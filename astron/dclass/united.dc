@@ -9,9 +9,6 @@ from otp.ai import MagicWordManager/AI
 from otp.avatar import DistributedAvatar/AI/UD
 from otp.avatar import DistributedPlayer/AI
 from otp.friends import FriendManager/AI
-from otp.friends import PlayerFriendsManager/UD
-from otp.friends import FriendInfo
-from otp.friends import AvatarFriendInfo
 from otp.distributed import DistributedDistrict/AI/UD
 from otp.distributed import DistributedDirectory/AI
 from otp.chat import ChatAgent/UD
@@ -247,38 +244,6 @@ dclass FriendManager : DistributedObject {
   submitSecretResponse(int8, int32);
 };
 
-struct FriendInfo {
-  string avatarName;
-  uint32 avatarId;
-  string playerName;
-  uint8 onlineYesNo;
-  uint8 openChatEnabledYesNo;
-  uint8 openChatFriendshipYesNo;
-  uint8 wlChatEnabledYesNo;
-  string location;
-  string sublocation;
-  uint32 timestamp;
-};
-
-struct AvatarFriendInfo {
-  string avatarName;
-  string playerName;
-  uint32 playerId;
-  uint8 onlineYesNo;
-  uint8 openChatEnabledYesNo;
-  uint8 openChatFriendshipYesNo;
-  uint8 wlChatEnabledYesNo;
-};
-
-struct MemberInfo {
-  uint32 avatarId;
-  string avatarName;
-  uint8 avatarRank;
-  uint8 avatarOnline;
-  uint32 bandManagerId;
-  uint32 bandId;
-};
-
 struct leaderBoardRecordResponces {
   char found;
   uint32 id;
@@ -305,21 +270,6 @@ dclass LeaderBoard : LeaderBoardReceiver {
   getTopTen(string);
   getValuesRespondTo(string, uint32 [], uint32);
   getTopTenRespondTo(string, uint32);
-};
-
-dclass PlayerFriendsManager : DistributedObject {
-  requestInvite(uint32, uint32, uint8) airecv clsend;
-  invitationFrom(uint32, string);
-  retractInvite(uint32);
-  invitationResponse(uint32, uint16, uint32);
-  requestDecline(uint32, uint32) airecv clsend;
-  requestDeclineWithReason(uint32, uint32, uint32) airecv clsend;
-  requestRemove(uint32, uint32) airecv clsend;
-  secretResponse(string);
-  rejectSecret(string);
-  rejectUseSecret(string);
-  updatePlayerFriend(uint32, FriendInfo, uint8);
-  removePlayerFriend(uint32);
 };
 
 dclass CallbackObject {
@@ -559,7 +509,6 @@ from toontown.parties import DistributedPartyJukeboxActivity/AI
 from toontown.parties import DistributedPartyJukebox40Activity/AI
 from toontown.parties import DistributedPartyValentineJukeboxActivity/AI
 from toontown.parties import DistributedPartyValentineJukebox40Activity/AI
-from toontown.friends import TTPlayerFriendsManager/UD
 from toontown.friends import TTUFriendsManager/UD
 from toontown.safezone import DistributedGolfKart/AI
 from toontown.safezone import DistributedPicnicBasket/AI
@@ -1723,7 +1672,7 @@ dclass NewsManager : DistributedObject {
 };
 
 dclass PurchaseManager : DistributedObject {
-  setPlayerIds(uint32, uint32, uint32, uint32) required broadcast ram;
+  setAvIds(uint32, uint32, uint32, uint32) required broadcast ram;
   setNewbieIds(uint32[]) required broadcast ram;
   setMinigamePoints(uint8, uint8, uint8, uint8) required broadcast ram;
   setPlayerMoney(uint16, uint16, uint16, uint16) required broadcast ram;
@@ -1793,7 +1742,7 @@ dclass DistributedLargeBlobSender : DistributedObject {
 
 dclass DistributedLevel : DistributedObject {
   setLevelZoneId(uint32) required broadcast ram;
-  setPlayerIds(uint32[]) required broadcast ram;
+  setAvIds(uint32[]) required broadcast ram;
   setEntranceId(uint8) required broadcast ram;
   setZoneIds(uint32[]) broadcast ram;
   setStartTimestamp(int32) broadcast ram;
@@ -3007,9 +2956,6 @@ dclass DistributedVineGame : DistributedMinigame {
   setFallingFromVine(uint32, int8, int8, int32/100, int16/100, int16/100, int16, int8) clsend broadcast;
   setFallingFromMidair(uint32, int8, int32/100, int16/100, int16/100, int16, int8) clsend broadcast;
   setVineSections(uint8[]) required broadcast ram;
-};
-
-dclass TTPlayerFriendsManager : PlayerFriendsManager {
 };
 
 dclass DistributedGolfKart : DistributedObject {

@@ -19,7 +19,5 @@ class TTSCWhiteListTerminal(SCTerminal):
         SCTerminal.handleSelect(self)
         if not self.parentClass.whisperAvatarId:
             base.localAvatar.chatMgr.fsm.request('whiteListOpenChat')
-        elif self.parentClass.toPlayer:
-            base.localAvatar.chatMgr.fsm.request('whiteListPlayerChat', [self.parentClass.whisperAvatarId])
         else:
             base.localAvatar.chatMgr.fsm.request('whiteListAvatarChat', [self.parentClass.whisperAvatarId])

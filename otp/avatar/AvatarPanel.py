@@ -21,7 +21,7 @@ class AvatarPanel(DirectObject.DirectObject):
             self.avName = avatar.getName()
         else:
             self.avatar = None
-            self.avName = 'Player'
+            self.avName = 'Avatar'
         if hasattr(avatar, 'uniqueName'):
             self.avId = avatar.doId
             self.avDisableName = avatar.uniqueName('disable')

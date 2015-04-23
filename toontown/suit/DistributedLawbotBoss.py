@@ -381,7 +381,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
 
     def __showWaitingMessage(self, task):
         self.notify.debug('----- __showWaitingMessage')
-        self.__showOnscreenMessage(TTLocalizer.BuildingWaitingForVictors)
+        self.__showOnscreenMessage(TTLocalizer.WaitingForOtherToons)
 
     def loadEnvironment(self):
         self.notify.debug('----- loadEnvironment')

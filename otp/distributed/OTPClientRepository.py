@@ -254,8 +254,6 @@ class OTPClientRepository(ClientRepositoryBase):
         self.playGame = playGame(self.gameFSM, self.gameDoneEvent)
         self.shardListHandle = None
         self.uberZoneInterest = None
-        self.wantSwitchboard = config.GetBool('want-switchboard', 0)
-        self.wantSwitchboardHacks = base.config.GetBool('want-switchboard-hacks', 0)
 
         self.__pendingGenerates = {}
         self.__pendingMessages = {}
@@ -1538,9 +1536,6 @@ class OTPClientRepository(ClientRepositoryBase):
         pass
 
     def identifyFriend(self, doId):
-        pass
-
-    def identifyPlayer(self, playerId):
         pass
 
     def identifyAvatar(self, doId):

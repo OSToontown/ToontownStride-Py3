@@ -469,7 +469,7 @@ class DistributedRace(DistributedObject.DistributedObject):
 
     def enterWaiting(self):
         self.waitingLabel = DirectLabel()
-        self.waitingLabel['text'] = TTLocalizer.BuildingWaitingForVictors
+        self.waitingLabel['text'] = TTLocalizer.WaitingForOtherToons
         self.waitingLabel.setScale(TTLocalizer.DRenterWaiting)
 
     def exitWaiting(self):

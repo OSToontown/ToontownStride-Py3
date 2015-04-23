@@ -1054,7 +1054,7 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
             if place and hasattr(place, 'fsm'):
                 FriendsListManager.FriendsListManager._FriendsListManager__handleFriendAvatar(place, avId, avName, avDisableName)
 
-    def __handleAvatarDetails(self, avId, avName, playerId = None):
+    def __handleAvatarDetails(self, avId, avName):
         self.notify.debug('__handleAvatarDetails')
         if not (self.state == 'BattleThree' or self.state == 'BattleFour'):
             return
@@ -1063,7 +1063,7 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
         if self.cr:
             place = self.cr.playGame.getPlace()
             if place and hasattr(place, 'fsm'):
-                FriendsListManager.FriendsListManager._FriendsListManager__handleAvatarDetails(place, avId, avName, playerId)
+                FriendsListManager.FriendsListManager._FriendsListManager__handleAvatarDetails(place, avId, avName)
 
     def enterBattleFour(self):
         self.cleanupIntervals()

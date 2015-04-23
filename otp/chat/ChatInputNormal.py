@@ -15,7 +15,6 @@ class ChatInputNormal(DirectObject.DirectObject):
         self.whisperPos = Vec3(0.0, 0, 0.71)
         self.whisperAvatarName = None
         self.whisperAvatarId = None
-        self.toPlayer = 0
         wantHistory = 0
         if __dev__:
             wantHistory = 1
@@ -39,11 +38,10 @@ class ChatInputNormal(DirectObject.DirectObject):
         del self.whisperLabel
         del self.chatMgr
 
-    def activateByData(self, whisperAvatarId = None, toPlayer = 0):
-        self.toPlayer = toPlayer
+    def activateByData(self, whisperAvatarId = None):
         self.whisperAvatarId = whisperAvatarId
         if self.whisperAvatarId:
-            self.whisperAvatarName = base.talkAssistant.findName(self.whisperAvatarId, self.toPlayer)
+            self.whisperAvatarName = base.talkAssistant.findAvatarName(self.whisperAvatarId)
             self.chatFrame.setPos(self.whisperPos)
             self.whisperLabel['text'] = OTPLocalizer.ChatInputWhisperLabel % self.whisperAvatarName
             self.whisperLabel.show()
@@ -76,12 +74,7 @@ class ChatInputNormal(DirectObject.DirectObject):
         self.deactivate()
         self.chatMgr.fsm.request('mainMenu')
         if text:
-            if self.toPlayer:
-                if self.whisperAvatarId:
-                    self.whisperAvatarName = None
-                    self.whisperAvatarId = None
-                    self.toPlayer = 0
-            elif self.whisperAvatarId:
+            if self.whisperAvatarId:
                 self.chatMgr.sendWhisperString(text, self.whisperAvatarId)
                 self.whisperAvatarName = None
                 self.whisperAvatarId = None
@@ -89,7 +82,6 @@ class ChatInputNormal(DirectObject.DirectObject):
                 base.talkAssistant.sendOpenTalk(text)
                 if self.wantHistory:
                     self.addToHistory(text)
-        return
 
     def chatOverflow(self, overflowText):
         self.sendChat(self.chatEntry.get())

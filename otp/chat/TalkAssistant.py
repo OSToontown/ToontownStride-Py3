@@ -30,7 +30,6 @@ class TalkAssistant(DirectObject.DirectObject):
         self.floodThreshold = 10.0
         self.useWhiteListFilter = base.config.GetBool('white-list-filter-openchat', 0)
         self.lastWhisperDoId = None
-        self.lastWhisperPlayerId = None
         self.lastWhisper = None
         self.SCDecoder = SCDecoders
         self.whiteList = TTWhiteList()
@@ -146,25 +145,10 @@ class TalkAssistant(DirectObject.DirectObject):
     def stampTime(self):
         return globalClock.getRealTime() - self.zeroTimeGame
 
-    def findName(self, id, isPlayer = 0):
-        if isPlayer:
-            return self.findPlayerName(id)
-        else:
-            return self.findAvatarName(id)
-
     def findAvatarName(self, id):
         info = base.cr.identifyAvatar(id)
-        if info:
-            return info.getName()
-        else:
-            return ''
-
-    def findPlayerName(self, id):
-        info = base.cr.playerFriendsManager.getFriendInfo(id)
-        if info:
-            return info.playerName
-        else:
-            return ''
+        
+        return info.getName() if info else ''
 
     def whiteListFilterMessage(self, text):
         if not self.useWhiteListFilter:
@@ -246,10 +230,6 @@ class TalkAssistant(DirectObject.DirectObject):
         if remoteAvatarOrHandleOrInfo and hasattr(remoteAvatarOrHandleOrInfo, 'isUnderstandable'):
             if remoteAvatarOrHandleOrInfo.isUnderstandable():
                 return True
-        info = base.cr.playerFriendsManager.findPlayerInfoFromAvId(avatarId)
-        if info:
-            if info.understandableYesNo:
-                return True
         if base.cr.getFriendFlags(avatarId) & OTPGlobals.FriendChat:
             return True
         return False
@@ -257,36 +237,17 @@ class TalkAssistant(DirectObject.DirectObject):
     def checkWhisperSpeedChatAvatar(self, avatarId):
         return True
 
-    def checkWhisperTypedChatPlayer(self, playerId):
-        info = base.cr.playerFriendsManager.getFriendInfo(playerId)
-        if info:
-            if info.understandableYesNo:
-                return True
-        return False
-
-    def checkWhisperSpeedChatPlayer(self, playerId):
-        if base.cr.playerFriendsManager.isPlayerFriend(playerId):
-            return True
-        return False
-
     def checkOpenSpeedChat(self):
         return True
 
     def checkWhisperSpeedChatAvatar(self, avatarId):
         return True
 
-    def checkWhisperSpeedChatPlayer(self, playerId):
-        if base.cr.playerFriendsManager.isPlayerFriend(playerId):
-            return True
-        return False
-
     def receiveOpenTalk(self, senderAvId, avatarName, accountId, accountName, message, scrubbed = 0):
         error = None
         if not avatarName and senderAvId:
             localAvatar.sendUpdate('logSuspiciousEvent', ['receiveOpenTalk: invalid avatar name (%s)' % senderAvId])
             avatarName = self.findAvatarName(senderAvId)
-        if not accountName and accountId:
-            accountName = self.findPlayerName(accountId)
         newMessage = TalkMessage(self.countMessage(), self.stampTime(), message, senderAvId, avatarName, accountId, accountName, None, None, None, None, TALK_OPEN, None)
         if senderAvId != localAvatar.doId:
             self.addHandle(senderAvId, newMessage)
@@ -313,8 +274,6 @@ class TalkAssistant(DirectObject.DirectObject):
         error = None
         if not avatarName and avatarId:
             avatarName = self.findAvatarName(avatarId)
-        if not accountName and accountId:
-            accountName = self.findPlayerName(accountId)
         newMessage = TalkMessage(self.countMessage(), self.stampTime(), message, avatarId, avatarName, accountId, accountName, toId, toName, None, None, TALK_WHISPER, None)
         if avatarId == localAvatar.doId:
             self.addHandle(toId, newMessage)
@@ -332,8 +291,6 @@ class TalkAssistant(DirectObject.DirectObject):
         error = None
         if not avatarName and avatarId:
             avatarName = self.findAvatarName(avatarId)
-        if not accountName and accountId:
-            accountName = self.findPlayerName(accountId)
         newMessage = TalkMessage(self.countMessage(), self.stampTime(), message, avatarId, avatarName, accountId, accountName, None, None, None, None, AVATAR_THOUGHT, None)
         if avatarId != localAvatar.doId:
             self.addHandle(avatarId, newMessage)
@@ -394,7 +351,7 @@ class TalkAssistant(DirectObject.DirectObject):
     def receiveOpenSpeedChat(self, type, messageIndex, senderAvId, name = None):
         error = None
         if not name and senderAvId:
-            name = self.findName(senderAvId, 0)
+            name = self.findAvatarName(senderAvId)
         if type == SPEEDCHAT_NORMAL:
             message = self.SCDecoder.decodeSCStaticTextMsg(messageIndex)
         elif type == SPEEDCHAT_EMOTE:
@@ -413,7 +370,7 @@ class TalkAssistant(DirectObject.DirectObject):
     def receiveAvatarWhisperSpeedChat(self, type, messageIndex, senderAvId, name = None):
         error = None
         if not name and senderAvId:
-            name = self.findName(senderAvId, 0)
+            name = self.findAvatarName(senderAvId)
         if type == SPEEDCHAT_NORMAL:
             message = self.SCDecoder.decodeSCStaticTextMsg(messageIndex)
         elif type == SPEEDCHAT_EMOTE:
@@ -424,23 +381,6 @@ class TalkAssistant(DirectObject.DirectObject):
         self.historyComplete.append(newMessage)
         self.historyOpen.append(newMessage)
         self.addToHistoryDoId(newMessage, senderAvId)
-        messenger.send('NewOpenMessage', [newMessage])
-        return error
-
-    def receivePlayerWhisperSpeedChat(self, type, messageIndex, senderAvId, name = None):
-        error = None
-        if not name and senderAvId:
-            name = self.findName(senderAvId, 1)
-        if type == SPEEDCHAT_NORMAL:
-            message = self.SCDecoder.decodeSCStaticTextMsg(messageIndex)
-        elif type == SPEEDCHAT_EMOTE:
-            message = self.SCDecoder.decodeSCEmoteWhisperMsg(messageIndex, name)
-        elif type == SPEEDCHAT_CUSTOM:
-            message = self.SCDecoder.decodeSCCustomMsg(messageIndex)
-        newMessage = TalkMessage(self.countMessage(), self.stampTime(), message, None, None, senderAvId, name, localAvatar.doId, localAvatar.getName(), localAvatar.DISLid, localAvatar.DISLname, TALK_WHISPER, None)
-        self.historyComplete.append(newMessage)
-        self.historyOpen.append(newMessage)
-        self.addToHistoryDISLId(newMessage, senderAvId)
         messenger.send('NewOpenMessage', [newMessage])
         return error
 
@@ -518,15 +458,3 @@ class TalkAssistant(DirectObject.DirectObject):
             self.addToHistoryDoId(newMessage, localAvatar.doId)
             messenger.send('NewOpenMessage', [newMessage])
         return error
-
-    def sendPlayerWhisperSpeedChat(self, type, messageIndex, receiverId):
-        # TODO: Remove Player system
-        return None
-
-    def getWhisperReplyId(self):
-        if self.lastWhisper:
-            toPlayer = 0
-            if self.lastWhisper == self.lastWhisperPlayerId:
-                toPlayer = 1
-            return (self.lastWhisper, toPlayer)
-        return (0, 0)

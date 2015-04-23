@@ -76,7 +76,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.toontownTimeManager = ToontownTimeManager.ToontownTimeManager()
 
         self.csm = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_CLIENT_SERVICES_MANAGER, 'ClientServicesManager')
-        self.playerFriendsManager = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_PLAYER_FRIENDS_MANAGER, 'TTPlayerFriendsManager')
         self.ttuFriendsManager = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_TTU_FRIENDS_MANAGER, 'TTUFriendsManager')
 
         self.furnitureManager = None
@@ -658,9 +657,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         elif self.cache.contains(doId):
             teleportNotify.debug('found friend %s in cache' % doId)
             avatar = self.cache.dict[doId]
-        elif self.playerFriendsManager.getAvHandleFromId(doId):
-            teleportNotify.debug('found friend %s in playerFriendsManager' % doId)
-            avatar = base.cr.playerFriendsManager.getAvHandleFromId(doId)
         else:
             self.notify.warning("Don't know who friend %s is." % doId)
             return
@@ -680,9 +676,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         teleportNotify.debug('adding %s to friendsMap' % doId)
         self.friendsMap[doId] = handle
         return handle
-
-    def identifyPlayer(self, pId):
-        return base.cr.playerFriendsManager.getFriendInfo(pId)
 
     def identifyAvatar(self, doId):
         if doId in self.doId2do:

@@ -51,15 +51,12 @@ class ChatManager(DirectObject.DirectObject):
          State.State('normalChat', self.enterNormalChat, self.exitNormalChat),
          State.State('whisper', self.enterWhisper, self.exitWhisper),
          State.State('whisperChat', self.enterWhisperChat, self.exitWhisperChat),
-         State.State('whisperChatPlayer', self.enterWhisperChatPlayer, self.exitWhisperChatPlayer),
          State.State('whisperSpeedChat', self.enterWhisperSpeedChat, self.exitWhisperSpeedChat),
-         State.State('whisperSpeedChatPlayer', self.enterWhisperSpeedChatPlayer, self.exitWhisperSpeedChatPlayer),
          State.State('noSecretChatAtAll', self.enterNoSecretChatAtAll, self.exitNoSecretChatAtAll),
          State.State('noSecretChatAtAllAndNoWhitelist', self.enterNoSecretChatAtAllAndNoWhitelist, self.exitNoSecretChatAtAllAndNoWhitelist),
          State.State('otherDialog', self.enterOtherDialog, self.exitOtherDialog),
          State.State('whiteListOpenChat', self.enterWhiteListOpenChat, self.exitWhiteListOpenChat),
-         State.State('whiteListAvatarChat', self.enterWhiteListAvatarChat, self.exitWhiteListAvatarChat),
-         State.State('whiteListPlayerChat', self.enterWhiteListPlayerChat, self.exitWhiteListPlayerChat)], 'off', 'off')
+         State.State('whiteListAvatarChat', self.enterWhiteListAvatarChat, self.exitWhiteListAvatarChat)], 'off', 'off')
         self.fsm.enterInitialState()
         return
 
@@ -109,10 +106,6 @@ class ChatManager(DirectObject.DirectObject):
 
     def sendChatString(self, message):
         chatFlags = CFSpeech | CFTimeout
-        if base.cr.wantSwitchboardHacks:
-            from otp.switchboard import badwordpy
-            badwordpy.init('', '')
-            message = badwordpy.scrub(message)
         if isThought(message):
             message = removeThoughtPrefix(message)
             chatFlags = CFThought
@@ -125,29 +118,20 @@ class ChatManager(DirectObject.DirectObject):
     def sendSCChatMessage(self, msgIndex):
         base.talkAssistant.sendOpenSpeedChat(1, msgIndex)
 
-    def sendSCWhisperMessage(self, msgIndex, whisperAvatarId, toPlayer):
-        if toPlayer:
-            base.talkAssistant.sendPlayerWhisperSpeedChat(1, msgIndex, whisperAvatarId)
-        else:
-            base.talkAssistant.sendAvatarWhisperSpeedChat(1, msgIndex, whisperAvatarId)
+    def sendSCWhisperMessage(self, msgIndex, whisperAvatarId):
+        base.talkAssistant.sendAvatarWhisperSpeedChat(1, msgIndex, whisperAvatarId)
 
     def sendSCCustomChatMessage(self, msgIndex):
         base.talkAssistant.sendOpenSpeedChat(3, msgIndex)
 
-    def sendSCCustomWhisperMessage(self, msgIndex, whisperAvatarId, toPlayer):
-        if toPlayer:
-            base.talkAssistant.sendPlayerWhisperSpeedChat(3, msgIndex, whisperAvatarId)
-        else:
-            base.talkAssistant.sendAvatarWhisperSpeedChat(3, msgIndex, whisperAvatarId)
+    def sendSCCustomWhisperMessage(self, msgIndex, whisperAvatarId):
+        base.talkAssistant.sendAvatarWhisperSpeedChat(3, msgIndex, whisperAvatarId)
 
     def sendSCEmoteChatMessage(self, emoteId):
         base.talkAssistant.sendOpenSpeedChat(2, emoteId)
 
-    def sendSCEmoteWhisperMessage(self, emoteId, whisperAvatarId, toPlayer):
-        if toPlayer:
-            base.talkAssistant.sendPlayerWhisperSpeedChat(2, emoteId, whisperAvatarId)
-        else:
-            base.talkAssistant.sendAvatarWhisperSpeedChat(2, emoteId, whisperAvatarId)
+    def sendSCEmoteWhisperMessage(self, emoteId, whisperAvatarId):
+        base.talkAssistant.sendAvatarWhisperSpeedChat(2, emoteId, whisperAvatarId)
 
     def enterOff(self):
         self.scButton.hide()
@@ -177,8 +161,8 @@ class ChatManager(DirectObject.DirectObject):
         if self.wantBackgroundFocus:
             self.chatInputNormal.chatEntry['backgroundFocus'] = 0
 
-    def whisperTo(self, avatarName, avatarId, playerId = None):
-        self.fsm.request('whisper', [avatarName, avatarId, playerId])
+    def whisperTo(self, avatarName, avatarId):
+        self.fsm.request('whisper', [avatarName, avatarId])
 
     def noWhisper(self):
         self.fsm.request('mainMenu')
@@ -198,54 +182,28 @@ class ChatManager(DirectObject.DirectObject):
     def enterWhiteListAvatarChat(self, receiverId):
         if self.wantBackgroundFocus:
             self.chatInputNormal.chatEntry['backgroundFocus'] = 0
-        base.localAvatar.chatMgr.chatInputWhiteList.activateByData(receiverId, 0)
+        base.localAvatar.chatMgr.chatInputWhiteList.activateByData(receiverId)
 
     def exitWhiteListAvatarChat(self):
         pass
 
-    def enterWhiteListPlayerChat(self, receiverId):
-        if self.wantBackgroundFocus:
-            self.chatInputNormal.chatEntry['backgroundFocus'] = 0
-        base.localAvatar.chatMgr.chatInputWhiteList.activateByData(receiverId, 1)
-
-    def exitWhiteListPlayerChat(self):
-        pass
-
-    def enterWhisper(self, avatarName, avatarId, playerId = None):
-        self.whisperScButton['extraArgs'] = [avatarName, avatarId, playerId]
-        self.whisperButton['extraArgs'] = [avatarName, avatarId, playerId]
-        playerName = None
-        chatToToon = 1
+    def enterWhisper(self, avatarName, avatarId):
+        self.whisperScButton['extraArgs'] = [avatarName, avatarId]
+        self.whisperButton['extraArgs'] = [avatarName, avatarId]
         online = 0
         if avatarId in self.cr.doId2do:
             online = 1
         elif self.cr.isFriend(avatarId):
             online = self.cr.isFriendOnline(avatarId)
-        hasManager = hasattr(base.cr, 'playerFriendsManager')
-        if hasManager:
-            if base.cr.playerFriendsManager.askAvatarOnline(avatarId):
-                online = 1
         avatarUnderstandable = 0
-        playerUnderstandable = 0
         av = None
         if avatarId:
             av = self.cr.identifyAvatar(avatarId)
         if av != None:
             avatarUnderstandable = av.isUnderstandable()
-        if playerId:
-            if playerId in base.cr.playerFriendsManager.playerId2Info:
-                playerInfo = base.cr.playerFriendsManager.playerId2Info.get(playerId)
-                playerName = playerInfo.playerName
-                online = 1
-                playerUnderstandable = playerInfo.understandableYesNo
-                if playerUnderstandable or not avatarId:
-                    chatToToon = 0
-        if chatToToon:
-            chatName = avatarName
-        else:
-            chatName = playerName
+        chatName = avatarName
         normalButtonObscured, scButtonObscured = self.isObscured()
-        if (avatarUnderstandable or playerUnderstandable) and online and not normalButtonObscured:
+        if avatarUnderstandable and online and not normalButtonObscured:
             self.whisperButton['state'] = 'normal'
             self.enablewhisperButton()
         else:
@@ -261,16 +219,10 @@ class ChatManager(DirectObject.DirectObject):
             self.changeFrameText(OTPLocalizer.ChatManagerWhisperOffline % chatName)
         self.whisperFrame.show()
         self.refreshWhisperFrame()
-        if avatarUnderstandable or playerUnderstandable:
-            if playerId and not chatToToon:
-                if self.wantBackgroundFocus:
-                    self.chatInputNormal.chatEntry['backgroundFocus'] = 1
-                self.acceptOnce('enterNormalChat', self.fsm.request, ['whisperChatPlayer', [avatarName, playerId]])
-            elif online and chatToToon:
-                if self.wantBackgroundFocus:
-                    self.chatInputNormal.chatEntry['backgroundFocus'] = 1
-                self.acceptOnce('enterNormalChat', self.fsm.request, ['whisperChat', [avatarName, avatarId]])
-        return
+        if avatarUnderstandable and online:
+            if self.wantBackgroundFocus:
+                self.chatInputNormal.chatEntry['backgroundFocus'] = 1
+            self.acceptOnce('enterNormalChat', self.fsm.request, ['whisperChat', [avatarName, avatarId]])
 
     def disablewhisperButton(self):
         pass
@@ -299,31 +251,11 @@ class ChatManager(DirectObject.DirectObject):
         self.whisperFrame.hide()
         self.chatInputSpeedChat.hide()
 
-    def enterWhisperSpeedChatPlayer(self, playerId):
-        self.whisperFrame.show()
-        if self.wantBackgroundFocus:
-            self.chatInputNormal.chatEntry['backgroundFocus'] = 0
-        self.chatInputSpeedChat.show(playerId, 1)
-
-    def exitWhisperSpeedChatPlayer(self):
-        self.whisperFrame.hide()
-        self.chatInputSpeedChat.hide()
-
     def enterWhisperChat(self, avatarName, avatarId):
         result = self.chatInputNormal.activateByData(avatarId)
         return result
 
     def exitWhisperChat(self):
-        self.chatInputNormal.deactivate()
-
-    def enterWhisperChatPlayer(self, avatarName, playerId):
-        playerInfo = base.cr.playerFriendsManager.getFriendInfo(playerId)
-        if playerInfo:
-            avatarName = playerInfo.playerName
-        result = self.chatInputNormal.activateByData(playerId, 1)
-        return result
-
-    def exitWhisperChatPlayer(self):
         self.chatInputNormal.deactivate()
 
     def enterSpeedChat(self):

@@ -41,7 +41,7 @@ class DistributedLevelAI(DistributedObjectAI.DistributedObjectAI, Level.Level):
     def getLevelZoneId(self):
         return self.zoneId
 
-    def getPlayerIds(self):
+    def getAvIds(self):
         return self.avIdList
 
     def getEntranceId(self):

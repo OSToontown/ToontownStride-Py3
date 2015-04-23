@@ -12,7 +12,6 @@ class ChatInputTyped(DirectObject.DirectObject):
     def __init__(self, mainEntry = 0):
         self.whisperName = None
         self.whisperId = None
-        self.toPlayer = 0
         self.mainEntry = mainEntry
         wantHistory = 0
         if __dev__:
@@ -37,12 +36,11 @@ class ChatInputTyped(DirectObject.DirectObject):
         del self.whisperLabel
         del self.chatMgr
 
-    def show(self, whisperId = None, toPlayer = 0):
-        self.toPlayer = toPlayer
+    def show(self, whisperId = None):
         self.whisperId = whisperId
         self.whisperName = None
         if self.whisperId:
-            self.whisperName = base.talkAssistant.findName(whisperId, toPlayer)
+            self.whisperName = base.talkAssistant.findAvatarName(whisperId)
             if hasattr(self, 'whisperPos'):
                 self.chatFrame.setPos(self.whisperPos)
             self.whisperLabel['text'] = OTPLocalizer.ChatInputWhisperLabel % self.whisperName
@@ -82,14 +80,9 @@ class ChatInputTyped(DirectObject.DirectObject):
         self.cancelButton.show()
         self.typedChatButton.hide()
         self.typedChatBar.hide()
-        if self.whisperId:
-            if self.toPlayer:
-                if not base.talkAssistant.checkWhisperTypedChatPlayer(self.whisperId):
-                    messenger.send('Chat-Failed player typed chat test')
-                    self.deactivate()
-            elif not base.talkAssistant.checkWhisperTypedChatAvatar(self.whisperId):
-                messenger.send('Chat-Failed avatar typed chat test')
-                self.deactivate()
+        if self.whisperId and not base.talkAssistant.checkWhisperTypedChatAvatar(self.whisperId):
+            messenger.send('Chat-Failed avatar typed chat test')
+            self.deactivate()
 
     def deactivate(self):
         self.chatEntry.set('')
@@ -103,10 +96,7 @@ class ChatInputTyped(DirectObject.DirectObject):
     def sendChat(self, text):
         self.deactivate()
         if text:
-            if self.toPlayer:
-                if self.whisperId:
-                    pass
-            elif self.whisperId:
+            if self.whisperId:
                 pass
             else:
                 base.talkAssistant.sendOpenTalk(text)

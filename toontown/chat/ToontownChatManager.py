@@ -84,15 +84,12 @@ class ToontownChatManager(ChatManager.ChatManager):
          msgIndex])
         self.announceSCChat()
 
-    def sendSCToontaskWhisperMessage(self, taskId, toNpcId, toonProgress, msgIndex, whisperAvatarId, toPlayer):
-        if toPlayer:
-            base.talkAssistant.sendPlayerWhisperToonTaskSpeedChat(taskId, toNpcId, toonProgress, msgIndex, whisperAvatarId)
-        else:
-            messenger.send('whisperUpdateSCToontask', [taskId,
-             toNpcId,
-             toonProgress,
-             msgIndex,
-             whisperAvatarId])
+    def sendSCToontaskWhisperMessage(self, taskId, toNpcId, toonProgress, msgIndex, whisperAvatarId):
+        messenger.send('whisperUpdateSCToontask', [taskId,
+         toNpcId,
+         toonProgress,
+         msgIndex,
+         whisperAvatarId])
 
     def enterMainMenu(self):
         self.chatInputNormal.setPos(self.normalPos)
@@ -130,10 +127,8 @@ class ToontownChatManager(ChatManager.ChatManager):
         else:
             self.fsm.request('speedChat')
 
-    def __whisperButtonPressed(self, avatarName, avatarId, playerId):
+    def __whisperButtonPressed(self, avatarName, avatarId):
         messenger.send('wakeup')
-        if playerId:
-            playerInfo = base.cr.playerFriendsManager.getFriendInfo(playerId)
         if avatarId:
             self.enterWhisperChat(avatarName, avatarId)
         self.whisperFrame.hide()
@@ -143,14 +138,6 @@ class ToontownChatManager(ChatManager.ChatManager):
         result = ChatManager.ChatManager.enterNormalChat(self)
         if result == None:
             self.notify.warning('something went wrong in enterNormalChat, falling back to main menu')
-            self.fsm.request('mainMenu')
-        return
-
-    def enterWhisperChatPlayer(self, avatarName, playerId):
-        result = ChatManager.ChatManager.enterWhisperChatPlayer(self, avatarName, playerId)
-        self.chatInputNormal.setPos(self.whisperPos)
-        if result == None:
-            self.notify.warning('something went wrong in enterWhisperChatPlayer, falling back to main menu')
             self.fsm.request('mainMenu')
         return
 
@@ -177,25 +164,13 @@ class ToontownChatManager(ChatManager.ChatManager):
     def exitNoSecretChatAtAllAndNoWhitelist(self):
         self.noSecretChatAtAllAndNoWhitelist.hide()
 
-    def __whisperScButtonPressed(self, avatarName, avatarId, playerId):
+    def __whisperScButtonPressed(self, avatarName, avatarId):
         messenger.send('wakeup')
-        hasManager = hasattr(base.cr, 'playerFriendsManager')
-        transientFriend = 0
-        if hasManager:
-            transientFriend = base.cr.playerFriendsManager.askTransientFriend(avatarId)
-            if transientFriend:
-                playerId = base.cr.playerFriendsManager.findPlayerIdFromAvId(avatarId)
-        if avatarId and not transientFriend:
+        if avatarId:
             if self.fsm.getCurrentState().getName() == 'whisperSpeedChat':
-                self.fsm.request('whisper', [avatarName, avatarId, playerId])
+                self.fsm.request('whisper', [avatarName, avatarId])
             else:
                 self.fsm.request('whisperSpeedChat', [avatarId])
-        elif playerId:
-            if self.fsm.getCurrentState().getName() == 'whisperSpeedChatPlayer':
-                self.fsm.request('whisper', [avatarName, avatarId, playerId])
-            else:
-                self.fsm.request('whisperSpeedChatPlayer', [playerId])
-        # Do more work here for position of SCWhisperpos
 
     def __whisperCancelPressed(self):
         self.fsm.request('mainMenu')

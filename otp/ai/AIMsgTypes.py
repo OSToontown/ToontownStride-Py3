@@ -1,10 +1,8 @@
 from otp.distributed.OtpDoGlobals import *
 from direct.showbase.PythonUtil import invertDictLossless
-OTP_SERVER_ROOT_DO_ID = 4007
 CHANNEL_CLIENT_BROADCAST = 4014
 BAD_CHANNEL_ID = 0
 BAD_ZONE_ID = 0
-BAD_DO_ID = 0
 CONTROL_MESSAGE = 4001
 CONTROL_SET_CHANNEL = 2001
 CONTROL_REMOVE_CHANNEL = 2002

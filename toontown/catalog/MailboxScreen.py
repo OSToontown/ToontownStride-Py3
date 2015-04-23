@@ -347,13 +347,6 @@ class MailboxScreen(DirectObject.DirectObject):
             self.currentItem = None
         return
 
-    def checkFamily(self, doId):
-        for familyMember in base.cr.avList:
-            if familyMember.id == doId:
-                return familyMember
-
-        return None
-
     def __showCurrentItem(self):
         self.__clearCurrentItem()
         if len(self.items) < 1:
@@ -519,20 +512,5 @@ class MailboxScreen(DirectObject.DirectObject):
 
     def getSenderName(self, avId):
         sender = base.cr.identifyFriend(avId)
-        nameOfSender = ''
-        if sender:
-            nameOfSender = sender.getName()
-        else:
-            sender = self.checkFamily(avId)
-            if sender:
-                nameOfSender = sender.name
-            elif hasattr(base.cr, 'playerFriendsManager'):
-                sender = base.cr.playerFriendsManager.getAvHandleFromId(avId)
-                if sender:
-                    nameOfSender = sender.getName()
-        if not sender:
-            nameOfSender = TTLocalizer.MailboxGiftTagAnonymous
-            if hasattr(base.cr, 'playerFriendsManager'):
-                base.cr.playerFriendsManager.requestAvatarInfo(avId)
-                self.accept('friendsListChanged', self.__showCurrentItem)
-        return nameOfSender
+        
+        return sender.getName() if sender else TTLocalizer.MailboxGiftTagAnonymous

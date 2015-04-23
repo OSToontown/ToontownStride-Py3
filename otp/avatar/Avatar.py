@@ -169,19 +169,6 @@ class Avatar(Actor, ShadowCaster):
         elif base.cr.getFriendFlags(self.doId) & OTPGlobals.FriendChat:
             self.understandable = 1
             self.setPlayerType(NametagGlobals.CCFreeChat)
-        elif base.cr.playerFriendsManager.findPlayerIdFromAvId(self.doId) is not None:
-            playerInfo = base.cr.playerFriendsManager.findPlayerInfoFromAvId(self.doId)
-            if playerInfo.openChatFriendshipYesNo:
-                self.understandable = 1
-                nametagColor = NametagGlobals.NametagColors[NametagGlobals.CCFreeChat]
-                self.nametag.setNametagColor(nametagColor)
-                chatColor = NametagGlobals.ChatColors[NametagGlobals.CCFreeChat]
-                self.nametag.setChatColor(chatColor)
-                self.nametag.updateAll()
-            elif playerInfo.isUnderstandable():
-                self.understandable = 1
-            else:
-                self.understandable = 0
         elif hasattr(base, 'localAvatar') and self.whitelistChatFlags & base.localAvatar.whitelistChatFlags:
             self.understandable = 1
         else:

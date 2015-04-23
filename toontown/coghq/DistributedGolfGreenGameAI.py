@@ -250,8 +250,8 @@ class DistributedGolfGreenGameAI(BattleBlockerAI.BattleBlockerAI, NodePath, Basi
             roomId = self.getLevelDoId()
             room = simbase.air.doId2do.get(roomId)
             if room:
-                playerIds = self.everJoinedToons
-                for avId in playerIds:
+                avIds = self.everJoinedToons
+                for avId in avIds:
                     av = simbase.air.doId2do.get(avId)
                     if av:
                         av.takeDamage(self.DamageOnFailure, quietly=0)

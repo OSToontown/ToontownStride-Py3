@@ -91,11 +91,6 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
                 messenger.send('Chat-Failed open typed chat test')
                 self.notify.warning('Chat-Failed open typed chat test')
                 return None
-        elif request == 'PlayerWhisper':
-            if not base.talkAssistant.checkWhisperTypedChatPlayer(self.whisperId):
-                messenger.send('Chat-Failed player typed chat test')
-                self.notify.warning('Chat-Failed player typed chat test')
-                return None
         elif request == 'AvatarWhisper':
             if not base.talkAssistant.checkWhisperTypedChatAvatar(self.whisperId):
                 messenger.send('Chat-Failed avatar typed chat test')
@@ -117,15 +112,6 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
     def exitAllChat(self):
         pass
 
-    def enterPlayerWhisper(self):
-        self.tempText = self.chatEntry.get()
-        self.activate()
-
-    def exitPlayerWhisper(self):
-        self.chatEntry.set(self.tempText)
-        self.whisperId = None
-        return
-
     def enterAvatarWhisper(self):
         self.tempText = self.chatEntry.get()
         self.activate()
@@ -135,18 +121,14 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
         self.whisperId = None
         return
 
-    def activateByData(self, receiverId = None, toPlayer = 0):
+    def activateByData(self, receiverId = None):
         self.receiverId = receiverId
-        self.toPlayer = toPlayer
         result = None
         if not self.receiverId:
             result = self.requestMode('AllChat')
-        elif self.receiverId and not self.toPlayer:
+        elif self.receiverId:
             self.whisperId = receiverId
             result = self.requestMode('AvatarWhisper')
-        elif self.receiverId and self.toPlayer:
-            self.whisperId = receiverId
-            result = self.requestMode('PlayerWhisper')
         return result
 
     def activate(self):
@@ -203,17 +185,15 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
             self.sendChatByMode(text)
 
     def sendChatByData(self, text):
-        if not self.receiverId:
-            base.talkAssistant.sendOpenTalk(text)
-        elif self.receiverId and not self.toPlayer:
+        if self.receiverId:
             base.talkAssistant.sendWhisperTalk(text, self.receiverId)
+        else:
+            base.talkAssistant.sendOpenTalk(text)
 
     def sendChatByMode(self, text):
         state = self.getCurrentOrNextState()
         messenger.send('sentRegularChat')
-        if state == 'PlayerWhisper':
-            base.talkAssistant.sendPlayerWhisperWLChat(text, self.whisperId)
-        elif state == 'AvatarWhisper':
+        if state == 'AvatarWhisper':
             base.talkAssistant.sendAvatarWhisperWLChat(text, self.whisperId)
         else:
             base.talkAssistant.sendOpenTalk(text)

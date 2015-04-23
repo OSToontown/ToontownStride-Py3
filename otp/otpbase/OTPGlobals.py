@@ -21,8 +21,6 @@ AICollMovePriority = 8
 # But since we told people that we are allowing "unlimited" friends, we instead can give them a
 # high amount.
 MaxFriends = 200
-
-MaxPlayerFriends = 300
 MaxBackCatalog = 48
 FriendChat = 1
 CommonChat = 1
@@ -310,21 +308,11 @@ AvatarFriendAddEvent = 'avatarFriendAddEvent'
 AvatarNewFriendAddEvent = 'avatarNewFriendAddEvent'
 AvatarFriendUpdateEvent = 'avatarFriendUpdateEvent'
 AvatarFriendRemoveEvent = 'avatarFriendRemoveEvent'
-PlayerFriendAddEvent = 'playerFriendAddEvent'
-PlayerFriendUpdateEvent = 'playerFriendUpdateEvent'
-PlayerFriendRemoveEvent = 'playerFriendRemoveEvent'
 AvatarFriendConsideringEvent = 'avatarFriendConsideringEvent'
 AvatarFriendInvitationEvent = 'avatarFriendInvitationEvent'
 AvatarFriendRejectInviteEvent = 'avatarFriendRejectInviteEvent'
 AvatarFriendRetractInviteEvent = 'avatarFriendRetractInviteEvent'
 AvatarFriendRejectRemoveEvent = 'avatarFriendRejectRemoveEvent'
-PlayerFriendInvitationEvent = 'playerFriendInvitationEvent'
-PlayerFriendRejectInviteEvent = 'playerFriendRejectInviteEvent'
-PlayerFriendRetractInviteEvent = 'playerFriendRetractInviteEvent'
-PlayerFriendRejectRemoveEvent = 'playerFriendRejectRemoveEvent'
-PlayerFriendNewSecretEvent = 'playerFriendNewSecretEvent'
-PlayerFriendRejectNewSecretEvent = 'playerFriendRejectNewSecretEvent'
-PlayerFriendRejectUseSecretEvent = 'playerFriendRejectUseSecretEvent'
 WhisperIncomingEvent = 'whisperIncomingEvent'
 ChatFeedback_PassedBlacklist = 32
 ChatFeedback_Whitelist = 64

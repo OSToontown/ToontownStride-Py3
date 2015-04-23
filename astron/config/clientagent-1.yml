@@ -20,16 +20,8 @@ uberdogs:
       id: 4501
       anonymous: false
 
-    - class: PlayerFriendsManager
-      id: 4687
-      anonymous: false
-
     - class: TTUFriendsManager
       id: 4666
-      anonymous: false
-
-    - class: TTCodeRedemptionMgr
-      id: 4695
       anonymous: false
 
     - class: GlobalPartyManager

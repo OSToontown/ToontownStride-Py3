@@ -16,9 +16,9 @@ class PurchaseManager(DistributedObject.DistributedObject):
         DistributedObject.DistributedObject.disable(self)
         self.ignoreAll()
 
-    def setPlayerIds(self, *playerIds):
-        self.notify.debug('setPlayerIds: %s' % (playerIds,))
-        self.playerIds = playerIds
+    def setAvIds(self, *avIds):
+        self.notify.debug('setAvIds: %s' % (avIds,))
+        self.avIds = avIds
 
     def setNewbieIds(self, newbieIds):
         self.notify.debug('setNewbieIds: %s' % (newbieIds,))
@@ -57,16 +57,16 @@ class PurchaseManager(DistributedObject.DistributedObject):
             self.accept('boughtGag', self.__handleBoughtGag)
             base.cr.playGame.hood.fsm.request('purchase', [self.mpArray,
              self.moneyArray,
-             self.playerIds,
+             self.avIds,
              self.playerStates,
              remain,
              self.metagameRound,
              self.votesArray])
 
     def calcHasLocalToon(self):
-        retval = base.localAvatar.doId not in self.newbieIds and base.localAvatar.doId in self.playerIds
+        retval = base.localAvatar.doId not in self.newbieIds and base.localAvatar.doId in self.avIds
         if self.metagameRound > -1 and self.metagameRound < TravelGameGlobals.FinalMetagameRoundIndex:
-            retval = base.localAvatar.doId in self.playerIds
+            retval = base.localAvatar.doId in self.avIds
         self.notify.debug('calcHasLocalToon returning %s' % retval)
         return retval
 
