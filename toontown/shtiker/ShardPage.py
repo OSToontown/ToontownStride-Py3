@@ -365,9 +365,9 @@ class ShardPage(ShtikerPage.ShtikerPage):
             if base.cr.groupManager.isInGroup(base.localAvatar.doId, gid):
                 self.rejectGroup(4)
                 return
-        if len(base.cr.groupManager.getGroupPlayers(groupId)) >= 8:
-            self.rejectGroup(3)
-            return
+        #if len(base.cr.groupManager.getGroupPlayers(groupId)) >= 8:
+        #    self.rejectGroup(3)
+        #    return
         suitIdx = -1
         gids = {10000:0, 11000:1, 12000:2, 13000:3}
         suitIdx = gids.get(groupId)

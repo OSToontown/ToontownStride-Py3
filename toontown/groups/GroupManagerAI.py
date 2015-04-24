@@ -10,10 +10,10 @@ class GroupManagerAI(DistributedObjectAI.DistributedObjectAI):
 
     def __init__(self, air):
         DistributedObjectAI.DistributedObjectAI.__init__(self, air)
-        self.sellGroup = GlobalGroup('VP Group', SellbotHQ)
-        self.cashGroup = GlobalGroup('CFO Group', CashbotHQ)
-        self.lawGroup  = GlobalGroup('CJ Group', LawbotHQ)
-        self.bossGroup = GlobalGroup('CEO Group', BossbotHQ)
+        self.sellGroup = GlobalGroup('VP', SellbotHQ)
+        self.cashGroup = GlobalGroup('CFO', CashbotHQ)
+        self.lawGroup  = GlobalGroup('CJ', LawbotHQ)
+        self.bossGroup = GlobalGroup('CEO', BossbotHQ)
         self.shardGroups = {
             SellbotHQ: self.sellGroup,
             CashbotHQ: self.cashGroup,
@@ -27,10 +27,10 @@ class GroupManagerAI(DistributedObjectAI.DistributedObjectAI):
             BossbotHQ: [],
         }
         self.id2type = {
-            SellbotHQ: 'VP Group',
-            CashbotHQ: 'CFO Group',
-            LawbotHQ: 'CJ Group',
-            BossbotHQ: 'CEO Group',
+            SellbotHQ: 'VP',
+            CashbotHQ: 'CFO',
+            LawbotHQ: 'CJ',
+            BossbotHQ: 'CEO',
         }
         self.childId = None
 
@@ -67,7 +67,7 @@ class GroupManagerAI(DistributedObjectAI.DistributedObjectAI):
         for groupId, group in self.groupPlayers.items():
             for player in group:
                 toon = simbase.air.doId2do.get(player)
-                if toon.zoneId != groupId:
+                if (toon.zoneId != groupId) or (toon.zoneId + 100 != groupId):
                     self.removePlayerFromGroup(groupId, player)
         return task.again
 

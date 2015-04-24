@@ -12,10 +12,10 @@ class GroupManager(DistributedObject.DistributedObject):
         self.shardGroups = {}
         self.groupPlayers = {}
         self.id2type = {
-            SellbotHQ: 'VP Group',
-            CashbotHQ: 'CFO Group',
-            LawbotHQ: 'CJ Group',
-            BossbotHQ: 'CEO Group',
+            SellbotHQ: 'VP',
+            CashbotHQ: 'CFO',
+            LawbotHQ: 'CJ',
+            BossbotHQ: 'CEO',
         }
 
     def announceGenerate(self):
