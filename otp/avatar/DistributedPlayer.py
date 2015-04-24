@@ -17,12 +17,6 @@ from otp.speedchat import SCDecoders
 from toontown.chat.ChatGlobals import *
 from toontown.chat.WhisperPopup import WhisperPopup
 
-
-if base.config.GetBool('want-chatfilter-hacks', 0):
-    from otp.switchboard import badwordpy
-    import os
-    badwordpy.init(os.environ.get('OTP') + '\\src\\switchboard\\', '')
-
 class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBase, TelemetryLimited):
     TeleportFailureTimeout = 60.0
     chatGarbler = ChatGarbler.ChatGarbler()
@@ -139,10 +133,7 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
     def displayWhisper(self, fromId, chatString, whisperType):
         print 'Whisper type %s from %s: %s' % (whisperType, fromId, chatString)
 
-    def displayWhisperPlayer(self, playerId, chatString, whisperType):
-        print 'WhisperPlayer type %s from %s: %s' % (whisperType, playerId, chatString)
-
-    def whisperSCTo(self, msgIndex, sendToId, toPlayer):
+    def whisperSCTo(self, msgIndex, sendToId):
         messenger.send('wakeup')
         base.cr.ttuFriendsManager.d_whisperSCTo(sendToId, msgIndex)
 
@@ -156,7 +147,7 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
             base.talkAssistant.receiveAvatarWhisperSpeedChat(TalkAssistant.SPEEDCHAT_NORMAL, msgIndex, fromId)
         return
 
-    def whisperSCCustomTo(self, msgIndex, sendToId, toPlayer):
+    def whisperSCCustomTo(self, msgIndex, sendToId):
         messenger.send('wakeup')
         base.cr.ttuFriendsManager.d_whisperSCCustomTo(sendToId, msgIndex)
 
@@ -178,7 +169,7 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
             base.talkAssistant.receiveAvatarWhisperSpeedChat(TalkAssistant.SPEEDCHAT_CUSTOM, msgIndex, fromId)
         return
 
-    def whisperSCEmoteTo(self, emoteId, sendToId, toPlayer):
+    def whisperSCEmoteTo(self, emoteId, sendToId):
         messenger.send('wakeup')
         base.cr.ttuFriendsManager.d_whisperSCEmoteTo(sendToId, emoteId)
 
@@ -314,34 +305,22 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
         base.cr.ttuFriendsManager.d_teleportQuery(sendToId)
 
     def teleportQuery(self, requesterId):
-        teleportNotify.debug('receieved teleportQuery(%s)' % requesterId)
-        avatar = base.cr.playerFriendsManager.identifyFriend(requesterId)
-        if avatar != None:
-            teleportNotify.debug('avatar is not None')
-            if base.localAvatar.isIgnored(requesterId):
-                self.d_teleportResponse(self.doId, 2, 0, 0, 0, sendToId=requesterId)
-                return
-            if hasattr(base, 'distributedParty'):
-                if base.distributedParty.partyInfo.isPrivate:
-                    if requesterId not in base.distributedParty.inviteeIds:
-                        teleportNotify.debug('avatar not in inviteeIds')
-                        self.d_teleportResponse(self.doId, 0, 0, 0, 0, sendToId=requesterId)
-                        return
-                if base.distributedParty.isPartyEnding:
-                    teleportNotify.debug('party is ending')
-                    self.d_teleportResponse(self.doId, 0, 0, 0, 0, sendToId=requesterId)
-                    return
-            if self.__teleportAvailable and not self.ghostMode and base.config.GetBool('can-be-teleported-to', 1):
-                teleportNotify.debug('teleport initiation successful')
-                self.setSystemMessage(requesterId, OTPLocalizer.WhisperComingToVisit % avatar.getName())
-                messenger.send('teleportQuery', [avatar, self])
-                return
-            teleportNotify.debug('teleport initiation failed')
+        avatar = base.cr.identifyFriend(requesterId)
+        
+        if avatar is None:
+            self.d_teleportResponse(self.doId, 0, 0, 0, 0, sendToId=requesterId)
+        elif base.localAvatar.isIgnored(requesterId):
+            self.d_teleportResponse(self.doId, 2, 0, 0, 0, sendToId=requesterId)
+        elif hasattr(base, 'distributedParty') and ((base.distributedParty.partyInfo.isPrivate and requesterId not in base.distributedParty.inviteeIds) or base.distributedParty.isPartyEnding):
+            self.d_teleportResponse(self.doId, 0, 0, 0, 0, sendToId=requesterId)
+        elif self.__teleportAvailable and not self.ghostMode:
+            self.setSystemMessage(requesterId, OTPLocalizer.WhisperComingToVisit % avatar.getName())
+            messenger.send('teleportQuery', [avatar, self])
+        else:
             if self.failedTeleportMessageOk(requesterId):
                 self.setSystemMessage(requesterId, OTPLocalizer.WhisperFailedVisit % avatar.getName())
-        teleportNotify.debug('sending try-again-later message')
-        self.d_teleportResponse(self.doId, 0, 0, 0, 0, sendToId=requesterId)
-        return
+            
+            self.d_teleportResponse(self.doId, 0, 0, 0, 0, sendToId=requesterId)
 
     def failedTeleportMessageOk(self, fromId):
         now = globalClock.getFrameTime()

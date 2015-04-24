@@ -13,9 +13,9 @@ from toontown.minigame import MinigameGlobals
 class PurchaseManagerAI(DistributedObjectAI.DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('PurchaseManagerAI')
 
-    def __init__(self, air, playerArray, mpArray, previousMinigameId, trolleyZone, newbieIdList = [], votesArray = None, metagameRound = -1, desiredNextGame = None):
+    def __init__(self, air, avArray, mpArray, previousMinigameId, trolleyZone, newbieIdList = [], votesArray = None, metagameRound = -1, desiredNextGame = None):
         DistributedObjectAI.DistributedObjectAI.__init__(self, air)
-        self.playerIds = copy.deepcopy(playerArray)
+        self.avIds = copy.deepcopy(avArray)
         self.minigamePoints = copy.deepcopy(mpArray)
         self.previousMinigameId = previousMinigameId
         self.trolleyZone = trolleyZone
@@ -27,8 +27,8 @@ class PurchaseManagerAI(DistributedObjectAI.DistributedObjectAI):
             self.votesArray = []
         self.metagameRound = metagameRound
         self.desiredNextGame = desiredNextGame
-        for i in xrange(len(self.playerIds), 4):
-            self.playerIds.append(0)
+        for i in xrange(len(self.avIds), 4):
+            self.avIds.append(0)
 
         for i in xrange(len(self.minigamePoints), 4):
             self.minigamePoints.append(0)
@@ -45,13 +45,13 @@ class PurchaseManagerAI(DistributedObjectAI.DistributedObjectAI):
          0,
          0,
          0]
-        for i in xrange(len(self.playerIds)):
-            avId = self.playerIds[i]
+        for i in xrange(len(self.avIds)):
+            avId = self.avIds[i]
             if avId <= 3:
                 self.playerStates[i] = PURCHASE_NO_CLIENT_STATE
                 self.playersReported[i] = PURCHASE_CANTREPORT_STATE
             elif avId in self.air.doId2do:
-                if avId not in self.getInvolvedPlayerIds():
+                if avId not in self.getInvolvedAvIds():
                     self.playerStates[i] = PURCHASE_EXIT_STATE
                     self.playersReported[i] = PURCHASE_REPORTED_STATE
                 else:
@@ -61,7 +61,7 @@ class PurchaseManagerAI(DistributedObjectAI.DistributedObjectAI):
                 self.playerStates[i] = PURCHASE_DISCONNECTED_STATE
                 self.playersReported[i] = PURCHASE_CANTREPORT_STATE
 
-        for avId in self.getInvolvedPlayerIds():
+        for avId in self.getInvolvedAvIds():
             if avId > 3 and avId in self.air.doId2do:
                 self.acceptOnce(self.air.getAvatarExitEvent(avId), self.__handleUnexpectedExit, extraArgs=[avId])
                 av = self.air.doId2do[avId]
@@ -77,7 +77,7 @@ class PurchaseManagerAI(DistributedObjectAI.DistributedObjectAI):
                 av.addMoney(self.minigamePoints[avIndex])
                 self.air.writeServerEvent('minigame', avId, '%s|%s|%s|%s' % (self.previousMinigameId,
                  self.trolleyZone,
-                 self.playerIds,
+                 self.avIds,
                  self.minigamePoints[avIndex]))
                 if self.metagameRound == TravelGameGlobals.FinalMetagameRoundIndex:
                     numPlayers = len(self.votesArray)
@@ -87,7 +87,7 @@ class PurchaseManagerAI(DistributedObjectAI.DistributedObjectAI):
                     av.addMoney(extraBeans)
                     self.air.writeServerEvent('minigame_extraBeans', avId, '%s|%s|%s|%s' % (self.previousMinigameId,
                      self.trolleyZone,
-                     self.playerIds,
+                     self.avIds,
                      extraBeans))
 
         self.receivingInventory = 1
@@ -99,9 +99,9 @@ class PurchaseManagerAI(DistributedObjectAI.DistributedObjectAI):
         self.ignoreAll()
         DistributedObjectAI.DistributedObjectAI.delete(self)
 
-    def getInvolvedPlayerIds(self):
+    def getInvolvedAvIds(self):
         avIds = []
-        for avId in self.playerIds:
+        for avId in self.avIds:
             if avId not in self.newbieIds:
                 avIds.append(avId)
             elif self.metagameRound > -1 and self.metagameRound < TravelGameGlobals.FinalMetagameRoundIndex:
@@ -112,8 +112,8 @@ class PurchaseManagerAI(DistributedObjectAI.DistributedObjectAI):
     def getMinigamePoints(self):
         return self.minigamePoints
 
-    def getPlayerIds(self):
-        return self.playerIds
+    def getavIds(self):
+        return self.avIds
 
     def getNewbieIds(self):
         return self.newbieIds
@@ -259,7 +259,7 @@ class PurchaseManagerAI(DistributedObjectAI.DistributedObjectAI):
         retval = []
         for playAgainIndex in xrange(len(playAgainList)):
             avId = playAgainList[playAgainIndex]
-            origIndex = self.playerIds.index(avId)
+            origIndex = self.avIds.index(avId)
             if self.votesArray and origIndex < len(self.votesArray):
                 retval.append(self.votesArray[origIndex])
             else:
@@ -296,8 +296,8 @@ class PurchaseManagerAI(DistributedObjectAI.DistributedObjectAI):
         return None
 
     def findAvIndex(self, avId):
-        for i in xrange(len(self.playerIds)):
-            if avId == self.playerIds[i]:
+        for i in xrange(len(self.avIds)):
+            if avId == self.avIds[i]:
                 return i
 
         return None
@@ -314,7 +314,7 @@ class PurchaseManagerAI(DistributedObjectAI.DistributedObjectAI):
         playAgainList = []
         for i in xrange(len(self.playerStates)):
             if self.playerStates[i] == PURCHASE_PLAYAGAIN_STATE:
-                playAgainList.append(self.playerIds[i])
+                playAgainList.append(self.avIds[i])
 
         return playAgainList
 

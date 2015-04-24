@@ -47,9 +47,9 @@ class DistributedIceGame(DistributedMinigame.DistributedMinigame, DistributedIce
         self.curMatch = 0
         self.controlKeyWarningLabel = DirectLabel(text=TTLocalizer.IceGameControlKeyWarning, text_fg=VBase4(1, 0, 0, 1), relief=None, pos=(0.0, 0, 0), scale=0.15)
         self.controlKeyWarningLabel.hide()
-        self.waitingMoveLabel = DirectLabel(text=TTLocalizer.IceGameWaitingForPlayersToFinishMove, text_fg=VBase4(1, 1, 1, 1), relief=None, pos=(-0.6, 0, -0.75), scale=0.075)
+        self.waitingMoveLabel = DirectLabel(text=TTLocalizer.WaitingForOtherToons, text_fg=VBase4(1, 1, 1, 1), relief=None, pos=(-0.6, 0, -0.75), scale=0.075)
         self.waitingMoveLabel.hide()
-        self.waitingSyncLabel = DirectLabel(text=TTLocalizer.IceGameWaitingForAISync, text_fg=VBase4(1, 1, 1, 1), relief=None, pos=(-0.6, 0, -0.75), scale=0.075)
+        self.waitingSyncLabel = DirectLabel(text=TTLocalizer.WaitingForOtherToons, text_fg=VBase4(1, 1, 1, 1), relief=None, pos=(-0.6, 0, -0.75), scale=0.075)
         self.waitingSyncLabel.hide()
         self.infoLabel = DirectLabel(text='', text_fg=VBase4(0, 0, 0, 1), relief=None, pos=(0.0, 0, 0.7), scale=0.075)
         self.updateInfoLabel()

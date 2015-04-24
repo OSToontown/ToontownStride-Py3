@@ -54,9 +54,6 @@ class FriendInvitee(ToonHeadDialog.ToonHeadDialog):
         if self.context != None:
             base.cr.friendManager.up_inviteeFriendResponse(2, self.context)
             self.context = None
-        if base.friendMode == 1:
-            base.cr.friendManager.executeGameSpecificFunction()
-        return
 
     def __handleButton(self, value):
         base.cr.friendManager.up_inviteeFriendResponse(value == DGG.DIALOG_OK, self.context)

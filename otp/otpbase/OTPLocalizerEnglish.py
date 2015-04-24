@@ -32,9 +32,6 @@ WhisperGiveupVisit = "%s couldn't find you because you're moving around!"
 TeleportGreeting = 'Hi, %s.'
 WhisperFriendComingOnline = '%s is coming online!'
 WhisperFriendLoggedOut = '%s has logged out.'
-WhisperPlayerOnline = '%s logged into %s'
-WhisperPlayerOffline = '%s is offline.'
-WhisperUnavailable = 'That player is no longer available for whispers.'
 DialogSpecial = 'ooo'
 DialogExclamation = '!'
 DialogQuestion = '?'
@@ -214,66 +211,11 @@ SCMenuSellbotInvasion = 'SELLBOT INVASION'
 SCMenuFieldOffice = 'FIELD OFFICES'
 SCMenuIdesOfMarch = 'GREEN'
 ScMenuBugs = 'Bugs'
-GuildMemberTitle = 'Member Options'
-GuildMemberPromote = 'Make Officer'
-GuildMemberPromoteInvite = 'Make Veteran'
-GuildMemberDemoteInvite = 'Demote to Veteran'
-GuildMemberGM = 'Make Guildmaster'
-GuildMemberGMConfirm = 'Confirm'
-GuildMemberDemote = 'Demote to Member'
-GuildMemberKick = 'Remove Member'
-GuildMemberCancel = lCancel
-GuildMemberOnline = 'has come online.'
-GuildMemberOffline = 'has gone offline.'
-GuildPrefix = '(G):'
-GuildNewMember = 'New Guild Member'
-GuildMemberUnknown = 'Unknown'
-GuildMemberGMMessage = 'Warning! Would you like to give up leadership of your guild and make %s your guild master?\n\nYou will become an officer'
-GuildInviteeOK = lOK
-GuildInviteeNo = lNo
-GuildInviteeInvitation = '%s is inviting you to join %s.'
-GuildRedeemErrorInvalidToken = 'Sorry, that code is invalid. Please try again.'
-GuildRedeemErrorGuildFull = 'Sorry, this guild has too many members already.'
 FriendInviteeTooManyFriends = '%s would like to be your friend, but you already have too many friends on your list!'
 FriendInviteeInvitation = '%s would like to be your friend.'
-FriendInviteeInvitationPlayer = "%s's player would like to be your friend."
 FriendNotifictation = '%s is now your friend.'
 FriendInviteeOK = lOK
 FriendInviteeNo = lNo
-GuildInviterWentAway = '%s is no longer present.'
-GuildInviterAlready = '%s is already in a guild.'
-GuildInviterBusy = '%s is busy right now.'
-GuildInviterNotYet = 'Invite %s to join your guild?'
-GuildInviterCheckAvailability = 'Inviting %s to join your guild.'
-GuildInviterOK = lOK
-GuildInviterNo = lNo
-GuildInviterCancel = lCancel
-GuildInviterYes = lYes
-GuildInviterTooFull = 'Guild has reached maximum size.'
-GuildInviterNo = lNo
-GuildInviterClickToon = 'Click on the pirate you would like to invite.'
-GuildInviterTooMany = 'This is a bug'
-GuildInviterNotAvailable = '%s is busy right now; try again later.'
-GuildInviterGuildSaidNo = '%s has declined your guild invitation.'
-GuildInviterAlreadyInvited = '%s has already been invited.'
-GuildInviterEndGuildship = 'Remove %s from the guild?'
-GuildInviterFriendsNoMore = '%s has left the guild.'
-GuildInviterSelf = 'You are already in the guild!'
-GuildInviterIgnored = '%s is ignoring you.'
-GuildInviterAsking = 'Asking %s to join the guild.'
-GuildInviterGuildSaidYes = '%s has joined the guild!'
-GuildInviterFriendKickedOut = '%s has kicked out %s from the Guild.'
-GuildInviterFriendKickedOutP = '%s have kicked out %s from the Guild.'
-GuildInviterFriendInvited = '%s has invited %s to the Guild.'
-GuildInviterFriendInvitedP = '%s have invited %s to the Guild.'
-GuildInviterFriendPromoted = '%s has promoted %s to the rank of %s.'
-GuildInviterFriendPromotedP = '%s have promoted %s to the rank of %s.'
-GuildInviterFriendDemoted = '%s has demoted %s to the rank of %s.'
-GuildInviterFriendDemotedP = '%s have demoted %s to the rank of %s.'
-GuildInviterFriendPromotedGM = '%s has named %s as the new %s'
-GuildInviterFriendPromotedGMP = '%s have named %s as the new %s'
-GuildInviterFriendDemotedGM = '%s has been named by %s as the new GuildMaster who became the rank of %s'
-GuildInviterFriendDemotedGMP = '%s have been named by %s as the new GuildMaster who beaome the rank of %s'
 FriendOnline = 'has come online.'
 FriendOffline = 'has gone offline.'
 FriendInviterOK = lOK
@@ -285,7 +227,6 @@ FriendInviterNo = lNo
 FriendInviterClickToon = 'Click on the toon you would like to make friends with.'
 FriendInviterTooMany = 'You have too many friends on your list to add another one now. You will have to remove some friends if you want to make friends with %s.'
 FriendInviterToonTooMany = 'You have too many toon friends on your list to add another one now. You will have to remove some toon friends if you want to make friends with %s.'
-FriendInviterPlayerTooMany = 'You have too many player friends on your list to add another one now. You will have to remove some player friends if you want to make friends with %s.'
 FriendInviterNotYet = 'Would you like to make friends with %s?'
 FriendInviterCheckAvailability = 'Seeing if %s is available.'
 FriendInviterNotAvailable = '%s is busy right now; try again later.'
@@ -304,15 +245,11 @@ FriendInviterSelf = "You are already 'friends' with yourself!"
 FriendInviterIgnored = '%s is ignoring you.'
 FriendInviterAsking = 'Asking %s to be your friend.'
 FriendInviterFriendSaidYes = 'You are now friends with %s!'
-FriendInviterPlayerFriendSaidYes = "You are now friends with %s's player, %s!"
 FriendInviterFriendSaidNo = '%s said no, thank you.'
 FriendInviterFriendSaidNoNewFriends = "%s isn't looking for new friends right now."
 FriendInviterOtherTooMany = '%s has too many friends already!'
 FriendInviterMaybe = '%s was unable to answer.'
 FriendInviterDown = 'Cannot make friends now.'
-TalkGuild = 'G'
-TalkParty = 'P'
-TalkPVP = 'PVP'
 AntiSpamInChat = '***Spamming***'
 IgnoreConfirmOK = lOK
 IgnoreConfirmCancel = lCancel
@@ -411,7 +348,7 @@ SuitBrushOffs = {'f': ["I'm late for a meeting."],
         "You're in no position to meet with me.",
         'Talk to my assistant.',
         "I'll pretend I don't see you Toon.",
-        "There's a restraining order coming your way"]}
+        "There's a restraining order coming your way."]}
 SuitFaceoffTaunts = {'b': ['Do you have a donation for me?',
        "I'm going to make you a sore loser.",
        "I'm going to leave you high and dry.",
@@ -1819,279 +1756,12 @@ SpeedChatStaticTextToontown = {100: 'Hi!',
  30450: "It's easy to be green!",
  30451: 'Visit Green Bean Jeans and you can be green too!',
  30452: "It's on Oak Street in Daisy Gardens."}
-SpeedChatStaticTextPirates = {50001: 'Aye',
- 50002: 'Nay',
- 50003: 'Yes',
- 50004: 'No',
- 50005: 'Ok',
- 50100: 'Gangway!',
- 50101: 'Blimey!',
- 50102: 'Well blow me down!',
- 50103: 'Walk the plank!',
- 50104: 'Dead men tell no tales....',
- 50105: 'Shiver me timbers!',
- 50106: "Salty as a Kraken's kiss.",
- 50107: 'Treasure be the measure of our pleasure!',
- 50108: "I don't fear death - I attune it.",
- 50700: 'Ahoy!',
- 50701: 'Ahoy, mate!',
- 50702: 'Yo-Ho-Ho',
- 50703: 'Avast!',
- 50704: 'Hey Bucko.',
- 50800: 'Until next time.',
- 50801: 'May fair winds find ye.',
- 50802: 'Godspeed.',
- 50900: 'How are ye, mate?',
- 50901: '',
- 51000: "It's like the sky is raining gold doubloons!",
- 51001: 'May a stiff wind be at our backs, the sun on our faces and our cannons fire true!',
- 51100: 'I be sailing some rough waters today.',
- 51200: 'Me apologies, mate.',
- 51201: 'Sorry.',
- 51202: 'Sorry, I was busy before.',
- 51203: 'Sorry, I already have plans.',
- 51204: "Sorry, I don't need to do that.",
- 51300: 'Attack the weakest one!',
- 51301: 'Attack the strongest one!',
- 51302: 'Attack me target!',
- 51303: 'I be needing help!',
- 51304: "I can't do any damage!",
- 51305: 'I think we be in trouble.',
- 51306: 'Surround the most powerful one.',
- 51307: 'We should retreat.',
- 51308: 'Run for it!',
- 51400: 'Fire a Broadside!',
- 51401: 'Port Side! (left)',
- 51402: 'Starboard Side! (right)',
- 51403: 'Incoming!',
- 51404: 'Come about!',
- 51405: 'Broadside! Take Cover!',
- 51406: 'To the Cannons!',
- 51407: 'Open fire!',
- 51408: 'Hold yer fire!',
- 51409: 'Aim for the masts!',
- 51410: 'Aim for the hull!',
- 51411: 'Prepare to board!',
- 51412: "She's coming about.",
- 51413: 'Ramming speed!',
- 51414: "We've got her on the run.",
- 51415: 'We be taking on water!',
- 51416: "We can't take anymore!",
- 51417: "I don't have a shot!",
- 51418: "Let's find port for repair.",
- 51419: 'Man overboard!',
- 51420: 'Enemy spotted.',
- 51421: 'Handsomely now, mates!',
- 50400: "Let's set sail.",
- 50401: "Let's get out of here.",
- 51500: "Let's sail to Port Royal.",
- 51501: "Let's sail to Tortuga.",
- 51502: "Let's sail to Padres Del Fuego.",
- 51503: "Let's sail to Devil's Anvil.",
- 51504: "Let's sail to Kingshead.",
- 51505: "Let's sail to Isla Perdida.",
- 51506: "Let's sail to Cuba.",
- 51507: "Let's sail to Tormenta.",
- 51508: "Let's sail to Outcast Isle.",
- 51509: "Let's sail to Driftwood.",
- 51510: "Let's sail to Cutthroat.",
- 51511: "Let's sail to Rumrunner's Isle.",
- 51512: "Let's sail to Isla Cangrejos.",
- 51600: "Let's head into town.",
- 51601: "Let's go to the docks.",
- 51602: "Let's head to the tavern.",
- 51800: "Let's go to Fort Charles.",
- 51801: "Let's go to the Governor's Mansion.",
- 52500: 'Where be I, mate?',
- 51700: 'Yer already there.',
- 51701: "I don't know.",
- 51702: 'Yer on the wrong island.',
- 51703: "That's in town.",
- 51704: 'Look just outside of town.',
- 51705: 'Ye will have to search through the jungle.',
- 51706: 'Deeper inland.',
- 51707: 'Oh, that be by the coast.',
- 50200: 'Bilge rat!',
- 50201: 'Scurvy dog!',
- 50202: 'See ye in Davy Jones locker!',
- 50203: 'Scoundrel!',
- 50204: 'Landlubber!',
- 50205: 'Addle-minded fool!',
- 50206: 'You need a sharp sword and sharper wits.',
- 50207: 'Ye be one doubloon short of a full hull mate!',
- 50208: "Watch yer tongue or I'll pickle it with sea salt!",
- 50209: 'Touch me loot and you get the boot!',
- 50210: 'The horizon be as empty as yer head.',
- 50211: "You're a canvas shy of a full sail, aren't ye mate?",
- 50300: 'Fine shooting mate!',
- 50301: 'A well placed blow!',
- 50302: 'Nice shot!',
- 50303: 'Well met!',
- 50304: 'We showed them!',
- 50305: 'Yer not so bad yerself!',
- 50306: 'A fine plunder haul!',
- 52400: 'May luck be my lady.',
- 52401: 'I think these cards be marked!',
- 52402: 'Blimey cheater!',
- 51900: "That's a terrible flop!",
- 51901: 'Trying to buy the hand, are ye?',
- 51902: 'Ye be bluffing.',
- 51903: "I don't think ye had it.",
- 51904: 'Saved by the river.',
- 52600: 'Hit me.',
- 52601: 'Can I get another dealer?',
- 53101: 'I caught a fish!',
- 53102: 'I saw a Legendary Fish!',
- 53103: 'What did you catch?',
- 53104: 'This will make a whale of a tale!',
- 53105: 'That was a beauty!',
- 53106: 'Arr, the sea is treacherous today.',
- 53107: 'What a bountiful haul of fish!',
- 53110: 'Do you have the Legendary Lure?',
- 53111: 'Have you ever caught a Legendary Fish?',
- 53112: 'Can you sail on a fishing boat?',
- 53113: 'Where is the Fishing Master?',
- 53114: 'Have you completed your fish collection?',
- 53120: 'Fire at my target!',
- 53121: 'Fire at the ship closest to the shore!',
- 53122: "There's a ship getting away!",
- 53123: 'Fire at the big ships!',
- 53124: 'Fire at the small ships!',
- 53125: 'More are coming!',
- 53126: "We're not going to last much longer!",
- 53127: 'Shoot the barrels!',
- 53128: "We've got new ammo!",
- 53129: 'Sturdy defense, mates!',
- 53141: 'Look at the potion I made!',
- 53142: 'Have you completed your potion collection?',
- 53143: 'Where is the Gypsy?',
- 53144: 'What potion is that?',
- 53145: 'This potion was easy enough.',
- 53146: "This potion was hard brewin', I tell ye!",
- 53160: 'We need someone to bilge pump!',
- 53161: 'We need someone to scrub!',
- 53162: 'We need someone to saw!',
- 53163: 'We need someone to brace!',
- 53164: 'We need someone to hammer!',
- 53165: 'We need someone to patch!',
- 53166: "I'll do it!",
- 53167: "Keep it up, this ship won't repair itself!",
- 53168: 'Great job repairing the ship!',
- 52100: 'Want to group up?',
- 52101: 'Join me crew?',
- 52200: 'Fight some skeletons?',
- 52201: 'Fight some crabs?',
- 52300: "How 'bout a game of Mayhem?",
- 52301: 'Join me Mayhem game.',
- 52302: 'Want to start a Mayhem game?',
- 52303: 'Want to start a team battle game?',
- 52304: 'Join me team battle game.',
- 52350: 'Join my Cannon Defense.',
- 52351: 'Want to start a Cannon Defense?',
- 52352: 'Can you lend me a hand with Repair?',
- 52353: 'We need to Repair the ship now!',
- 52354: 'Care to catch some fish?',
- 52355: 'Want to go fishing with me?',
- 52356: "Join me crew for some fishin'?",
- 52357: 'Time to brew some potions!',
- 52358: 'You should try your hand at brewing potions.',
- 52000: '',
- 52000: '',
- 52700: '',
- 53000: '',
- 52800: '',
- 52900: '',
- 50500: '',
- 50600: '',
- 60100: 'Hi!',
- 60101: 'Hello!',
- 60102: 'Hey!',
- 60103: 'Yo!',
- 60104: 'Hi everybody!',
- 60105: 'How are you doing?',
- 60106: "What's Up?",
- 60200: 'Bye!',
- 60201: 'Later!',
- 60202: 'See ya!',
- 60203: "I'll be right back.",
- 60204: 'I need to go.',
- 60300: ':-)',
- 60301: 'Cool!',
- 60302: 'Yeah!',
- 60303: 'Ha ha!',
- 60304: 'Sweet!',
- 60305: 'Yeah!',
- 60306: 'That rocks!',
- 60307: 'Funky!',
- 60308: 'Awesome!',
- 60309: 'Wow!',
- 60400: ':-(',
- 60401: 'Doh!',
- 60402: 'Aw man!',
- 60403: 'Ouch!',
- 60404: 'Bummer!',
- 60500: 'Where are you?',
- 60501: "Let's go to the Gateway Store.",
- 60502: "Let's go to the Disco Hall.",
- 60503: "Let's go to Toontown.",
- 60504: "Let's go to Pirates of the Carribean.",
- 60505: 'Flip coin',
- 60506: 'Dance',
- 60507: 'Chant 1',
- 60508: 'Chant 2',
- 60509: 'Dance a jig',
- 60510: 'Sleep',
- 60511: 'Flex',
- 60512: 'Play Lute',
- 60513: 'Play Flute',
- 60514: 'Frustrated',
- 60515: 'Searching',
- 60516: 'Yawn',
- 60517: 'Kneel',
- 60518: 'Sweep',
- 60519: 'Primp',
- 60520: 'Yawn',
- 60521: 'Dance',
- 60522: 'No',
- 60523: 'Yes',
- 60524: 'Laugh',
- 60525: 'Clap',
- 60526: 'Smile',
- 60527: 'Anger',
- 60528: 'Fear',
- 60529: 'Sad',
- 60530: 'Celebrate',
- 60668: 'Celebrate',
- 60669: 'Sleep',
- 60602: 'Angry',
- 60614: 'Clap',
- 60622: 'Scared',
- 60640: 'Laugh',
- 60652: 'Sad',
- 60657: 'Smile',
- 60664: 'Wave',
- 60665: 'Wink',
- 60666: 'Yawn',
- 60669: 'Sleep',
- 60670: 'Dance',
- 60676: 'Flirt',
- 60677: 'Zombie dance',
- 60678: 'Noisemaker',
- 60671: "Hello, I'm a Pirate, and I'm here to steal your heart.",
- 60672: "I just found the treasure I've been searching for.",
- 60673: "If you were a booger, I'd pick you first.",
- 60674: 'Come to Tortuga often?',
- 60675: 'Do you have a map?  I just keep getting lost in your eyes.',
- 65000: 'Yes',
- 65001: 'No',
- 60909: 'Check Hand'}
 SpeedChatStaticText = SpeedChatStaticTextCommon
 Emotes_Root = 'EMOTES'
 Emotes_Dances = 'Dances'
 Emotes_General = 'General'
 Emotes_Music = 'Music'
 Emotes_Expressions = 'Emotions'
-Emote_ShipDenied = 'Cannot emote while sailing.'
 Emote_MoveDenied = 'Cannot emote while moving.'
 Emote_CombatDenied = 'Cannot emote while in combat.'
 Emote_CannonDenied = 'Cannot emote while using a cannon.'
@@ -2629,48 +2299,6 @@ SCMenuCustomCogIndices = {'bf': (20005, 20014),
  'rb': (20320, 20329),
  'sc': (20330, 20331),
  'sd': (20341, 20350)}
-PSCMenuExpressions = 'EXPRESSIONS'
-PSCMenuGreetings = 'GREETINGS'
-PSCMenuGoodbyes = 'GOODBYES'
-PSCMenuFriendly = 'FRIENDLY'
-PSCMenuHappy = 'HAPPY'
-PSCMenuSad = 'SAD'
-PSCMenuSorry = 'SORRY'
-PSCMenuCombat = 'COMBAT'
-PSCMenuSeaCombat = 'SEA COMBAT'
-PSCMenuPlaces = 'PLACES'
-PSCMenuLetsSail = "LET'S SAIL..."
-PSCMenuLetsHeadTo = "LET'S HEAD TO..."
-PSCMenuHeadToPortRoyal = 'PORT ROYAL'
-PSCMenuWhereIs = 'WHERE IS ..?'
-PSCMenuWhereIsPortRoyal = 'PORT ROYAL'
-PSCMenuWhereIsTortuga = 'TORTUGA'
-PSCMenuWhereIsPadresDelFuego = 'PADRES DEL FUEGO'
-PSCMenuWhereIsLasPulgas = 'LAS PULGAS'
-PSCMenuWhereIsLosPadres = 'LOS PADRES'
-PSCMenuDirections = 'DIRECTIONS'
-PSCMenuInsults = 'INSULTS'
-PSCMenuCompliments = 'COMPLIMENTS'
-PSCMenuCardGames = 'CARD GAMES'
-PSCMenuPoker = 'POKER'
-PSCMenuBlackjack = 'BLACKJACK'
-PSCMenuMinigames = 'MINIGAMES'
-PSCMenuFishing = 'FISHING'
-PSCMenuCannonDefense = 'CANNON DEFENSE'
-PSCMenuPotions = 'POTION BREWING'
-PSCMenuRepair = 'REPAIR'
-PSCMenuInvitations = 'INVITATIONS'
-PSCMenuVersusPlayer = 'VERSUS'
-PSCMenuHunting = 'HUNTING'
-PSCMenuQuests = 'QUESTS'
-PSCMenuGM = 'GM'
-PSCMenuShips = 'SHIPS'
-PSCMenuAdventures = 'ADVENTURE'
-GWSCMenuHello = 'GREETINGS'
-GWSCMenuBye = 'GOODBYES'
-GWSCMenuHappy = 'HAPPY'
-GWSCMenuSad = 'SAD'
-GWSCMenuPlaces = 'PLACES'
 RandomButton = 'Randomize'
 TypeANameButton = 'Type Name'
 PickANameButton = 'Pick-A-Name'
@@ -2712,7 +2340,6 @@ AvatarDetailPanelCancel = lCancel
 AvatarDetailPanelClose = lClose
 AvatarDetailPanelLookup = 'Looking up details for %s.'
 AvatarDetailPanelFailedLookup = 'Unable to get details for %s.'
-AvatarDetailPanelPlayer = 'Player: %(player)s\nWorld: %(world)s\nLocation: %(location)s'
 AvatarDetailPanelOnline = 'District: %(district)s\nLocation: %(location)s'
 AvatarDetailPanelOffline = 'District: offline\nLocation: offline'
 AvatarPanelFriends = 'Friends'

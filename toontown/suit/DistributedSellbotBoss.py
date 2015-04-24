@@ -501,7 +501,7 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
             self.onscreenMessage = None
 
     def __showWaitingMessage(self, task):
-        self.__showOnscreenMessage(TTLocalizer.BuildingWaitingForVictors)
+        self.__showOnscreenMessage(TTLocalizer.WaitingForOtherToons)
 
     def __placeCageShadow(self):
         if self.cageShadow == None:

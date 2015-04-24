@@ -9,10 +9,6 @@ from otp.ai import MagicWordManager/AI
 from otp.avatar import DistributedAvatar/AI/UD
 from otp.avatar import DistributedPlayer/AI
 from otp.friends import FriendManager/AI
-from otp.friends import PlayerFriendsManager/UD
-from otp.friends import GuildManager/AI/UD
-from otp.friends import FriendInfo
-from otp.friends import AvatarFriendInfo
 from otp.distributed import DistributedDistrict/AI/UD
 from otp.distributed import DistributedDirectory/AI
 from otp.chat import ChatAgent/UD
@@ -179,11 +175,6 @@ dclass TalkPath_group {
                string(0-400) chat, TalkModification [], uint8 flags) clsend airecv;
 };
 
-dclass TalkPath_account {
-  setTalkAccount(DoId toAcc, DoId fromAcc, string(0-256) avName,
-                 string(0-400) msg, TalkModification [], uint8 flags) airecv clsend;
-};
-
 dclass AvatarHandle : TalkPath_whisper {
 };
 
@@ -253,38 +244,6 @@ dclass FriendManager : DistributedObject {
   submitSecretResponse(int8, int32);
 };
 
-struct FriendInfo {
-  string avatarName;
-  uint32 avatarId;
-  string playerName;
-  uint8 onlineYesNo;
-  uint8 openChatEnabledYesNo;
-  uint8 openChatFriendshipYesNo;
-  uint8 wlChatEnabledYesNo;
-  string location;
-  string sublocation;
-  uint32 timestamp;
-};
-
-struct AvatarFriendInfo {
-  string avatarName;
-  string playerName;
-  uint32 playerId;
-  uint8 onlineYesNo;
-  uint8 openChatEnabledYesNo;
-  uint8 openChatFriendshipYesNo;
-  uint8 wlChatEnabledYesNo;
-};
-
-struct MemberInfo {
-  uint32 avatarId;
-  string avatarName;
-  uint8 avatarRank;
-  uint8 avatarOnline;
-  uint32 bandManagerId;
-  uint32 bandId;
-};
-
 struct leaderBoardRecordResponces {
   char found;
   uint32 id;
@@ -311,85 +270,6 @@ dclass LeaderBoard : LeaderBoardReceiver {
   getTopTen(string);
   getValuesRespondTo(string, uint32 [], uint32);
   getTopTenRespondTo(string, uint32);
-};
-
-dclass GuildManager : DistributedObject, LeaderBoardReceiver, TalkPath_group {
-  online();
-  guildRejectInvite(uint32, uint32);
-  invitationFrom(uint32, string, uint32, string);
-  requestInvite(uint32) airecv clsend;
-  memberList() airecv clsend;
-  createGuild() airecv clsend;
-  acceptInvite() airecv clsend;
-  declineInvite() airecv clsend;
-  setWantName(string(0-256)) airecv clsend;
-  removeMember(uint32) airecv clsend;
-  changeRank(uint32, uint8) airecv clsend;
-  changeRankAvocate(uint32) airecv clsend;
-  statusRequest() airecv clsend;
-  requestLeaderboardTopTen() airecv clsend;
-  guildStatusUpdate(uint32, string(0-256), uint8);
-  guildNameReject(uint32);
-  guildNameChange(string, uint8);
-  receiveMember(MemberInfo);
-  receiveMembersDone();
-  guildAcceptInvite(uint32);
-  guildDeclineInvite(uint32);
-  updateRep(uint32, uint32);
-  leaderboardTopTen(leaderBoardRecord []);
-  recvAvatarOnline(uint32, string, uint32, uint32);
-  recvAvatarOffline(uint32, string);
-  sendChat(string(0-256), uint8, uint32) airecv clsend;
-  sendWLChat(string(0-256), uint8, uint32) airecv clsend;
-  sendSC(uint16) airecv clsend;
-  sendSCQuest(uint16, uint16, uint16) airecv clsend;
-  recvChat(uint32, string, uint8, uint32);
-  recvWLChat(uint32, string, uint8, uint32);
-  recvSC(uint32, uint16);
-  recvSCQuest(uint32, uint16, uint16, uint16);
-  sendTokenRequest() airecv clsend;
-  recvTokenGenerated(string);
-  recvTokenInviteValue(string, int8);
-  sendTokenForJoinRequest(string(0-256), string(0-256)) airecv clsend;
-  recvTokenRedeemMessage(string);
-  recvTokenRedeemedByPlayerMessage(string);
-  sendTokenRValue(string(0-256), int8) airecv clsend;
-  sendPermToken() airecv clsend;
-  sendNonPermTokenCount() airecv clsend;
-  recvPermToken(string);
-  recvNonPermTokenCount(uint8);
-  sendClearTokens(uint8) airecv clsend;
-  sendAvatarBandId(uint32, uint32, uint32);
-  recvMemberAdded(MemberInfo, uint32, string);
-  notifyGuildKicksMaxed();
-  recvMemberRemoved(uint32, uint32, string, string);
-  recvMemberUpdateName(uint32, string);
-  recvMemberUpdateRank(uint32, uint32, string, string, uint8, bool);
-  recvMemberUpdateBandId(uint32, uint32, uint32);
-  avatarOnline(uint32, uint16);
-  avatarOffline(uint32);
-  reflectTeleportQuery(uint32, uint32, uint32, uint32, uint32) clsend airecv;
-  teleportQuery(uint32, uint32, uint32, uint32, uint32);
-  reflectTeleportResponse(uint32, int8, uint32, uint32, uint32) clsend airecv;
-  teleportResponse(uint32, int8, uint32, uint32, uint32);
-  requestGuildMatesList(uint32, uint32, uint32);
-  updateAvatarName(uint32, string);
-  avatarDeleted(uint32);
-};
-
-dclass PlayerFriendsManager : DistributedObject, TalkPath_account {
-  requestInvite(uint32, uint32, uint8) airecv clsend;
-  invitationFrom(uint32, string);
-  retractInvite(uint32);
-  invitationResponse(uint32, uint16, uint32);
-  requestDecline(uint32, uint32) airecv clsend;
-  requestDeclineWithReason(uint32, uint32, uint32) airecv clsend;
-  requestRemove(uint32, uint32) airecv clsend;
-  secretResponse(string);
-  rejectSecret(string);
-  rejectUseSecret(string);
-  updatePlayerFriend(uint32, FriendInfo, uint8);
-  removePlayerFriend(uint32);
 };
 
 dclass CallbackObject {
@@ -476,7 +356,6 @@ from toontown.coghq import DistributedCogHQDoor/AI
 from toontown.coghq import DistributedSellbotHQDoor/AI
 from toontown.toon import DistributedNPCToonBase/AI
 from toontown.toon import DistributedNPCToon/AI
-from toontown.toon import DistributedSmartNPC/AI
 from toontown.toon import DistributedSmartNPC/AI
 from toontown.toon import DistributedNPCSpecialQuestGiver/AI
 from toontown.toon import DistributedNPCFlippyInToonHall/AI
@@ -630,7 +509,6 @@ from toontown.parties import DistributedPartyJukeboxActivity/AI
 from toontown.parties import DistributedPartyJukebox40Activity/AI
 from toontown.parties import DistributedPartyValentineJukeboxActivity/AI
 from toontown.parties import DistributedPartyValentineJukebox40Activity/AI
-from toontown.friends import TTPlayerFriendsManager/UD
 from toontown.friends import TTUFriendsManager/UD
 from toontown.safezone import DistributedGolfKart/AI
 from toontown.safezone import DistributedPicnicBasket/AI
@@ -1794,7 +1672,7 @@ dclass NewsManager : DistributedObject {
 };
 
 dclass PurchaseManager : DistributedObject {
-  setPlayerIds(uint32, uint32, uint32, uint32) required broadcast ram;
+  setAvIds(uint32, uint32, uint32, uint32) required broadcast ram;
   setNewbieIds(uint32[]) required broadcast ram;
   setMinigamePoints(uint8, uint8, uint8, uint8) required broadcast ram;
   setPlayerMoney(uint16, uint16, uint16, uint16) required broadcast ram;
@@ -1864,7 +1742,7 @@ dclass DistributedLargeBlobSender : DistributedObject {
 
 dclass DistributedLevel : DistributedObject {
   setLevelZoneId(uint32) required broadcast ram;
-  setPlayerIds(uint32[]) required broadcast ram;
+  setAvIds(uint32[]) required broadcast ram;
   setEntranceId(uint8) required broadcast ram;
   setZoneIds(uint32[]) broadcast ram;
   setStartTimestamp(int32) broadcast ram;
@@ -3078,9 +2956,6 @@ dclass DistributedVineGame : DistributedMinigame {
   setFallingFromVine(uint32, int8, int8, int32/100, int16/100, int16/100, int16, int8) clsend broadcast;
   setFallingFromMidair(uint32, int8, int32/100, int16/100, int16/100, int16, int8) clsend broadcast;
   setVineSections(uint8[]) required broadcast ram;
-};
-
-dclass TTPlayerFriendsManager : PlayerFriendsManager {
 };
 
 dclass DistributedGolfKart : DistributedObject {

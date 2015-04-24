@@ -67,8 +67,8 @@ class DistributedMazeAI(DistributedEntityAI.DistributedEntityAI):
         roomId = self.getLevelDoId()
         room = simbase.air.doId2do.get(roomId)
         if room:
-            playerIds = room.presentAvIds
-            for avId in playerIds:
+            avIds = room.presentAvIds
+            for avId in avIds:
                 av = simbase.air.doId2do.get(avId)
                 if av and avId not in self.finishedList:
                     self.finishedList.append(avId)
@@ -81,7 +81,7 @@ class DistributedMazeAI(DistributedEntityAI.DistributedEntityAI):
         roomId = self.getLevelDoId()
         room = simbase.air.doId2do.get(roomId)
         if room:
-            playerIds = room.presentAvIds
-            if av and senderId in playerIds:
+            avIds = room.presentAvIds
+            if av and senderId in avIds:
                 av.takeDamage(self.DamageOnFailure, quietly=0)
                 room.sendUpdate('forceOuch', [self.DamageOnFailure])

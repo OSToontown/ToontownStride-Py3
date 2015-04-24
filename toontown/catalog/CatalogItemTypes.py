@@ -83,7 +83,6 @@ CatalogItemType2multipleAllowed = {INVALID_ITEM: False,
  ANIMATED_FURNITURE_ITEM: True,
  ACCESSORY_ITEM: False,
  HOUSE_ITEM: False}
-SingleCodeRedemption = (BEAN_ITEM,)
 CatalogItemTypeMask = 31
 CatalogItemSaleFlag = 128
 CatalogItemGiftTag = 64

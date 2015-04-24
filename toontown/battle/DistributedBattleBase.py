@@ -319,16 +319,19 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
         pass
     
     def getInteractiveProp(self):
-        if self.interactiveProp:
-            return self.interactiveProp
-        elif base.cr.playGame.hood:
-            loader = base.cr.playGame.hood.loader
-            
-            if hasattr(loader, 'getInteractiveProp'):
-                self.interactiveProp = base.cr.playGame.hood.loader.getInteractiveProp(self.zoneId)
-                
+        if config.GetBool('want-anim-props', True):        
+            if self.interactiveProp:
                 return self.interactiveProp
-        return None
+            elif base.cr.playGame.hood:
+                loader = base.cr.playGame.hood.loader
+            
+                if hasattr(loader, 'getInteractiveProp'):
+                    self.interactiveProp = base.cr.playGame.hood.loader.getInteractiveProp(self.zoneId)
+                
+                    return self.interactiveProp
+            return None
+        else:
+            return None
     
     def getInteractivePropTrackBonus(self):
         prop = self.getInteractiveProp()

@@ -247,7 +247,7 @@ class CogdoMazeLocalPlayer(CogdoMazePlayer):
         self.exited = True
         message = ''
         if door.getPlayerCount() < len(self.game.players):
-            message = TTLocalizer.CogdoMazeGameWaitingForToons
+            message = TTLocalizer.WaitingForOtherToons
         if toonId == self.toon.doId:
             self._guiMgr.setMessage(message)
             self._winSfx.play()

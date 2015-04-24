@@ -118,7 +118,6 @@ class ToonTeleportPanel(DirectFrame):
 
     def enterBegin(self):
         myId = base.localAvatar.doId
-        hasManager = hasattr(base.cr, 'playerFriendsManager')
         if self.avId == myId:
             self.fsm.request('self')
         elif self.avId in base.cr.doId2do:
@@ -128,16 +127,6 @@ class ToonTeleportPanel(DirectFrame):
                 self.fsm.request('checkAvailability')
             else:
                 self.fsm.request('notOnline')
-        elif hasManager and base.cr.playerFriendsManager.getAvHandleFromId(self.avId):
-            id = base.cr.playerFriendsManager.findPlayerIdFromAvId(self.avId)
-            info = base.cr.playerFriendsManager.getFriendInfo(id)
-            if info:
-                if info.onlineYesNo:
-                    self.fsm.request('checkAvailability')
-                else:
-                    self.fsm.request('notOnline')
-            else:
-                self.fsm.request('wentAway')
         else:
             self.fsm.request('wentAway')
 

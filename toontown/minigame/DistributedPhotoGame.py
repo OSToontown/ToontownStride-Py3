@@ -543,13 +543,13 @@ class DistributedPhotoGame(DistributedMinigame, PhotoGameBase.PhotoGameBase):
         self.notify.debug('Viewfinder to screen angles with math H:%s V:%s' % (hMDegree, vMDegree))
         return
 
-    def newAIPhotoScore(self, playerId, assignmentIndex, score):
+    def newAIPhotoScore(self, avId, assignmentIndex, score):
         if len(self.assignments) > assignmentIndex:
             assignment = self.assignments[assignmentIndex]
             assignmentData = self.assignmentDataDict[assignment]
             if score > assignmentData[2]:
                 assignmentData[2] = score
-                assignmentData[3] = playerId
+                assignmentData[3] = avId
                 self.updateAssignmentPanels()
 
     def determinePhotoContent(self, subject):

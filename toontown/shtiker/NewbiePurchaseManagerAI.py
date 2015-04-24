@@ -2,10 +2,10 @@ import PurchaseManagerAI
 
 class NewbiePurchaseManagerAI(PurchaseManagerAI.PurchaseManagerAI):
 
-    def __init__(self, air, newbieId, playerArray, mpArray, previousMinigameId, trolleyZone):
+    def __init__(self, air, newbieId, avArray, mpArray, previousMinigameId, trolleyZone):
         self.ownedNewbieId = newbieId
         newbieList = []
-        PurchaseManagerAI.PurchaseManagerAI.__init__(self, air, playerArray, mpArray, previousMinigameId, trolleyZone, newbieList)
+        PurchaseManagerAI.PurchaseManagerAI.__init__(self, air, avArray, mpArray, previousMinigameId, trolleyZone, newbieList)
 
     def startCountdown(self):
         pass
@@ -13,7 +13,7 @@ class NewbiePurchaseManagerAI(PurchaseManagerAI.PurchaseManagerAI):
     def getOwnedNewbieId(self):
         return self.ownedNewbieId
 
-    def getInvolvedPlayerIds(self):
+    def getInvolvedAvIds(self):
         return [self.ownedNewbieId]
 
     def handlePlayerLeaving(self, avId):

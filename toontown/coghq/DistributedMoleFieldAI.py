@@ -107,8 +107,8 @@ class DistributedMoleFieldAI(DistributedEntityAI.DistributedEntityAI, MoleFieldB
             return
         senderId = self.air.getAvatarIdFromSender()
         av = simbase.air.doId2do.get(senderId)
-        playerIds = room.presentAvIds
-        if av and senderId in playerIds:
+        avIds = room.presentAvIds
+        if av and senderId in avIds:
             av.takeDamage(self.DamageOnFailure, quietly=0)
             room.sendUpdate('forceOuch', [self.DamageOnFailure])
 

@@ -494,7 +494,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         base.talkAssistant.receiveOpenTalk(fromAV, avatarName, fromAC, None, newText)
 
     def isAvFriend(self, avId):
-        return base.cr.isFriend(avId) or base.cr.playerFriendsManager.isAvatarOwnerPlayerFriend(avId)
+        return base.cr.isFriend(avId)
 
     def setTalkWhisper(self, fromAV, fromAC, avatarName, chat, mods, flags):
         if not localAvatar.acceptingNonFriendWhispers:
@@ -2407,9 +2407,9 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
                     if base.cr.isFriend(toonId):
                         if base.cr.isFriendOnline(toonId):
                             if singleReply.status == InviteStatus.Accepted:
-                                self.whisperSCTo(5302, toonId, 0)
+                                self.whisperSCTo(5302, toonId)
                             else:
-                                self.whisperSCTo(5302, toonId, 0)
+                                self.whisperSCTo(5302, toonId)
 
     def updateInvite(self, inviteKey, newStatus):
         DistributedToon.partyNotify.debug('updateInvite( inviteKey=%d, newStatus=%s )' % (inviteKey, InviteStatus.getString(newStatus)))

@@ -51,7 +51,7 @@ class DistributedLevel(DistributedObject.DistributedObject, Level.Level):
     def setLevelZoneId(self, zoneId):
         self.levelZone = zoneId
 
-    def setPlayerIds(self, avIdList):
+    def setAvIds(self, avIdList):
         self.avIdList = avIdList
 
     def setEntranceId(self, entranceId):

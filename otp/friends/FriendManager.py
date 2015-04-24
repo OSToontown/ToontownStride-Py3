@@ -11,23 +11,12 @@ class FriendManager(DistributedObject.DistributedObject):
         DistributedObject.DistributedObject.__init__(self, cr)
         self.__available = 0
         self.otherToon = 0
-        self.gameSpecificFunction = None
-        return
 
     def setAvailable(self, available):
         self.__available = available
-        if self.__available and self.gameSpecificFunction:
-            self.gameSpecificFunction()
 
     def getAvailable(self):
         return self.__available
-
-    def setGameSpecificFunction(self, function):
-        self.gameSpecificFunction = function
-
-    def executeGameSpecificFunction(self):
-        if self.__available and self.gameSpecificFunction:
-            self.gameSpecificFunction()
 
     def generate(self):
         if base.cr.friendManager != None:
@@ -42,7 +31,6 @@ class FriendManager(DistributedObject.DistributedObject):
         return
 
     def delete(self):
-        self.gameSpecificFunction = None
         base.cr.friendManager = None
         DistributedObject.DistributedObject.delete(self)
         return

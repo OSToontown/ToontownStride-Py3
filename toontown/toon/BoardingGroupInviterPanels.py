@@ -135,7 +135,7 @@ class BoardingGroupInvitingPanel(BoardingGroupInviterPanelBase):
         self.dialogName = 'BoardingGroupInvitingPanel'
         self.inviterText = TTLocalizer.BoardingInvitingMessage % self.avatarName
         self.panelStyle = TTDialog.CancelOnly
-        self.buttonTextList = [OTPLocalizer.GuildInviterCancel]
+        self.buttonTextList = [OTPLocalizer.lCancel]
 
     def handleButton(self, value):
         self.boardingParty.requestCancelInvite(self.avId)
@@ -163,4 +163,4 @@ class BoardingGroupInvitationRejectedPanel(BoardingGroupInviterPanelBase):
         self.dialogName = 'BoardingGroupInvitationRejectedPanel'
         self.inviterText = TTLocalizer.BoardingInvitationRejected % self.avatarName
         self.panelStyle = TTDialog.Acknowledge
-        self.buttonTextList = [OTPLocalizer.GuildInviterOK]
+        self.buttonTextList = [OTPLocalizer.lOK]

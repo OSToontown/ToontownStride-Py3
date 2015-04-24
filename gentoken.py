@@ -11,6 +11,6 @@ def executeHttpRequest(url, agent, **extras):
     except:
         return None
 
-print executeHttpRequest('register', 'Site', ip='69.69.69.69', username='dev', password='user', email='dev@dev.net', accesslevel=0)
-print executeHttpRequest('email', 'Site', email='dev@dev.net')
-print executeHttpRequest('login', 'Player', username='dev', password='user')
+print executeHttpRequest('register', 'Site', ip='69.69.69.63', username='Swag', password='user', email='swag@79.net', accesslevel=0)
+print executeHttpRequest('email', 'Site', email='swag@79.net')
+print executeHttpRequest('login', 'Site', username='Swag', password='user')

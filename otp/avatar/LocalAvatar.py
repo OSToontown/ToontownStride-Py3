@@ -70,8 +70,6 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         self.accept('friendOnline', self.__friendOnline)
         self.accept('friendOffline', self.__friendOffline)
         self.accept('clickedWhisper', self.clickedWhisper)
-        self.accept('playerOnline', self.__playerOnline)
-        self.accept('playerOffline', self.__playerOffline)
         self.sleepCallback = None
         self.accept('wakeup', self.wakeUp)
         self.jumpLandAnimFixTask = None
@@ -917,22 +915,6 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         whisper.manage(base.marginManager)
         base.playSfx(sfx)
 
-    def displayWhisperPlayer(self, fromId, chatString, whisperType):
-        sender = None
-        playerInfo = None
-        sfx = self.soundWhisper
-        playerInfo = base.cr.playerFriendsManager.playerId2Info.get(fromId, None)
-        if playerInfo == None:
-            return
-        senderName = playerInfo.playerName
-        if whisperType == WTNormal or whisperType == WTQuickTalker:
-            chatString = senderName + ': ' + chatString
-        whisper = WhisperPopup(chatString, OTPGlobals.getInterfaceFont(), whisperType)
-        if sender != None:
-            whisper.setClickable(senderName, fromId)
-        whisper.manage(base.marginManager)
-        base.playSfx(sfx)
-
     def setAnimMultiplier(self, value):
         self.animMultiplier = value
 
@@ -1128,7 +1110,6 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
 
     def startChat(self):
         self.chatMgr.start()
-        self.accept(OTPGlobals.WhisperIncomingEvent, self.handlePlayerFriendWhisper)
         self.accept(OTPGlobals.ThinkPosHotkey, self.thinkPos)
         self.accept(OTPGlobals.PrintCamPosHotkey, self.printCamPos)
         if self.__enableMarkerPlacement:
@@ -1190,35 +1171,15 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
             self.setSystemMessage(0, OTPLocalizer.WhisperFriendLoggedOut % friend.getName())
         return
 
-    def __playerOnline(self, playerId):
-        playerInfo = base.cr.playerFriendsManager.playerId2Info[playerId]
-        if playerInfo:
-            self.setSystemMessage(playerId, OTPLocalizer.WhisperPlayerOnline % (playerInfo.playerName, playerInfo.location))
-
-    def __playerOffline(self, playerId):
-        playerInfo = base.cr.playerFriendsManager.playerId2Info[playerId]
-        if playerInfo:
-            self.setSystemMessage(playerId, OTPLocalizer.WhisperPlayerOffline % playerInfo.playerName)
-
-    def clickedWhisper(self, doId, isPlayer = None):
-        if not isPlayer:
-            friend = base.cr.identifyFriend(doId)
-            if friend != None:
-                messenger.send('clickedNametag', [friend])
-                self.chatMgr.whisperTo(friend.getName(), doId)
-        else:
-            friend = base.cr.playerFriendsManager.getFriendInfo(doId)
-            if friend:
-                messenger.send('clickedNametagPlayer', [None, doId])
-                self.chatMgr.whisperTo(friend.getName(), None, doId)
-        return
+    def clickedWhisper(self, doId):
+        friend = base.cr.identifyFriend(doId)
+        
+        if friend != None:
+            messenger.send('clickedNametag', [friend])
+            self.chatMgr.whisperTo(friend.getName(), doId)
 
     def d_setParent(self, parentToken):
         DistributedSmoothNode.DistributedSmoothNode.d_setParent(self, parentToken)
-
-    def handlePlayerFriendWhisper(self, playerId, charMessage):
-        print 'handlePlayerFriendWhisper'
-        self.displayWhisperPlayer(playerId, charMessage, WTNormal)
 
     def canChat(self):
         return 0

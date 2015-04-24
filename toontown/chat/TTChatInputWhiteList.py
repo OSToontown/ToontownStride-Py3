@@ -112,13 +112,10 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
             for friendId, flags in base.localAvatar.friendsList:
                 if flags & ToontownGlobals.FriendChat:
                     self.sendWhisperByFriend(friendId, text)
-
-        elif not self.receiverId:
-            base.talkAssistant.sendOpenTalk(text)
-        elif self.receiverId and not self.toPlayer:
+        elif self.receiverId:
             base.talkAssistant.sendWhisperTalk(text, self.receiverId)
-        elif self.receiverId and self.toPlayer:
-            base.talkAssistant.sendAccountTalk(text, self.receiverId)
+        else:
+            base.talkAssistant.sendOpenTalk(text)
 
     def sendWhisperByFriend(self, avatarId, text):
         online = 0
@@ -151,14 +148,6 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
     def exitAllChat(self):
         ChatInputWhiteListFrame.exitAllChat(self)
 
-    def enterPlayerWhisper(self):
-        ChatInputWhiteListFrame.enterPlayerWhisper(self)
-        self.labelWhisper()
-
-    def exitPlayerWhisper(self):
-        ChatInputWhiteListFrame.exitPlayerWhisper(self)
-        self.whisperLabel.hide()
-
     def enterAvatarWhisper(self):
         ChatInputWhiteListFrame.enterAvatarWhisper(self)
         self.labelWhisper()
@@ -169,7 +158,7 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
 
     def labelWhisper(self):
         if self.receiverId:
-            self.whisperName = base.talkAssistant.findName(self.receiverId, self.toPlayer)
+            self.whisperName = base.talkAssistant.findAvatarName(self.receiverId)
             self.whisperLabel['text'] = OTPLocalizer.ChatInputWhisperLabel % self.whisperName
             self.whisperLabel.show()
         else:

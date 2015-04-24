@@ -33,7 +33,7 @@ class DistributedPatternGame(DistributedMinigame):
     strWrong = TTLocalizer.PatternGameWrong
     strPerfect = TTLocalizer.PatternGamePerfect
     strBye = TTLocalizer.PatternGameBye
-    strWaitingOtherPlayers = TTLocalizer.PatternGameWaitingOtherPlayers
+    strWaitingOtherPlayers = TTLocalizer.WaitingForOtherToons
     strPleaseWait = TTLocalizer.PatternGamePleaseWait
     strRound = TTLocalizer.PatternGameRound
     toonAnimNames = ['up',

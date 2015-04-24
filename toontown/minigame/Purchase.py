@@ -238,7 +238,7 @@ class Purchase(PurchaseBase):
         self.toon.inventory.hide()
         taskMgr.remove('resetStatusText')
         taskMgr.remove('showBrokeMsgTask')
-        self.statusLabel['text'] = TTLocalizer.GagShopWaitingOtherPlayers
+        self.statusLabel['text'] = TTLocalizer.WaitingForOtherToons
         messenger.send('purchasePlayAgain')
 
     def handleDone(self, playAgain):

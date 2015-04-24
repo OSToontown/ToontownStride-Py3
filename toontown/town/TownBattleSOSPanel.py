@@ -78,7 +78,7 @@ class TownBattleSOSPanel(DirectFrame, StateData.StateData):
 
     def makeFriendButton(self, friendPair):
         friendId, flags = friendPair
-        handle = base.cr.playerFriendsManager.identifyFriend(friendId)
+        handle = base.cr.identifyFriend(friendId)
         if handle == None:
             base.cr.fillUpFriendsMap()
             return
@@ -168,11 +168,6 @@ class TownBattleSOSPanel(DirectFrame, StateData.StateData):
                 if base.cr.isFriendOnline(friendPair[0]):
                     if self.factoryToonIdList is None or friendPair[0] in self.factoryToonIdList:
                         newFriends.append(friendPair)
-
-            if hasattr(base.cr, 'playerFriendsManager'):
-                for avatarId in base.cr.playerFriendsManager.getAllOnlinePlayerAvatars():
-                    if not base.cr.playerFriendsManager.askAvatarKnownElseWhere(avatarId):
-                        newFriends.append((avatarId, 0))
 
         for friendPair in self.friends.keys():
             if friendPair not in newFriends:

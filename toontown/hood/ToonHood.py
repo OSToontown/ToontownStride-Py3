@@ -118,13 +118,13 @@ class ToonHood(Hood):
             self.doneStatus = doneStatus
             messenger.send(self.doneEvent)
 
-    def enterPurchase(self, pointsAwarded, playerMoney, playerIds, playerStates, remain, metagameRound = -1, votesArray = None):
+    def enterPurchase(self, pointsAwarded, playerMoney, avIds, playerStates, remain, metagameRound = -1, votesArray = None):
         messenger.send('enterSafeZone')
         DistributedAvatar.DistributedAvatar.HpTextEnabled = 0
         base.localAvatar.laffMeter.start()
         self.purchaseDoneEvent = 'purchaseDone'
         self.accept(self.purchaseDoneEvent, self.handlePurchaseDone)
-        self.purchase = Purchase.Purchase(base.localAvatar, pointsAwarded, playerMoney, playerIds, playerStates, remain, self.purchaseDoneEvent, metagameRound, votesArray)
+        self.purchase = Purchase.Purchase(base.localAvatar, pointsAwarded, playerMoney, avIds, playerStates, remain, self.purchaseDoneEvent, metagameRound, votesArray)
         self.purchase.load()
         self.purchase.enter()
 

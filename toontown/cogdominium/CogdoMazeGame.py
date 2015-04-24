@@ -465,9 +465,9 @@ class CogdoMazeGame(DirectObject):
             self.gags.append(gag)
         return
 
-    def handleToonMeetsGag(self, playerId, gag):
+    def handleToonMeetsGag(self, avId, gag):
         self.removeGag(gag)
-        self.distGame.b_toonHitByGag(playerId)
+        self.distGame.b_toonHitByGag(avId)
 
     def toonHitByGag(self, toonId, hitToon, elapsedTime = 0.0):
         if toonId not in self.toonId2Player.keys() or hitToon not in self.toonId2Player.keys():
