@@ -70,13 +70,6 @@ class ToontownChatManager(ChatManager.ChatManager):
         messenger.send('chatUpdateSCResistance', [textId])
         self.announceSCChat()
 
-    def sendSCSingingChatMessage(self, textId):
-        messenger.send('chatUpdateSCSinging', [textId])
-        self.announceSCChat()
-
-    def sendSCSingingWhisperMessage(self, textId):
-        pass
-
     def sendSCToontaskChatMessage(self, taskId, toNpcId, toonProgress, msgIndex):
         messenger.send('chatUpdateSCToontask', [taskId,
          toNpcId,

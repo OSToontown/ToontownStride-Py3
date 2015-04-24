@@ -483,7 +483,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             LocalAvatar.LocalAvatar.startChat(self)
             self.accept('chatUpdateSCToontask', self.b_setSCToontask)
             self.accept('chatUpdateSCResistance', self.d_reqSCResistance)
-            self.accept('chatUpdateSCSinging', self.b_setSCSinging)
             self.accept('whisperUpdateSCToontask', self.whisperSCToontaskTo)
         else:
             self.notify.info('NOT calling LocalAvatar.startchat, in tutorial')
@@ -492,7 +491,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         LocalAvatar.LocalAvatar.stopChat(self)
         self.ignore('chatUpdateSCToontask')
         self.ignore('chatUpdateSCResistance')
-        self.ignore('chatUpdateSCSinging')
         self.ignore('whisperUpdateSCToontask')
 
     def tunnelIn(self, tunnelOrigin):

@@ -10,7 +10,6 @@ from TTSCResistanceTerminal import TTSCResistanceTerminal
 from TTSCKartRacingMenu import TTSCKartRacingMenu
 from TTSCGolfMenu import TTSCGolfMenu
 from TTSCBoardingMenu import TTSCBoardingMenu
-from TTSCSingingMenu import TTSCSingingMenu
 from TTSCAprilToonsMenu import TTSCAprilToonsMenu
 from TTSCSillyPhaseOneMenu import TTSCSillyPhaseOneMenu
 from TTSCSillyPhaseTwoMenu import TTSCSillyPhaseTwoMenu

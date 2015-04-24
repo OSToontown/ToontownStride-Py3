@@ -5,7 +5,6 @@ from toontown.speedchat.TTSpeedChatTypes import *
 from otp.speedchat.SpeedChat import SpeedChat
 from otp.speedchat import SpeedChatGlobals
 from toontown.speedchat import TTSpeedChatGlobals
-from toontown.speedchat import TTSCSingingTerminal
 from toontown.speedchat import TTSCIndexedTerminal
 from direct.showbase import DirectObject
 from direct.fsm import ClassicFSM, State
@@ -356,7 +355,6 @@ class TTChatInputSpeedChat(DirectObject.DirectObject):
         self.ceoMenu = None
         self.golfMenu = None
         self.boardingGroupMenu = None
-        self.singingGroupMenu = None
         self.aprilToonsMenu = None
         self.victoryPartiesMenu = None
         self.sillyPhaseOneMenu = None
@@ -383,7 +381,6 @@ class TTChatInputSpeedChat(DirectObject.DirectObject):
         listenForSCEvent(SpeedChatGlobals.SCEmoteNoAccessEvent, self.handleEmoteNoAccess)
         listenForSCEvent(TTSpeedChatGlobals.TTSCToontaskMsgEvent, self.handleToontaskMsg)
         listenForSCEvent(TTSpeedChatGlobals.TTSCResistanceMsgEvent, self.handleResistanceMsg)
-        listenForSCEvent(TTSCSingingTerminal.TTSCSingingMsgEvent, self.handleSingingMsg)
         listenForSCEvent('SpeedChatStyleChange', self.handleSpeedChatStyleChange)
         listenForSCEvent(TTSCIndexedTerminal.TTSCIndexedMsgEvent, self.handleStaticTextMsg)
         self.fsm = ClassicFSM.ClassicFSM('SpeedChat', [State.State('off', self.enterOff, self.exitOff, ['active']), State.State('active', self.enterActive, self.exitActive, ['off'])], 'off', 'off')
@@ -468,12 +465,6 @@ class TTChatInputSpeedChat(DirectObject.DirectObject):
             self.chatMgr.sendSCChatMessage(textId)
         else:
             self.chatMgr.sendSCWhisperMessage(textId, self.whisperAvatarId)
-
-    def handleSingingMsg(self, textId):
-        if self.whisperAvatarId is None:
-            self.chatMgr.sendSCSingingChatMessage(textId)
-        else:
-            self.chatMgr.sendSCSingingWhisperMessage(textId)
 
     def handleCustomMsg(self, textId):
         if self.whisperAvatarId is None:
@@ -707,21 +698,6 @@ class TTChatInputSpeedChat(DirectObject.DirectObject):
             del self.speedChat[i]
             self.boardingGroupMenu.destroy()
             self.boardingGroupMenu = None
-        return
-
-    def addSingingGroupMenu(self):
-        if self.singingGroupMenu == None:
-            menu = TTSCSingingMenu()
-            self.singingGroupMenu = SCMenuHolder(OTPLocalizer.SCMenuSingingGroup, menu=menu)
-            self.speedChat[2:2] = [self.singingGroupMenu]
-        return
-
-    def removeSingingMenu(self):
-        if self.singingGroupMenu:
-            i = self.speedChat.index(self.singingGroupMenu)
-            del self.speedChat[i]
-            self.singingGroupMenu.destroy()
-            self.singingGroupMenu = None
         return
 
     def addAprilToonsMenu(self):

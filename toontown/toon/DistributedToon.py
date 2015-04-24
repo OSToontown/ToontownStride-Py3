@@ -346,20 +346,8 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         if chatString:
             self.setChatAbsolute(chatString, CFSpeech | CFQuicktalker | CFTimeout)
 
-    def b_setSCSinging(self, msgIndex):
-        self.setSCSinging(msgIndex)
-        self.d_setSCSinging(msgIndex)
-        return None
-
-    def d_setSCSinging(self, msgIndex):
-        messenger.send('wakeup')
-        self.sendUpdate('setSCSinging', [msgIndex])
-
     def sendLogSuspiciousEvent(self, msg):
         localAvatar.sendUpdate('logSuspiciousEvent', ['%s for %s' % (msg, self.doId)])
-
-    def setSCSinging(self, msgIndex):
-        self.sendUpdate('logSuspiciousEvent', ['invalid msgIndex in setSCSinging: %s from %s' % (msgIndex, self.doId)])
 
     def d_reqSCResistance(self, msgIndex):
         messenger.send('wakeup')
