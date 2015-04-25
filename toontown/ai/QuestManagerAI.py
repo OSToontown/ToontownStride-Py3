@@ -418,7 +418,7 @@ class QuestManagerAI:
 
         return (recoveredItems, unrecoveredItems)
 
-    def toonKilledBuilding(self, av, type, difficulty, floors, zoneId, activeToons):
+    def toonKilledBuilding(self, av, type, difficulty, floors, zoneId, activeToons, cogdo):
         # Get the avatars current quests.
         avQuests = av.getQuests()
         questList = []
@@ -432,9 +432,10 @@ class QuestManagerAI:
                 if isinstance(questClass, Quests.BuildingQuest):
                     if questClass.isLocationMatch(zoneId):
                         if questClass.doesBuildingTypeCount(type):
-                            if questClass.doesBuildingCount(av, activeToons):
-                                if floors >= questClass.getNumFloors():
-                                    questDesc[QuestProgressIndex] += 1
+                            if questClass.isCogdo() == cogdo:
+                                if questClass.doesBuildingCount(av, activeToons):
+                                    if floors >= questClass.getNumFloors():
+                                        questDesc[QuestProgressIndex] += 1
             questList.append(questDesc)
 
         av.b_setQuests(questList)

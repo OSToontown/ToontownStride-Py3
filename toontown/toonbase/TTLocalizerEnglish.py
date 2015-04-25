@@ -268,8 +268,6 @@ QuestsBuildingQuestFloorNumbers = ('',
  'three+',
  'four+',
  'five+')
-QuestsBuildingQuestBuilding = 'Building'
-QuestsBuildingQuestBuildings = 'Buildings'
 QuestsBuildingQuestHeadline = 'DEFEAT'
 QuestsBuildingQuestProgressString = '%(progress)s of %(num)s defeated'
 QuestsBuildingQuestString = 'Defeat %s'
@@ -280,6 +278,9 @@ QuestsBuildingQuestDescC = '%(count)s %(type)s Buildings'
 QuestsBuildingQuestDescCF = '%(count)s %(floors)s story %(type)s Buildings'
 QuestsBuildingQuestDescI = 'some %(type)s Buildings'
 QuestsBuildingQuestDescIF = 'some %(floors)s story %(type)s Buildings'
+QuestsCogdoQuestDesc = 'a %(type)s Field Office'
+QuestsCogdoQuestDescC = '%(count)s %(type)s Field Offices'
+QuestsCogdoQuestDescI = 'some %(type)s Field Offices'
 QuestFactoryQuestFactory = 'Factory'
 QuestsFactoryQuestFactories = 'Factories'
 QuestsFactoryQuestHeadline = 'DEFEAT'

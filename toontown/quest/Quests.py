@@ -245,6 +245,9 @@ class Quest:
 
     def checkBuildingFloors(self, floors):
         self.check(floors >= 1 and floors <= 5, 'invalid num floors: %s' % floors)
+    
+    def checkBuildingType(self, cogdo):
+        self.check(cogdo != 0 and cogdo != 1, 'invalid cogdo value: %s' % cogdo)
 
     def checkNumFactories(self, num):
         self.check(1, 'invalid num factories: %s' % num)
@@ -1018,12 +1021,16 @@ class BuildingQuest(CogQuest):
         self.checkNumBuildings(self.quest[1])
         self.checkBuildingTrack(self.quest[2])
         self.checkBuildingFloors(self.quest[3])
+        self.checkBuildingType(self.quest[4])
 
     def getNumFloors(self):
         return self.quest[3]
 
     def getBuildingTrack(self):
         return self.quest[2]
+    
+    def isCogdo(self):
+        return self.quest[4]
 
     def getNumQuestItems(self):
         return self.getNumBuildings()
@@ -1047,21 +1054,29 @@ class BuildingQuest(CogQuest):
 
     def getObjectiveStrings(self):
         count = self.getNumBuildings()
-        floors = TTLocalizer.QuestsBuildingQuestFloorNumbers[self.getNumFloors() - 1]
         buildingTrack = self.getBuildingTrack()
         if buildingTrack == Any:
             type = TTLocalizer.Cog
         else:
             type = self.trackNames[self.trackCodes.index(buildingTrack)]
-        if count == 1:
-            if floors == '':
-                text = TTLocalizer.QuestsBuildingQuestDesc
+        floors = TTLocalizer.QuestsBuildingQuestFloorNumbers[self.getNumFloors() - 1]
+
+        if self.isCogdo():
+            if count == 1:
+                return TTLocalizer.QuestsCogdoQuestDesc
             else:
-                text = TTLocalizer.QuestsBuildingQuestDescF
-        elif floors == '':
-            text = TTLocalizer.QuestsBuildingQuestDescC
+                return TTLocalizer.QuestsCogdoQuestDescC
         else:
-            text = TTLocalizer.QuestsBuildingQuestDescCF
+            if count == 1:
+                if floors == '':
+                    text = TTLocalizer.QuestsBuildingQuestDesc
+                else:
+                    text = TTLocalizer.QuestsBuildingQuestDescF
+            elif floors == '':
+                text = TTLocalizer.QuestsBuildingQuestDescC
+            else:
+                text = TTLocalizer.QuestsBuildingQuestDescCF
+
         return (text % {'count': count,
           'floors': floors,
           'type': type},)
@@ -1073,21 +1088,28 @@ class BuildingQuest(CogQuest):
         if progress >= self.getNumBuildings():
             return getFinishToonTaskSCStrings(toNpcId)
         count = self.getNumBuildings()
-        floors = TTLocalizer.QuestsBuildingQuestFloorNumbers[self.getNumFloors() - 1]
         buildingTrack = self.getBuildingTrack()
         if buildingTrack == Any:
             type = TTLocalizer.Cog
         else:
             type = self.trackNames[self.trackCodes.index(buildingTrack)]
-        if count == 1:
-            if floors == '':
-                text = TTLocalizer.QuestsBuildingQuestDesc
+        floors = TTLocalizer.QuestsBuildingQuestFloorNumbers[self.getNumFloors() - 1]
+        
+        if self.isCogdo():
+            if count == 1:
+                return TTLocalizer.QuestsCogdoQuestDesc
             else:
-                text = TTLocalizer.QuestsBuildingQuestDescF
-        elif floors == '':
-            text = TTLocalizer.QuestsBuildingQuestDescI
+                return TTLocalizer.QuestsCogdoQuestDescI
         else:
-            text = TTLocalizer.QuestsBuildingQuestDescIF
+            if count == 1:
+                if floors == '':
+                    text = TTLocalizer.QuestsBuildingQuestDesc
+                else:
+                    text = TTLocalizer.QuestsBuildingQuestDescF
+            elif floors == '':
+                text = TTLocalizer.QuestsBuildingQuestDescI
+            else:
+                text = TTLocalizer.QuestsBuildingQuestDescIF
         objective = text % {'floors': floors,
          'type': type}
         location = self.getLocationName()
@@ -1113,10 +1135,10 @@ class BuildingQuest(CogQuest):
 class BuildingNewbieQuest(BuildingQuest, NewbieQuest):
     def __init__(self, id, quest):
         BuildingQuest.__init__(self, id, quest)
-        self.checkNewbieLevel(self.quest[4])
+        self.checkNewbieLevel(self.quest[5])
 
     def getNewbieLevel(self):
-        return self.quest[4]
+        return self.quest[5]
 
     def getString(self):
         return NewbieQuest.getString(self)
@@ -2244,14 +2266,14 @@ QuestDict = {
     2148: (DD_TIER + 1, Start, (CogTrackQuest, Anywhere, 7, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
     2149: (DD_TIER + 1, Start, (CogTrackQuest, Anywhere, 7, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
     2150: (DD_TIER + 1, Start, (CogTrackQuest, Anywhere, 7, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
-    2151: (DD_TIER + 1, Start, (BuildingQuest, Anywhere, 1, Any, 1), Any, ToonHQ, Any, NA, DefaultDialog),
-    2152: (DD_TIER + 1, Start, (BuildingQuest, Anywhere, 1, Any, 2), Any, ToonHQ, Any, NA, DefaultDialog),
-    2153: (DD_TIER + 1, Start, (BuildingQuest, Anywhere, 2, Any, 1), Any, ToonHQ, Any, NA, DefaultDialog),
-    2154: (DD_TIER + 1, Start, (BuildingQuest, Anywhere, 2, Any, 2), Any, ToonHQ, Any, NA, DefaultDialog),
-    2155: (DD_TIER + 1, Start, (BuildingQuest, Anywhere, 1, 'm', 1), Any, ToonHQ, Any, NA, DefaultDialog),
-    2156: (DD_TIER + 1, Start, (BuildingQuest, Anywhere, 1, 's', 1), Any, ToonHQ, Any, NA, DefaultDialog),
-    2157: (DD_TIER + 1, Start, (BuildingQuest, Anywhere, 1, 'c', 1), Any, ToonHQ, Any, NA, DefaultDialog),
-    2158: (DD_TIER + 1, Start, (BuildingQuest, Anywhere, 1, 'l', 1), Any, ToonHQ, Any, NA, DefaultDialog),
+    2151: (DD_TIER + 1, Start, (BuildingQuest, Anywhere, 1, Any, 1, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    2152: (DD_TIER + 1, Start, (BuildingQuest, Anywhere, 1, Any, 2, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    2153: (DD_TIER + 1, Start, (BuildingQuest, Anywhere, 2, Any, 1, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    2154: (DD_TIER + 1, Start, (BuildingQuest, Anywhere, 2, Any, 2, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    2155: (DD_TIER + 1, Start, (BuildingQuest, Anywhere, 1, 'm', 1, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    2156: (DD_TIER + 1, Start, (BuildingQuest, Anywhere, 1, 's', 1, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    2157: (DD_TIER + 1, Start, (BuildingQuest, Anywhere, 1, 'c', 1, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    2158: (DD_TIER + 1, Start, (BuildingQuest, Anywhere, 1, 'l', 1, 0), Any, ToonHQ, Any, NA, DefaultDialog),
     2159: (DD_TIER + 1, Start, (DeliverGagQuest, 2, ToontownBattleGlobals.THROW_TRACK, 1), Any, Any, Any, NA, DefaultDialog),
     2160: (DD_TIER + 1, Start, (DeliverGagQuest, 1, ToontownBattleGlobals.SQUIRT_TRACK, 1), Any, Any, Any, NA, DefaultDialog),
     2161: (DD_TIER + 1, Start, (DeliverGagQuest, 1, ToontownBattleGlobals.SQUIRT_TRACK, 2), Any, Any, Any, NA, DefaultDialog),
@@ -2308,7 +2330,7 @@ QuestDict = {
     2920: (DD_TIER + 2, Cont, (VisitQuest,), Same, 1204, NA, 2921, TTLocalizer.QuestDialog_2910),
     2921: (DD_TIER + 2, Cont, (CogTrackQuest, ToontownGlobals.DonaldsDock, 6, 'c'), Same, Same, NA, 2925, TTLocalizer.QuestDialogDict[2921]),
     2925: (DD_TIER + 2, Cont, (DeliverItemQuest, 2012), Same, 1203, NA, 2926, TTLocalizer.QuestDialogDict[2925]),
-    2926: (DD_TIER + 2, Cont, (BuildingQuest, ToontownGlobals.DonaldsDock, 1, Any, 2), Same, Same, 900, NA, TTLocalizer.QuestDialogDict[2926]),
+    2926: (DD_TIER + 2, Cont, (BuildingQuest, ToontownGlobals.DonaldsDock, 1, Any, 2, 0), Same, Same, 900, NA, TTLocalizer.QuestDialogDict[2926]),
     3101: (DG_TIER, Start, (CogQuest, ToontownGlobals.DaisyGardens, 8, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     3102: (DG_TIER, Start, (CogQuest, ToontownGlobals.DaisyGardens, 10, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     3103: (DG_TIER, Start, (CogQuest, ToontownGlobals.DaisyGardens, 12, Any), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -2359,14 +2381,14 @@ QuestDict = {
     3148: (DG_TIER, Start, (CogTrackQuest, Anywhere, 14, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
     3149: (DG_TIER, Start, (CogTrackQuest, Anywhere, 14, 'c'), Any, ToonHQ, OBSOLETE, NA, DefaultDialog),
     3150: (DG_TIER, Start, (CogTrackQuest, Anywhere, 14, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
-    3151: (DG_TIER, Start, (BuildingQuest, Anywhere, 1, Any, 2), Any, ToonHQ, Any, NA, DefaultDialog),
-    3152: (DG_TIER, Start, (BuildingQuest, Anywhere, 2, Any, 2), Any, ToonHQ, Any, NA, DefaultDialog),
-    3153: (DG_TIER, Start, (BuildingQuest, Anywhere, 3, Any, 2), Any, ToonHQ, Any, NA, DefaultDialog),
-    3154: (DG_TIER, Start, (BuildingQuest, Anywhere, 4, Any, 2), Any, ToonHQ, Any, NA, DefaultDialog),
-    3155: (DG_TIER, Start, (BuildingQuest, Anywhere, 2, 'm', 2), Any, ToonHQ, OBSOLETE, NA, DefaultDialog),
-    3156: (DG_TIER, Start, (BuildingQuest, Anywhere, 2, 's', 2), Any, ToonHQ, Any, NA, DefaultDialog),
-    3157: (DG_TIER, Start, (BuildingQuest, Anywhere, 2, 'c', 2), Any, ToonHQ, OBSOLETE, NA, DefaultDialog),
-    3158: (DG_TIER, Start, (BuildingQuest, Anywhere, 2, 'l', 2), Any, ToonHQ, Any, NA, DefaultDialog),
+    3151: (DG_TIER, Start, (BuildingQuest, Anywhere, 1, Any, 2, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    3152: (DG_TIER, Start, (BuildingQuest, Anywhere, 2, Any, 2, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    3153: (DG_TIER, Start, (BuildingQuest, Anywhere, 3, Any, 2, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    3154: (DG_TIER, Start, (BuildingQuest, Anywhere, 4, Any, 2, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    3155: (DG_TIER, Start, (BuildingQuest, Anywhere, 2, 'm', 2, 0), Any, ToonHQ, OBSOLETE, NA, DefaultDialog),
+    3156: (DG_TIER, Start, (BuildingQuest, Anywhere, 2, 's', 2, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    3157: (DG_TIER, Start, (BuildingQuest, Anywhere, 2, 'c', 2, 0), Any, ToonHQ, OBSOLETE, NA, DefaultDialog),
+    3158: (DG_TIER, Start, (BuildingQuest, Anywhere, 2, 'l', 2, 0), Any, ToonHQ, Any, NA, DefaultDialog),
     3200: (DG_TIER, Start, (VisitQuest,), Any, 5101, NA, 3201, TTLocalizer.QuestDialogDict[3200]),
     3201: (DG_TIER, Start, (DeliverItemQuest, 5001), 5101, 5206, NA, 3203, TTLocalizer.QuestDialogDict[3201]),
     3203: (DG_TIER, Cont, (RecoverItemQuest, ToontownGlobals.DaisyGardens, 1, 5002, VeryHard, Any), Same, Same, 100, NA, TTLocalizer.QuestDialogDict[3203]),
@@ -2392,9 +2414,9 @@ QuestDict = {
     3246: (DG_TIER, Cont, (RecoverItemQuest, Anywhere, 1, 5010, VeryHard, 'sd'), Same, Same, 101, NA, TTLocalizer.QuestDialogDict[3246]),
     3220: (DG_TIER, Start, (VisitQuest,), Any, 5207, NA, 3221, TTLocalizer.QuestDialogDict[3220]),
     3221: (DG_TIER, Start, (CogQuest, ToontownGlobals.DaisyGardens, 20, Any), 5207, Same, 100, NA, TTLocalizer.QuestDialogDict[3221]),
-    3222: (DG_TIER, Start, (BuildingQuest, Anywhere, 2, Any, 1), ToonHQ, ToonHQ, NA, 3223, TTLocalizer.QuestDialogDict[3222]),
-    3223: (DG_TIER, Cont, (BuildingQuest, Anywhere, 2, Any, 2), Same, Same, NA, 3224, TTLocalizer.QuestDialogDict[3223]),
-    3224: (DG_TIER, Cont, (BuildingQuest, Anywhere, 2, Any, 3), Same, Same, 501, NA, TTLocalizer.QuestDialogDict[3224]),
+    3222: (DG_TIER, Start, (BuildingQuest, Anywhere, 2, Any, 1, 0), ToonHQ, ToonHQ, NA, 3223, TTLocalizer.QuestDialogDict[3222]),
+    3223: (DG_TIER, Cont, (BuildingQuest, Anywhere, 2, Any, 2, 0), Same, Same, NA, 3224, TTLocalizer.QuestDialogDict[3223]),
+    3224: (DG_TIER, Cont, (BuildingQuest, Anywhere, 2, Any, 3, 0), Same, Same, 501, NA, TTLocalizer.QuestDialogDict[3224]),
     3225: (DG_TIER, Start, (VisitQuest,), Any, 5108, NA, (3226, 3227, 3228, 3229, 3230, 3231, 3232, 3233, 3234), TTLocalizer.QuestDialogDict[3225]),
     3226: (DG_TIER, Start, (DeliverItemQuest, 5011), 5108, 5201, NA, 3235, TTLocalizer.QuestDialog_3225),
     3227: (DG_TIER, Start, (DeliverItemQuest, 5011), 5108, 5203, NA, 3235, TTLocalizer.QuestDialog_3225),
@@ -2406,14 +2428,14 @@ QuestDict = {
     3233: (DG_TIER, Start, (DeliverItemQuest, 5011), 5108, 5105, NA, 3235, TTLocalizer.QuestDialog_3225),
     3234: (DG_TIER, Start, (DeliverItemQuest, 5011), 5108, 5207, NA, 3235, TTLocalizer.QuestDialog_3225),
     3235: (DG_TIER, Cont, (CogQuest, ToontownGlobals.DaisyGardens, 10, Any), Same, 5108, 100, NA, TTLocalizer.QuestDialogDict[3235]),
-    3236: (DG_TIER, OBSOLETE, (BuildingQuest, Anywhere, 3, 'l', 2), Any, ToonHQ, NA, 3237, TTLocalizer.QuestDialogDict[3236]),
-    3237: (DG_TIER, OBSOLETE, (BuildingQuest, Anywhere, 3, 's', 2), Same, Same, 702, NA, TTLocalizer.QuestDialogDict[3237]),
+    3236: (DG_TIER, OBSOLETE, (BuildingQuest, Anywhere, 3, 'l', 2, 0), Any, ToonHQ, NA, 3237, TTLocalizer.QuestDialogDict[3236]),
+    3237: (DG_TIER, OBSOLETE, (BuildingQuest, Anywhere, 3, 's', 2, 0), Same, Same, 702, NA, TTLocalizer.QuestDialogDict[3237]),
     3238: (DG_TIER, Start, (RecoverItemQuest, Anywhere, 1, 2, VeryEasy, 'm'), Any, ToonHQ, NA, 3239, TTLocalizer.QuestDialogDict[3238]),
     3239: (DG_TIER, Cont, (RecoverItemQuest, Anywhere, 1, 5012, Hard, 'm'), Same, Same, 302, NA, TTLocalizer.QuestDialogDict[3239]),
     3242: (DG_TIER, Start, (RecoverItemQuest, Anywhere, 1, 2, VeryEasy, 'le'), Any, ToonHQ, NA, 3243, TTLocalizer.QuestDialogDict[3242]),
     3243: (DG_TIER, Cont, (RecoverItemQuest, Anywhere, 1, 5012, Hard, 'le'), Same, Same, 302, NA, TTLocalizer.QuestDialogDict[3243]),
     3240: (DG_TIER, OBSOLETE, (RecoverItemQuest, Anywhere, 1, 5009, Hard, 'le'), Any, 5103, 102, NA, TTLocalizer.QuestDialogDict[3240]),
-    3241: (DG_TIER, OBSOLETE, (BuildingQuest, Anywhere, 5, Any, 3), Any, ToonHQ, 102, NA, TTLocalizer.QuestDialogDict[3241]),
+    3241: (DG_TIER, OBSOLETE, (BuildingQuest, Anywhere, 5, Any, 3, 0), Any, ToonHQ, 102, NA, TTLocalizer.QuestDialogDict[3241]),
     3250: (DG_TIER, Start, (VisitQuest,), Any, 5317, NA, 3251, TTLocalizer.QuestDialogDict[3250]),
     3251: (DG_TIER, Start, (CogTrackQuest, ToontownGlobals.SellbotHQ, 5, 's'), 5317, Same, NA, 3252, TTLocalizer.QuestDialogDict[3251]),
     3252: (DG_TIER, Cont, (VisitQuest,), Same, 5311, NA, 3253, TTLocalizer.QuestDialogDict[3252]),
@@ -2507,14 +2529,14 @@ QuestDict = {
     4148: (MM_TIER + 1, Start, (CogTrackQuest, Anywhere, 30, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
     4149: (MM_TIER + 1, Start, (CogTrackQuest, Anywhere, 30, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
     4150: (MM_TIER + 1, Start, (CogTrackQuest, Anywhere, 30, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
-    4151: (MM_TIER + 1, Start, (BuildingQuest, Anywhere, 1, Any, 3), Any, ToonHQ, Any, NA, DefaultDialog),
-    4152: (MM_TIER + 1, Start, (BuildingQuest, Anywhere, 2, Any, 3), Any, ToonHQ, Any, NA, DefaultDialog),
-    4153: (MM_TIER + 1, Start, (BuildingQuest, Anywhere, 3, Any, 3), Any, ToonHQ, Any, NA, DefaultDialog),
-    4154: (MM_TIER + 1, Start, (BuildingQuest, Anywhere, 4, Any, 3), Any, ToonHQ, Any, NA, DefaultDialog),
-    4155: (MM_TIER + 1, Start, (BuildingQuest, Anywhere, 3, 'm', 3), Any, ToonHQ, Any, NA, DefaultDialog),
-    4156: (MM_TIER + 1, Start, (BuildingQuest, Anywhere, 3, 's', 3), Any, ToonHQ, Any, NA, DefaultDialog),
-    4157: (MM_TIER + 1, Start, (BuildingQuest, Anywhere, 3, 'c', 3), Any, ToonHQ, Any, NA, DefaultDialog),
-    4158: (MM_TIER + 1, Start, (BuildingQuest, Anywhere, 3, 'l', 3), Any, ToonHQ, Any, NA, DefaultDialog),
+    4151: (MM_TIER + 1, Start, (BuildingQuest, Anywhere, 1, Any, 3, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    4152: (MM_TIER + 1, Start, (BuildingQuest, Anywhere, 2, Any, 3, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    4153: (MM_TIER + 1, Start, (BuildingQuest, Anywhere, 3, Any, 3, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    4154: (MM_TIER + 1, Start, (BuildingQuest, Anywhere, 4, Any, 3, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    4155: (MM_TIER + 1, Start, (BuildingQuest, Anywhere, 3, 'm', 3, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    4156: (MM_TIER + 1, Start, (BuildingQuest, Anywhere, 3, 's', 3, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    4157: (MM_TIER + 1, Start, (BuildingQuest, Anywhere, 3, 'c', 3, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    4158: (MM_TIER + 1, Start, (BuildingQuest, Anywhere, 3, 'l', 3, 0), Any, ToonHQ, Any, NA, DefaultDialog),
     4160: (MM_TIER + 1, Start, (CogQuest, ToontownGlobals.SellbotHQ, 10, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     4161: (MM_TIER + 1, Start, (CogQuest, ToontownGlobals.SellbotHQ, 12, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     4162: (MM_TIER + 1, Start, (CogLevelQuest, ToontownGlobals.SellbotHQ, 6, 4), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -2522,6 +2544,12 @@ QuestDict = {
     4164: (MM_TIER + 1, Start, (FactoryQuest, ToontownGlobals.SellbotHQ, 1), Any, ToonHQ, Any, NA, DefaultDialog),
     4165: (MM_TIER + 1, Start, (SkelecogQuest, ToontownGlobals.SellbotFactoryInt, 4), Any, ToonHQ, Any, NA, DefaultDialog),
     4166: (MM_TIER + 1, Start, (ForemanQuest, ToontownGlobals.SellbotHQ, 1), Any, ToonHQ, Any, NA, DefaultDialog),
+    4167: (MM_TIER + 1, Start, (BuildingQuest, Anywhere, 1, Any, 0, 1), Any, ToonHQ, Any, NA, DefaultDialog),
+    4168: (MM_TIER + 1, Start, (BuildingQuest, Anywhere, 2, Any, 0, 1), Any, ToonHQ, Any, NA, DefaultDialog),
+    4169: (MM_TIER + 1, Start, (BuildingQuest, Anywhere, 3, Any, 0, 1), Any, ToonHQ, Any, NA, DefaultDialog),
+    4170: (MM_TIER + 1, Start, (BuildingQuest, Anywhere, 4, Any, 0, 1), Any, ToonHQ, Any, NA, DefaultDialog),
+    4171: (MM_TIER + 1, Start, (BuildingQuest, Anywhere, 3, 's', 0, 1), Any, ToonHQ, Any, NA, DefaultDialog),
+    4172: (MM_TIER + 1, Start, (BuildingQuest, Anywhere, 3, 'l', 0, 1), Any, ToonHQ, Any, NA, DefaultDialog),
     4200: (MM_TIER + 1, Start, (VisitQuest,), Any, 4101, NA, 4201, TTLocalizer.QuestDialogDict[4200]),
     4201: (MM_TIER + 1, Start, (VisitQuest,), 4101, 4201, NA, 4202, TTLocalizer.QuestDialogDict[4201]),
     4202: (MM_TIER + 1, Cont, (DeliverItemQuest, 4001), Same, 4101, NA, 4203, TTLocalizer.QuestDialogDict[4202]),
@@ -2536,7 +2564,7 @@ QuestDict = {
     4211: (MM_TIER + 1, Start, (VisitQuest,), ToonHQ, 4103, NA, 4212, TTLocalizer.QuestDialogDict[4211]),
     4212: (MM_TIER + 1, Start, (CogQuest, ToontownGlobals.MinniesMelodyland, 10, 'nc'), 4103, Same, NA, 4213, TTLocalizer.QuestDialogDict[4212]),
     4213: (MM_TIER + 1, Cont, (CogTrackQuest, ToontownGlobals.MinniesMelodyland, 20, 'm'), Same, Same, NA, 4214, TTLocalizer.QuestDialogDict[4213]),
-    4214: (MM_TIER + 1, Cont, (BuildingQuest, Anywhere, 1, 'm', Any), Same, Same, 303, NA, TTLocalizer.QuestDialogDict[4214]),
+    4214: (MM_TIER + 1, Cont, (BuildingQuest, Anywhere, 1, 'm', Any, 0), Same, Same, 303, NA, TTLocalizer.QuestDialogDict[4214]),
     4215: (MM_TIER + 1, Start, (VisitQuest,), Any, 4302, NA, 4216, TTLocalizer.QuestDialogDict[4215]),
     4216: (MM_TIER + 1, Start, (RecoverItemQuest, Anywhere, 1, 4005, VeryHard, 'gh'), 4302, Same, NA, 4217, TTLocalizer.QuestDialogDict[4216]),
     4217: (MM_TIER + 1, Cont, (DeliverItemQuest, 4005), Same, 4203, NA, 4218, TTLocalizer.QuestDialogDict[4217]),
@@ -2552,11 +2580,11 @@ QuestDict = {
     902: (MM_TIER + 2, Start, (VisitQuest,), Any, 4303, NA, 4903, TTLocalizer.QuestDialogDict[902]),
     4903: (MM_TIER + 2, Start, (DeliverItemQuest, 4008), 4303, 4109, NA, 4904, TTLocalizer.QuestDialogDict[4903]),
     4904: (MM_TIER + 2, Cont, (RecoverItemQuest, Anywhere, 1, 4009, VeryHard, AnyFish), Same, Same, NA, 4905, TTLocalizer.QuestDialogDict[4904]),
-    4905: (MM_TIER + 2, Cont, (BuildingQuest, Anywhere, 1, Any, 1), Same, Same, NA, 4906, TTLocalizer.QuestDialogDict[4905]),
+    4905: (MM_TIER + 2, Cont, (BuildingQuest, Anywhere, 1, Any, 1, 0), Same, Same, NA, 4906, TTLocalizer.QuestDialogDict[4905]),
     4906: (MM_TIER + 2, Cont, (DeliverItemQuest, 4010), Same, 4303, NA, 4907, TTLocalizer.QuestDialogDict[4906]),
     4907: (MM_TIER + 2, Cont, (VisitQuest,), Same, 4208, NA, 4908, TTLocalizer.QuestDialogDict[4907]),
-    4908: (MM_TIER + 2, Cont, (BuildingQuest, Anywhere, 1, Any, 2), Same, Same, NA, 4909, TTLocalizer.QuestDialogDict[4908]),
-    4909: (MM_TIER + 2, Cont, (BuildingQuest, Anywhere, 1, Any, 3), Same, Same, NA, 4910, TTLocalizer.QuestDialogDict[4909]),
+    4908: (MM_TIER + 2, Cont, (BuildingQuest, Anywhere, 1, Any, 2, 0), Same, Same, NA, 4909, TTLocalizer.QuestDialogDict[4908]),
+    4909: (MM_TIER + 2, Cont, (BuildingQuest, Anywhere, 1, Any, 3, 0), Same, Same, NA, 4910, TTLocalizer.QuestDialogDict[4909]),
     4910: (MM_TIER + 2, Cont, (DeliverItemQuest, 4011), Same, 4303, 900, NA, TTLocalizer.QuestDialogDict[4910]),
     4810: (MM_TIER + 2, Start, (CogQuest, Anywhere, 16, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     4811: (MM_TIER + 2, Start, (CogQuest, Anywhere, 18, Any), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -2592,10 +2620,10 @@ QuestDict = {
     5247: (BR_TIER, Start, (VisitQuest,), Any, 3112, NA, 5248, TTLocalizer.QuestDialogDict[5247]),
     5248: (BR_TIER, Start, (CogLevelQuest, Anywhere, 10, 8), 3112, Same, NA, 5249, TTLocalizer.QuestDialogDict[5248]),
     5249: (BR_TIER, Cont, (RecoverItemQuest, Anywhere, 3, 3018, VeryHard, AnyFish), Same, Same, NA, (5250, 5258, 5259, 5260), TTLocalizer.QuestDialogDict[5249]),
-    5250: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 'l', 4), Same, Same, 408, NA, TTLocalizer.QuestDialogDict[5250]),
-    5258: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 'c', 4), Same, Same, 408, NA, TTLocalizer.QuestDialogDict[5258]),
-    5259: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 'm', 4), Same, Same, 408, NA, TTLocalizer.QuestDialogDict[5259]),
-    5260: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 's', 4), Same, Same, 408, NA, TTLocalizer.QuestDialogDict[5260]),
+    5250: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 'l', 4, 0), Same, Same, 408, NA, TTLocalizer.QuestDialogDict[5250]),
+    5258: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 'c', 4, 0), Same, Same, 408, NA, TTLocalizer.QuestDialogDict[5258]),
+    5259: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 'm', 4, 0), Same, Same, 408, NA, TTLocalizer.QuestDialogDict[5259]),
+    5260: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 's', 4, 0), Same, Same, 408, NA, TTLocalizer.QuestDialogDict[5260]),
     5020: (BR_TIER, Start, (CogQuest, Anywhere, 36, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     5021: (BR_TIER, Start, (CogQuest, Anywhere, 38, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     5022: (BR_TIER, Start, (CogQuest, Anywhere, 40, Any), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -2622,10 +2650,10 @@ QuestDict = {
     5061: (BR_TIER, Start, (CogNewbieQuest, ToontownGlobals.ToontownCentral, 5, Any, NEWBIE_HP), Any, ToonHQ, 606, NA, DefaultDialog),
     5062: (BR_TIER, Start, (CogNewbieQuest, ToontownGlobals.ToontownCentral, 5, Any, NEWBIE_HP), Any, ToonHQ, 606, NA, DefaultDialog),
     5063: (BR_TIER, Start, (CogNewbieQuest, ToontownGlobals.ToontownCentral, 5, Any, NEWBIE_HP), Any, ToonHQ, 606, NA, DefaultDialog),
-    5064: (BR_TIER, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 1, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
-    5065: (BR_TIER, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 1, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
-    5066: (BR_TIER, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 1, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
-    5067: (BR_TIER, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 1, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
+    5064: (BR_TIER, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 1, 0, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
+    5065: (BR_TIER, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 1, 0, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
+    5066: (BR_TIER, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 1, 0, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
+    5067: (BR_TIER, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 1, 0, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
     5070: (BR_TIER, Start, (CogQuest, ToontownGlobals.SellbotHQ, 20, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     5071: (BR_TIER, Start, (CogQuest, ToontownGlobals.SellbotHQ, 22, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     5072: (BR_TIER, Start, (CogLevelQuest, ToontownGlobals.SellbotHQ, 15, 4), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -2691,14 +2719,14 @@ QuestDict = {
     5148: (BR_TIER + 1, Start, (CogTrackQuest, Anywhere, 45, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
     5149: (BR_TIER + 1, Start, (CogTrackQuest, Anywhere, 45, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
     5150: (BR_TIER + 1, Start, (CogTrackQuest, Anywhere, 45, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
-    5151: (BR_TIER + 1, Start, (BuildingQuest, Anywhere, 8, Any, 3), Any, ToonHQ, Any, NA, DefaultDialog),
-    5152: (BR_TIER + 1, Start, (BuildingQuest, Anywhere, 2, Any, 4), Any, ToonHQ, Any, NA, DefaultDialog),
-    5153: (BR_TIER + 1, Start, (BuildingQuest, Anywhere, 5, Any, 4), Any, ToonHQ, Any, NA, DefaultDialog),
-    5154: (BR_TIER + 1, Start, (BuildingQuest, Anywhere, 6, Any, 4), Any, ToonHQ, Any, NA, DefaultDialog),
-    5155: (BR_TIER + 1, Start, (BuildingQuest, Anywhere, 2, 'm', 4), Any, ToonHQ, Any, NA, DefaultDialog),
-    5156: (BR_TIER + 1, Start, (BuildingQuest, Anywhere, 2, 's', 4), Any, ToonHQ, Any, NA, DefaultDialog),
-    5157: (BR_TIER + 1, Start, (BuildingQuest, Anywhere, 2, 'c', 4), Any, ToonHQ, Any, NA, DefaultDialog),
-    5158: (BR_TIER + 1, Start, (BuildingQuest, Anywhere, 2, 'l', 4), Any, ToonHQ, Any, NA, DefaultDialog),
+    5151: (BR_TIER + 1, Start, (BuildingQuest, Anywhere, 8, Any, 3, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    5152: (BR_TIER + 1, Start, (BuildingQuest, Anywhere, 2, Any, 4, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    5153: (BR_TIER + 1, Start, (BuildingQuest, Anywhere, 5, Any, 4, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    5154: (BR_TIER + 1, Start, (BuildingQuest, Anywhere, 6, Any, 4, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    5155: (BR_TIER + 1, Start, (BuildingQuest, Anywhere, 2, 'm', 4, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    5156: (BR_TIER + 1, Start, (BuildingQuest, Anywhere, 2, 's', 4, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    5157: (BR_TIER + 1, Start, (BuildingQuest, Anywhere, 2, 'c', 4, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    5158: (BR_TIER + 1, Start, (BuildingQuest, Anywhere, 2, 'l', 4, 0), Any, ToonHQ, Any, NA, DefaultDialog),
     5160: (BR_TIER + 1, Start, (CogQuest, ToontownGlobals.SellbotHQ, 22, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     5161: (BR_TIER + 1, Start, (CogQuest, ToontownGlobals.SellbotHQ, 25, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     5162: (BR_TIER + 1, Start, (CogLevelQuest, ToontownGlobals.SellbotHQ, 16, 4), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -2714,6 +2742,11 @@ QuestDict = {
     5172: (BR_TIER + 1, Start, (SkelecogLevelQuest, ToontownGlobals.SellbotHQ, 3, 6), Any, ToonHQ, Any, NA, DefaultDialog),
     5173: (BR_TIER + 1, Start, (ForemanQuest, ToontownGlobals.SellbotHQ, 1), Any, ToonHQ, Any, NA, DefaultDialog),
     5174: (BR_TIER + 1, Start, (ForemanQuest, ToontownGlobals.SellbotHQ, 2), Any, ToonHQ, Any, NA, DefaultDialog),
+    5176: (BR_TIER + 1, Start, (BuildingQuest, Anywhere, 4, Any, 0, 1), Any, ToonHQ, Any, NA, DefaultDialog),
+    5177: (BR_TIER + 1, Start, (BuildingQuest, Anywhere, 5, Any, 0, 1), Any, ToonHQ, Any, NA, DefaultDialog),
+    5178: (BR_TIER + 1, Start, (BuildingQuest, Anywhere, 6, Any, 0, 1), Any, ToonHQ, Any, NA, DefaultDialog),
+    5179: (BR_TIER + 1, Start, (BuildingQuest, Anywhere, 3, 's', 0, 1), Any, ToonHQ, Any, NA, DefaultDialog),
+    5180: (BR_TIER + 1, Start, (BuildingQuest, Anywhere, 3, 'l', 0, 1), Any, ToonHQ, Any, NA, DefaultDialog),
     5200: (BR_TIER + 1, Start, (VisitQuest,), Any, 3110, NA, (5201, 5261, 5262, 5263), TTLocalizer.QuestDialogDict[5200]),
     5201: (BR_TIER + 1, Start, (RecoverItemQuest, Anywhere, 1, 3001, VeryHard, 'hh'), 3110, Same, 100, NA, TTLocalizer.QuestDialogDict[5201]),
     5261: (BR_TIER + 1, Start, (RecoverItemQuest, Anywhere, 1, 3001, VeryHard, 'tf'), 3110, Same, 100, NA, TTLocalizer.QuestDialogDict[5261]),
@@ -2724,7 +2757,7 @@ QuestDict = {
     5204: (BR_TIER + 1, Cont, (VisitQuest,), Same, 3205, NA, 5205, TTLocalizer.QuestDialogDict[5204]),
     5205: (BR_TIER + 1, Cont, (RecoverItemQuest, ToontownGlobals.TheBrrrgh, 3, 3003, Hard, AnyFish), Same, Same, NA, 5206, TTLocalizer.QuestDialogDict[5205]),
     5206: (BR_TIER + 1, Cont, (VisitQuest,), Same, 3210, NA, 5207, TTLocalizer.QuestDialogDict[5206]),
-    5207: (BR_TIER + 1, Cont, (BuildingQuest, Anywhere, 5, Any, 4), Same, Same, NA, 5208, TTLocalizer.QuestDialogDict[5207]),
+    5207: (BR_TIER + 1, Cont, (BuildingQuest, Anywhere, 5, Any, 4, 0), Same, Same, NA, 5208, TTLocalizer.QuestDialogDict[5207]),
     5208: (BR_TIER + 1, Cont, (VisitQuest,), Same, 3114, NA, 5209, TTLocalizer.QuestDialogDict[5208]),
     5209: (BR_TIER + 1, Cont, (CogLevelQuest, Anywhere, 20, 7), Same, Same, 204, NA, TTLocalizer.QuestDialogDict[5209]),
     5210: (BR_TIER + 1, Start, (VisitQuest,), Any, 3206, NA, (5211, 5264, 5265, 5266), TTLocalizer.QuestDialogDict[5210]),
@@ -2746,7 +2779,7 @@ QuestDict = {
     5223: (BR_TIER + 1, Cont, (DeliverItemQuest, 3008), Same, 3113, NA, 5224, TTLocalizer.QuestDialogDict[5223]),
     5224: (BR_TIER + 1, Cont, (CogQuest, Anywhere, 5, 'le'), Same, Same, 502, NA, TTLocalizer.QuestDialogDict[5224]),
     5225: (BR_TIER + 1, Start, (VisitQuest,), Any, 3106, NA, 5226, TTLocalizer.QuestDialogDict[5225]),
-    5226: (BR_TIER + 1, Start, (BuildingQuest, Anywhere, 3, 'm', 4), 3106, Same, NA, 5227, TTLocalizer.QuestDialogDict[5226]),
+    5226: (BR_TIER + 1, Start, (BuildingQuest, Anywhere, 3, 'm', 4, 0), 3106, Same, NA, 5227, TTLocalizer.QuestDialogDict[5226]),
     5227: (BR_TIER + 1, Cont, (VisitQuest,), Same, 3208, NA, 5228, TTLocalizer.QuestDialogDict[5227]),
     5228: (BR_TIER + 1, Cont, (DeliverItemQuest, 3009), Same, 3207, NA, (5229, 5267, 5268, 5269), TTLocalizer.QuestDialogDict[5228]),
     5229: (BR_TIER + 1, Cont, (CogTrackQuest, ToontownGlobals.TheBrrrgh, 8, 'm'), Same, Same, NA, 5230, TTLocalizer.QuestDialogDict[5229]),
@@ -2763,7 +2796,7 @@ QuestDict = {
     5243: (BR_TIER + 1, Start, (VisitQuest,), Any, 3217, NA, 5244, TTLocalizer.QuestDialogDict[5243]),
     5244: (BR_TIER + 1, Start, (RecoverItemQuest, Anywhere, 1, 2007, VeryHard, 'mm'), 3217, Same, NA, 5245, TTLocalizer.QuestDialogDict[5244]),
     5245: (BR_TIER + 1, Cont, (RecoverItemQuest, Anywhere, 1, 3017, Hard, AnyFish), Same, Same, NA, 5246, TTLocalizer.QuestDialogDict[5245]),
-    5246: (BR_TIER + 1, Cont, (BuildingQuest, ToontownGlobals.TheBrrrgh, 5, Any, 1), Same, Same, 101, NA, TTLocalizer.QuestDialogDict[5246]),
+    5246: (BR_TIER + 1, Cont, (BuildingQuest, ToontownGlobals.TheBrrrgh, 5, Any, 1, 0), Same, Same, 101, NA, TTLocalizer.QuestDialogDict[5246]),
     5251: (BR_TIER + 1, Start, (VisitQuest,), Any, 3134, NA, 5252, TTLocalizer.QuestDialogDict[5251]),
     5252: (BR_TIER + 1, Start, (RecoverItemQuest, Anywhere, 1, 3019, VeryHard, Any), 3134, Same, NA, (5253, 5273, 5274, 5275), TTLocalizer.QuestDialogDict[5252]),
     5253: (BR_TIER + 1, Cont, (RecoverItemQuest, Anywhere, 1, 3020, VeryHard, 'cr'), Same, Same, NA, (5254, 5282, 5283, 5284), TTLocalizer.QuestDialogDict[5253]),
@@ -2785,7 +2818,7 @@ QuestDict = {
     5304: (BR_TIER + 1, Cont, (RecoverItemQuest, ToontownGlobals.TheBrrrgh, 1, 3024, VeryHard, 'l', 'track'), Same, Same, NA, 5305, TTLocalizer.QuestDialogDict[5304]),
     5305: (BR_TIER + 1, Cont, (CogLevelQuest, Anywhere, 20, 7), Same, Same, NA, 5306, TTLocalizer.QuestDialogDict[5305]),
     5306: (BR_TIER + 1, Cont, (RecoverItemQuest, ToontownGlobals.TheBrrrgh, 2, 3025, Hard, AnyFish), Same, Same, NA, 5307, TTLocalizer.QuestDialogDict[5306]),
-    5307: (BR_TIER + 1, Cont, (BuildingQuest, Anywhere, 5, Any, 4), Same, Same, 204, NA, TTLocalizer.QuestDialogDict[5307]),
+    5307: (BR_TIER + 1, Cont, (BuildingQuest, Anywhere, 5, Any, 4, 0), Same, Same, 204, NA, TTLocalizer.QuestDialogDict[5307]),
     5308: (BR_TIER + 1, Start, (VisitQuest,), Any, 3312, NA, 5309, TTLocalizer.QuestDialogDict[5308]),
     5309: (BR_TIER + 1, Start, (CogTrackQuest, ToontownGlobals.PolarPlace, 30, 'l'), Same, Same, NA, 5310, TTLocalizer.QuestDialogDict[5309]),
     5310: (BR_TIER + 1, Cont, (VisitQuest,), Same, 3113, NA, 5311, TTLocalizer.QuestDialogDict[5310]),
@@ -2795,10 +2828,10 @@ QuestDict = {
     5291: (BR_TIER + 1, Start, (CogNewbieQuest, ToontownGlobals.ToontownCentral, 12, Any, NEWBIE_HP), Any, ToonHQ, 606, NA, DefaultDialog),
     5292: (BR_TIER + 1, Start, (CogNewbieQuest, ToontownGlobals.ToontownCentral, 12, Any, NEWBIE_HP), Any, ToonHQ, 606, NA, DefaultDialog),
     5293: (BR_TIER + 1, Start, (CogNewbieQuest, ToontownGlobals.ToontownCentral, 12, Any, NEWBIE_HP), Any, ToonHQ, 606, NA, DefaultDialog),
-    5294: (BR_TIER + 1, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 1, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
-    5295: (BR_TIER + 1, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 1, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
-    5296: (BR_TIER + 1, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 1, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
-    5297: (BR_TIER + 1, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 1, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
+    5294: (BR_TIER + 1, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 1, 0, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
+    5295: (BR_TIER + 1, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 1, 0, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
+    5296: (BR_TIER + 1, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 1, 0, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
+    5297: (BR_TIER + 1, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 1, 0, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
     5500: (BR_TIER + 1, Start, (CogQuest, ToontownGlobals.TheBrrrgh, 75, Any), Any, ToonHQ, NA, 5501, DefaultDialog),
     5501: (BR_TIER + 1, Cont, (DeliverItemQuest, 1000), Any, 3008, 1000, NA, DefaultDialog),
     903: (BR_TIER + 2, Start, (VisitQuest,), Any, 3112, NA, (5234, 5278), TTLocalizer.QuestDialogDict[903]),
@@ -2813,7 +2846,7 @@ QuestDict = {
     5239: (BR_TIER + 2, Cont, (DeliverItemQuest, 3015), Same, 3112, NA, (5240, 5281), TTLocalizer.QuestDialogDict[5239]),
     5240: (BR_TIER + 2, Cont, (RecoverItemQuest, Anywhere, 1, 3016, Hard, 'bw'), Same, Same, NA, 5241, TTLocalizer.QuestDialogDict[5240]),
     5281: (BR_TIER + 2, Cont, (RecoverItemQuest, Anywhere, 1, 3023, Hard, 'mh'), Same, Same, NA, 5241, TTLocalizer.QuestDialogDict[5281]),
-    5241: (BR_TIER + 2, Cont, (BuildingQuest, Anywhere, 20, Any, 4), Same, Same, NA, 5242, TTLocalizer.QuestDialogDict[5241]),
+    5241: (BR_TIER + 2, Cont, (BuildingQuest, Anywhere, 20, Any, 4, 0), Same, Same, NA, 5242, TTLocalizer.QuestDialogDict[5241]),
     5242: (BR_TIER + 2, Cont, (RecoverItemQuest, Anywhere, 1, 3014, VeryHard, AnyFish), Same, Same, 900, NA, TTLocalizer.QuestDialogDict[5242]),
     5320: (BR_TIER + 2, Start, (CogQuest, Anywhere, 36, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     5321: (BR_TIER + 2, Start, (CogQuest, Anywhere, 38, Any), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -2841,10 +2874,10 @@ QuestDict = {
     5361: (BR_TIER + 2, Start, (CogNewbieQuest, ToontownGlobals.ToontownCentral, 20, Any, NEWBIE_HP), Any, ToonHQ, 606, NA, DefaultDialog),
     5362: (BR_TIER + 2, Start, (CogNewbieQuest, ToontownGlobals.ToontownCentral, 20, Any, NEWBIE_HP), Any, ToonHQ, 606, NA, DefaultDialog),
     5363: (BR_TIER + 2, Start, (CogNewbieQuest, ToontownGlobals.ToontownCentral, 20, Any, NEWBIE_HP), Any, ToonHQ, 606, NA, DefaultDialog),
-    5364: (BR_TIER + 2, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 1, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
-    5365: (BR_TIER + 2, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 1, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
-    5366: (BR_TIER + 2, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 1, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
-    5367: (BR_TIER + 2, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 1, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
+    5364: (BR_TIER + 2, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 1, 0, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
+    5365: (BR_TIER + 2, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 1, 0, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
+    5366: (BR_TIER + 2, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 1, 0, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
+    5367: (BR_TIER + 2, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 1, 0, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
     5370: (BR_TIER + 2, Start, (CogQuest, ToontownGlobals.SellbotHQ, 22, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     5371: (BR_TIER + 2, Start, (CogQuest, ToontownGlobals.SellbotHQ, 25, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     5372: (BR_TIER + 2, Start, (CogLevelQuest, ToontownGlobals.SellbotHQ, 16, 4), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -2910,22 +2943,22 @@ QuestDict = {
     6148: (DL_TIER, Start, (CogTrackQuest, Anywhere, 70, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
     6149: (DL_TIER, Start, (CogTrackQuest, Anywhere, 70, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
     6150: (DL_TIER, Start, (CogTrackQuest, Anywhere, 70, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6151: (DL_TIER, Start, (BuildingQuest, Anywhere, 10, Any, 2), Any, ToonHQ, Any, NA, DefaultDialog),
-    6152: (DL_TIER, Start, (BuildingQuest, Anywhere, 6, Any, 4), Any, ToonHQ, Any, NA, DefaultDialog),
-    6153: (DL_TIER, OBSOLETE, (BuildingQuest, Anywhere, 8, Any, 4), Any, ToonHQ, Any, NA, DefaultDialog),
-    6154: (DL_TIER, Start, (BuildingQuest, Anywhere, 6, Any, 5), Any, ToonHQ, Any, NA, DefaultDialog),
-    6155: (DL_TIER, Start, (BuildingQuest, Anywhere, 2, 'm', 5), Any, ToonHQ, Any, NA, DefaultDialog),
-    6156: (DL_TIER, Start, (BuildingQuest, Anywhere, 2, 's', 5), Any, ToonHQ, Any, NA, DefaultDialog),
-    6157: (DL_TIER, Start, (BuildingQuest, Anywhere, 2, 'c', 5), Any, ToonHQ, Any, NA, DefaultDialog),
-    6158: (DL_TIER, Start, (BuildingQuest, Anywhere, 2, 'l', 5), Any, ToonHQ, Any, NA, DefaultDialog),
+    6151: (DL_TIER, Start, (BuildingQuest, Anywhere, 10, Any, 2, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    6152: (DL_TIER, Start, (BuildingQuest, Anywhere, 6, Any, 4, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    6153: (DL_TIER, OBSOLETE, (BuildingQuest, Anywhere, 8, Any, 4, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    6154: (DL_TIER, Start, (BuildingQuest, Anywhere, 6, Any, 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    6155: (DL_TIER, Start, (BuildingQuest, Anywhere, 2, 'm', 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    6156: (DL_TIER, Start, (BuildingQuest, Anywhere, 2, 's', 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    6157: (DL_TIER, Start, (BuildingQuest, Anywhere, 2, 'c', 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    6158: (DL_TIER, Start, (BuildingQuest, Anywhere, 2, 'l', 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
     6160: (DL_TIER, Start, (CogNewbieQuest, ToontownGlobals.ToontownCentral, 25, Any, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
     6161: (DL_TIER, Start, (CogNewbieQuest, ToontownGlobals.ToontownCentral, 25, Any, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
     6162: (DL_TIER, Start, (CogNewbieQuest, ToontownGlobals.ToontownCentral, 25, Any, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
     6163: (DL_TIER, Start, (CogNewbieQuest, ToontownGlobals.ToontownCentral, 25, Any, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
-    6164: (DL_TIER, Start, (BuildingNewbieQuest, Anywhere, 2, Any, 1, NEWBIE_HP), Any, ToonHQ, 608, NA, DefaultDialog),
-    6165: (DL_TIER, Start, (BuildingNewbieQuest, Anywhere, 2, Any, 1, NEWBIE_HP), Any, ToonHQ, 608, NA, DefaultDialog),
-    6166: (DL_TIER, Start, (BuildingNewbieQuest, Anywhere, 2, Any, 1, NEWBIE_HP), Any, ToonHQ, 608, NA, DefaultDialog),
-    6167: (DL_TIER, Start, (BuildingNewbieQuest, Anywhere, 2, Any, 1, NEWBIE_HP), Any, ToonHQ, 608, NA, DefaultDialog),
+    6164: (DL_TIER, Start, (BuildingNewbieQuest, Anywhere, 2, Any, 1, 0, NEWBIE_HP), Any, ToonHQ, 608, NA, DefaultDialog),
+    6165: (DL_TIER, Start, (BuildingNewbieQuest, Anywhere, 2, Any, 1, 0, NEWBIE_HP), Any, ToonHQ, 608, NA, DefaultDialog),
+    6166: (DL_TIER, Start, (BuildingNewbieQuest, Anywhere, 2, Any, 1, 0, NEWBIE_HP), Any, ToonHQ, 608, NA, DefaultDialog),
+    6167: (DL_TIER, Start, (BuildingNewbieQuest, Anywhere, 2, Any, 1, 0, NEWBIE_HP), Any, ToonHQ, 608, NA, DefaultDialog),
     6170: (DL_TIER, OBSOLETE, (CogQuest, ToontownGlobals.SellbotHQ, 40, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     6171: (DL_TIER, OBSOLETE, (CogQuest, ToontownGlobals.SellbotHQ, 45, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     6172: (DL_TIER, OBSOLETE, (CogQuest, ToontownGlobals.SellbotHQ, 50, Any), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -2951,10 +2984,14 @@ QuestDict = {
     6194: (DL_TIER, Start, (FactoryNewbieQuest, ToontownGlobals.SellbotHQ, 1, SELLBOT_HQ_NEWBIE_HP), Any, ToonHQ, 609, NA, DefaultDialog),
     6195: (DL_TIER, Start, (FactoryNewbieQuest, ToontownGlobals.SellbotHQ, 1, SELLBOT_HQ_NEWBIE_HP), Any, ToonHQ, 609, NA, DefaultDialog),
     6196: (DL_TIER, Start, (ForemanNewbieQuest, ToontownGlobals.SellbotFactoryInt, 1, SELLBOT_HQ_NEWBIE_HP), Any, ToonHQ, 609, NA, DefaultDialog),
+    6197: (DL_TIER, Start, (BuildingQuest, Anywhere, 10, Any, 0, 1), Any, ToonHQ, Any, NA, DefaultDialog),
+    6198: (DL_TIER, Start, (BuildingQuest, Anywhere, 8, Any, 0, 1), Any, ToonHQ, Any, NA, DefaultDialog),
+    6199: (DL_TIER, Start, (BuildingQuest, Anywhere, 6, 's', 0, 1), Any, ToonHQ, Any, NA, DefaultDialog),
+    6200: (DL_TIER, Start, (BuildingQuest, Anywhere, 5, 'l', 0, 1), Any, ToonHQ, Any, NA, DefaultDialog),
     6201: (DL_TIER, Start, (VisitQuest,), Any, 9111, NA, 6202, TTLocalizer.QuestDialogDict[6201]),
     6202: (DL_TIER, Start, (CogQuest, ToontownGlobals.DonaldsDreamland, 70, Any), 9111, Same, 100, NA, TTLocalizer.QuestDialogDict[6202]),
     6206: (DL_TIER, Start, (VisitQuest,), Any, 9131, NA, 6207, TTLocalizer.QuestDialogDict[6206]),
-    6207: (DL_TIER, Start, (BuildingQuest, ToontownGlobals.DonaldsDreamland, 8, Any, 4), 9131, Same, 205, NA, TTLocalizer.QuestDialogDict[6207]),
+    6207: (DL_TIER, Start, (BuildingQuest, ToontownGlobals.DonaldsDreamland, 8, Any, 4, 0), 9131, Same, 205, NA, TTLocalizer.QuestDialogDict[6207]),
     6211: (DL_TIER, Start, (VisitQuest,), Any, 9217, NA, 6212, TTLocalizer.QuestDialogDict[6211]),
     6212: (DL_TIER, Start, (RecoverItemQuest, Anywhere, 3, 6002, Medium, 'bc'), 9217, Same, NA, 6213, TTLocalizer.QuestDialogDict[6212]),
     6213: (DL_TIER, Cont, (RecoverItemQuest, Anywhere, 1, 6003, Hard, 'mb'), Same, Same, NA, 6214, TTLocalizer.QuestDialogDict[6213]),
@@ -2985,7 +3022,7 @@ QuestDict = {
     6265: (DL_TIER, Cont, (DeliverItemQuest, 6012), Same, 9115, NA, 6266, TTLocalizer.QuestDialogDict[6265]),
     6266: (DL_TIER, Cont, (VisitQuest,), Same, 9221, 103, NA, TTLocalizer.QuestDialogDict[6266]),
     6271: (DL_TIER, Start, (VisitQuest,), Any, 9208, NA, 6272, TTLocalizer.QuestDialogDict[6271]),
-    6272: (DL_TIER, Start, (BuildingQuest, ToontownGlobals.DonaldsDreamland, 2, 'm', 5), 9208, Same, 305, NA, TTLocalizer.QuestDialogDict[6272]),
+    6272: (DL_TIER, Start, (BuildingQuest, ToontownGlobals.DonaldsDreamland, 2, 'm', 5, 0), 9208, Same, 305, NA, TTLocalizer.QuestDialogDict[6272]),
     6281: (DL_TIER, Start, (VisitQuest,), Any, 9123, NA, 6282, TTLocalizer.QuestDialogDict[6281]),
     6282: (DL_TIER, Start, (CogTrackQuest, ToontownGlobals.DonaldsDreamland, 55, 'm'), 9123, Same, 4001, NA, TTLocalizer.QuestDialogDict[6282]),
     6291: (DL_TIER, Start, (VisitQuest,), Any, 9226, NA, 6292, TTLocalizer.QuestDialogDict[6291]),
@@ -3064,22 +3101,22 @@ QuestDict = {
     7148: (DL_TIER + 1, Start, (CogTrackQuest, Anywhere, 140, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
     7149: (DL_TIER + 1, Start, (CogTrackQuest, Anywhere, 140, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
     7150: (DL_TIER + 1, Start, (CogTrackQuest, Anywhere, 140, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
-    7151: (DL_TIER + 1, Start, (BuildingQuest, Anywhere, 20, Any, 2), Any, ToonHQ, Any, NA, DefaultDialog),
-    7152: (DL_TIER + 1, OBSOLETE, (BuildingQuest, Anywhere, 10, Any, 3), Any, ToonHQ, Any, NA, DefaultDialog),
-    7153: (DL_TIER + 1, Start, (BuildingQuest, Anywhere, 10, Any, 4), Any, ToonHQ, Any, NA, DefaultDialog),
-    7154: (DL_TIER + 1, Start, (BuildingQuest, Anywhere, 10, Any, 5), Any, ToonHQ, Any, NA, DefaultDialog),
-    7155: (DL_TIER + 1, OBSOLETE, (BuildingQuest, Anywhere, 5, 'm', 5), Any, ToonHQ, Any, NA, DefaultDialog),
-    7156: (DL_TIER + 1, Start, (BuildingQuest, Anywhere, 5, 's', 5), Any, ToonHQ, Any, NA, DefaultDialog),
-    7157: (DL_TIER + 1, Start, (BuildingQuest, Anywhere, 5, 'c', 5), Any, ToonHQ, Any, NA, DefaultDialog),
-    7158: (DL_TIER + 1, Start, (BuildingQuest, Anywhere, 5, 'l', 5), Any, ToonHQ, Any, NA, DefaultDialog),
+    7151: (DL_TIER + 1, Start, (BuildingQuest, Anywhere, 20, Any, 2, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    7152: (DL_TIER + 1, OBSOLETE, (BuildingQuest, Anywhere, 10, Any, 3, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    7153: (DL_TIER + 1, Start, (BuildingQuest, Anywhere, 10, Any, 4, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    7154: (DL_TIER + 1, Start, (BuildingQuest, Anywhere, 10, Any, 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    7155: (DL_TIER + 1, OBSOLETE, (BuildingQuest, Anywhere, 5, 'm', 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    7156: (DL_TIER + 1, Start, (BuildingQuest, Anywhere, 5, 's', 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    7157: (DL_TIER + 1, Start, (BuildingQuest, Anywhere, 5, 'c', 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    7158: (DL_TIER + 1, Start, (BuildingQuest, Anywhere, 5, 'l', 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
     7160: (DL_TIER + 1, Start, (CogNewbieQuest, ToontownGlobals.ToontownCentral, 35, Any, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
     7161: (DL_TIER + 1, Start, (CogNewbieQuest, ToontownGlobals.ToontownCentral, 35, Any, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
     7162: (DL_TIER + 1, Start, (CogNewbieQuest, ToontownGlobals.ToontownCentral, 35, Any, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
     7163: (DL_TIER + 1, Start, (CogNewbieQuest, ToontownGlobals.ToontownCentral, 35, Any, NEWBIE_HP), Any, ToonHQ, 607, NA, DefaultDialog),
-    7164: (DL_TIER + 1, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 2, NEWBIE_HP), Any, ToonHQ, 608, NA, DefaultDialog),
-    7165: (DL_TIER + 1, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 2, NEWBIE_HP), Any, ToonHQ, 608, NA, DefaultDialog),
-    7166: (DL_TIER + 1, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 2, NEWBIE_HP), Any, ToonHQ, 608, NA, DefaultDialog),
-    7167: (DL_TIER + 1, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 2, NEWBIE_HP), Any, ToonHQ, 608, NA, DefaultDialog),
+    7164: (DL_TIER + 1, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 2, 0, NEWBIE_HP), Any, ToonHQ, 608, NA, DefaultDialog),
+    7165: (DL_TIER + 1, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 2, 0, NEWBIE_HP), Any, ToonHQ, 608, NA, DefaultDialog),
+    7166: (DL_TIER + 1, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 2, 0, NEWBIE_HP), Any, ToonHQ, 608, NA, DefaultDialog),
+    7167: (DL_TIER + 1, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 2, 0, NEWBIE_HP), Any, ToonHQ, 608, NA, DefaultDialog),
     7170: (DL_TIER + 1, OBSOLETE, (CogQuest, ToontownGlobals.SellbotHQ, 80, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     7171: (DL_TIER + 1, OBSOLETE, (CogQuest, ToontownGlobals.SellbotHQ, 90, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     7172: (DL_TIER + 1, OBSOLETE, (CogQuest, ToontownGlobals.SellbotHQ, 100, Any), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -3122,7 +3159,7 @@ QuestDict = {
     7219: (DL_TIER + 1, Start, (VisitQuest,), 9109, 9230, NA, 7220, TTLocalizer.QuestDialogDict[7219]),
     7220: (DL_TIER + 1, Cont, (DeliverItemQuest, 7005), Same, 9109, NA, 7221, TTLocalizer.QuestDialogDict[7220]),
     7221: (DL_TIER + 1, Cont, (VisitQuest,), Same, 9230, NA, 7222, TTLocalizer.QuestDialogDict[7221]),
-    7222: (DL_TIER + 1, Cont, (BuildingQuest, Anywhere, 10, Any, 3), Same, Same, NA, 7223, TTLocalizer.QuestDialogDict[7222]),
+    7222: (DL_TIER + 1, Cont, (BuildingQuest, Anywhere, 10, Any, 3, 0), Same, Same, NA, 7223, TTLocalizer.QuestDialogDict[7222]),
     7223: (DL_TIER + 1, Cont, (DeliverItemQuest, 7006), Same, 9109, 4005, NA, TTLocalizer.QuestDialogDict[7223]),
     7226: (DL_TIER + 1, Start, (VisitQuest,), Any, 9224, NA, 7227, TTLocalizer.QuestDialogDict[7226]),
     7227: (DL_TIER + 1, Start, (VisitQuest,), 9224, 9102, NA, 7228, TTLocalizer.QuestDialogDict[7227]),
@@ -3133,7 +3170,7 @@ QuestDict = {
     7232: (DL_TIER + 1, Cont, (VisitQuest,), Same, 9216, NA, 7233, TTLocalizer.QuestDialogDict[7232]),
     7233: (DL_TIER + 1, Cont, (DeliverItemQuest, 7009), Same, 9224, NA, 7234, TTLocalizer.QuestDialogDict[7233]),
     7234: (DL_TIER + 1, Cont, (VisitQuest,), Same, 9216, NA, 7235, TTLocalizer.QuestDialogDict[7234]),
-    7235: (DL_TIER + 1, Cont, (BuildingQuest, Anywhere, 5, 'm', 5), Same, Same, NA, 7236, TTLocalizer.QuestDialogDict[7235]),
+    7235: (DL_TIER + 1, Cont, (BuildingQuest, Anywhere, 5, 'm', 5, 0), Same, Same, NA, 7236, TTLocalizer.QuestDialogDict[7235]),
     7236: (DL_TIER + 1, Cont, (DeliverItemQuest, 7010), Same, 9224, 4006, NA, TTLocalizer.QuestDialogDict[7236]),
     7239: (DL_TIER + 1, Start, (VisitQuest,), Any, 9114, NA, 7240, TTLocalizer.QuestDialogDict[7239]),
     7240: (DL_TIER + 1, Start, (VisitQuest,), 9114, 9215, NA, 7241, TTLocalizer.QuestDialogDict[7240]),
@@ -3164,6 +3201,10 @@ QuestDict = {
     7270: (DL_TIER + 1, Start, (SupervisorQuest, ToontownGlobals.CashbotMintIntB, 6), Any, ToonHQ, Any, NA, DefaultDialog),
     7500: (DL_TIER + 1, Start, (CogQuest, ToontownGlobals.DonaldsDreamland, 100, Any), Any, ToonHQ, NA, 7501, DefaultDialog),
     7501: (DL_TIER + 1, Cont, (DeliverItemQuest, 1000), Any, 9010, 1000, NA, DefaultDialog),
+    7502: (DL_TIER + 1, Start, (BuildingQuest, Anywhere, 20, Any, 0, 1), Any, ToonHQ, Any, NA, DefaultDialog),
+    7503: (DL_TIER + 1, Start, (BuildingQuest, Anywhere, 15, Any, 0, 1), Any, ToonHQ, Any, NA, DefaultDialog),
+    7504: (DL_TIER + 1, Start, (BuildingQuest, Anywhere, 10, 's', 0, 1), Any, ToonHQ, Any, NA, DefaultDialog),
+    7505: (DL_TIER + 1, Start, (BuildingQuest, Anywhere, 10, 'l', 0, 1), Any, ToonHQ, Any, NA, DefaultDialog),
     8101: (DL_TIER + 2, Start, (CogQuest, Anywhere, 240, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     8102: (DL_TIER + 2, Start, (CogQuest, Anywhere, 260, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     8103: (DL_TIER + 2, Start, (CogQuest, Anywhere, 280, Any), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -3214,22 +3255,22 @@ QuestDict = {
     8148: (DL_TIER + 2, Start, (CogTrackQuest, Anywhere, 300, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
     8149: (DL_TIER + 2, Start, (CogTrackQuest, Anywhere, 300, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
     8150: (DL_TIER + 2, Start, (CogTrackQuest, Anywhere, 300, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
-    8151: (DL_TIER + 2, Start, (BuildingQuest, Anywhere, 40, Any, 2), Any, ToonHQ, Any, NA, DefaultDialog),
-    8152: (DL_TIER + 2, Start, (BuildingQuest, Anywhere, 20, Any, 3), Any, ToonHQ, Any, NA, DefaultDialog),
-    8153: (DL_TIER + 2, Start, (BuildingQuest, Anywhere, 20, Any, 4), Any, ToonHQ, Any, NA, DefaultDialog),
-    8154: (DL_TIER + 2, Start, (BuildingQuest, Anywhere, 20, Any, 5), Any, ToonHQ, Any, NA, DefaultDialog),
-    8155: (DL_TIER + 2, Start, (BuildingQuest, Anywhere, 10, 'm', 5), Any, ToonHQ, Any, NA, DefaultDialog),
-    8156: (DL_TIER + 2, Start, (BuildingQuest, Anywhere, 10, 's', 5), Any, ToonHQ, Any, NA, DefaultDialog),
-    8157: (DL_TIER + 2, Start, (BuildingQuest, Anywhere, 10, 'c', 5), Any, ToonHQ, Any, NA, DefaultDialog),
-    8158: (DL_TIER + 2, Start, (BuildingQuest, Anywhere, 10, 'l', 5), Any, ToonHQ, Any, NA, DefaultDialog),
+    8151: (DL_TIER + 2, Start, (BuildingQuest, Anywhere, 40, Any, 2, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    8152: (DL_TIER + 2, Start, (BuildingQuest, Anywhere, 20, Any, 3, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    8153: (DL_TIER + 2, Start, (BuildingQuest, Anywhere, 20, Any, 4, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    8154: (DL_TIER + 2, Start, (BuildingQuest, Anywhere, 20, Any, 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    8155: (DL_TIER + 2, Start, (BuildingQuest, Anywhere, 10, 'm', 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    8156: (DL_TIER + 2, Start, (BuildingQuest, Anywhere, 10, 's', 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    8157: (DL_TIER + 2, Start, (BuildingQuest, Anywhere, 10, 'c', 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    8158: (DL_TIER + 2, Start, (BuildingQuest, Anywhere, 10, 'l', 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
     8160: (DL_TIER + 2, Start, (CogNewbieQuest, ToontownGlobals.ToontownCentral, 40, Any, NEWBIE_HP), Any, ToonHQ, 608, NA, DefaultDialog),
     8161: (DL_TIER + 2, Start, (CogNewbieQuest, ToontownGlobals.ToontownCentral, 40, Any, NEWBIE_HP), Any, ToonHQ, 608, NA, DefaultDialog),
     8162: (DL_TIER + 2, Start, (CogNewbieQuest, ToontownGlobals.ToontownCentral, 40, Any, NEWBIE_HP), Any, ToonHQ, 608, NA, DefaultDialog),
     8163: (DL_TIER + 2, Start, (CogNewbieQuest, ToontownGlobals.ToontownCentral, 40, Any, NEWBIE_HP), Any, ToonHQ, 608, NA, DefaultDialog),
-    8164: (DL_TIER + 2, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 3, NEWBIE_HP), Any, ToonHQ, 609, NA, DefaultDialog),
-    8165: (DL_TIER + 2, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 3, NEWBIE_HP), Any, ToonHQ, 609, NA, DefaultDialog),
-    8166: (DL_TIER + 2, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 3, NEWBIE_HP), Any, ToonHQ, 609, NA, DefaultDialog),
-    8167: (DL_TIER + 2, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 3, NEWBIE_HP), Any, ToonHQ, 609, NA, DefaultDialog),
+    8164: (DL_TIER + 2, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 3, 0, NEWBIE_HP), Any, ToonHQ, 609, NA, DefaultDialog),
+    8165: (DL_TIER + 2, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 3, 0, NEWBIE_HP), Any, ToonHQ, 609, NA, DefaultDialog),
+    8166: (DL_TIER + 2, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 3, 0, NEWBIE_HP), Any, ToonHQ, 609, NA, DefaultDialog),
+    8167: (DL_TIER + 2, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 3, 0, NEWBIE_HP), Any, ToonHQ, 609, NA, DefaultDialog),
     8170: (DL_TIER + 2, OBSOLETE, (CogQuest, ToontownGlobals.SellbotHQ, 160, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     8171: (DL_TIER + 2, OBSOLETE, (CogQuest, ToontownGlobals.SellbotHQ, 180, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     8172: (DL_TIER + 2, OBSOLETE, (CogQuest, ToontownGlobals.SellbotHQ, 200, Any), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -3278,6 +3319,10 @@ QuestDict = {
     8217: (DL_TIER + 2, Start, (SupervisorQuest, ToontownGlobals.CashbotMintIntB, 14), Any, ToonHQ, Any, NA, DefaultDialog),
     8218: (DL_TIER + 2, Start, (SupervisorQuest, ToontownGlobals.CashbotMintIntC, 12), Any, ToonHQ, Any, NA, DefaultDialog),
     8219: (DL_TIER + 2, Start, (CFOQuest, ToontownGlobals.CashbotHQ, 2), Any, ToonHQ, 621, NA, DefaultDialog),
+    8220: (DL_TIER + 2, Start, (BuildingQuest, Anywhere, 25, Any, 0, 1), Any, ToonHQ, Any, NA, DefaultDialog),
+    8221: (DL_TIER + 2, Start, (BuildingQuest, Anywhere, 20, Any, 0, 1), Any, ToonHQ, Any, NA, DefaultDialog),
+    8224: (DL_TIER + 2, Start, (BuildingQuest, Anywhere, 15, 's', 0, 1), Any, ToonHQ, Any, NA, DefaultDialog),
+    8225: (DL_TIER + 2, Start, (BuildingQuest, Anywhere, 15, 'l', 0, 1), Any, ToonHQ, Any, NA, DefaultDialog),
     9101: (DL_TIER + 3, Start, (CogQuest, Anywhere, 500, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     9102: (DL_TIER + 3, Start, (CogQuest, Anywhere, 600, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     9103: (DL_TIER + 3, Start, (CogQuest, Anywhere, 700, Any), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -3328,22 +3373,22 @@ QuestDict = {
     9148: (DL_TIER + 3, Start, (CogTrackQuest, Anywhere, 600, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
     9149: (DL_TIER + 3, Start, (CogTrackQuest, Anywhere, 600, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
     9150: (DL_TIER + 3, Start, (CogTrackQuest, Anywhere, 600, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
-    9151: (DL_TIER + 3, Start, (BuildingQuest, Anywhere, 400, Any, 2), Any, ToonHQ, Any, NA, DefaultDialog),
-    9152: (DL_TIER + 3, Start, (BuildingQuest, Anywhere, 200, Any, 3), Any, ToonHQ, Any, NA, DefaultDialog),
-    9153: (DL_TIER + 3, Start, (BuildingQuest, Anywhere, 200, Any, 4), Any, ToonHQ, Any, NA, DefaultDialog),
-    9154: (DL_TIER + 3, Start, (BuildingQuest, Anywhere, 200, Any, 5), Any, ToonHQ, Any, NA, DefaultDialog),
-    9155: (DL_TIER + 3, Start, (BuildingQuest, Anywhere, 100, Any, 5), Any, ToonHQ, Any, NA, DefaultDialog),
-    9156: (DL_TIER + 3, Start, (BuildingQuest, Anywhere, 100, Any, 5), Any, ToonHQ, Any, NA, DefaultDialog),
-    9157: (DL_TIER + 3, Start, (BuildingQuest, Anywhere, 100, Any, 5), Any, ToonHQ, Any, NA, DefaultDialog),
-    9158: (DL_TIER + 3, Start, (BuildingQuest, Anywhere, 100, Any, 5), Any, ToonHQ, Any, NA, DefaultDialog),
+    9151: (DL_TIER + 3, Start, (BuildingQuest, Anywhere, 400, Any, 2, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    9152: (DL_TIER + 3, Start, (BuildingQuest, Anywhere, 200, Any, 3, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    9153: (DL_TIER + 3, Start, (BuildingQuest, Anywhere, 200, Any, 4, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    9154: (DL_TIER + 3, Start, (BuildingQuest, Anywhere, 200, Any, 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    9155: (DL_TIER + 3, Start, (BuildingQuest, Anywhere, 100, Any, 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    9156: (DL_TIER + 3, Start, (BuildingQuest, Anywhere, 100, Any, 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    9157: (DL_TIER + 3, Start, (BuildingQuest, Anywhere, 100, Any, 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    9158: (DL_TIER + 3, Start, (BuildingQuest, Anywhere, 100, Any, 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
     9160: (DL_TIER + 3, Start, (CogNewbieQuest, ToontownGlobals.ToontownCentral, 45, Any, NEWBIE_HP), Any, ToonHQ, 609, NA, DefaultDialog),
     9161: (DL_TIER + 3, Start, (CogNewbieQuest, ToontownGlobals.ToontownCentral, 45, Any, NEWBIE_HP), Any, ToonHQ, 609, NA, DefaultDialog),
     9162: (DL_TIER + 3, Start, (CogNewbieQuest, ToontownGlobals.ToontownCentral, 45, Any, NEWBIE_HP), Any, ToonHQ, 609, NA, DefaultDialog),
     9163: (DL_TIER + 3, Start, (CogNewbieQuest, ToontownGlobals.ToontownCentral, 45, Any, NEWBIE_HP), Any, ToonHQ, 609, NA, DefaultDialog),
-    9164: (DL_TIER + 3, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 3, NEWBIE_HP), Any, ToonHQ, 609, NA, DefaultDialog),
-    9165: (DL_TIER + 3, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 3, NEWBIE_HP), Any, ToonHQ, 609, NA, DefaultDialog),
-    9166: (DL_TIER + 3, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 3, NEWBIE_HP), Any, ToonHQ, 609, NA, DefaultDialog),
-    9167: (DL_TIER + 3, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 3, NEWBIE_HP), Any, ToonHQ, 609, NA, DefaultDialog),
+    9164: (DL_TIER + 3, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 3, 0, NEWBIE_HP), Any, ToonHQ, 609, NA, DefaultDialog),
+    9165: (DL_TIER + 3, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 3, 0, NEWBIE_HP), Any, ToonHQ, 609, NA, DefaultDialog),
+    9166: (DL_TIER + 3, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 3, 0, NEWBIE_HP), Any, ToonHQ, 609, NA, DefaultDialog),
+    9167: (DL_TIER + 3, Start, (BuildingNewbieQuest, Anywhere, 1, Any, 3, 0, NEWBIE_HP), Any, ToonHQ, 609, NA, DefaultDialog),
     9170: (DL_TIER + 3, OBSOLETE, (CogQuest, ToontownGlobals.SellbotHQ, 350, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     9171: (DL_TIER + 3, OBSOLETE, (CogQuest, ToontownGlobals.SellbotHQ, 400, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     9172: (DL_TIER + 3, OBSOLETE, (CogQuest, ToontownGlobals.SellbotHQ, 500, Any), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -3404,8 +3449,12 @@ QuestDict = {
     9229: (DL_TIER + 3, Start, (SupervisorNewbieQuest, ToontownGlobals.CashbotMintIntC, 2, CASHBOT_HQ_NEWBIE_HP), Any, ToonHQ, 611, NA, DefaultDialog),
     9500: (DL_TIER + 3, Start, (CogQuest, ToontownGlobals.DonaldsDreamland, 1000, Any), Any, ToonHQ, NA, 9501, DefaultDialog),
     9501: (DL_TIER + 3, Cont, (DeliverItemQuest, 1000), Any, 2004, 1000, NA, DefaultDialog),
+    9502: (DL_TIER + 3, Start, (BuildingQuest, Anywhere, 30, Any, 2, 1), Any, ToonHQ, Any, NA, DefaultDialog),
+    9503: (DL_TIER + 3, Start, (BuildingQuest, Anywhere, 25, Any, 3, 1), Any, ToonHQ, Any, NA, DefaultDialog),
+    9504: (DL_TIER + 3, Start, (BuildingQuest, Anywhere, 20, 's', 5, 1), Any, ToonHQ, Any, NA, DefaultDialog),
+    9505: (DL_TIER + 3, Start, (BuildingQuest, Anywhere, 20, 'l', 5, 1), Any, ToonHQ, Any, NA, DefaultDialog),
     10001: (ELDER_TIER, Start, (CogNewbieQuest, ToontownGlobals.ToontownCentral, 50, Any, NEWBIE_HP), Any, ToonHQ, Any, NA, DefaultDialog),
-    10002: (ELDER_TIER, Start, (BuildingNewbieQuest, Anywhere, 4, Any, 1, NEWBIE_HP), Any, ToonHQ, Any, NA, DefaultDialog),
+    10002: (ELDER_TIER, Start, (BuildingNewbieQuest, Anywhere, 4, Any, 1, 0, NEWBIE_HP), Any, ToonHQ, Any, NA, DefaultDialog),
     10100: (ELDER_TIER, Start, (CogQuest, Anywhere, 80, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     10101: (ELDER_TIER, Start, (CogQuest, Anywhere, 100, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     10102: (ELDER_TIER, Start, (CogQuest, Anywhere, 120, Any), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -3413,15 +3462,15 @@ QuestDict = {
     10104: (ELDER_TIER, Start, (CogQuest, Anywhere, 250, Any), Any, ToonHQ, 615, NA, DefaultDialog),
     10105: (ELDER_TIER, Start, (CogQuest, Anywhere, 300, Any), Any, ToonHQ, 616, NA, DefaultDialog),
     10106: (ELDER_TIER, Start, (CogQuest, Anywhere, 400, Any), Any, ToonHQ, 618, NA, DefaultDialog),
-    10110: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 40, Any, 2), Any, ToonHQ, Any, NA, DefaultDialog),
-    10111: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 30, Any, 3), Any, ToonHQ, Any, NA, DefaultDialog),
-    10112: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 25, Any, 4), Any, ToonHQ, Any, NA, DefaultDialog),
-    10113: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 20, Any, 5), Any, ToonHQ, Any, NA, DefaultDialog),
-    10114: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 20, 'm', 5), Any, ToonHQ, Any, NA, DefaultDialog),
-    10115: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 20, 's', 5), Any, ToonHQ, Any, NA, DefaultDialog),
-    10116: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 20, 'c', 5), Any, ToonHQ, Any, NA, DefaultDialog),
-    10117: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 20, 'l', 5), Any, ToonHQ, Any, NA, DefaultDialog),
-    10118: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 50, Any, 1), Any, ToonHQ, 620, NA, DefaultDialog),
+    10110: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 40, Any, 2, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    10111: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 30, Any, 3, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    10112: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 25, Any, 4, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    10113: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 20, Any, 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    10114: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 20, 'm', 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    10115: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 20, 's', 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    10116: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 20, 'c', 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    10117: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 20, 'l', 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    10118: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 50, Any, 1, 0), Any, ToonHQ, 620, NA, DefaultDialog),
     10120: (ELDER_TIER, OBSOLETE, (CogQuest, ToontownGlobals.SellbotHQ, 60, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     10121: (ELDER_TIER, OBSOLETE, (FactoryQuest, ToontownGlobals.SellbotHQ, 10), Any, ToonHQ, Any, NA, DefaultDialog),
     10122: (ELDER_TIER, OBSOLETE, (ForemanQuest, ToontownGlobals.SellbotHQ, 10), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -3439,12 +3488,17 @@ QuestDict = {
     10147: (ELDER_TIER, Start, (SupervisorNewbieQuest, ToontownGlobals.CashbotHQ, 3, CASHBOT_HQ_NEWBIE_HP), Any, ToonHQ, 611, NA, DefaultDialog),
     10200: (ELDER_TIER, Start, (CogQuest, Anywhere, 100, Any), Any, ToonHQ, NA, 10201, DefaultDialog),
     10201: (ELDER_TIER, Cont, (DeliverItemQuest, 1000), Any, ToonTailor, 1000, NA, DefaultDialog),
-    10202: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 25, Any, 1), Any, ToonHQ, NA, 10203, DefaultDialog),
+    10202: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 25, Any, 1, 0), Any, ToonHQ, NA, 10203, DefaultDialog),
     10203: (ELDER_TIER, Cont, (DeliverItemQuest, 1000), Any, ToonTailor, 1000, NA, DefaultDialog),
     10204: (ELDER_TIER, Start, (CogNewbieQuest, ToontownGlobals.ToontownCentral, 60, Any, NEWBIE_HP), Any, ToonHQ, NA, 10205, DefaultDialog),
     10205: (ELDER_TIER, Cont, (DeliverItemQuest, 1000), Any, ToonTailor, 1000, NA, DefaultDialog),
-    10206: (ELDER_TIER, Start, (BuildingNewbieQuest, Anywhere, 4, Any, 1, NEWBIE_HP), Any, ToonHQ, NA, 10207, DefaultDialog),
+    10206: (ELDER_TIER, Start, (BuildingNewbieQuest, Anywhere, 4, Any, 1, 0, NEWBIE_HP), Any, ToonHQ, NA, 10207, DefaultDialog),
     10207: (ELDER_TIER, Cont, (DeliverItemQuest, 1000), Any, ToonTailor, 1000, NA, DefaultDialog),
+    10208: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 40, Any, 2, 1), Any, ToonHQ, Any, NA, DefaultDialog),
+    10209: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 30, Any, 3, 1), Any, ToonHQ, Any, NA, DefaultDialog),
+    10210: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 25, Any, 4, 1), Any, ToonHQ, Any, NA, DefaultDialog),
+    10211: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 20, 's', 5, 1), Any, ToonHQ, Any, NA, DefaultDialog),
+    10212: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 20, 'l', 5, 1), Any, ToonHQ, Any, NA, DefaultDialog),
     11000: (LAWBOT_HQ_TIER, Start, (VisitQuest,), Any, 3310, NA, 11001, TTLocalizer.QuestDialogDict[11000]),
     11001: (LAWBOT_HQ_TIER, Start, (RecoverItemQuest, ToontownGlobals.SillyStreet, 1, 3027, Hard, Any), Same, Same, 4100, NA, TTLocalizer.QuestDialogDict[11001]),
     11002: (LAWBOT_HQ_TIER + 1, Start, (VisitQuest,), Any, 3310, NA, 11003, TTLocalizer.QuestDialogDict[11002]),
