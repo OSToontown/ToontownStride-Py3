@@ -39,10 +39,6 @@ class DistributedStageRoomAI(DistributedLevelAI.DistributedLevelAI, StageRoomBas
         self.notify.debug('loading spec')
         specModule = StageRoomSpecs.getStageRoomSpecModule(self.roomId)
         roomSpec = LevelSpec.LevelSpec(specModule)
-        if __dev__:
-            self.notify.debug('creating entity type registry')
-            typeReg = self.getStageEntityTypeReg()
-            roomSpec.setEntityTypeReg(typeReg)
         self.notify.debug('creating entities')
         DistributedLevelAI.DistributedLevelAI.generate(self, roomSpec)
         self.notify.debug('creating cogs')

@@ -83,39 +83,3 @@ class GearEntity(BasicEntities.NodePathEntity):
         if hasattr(self, 'rotateIval'):
             self.rotateIval.pause()
             del self.rotateIval
-
-    if __dev__:
-
-        def setDegreesPerSec(self, degreesPerSec):
-            if self.entInitialized:
-                self.degreesPerSec = degreesPerSec
-                self.startRotate()
-
-        def setPhaseShift(self, phaseShift):
-            if self.entInitialized:
-                self.phaseShift = phaseShift
-                self.startRotate()
-
-        def attribChanged(self, attrib, value):
-            self.destroyGear()
-            self.initGear()
-
-        def setScale(self, *args):
-            BasicEntities.NodePathEntity.setScale(self, *args)
-            if self.entInitialized:
-                self.initGear()
-
-        def setSx(self, *args):
-            BasicEntities.NodePathEntity.setSx(self, *args)
-            if self.entInitialized:
-                self.initGear()
-
-        def setSy(self, *args):
-            BasicEntities.NodePathEntity.setSy(self, *args)
-            if self.entInitialized:
-                self.initGear()
-
-        def setSz(self, *args):
-            BasicEntities.NodePathEntity.setSz(self, *args)
-            if self.entInitialized:
-                self.initGear()

@@ -31,8 +31,6 @@ class DistributedMintAI(DistributedObjectAI.DistributedObjectAI):
             roomDoIds.append(room.doId)
 
         self.sendUpdate('setRoomDoIds', [roomDoIds])
-        if __dev__:
-            simbase.mint = self
         description = '%s|%s|%s' % (self.mintId, self.floorNum, self.avIds)
         for avId in self.avIds:
             self.air.writeServerEvent('mintEntered', avId, description)
@@ -46,9 +44,6 @@ class DistributedMintAI(DistributedObjectAI.DistributedObjectAI):
 
     def delete(self):
         self.notify.info('delete: %s' % self.doId)
-        if __dev__:
-            if hasattr(simbase, 'mint') and simbase.mint is self:
-                del simbase.mint
         del self.rooms
         del self.layout
         del self.battleExpAggreg

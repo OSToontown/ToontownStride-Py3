@@ -14,11 +14,3 @@ class CountryClubRoomBase:
 
     def getCogTrack(self):
         return self.cogTrack
-
-    if __dev__:
-
-        def getCountryClubEntityTypeReg(self):
-            import FactoryEntityTypes
-            from otp.level import EntityTypeRegistry
-            typeReg = EntityTypeRegistry.EntityTypeRegistry(FactoryEntityTypes)
-            return typeReg

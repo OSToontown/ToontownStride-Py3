@@ -44,9 +44,6 @@ class LevelSuitPlannerAI(DirectObject.DirectObject):
         return joinChances
 
     def __genSuitInfos(self, level, track):
-        if __dev__:
-            pass
-
         def getSuitDict(spec, cogId, level = level, track = track):
             suitDict = {}
             suitDict['track'] = track
@@ -152,8 +149,6 @@ class LevelSuitPlannerAI(DirectObject.DirectObject):
         numSpotsAvailable = 4 - len(battle.suits)
         if len(cellReserves) > 0 and numSpotsAvailable > 0:
             self.joinedReserves = []
-            if __dev__:
-                pass
             if len(battle.suits) == 0:
                 hpPercent = 100
             else:

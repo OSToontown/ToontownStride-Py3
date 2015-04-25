@@ -126,12 +126,8 @@ class DistributedDoorEntity(DistributedDoorEntityBase.DistributedDoorEntityBase,
 
         self.accept('exit%s' % (self.getName(),), self.exitTrigger)
         self.acceptAvatar()
-        if __dev__:
-            self.initWantDoors()
 
     def takedown(self):
-        if __dev__:
-            self.shutdownWantDoors()
         self.ignoreAll()
         if self.track is not None:
             self.track.finish()
@@ -447,22 +443,3 @@ class DistributedDoorEntity(DistributedDoorEntityBase.DistributedDoorEntityBase,
         self.doorRight.unstash()
         self.doorLeft.setPos(Vec3(0.0))
         self.doorRight.setPos(Vec3(0.0))
-
-
-    if __dev__:
-        def initWantDoors(self):
-            self.accept('wantDoorsChanged', self.onWantDoorsChanged)
-            self.onWantDoorsChanged()
-
-        def shutdownWantDoors(self):
-            self.ignore('wantDoorsChanged')
-
-        def onWantDoorsChanged(self):
-            if self.level.levelMgrEntity.wantDoors:
-                self.getNodePath().unstash()
-            else:
-                self.getNodePath().stash()
-
-        def attribChanged(self, attrib, value):
-            self.takedown()
-            self.setup()

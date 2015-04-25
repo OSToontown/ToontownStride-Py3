@@ -637,10 +637,7 @@ class OTPClientRepository(ClientRepositoryBase):
         def doneWait(task, self = self):
             self.loginFSM.request('waitForShardList')
 
-        if __dev__:
-            delay = 0.0
-        else:
-            delay = 6.5 + random.random() * 2.0
+        delay = 6.5 + random.random() * 2.0
         taskMgr.doMethodLater(delay, doneWait, self.noShardsWaitTaskName)
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
@@ -832,7 +829,7 @@ class OTPClientRepository(ClientRepositoryBase):
 
     @report(types=['args'], dConfigParam='teleport')
     def detectLeaks(self, okTasks = None, okEvents = None):
-        if not __dev__ or configIsToday('allow-unclean-exit'):
+        if not True:
             return
         leakedTasks = self.detectLeakedTasks(okTasks)
         leakedEvents = self.detectLeakedEvents(okEvents)
@@ -1085,10 +1082,6 @@ class OTPClientRepository(ClientRepositoryBase):
             self.gotTimeSync()
         else:
             DistributedSmoothNode.globalActivateSmoothing(1, 0)
-            h = HashVal()
-            hashPrcVariables(h)
-            pyc = HashVal()
-            self.timeManager.d_setSignature(self.userSignature, h.asBin(), pyc.asBin())
             if self.timeManager.synchronize('startup'):
                 self.accept('gotTimeSync', self.gotTimeSync)
                 self.waitForDatabaseTimeout(requestName='uberZoneInterest-timeSync')
@@ -1353,7 +1346,7 @@ class OTPClientRepository(ClientRepositoryBase):
         OTPClientRepository.notify.debug('waiting for database timeout %s at %s' % (requestName, globalClock.getFrameTime()))
         self.cleanupWaitingForDatabase()
         globalClock.tick()
-        taskMgr.doMethodLater((OTPGlobals.DatabaseDialogTimeout + extraTimeout) * choice(__dev__, 10, 1), self.__showWaitingForDatabase, 'waitingForDatabase', extraArgs=[requestName])
+        taskMgr.doMethodLater((OTPGlobals.DatabaseDialogTimeout + extraTimeout) * choice(0, 10, 1), self.__showWaitingForDatabase, 'waitingForDatabase', extraArgs=[requestName])
 
     def cleanupWaitingForDatabase(self):
         if self.waitingForDatabase:

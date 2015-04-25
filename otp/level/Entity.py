@@ -85,17 +85,3 @@ class Entity(DirectObject):
 
     def setAttribInit(self, attrib, value):
         self.__dict__[attrib] = value
-
-    if __dev__:
-
-        def handleAttribChange(self, attrib, value):
-            setter = self.privGetSetter(attrib)
-            if setter is not None:
-                setter(value)
-            else:
-                self.__dict__[attrib] = value
-                self.attribChanged(attrib, value)
-            return
-
-        def attribChanged(self, attrib, value):
-            pass

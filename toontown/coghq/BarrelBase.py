@@ -29,30 +29,3 @@ class BarrelBase:
             else:
                 self._gagTrack = self.gagTrack
         return self._gagTrack
-
-    if __dev__:
-
-        def setRewardPerGrab(self, rewardPerGrab):
-            if hasattr(self, '_reward'):
-                del self._reward
-            self.rewardPerGrab = rewardPerGrab
-
-        def setRewardPerGrabMax(self, rewardPerGrabMax):
-            if hasattr(self, '_reward'):
-                del self._reward
-            self.rewardPerGrabMax = rewardPerGrabMax
-
-        def setGagLevel(self, gagLevel):
-            if hasattr(self, '_gagLevel'):
-                del self._gagLevel
-            self.gagLevel = gagLevel
-
-        def setGagLevelMax(self, gagLevelMax):
-            if hasattr(self, '_gagLevel'):
-                del self._gagLevel
-            self.gagLevelMax = gagLevelMax
-
-        def setGagTrack(self, gagTrack):
-            if hasattr(self, '_gagTrack'):
-                del self._gagTrack
-            self.gagTrack = gagTrack

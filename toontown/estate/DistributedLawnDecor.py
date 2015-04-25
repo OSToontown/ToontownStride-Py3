@@ -94,11 +94,6 @@ class DistributedLawnDecor(DistributedNode.DistributedNode, NodePath, ShadowCast
         if not self.rotateNode:
             self.rotateNode = self.plantPath.attachNewNode('rotate')
         self.model = None
-        if __dev__:
-            self.model = loader.loadModel(self.defaultModel)
-            self.model.setScale(0.4, 0.4, 0.1)
-            self.model.reparentTo(self.rotateNode)
-        return
 
     def setupShadow(self):
         self.shadowJoint = self.rotateNode.attachNewNode('shadow')

@@ -13,10 +13,6 @@ from toontown.nametag.NametagGlobals import *
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase.ToontownGlobals import *
 
-
-if __dev__:
-    from otp.level import EditorGlobals
-
 def getMintRoomReadyPostName(doId):
     return 'mintRoomReady-%s' % doId
 
@@ -68,19 +64,12 @@ class DistributedMintRoom(DistributedLevel.DistributedLevel, MintRoomBase.MintRo
         DistributedLevel.DistributedLevel.levelAnnounceGenerate(self)
         specModule = MintRoomSpecs.getMintRoomSpecModule(self.roomId)
         roomSpec = LevelSpec.LevelSpec(specModule)
-        if __dev__:
-            typeReg = self.getEntityTypeReg()
-            roomSpec.setEntityTypeReg(typeReg)
         DistributedLevel.DistributedLevel.initializeLevel(self, roomSpec)
 
     def getReadyPostName(self):
         return getMintRoomReadyPostName(self.doId)
 
     def privGotSpec(self, levelSpec):
-        if __dev__:
-            if not levelSpec.hasEntityTypeReg():
-                typeReg = self.getEntityTypeReg()
-                levelSpec.setEntityTypeReg(typeReg)
         DistributedLevel.DistributedLevel.privGotSpec(self, levelSpec)
         MintRoom.MintRoom.enter(self)
         self.acceptOnce('leavingMint', self.announceLeaving)
@@ -132,20 +121,14 @@ class DistributedMintRoom(DistributedLevel.DistributedLevel, MintRoomBase.MintRo
         pass
 
     def getParentTokenForEntity(self, entId):
-        if __dev__:
-            pass
         return 1000000 * self.roomNum + entId
 
     def enterLtNotPresent(self):
         MintRoom.MintRoom.enterLtNotPresent(self)
-        if __dev__:
-            bboard.removeIfEqual(EditorGlobals.EditTargetPostName, self)
         self.ignore('f2')
 
     def enterLtPresent(self):
         MintRoom.MintRoom.enterLtPresent(self)
-        if __dev__:
-            bboard.post(EditorGlobals.EditTargetPostName, self)
         if self.mint is not None:
             self.mint.currentRoomName = MintRoomSpecs.CashbotMintRoomId2RoomName[self.roomId]
 

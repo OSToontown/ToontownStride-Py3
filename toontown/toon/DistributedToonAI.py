@@ -2579,12 +2579,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         if self.isPlayerControlled():
             DistributedPlayerAI.DistributedPlayerAI.decrementPopulation(self)
 
-    if __dev__:
-
-        def _logGarbage(self):
-            if self.isPlayerControlled():
-                DistributedPlayerAI.DistributedPlayerAI._logGarbage(self)
-
     def reqSCResistance(self, msgIndex, nearbyPlayers):
         self.d_setSCResistance(msgIndex, nearbyPlayers)
 
@@ -3756,8 +3750,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def logMessage(self, message):
         avId = self.air.getAvatarIdFromSender()
-        if __dev__:
-            print 'CLIENT LOG MESSAGE %s %s' % (avId, message)
         try:
             self.air.writeServerEvent('clientLog', avId, message)
         except:
@@ -3798,10 +3790,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
                 newInvites += 1
             elif invite.status == PartyGlobals.InviteStatus.ReadButNotReplied:
                 readButNotRepliedInvites += 1
-            if __dev__:
-                partyInfo = self.getOnePartyInvitedTo(invite.partyId)
-                if not partyInfo:
-                    self.notify.error('party info not found in partiesInvtedTo, partyId = %s' % str(invite.partyId))
 
         if newInvites:
             self.setInviteMailNotify(ToontownGlobals.NewItems)

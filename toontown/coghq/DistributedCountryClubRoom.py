@@ -11,8 +11,6 @@ import CountryClubRoomSpecs
 from otp.level import LevelSpec, LevelConstants
 from toontown.toonbase import TTLocalizer
 from toontown.nametag.NametagGlobals import *
-if __dev__:
-    from otp.level import EditorGlobals
 
 def getCountryClubRoomReadyPostName(doId):
     return 'countryClubRoomReady-%s' % doId
@@ -65,19 +63,12 @@ class DistributedCountryClubRoom(DistributedLevel.DistributedLevel, CountryClubR
         DistributedLevel.DistributedLevel.levelAnnounceGenerate(self)
         specModule = CountryClubRoomSpecs.getCountryClubRoomSpecModule(self.roomId)
         roomSpec = LevelSpec.LevelSpec(specModule)
-        if __dev__:
-            typeReg = self.getCountryClubEntityTypeReg()
-            roomSpec.setEntityTypeReg(typeReg)
         DistributedLevel.DistributedLevel.initializeLevel(self, roomSpec)
 
     def getReadyPostName(self):
         return getCountryClubRoomReadyPostName(self.doId)
 
     def privGotSpec(self, levelSpec):
-        if __dev__:
-            if not levelSpec.hasEntityTypeReg():
-                typeReg = self.getCountryClubEntityTypeReg()
-                levelSpec.setEntityTypeReg(typeReg)
         DistributedLevel.DistributedLevel.privGotSpec(self, levelSpec)
         base.localAvatar.setH(-90)
         CountryClubRoom.CountryClubRoom.enter(self)
@@ -130,20 +121,14 @@ class DistributedCountryClubRoom(DistributedLevel.DistributedLevel, CountryClubR
         pass
 
     def getParentTokenForEntity(self, entId):
-        if __dev__:
-            pass
         return 1000000 * self.roomNum + entId
 
     def enterLtNotPresent(self):
         CountryClubRoom.CountryClubRoom.enterLtNotPresent(self)
-        if __dev__:
-            bboard.removeIfEqual(EditorGlobals.EditTargetPostName, self)
         self.ignore('f2')
 
     def enterLtPresent(self):
         CountryClubRoom.CountryClubRoom.enterLtPresent(self)
-        if __dev__:
-            bboard.post(EditorGlobals.EditTargetPostName, self)
         if self.countryClub is not None:
             self.countryClub.currentRoomName = CountryClubRoomSpecs.BossbotCountryClubRoomId2RoomName[self.roomId]
 

@@ -13,8 +13,6 @@ from otp.level import LevelConstants
 from toontown.toonbase import TTLocalizer
 from toontown.coghq import FactoryCameraViews
 from direct.distributed.DistributedObject import DistributedObject
-if __dev__:
-    from otp.level import EditorGlobals
 
 class DistributedLawOffice(DistributedObject, LawOfficeBase.LawOfficeBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLawOffice')

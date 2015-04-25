@@ -25,18 +25,9 @@ class PetBrain(DirectObject.DirectObject):
         self.avAwareness = {}
         self.lastInteractTime = {}
         self.nextAwarenessIndex = 0
-        if __dev__:
-            self.pscPrior = PStatCollector('App:Show code:petThink:UpdatePriorities')
-            self.pscAware = PStatCollector('App:Show code:petThink:ShuffleAwareness')
-            self.pscResc = PStatCollector('App:Show code:petThink:Reschedule')
-        return
 
     def destroy(self):
         taskMgr.remove(self.getTeleportTaskName())
-        if __dev__:
-            del self.pscPrior
-            del self.pscAware
-            del self.pscResc
         self.stop()
         self.goalMgr.destroy()
         self.chaseNode.removeNode()
@@ -123,19 +114,11 @@ class PetBrain(DirectObject.DirectObject):
 
     def _think(self, task = None):
         if not self.inMovie:
-            if __dev__:
-                self.pscPrior.start()
             self._updatePriorities()
-            if __dev__:
-                self.pscPrior.stop()
-            if __dev__:
-                self.pscAware.start()
             if len(self.nearbyAvs) > PetConstants.MaxAvatarAwareness:
                 self.nextAwarenessIndex %= len(self.nearbyAvs)
                 self._considerBecomeAwareOf(self.nearbyAvs.keys()[self.nextAwarenessIndex])
                 self.nextAwarenessIndex += 1
-            if __dev__:
-                self.pscAware.stop()
             curT = globalClock.getFrameTime()
             tSinceLastLonelinessUpdate = curT - self.tLastLonelinessUpdate
             if tSinceLastLonelinessUpdate >= PetConstants.LonelinessUpdatePeriod:
@@ -146,11 +129,7 @@ class PetBrain(DirectObject.DirectObject):
                     self.pet.lerpMood('loneliness', max(-1.0, dt * -.003 * numLookers))
                     if numLookers > 5:
                         self.pet.lerpMood('excitement', min(1.0, dt * 0.001 * numLookers))
-        if __dev__:
-            self.pscResc.start()
         taskMgr.doMethodLater(simbase.petThinkPeriod, self._think, self.getThinkTaskName())
-        if __dev__:
-            self.pscResc.stop()
         return Task.done
 
     def _updatePriorities(self):

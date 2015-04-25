@@ -11,8 +11,6 @@ import StageRoomSpecs
 from otp.level import LevelSpec, LevelConstants
 from toontown.toonbase import TTLocalizer
 from toontown.nametag.NametagGlobals import *
-if __dev__:
-    from otp.level import EditorGlobals
 
 def getStageRoomReadyPostName(doId):
     return 'stageRoomReady-%s' % doId
@@ -65,19 +63,12 @@ class DistributedStageRoom(DistributedLevel.DistributedLevel, StageRoomBase.Stag
         DistributedLevel.DistributedLevel.levelAnnounceGenerate(self)
         specModule = StageRoomSpecs.getStageRoomSpecModule(self.roomId)
         roomSpec = LevelSpec.LevelSpec(specModule)
-        if __dev__:
-            typeReg = self.getEntityTypeReg()
-            roomSpec.setEntityTypeReg(typeReg)
         DistributedLevel.DistributedLevel.initializeLevel(self, roomSpec)
 
     def getReadyPostName(self):
         return getStageRoomReadyPostName(self.doId)
 
     def privGotSpec(self, levelSpec):
-        if __dev__:
-            if not levelSpec.hasEntityTypeReg():
-                typeReg = self.getEntityTypeReg()
-                levelSpec.setEntityTypeReg(typeReg)
         DistributedLevel.DistributedLevel.privGotSpec(self, levelSpec)
         StageRoom.StageRoom.enter(self)
         self.acceptOnce('leavingStage', self.announceLeaving)
@@ -129,20 +120,14 @@ class DistributedStageRoom(DistributedLevel.DistributedLevel, StageRoomBase.Stag
         pass
 
     def getParentTokenForEntity(self, entId):
-        if __dev__:
-            pass
         return 1000000 * self.roomNum + entId
 
     def enterLtNotPresent(self):
         StageRoom.StageRoom.enterLtNotPresent(self)
-        if __dev__:
-            bboard.removeIfEqual(EditorGlobals.EditTargetPostName, self)
         self.ignore('f2')
 
     def enterLtPresent(self):
         StageRoom.StageRoom.enterLtPresent(self)
-        if __dev__:
-            bboard.post(EditorGlobals.EditTargetPostName, self)
         if self.stage is not None:
             self.stage.currentRoomName = StageRoomSpecs.CashbotStageRoomId2RoomName[self.roomId]
 

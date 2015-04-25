@@ -17,7 +17,6 @@ import random
 
 class DistributedLevel(DistributedObject.DistributedObject, Level.Level):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLevel')
-    WantVisibility = config.GetBool('level-visibility', 1)
     ColorZonesAllDOs = 0
     FloorCollPrefix = 'zoneFloor'
     OuchTaskName = 'ouchTask'
@@ -78,47 +77,12 @@ class DistributedLevel(DistributedObject.DistributedObject, Level.Level):
         pass
 
     def initializeLevel(self, levelSpec):
-        if __dev__:
-            self.candidateSpec = levelSpec
-            self.sendUpdate('requestCurrentLevelSpec', [levelSpec.stringHash(), levelSpec.entTypeReg.getHashStr()])
-        else:
-            self.privGotSpec(levelSpec)
-
-    if __dev__:
-
-        def reportModelSpecSyncError(self, msg):
-            DistributedLevel.notify.error('%s\n\nyour spec does not match the level model\nuse SpecUtil.updateSpec, then restart your AI and client' % msg)
-
-        def setSpecDeny(self, reason):
-            DistributedLevel.notify.error(reason)
-
-        def setSpecSenderDoId(self, doId):
-            DistributedLevel.notify.debug('setSpecSenderDoId: %s' % doId)
-            blobSender = base.cr.doId2do[doId]
-
-            def setSpecBlob(specBlob, blobSender = blobSender, self = self):
-                blobSender.sendAck()
-                from LevelSpec import LevelSpec
-                spec = eval(specBlob)
-                if spec is None:
-                    spec = self.candidateSpec
-                del self.candidateSpec
-                self.privGotSpec(spec)
-                return
-
-            if blobSender.isComplete():
-                setSpecBlob(blobSender.getBlob())
-            else:
-                evtName = self.uniqueName('specDone')
-                blobSender.setDoneEvent(evtName)
-                self.acceptOnce(evtName, setSpecBlob)
+        self.privGotSpec(levelSpec)
 
     def privGotSpec(self, levelSpec):
         Level.Level.initializeLevel(self, self.doId, levelSpec, self.scenarioIndex)
         modelZoneNums = self.zoneNums
         specZoneNums = self.zoneNum2zoneId.keys()
-        if not sameElements(modelZoneNums, specZoneNums):
-            self.reportModelSpecSyncError('model zone nums (%s) do not match spec zone nums (%s)' % (modelZoneNums, specZoneNums))
         self.initVisibility()
         self.placeLocalToon()
 
@@ -329,13 +293,7 @@ class DistributedLevel(DistributedObject.DistributedObject, Level.Level):
                     self.camEnterZone(zoneNum)
 
         self.accept('on-floor', handleCameraRayFloorCollision)
-        if not DistributedLevel.WantVisibility:
-            zoneNums = list(self.zoneNums)
-            zoneNums.remove(LevelConstants.UberZoneEntId)
-            self.forceSetZoneThisFrame()
-            self.setVisibility(zoneNums)
         taskMgr.add(self.visChangeTask, self.uniqueName(DistributedLevel.VisChangeTaskName), priority=49)
-        return
 
     def shutdownVisibility(self):
         taskMgr.remove(self.uniqueName(DistributedLevel.VisChangeTaskName))
@@ -373,8 +331,6 @@ class DistributedLevel(DistributedObject.DistributedObject, Level.Level):
 
     def enterZone(self, zoneNum):
         DistributedLevel.notify.debug('entering zone %s' % zoneNum)
-        if not DistributedLevel.WantVisibility:
-            return
         if zoneNum == self.curZoneNum:
             return
         if zoneNum not in self.zoneNumDict:
@@ -467,12 +423,6 @@ class DistributedLevel(DistributedObject.DistributedObject, Level.Level):
             self.updateVisibility()
             self.visChangedThisFrame = 0
         return Task.cont
-
-    if __dev__:
-
-        def setAttribChange(self, entId, attribName, valueStr, username):
-            value = eval(valueStr)
-            self.levelSpec.setAttribChange(entId, attribName, value, username)
 
     def spawnTitleText(self):
 

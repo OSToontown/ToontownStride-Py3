@@ -207,9 +207,3 @@ class DistributedDoorEntityAI(DistributedDoorEntityBase.DistributedDoorEntityBas
         if self.isUnlocked():
             if self.fsm.getCurrentState() is not self.states[2]:
                 self.fsm.request(self.states[1])
-
-    if __dev__:
-
-        def attribChanged(self, attrib, value):
-            self.takedown()
-            self.setup()

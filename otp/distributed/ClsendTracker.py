@@ -12,7 +12,7 @@ class ClsendTracker:
         if self.isPlayerControlled():
             if simbase.air.getTrackClsends():
                 if ClsendTracker.NumTrackersLoggingOverflow < ClsendTracker.MaxTrackersLoggingOverflow:
-                    self._logClsendOverflow = random.random() < 1.0 / config.GetFloat('clsend-log-one-av-in-every', choice(__dev__, 4, 50))
+                    self._logClsendOverflow = random.random() < 1.0 / config.GetFloat('clsend-log-one-av-in-every', choice(0, 4, 50))
         if self._logClsendOverflow:
             ClsendTracker.NumTrackersLoggingOverflow += 1
         self._clsendMsgs = []

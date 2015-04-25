@@ -13,10 +13,7 @@ class ChatInputTyped(DirectObject.DirectObject):
         self.whisperName = None
         self.whisperId = None
         self.mainEntry = mainEntry
-        wantHistory = 0
-        if __dev__:
-            wantHistory = 1
-        self.wantHistory = base.config.GetBool('want-chat-history', wantHistory)
+        self.wantHistory = base.config.GetBool('want-chat-history', 0)
         self.history = ['']
         self.historySize = base.config.GetInt('chat-history-size', 10)
         self.historyIndex = 0

@@ -61,10 +61,3 @@ class DistCogdoCraneGameAI(DistCogdoLevelGameAI, CogdoCraneGameBase):
     def _finishDoneDL(self, task):
         self.announceGameDone()
         return task.done
-
-    if __dev__:
-        
-        def _handleGameDurationChanged(self, gameDuration):
-            if hasattr(self, '_gameDoneEvent') and self._gameDoneEvent != None:
-                taskMgr.remove(self._gameDoneEvent)
-                self._scheduleGameDone()

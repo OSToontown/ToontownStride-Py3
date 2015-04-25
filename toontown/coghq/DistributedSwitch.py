@@ -122,9 +122,3 @@ class DistributedSwitch(DistributedSwitchBase.DistributedSwitchBase, BasicEntiti
             self.track.finish()
         self.track = None
         return
-
-    if __dev__:
-
-        def attribChanged(self, attrib, value):
-            self.takedown()
-            self.setup()

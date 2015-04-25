@@ -2,7 +2,6 @@ import CutScene
 import EntityCreatorBase
 import BasicEntities
 from direct.directnotify import DirectNotifyGlobal
-import EditMgr
 import EntrancePoint
 import LevelMgr
 import LogicGate
@@ -32,7 +31,6 @@ class EntityCreator(EntityCreatorBase.EntityCreatorBase):
          'ambientSound': AmbientSound.AmbientSound,
          'collisionSolid': CollisionSolidEntity.CollisionSolidEntity,
          'cutScene': CutScene.CutScene,
-         'editMgr': EditMgr.EditMgr,
          'entityGroup': nothing,
          'entrancePoint': EntrancePoint.EntrancePoint,
          'levelMgr': LevelMgr.LevelMgr,

@@ -16,8 +16,6 @@ from direct.controls.ControlManager import CollisionHandlerRayStart
 from otp.ai.MagicWordGlobal import *
 from toontown.nametag.NametagGlobals import *
 from toontown.chat.ChatGlobals import CFThought, CFTimeout
-if __dev__:
-    from otp.level import EditorGlobals
 
 class DistributedFactory(DistributedLevel.DistributedLevel, FactoryBase.FactoryBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedFactory')
@@ -41,8 +39,6 @@ class DistributedFactory(DistributedLevel.DistributedLevel, FactoryBase.FactoryB
         DistributedLevel.DistributedLevel.generate(self)
         self.factoryViews = FactoryCameraViews.FactoryCameraViews(self)
         base.localAvatar.chatMgr.chatInputSpeedChat.addFactoryMenu()
-        if __dev__:
-            bboard.post(EditorGlobals.EditTargetPostName, self)
         self.accept('SOSPanelEnter', self.handleSOSPanel)
 
     def delete(self):
@@ -51,8 +47,6 @@ class DistributedFactory(DistributedLevel.DistributedLevel, FactoryBase.FactoryB
         self.factoryViews.delete()
         del self.factoryViews
         self.ignore('SOSPanelEnter')
-        if __dev__:
-            bboard.removeIfEqual(EditorGlobals.EditTargetPostName, self)
         base.localAvatar.physControls.setCollisionRayHeight(CollisionHandlerRayStart)
 
     def setFactoryId(self, id):
@@ -76,16 +70,9 @@ class DistributedFactory(DistributedLevel.DistributedLevel, FactoryBase.FactoryB
         DistributedLevel.DistributedLevel.levelAnnounceGenerate(self)
         specModule = FactorySpecs.getFactorySpecModule(self.factoryId)
         factorySpec = LevelSpec.LevelSpec(specModule)
-        if __dev__:
-            typeReg = self.getEntityTypeReg()
-            factorySpec.setEntityTypeReg(typeReg)
         DistributedLevel.DistributedLevel.initializeLevel(self, factorySpec)
 
     def privGotSpec(self, levelSpec):
-        if __dev__:
-            if not levelSpec.hasEntityTypeReg():
-                typeReg = self.getEntityTypeReg()
-                levelSpec.setEntityTypeReg(typeReg)
         firstSetZoneDoneEvent = self.cr.getNextSetZoneDoneEvent()
 
         def handleFirstSetZoneDone():

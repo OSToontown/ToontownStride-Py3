@@ -26,20 +26,9 @@ class CollisionSolidEntity(BasicEntities.NodePathEntity):
         node.addSolid(solid)
         node.setCollideMask(OTPGlobals.WallBitmask)
         self.collNodePath = self.attachNewNode(node)
-        if __dev__:
-            if self.showSolid:
-                self.showCS()
-            else:
-                self.hideCS()
 
     def destroySolid(self):
         if self.collNodePath is not None:
             self.collNodePath.removeNode()
             self.collNodePath = None
         return
-
-    if __dev__:
-
-        def attribChanged(self, attrib, value):
-            print 'attribChanged'
-            self.initSolid()

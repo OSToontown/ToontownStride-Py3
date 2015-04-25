@@ -87,9 +87,3 @@ class BattleBlocker(BasicEntities.DistributedNodePathEntity):
         if callback:
             track.append(Func(callback))
         track.start()
-
-    if __dev__:
-
-        def attribChanged(self, *args):
-            self.unloadCollisionGeom()
-            self.initCollisionGeom()

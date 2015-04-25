@@ -31,10 +31,3 @@ class EntrancePoint(BasicEntities.NodePathEntity):
         if self.entranceId >= 0:
             if self.entranceId in self.level.entranceId2entity:
                 del self.level.entranceId2entity[self.entranceId]
-
-    if __dev__:
-
-        def attribChanged(self, *args):
-            BasicEntities.NodePathEntity.attribChanged(self, *args)
-            self.destroyEntrancePoint()
-            self.initEntrancePoint()

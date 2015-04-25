@@ -6,7 +6,6 @@ import time
 from direct.directnotify.DirectNotifyGlobal import *
 from direct.interval.IntervalManager import ivalMgr
 from direct.showbase import EventManager
-from direct.showbase import ExceptionVarDump
 from direct.showbase import PythonUtil
 from direct.showbase.BulletinBoardGlobal import *
 from direct.showbase.EventManagerGlobal import *
@@ -25,10 +24,6 @@ class AIBase:
     def __init__(self):
         self.config = getConfigShowbase()
         __builtins__['__dev__'] = self.config.GetBool('want-dev', 0)
-        logStackDump = (self.config.GetBool('log-stack-dump', (not __dev__)) or self.config.GetBool('ai-log-stack-dump', (not __dev__)))
-        uploadStackDump = self.config.GetBool('upload-stack-dump', 0)
-        if logStackDump or uploadStackDump:
-            ExceptionVarDump.install(logStackDump, uploadStackDump)
         if self.config.GetBool('use-vfs', 1):
             vfs = VirtualFileSystem.getGlobalPtr()
         else:
@@ -58,15 +53,11 @@ class AIBase:
         __builtins__['globalClock'] = globalClock
         __builtins__['vfs'] = vfs
         __builtins__['hidden'] = self.hidden
-        AIBase.notify.info('__dev__ == %s' % __dev__)
         PythonUtil.recordFunctorCreationStacks()
         self.wantStats = self.config.GetBool('want-pstats', 0)
         Task.TaskManager.pStatsTasks = self.config.GetBool('pstats-tasks', 0)
         taskMgr.resumeFunc = PStatClient.resumeAfterPause
-        defaultValue = 1
-        if __dev__:
-            defaultValue = 0
-        wantFakeTextures = self.config.GetBool('want-fake-textures-ai', defaultValue)
+        wantFakeTextures = self.config.GetBool('want-fake-textures-ai', 1)
         if wantFakeTextures:
             loadPrcFileData('aibase', 'textures-header-only 1')
         self.wantPets = self.config.GetBool('want-pets', 1)

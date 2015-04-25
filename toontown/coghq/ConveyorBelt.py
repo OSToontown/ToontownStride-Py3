@@ -99,9 +99,3 @@ class ConveyorBelt(BasicEntities.NodePathEntity):
             self.clearClipPlane()
             for tread in self.treads:
                 tread.parentingNode.clearClipPlane()
-
-    if __dev__:
-
-        def attribChanged(self, attrib, value):
-            self.destroyBelt()
-            self.initBelt()

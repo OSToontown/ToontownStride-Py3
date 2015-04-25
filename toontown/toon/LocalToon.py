@@ -181,18 +181,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
     def startGlitchKiller(self):
         if localAvatar.getZoneId() not in GlitchKillerZones:
             return
-        if __dev__:
-            self.glitchMessage = 'START GLITCH KILLER'
-            randChoice = random.randint(0, 3)
-            if randChoice == 0:
-                self.glitchMessage = 'START GLITCH KILLER'
-            elif randChoice == 1:
-                self.glitchMessage = 'GLITCH KILLER ENGAGED'
-            elif randChoice == 2:
-                self.glitchMessage = 'GLITCH KILLER GO!'
-            elif randChoice == 3:
-                self.glitchMessage = 'GLITCH IN YO FACE FOOL!'
-            self.notify.debug(self.glitchMessage)
         taskMgr.remove(self.uniqueName('glitchKiller'))
         taskMgr.add(self.glitchKiller, self.uniqueName('glitchKiller'))
         self.glitchOkay = 1
@@ -204,15 +192,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.tempGreySpacing = 0
 
     def stopGlitchKiller(self):
-        if __dev__ and hasattr(self, 'glitchMessage'):
-            if self.glitchMessage == 'START GLITCH KILLER':
-                self.notify.debug('STOP GLITCH KILLER')
-            elif self.glitchMessage == 'GLITCH KILLER ENGAGED':
-                self.notify.debug('GLITCH KILLER DISENGAGED')
-            elif self.glitchMessage == 'GLITCH KILLER GO!':
-                self.notify.debug('GLITCH KILLER NO GO!')
-            elif self.glitchMessage == 'GLITCH IN YO FACE FOOL!':
-                self.notify.debug('GLITCH OFF YO FACE FOOL!')
         taskMgr.remove(self.uniqueName('glitchKiller'))
         self.glitchOkay = 1
 

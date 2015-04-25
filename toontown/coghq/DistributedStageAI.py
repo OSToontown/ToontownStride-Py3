@@ -39,8 +39,6 @@ class DistributedStageAI(DistributedObjectAI.DistributedObjectAI):
         self.sendUpdate('setRoomDoIds', [
             roomDoIds])
         self.placeElevatorsOnMarkers()
-        if __dev__:
-            simbase.stage = self
         description = '%s|%s|%s' % (self.stageId, self.floorNum, self.avIds)
         for avId in self.avIds:
             self.air.writeServerEvent('stageEntered', avId, description)
@@ -57,9 +55,6 @@ class DistributedStageAI(DistributedObjectAI.DistributedObjectAI):
 
     def delete(self):
         self.notify.info('delete: %s' % self.doId)
-        if __dev__:
-            if hasattr(simbase, 'stage') and simbase.stage is self:
-                del simbase.stage
         self.air.deallocateZone(self.zoneId)
         if hasattr(self, 'elevatorList'):
             del self.elevatorList

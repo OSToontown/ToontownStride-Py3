@@ -45,10 +45,6 @@ class DistributedLawOfficeFloorAI(DistributedLevelAI.DistributedLevelAI, LawOffi
     def startFloor(self):
         self.notify.info('loading spec')
         self.factorySpec = LevelSpec.LevelSpec(self.spec)
-        if __dev__:
-            self.notify.info('creating entity type registry')
-            typeReg = self.getEntityTypeReg()
-            self.factorySpec.setEntityTypeReg(typeReg)
         self.notify.info('creating entities')
         DistributedLevelAI.DistributedLevelAI.generate(self, self.factorySpec)
         self.notify.info('creating cogs')

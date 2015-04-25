@@ -34,9 +34,3 @@ class FactoryLevelMgr(LevelMgr.LevelMgr):
 
     def setFarPlaneDistance(self, farPlaneDistance):
         base.camLens.setNearFar(ToontownGlobals.DefaultCameraNear, farPlaneDistance)
-
-    if __dev__:
-
-        def setWantDoors(self, wantDoors):
-            self.wantDoors = wantDoors
-            messenger.send('wantDoorsChanged')

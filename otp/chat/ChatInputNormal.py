@@ -15,10 +15,7 @@ class ChatInputNormal(DirectObject.DirectObject):
         self.whisperPos = Vec3(0.0, 0, 0.71)
         self.whisperAvatarName = None
         self.whisperAvatarId = None
-        wantHistory = 0
-        if __dev__:
-            wantHistory = 1
-        self.wantHistory = base.config.GetBool('want-chat-history', wantHistory)
+        self.wantHistory = base.config.GetBool('want-chat-history', 0)
         self.history = ['']
         self.historySize = base.config.GetInt('chat-history-size', 10)
         self.historyIndex = 0

@@ -135,8 +135,7 @@ class DistributedLaserFieldAI(BattleBlockerAI.BattleBlockerAI, NodePath, BasicEn
         stage = self.air.getDo(self.level.stageDoId)
         stage.resetPuzzelReward()
         self.healReady = 0
-        if not __dev__ and 1:
-            self.canButton = 0
+        self.canButton = 0
         self.sendUpdate('setActiveLF', [0])
         if not self.playedSound:
             self.sendUpdate('setSuccess', [0])

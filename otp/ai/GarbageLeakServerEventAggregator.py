@@ -37,7 +37,6 @@ class GarbageLeakServerEventAggregator(DirectObject):
             self._sentLeakDesc2num.setdefault(desc, 0)
             num = curNum - self._sentLeakDesc2num[desc]
             if num > 0:
-                base.cr.timeManager.d_setClientGarbageLeak(num, desc)
                 self._sentLeakDesc2num[desc] = curNum
 
         if task:

@@ -345,11 +345,3 @@ class DistributedStomper(DistributedCrusherEntity.DistributedCrusherEntity):
             if tPos[2] < zRange and tPos[2] > -zRange and tPos[0] < xRange and tPos[0] > -xRange and tPos[1] < yRange / 10.0 and tPos[1] > -yRange:
                 self.level.b_setOuch(self.damage, 'Squish')
                 base.localAvatar.setZ(self.getZ(render) + 0.025)
-
-    if __dev__:
-
-        def attribChanged(self, *args):
-            self.stopStomper()
-            self.unloadModel()
-            self.loadModel()
-            self.startStomper(0)

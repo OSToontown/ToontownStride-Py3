@@ -22,9 +22,3 @@ if config.GetBool('want-brutal-factory', True):
     import SellbotMegaCorpLegCogs
     FactorySpecModules[ToontownGlobals.SellbotMegaCorpInt] = SellbotMegaCorpLegSpec
     CogSpecModules[ToontownGlobals.SellbotMegaCorpInt] = SellbotMegaCorpLegCogs
-
-if __dev__:
-    import FactoryMockupSpec
-    import FactoryMockupCogs
-    FactorySpecModules[ToontownGlobals.MockupFactoryId] = FactoryMockupSpec
-    CogSpecModules[ToontownGlobals.MockupFactoryId] = FactoryMockupCogs

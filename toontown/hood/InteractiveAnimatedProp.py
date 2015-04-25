@@ -274,8 +274,6 @@ class InteractiveAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
             whichAnim = self.chooseIdleAnimToRun()
             if self.visId == localAvatar.zoneId:
                 self.notify.debug('whichAnim=%s' % whichAnim)
-                if __dev__:
-                    self.notify.info('whichAnim=%s %s' % (whichAnim, self.getOrigIdleAnimName(whichAnim)))
             self.lastPlayingAnimPhase = whichAnim
             self.curIval = self.createIdleAnimSequence(whichAnim)
             self.notify.debug('starting curIval of length %s' % self.curIval.getDuration())

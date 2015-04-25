@@ -93,8 +93,6 @@ class AIZoneDataObj:
         if not hasattr(self, '_nonCollidableParent'):
             render = self.getRender()
             self._nonCollidableParent = render.attachNewNode('nonCollidables')
-        if __dev__:
-            pass
         return self._nonCollidableParent
 
     def getParentMgr(self):

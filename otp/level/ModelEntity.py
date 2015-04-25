@@ -35,11 +35,7 @@ class ModelEntity(BasicEntities.NodePathEntity):
         if self.model:
             self.model.reparentTo(self)
             if self.collisionsOnly:
-                if __dev__:
-                    self.model.setTransparency(1)
-                    self.model.setColorScale(1, 1, 1, 0.1)
-                else:
-                    self.model.hide()
+                self.model.hide()
             else:
                 self.model.show()
             if self.modelPath in ('phase_9/models/cogHQ/woodCrateB.bam', 'phase_9/models/cogHQ/metal_crateB.bam', 'phase_10/models/cashbotHQ/CBMetalCrate.bam', 'phase_10/models/cogHQ/CBMetalCrate2.bam', 'phase_10/models/cashbotHQ/CBWoodCrate.bam', 'phase_11/models/lawbotHQ/LB_metal_crate.bam', 'phase_11/models/lawbotHQ/LB_metal_crate2.bam'):

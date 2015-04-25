@@ -12,8 +12,6 @@ from otp.level import LevelSpec
 from otp.level import LevelConstants
 from toontown.toonbase import TTLocalizer
 from toontown.coghq import FactoryCameraViews
-if __dev__:
-    from otp.level import EditorGlobals
 
 class DistributedLawOfficeFloor(DistributedLevel.DistributedLevel, LawOfficeBase.LawOfficeBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLawOffice')
@@ -36,8 +34,6 @@ class DistributedLawOfficeFloor(DistributedLevel.DistributedLevel, LawOfficeBase
         DistributedLevel.DistributedLevel.generate(self)
         self.factoryViews = FactoryCameraViews.FactoryCameraViews(self)
         base.localAvatar.chatMgr.chatInputSpeedChat.addFactoryMenu()
-        if __dev__:
-            bboard.post(EditorGlobals.EditTargetPostName, self)
         self.accept('SOSPanelEnter', self.handleSOSPanel)
 
     def delete(self):
@@ -46,8 +42,6 @@ class DistributedLawOfficeFloor(DistributedLevel.DistributedLevel, LawOfficeBase
         self.factoryViews.delete()
         del self.factoryViews
         self.ignore('SOSPanelEnter')
-        if __dev__:
-            bboard.removeIfEqual(EditorGlobals.EditTargetPostName, self)
 
     def setLawOfficeId(self, id):
         LawOfficeBase.LawOfficeBase.setLawOfficeId(self, id)
@@ -70,16 +64,9 @@ class DistributedLawOfficeFloor(DistributedLevel.DistributedLevel, LawOfficeBase
         DistributedLevel.DistributedLevel.levelAnnounceGenerate(self)
         specModule = FactorySpecs.getFactorySpecModule(self.lawOfficeId)
         factorySpec = LevelSpec.LevelSpec(specModule)
-        if __dev__:
-            typeReg = self.getEntityTypeReg()
-            factorySpec.setEntityTypeReg(typeReg)
         DistributedLevel.DistributedLevel.initializeLevel(self, factorySpec)
 
     def privGotSpec(self, levelSpec):
-        if __dev__:
-            if not levelSpec.hasEntityTypeReg():
-                typeReg = self.getEntityTypeReg()
-                levelSpec.setEntityTypeReg(typeReg)
         firstSetZoneDoneEvent = self.cr.getNextSetZoneDoneEvent()
 
         def handleFirstSetZoneDone():

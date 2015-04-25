@@ -41,8 +41,6 @@ class DistributedCountryClubAI(DistributedObjectAI.DistributedObjectAI):
         self.sendUpdate('setRoomDoIds', [
             roomDoIds])
         self.placeElevatorsOnMarkers()
-        if __dev__:
-            simbase.countryClub = self
         description = '%s|%s|%s' % (self.countryClubId, self.floorNum, self.avIds)
         for avId in self.avIds:
             self.air.writeServerEvent('countryClubEntered', avId, description)
@@ -58,9 +56,6 @@ class DistributedCountryClubAI(DistributedObjectAI.DistributedObjectAI):
 
     def delete(self):
         self.notify.info('delete: %s' % self.doId)
-        if __dev__:
-            if hasattr(simbase, 'countryClub') and simbase.countryClub is self:
-                del simbase.countryClub
         del self.rooms
         del self.layout
         del self.battleExpAggreg

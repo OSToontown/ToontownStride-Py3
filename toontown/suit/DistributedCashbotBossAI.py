@@ -46,8 +46,6 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
 
     def generate(self):
         DistributedBossCogAI.DistributedBossCogAI.generate(self)
-        if __dev__:
-            self.scene.reparentTo(self.getRender())
 
     def getHoodId(self):
         return ToontownGlobals.CashbotHQ

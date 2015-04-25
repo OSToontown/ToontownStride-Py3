@@ -108,9 +108,3 @@ class DistributedSwitchAI(DistributedSwitchBase.DistributedSwitchBase, Distribut
             self.doLaterTask.remove()
             self.doLaterTask = None
         return
-
-    if __dev__:
-
-        def attribChanged(self, attrib, value):
-            self.takedown()
-            self.setup()

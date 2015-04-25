@@ -11,14 +11,6 @@ GlobalEntities = {
         'farPlaneDistance': 1500,
         'modelFilename': 'phase_10/models/lawbotHQ/LawbotCourtroom3',
         'wantDoors': 1 },
-    1001: {
-        'type': 'editMgr',
-        'name': 'EditMgr',
-        'parentEntId': 0,
-        'insertEntity': None,
-        'removeEntity': None,
-        'requestNewEntity': None,
-        'requestSave': None },
     0: {
         'type': 'zone',
         'name': 'UberZone',

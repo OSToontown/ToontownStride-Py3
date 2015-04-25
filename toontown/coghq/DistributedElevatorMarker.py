@@ -44,10 +44,6 @@ class DistributedElevatorMarker(BasicEntities.DistributedNodePathEntity):
     def loadModel(self):
         self.rotateNode = self.attachNewNode('rotate')
         self.model = None
-        if __dev__:
-            self.model = loader.loadModel(self.elevatorMarkerModels[self.modelPath])
-            self.model.reparentTo(self.rotateNode)
-        return
 
     def unloadModel(self):
         if self.model:

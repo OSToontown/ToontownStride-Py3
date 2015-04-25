@@ -15,8 +15,6 @@ from toontown.toonbase import TTLocalizer
 from toontown.distributed import DelayDelete
 from toontown.distributed.DelayDeletable import DelayDeletable
 import random
-if __dev__:
-    import pdb
 BeanColors = (VBase4(1.0, 0.2, 0.2, 1.0),
  VBase4(0.2, 1.0, 0.2, 1.0),
  VBase4(0.2, 0.2, 1.0, 1.0),

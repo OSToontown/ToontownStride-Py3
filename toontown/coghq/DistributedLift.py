@@ -200,10 +200,3 @@ class DistributedLift(BasicEntities.DistributedNodePathEntity):
 
     def exitWaiting(self):
         pass
-
-    if __dev__:
-
-        def attribChanged(self, *args):
-            BasicEntities.DistributedNodePathEntity.attribChanged(self, *args)
-            self.destroyPlatform()
-            self.initPlatform()

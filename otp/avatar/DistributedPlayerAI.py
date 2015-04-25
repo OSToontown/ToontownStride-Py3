@@ -21,12 +21,6 @@ class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.Pl
         self.DISLid = 0
         self.adminAccess = 0
 
-    if __dev__:
-
-        def generate(self):
-            self._sentExitServerEvent = False
-            DistributedAvatarAI.DistributedAvatarAI.generate(self)
-
     def announceGenerate(self):
         DistributedAvatarAI.DistributedAvatarAI.announceGenerate(self)
         ClsendTracker.announceGenerate(self)
@@ -40,16 +34,10 @@ class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.Pl
 
     def _sendExitServerEvent(self):
         self.air.writeServerEvent('avatarExit', self.doId, '')
-        if __dev__:
-            self._sentExitServerEvent = True
 
     def delete(self):
-        if __dev__:
-            del self._sentExitServerEvent
         self._doPlayerExit()
         ClsendTracker.destroy(self)
-        if __dev__:
-            GarbageReport.checkForGarbageLeaks()
         DistributedAvatarAI.DistributedAvatarAI.delete(self)
 
     def isPlayerControlled(self):

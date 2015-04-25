@@ -20,12 +20,9 @@ class PathEntity(BasicEntities.NodePathEntity):
         pathTableId = GoonPathData.taskZoneId2pathId[self.level.getTaskZoneId()]
         if self.pathIndex in GoonPathData.Paths[pathTableId]:
             self.path = GoonPathData.Paths[pathTableId][self.pathIndex]
-            if __dev__:
-                messenger.send(self.getChangeEvent())
         else:
             PathEntity.notify.warning('invalid pathIndex: %s' % pathIndex)
             self.path = None
-        return
 
     def makePathTrack(self, node, velocity, name, turnTime = 1, lookAroundNode = None):
         track = Sequence(name=name)
@@ -46,12 +43,3 @@ class PathEntity(BasicEntities.NodePathEntity):
             track.append(LerpPosInterval(node, duration=duration, pos=endPoint, startPos=startPoint))
 
         return track
-
-    if __dev__:
-
-        def getChangeEvent(self):
-            return self.getUniqueName('pathChanged')
-
-        def setPathScale(self, pathScale):
-            self.pathScale = pathScale
-            self.setPathIndex(self.pathIndex)

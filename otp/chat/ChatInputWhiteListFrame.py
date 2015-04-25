@@ -45,10 +45,7 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
         self.chatEntry = DirectEntry(**entryOptions)
         self.whisperId = None
         self.chatEntry.bind(DGG.OVERFLOW, self.chatOverflow)
-        wantHistory = 0
-        if __dev__:
-            wantHistory = 1
-        self.wantHistory = base.config.GetBool('want-chat-history', wantHistory)
+        self.wantHistory = base.config.GetBool('want-chat-history', 0)
         self.history = ['']
         self.historySize = base.config.GetInt('chat-history-size', 10)
         self.historyIndex = 0

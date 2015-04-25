@@ -41,9 +41,3 @@ class PlatformEntity(BasicEntities.NodePathEntity):
         if hasattr(self, 'platform'):
             self.platform.destroy()
             del self.platform
-
-    if __dev__:
-
-        def attribChanged(self, *args):
-            self.stop()
-            self.start()

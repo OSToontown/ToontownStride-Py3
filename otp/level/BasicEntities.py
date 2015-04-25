@@ -9,16 +9,13 @@ class NodePathEntityBase:
         if doReparent:
             self.callSetters('parentEntId')
         self.getNodePath().setName('%s-%s' % (self.__class__.__name__, self.entId))
-        if __dev__:
-            self.getNodePath().setTag('entity', '1')
 
     def setParentEntId(self, parentEntId):
         self.parentEntId = parentEntId
         self.level.requestReparent(self, self.parentEntId)
 
     def destroy(self):
-        if __dev__:
-            self.getNodePath().clearTag('entity')
+        pass
 
 
 class NodePathAttribs(NodePathEntityBase):

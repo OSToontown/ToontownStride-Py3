@@ -31,10 +31,6 @@ class DistributedMintRoomAI(DistributedLevelAI.DistributedLevelAI, MintRoomBase.
         self.notify.debug('loading spec')
         specModule = MintRoomSpecs.getMintRoomSpecModule(self.roomId)
         roomSpec = LevelSpec.LevelSpec(specModule)
-        if __dev__:
-            self.notify.debug('creating entity type registry')
-            typeReg = self.getMintEntityTypeReg()
-            roomSpec.setEntityTypeReg(typeReg)
         self.notify.debug('creating entities')
         DistributedLevelAI.DistributedLevelAI.generate(self, roomSpec)
         self.notify.debug('creating cogs')

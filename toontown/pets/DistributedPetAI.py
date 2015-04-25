@@ -72,8 +72,6 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         self.gaitFSM.enterInitialState()
         self.unstickFSM = ClassicFSM.ClassicFSM('unstickFSM', [State.State('off', self.unstickEnterOff, self.unstickExitOff), State.State('on', self.unstickEnterOn, self.unstickExitOn)], 'off', 'off')
         self.unstickFSM.enterInitialState()
-        if __dev__:
-            self.pscMoveResc = PStatCollector('App:Show code:petMove:Reschedule')
         return
 
     def setInactive(self):
@@ -132,8 +130,6 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         broadcastZones = list2dict([newZoneId, oldZoneId])
         self.estateOwnerId = simbase.air.estateManager.getOwnerFromZone(newZoneId)
         if self.estateOwnerId:
-            if __dev__:
-                pass
             self.inEstate = 1
             self.estateZones = simbase.air.estateManager.getEstateZones(self.estateOwnerId)
         else:
@@ -438,10 +434,6 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         self.d_setTrickAptitudes(aptitudes)
 
     def d_setTrickAptitudes(self, aptitudes):
-        if __dev__:
-            for aptitude in aptitudes:
-                pass
-
         while len(aptitudes) < len(PetTricks.Tricks) - 1:
             aptitudes.append(0.0)
 
@@ -610,8 +602,6 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
             if self.unstickFSM:
                 self.unstickFSM.requestFinalState()
             del self.unstickFSM
-        if __dev__:
-            del self.pscMoveResc
         PetLookerAI.PetLookerAI.destroy(self)
         self.ignoreAll()
         self._hasCleanedUp = True
@@ -629,8 +619,6 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
 
         del self.gaitFSM
         del self.unstickFSM
-        if __dev__:
-            del self.pscMoveResc
         PetLookerAI.PetLookerAI.destroy(self)
         self.doNotDeallocateChannel = True
         self.zoneId = None
@@ -662,11 +650,7 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
             self.stopPosHprBroadcast()
             self.requestDelete()
             return Task.done
-        if __dev__:
-            self.pscMoveResc.start()
         taskMgr.doMethodLater(simbase.petMovePeriod, self.move, self.getMoveTaskName())
-        if __dev__:
-            self.pscMoveResc.stop()
         return Task.done
 
     def startPosHprBroadcast(self):

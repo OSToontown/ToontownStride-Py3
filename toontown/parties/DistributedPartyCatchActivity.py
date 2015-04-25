@@ -118,25 +118,6 @@ class DistributedPartyCatchActivity(DistributedPartyActivity, DistributedPartyCa
         self.notify.info('load()')
         DistributedPartyCatchActivity.notify.debug('PartyCatch: load')
         self.activityFSM = CatchActivityFSM(self)
-        if __dev__:
-            for o in xrange(3):
-                print {0: 'SPOTS PER PLAYER',
-                 1: 'DROPS PER MINUTE PER SPOT DURING NORMAL DROP PERIOD',
-                 2: 'DROPS PER MINUTE PER PLAYER DURING NORMAL DROP PERIOD'}[o]
-                for i in xrange(1, self.FallRateCap_Players + 10):
-                    self.defineConstants(forceNumPlayers=i)
-                    numDropLocations = self.DropRows * self.DropColumns
-                    numDropsPerMin = 60.0 / self.DropPeriod
-                    if o == 0:
-                        spotsPerPlayer = numDropLocations / float(i)
-                        print '%2d PLAYERS: %s' % (i, spotsPerPlayer)
-                    elif o == 1:
-                        numDropsPerMinPerSpot = numDropsPerMin / numDropLocations
-                        print '%2d PLAYERS: %s' % (i, numDropsPerMinPerSpot)
-                    elif i > 0:
-                        numDropsPerMinPerPlayer = numDropsPerMin / i
-                        print '%2d PLAYERS: %s' % (i, numDropsPerMinPerPlayer)
-
         self.defineConstants()
         self.treesAndFence = loader.loadModel('phase_13/models/parties/%s' % arenaModel)
         self.treesAndFence.setScale(0.9)

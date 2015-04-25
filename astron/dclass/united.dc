@@ -67,20 +67,6 @@ dclass TimeManager : DistributedObject {
   serverTime(uint8 context, int32 timestap, uint32 timeOfDay);
   setDisconnectReason(uint8) airecv clsend;
   setExceptionInfo(string(0-1024)) airecv clsend;
-  setSignature(string(0-1024) signature, char prcHash[16],
-               char pycHash[16]) airecv clsend;
-  setFrameRate(uint16/10 fps, uint16/1000 deviation, uint16 numAvatars,
-               string(0-256) locationCode, uint32/10 timeInLocation,
-               uint32/10 timeInGame, string(0-256) gameOptionsCode,
-               uint16 vendorId, uint16 deviceId, uint32/10 processMemory,
-               uint32/10 pageFileUsage, uint32/10 physicalMemory,
-               uint32 pageFaultCount, OSInfo, CPUSpeed, uint16 cpuCores,
-               uint16 logicalCPUs, string(0-256) apiName) airecv clsend;
-  checkForGarbageLeaks(bool) airecv clsend;
-  setNumAIGarbageLeaks(uint32);
-  setClientGarbageLeak(uint32, string(0-1024)) airecv clsend;
-  checkAvOnDistrict(uint32 context, DoId avatar) clsend airecv;
-  checkAvOnDistrictResult(uint32 context, DoId av, bool isOnDistrict);
 };
 
 dclass DistributedDirectory : DistributedObject {
@@ -447,7 +433,6 @@ from toontown.coghq import DistributedStageRoom/AI
 from toontown.coghq import DistributedStageBattle/AI
 from toontown.pets.PetDCImports/AI import *
 from toontown.pets import DistributedPetProxy/AI
-from toontown.coghq.InGameEditorDCImports/AI import *
 from toontown.distributed import ToontownDistrict/AI
 from toontown.distributed import ToontownDistrictStats/AI
 from toontown.racing import DistributedVehicle/AI
@@ -1714,10 +1699,6 @@ dclass AccountDate : DistributedObject {
   requestDateResult(string);
 };
 
-dclass DistributedMyTest : DistributedObject {
-  setMyTest(uint16) broadcast;
-};
-
 dclass DistributedTreasure : DistributedObject {
   setTreasureType(uint16) required broadcast ram;
   setPosition(int16/10, int16/10, int16/10) required broadcast ram;
@@ -1732,14 +1713,6 @@ dclass DistributedCashbotBossTreasure : DistributedTreasure {
   setStyle(uint16) required broadcast ram;
 };
 
-dclass DistributedLargeBlobSender : DistributedObject {
-  setMode(uint8) required broadcast ram;
-  setTargetAvId(uint32) required broadcast ram;
-  setChunk(blob);
-  setFilename(string);
-  setAck() airecv clsend;
-};
-
 dclass DistributedLevel : DistributedObject {
   setLevelZoneId(uint32) required broadcast ram;
   setAvIds(uint32[]) required broadcast ram;
@@ -1747,10 +1720,6 @@ dclass DistributedLevel : DistributedObject {
   setZoneIds(uint32[]) broadcast ram;
   setStartTimestamp(int32) broadcast ram;
   setOuch(uint8) airecv clsend;
-  requestCurrentLevelSpec(string, string) airecv clsend;
-  setSpecDeny(blob);
-  setSpecSenderDoId(uint32);
-  setAttribChange(uint32, blob, blob, blob) broadcast;
 };
 
 dclass DistributedEntity : DistributedObject {
@@ -2362,17 +2331,6 @@ dclass DistributedStageRoom : DistributedLevel {
   setSuits(uint32[], uint32[]) broadcast ram;
   setBossConfronted(uint32) broadcast ram;
   setDefeated() broadcast ram;
-};
-
-dclass DistributedInGameEditor : DistributedObject {
-  setEditorAvId(uint32) required broadcast ram;
-  setEditUsername(blob) required broadcast ram;
-  setLevelDoId(uint32) required broadcast ram;
-  requestCurrentLevelSpec() airecv clsend;
-  setSpecSenderDoId(uint32);
-  setEdit(uint32, blob, blob, blob) airecv clsend;
-  setAttribChange(uint32, blob, blob, blob);
-  setFinished() airecv clsend;
 };
 
 dclass DistributedLift : DistributedEntity {

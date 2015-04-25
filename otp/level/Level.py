@@ -17,8 +17,6 @@ class Level:
         self.levelSpec = levelSpec
         self.scenarioIndex = scenarioIndex
         self.levelSpec.setScenario(self.scenarioIndex)
-        if __dev__:
-            self.levelSpec.setLevel(self)
         self.entranceId2entity = {}
         self.entId2createCallbacks = {}
         self.createdEntIds = []
@@ -219,43 +217,3 @@ class Level:
 
     def handleVisChange(self):
         pass
-
-    if __dev__:
-
-        def getAttribChangeEventName(self):
-            return 'attribChange-%s' % self.levelId
-
-        def getInsertEntityEventName(self):
-            return 'insertEntity-%s' % self.levelId
-
-        def getRemoveEntityEventName(self):
-            return 'removeEntity-%s' % self.levelId
-
-        def handleAttribChange(self, entId, attrib, value, username = None):
-            entity = self.getEntity(entId)
-            if entity is not None:
-                entity.handleAttribChange(attrib, value)
-            messenger.send(self.getAttribChangeEventName(), [entId,
-             attrib,
-             value,
-             username])
-            return
-
-        def setEntityCreatorUsername(self, entId, editUsername):
-            pass
-
-        def handleEntityInsert(self, entId):
-            self.entType2ids[self.getEntityType(entId)].append(entId)
-            self.createEntity(entId)
-            messenger.send(self.getInsertEntityEventName(), [entId])
-
-        def handleEntityRemove(self, entId):
-            messenger.send(self.getRemoveEntityEventName(), [entId])
-            if entId in self.createdEntIds:
-                entity = self.getEntity(entId)
-                entity.destroy()
-            elif entId in self.nothingEntIds:
-                del self.nothingEntIds[entId]
-            elif entId in self.nonlocalEntIds:
-                del self.nonlocalEntIds[entId]
-            self.entType2ids[self.getEntityType(entId)].remove(entId)

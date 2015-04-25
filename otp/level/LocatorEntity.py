@@ -26,8 +26,3 @@ class LocatorEntity(Entity.Entity, NodePath):
                 self.reparentTo(hidden)
             else:
                 self.reparentTo(parent)
-
-    if __dev__:
-
-        def attribChanged(self, attrib, value):
-            self.doReparent()

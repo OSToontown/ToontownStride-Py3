@@ -1,12 +1,11 @@
 from direct.directnotify.DirectNotifyGlobal import directNotify
 from otp.level.DistributedLevel import DistributedLevel
 from otp.level import LevelConstants
-from otp.level import EditorGlobals
+from otp.level.LevelSpec import LevelSpec
 from toontown.cogdominium.DistCogdoGame import DistCogdoGame
-from toontown.cogdominium.CogdoLevelGameBase import CogdoLevelGameBase
 from toontown.cogdominium.CogdoEntityCreator import CogdoEntityCreator
 
-class DistCogdoLevelGame(CogdoLevelGameBase, DistCogdoGame, DistributedLevel):
+class DistCogdoLevelGame(DistCogdoGame, DistributedLevel):
     notify = directNotify.newCategory('DistCogdoLevelGame')
 
     def __init__(self, cr):
@@ -16,14 +15,10 @@ class DistCogdoLevelGame(CogdoLevelGameBase, DistCogdoGame, DistributedLevel):
     def generate(self):
         DistributedLevel.generate(self)
         DistCogdoGame.generate(self)
-        if __dev__:
-            bboard.post(EditorGlobals.EditTargetPostName, self)
 
     def announceGenerate(self):
         DistributedLevel.announceGenerate(self)
         DistCogdoGame.announceGenerate(self)
-        if __dev__:
-            self.startHandleEdits()
 
     def createEntityCreator(self):
         return CogdoEntityCreator(level=self)
@@ -31,18 +26,7 @@ class DistCogdoLevelGame(CogdoLevelGameBase, DistCogdoGame, DistributedLevel):
     def levelAnnounceGenerate(self):
         self.notify.debug('levelAnnounceGenerate')
         DistributedLevel.levelAnnounceGenerate(self)
-        spec = self.getLevelSpec()
-        if __dev__:
-            typeReg = self.getEntityTypeReg()
-            spec.setEntityTypeReg(typeReg)
-        DistributedLevel.initializeLevel(self, spec)
-
-    def privGotSpec(self, levelSpec):
-        if __dev__:
-            if not levelSpec.hasEntityTypeReg():
-                typeReg = self.getEntityTypeReg()
-                levelSpec.setEntityTypeReg(typeReg)
-        DistributedLevel.privGotSpec(self, levelSpec)
+        DistributedLevel.initializeLevel(self, LevelSpec(self.getSpec()))
 
     def initVisibility(self):
         levelMgr = self.getEntity(LevelConstants.LevelMgrEntId)
@@ -53,13 +37,9 @@ class DistCogdoLevelGame(CogdoLevelGameBase, DistCogdoGame, DistributedLevel):
         DistributedLevel.placeLocalToon(self, moveLocalAvatar=False)
 
     def disable(self):
-        if __dev__:
-            self.stopHandleEdits()
         DistCogdoGame.disable(self)
         DistributedLevel.disable(self)
 
     def delete(self):
         DistCogdoGame.delete(self)
         DistributedLevel.delete(self)
-        if __dev__:
-            bboard.removeIfEqual(EditorGlobals.EditTargetPostName, self)

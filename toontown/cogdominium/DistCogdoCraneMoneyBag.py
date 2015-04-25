@@ -81,9 +81,3 @@ class DistCogdoCraneMoneyBag(DistCogdoCraneObject):
 
     def exitInitial(self):
         pass
-
-    if __dev__:
-
-        def _handleMoneyBagGrabHeightChanged(self, height):
-            grabPos = DistCogdoCraneMoneyBag.grabPos
-            DistCogdoCraneMoneyBag.grabPos = (grabPos[0], grabPos[1], height)

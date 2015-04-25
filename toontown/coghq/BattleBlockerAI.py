@@ -64,17 +64,3 @@ class BattleBlockerAI(DistributedEntityAI.DistributedEntityAI):
 
     def d_setBattleFinished(self):
         self.sendUpdate('setBattleFinished', [])
-
-    if __dev__:
-
-        def attribChanged(self, *args):
-            self.suitIds = []
-            suits = self.level.planner.battleCellId2suits.get(self.cellId)
-            if suits:
-                for suit in suits:
-                    self.suitIds.append(suit.doId)
-
-            else:
-                self.notify.warning("Couldn't find battle cell id %d in battleCellId2suits" % self.cellId)
-            self.d_setSuits()
-            self.registerBlocker()

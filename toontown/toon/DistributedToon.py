@@ -2254,10 +2254,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
                 newInvites += 1
             elif invite.status == PartyGlobals.InviteStatus.ReadButNotReplied:
                 readButNotRepliedInvites += 1
-            if __dev__:
-                partyInfo = self.getOnePartyInvitedTo(invite.partyId)
-                if not partyInfo:
-                    self.notify.error('party info not found in partiesInvtedTo, partyId = %s' % str(invite.partyId))
 
         if newInvites:
             self.setInviteMailNotify(ToontownGlobals.NewItems)

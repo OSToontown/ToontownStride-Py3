@@ -29,15 +29,9 @@ class DistributedFactoryAI(DistributedLevelAI.DistributedLevelAI, FactoryBase.Fa
     def generate(self):
         self.notify.info('generate')
         self.notify.info('start factory %s %s creation, frame=%s' % (self.factoryId, self.doId, globalClock.getFrameCount()))
-        if __dev__:
-            simbase.factory = self
         self.notify.info('loading spec')
         specModule = FactorySpecs.getFactorySpecModule(self.factoryId)
         factorySpec = LevelSpec.LevelSpec(specModule)
-        if __dev__:
-            self.notify.info('creating entity type registry')
-            typeReg = self.getEntityTypeReg()
-            factorySpec.setEntityTypeReg(typeReg)
         self.notify.info('creating entities')
         DistributedLevelAI.DistributedLevelAI.generate(self, factorySpec)
         self.notify.info('creating cogs')
@@ -60,9 +54,6 @@ class DistributedFactoryAI(DistributedLevelAI.DistributedLevelAI, FactoryBase.Fa
 
     def delete(self):
         self.notify.info('delete: %s' % self.doId)
-        if __dev__:
-            if hasattr(simbase, 'factory') and simbase.factory is self:
-                del simbase.factory
         suits = self.suits
         for reserve in self.reserveSuits:
             suits.append(reserve[0])

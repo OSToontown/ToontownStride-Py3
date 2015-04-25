@@ -33,10 +33,6 @@ class DistributedCountryClubRoomAI(DistributedLevelAI.DistributedLevelAI, Countr
         self.notify.debug('loading spec')
         specModule = CountryClubRoomSpecs.getCountryClubRoomSpecModule(self.roomId)
         roomSpec = LevelSpec.LevelSpec(specModule)
-        if __dev__:
-            self.notify.debug('creating entity type registry')
-            typeReg = self.getCountryClubEntityTypeReg()
-            roomSpec.setEntityTypeReg(typeReg)
         self.notify.debug('creating entities')
         DistributedLevelAI.DistributedLevelAI.generate(self, roomSpec)
         self.notify.debug('creating cogs')

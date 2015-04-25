@@ -18,15 +18,6 @@ REJECT_BLOCKED_ROOM = 5
 REJECT_NOT_YET_AVAILABLE = 6
 REJECT_BOARDINGPARTY = 7
 MAX_GROUP_BOARDING_TIME = 6.0
-if __dev__:
-    try:
-        config = simbase.config
-    except:
-        config = base.config
-
-    elevatorCountdown = config.GetFloat('elevator-countdown', -1)
-    if elevatorCountdown != -1:
-        bboard.post('elevatorCountdown', elevatorCountdown)
 ElevatorData = {ELEVATOR_NORMAL: {'openTime': 2.0,
                    'closeTime': 2.0,
                    'width': 3.5,

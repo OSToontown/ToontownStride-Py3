@@ -14,11 +14,3 @@ class StageRoomBase:
 
     def getCogTrack(self):
         return self.cogTrack
-
-    if __dev__:
-
-        def getEntityTypeReg(self):
-            import FactoryEntityTypes
-            from otp.level import EntityTypeRegistry
-            typeReg = EntityTypeRegistry.EntityTypeRegistry(FactoryEntityTypes)
-            return typeReg

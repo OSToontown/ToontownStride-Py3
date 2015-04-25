@@ -45,9 +45,3 @@ class DistCogdoBoardroomGame(CogdoBoardroomGameBase, DistCogdoLevelGame):
 
     def timerExpired(self):
         pass
-
-    if __dev__:
-
-        def _handleTimerScaleChanged(self, timerScale):
-            if hasattr(self, 'timer'):
-                self.timer.setScale(timerScale)
