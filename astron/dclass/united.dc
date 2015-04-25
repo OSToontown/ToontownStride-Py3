@@ -50,18 +50,6 @@ dclass DistributedObject {
   broadcastMessage() broadcast;
 };
 
-struct OSInfo {
-  string name;
-  int16 platform;
-  int16 major;
-  int16 minor;
-};
-
-struct CPUSpeed {
-  int32/1000 maxSpeed;
-  int32/1000 currentSpeed;
-};
-
 dclass TimeManager : DistributedObject {
   requestServerTime(uint8 context) airecv clsend;
   serverTime(uint8 context, int32 timestap, uint32 timeOfDay);
