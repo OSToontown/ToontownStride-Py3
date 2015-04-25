@@ -5,11 +5,6 @@ from pandac.PandaModules import BitMask32, Vec4
 MapHotkeyOn = 'alt'
 MapHotkeyOff = 'alt-up'
 MapHotkey = 'alt'
-AccountDatabaseChannelId = 4008
-ToonDatabaseChannelId = 4021
-DoodleDatabaseChannelId = 4023
-DefaultDatabaseChannelId = AccountDatabaseChannelId
-DatabaseIdFromClassName = {'Account': AccountDatabaseChannelId}
 CogHQCameraFov = 60.0
 BossBattleCameraFov = 72.0
 MakeAToonCameraFov = 48.0
@@ -1573,22 +1568,6 @@ DG = 5
 BR = 6
 OZ = 7
 DL = 8
-gmMagicWordList = ['restock',
- 'restockUber',
- 'autoRestock',
- 'resistanceRestock',
- 'restockSummons',
- 'uberDrop',
- 'rich',
- 'maxBankMoney',
- 'toonUp',
- 'rod',
- 'cogPageFull',
- 'pinkSlips',
- 'Tickets',
- 'newSummons',
- 'who',
- 'who all']
 AnimPropTypes = Enum(('Unknown',
  'Hydrant',
  'Mailbox',
@@ -1650,9 +1629,7 @@ AV_TOUCH_CHECK_DIST_Z = 5.0
 AV_TOUCH_CHECK_TIMELIMIT_CL = 0.002
 AV_TOUCH_COUNT_LIMIT = 5
 AV_TOUCH_COUNT_TIME = 300
-GloveCost = 1
-
-# Buffs...
+GloveCost = 2000
 
 BMovementSpeed = 0
 BMovementSpeedMultiplier = 1.3

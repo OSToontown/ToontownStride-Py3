@@ -25,7 +25,6 @@ class OTPBase(ShowBase):
         self.slowCloseShard = self.config.GetBool('slow-close-shard', 0)
         self.slowCloseShardDelay = self.config.GetFloat('slow-close-shard-delay', 10.0)
         self.fillShardsToIdealPop = self.config.GetBool('fill-shards-to-ideal-pop', 1)
-        self.logPrivateInfo = self.config.GetBool('log-private-info', __dev__)
         self.wantDynamicShadows = 1
         self.stereoEnabled = False
         self.enviroDR = None
