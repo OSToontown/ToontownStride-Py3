@@ -1,6 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from direct.distributed.ClockDelta import globalClockDelta
+from otp.otpbase import OTPGlobals
 import time
 
 class TimeManagerAI(DistributedObjectAI):
@@ -14,7 +15,12 @@ class TimeManagerAI(DistributedObjectAI):
         self.sendUpdateToAvatarId(self.air.getAvatarIdFromSender(), 'serverTime', [context, globalClockDelta.getRealNetworkTime(bits=32), int(time.time())])
 
     def setDisconnectReason(self, reason):
-        self.avId2DcReason[self.air.getAvatarIdFromSender()] = reason
+        avId = self.air.getAvatarIdFromSender()
+        
+        if reason == OTPGlobals.DisconnectNone and avId in self.avId2DcReason:
+            del self.avId2DcReason[avId]
+        else:
+            self.avId2DcReason[avId] = reason
 
     def setExceptionInfo(self, exception):
         avId = self.air.getAvatarIdFromSender()
