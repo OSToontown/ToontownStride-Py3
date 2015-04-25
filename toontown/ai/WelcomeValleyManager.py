@@ -1,8 +1,6 @@
 from pandac.PandaModules import *
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownGlobals
-from direct.showbase import PythonUtil
 
 class WelcomeValleyManager(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('WelcomeValleyManager')
@@ -19,13 +17,11 @@ class WelcomeValleyManager(DistributedObject.DistributedObject):
         return
 
     def disable(self):
-        self.ignore(ToontownGlobals.SynchronizeHotkey)
         base.cr.welcomeValleyManager = None
         DistributedObject.DistributedObject.disable(self)
         return
 
     def delete(self):
-        self.ignore(ToontownGlobals.SynchronizeHotkey)
         base.cr.welcomeValleyManager = None
         DistributedObject.DistributedObject.delete(self)
         return

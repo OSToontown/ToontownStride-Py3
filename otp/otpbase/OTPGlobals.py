@@ -16,10 +16,6 @@ DefaultCameraFar = 800.0
 DefaultCameraNear = 1.0
 AICollisionPriority = 10
 AICollMovePriority = 8
-
-# As of right now, 200 friends is pretty insane, especially with the current CONSTANT db querying.
-# But since we told people that we are allowing "unlimited" friends, we instead can give them a
-# high amount.
 MaxFriends = 200
 MaxBackCatalog = 48
 FriendChat = 1
@@ -67,18 +63,12 @@ CEName2Id = {
 }
 BigToonScale = 1.5
 SmallToonScale = 0.5
-DisconnectUnknown = 0
+DisconnectNone = 0
 DisconnectBookExit = 1
 DisconnectCloseWindow = 2
 DisconnectPythonError = 3
 DisconnectSwitchShards = 4
 DisconnectGraphicsError = 5
-DisconnectReasons = {DisconnectUnknown: 'unknown',
- DisconnectBookExit: 'book exit',
- DisconnectCloseWindow: 'closed window',
- DisconnectPythonError: 'python error',
- DisconnectSwitchShards: 'switch shards',
- DisconnectGraphicsError: 'graphics error'}
 DatabaseDialogTimeout = 20.0
 DatabaseGiveupTimeout = 45.0
 WalkCutOff = 0.5
@@ -201,7 +191,6 @@ FriendsListHotkey = 'f7'
 StickerBookHotkey = 'f8'
 OptionsPageHotkey = 'escape'
 ScreenshotHotkey = 'f9'
-SynchronizeHotkey = 'shift-f6'
 QuestsHotkeyOn = 'end'
 QuestsHotkeyOff = 'end-up'
 InventoryHotkeyOn = 'home'

@@ -1,20 +1,13 @@
-import base64
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
 from direct.distributed.ClockDelta import *
-from direct.showbase import GarbageReport
 from direct.showbase import PythonUtil
 from direct.showbase.DirectObject import *
 from direct.task import Task
-import os
 from pandac.PandaModules import *
-import re
-import sys
-import time
-
 from otp.otpbase import OTPGlobals
 from toontown.chat.ChatGlobals import *
-
+import time
 
 class TimeManager(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('TimeManager')
@@ -26,10 +19,6 @@ class TimeManager(DistributedObject.DistributedObject):
         self.minWait = base.config.GetFloat('time-manager-min-wait', 10)
         self.maxUncertainty = base.config.GetFloat('time-manager-max-uncertainty', 1)
         self.maxAttempts = base.config.GetInt('time-manager-max-attempts', 5)
-        self.extraSkew = base.config.GetInt('time-manager-extra-skew', 0)
-        if self.extraSkew != 0:
-            self.notify.info('Simulating clock skew of %0.3f s' % self.extraSkew)
-        self.talkResult = 0
         self.thisContext = -1
         self.nextContext = 0
         self.attemptCount = 0
@@ -42,10 +31,10 @@ class TimeManager(DistributedObject.DistributedObject):
             self.cr.timeManager.delete()
         self.cr.timeManager = self
         DistributedObject.DistributedObject.generate(self)
-        self.accept(OTPGlobals.SynchronizeHotkey, self.handleHotkey)
         self.accept('clock_error', self.handleClockError)
         if self.updateFreq > 0:
             self.startTask()
+        self.setDisconnectReason(OTPGlobals.DisconnectNone)
         return
 
     def announceGenerate(self):
@@ -56,7 +45,6 @@ class TimeManager(DistributedObject.DistributedObject):
         return self._gotFirstTimeSync
 
     def disable(self):
-        self.ignore(OTPGlobals.SynchronizeHotkey)
         self.ignore('clock_error')
         self.stopTask()
         if self.cr.timeManager == self:
@@ -66,7 +54,6 @@ class TimeManager(DistributedObject.DistributedObject):
         return
 
     def delete(self):
-        self.ignore(OTPGlobals.SynchronizeHotkey)
         self.ignore('clock_error')
         self.stopTask()
         if self.cr.timeManager == self:
@@ -86,13 +73,6 @@ class TimeManager(DistributedObject.DistributedObject):
         taskMgr.doMethodLater(self.updateFreq, self.doUpdate, 'timeMgrTask')
         return Task.done
 
-    def handleHotkey(self):
-        self.lastAttempt = -self.minWait * 2
-        if self.synchronize('user hotkey'):
-            self.talkResult = 1
-        else:
-            base.localAvatar.setChatAbsolute('Too soon.', CFSpeech | CFTimeout)
-
     def handleClockError(self):
         self.synchronize('clock error')
 
@@ -101,7 +81,6 @@ class TimeManager(DistributedObject.DistributedObject):
         if now - self.lastAttempt < self.minWait:
             self.notify.debug('Not resyncing (too soon): %s' % description)
             return 0
-        self.talkResult = 0
         self.thisContext = self.nextContext
         self.attemptCount = 0
         self.nextContext = self.nextContext + 1 & 255
@@ -121,8 +100,8 @@ class TimeManager(DistributedObject.DistributedObject):
         self.attemptCount += 1
         self.notify.info('Clock sync roundtrip took %0.3f ms' % (elapsed * 1000.0))
         self.notify.info('AI time delta is %s from server delta' % PythonUtil.formatElapsedSeconds(aiTimeSkew))
-        average = (self.start + end) / 2.0 - self.extraSkew
-        uncertainty = (end - self.start) / 2.0 + abs(self.extraSkew)
+        average = (self.start + end) / 2.0
+        uncertainty = (end - self.start) / 2.0
         globalClockDelta.resynchronize(average, timestamp, uncertainty)
         self.notify.info('Local clock uncertainty +/- %.3f s' % globalClockDelta.getUncertainty())
         if globalClockDelta.getUncertainty() > self.maxUncertainty:
@@ -132,8 +111,6 @@ class TimeManager(DistributedObject.DistributedObject):
                 self.sendUpdate('requestServerTime', [self.thisContext])
                 return
             self.notify.info('Giving up on uncertainty requirement.')
-        if self.talkResult:
-            base.localAvatar.setChatAbsolute('latency %0.0f ms, sync \xc2\xb1%0.0f ms' % (elapsed * 1000.0, globalClockDelta.getUncertainty() * 1000.0), CFSpeech | CFTimeout)
         self._gotFirstTimeSync = True
         messenger.send('gotTimeSync')
 
@@ -142,7 +119,6 @@ class TimeManager(DistributedObject.DistributedObject):
             toontownTimeManager.updateLoginTimes(timeOfDay, int(time.time()), globalClock.getRealTime())
 
     def setDisconnectReason(self, disconnectCode):
-        self.notify.info('Client disconnect reason %s.' % disconnectCode)
         self.sendUpdate('setDisconnectReason', [disconnectCode])
 
     def setExceptionInfo(self):
