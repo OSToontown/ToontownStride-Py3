@@ -37,7 +37,7 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
 
     # --- GENERAL ---
 
-    @rpcmethod(accessLevel=SYSTEM_ADMINISTRATOR)
+    @rpcmethod(accessLevel=ADMINISTRATOR)
     def rpc_queryObject(self, doId):
         """
         Summary:
@@ -69,7 +69,7 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
 
         return result
 
-    @rpcmethod(accessLevel=SYSTEM_ADMINISTRATOR)
+    @rpcmethod(accessLevel=ADMINISTRATOR)
     def rpc_updateObject(self, doId, dclassName, newFields, oldFields=None):
         """
         Summary:
@@ -119,7 +119,7 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
 
         return result[0]
 
-    @rpcmethod(accessLevel=SYSTEM_ADMINISTRATOR)
+    @rpcmethod(accessLevel=ADMINISTRATOR)
     def rpc_setField(self, doId, dclassName, fieldName, args=[]):
         """
         Summary:
@@ -152,7 +152,7 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
 
     # --- MESSAGES ---
 
-    @rpcmethod(accessLevel=SYSTEM_ADMINISTRATOR)
+    @rpcmethod(accessLevel=ADMINISTRATOR)
     def rpc_messageChannel(self, channel, message):
         """
         Summary:
@@ -169,7 +169,7 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
             channel, 1000000, [message])
         self.air.send(datagram)
 
-    @rpcmethod(accessLevel=SYSTEM_ADMINISTRATOR)
+    @rpcmethod(accessLevel=ADMINISTRATOR)
     def rpc_messageAll(self, message):
         """
         Summary: Broadcasts a [message] to all clients.
@@ -179,7 +179,7 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
         """
         self.rpc_messageChannel(10, message)
 
-    @rpcmethod(accessLevel=SYSTEM_ADMINISTRATOR)
+    @rpcmethod(accessLevel=ADMINISTRATOR)
     def rpc_messageShard(self, shardId, message):
         """
         Summary:
@@ -254,7 +254,7 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
 
     # --- KICKS ---
 
-    @rpcmethod(accessLevel=SYSTEM_ADMINISTRATOR)
+    @rpcmethod(accessLevel=ADMINISTRATOR)
     def rpc_kickChannel(self, channel, code, reason):
         """
         Summary:
@@ -272,7 +272,7 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
         datagram.addString(reason)
         self.air.send(datagram)
 
-    @rpcmethod(accessLevel=SYSTEM_ADMINISTRATOR)
+    @rpcmethod(accessLevel=ADMINISTRATOR)
     def rpc_kickAll(self, code, reason):
         """
         Summary: Kicks all clients.
@@ -283,7 +283,7 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
         """
         self.rpc_kickChannel(10, code, reason)
 
-    @rpcmethod(accessLevel=SYSTEM_ADMINISTRATOR)
+    @rpcmethod(accessLevel=ADMINISTRATOR)
     def rpc_kickShard(self, shardId, code, reason):
         """
         Summary: Kicks all clients under the provided [shardId].

@@ -23,7 +23,6 @@ import sys
 import time
 import types
 
-from otp.ai.GarbageLeakServerEventAggregator import GarbageLeakServerEventAggregator
 from otp.avatar import Avatar
 from otp.avatar import DistributedAvatar
 from otp.avatar.DistributedPlayer import DistributedPlayer
@@ -1168,7 +1167,6 @@ class OTPClientRepository(ClientRepositoryBase):
         if self.music:
             self.music.stop()
             self.music = None
-        self.garbageLeakLogger = GarbageLeakServerEventAggregator(self)
         self.handler = self.handlePlayGame
         self.accept(self.gameDoneEvent, self.handleGameDone)
         base.transitions.noFade()
@@ -1208,8 +1206,6 @@ class OTPClientRepository(ClientRepositoryBase):
         self.playGame.exit()
         self.playGame.unload()
         self.ignore(self.gameDoneEvent)
-        self.garbageLeakLogger.destroy()
-        del self.garbageLeakLogger
         return
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
