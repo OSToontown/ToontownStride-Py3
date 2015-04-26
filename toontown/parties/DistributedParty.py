@@ -567,7 +567,6 @@ class DistributedParty(DistributedObject.DistributedObject):
         self.doSpawnTitleText(partyText)
 
     def doSpawnTitleText(self, text):
-        return
         self.titleColor = (1.0, 0.5, 0.4, 1.0)
         self.titleText = OnscreenText.OnscreenText(text, fg=self.titleColor, font=ToontownGlobals.getSignFont(), pos=(0, -0.5), scale=0.16, drawOrder=0, mayChange=1, wordwrap=16)
         self.titleText.setText(text)
@@ -575,7 +574,7 @@ class DistributedParty(DistributedObject.DistributedObject):
         self.titleText.setColor(Vec4(*self.titleColor))
         self.titleText.clearColorScale()
         self.titleText.setFg(self.titleColor)
-        seq = Sequence(Wait(0.1), Wait(6.0), self.titleText.colorScaleInterval(0.5, Vec4(1.0, 1.0, 1.0, 0.0)), Task(self.hideTitleText))
+        seq = Sequence(Wait(0.1), Wait(6.0), self.titleText.colorScaleInterval(0.5, Vec4(1.0, 1.0, 1.0, 0.0)), Func(self.hideTitleText))
         seq.start()
 
     def hideTitleText(self):
