@@ -322,7 +322,7 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
         if config.GetBool('want-anim-props', True):        
             if self.interactiveProp:
                 return self.interactiveProp
-            elif base.cr.playGame.hood:
+            elif base.cr.playGame.hood and hasattr(base.cr.playGame.hood, 'loader'):
                 loader = base.cr.playGame.hood.loader
             
                 if hasattr(loader, 'getInteractiveProp'):
