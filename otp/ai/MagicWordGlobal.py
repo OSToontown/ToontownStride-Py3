@@ -88,9 +88,9 @@ CATEGORY_MODERATOR = MagicWordCategory('Moderator', defaultAccess=300)
 CATEGORY_CREATIVE = MagicWordCategory('Creative', defaultAccess=400)
 CATEGORY_PROGRAMMER = MagicWordCategory('Programmer', defaultAccess=500)
 CATEGORY_ADMINISTRATOR = MagicWordCategory('Administrator', defaultAccess=600)
+CATEGORY_SYSTEM_ADMINISTRATOR = MagicWordCategory('System administrator', defaultAccess=700)
 
 MINIMUM_MAGICWORD_ACCESS = CATEGORY_COMMUNITY_MANAGER.defaultAccess
-
 
 class MagicWord:
     def __init__(self, name, func, types, access, doc):

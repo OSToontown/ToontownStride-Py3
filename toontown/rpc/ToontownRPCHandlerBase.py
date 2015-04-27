@@ -13,6 +13,8 @@ MODERATOR = 300
 ARTIST = 400
 PROGRAMMER = 500
 ADMINISTRATOR = 600
+SYSTEM_ADMINISTRATOR = 700
+
 
 class RPCMethod:
     def __init__(self, accessLevel=UNKNOWN):

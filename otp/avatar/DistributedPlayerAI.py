@@ -139,7 +139,7 @@ class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.Pl
         self.friendsList.append((friendId, friendCode))
 
 
-@magicWord(category=CATEGORY_ADMINISTRATOR, types=[str])
+@magicWord(category=CATEGORY_SYSTEM_ADMINISTRATOR, types=[str])
 def system(message):
     """
     Broadcast a <message> to the game server.
@@ -151,7 +151,7 @@ def system(message):
                                10, 1000000, [message])
     simbase.air.send(dg)
 
-@magicWord(category=CATEGORY_ADMINISTRATOR, types=[int])
+@magicWord(category=CATEGORY_SYSTEM_ADMINISTRATOR, types=[int])
 def maintenance(minutes):
     """
     Initiate the maintenance message sequence. It will last for the specified
@@ -187,7 +187,7 @@ def maintenance(minutes):
 
     countdown(minutes)
 
-@magicWord(category=CATEGORY_ADMINISTRATOR, types=[str, str, int])
+@magicWord(category=CATEGORY_SYSTEM_ADMINISTRATOR, types=[str, str, int])
 def accessLevel(accessLevel, storage='PERSISTENT', showGM=1):
     """
     Modify the target's access level.
@@ -209,7 +209,14 @@ def accessLevel(accessLevel, storage='PERSISTENT', showGM=1):
         'p': CATEGORY_PROGRAMMER.defaultAccess,
         'administrator': CATEGORY_ADMINISTRATOR.defaultAccess,
         'admin': CATEGORY_ADMINISTRATOR.defaultAccess,
-        'a': CATEGORY_ADMINISTRATOR.defaultAccess
+        'a': CATEGORY_ADMINISTRATOR.defaultAccess,
+        'systemadministrator': CATEGORY_SYSTEM_ADMINISTRATOR.defaultAccess,
+        'systemadmin': CATEGORY_SYSTEM_ADMINISTRATOR.defaultAccess,
+        'sysadministrator': CATEGORY_SYSTEM_ADMINISTRATOR.defaultAccess,
+        'sysadmin': CATEGORY_SYSTEM_ADMINISTRATOR.defaultAccess,
+        'system': CATEGORY_SYSTEM_ADMINISTRATOR.defaultAccess,
+        'sys': CATEGORY_SYSTEM_ADMINISTRATOR.defaultAccess,
+        's': CATEGORY_SYSTEM_ADMINISTRATOR.defaultAccess
     }
     try:
         accessLevel = int(accessLevel)
