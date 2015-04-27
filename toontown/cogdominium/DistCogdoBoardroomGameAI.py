@@ -3,4 +3,3 @@ from toontown.cogdominium.DistCogdoLevelGameAI import DistCogdoLevelGameAI
 
 class DistCogdoBoardroomGameAI(DistCogdoLevelGameAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistCogdoBoardroomGameAI")
-

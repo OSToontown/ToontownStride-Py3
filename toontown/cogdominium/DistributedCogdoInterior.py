@@ -30,7 +30,7 @@ PAINTING_DICT = {'s': 'tt_m_ara_crg_paintingMoverShaker',
  'l': 'tt_m_ara_crg_paintingLegalEagle',
  'm': 'tt_m_ara_crg_paintingMoverShaker',
  'c': 'tt_m_ara_crg_paintingMoverShaker'}
- 
+
 from toontown.nametag.NametagGlobals import *
 from toontown.chat.ChatGlobals import *
 
@@ -342,13 +342,12 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
                 suit.reparentTo(render)
                 if oldsuits.count(suit) == 0:
                     self.joiningReserves.append(suit)
-                    
+
                 if 'Elevator' in repr(self.fsm):
-                    # fix the pos
+                    # Fix the position.
                     pos, h = BattleBase.BattleBase.suitPoints[len(suitIds) - 1][suitIds.index(suitId)]
                     suit.setPos(pos)
                     suit.setH(h)
-                
             else:
                 self.notify.warning('setSuits() - no suit: %d' % suitId)
 
@@ -420,14 +419,14 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
     def __playElevator(self, ts, name, callback):
         SuitHs = []
         SuitPositions = []
-        
+
         if self.floorModel:
             self.floorModel.removeNode()
             self.floorModel = None
-            
+
         if self.cage:
             self.cage = None
-            
+
         if self.currentFloor == 0:
             SuitHs = self.BottomFloor_SuitHs
             SuitPositions = self.BottomFloor_SuitPositions
@@ -468,14 +467,13 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
             SuitHs = self.BossOffice_SuitHs
             SuitPositions = self.BossOffice_SuitPositions
             self.__makeShopOwnerNpc()
-
         else:
             if self._wantBarrelRoom:
                 self.barrelRoom.load()
                 self.barrelRoom.hide()
             SuitHs = self.Cubicle_SuitHs
             SuitPositions = self.Cubicle_SuitPositions
-            
+
         if self.floorModel:
             self.floorModel.reparentTo(render)
             if self.isBossFloor(self.currentFloor):
@@ -483,35 +481,32 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
                 elevIn = self.floorModel.find(CogdoGameConsts.PenthouseElevatorInPath).copyTo(render)
                 elevOut = self.floorModel.find(CogdoGameConsts.PenthouseElevatorOutPath)
                 frame = self.elevatorModelOut.find('**/frame')
-                
+
                 if not frame.isEmpty():
                     frame.hide()
-                    
+
                 frame = self.elevatorModelIn.find('**/frame')
-                
+
                 if not frame.isEmpty():
                     frame.hide()
-                    
+
                 self.elevatorModelOut.reparentTo(elevOut)
                 self.elevatorModelOut.setY(0)
-                
             else:
                 elevIn = self.floorModel.find('**/elevator-in')
                 elevOut = self.floorModel.find('**/elevator-out')
-                
         elif self._wantBarrelRoom and self.barrelRoom.isLoaded() and self.currentFloor == 2 and self.FOType == 'l': #i know this is really ugly
             elevIn = self.barrelRoom.model.find(CogdoBarrelRoomConsts.BarrelRoomElevatorInPath)
             elevOut = self.barrelRoom.model.find(CogdoBarrelRoomConsts.BarrelRoomElevatorOutPath)
             y = elevOut.getY(render)
             elevOut = elevOut.copyTo(render)
             elevOut.setY(render, y - 0.75)
-            
         else:
             floorModel = loader.loadModel('phase_7/models/modules/boss_suit_office')
             elevIn = floorModel.find('**/elevator-in').copyTo(render)
             elevOut = floorModel.find('**/elevator-out').copyTo(render)
             floorModel.removeNode()
-            
+
         self.elevIn = elevIn
         self.elevOut = elevOut
         self._haveEntranceElevator.set(True)
@@ -805,13 +800,13 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
         trackName = '__outroPenthouse-%d' % avatar.doId
         track = Parallel(name=trackName)
         base.cr.playGame.getPlace().fsm.request('stopped')
-        
+
         if self.FOType == "l":
             speech = TTLocalizer.CogdoExecutiveSuiteToonThankYouLawbot
             
         else:
             speech = TTLocalizer.CogdoExecutiveSuiteToonThankYou % self.SOSToonName
-        
+
         track.append(Sequence(Func(camera.wrtReparentTo, localAvatar),
                               Func(camera.setPos, 0, -9, 9),
                               Func(camera.lookAt, Point3(5, 15, 0)),

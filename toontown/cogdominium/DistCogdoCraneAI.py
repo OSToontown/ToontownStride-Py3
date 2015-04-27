@@ -18,4 +18,3 @@ class DistCogdoCraneAI(DistributedObjectAI):
 
     def setCablePos(self, todo0, todo1, todo2, todo3, todo4):
         pass
-

@@ -18,10 +18,10 @@ MAX_RESERVES = {
 def filterReviveChance(track, revive):
     if revive >= 0:
         return revive
-        
+
     return random.randint(config.GetInt('min-lt-vs', 0), config.GetInt('max-lt-vs', 2))
-    # implements difficulty 19 / LT
-    
+    # Implements difficulty 19 / LT.
+
 def getMaxReserves(track):
     return int(math.ceil(MAX_RESERVES[track]))
 
@@ -32,13 +32,12 @@ class SuitPlannerCogdoInteriorAI:
         self.zoneId = zoneId
         self.numFloors = layout.getNumFloors()
         difficulty = min(difficulty + 4, len(SuitBuildingGlobals.SuitBuildingInfo) - 1)
-        
         self.respectInvasions = 1
-        
+
         if isinstance(difficulty, types.StringType):
             self.notify.warning('difficulty is a string!')
             difficulty = int(difficulty)
-            
+
         self._genSuitInfos(numFloors, difficulty, track)
 
     def __genJoinChances(self, num):
@@ -57,28 +56,26 @@ class SuitPlannerCogdoInteriorAI:
             lvls = self.__genLevelList(difficulty, currFloor, numFloors)
             activeDicts = []
             numActive = random.randint(1, min(4, len(lvls)))
-            
+
             if currFloor + 1 == numFloors and len(lvls) > 1:
                 origBossSpot = len(lvls) - 1
-                
+
                 if numActive == 1:
                     newBossSpot = numActive - 1
-                    
                 else:
                     newBossSpot = numActive - 2
-                    
+
                 tmp = lvls[newBossSpot]
                 lvls[newBossSpot] = lvls[origBossSpot]
                 lvls[origBossSpot] = tmp
-                
+
             bldgInfo = SuitBuildingGlobals.SuitBuildingInfo[difficulty]
-            
+
             if len(bldgInfo) > SuitBuildingGlobals.SUIT_BLDG_INFO_REVIVES:
                 revives = bldgInfo[SuitBuildingGlobals.SUIT_BLDG_INFO_REVIVES][0]
-                
             else:
                 revives = 0
-                
+
             for currActive in range(numActive - 1, -1, -1):
                 level = lvls[currActive]
                 type = self.__genNormalSuitType(level)
@@ -172,18 +169,18 @@ class SuitPlannerCogdoInteriorAI:
 
         for floor, currInfo in enumerate(self.suitInfos):
             floor += 1
-                        
+
             actives = currInfo['activeSuits']
             reserves = currInfo['reserveSuits']
-            
+
             print ' Floor %d has %d active suits.' % (floor, len(actives))
             print ' Floor %d has %d reserve suits.' % (floor, len(reserves))
-            
+
             for idx, currActive in enumerate(actives):
                 type, track, level, revives = map(lambda x: currActive[x], ('type', 'track', 'level', 'revives'))
-                
+
                 print '-- Active suit %d is %s, %s and level %d and revives is %d' % (idx, type, track, level, revives)
-            
+
             for idx, currReserve in enumerate(reserves):
                 type, track, level, revives, res = map(lambda x: currReserve[x], ('type', 'track', 'level', 'revives', 'joinChance'))
                 print '- Reserve suit %d is %s, %s and level %d and JC = %d and revives is %d' % (idx, type, track, level, res, revives)

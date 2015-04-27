@@ -4,4 +4,3 @@ from otp.level.DistributedLevelAI import DistributedLevelAI
 
 class DistCogdoLevelGameAI(DistCogdoGameAI, DistributedLevelAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistCogdoLevelGameAI")
-
