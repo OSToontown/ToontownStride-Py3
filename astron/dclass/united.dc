@@ -3349,7 +3349,7 @@ dclass TTUFriendsManager : DistributedObjectGlobal {
 
   getPetDetails(uint32) clsend;
   petDetails(uint32, uint32, string, uint32, uint32, uint16/1000[], PetTrait[], int8[], uint32);
-  
+
   routeTeleportQuery(uint32 toId) clsend;
   teleportQuery(uint32 fromId);
 
@@ -3386,7 +3386,6 @@ dclass TTUFriendsManager : DistributedObjectGlobal {
   sleepAutoReply(uint32 toId) clsend;
   setSleepAutoReply(uint32 fromId);
 };
-
 
 dclass DistributedSillyMeterMgr : DistributedObject {
   setNumPhases(uint8) required broadcast ram;
