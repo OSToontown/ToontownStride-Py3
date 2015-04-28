@@ -27,6 +27,7 @@ class CogdoBarrelRoomIntro(CogdoGameMovie):
     def displayLine(self, text):
         self.notify.debug('displayLine')
         self._dialogueLabel.node().setText(text)
+        self._dialogueLabel.setPos(0.32, 0, -0.72)
         self.toonHead.reparentTo(aspect2d)
         self._toonDialogueSfx.play()
         self.toonHead.setClipPlane(self.clipPlane)

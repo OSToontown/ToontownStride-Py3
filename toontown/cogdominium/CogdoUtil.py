@@ -69,7 +69,7 @@ class CogdoGameMovie:
         textNode.setFont(ToontownGlobals.getToonFont())
         self._dialogueLabel = aspect2d.attachNewNode(textNode)
         self._dialogueLabel.setScale(0.06, 0.06, 0.06)
-        self._dialogueLabel.setPos(0.32, 0, -0.7325)
+        self._dialogueLabel.setPos(0.32, 0, -0.75)
         self._dialogueLabel.reparentTo(hidden)
 
     def unload(self):

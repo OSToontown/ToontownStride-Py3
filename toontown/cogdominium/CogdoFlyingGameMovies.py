@@ -23,6 +23,7 @@ class CogdoFlyingGameIntro(CogdoGameMovie):
 
     def displayLine(self, who, text):
         self._dialogueLabel.node().setText(text)
+        self._dialogueLabel.setPos(0.32, 0, -0.724)
         if who == 'toon':
             self.toonHead.reparentTo(aspect2d)
             self.cogHead.reparentTo(hidden)

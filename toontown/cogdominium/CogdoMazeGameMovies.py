@@ -126,7 +126,7 @@ class CogdoMazeGameIntro(CogdoGameMovie):
         def end():
             self._stopUpdateTask()
 
-        self._ival = Sequence(Func(start), Func(self.displayLine, 'cog', self._getRandomLine(dialogue[0])), showExitIval, Func(showWaterCooler), Func(self.displayLine, 'toon', self._getRandomLine(dialogue[1])), Wait(waitDuration), Func(showBoss), bossSuit.hprInterval(1.0, bossSuit.getHpr() + Point3(180, 0, 0), blendType='easeInOut'), Func(self.displayLine, 'cog', self._getRandomLine(dialogue[2])), Wait(waitDuration - 1.0), Func(end))
+        self._ival = Sequence(Func(start), Func(self.displayLine, 'toon', self._getRandomLine(dialogue[0])), showExitIval, Func(showWaterCooler), Func(self.displayLine, 'toon', self._getRandomLine(dialogue[1])), Wait(waitDuration), Func(showBoss), bossSuit.hprInterval(1.0, bossSuit.getHpr() + Point3(180, 0, 0), blendType='easeInOut'), Func(self.displayLine, 'toon', self._getRandomLine(dialogue[2])), Wait(waitDuration - 1.0), Func(end))
         self._startUpdateTask()
 
     def _setCamTarget(self, targetNP, distance, offset = Point3(0, 0, 0), angle = Point3(0, 0, 0)):
