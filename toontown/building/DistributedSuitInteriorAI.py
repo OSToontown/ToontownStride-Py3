@@ -319,9 +319,10 @@ class DistributedSuitInteriorAI(DistributedObjectAI.DistributedObjectAI):
                     self.suits.append(info[0])
                     self.activeSuits.append(info[0])
                     self.joinedReserves.append(info)
-                    continue
+
             for info in self.joinedReserves:
                 self.reserveSuits.remove(info)
+                
             if len(self.joinedReserves) > 0:
                 self.fsm.request('ReservesJoining')
                 self.d_setSuits()
