@@ -1090,6 +1090,7 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
 
     def __handleLocalToonBattleEvent(self, response):
         mode = response['mode']
+        print(response)
         noAttack = 0
         if mode == 'Attack':
             self.notify.debug('got an attack')
