@@ -24,7 +24,8 @@ class CogdoMemoGui(DirectFrame):
         DirectFrame.destroy(self)
 
     def posNextToLaffMeter(self):
-        self.setPos(-0.975, 0, -0.875)
+        self.reparentTo(base.a2dBottomLeft)
+        self.setPos(0.358, 0, 0.125)
 
     def _initModel(self, type='joke_card'):
         self._countLabel = DirectLabel(parent=self, relief=None, pos=(0.0625, 0, -0.025), scale=CogdoGameConsts.MemoGuiTextScale, text=str(0), text_fg=CogdoGameConsts.MemoGuiTextColor, text_shadow=(0.2, 0.2, 0.2, 1), text_align=TextNode.ALeft, text_font=ToontownGlobals.getToonFont())

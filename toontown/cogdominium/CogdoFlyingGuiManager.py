@@ -33,7 +33,7 @@ class CogdoFlyingGuiManager:
 
     def _initTimer(self):
         self._timer = ToontownTimer()
-        self._timer.reparentTo(self.root)
+        self._timer.hide()
         self._timer.posInTopRightCorner()
 
     def _initMessageDisplay(self):

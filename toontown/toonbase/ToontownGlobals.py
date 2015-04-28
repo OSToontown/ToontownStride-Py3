@@ -8,6 +8,7 @@ MapHotkey = 'alt'
 CogHQCameraFov = 60.0
 BossBattleCameraFov = 72.0
 MakeAToonCameraFov = 48.0
+CogdoFov = 56.9
 VPElevatorFov = 53.0
 CFOElevatorFov = 43.0
 CJElevatorFov = 59.0

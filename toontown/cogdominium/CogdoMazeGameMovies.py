@@ -87,6 +87,8 @@ class CogdoMazeGameIntro(CogdoGameMovie):
         d = SuitDNA.SuitDNA()
         d.newSuit(suitData['dnaName'])
         bossSuit.setDNA(d)
+        bossSuit.nametag.setNametag2d(None)
+        bossSuit.nametag.setNametag3d(None)
         bossSuit.setScale(suitData['scale'])
         bossSuit.loop('neutral')
         bossSuit.reparentTo(render)

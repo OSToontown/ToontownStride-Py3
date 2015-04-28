@@ -222,7 +222,7 @@ class DistributedCogdoInteriorAI(DistributedObjectAI, FSM.FSM):
 
         self.d_setState('Elevator')
         self.timer.stop()
-        self.timer.startCallback(BattleBase.ELEVATOR_T + ElevatorData[ELEVATOR_NORMAL]['openTime'] + BattleBase.SERVER_BUFFER_TIME, self.serverElevatorDone)
+        self.timer.startCallback(BattleBase.ELEVATOR_T + ElevatorData[ELEVATOR_FIELD]['openTime'], self.serverElevatorDone)
 
         if self.curFloor == self.battleFloor:
             self.planner.myPrint()
@@ -420,7 +420,7 @@ class DistributedCogdoInteriorAI(DistributedObjectAI, FSM.FSM):
 
     def enterReservesJoining(self):
         self.resetResponses()
-        self.timer.startCallback(ElevatorData[ELEVATOR_NORMAL]['openTime'] + SUIT_HOLD_ELEVATOR_TIME + BattleBase.SERVER_BUFFER_TIME, self.serverReserveJoinDone)
+        self.timer.startCallback(ElevatorData[ELEVATOR_FIELD]['openTime'] + SUIT_HOLD_ELEVATOR_TIME + BattleBase.SERVER_BUFFER_TIME, self.serverReserveJoinDone)
 
     def exitReservesJoining(self):
         self.timer.stop()

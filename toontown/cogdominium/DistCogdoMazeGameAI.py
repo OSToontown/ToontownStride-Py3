@@ -13,7 +13,7 @@ JOKE_TOON_UP = 5
 
 class DistCogdoMazeGameAI(DistCogdoGameAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistCogdoMazeGameAI")
-    delayIntro = BattleBase.ELEVATOR_T + ElevatorData[ELEVATOR_NORMAL]['openTime'] + BattleBase.SERVER_BUFFER_TIME
+    delayIntro = BattleBase.ELEVATOR_T + ElevatorData[ELEVATOR_FIELD]['openTime']
 
     def __init__(self, air):
         DistCogdoGameAI.__init__(self, air)

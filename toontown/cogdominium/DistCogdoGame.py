@@ -20,7 +20,7 @@ class DistCogdoGame(DistCogdoGameBase, DistributedObject):
         DistributedObject.__init__(self, cr)
         base.cogdoGame = self
         cr.cogdoGame = self
-        self._waitingStartLabel = DirectLabel(text=TTL.MinigameWaitingForOtherPlayers, text_fg=VBase4(1, 1, 1, 1), relief=None, pos=(-0.6, 0, -0.75), scale=0.075)
+        self._waitingStartLabel = DirectLabel(text=TTL.MinigameWaitingForOtherToons, text_fg=VBase4(1, 1, 1, 1), relief=None, pos=(-0.6, 0, -0.75), scale=0.075)
         self._waitingStartLabel.hide()
         self.loadFSM = ClassicFSM.ClassicFSM('DistCogdoGame.loaded', [State.State('NotLoaded', self.enterNotLoaded, self.exitNotLoaded, ['Loaded']), State.State('Loaded', self.enterLoaded, self.exitLoaded, ['NotLoaded'])], 'NotLoaded', 'NotLoaded')
         self.loadFSM.enterInitialState()
@@ -214,7 +214,7 @@ class DistCogdoGame(DistCogdoGameBase, DistributedObject):
         if interior:
             numToons = len(interior.getToonIds())
         if numToons > 1:
-            msg = TTL.MinigameWaitingForOtherPlayers
+            msg = TTL.MinigameWaitingForOtherToons
         else:
             msg = TTL.MinigamePleaseWait
         self._waitingStartLabel['text'] = msg

@@ -38,6 +38,7 @@ Expiration date, month and day are optional fields.
 If you for some reason are not familiar with arrays or lists, you
 only include the comma if there are multiple arguments.
 """
+
 class TTCodeRedemptionMgrAI(DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("TTCodeRedemptionMgrAI")
     codes = {
@@ -90,7 +91,7 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
             self.requestCodeRedeem(avId, av, codeInfo['items'])
         else:
             self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [1])
-        
+
     def requestCodeRedeem(self, avId, av, items):
         count = self.getMailboxCount(items)
 
@@ -101,7 +102,7 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
         for item in items:
             if item in av.onOrder:
                 continue
-            
+
             item.deliveryDate = int(time.time() / 60) + 0.01
             av.onOrder.append(item)
 

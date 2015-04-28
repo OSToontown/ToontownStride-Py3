@@ -33,7 +33,7 @@ class DistributedGolfCourse(DistributedObject.DistributedObject, FSM, DelayDelet
     def __init__(self, cr):
         DistributedObject.DistributedObject.__init__(self, base.cr)
         FSM.__init__(self, 'Golf_%s_FSM' % self.id)
-        self.waitingStartLabel = DirectLabel(text=TTLocalizer.MinigameWaitingForOtherPlayers, text_fg=VBase4(1, 1, 1, 1), relief=None, pos=(-0.6, 0, -0.75), scale=0.075)
+        self.waitingStartLabel = DirectLabel(text=TTLocalizer.MinigameWaitingForOtherToons, text_fg=VBase4(1, 1, 1, 1), relief=None, pos=(-0.6, 0, -0.75), scale=0.075)
         self.waitingStartLabel.hide()
         self.avIdList = []
         self.remoteAvIdList = []

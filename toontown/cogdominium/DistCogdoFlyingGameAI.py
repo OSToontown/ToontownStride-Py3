@@ -1,10 +1,13 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import *
+from toontown.battle import BattleBase
+from toontown.building.ElevatorConstants import *
 from toontown.cogdominium.DistCogdoGameAI import DistCogdoGameAI
 import CogdoFlyingGameGlobals as Globals
 
 class DistCogdoFlyingGameAI(DistCogdoGameAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistCogdoFlyingGameAI")
+    delayIntro = BattleBase.ELEVATOR_T + ElevatorData[ELEVATOR_FIELD]['openTime']
 
     def __init__(self, air):
         DistCogdoGameAI.__init__(self, air)

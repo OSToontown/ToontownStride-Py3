@@ -4,7 +4,7 @@ from direct.showbase.RandomNumGen import RandomNumGen
 from direct.interval.FunctionInterval import Wait
 from direct.interval.IntervalGlobal import Func
 from direct.interval.MetaInterval import Sequence, Parallel
-from toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer, ToontownGlobals
 import CogdoFlyingGameGlobals as Globals
 from CogdoFlyingLocalPlayer import CogdoFlyingLocalPlayer
 from CogdoGameAudioManager import CogdoGameAudioManager
@@ -123,6 +123,7 @@ class CogdoFlyingGame(DirectObject):
         self._movie.end()
         self._movie.unload()
         del self._movie
+        base.camLens.setMinFov(ToontownGlobals.CogdoFov/(4./3.))
         self.localPlayer.ready()
         self.level.update(0.0)
 

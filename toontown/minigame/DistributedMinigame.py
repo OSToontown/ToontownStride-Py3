@@ -26,7 +26,7 @@ class DistributedMinigame(DistributedObject.DistributedObject):
 
     def __init__(self, cr):
         DistributedObject.DistributedObject.__init__(self, cr)
-        self.waitingStartLabel = DirectLabel(text=TTLocalizer.MinigameWaitingForOtherPlayers, text_fg=VBase4(1, 1, 1, 1), relief=None, pos=(-0.6, 0, -0.75), scale=0.075)
+        self.waitingStartLabel = DirectLabel(text=TTLocalizer.MinigameWaitingForOtherToons, text_fg=VBase4(1, 1, 1, 1), relief=None, pos=(-0.6, 0, -0.75), scale=0.075)
         self.waitingStartLabel.hide()
         self.avIdList = []
         self.remoteAvIdList = []
@@ -348,7 +348,7 @@ class DistributedMinigame(DistributedObject.DistributedObject):
     def enterFrameworkWaitServerStart(self):
         self.notify.debug('BASE: enterFrameworkWaitServerStart')
         if self.numPlayers > 1:
-            msg = TTLocalizer.MinigameWaitingForOtherPlayers
+            msg = TTLocalizer.MinigameWaitingForOtherToons
         else:
             msg = TTLocalizer.MinigamePleaseWait
         self.waitingStartLabel['text'] = msg
