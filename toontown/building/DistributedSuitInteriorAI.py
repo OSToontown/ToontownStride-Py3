@@ -309,8 +309,10 @@ class DistributedSuitInteriorAI(DistributedObjectAI.DistributedObjectAI):
         totalMaxHp = 0
         for suit in self.suits:
             totalMaxHp += suit.maxHP
+
         for suit in deadSuits:
             self.activeSuits.remove(suit)
+
         if len(self.reserveSuits) > 0 and len(self.activeSuits) < 4:
             self.joinedReserves = []
             hpPercent = 100 - (totalHp / totalMaxHp) * 100.0
@@ -322,7 +324,7 @@ class DistributedSuitInteriorAI(DistributedObjectAI.DistributedObjectAI):
 
             for info in self.joinedReserves:
                 self.reserveSuits.remove(info)
-                
+
             if len(self.joinedReserves) > 0:
                 self.fsm.request('ReservesJoining')
                 self.d_setSuits()
