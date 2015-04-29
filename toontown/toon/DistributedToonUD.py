@@ -544,9 +544,6 @@ class DistributedToonUD(DistributedObjectUD):
     def flagAv(self, todo0, todo1, todo2):
         pass
 
-    def setAchievements(self, achievements):
-        pass
-
     def setRedeemedCodes(self, redeemedCodes):
         pass
 

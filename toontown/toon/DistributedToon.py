@@ -59,6 +59,7 @@ from toontown.speedchat import TTSCDecoders
 from toontown.suit import SuitDNA
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
+from toontown.battle import BattleParticles
 
 
 if base.wantKarts:
@@ -181,8 +182,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.gmNameTagEnabled = 0
         self.gmNameTagColor = 'whiteGM'
         self.gmNameTagString = ''
-        self.achievements = []
-        self.canEarnAchievements = False
         self.promotionStatus = [0, 0, 0, 0]
         self.buffs = []
         self.redeemedCodes = []
@@ -2581,10 +2580,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def setAnimalSound(self, index):
         self.animalSound = index
 
-    def setAchievements(self, achievements):
-        self.achievements = achievements
-        messenger.send(localAvatar.uniqueName('achievementsChange'))
-
     def setBuffs(self, buffs):
         self.buffs = buffs
         self.applyBuffs()
@@ -2681,3 +2676,17 @@ def blackCat():
     Ask the black cat manager to turn you into a cat.
     """
     base.cr.blackCatMgr.requestBlackCatTransformation()
+
+@magicWord(category=CATEGORY_COMMUNITY_MANAGER, types=[str])
+def showParticle(name):
+    """
+    Shows a particle.
+    """
+    
+    particle = BattleParticles.createParticleEffect(name)
+    
+    if particle:
+        particle.start(spellbook.getTarget())
+        return 'Successfully started particle!'
+    
+    return 'Particle %s does not exist.' % name
