@@ -9,4 +9,3 @@ class DistributedFlowerAI(DistributedPlantBaseAI):
 
     def setVariety(self, todo0):
         pass
-

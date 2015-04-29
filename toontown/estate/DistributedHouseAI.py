@@ -63,7 +63,6 @@ class DistributedHouseAI(DistributedObjectAI):
 
         self.sendUpdate('setHouseReady', [])
 
-
     def delete(self):
         self.door.requestDelete()
         self.interiorDoor.requestDelete()

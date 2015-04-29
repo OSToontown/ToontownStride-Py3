@@ -18,4 +18,3 @@ class DistributedPlantBaseAI(DistributedLawnDecorAI):
 
     def waterPlantDone(self):
         pass
-

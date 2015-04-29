@@ -16,22 +16,22 @@ class DistributedCannonAI(DistributedObjectAI):
         self.bumperPos = ToontownGlobals.PinballCannonBumperInitialPos
         self.active = 0
         self.avId = 0
-        
+
     def setEstateId(self, estateId):
         self.estateId = estateId
-        
+
     def getEstateId(self):
         return self.estateId
 
     def setTargetId(self, targetId):
         self.targetId = targetId
-        
+
     def getTargetId(self):
         return self.targetId
 
     def setPosHpr(self, x, y, z, h, p, r):
         self.posHpr = (x, y, z, h, p, r)
-    
+
     def getPosHpr(self):
         return self.posHpr
 
@@ -44,12 +44,11 @@ class DistributedCannonAI(DistributedObjectAI):
         av = self.air.doId2do.get(avId)
         if not av:
             return
-            
+
         if not self.avId:
             self.avId = avId
             self.d_setMovie(CannonGlobals.CANNON_MOVIE_LOAD)
             self.acceptOnce(self.air.getAvatarExitEvent(avId), self.__handleUnexpectedExit, extraArgs=[avId])
-            
         else:
             self.air.writeServerEvent('suspicious', avId, 'DistributedCannonAI.requestEnter cannon already occupied')
             self.notify.warning('requestEnter() - cannon already occupied')
@@ -83,7 +82,7 @@ class DistributedCannonAI(DistributedObjectAI):
 
         fireTime = CannonGameGlobals.FUSE_TIME
         self.sendUpdate('setCannonWillFire', [avId, fireTime, zRot, angle, globalClockDelta.getRealNetworkTime()])
-            
+
     def setFired(self):
         pass
 

@@ -100,7 +100,7 @@ class LoadHouseFSM(FSM):
     def enterOff(self):
         self.done = True
         self.callback(self.house)
-        
+
 class LoadPetFSM(FSM):
     def __init__(self, mgr, estate, toon, callback):
         FSM.__init__(self, 'LoadPetFSM')
@@ -109,7 +109,6 @@ class LoadPetFSM(FSM):
         self.toon = toon
         self.callback = callback
         self.pet = None
-
         self.done = False
 
     def start(self):
@@ -117,7 +116,6 @@ class LoadPetFSM(FSM):
         if not self.petId in self.mgr.air.doId2do:
             self.mgr.air.sendActivate(self.petId, self.mgr.air.districtId, self.estate.zoneId)
             self.acceptOnce('generate-%d' % self.petId, self.__generated)
-            
         else:
             self.__generated(self.mgr.air.doId2do[self.petId])
 
@@ -129,7 +127,7 @@ class LoadPetFSM(FSM):
     def enterOff(self):
         self.done = True
         self.callback(self.pet)
-        
+
 class LoadEstateFSM(FSM):
     def __init__(self, mgr, callback):
         FSM.__init__(self, 'LoadEstateFSM')
@@ -232,7 +230,7 @@ class LoadEstateFSM(FSM):
     def __gotEstate(self, estate):
         self.estate = estate
         self.estate.pets = []
-        
+
         self.estate.toons = self.toonIds
         self.estate.updateToons()
 
@@ -261,7 +259,7 @@ class LoadEstateFSM(FSM):
         # A houseFSM just finished! Let's see if all of them are done:
         if all(houseFSM.done for houseFSM in self.houseFSMs):
             self.demand('LoadPets')
-            
+
     def enterLoadPets(self):
         self.petFSMs = []
         for houseIndex in range(6):
@@ -272,17 +270,17 @@ class LoadEstateFSM(FSM):
                 fsm.start()
             else:
                 continue
-        
+
         if not self.petFSMs:
             self.demand('Finished')
-            
+
     def __petDone(self, pet):
         if self.state != 'LoadPets':
             pet.requestDelete()
             return
 
         if all(petFSM.done for petFSM in self.petFSMs):
-            self.demand('Finished')            
+            self.demand('Finished')
 
     def enterFinished(self):
         self.callback(True)
@@ -457,6 +455,6 @@ class EstateManagerAI(DistributedObjectAI):
 
     def _lookupEstate(self, toon):
         return self.toon2estate.get(toon)
-        
+
     def getOwnerFromZone(self, avId):
         return False

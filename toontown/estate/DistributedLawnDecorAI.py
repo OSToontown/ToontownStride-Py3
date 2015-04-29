@@ -30,4 +30,3 @@ class DistributedLawnDecorAI(DistributedNodeAI):
 
     def interactionDenied(self, todo0):
         pass
-

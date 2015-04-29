@@ -416,7 +416,6 @@ class DistributedFurnitureManagerAI(DistributedObjectAI):
     def recoverDeletedItem(self, blob, index):
         pass
 
-
     def handleMessage(self, func, response, *args):
         context = args[-1]
         args = args[:-1]
@@ -564,7 +563,6 @@ def fillAttic():
                 fm.moveItemToAttic(item.doId);
             fm.saveToHouse()
     return "everything has been moved to the attic"
-
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[])
 def emptyHouse():

@@ -9,4 +9,3 @@ class DistributedGagTreeAI(DistributedPlantBaseAI):
 
     def requestHarvest(self):
         pass
-

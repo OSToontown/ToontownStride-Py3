@@ -12,4 +12,3 @@ class DistributedStatuaryAI(DistributedLawnDecorAI):
 
     def setGrowthLevel(self, todo0):
         pass
-

@@ -6,4 +6,3 @@ class DistributedChangingStatuaryAI(DistributedStatuaryAI):
 
     def setGrowthLevel(self, todo0):
         pass
-

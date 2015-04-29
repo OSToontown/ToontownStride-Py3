@@ -18,4 +18,3 @@ class DistributedFireworksCannonAI(DistributedFireworkShowAI):
 
     def setPosition(self, todo0, todo1, todo2):
         pass
-

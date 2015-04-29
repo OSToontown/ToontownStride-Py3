@@ -18,4 +18,3 @@ class DistributedGardenPlotAI(DistributedLawnDecorAI):
 
     def plantNothing(self, todo0):
         pass
-
