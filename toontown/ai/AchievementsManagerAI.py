@@ -1,6 +1,6 @@
 from toontown.achievements import Achievements
 
-class AchievementsManagerAI():
+class AchievementsManagerAI:
     def __init__(self, air):
         self.air = air
 
