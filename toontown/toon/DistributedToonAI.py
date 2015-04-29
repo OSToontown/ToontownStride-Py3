@@ -4523,7 +4523,7 @@ def maxBankMoney(maxBankMoney):
     """
     Modifies the target's max bank money value.
     """
-    
+
     if not 10000 <= maxBankMoney <= 30000:
         return 'Max bank money value must be in xrange (10000-30000).'
     target = spellbook.getTarget()
@@ -4959,7 +4959,7 @@ def dna(part, value):
         dna.laughingMan = value
         invoker.b_setDNAString(dna.makeNetString())
         return 'Laughing Man set to: ' + str(dna.laughingMan)
-    
+
     if part == 'save':
         backup = simbase.backups.load('toon', (invoker.doId,), default={})
         backup.setdefault('dna', {})[value] = invoker.getDNAString()
@@ -5156,7 +5156,7 @@ def immortal():
     av = spellbook.getTarget() if spellbook.getInvokerAccess() >= 500 else spellbook.getInvoker()
     av.setImmortalMode(not av.immortalMode)
     return 'Toggled immortal mode %s for %s' % ('ON' if av.immortalMode else 'OFF', av.getName())
-    
+
 @magicWord(category=CATEGORY_PROGRAMMER, types=[str, int]) 
 def summoncogdo(track="s", difficulty=5):
     tracks = ['s']
@@ -5164,15 +5164,15 @@ def summoncogdo(track="s", difficulty=5):
         tracks.append('l')
     if track not in tracks:
         return "Invalid track!"
-        
+
     av = spellbook.getInvoker()
     building = av.findClosestDoor()
     if building == None:
         return "No bldg found!"
-        
+
     building.cogdoTakeOver(difficulty, 2, track)
     return 'Successfully spawned cogdo with track %s and difficulty %d' % (track, difficulty)
-    
+
 @magicWord(category=CATEGORY_PROGRAMMER, types=[int, int]) 
 def emblems(silver=10, gold=10):
     spellbook.getTarget().addEmblems((gold, silver))
