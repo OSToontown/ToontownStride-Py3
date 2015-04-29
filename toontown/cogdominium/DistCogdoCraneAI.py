@@ -1,20 +1,50 @@
-from direct.directnotify import DirectNotifyGlobal
-from direct.distributed.DistributedObjectAI import DistributedObjectAI
+from pandac.PandaModules import *
+from direct.distributed import DistributedObjectAI
+from toontown.toonbase import ToontownGlobals
+from otp.otpbase import OTPGlobals
+from direct.fsm import FSM
 
-class DistCogdoCraneAI(DistributedObjectAI):
-    notify = DirectNotifyGlobal.directNotify.newCategory("DistCogdoCraneAI")
+class DistCogdoCraneAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM):
 
-    def setCraneGameId(self, todo0):
+    def __init__(self, air, craneGame, index):
+        DistributedObjectAI.DistributedObjectAI.__init__(self, air)
+        FSM.FSM.__init__(self, 'DistCogdoCraneAI')
+        self.craneGame = craneGame
+        self.index = index
+        self.avId = 0
+        self.objectId = 0
+
+    def getCraneGameId(self):
+        return self.craneGame.doId
+
+    def getIndex(self):
+        return self.index
+
+    def generate(self):
+        DistributedObjectAI.DistributedObjectAI.generate(self)
+        self.request('Free')
+
+    def d_setState(self, state, avId):
+        self.sendUpdate('setState', [state, avId])
+
+    def enterOff(self):
         pass
 
-    def setIndex(self, todo0):
+    def exitOff(self):
         pass
 
-    def setState(self, todo0, todo1):
-        pass
+    def enterControlled(self, avId):
+        self.avId = avId
+        self.d_setState('C', avId)
 
-    def clearSmoothing(self, todo0):
-        pass
+    def exitControlled(self):
+        if self.objectId:
+            obj = self.air.doId2do[self.objectId]
+            obj.request('Dropped', self.avId, self.doId)
 
-    def setCablePos(self, todo0, todo1, todo2, todo3, todo4):
+    def enterFree(self):
+        self.avId = 0
+        self.d_setState('F', 0)
+
+    def exitFree(self):
         pass
