@@ -406,7 +406,6 @@ from toontown.coghq import BattleBlocker/AI
 from toontown.ai import DistributedAprilToonsMgr/AI
 from toontown.ai import DistributedBlackCatMgr/AI
 from toontown.ai import DistributedReportMgr/AI
-from toontown.ai import DistributedPolarBearMgr/AI
 from toontown.ai import DistributedPolarPlaceEffectMgr/AI
 from toontown.ai import DistributedGreenToonEffectMgr/AI
 from toontown.ai import DistributedResistanceEmoteMgr/AI
@@ -2537,11 +2536,6 @@ dclass DistributedBlackCatMgr : DistributedObject {
 
 dclass DistributedReportMgr : DistributedObject {
   sendReport(uint32, string) airecv clsend;
-};
-
-dclass DistributedPolarBearMgr : DistributedObject {
-  doPolarBearTransformation(uint32 avId) broadcast;
-  requestPolarBearTransformation() airecv clsend;
 };
 
 dclass DistributedPolarPlaceEffectMgr : DistributedObject {
