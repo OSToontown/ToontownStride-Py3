@@ -16,7 +16,7 @@ class DistributedResistanceEmoteMgr(DistributedObject.DistributedObject):
         DistributedObject.DistributedObject.announceGenerate(self)
         DistributedResistanceEmoteMgr.notify.debug('announceGenerate')
         self.accept(SpeedChatGlobals.SCStaticTextMsgEvent, self.phraseSaid)
-        
+
     def phraseSaid(self, phraseId):
         helpPhrase = 513
         if phraseId == helpPhrase:

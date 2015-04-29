@@ -6,12 +6,12 @@ import time
 
 class DistributedPolarPlaceEffectMgrAI(DistributedObjectAI, FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedPolarPlaceEffectMgrAI")
-    
+
     def __init__(self, air):
         DistributedObjectAI.__init__(self, air)
         FSM.__init__(self, 'ResistanceFSM')
         self.air = air
-        
+
     def enterOff(self):
         self.requestDelete()
 
@@ -21,4 +21,3 @@ class DistributedPolarPlaceEffectMgrAI(DistributedObjectAI, FSM):
         if not av: return
         expireTime = int((time.time()/60) + 0.5) + 60
         av.b_setCheesyEffect(13, 3000, expireTime)
-

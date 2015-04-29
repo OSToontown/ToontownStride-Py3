@@ -6,4 +6,3 @@ class DistributedScavengerHuntTargetAI(DistributedObjectAI):
 
     def attemptScavengerHunt(self):
         pass
-

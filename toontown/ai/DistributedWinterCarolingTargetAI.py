@@ -9,10 +9,10 @@ class DistributedWinterCarolingTargetAI(DistributedObjectAI, FSM):
         DistributedObjectAI.__init__(self, air)
         FSM.__init__(self, 'WinterCarolingFSM')
         self.air = air
-        
+
     def enterOff(self):
         self.requestDelete()
-        
+
     def requestScavengerHunt(self):
         avId = self.air.getAvatarIdFromSender()
         av = self.air.doId2do.get(avId)
@@ -27,4 +27,3 @@ class DistributedWinterCarolingTargetAI(DistributedObjectAI, FSM):
             av.b_setScavengerHunt(scavengerHunt)
         if len(scavengerHunt) == 6:
             av.b_setCheesyEffect(14, 0, 0)
-

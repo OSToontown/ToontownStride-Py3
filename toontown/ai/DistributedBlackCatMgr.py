@@ -9,15 +9,15 @@ def getDustCloudIval(toon):
     dustCloud.setZ(3)
     dustCloud.setScale(0.4)
     dustCloud.createTrack()
-    
+
     if hasattr(toon, 'laffMeter'):
         toon.laffMeter.color = toon.style.getBlackColor()
-    
+
     sequence = Sequence(Wait(0.5), Func(dustCloud.reparentTo, toon), dustCloud.track, Func(dustCloud.destroy))
-    
+
     if hasattr(toon, 'laffMeter'):
         sequence.append(Func(toon.laffMeter.adjustFace, toon.hp, toon.maxHp))
-    
+
     return sequence
 
 class DistributedBlackCatMgr(DistributedObject.DistributedObject):
@@ -36,5 +36,4 @@ class DistributedBlackCatMgr(DistributedObject.DistributedObject):
         self.sendUpdate('requestBlackCatTransformation')
 
     def doBlackCatTransformation(self):
-        print 'doit'
         getDustCloudIval(base.localAvatar).start()

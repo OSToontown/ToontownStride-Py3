@@ -11,27 +11,27 @@ class DistributedReportMgrAI(DistributedObjectAI):
         self.reports = []
         self.interval = config.GetInt('report-interval', 600)
         self.scheduleReport()
-    
+
     def scheduleReport(self):
         threading.Timer(self.interval, self.sendAllReports).start()
-    
+
     def sendReport(self, avId, category):
         if not ReportGlobals.isValidCategoryName(category) or not len(str(avId)) == 9:
             return
-        
+
         reporter = self.air.doId2do.get(self.air.getAvatarIdFromSender())
-        
+
         if not reporter or reporter.isReported(avId):
             return
-            
+
         timestamp = int(round(time.time() * 1000))
         self.reports.append('%s|%s|%s|%s' % (timestamp, reporter.doId, avId, category))
-    
+
     def sendAllReports(self):
         self.scheduleReport()
-        
+
         if not self.reports or config.GetString('accountdb-type', 'developer') != 'remote':
             return
-        
+
         executeHttpRequestAndLog('report', reports=','.join(self.reports))
         self.reports = []

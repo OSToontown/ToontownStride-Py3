@@ -14,11 +14,11 @@ class DistributedAprilToonsMgr(DistributedObject):
     def announceGenerate(self):
         DistributedObject.announceGenerate(self)
         self.d_requestEventsList()
-        
+
     def d_requestEventsList(self):
         self.notify.debug("Requesting events list from AI.")
         self.sendUpdate('requestEventsList', [])
-        
+
     def requestEventsListResp(self, eventIds):
         self.events = eventIds
         self.checkActiveEvents()

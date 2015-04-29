@@ -4,15 +4,15 @@ from direct.fsm.FSM import FSM
 
 class DistributedTrickOrTreatTargetAI(DistributedObjectAI, FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedTrickOrTreatTargetAI")
-    
+
     def __init__(self, air):
         DistributedObjectAI.__init__(self, air)
         FSM.__init__(self, 'TrickOrTreatTargeFSM')
         self.air = air
-        
+
     def enterOff(self):
         self.requestDelete()
-        
+
     def requestScavengerHunt(self):
         avId = self.air.getAvatarIdFromSender()
         av = self.air.doId2do.get(avId)
@@ -28,4 +28,3 @@ class DistributedTrickOrTreatTargetAI(DistributedObjectAI, FSM):
             av.addMoney(100)
         if len(scavengerHunt) == 6:
             av.b_setCheesyEffect(12, 0, 0)
-

@@ -12,6 +12,6 @@ class DistributedReportMgr(DistributedObject.DistributedObject):
     def delete(self):
         base.cr.reportMgr = None
         DistributedObject.DistributedObject.delete(self)
-    
+
     def sendReport(self, avId, category):
         self.sendUpdate('sendReport', [avId, category])

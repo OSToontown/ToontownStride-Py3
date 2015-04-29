@@ -85,4 +85,3 @@ class NewsManagerAI(DistributedObjectAI):
 
     def sendSystemMessage(self, todo0, todo1):
         pass
-

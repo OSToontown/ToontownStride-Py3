@@ -29,11 +29,11 @@ class DistributedWinterCarolingTarget(DistributedObject.DistributedObject):
             self.triggered = True
             self.d_requestScavengerHunt()
             taskMgr.doMethodLater(self.triggerDelay, reset, 'ScavengerHunt-phrase-reset', extraArgs=[])
-            
+
     def delete(self):
         self.ignore(SpeedChatGlobals.SCStaticTextMsgEvent)
         DistributedObject.DistributedObject.delete(self)
-        
+
     def d_requestScavengerHunt(self):
         self.sendUpdate('requestScavengerHunt', [])
 

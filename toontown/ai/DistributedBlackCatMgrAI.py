@@ -9,13 +9,13 @@ class DistributedBlackCatMgrAI(DistributedObjectAI):
     def requestBlackCatTransformation(self):
         if not self.air.holidayManager.isHolidayRunning(ToontownGlobals.BLACK_CAT_DAY):
             return
-        
+
         avId = self.air.getAvatarIdFromSender()
         av = self.air.doId2do.get(avId)
-        
+
         if not av or av.dna.getAnimal() != 'cat' or av.dna.headColor == 0x1a:
             return
-        
+
         newDNA = ToonDNA()
         newDNA.makeFromNetString(av.getDNAString())
         newDNA.updateToonProperties(armColor=26, legColor=26, headColor=26)

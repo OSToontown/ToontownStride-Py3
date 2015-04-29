@@ -731,17 +731,17 @@ def getHoliday(id):
         return getattr(ToontownGlobals, id)
     
     return -1
-    
+
 @magicWord(category=CATEGORY_PROGRAMMER, types=[str])
 def startHoliday(id):
     """
     Start a holiday.
     """
     holiday = getHoliday(id.upper())
-    
+
     if holiday < 0:
         return "Couldn't find holiday " + id + '!'
-    
+
     if base.cr.newsManager.startHoliday(holiday):
         return 'Successfully started holiday ' + id + '!'
     else:
@@ -753,10 +753,10 @@ def endHoliday(id):
     End a holiday.
     """
     holiday = getHoliday(id.upper())
-    
+
     if holiday < 0:
         return "Couldn't find holiday " + id + '!'
-    
+
     if base.cr.newsManager.endHoliday(holiday):
         return 'Successfully stopped holiday ' + id + '!'
     else:

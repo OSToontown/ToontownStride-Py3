@@ -11,7 +11,7 @@ class DistributedResistanceEmoteMgrAI(DistributedObjectAI, FSM):
         DistributedObjectAI.__init__(self, air)
         FSM.__init__(self, 'ResistanceFSM')
         self.air = air
-        
+
     def enterOff(self):
         self.requestDelete()
 
@@ -22,4 +22,3 @@ class DistributedResistanceEmoteMgrAI(DistributedObjectAI, FSM):
         RESIST_INDEX = EmoteFuncDict['Resistance Salute']
         av.emoteAccess[RESIST_INDEX] = 1
         av.d_setEmoteAccess(av.emoteAccess)
-

@@ -14,7 +14,7 @@ class DistributedPolarPlaceEffectMgr(DistributedObject.DistributedObject):
         DistributedObject.DistributedObject.announceGenerate(self)
         DistributedPolarPlaceEffectMgr.notify.debug('announceGenerate')
         self.accept(SpeedChatGlobals.SCStaticTextMsgEvent, self.phraseSaid)
-        
+
     def phraseSaid(self, phraseId):
         helpPhrase = 104
         if phraseId == helpPhrase:
