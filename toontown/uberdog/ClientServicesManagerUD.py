@@ -52,20 +52,20 @@ notify = directNotify.newCategory('ClientServicesManagerUD')
 
 def executeHttpRequestAndLog(url, **extras):
     response = executeHttpRequest(url, extras)
-    
+
     if response is None:
         notify.error('A request to ' + url + ' went wrong.')
         return None
-    
+
     try:
         data = json.loads(response)
     except:
         notify.error('Malformed response from ' + url + '.')
         return None
-    
+
     if 'error' in data:
         notify.warning('Error from ' + url + ':' + data['error'])
-    
+
     return data
 
 def judgeName(name):
@@ -74,10 +74,10 @@ def judgeName(name):
 
     for namePart in name.split(' '):
         namePart = namePart.lower()
-      
+
         if len(namePart) < 1:
             return False
-        
+
         if namePart in NameJudgeBlacklist.blacklist:
             return False
     return True
@@ -156,10 +156,10 @@ class RemoteAccountDB(AccountDB):
 
     def getNameStatus(self, avId):
         data = executeHttpRequestAndLog('nameget', id=avId)
-        
+
         if data is None:
             return 'PENDING'
-        
+
         return data['state']
 
     def removeNameRequest(self, avId):
@@ -174,9 +174,9 @@ class RemoteAccountDB(AccountDB):
             }
             callback(response)
             return response
-        
+
         cookie = executeHttpRequestAndLog('cookie', cookie=token)
-        
+
         if cookie is None or 'error' in cookie:
             response = {
                 'success': False,
@@ -393,7 +393,7 @@ class CreateAvatarFSM(OperationFSM):
         if not ToonDNA().isValidNetString(dna):
             self.demand('Kill', 'Invalid DNA specified!')
             return
-        
+
         if thirdTrack < 0 or thirdTrack == 4 or thirdTrack == 5 or thirdTrack >= 7:
             self.demand('Kill', 'Invalid third track specified!')
             return
