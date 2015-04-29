@@ -522,8 +522,7 @@ class DistributedCogdoInteriorAI(DistributedObjectAI, FSM.FSM):
                      5: 1.5, # Daisy Gardens
                      4: 2., # Minnie's Melodyland
                      3: 2.7, # The Brrrgh
-                     9: 3.5, # Donald's Dreamland
-                     7: 4 # Funny Farm
+                     9: 3.5 # Donald's Dreamland
                      }
 
         hoodValue = hoodIdMap[int(self.exterior.zoneId // 1000)]
