@@ -10,7 +10,6 @@ from otp.friends.FriendManagerAI import FriendManagerAI
 from toontown.ai import CogPageManagerAI
 from toontown.ai import CogSuitManagerAI
 from toontown.ai import PromotionManagerAI
-from toontown.ai.AchievementsManagerAI import AchievementsManagerAI
 from toontown.ai.FishManagerAI import  FishManagerAI
 from toontown.ai.HolidayManagerAI import HolidayManagerAI
 from toontown.ai.NewsManagerAI import NewsManagerAI
@@ -89,7 +88,6 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.wantCogdominiums = self.config.GetBool('want-cogdominiums', True)
         self.doLiveUpdates = self.config.GetBool('want-live-updates', False)
         self.wantTrackClsends = self.config.GetBool('want-track-clsends', False)
-        self.wantAchievements = self.config.GetBool('want-achievements', True)
         self.wantGloveNpc = self.config.GetBool('want-glove-npc', True)
         self.baseXpMultiplier = self.config.GetFloat('base-xp-multiplier', 1.0)
         self.wantHalloween = self.config.GetBool('want-halloween', False)
@@ -112,7 +110,6 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.friendManager.generateWithRequired(2)
         self.questManager = QuestManagerAI(self)
         self.banManager = BanManagerAI.BanManagerAI(self)
-        self.achievementsManager = AchievementsManagerAI(self)
         self.suitInvasionManager = SuitInvasionManagerAI(self)
         self.blackCatMgr = DistributedBlackCatMgrAI(self)
         self.blackCatMgr.generateWithRequired(2)
