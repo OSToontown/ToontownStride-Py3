@@ -20,12 +20,18 @@ class CogdoFlyingGuiManager:
         self.root = NodePath('CogdoFlyingGui')
         self.root.reparentTo(aspect2d)
         self.root.stash()
+        self.fuelGui = NodePath('CogdoFlyingFuelGui')
+        self.fuelGui.reparentTo(base.a2dBottomLeft)
+        self.fuelGui.stash()
+        self.progressGui = NodePath('CogdoFlyingProgressGui')
+        self.progressGui.reparentTo(base.a2dBottomRight)
+        self.progressGui.stash()
         self._initTimer()
         self._initHud()
         self._initMessageDisplay()
         self.sentTimeRunningOutMessage = False
-        self._refuelGui = CogdoFlyingFuelGui(self.root)
-        self._progressGui = CogdoFlyingProgressGui(self.root, self._level)
+        self._refuelGui = CogdoFlyingFuelGui(self.fuelGui)
+        self._progressGui = CogdoFlyingProgressGui(self.progressGui, self._level)
 
     def _initHud(self):
         self._memoGui = CogdoMemoGui(self.root, 'memo_card')
@@ -50,6 +56,8 @@ class CogdoFlyingGuiManager:
 
     def onstage(self):
         self.root.unstash()
+        self.fuelGui.unstash()
+        self.progressGui.unstash()
         self._refuelGui.hide()
         self._progressGui.hide()
 
@@ -67,6 +75,8 @@ class CogdoFlyingGuiManager:
 
     def offstage(self):
         self.root.stash()
+        self.fuelGui.stash()
+        self.progressGui.stash()
         self._refuelGui.hide()
         self._progressGui.hide()
         self.hideTimer()
@@ -164,4 +174,8 @@ class CogdoFlyingGuiManager:
         self._messageDisplay = None
         self.root.removeNode()
         self.root = None
+        self.fuelGui.removeNode()
+        self.fuelGui = None
+        self.progressGui.removeNode()
+        self.progressGui = None
         return

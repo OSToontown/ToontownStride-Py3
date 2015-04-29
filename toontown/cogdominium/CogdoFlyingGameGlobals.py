@@ -133,7 +133,7 @@ Gameplay.MinionScale = 0.8
 Gui = VariableContainer()
 Gui.FuelNumBladesPos2D = (-0.005, -0.017)
 Gui.FuelNumBladesScale = 0.07
-Gui.FuelPos2D = (-1.19, -0.24)
+Gui.FuelPos2D = (0.143, 0.760)
 Gui.NumBlades2FuelColor = {0: (0.9, 0.15, 0.15, 1.0),
  1: (0.9, 0.15, 0.15, 1.0),
  2: (0.9, 0.9, 0.15, 1.0),
@@ -141,7 +141,7 @@ Gui.NumBlades2FuelColor = {0: (0.9, 0.15, 0.15, 1.0),
 Gui.FuelNormalColor = (0.25, 0.65, 0.25, 1.0)
 Gui.FuelLowColor = (0.9, 0.9, 0.15, 1.0)
 Gui.FuelVeryLowColor = (0.9, 0.15, 0.15, 1.0)
-Gui.ProgressPos2D = (1.15, -0.15)
+Gui.ProgressPos2D = (-0.183, 0.85)
 Gui.ProgressHPos2D = (0, 0.82)
 Gui.MarkerScale = 0.03
 Gui.LocalMarkerScale = 0.0425
