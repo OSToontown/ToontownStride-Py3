@@ -536,6 +536,7 @@ MonthlySchedule = ((7,
    #CatalogGardenItem(104, 1),
    CatalogToonStatueItem(105, endPoseIndex=108),
    CatalogRentalItem(1, 2880, 1000),
+   CatalogRentalItem(2, 2890, 1000),
    #CatalogGardenStarterItem(), # We don't want Gardens yet.
    CatalogNametagItem(100),
    CatalogNametagItem(0),

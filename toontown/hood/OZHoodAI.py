@@ -1,10 +1,15 @@
 from toontown.hood import HoodAI
+from pandac.PandaModules import *
 from toontown.toonbase import ToontownGlobals
 from toontown.distributed.DistributedTimerAI import DistributedTimerAI
+import string
 from toontown.dna.DNAParser import DNAGroup, DNAVisGroup
 from toontown.safezone.DistributedPicnicBasketAI import DistributedPicnicBasketAI
-from toontown.safezone import DistributedGameTableAI
+from toontown.safezone import DistributedPicnicTableAI
+from toontown.safezone import DistributedChineseCheckersAI
+from toontown.safezone import DistributedCheckersAI
 from toontown.hood import ZoneUtil
+import random
 
 
 class OZHoodAI(HoodAI.HoodAI):
@@ -30,6 +35,7 @@ class OZHoodAI(HoodAI.HoodAI):
     def createTimer(self):
         self.timer = DistributedTimerAI(self.air)
         self.timer.generateWithRequired(self.zoneId)
+
 
     def findPicnicTables(self, dnaGroup, zoneId, area, overrideDNAZone=False):
         picnicTables = []
@@ -74,9 +80,11 @@ class OZHoodAI(HoodAI.HoodAI):
                 if 'game_table' in childDnaGroup.getName():
                     pos = childDnaGroup.getPos()
                     hpr = childDnaGroup.getHpr()
-                    gameTable = DistributedGameTableAI.DistributedGameTableAI(simbase.air)
-                    gameTable.setPosHpr(pos[0], pos[1], pos[2], hpr[0], hpr[1], hpr[2])
-                    gameTable.generateWithRequired(zoneId)
+                    nameInfo = childDnaGroup.getName().split('_')
+                    tableIndex = int(childDnaGroup.parent.getName().split('_')[-1])
+                    gameTable = DistributedPicnicTableAI.DistributedPicnicTableAI(simbase.air, zoneId, nameInfo[2], pos[0], pos[1], pos[2], hpr[0], hpr[1], hpr[2])
+                    gameTable.setTableIndex(tableIndex)
+                    gameTable.generateOtpObject(simbase.air.districtId, zone, ['setX', 'setY', 'setZ', 'setH', 'setP', 'setR'])
         elif isinstance(dnaGroup, DNAVisGroup) and (not overrideDNAZone):
             zoneId = ZoneUtil.getTrueZoneId(int(dnaGroup.getName().split(':')[0]), zoneId)
         for i in xrange(dnaGroup.getNumChildren()):

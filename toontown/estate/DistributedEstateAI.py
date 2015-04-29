@@ -17,6 +17,8 @@ from DistributedCannonAI import *
 from DistributedTargetAI import *
 import CannonGlobals
 
+import TableGlobals
+
 class Rental:
     def __init__(self, estate):
         self.estate = estate
@@ -57,7 +59,7 @@ class CannonRental(Rental):
         for i in xrange(20):
             x = random.randint(100, 300) - 200
             y = random.randint(100, 300) - 200
-            treasure = DistributedTreasureAI.DistributedTreasureAI(self.estate.air, self, 9, x, y, z)
+            treasure = DistributedTreasureAI.DistributedTreasureAI(self.estate.air, self, 7, x, y, z)
             treasure.generateWithRequired(self.estate.zoneId)
             self.objects.add(treasure)
             doIds.append(treasure.doId)
@@ -300,6 +302,8 @@ class DistributedEstateAI(DistributedObjectAI):
                 
             if self.rentalType == ToontownGlobals.RentalCannon:
                 self.rentalHandle = CannonRental(self)
+            elif self.rentalType == ToontownGlobals.RentalGameTable:
+                self.rentalHandle = TableRental(self)
                 
             else:
                 self.notify.warning('Unknown rental %s' % self.rentalType)
