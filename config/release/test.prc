@@ -13,7 +13,6 @@ want-pets #f
 want-parties #t
 want-cogdominiums #t
 want-lawbot-cogdo #f
-want-achievements #f
 boarding-group-merges #t
 
 # Sellbot boss:
