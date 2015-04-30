@@ -1,6 +1,6 @@
 from direct.interval.IntervalGlobal import *
 from pandac.PandaModules import *
-
+import time
 from DistributedNPCToonBase import *
 from toontown.chat.ChatGlobals import *
 from toontown.hood import ZoneUtil
@@ -69,11 +69,19 @@ class DistributedNPCToon(DistributedNPCToonBase):
         if isLocalToon:
             self.showNametag2d()
             taskMgr.remove(self.uniqueName('lerpCamera'))
-            base.localAvatar.posCamera(0, 0)
-            base.cr.playGame.getPlace().setState('walk')
+            self.neutralizeCamera()
             self.sendUpdate('setMovieDone', [])
             self.nametag3d.clearDepthTest()
             self.nametag3d.clearBin()
+
+    def neutralizeCamera(self):
+        avHeight = max(base.localAvatar.getHeight(), 3.0)
+        scaleFactor = avHeight * 0.3333333333
+        camera.wrtReparentTo(base.localAvatar)
+        camera.posQuatInterval(1, (0, -9 * scaleFactor, avHeight), (0, 0, 0), other=base.localAvatar, blendType='easeOut').start()
+        def walk():
+            base.cr.playGame.getPlace().setState('walk')
+        Sequence(Wait(1), Func(walk)).start()
 
     def setupCamera(self, mode):
         camera.wrtReparentTo(render)
@@ -86,11 +94,13 @@ class DistributedNPCToon(DistributedNPCToonBase):
         isLocalToon = avId == base.localAvatar.doId
         if mode == NPCToons.QUEST_MOVIE_CLEAR:
             self.cleanupMovie()
+            if isLocalToon:
+                self.neutralizeCamera()
             return
         if mode == NPCToons.QUEST_MOVIE_TIMEOUT:
             self.cleanupMovie()
             if isLocalToon:
-                self.freeAvatar()
+                self.neutralizeCamera()
             self.setPageNumber(0, -1)
             self.clearChat()
             self.startLookAround()
@@ -105,16 +115,14 @@ class DistributedNPCToon(DistributedNPCToonBase):
             rejectString = Quests.fillInQuestNames(rejectString, avName=av.name)
             self.setChatAbsolute(rejectString, CFSpeech | CFTimeout)
             if isLocalToon:
-                base.localAvatar.posCamera(0, 0)
-                base.cr.playGame.getPlace().setState('walk')
+                self.neutralizeCamera()
             return
         if mode == NPCToons.QUEST_MOVIE_TIER_NOT_DONE:
             rejectString = Quests.chooseQuestDialogTierNotDone()
             rejectString = Quests.fillInQuestNames(rejectString, avName=av.name)
             self.setChatAbsolute(rejectString, CFSpeech | CFTimeout)
             if isLocalToon:
-                base.localAvatar.posCamera(0, 0)
-                base.cr.playGame.getPlace().setState('walk')
+                self.neutralizeCamera()
             return
         self.setupAvatars(av)
         fullString = ''
