@@ -115,7 +115,7 @@ class DistributedNPCToon(DistributedNPCToonBase):
             rejectString = Quests.fillInQuestNames(rejectString, avName=av.name)
             self.setChatAbsolute(rejectString, CFSpeech | CFTimeout)
             if isLocalToon:
-                self.neutralizeCamera()
+                base.cr.playGame.getPlace().setState('walk')
             return
         if mode == NPCToons.QUEST_MOVIE_TIER_NOT_DONE:
             rejectString = Quests.chooseQuestDialogTierNotDone()
