@@ -1,34 +1,37 @@
 from pandac.PandaModules import *
-from panda3d.core import NodePath, ModelNode
 from direct.fsm import StateData
 from direct.gui.DirectGui import *
 from toontown.toonbase import TTLocalizer, ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownBattleGlobals
+from toontown.toonbase.ToontownBattleGlobals import AvPropsNew
 
 class TrackShop(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('TrackShop')
 
     def __init__(self, doneEvent):
         StateData.StateData.__init__(self, doneEvent)
+        self.quest = None
+        self.label = None
+        self.leftButton = None
+        self.rightButton = None
+        self.track = None
+        self.icon = None
         self.loaded = False
         self.index = 0
-        self.buttonPath = None
-        self.curTrackLabel = None
         return
-
-    def showButtons(self):
-        self.buttonPath.show()
-        self.curTrackLabel.show()
-
-    def hideButtons(self):
-        self.buttonPath.hide()
-        self.curTrackLabel.hide()
 
     def enter(self):
         base.disableMouse()
         self.acceptOnce('last', self.__handleBackward)
         self.acceptOnce('next', self.__handleForward)
+
+    def showButtons(self):
+        for element in [self.quest, self.label, self.leftButton, self.rightButton, self.track, self.icon]:
+            element.show()
+
+    def hideButtons(self):
+        for element in [self.quest, self.label, self.leftButton, self.rightButton, self.track, self.icon]:
+            element.hide()
 
     def exit(self):
         self.ignore('last')
@@ -38,41 +41,61 @@ class TrackShop(StateData.StateData):
     def load(self):
         if self.loaded:
             return
+
         self.loaded = True
+        self.questGui = loader.loadModel('phase_3.5/models/gui/stickerbook_gui')
+        self.inventoryGui = loader.loadModel('phase_3.5/models/gui/inventory_icons')
+        self.buttonGui = loader.loadModel('phase_3/models/gui/tt_m_gui_mat_mainGui')
+        self.shuffleArrowUp = self.buttonGui.find('**/tt_t_gui_mat_shuffleArrowUp')
+        self.shuffleArrowDown = self.buttonGui.find('**/tt_t_gui_mat_shuffleArrowDown')
 
-        buttonModel = ModelNode('tracks')
-        self.buttonPath = NodePath(buttonModel)
+        self.quest = DirectFrame(aspect2d, relief=None, image=self.questGui.find('**/questCard'),
+                     pos=(-0.62, 0, 0), image_scale=1.5)
 
-        self.curTrackLabel = DirectLabel(aspect2d, relief=None,
-                                         text='toon-up', text_scale=0.12, text_font=ToontownGlobals.getSignFont(), text_fg=(1, 0, 0, 1),
-                                         pos=(0, 0, -0.9))
+        self.label = DirectLabel(aspect2d, relief=None, text=TTLocalizer.PickTrackNotice,
+                     text_fg=(0, 1, 0, 1), text_scale=0.12, text_font=ToontownGlobals.getToonFont(),
+                     pos=(-0.62, 0, 0.45), text_shadow=(0, 0.392, 0, 1))
 
-        buttonImage = loader.loadModel("phase_3/models/gui/quit_button.bam")
+        self.leftButton = DirectButton(aspect2d, relief=None, image=(self.shuffleArrowUp, self.shuffleArrowDown),
+                          pos=(-1.2, 0, -0.05), command=self.handleSetIndex, extraArgs=[-1])
 
-        availableTracks = [(0, 'toon-up'), (1, 'trap'), (2, 'lure'), (3, 'sound'), (4, 'drop')]
-        for i, track in reversed(availableTracks):
-            track = DirectButton(self.buttonPath, relief=None,
-                                 text=track, text_scale=0.08, text_font=ToontownGlobals.getSignFont(), text_pos=(0, -0.03), text_fg=(1, 0, 0, 1),
-                                 pos=(0, 0, (i * 0.15) - 0.5),
-                                 image=(buttonImage.find('**/QuitBtn_UP'), buttonImage.find('**/QuitBtn_DN'), buttonImage.find('**/QuitBtn_RLVR')),
-                                 command=self.handleSetIndex, extraArgs=[i, track])
+        self.rightButton = DirectButton(aspect2d, relief=None, image=(self.shuffleArrowUp, self.shuffleArrowDown),
+                           pos=(-0.05, 0, -0.05), scale=-1, command=self.handleSetIndex, extraArgs=[1])
 
-        self.buttonPath.reparentTo(aspect2d)
+        self.track = DirectLabel(aspect2d, relief=None, text='',
+                     text_scale=0.11, text_font=ToontownGlobals.getSignFont(),
+                     pos=(-0.64, 0, -0.08), text_shadow=(1, 1, 1, 1))
+
+        self.icon = DirectFrame(aspect2d, relief=None, pos=(-0.65, 0, -0.3), image_scale=1.5)
+
+        self.updateGuiByIndex()
 
     def unload(self):
-        if self.buttonPath:
-            self.buttonPath.removeNode()
-            del self.buttonPath
-        if self.curTrackLabel:
-            self.curTrackLabel.removeNode()
-            del self.curTrackLabel
+        for element in [self.quest, self.label, self.leftButton, self.rightButton, self.track, self.icon]:
+            if element:
+                element.destroy()
+                del element
+
         self.index = 0
         self.loaded = False
-    
-    def handleSetIndex(self, i, track):
-        self.index = i
-        self.curTrackLabel['text'] = track
-    
+
+    def handleSetIndex(self, offset):
+        newIndex = self.index + offset
+
+        if newIndex == 4:
+            self.index = 6
+        elif newIndex == 5:
+            self.index = 3
+        elif newIndex > -1 and newIndex < len(ToontownGlobals.PropIdToColor):
+            self.index = newIndex
+
+        self.updateGuiByIndex()
+
+    def updateGuiByIndex(self):
+        self.track['text'] = TTLocalizer.PropIdToName[self.index]
+        self.track['text_fg'] = ToontownGlobals.PropIdToColor[self.index]
+        self.icon['image'] = self.inventoryGui.find('**/' + AvPropsNew[self.index][0])
+
     def __handleForward(self):
         self.doneStatus = 'next'
         messenger.send(self.doneEvent)
