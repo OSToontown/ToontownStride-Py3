@@ -572,8 +572,8 @@ class GardenDropGame:
         self.yellowButton = (self.GDButtonImage.find('**/QuitBtn_UP'), self.GDButtonImage.find('**/QuitBtn_DN'), self.GDButtonImage.find('**/QuitBtn_RLVR'))
  
         self.GardenGameButton = DirectButton(frameSize=(0), text=TTLocalizer.GardenDropButtonTitle, image=self.yellowButton, text_pos=(0,0.01), relief=None, text_fg=(1, 1, 1, 1), \
-        geom=None, pad=(0.01, 0.01), suppressKeys=0, command=self.deleteGDButton, pos=(-.62,0,-.89), text_font=self.font, text_scale=(0.083,0.040,0.049), borderWidth=(0.13, 0.01), scale=(0.8,1,1.8))
- 
+        geom=None, pad=(0.01, 0.01), suppressKeys=0, command=self.deleteGDButton, pos=(0.49, 0, 0.115), text_font=self.font, text_scale=(0.083,0.040,0.049), borderWidth=(0.13, 0.01), scale=(0.8,1,1.8))
+        self.GardenGameButton.reparentTo(base.a2dBottomLeft)
         base.localAvatar.gardenGameButton = self.GardenGameButton
  
     def __openHelp(self):
