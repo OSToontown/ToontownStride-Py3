@@ -92,7 +92,7 @@ class CountryClubInterior(BattlePlace.BattlePlace):
             base.playMusic(self.music, looping=1, volume=0.8)
             base.transitions.irisIn()
             CountryClub = bboard.get(DistributedCountryClub.DistributedCountryClub.ReadyPost)
-            self.loader.hood.spawnTitleText(CountryClub.countryClubId, CountryClub.floorNum)
+            self.loader.hood.spawnTitleText(CountryClub.countryClubId)
 
         self.CountryClubReadyWatcher = BulletinBoardWatcher.BulletinBoardWatcher('CountryClubReady', DistributedCountryClub.DistributedCountryClub.ReadyPost, commence)
         self.CountryClubDefeated = 0
