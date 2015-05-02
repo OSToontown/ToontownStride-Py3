@@ -81,10 +81,10 @@ class OZHoodAI(HoodAI.HoodAI):
                     pos = childDnaGroup.getPos()
                     hpr = childDnaGroup.getHpr()
                     nameInfo = childDnaGroup.getName().split('_')
-                    tableIndex = int(childDnaGroup.parent.getName().split('_')[-1])
+                    tableIndex = int(childDnaGroup.get_parent().getName().split('_')[-1])
                     gameTable = DistributedPicnicTableAI.DistributedPicnicTableAI(simbase.air, zoneId, nameInfo[2], pos[0], pos[1], pos[2], hpr[0], hpr[1], hpr[2])
                     gameTable.setTableIndex(tableIndex)
-                    gameTable.generateOtpObject(simbase.air.districtId, zone, ['setX', 'setY', 'setZ', 'setH', 'setP', 'setR'])
+                    gameTable.generateOtpObject(simbase.air.districtId, zoneId, ['setX', 'setY', 'setZ', 'setH', 'setP', 'setR'])
         elif isinstance(dnaGroup, DNAVisGroup) and (not overrideDNAZone):
             zoneId = ZoneUtil.getTrueZoneId(int(dnaGroup.getName().split(':')[0]), zoneId)
         for i in xrange(dnaGroup.getNumChildren()):
