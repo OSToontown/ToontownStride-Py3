@@ -23,7 +23,7 @@ want-pets #t
 want-parties #t
 want-cogdominiums #t
 want-lawbot-cogdo #t
-want-anim-props #f
+want-anim-props #t
 
 # Chat:
 want-whitelist #f
