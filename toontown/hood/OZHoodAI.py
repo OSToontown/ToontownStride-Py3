@@ -2,7 +2,7 @@ from toontown.hood import HoodAI
 from toontown.toonbase import ToontownGlobals
 from toontown.distributed.DistributedTimerAI import DistributedTimerAI
 from toontown.dna.DNAParser import DNAGroup, DNAVisGroup
-from toontown.safezone.DistributedPicnicBasketAI import DistributedPicnicBasketAI
+from toontown.safezone import DistributedPicnicTableAI
 from toontown.safezone import DistributedGameTableAI
 from toontown.hood import ZoneUtil
 
@@ -31,7 +31,7 @@ class OZHoodAI(HoodAI.HoodAI):
         self.timer = DistributedTimerAI(self.air)
         self.timer.generateWithRequired(self.zoneId)
 
-    def findPicnicTables(self, dnaGroup, zoneId, area, overrideDNAZone=False):
+    def createPicnicTables(self, dnaGroup, zoneId, area, overrideDNAZone=False):
         picnicTables = []
         if isinstance(dnaGroup, DNAGroup) and ('picnic_table' in dnaGroup.getName()):
             nameInfo = dnaGroup.getName().split('_')
@@ -40,8 +40,7 @@ class OZHoodAI(HoodAI.HoodAI):
                 if 'picnic_table' in childDnaGroup.getName():
                     pos = childDnaGroup.getPos()
                     hpr = childDnaGroup.getHpr()
-                    picnicTable = DistributedPicnicBasketAI(
-                        simbase.air, nameInfo[2],
+                    picnicTable = DistributedPicnicTableAI.DistributedPicnicTableAI(simbase.air, nameInfo[2],
                         pos[0], pos[1], pos[2], hpr[0], hpr[1], hpr[2])
                     picnicTable.generateWithRequired(zoneId)
                     picnicTables.append(picnicTable)
@@ -53,7 +52,7 @@ class OZHoodAI(HoodAI.HoodAI):
             picnicTables.extend(foundPicnicTables)
         return picnicTables
 
-    def createPicnicTables(self):
+    def findPicnicTables(self):
         self.picnicTables = []
         for zoneId in self.getZoneTable():
             dnaData = self.air.dnaDataMap.get(zoneId, None)
@@ -66,7 +65,7 @@ class OZHoodAI(HoodAI.HoodAI):
         for picnicTable in self.picnicTables:
             picnicTable.start()
 
-    def findGameTables(self, dnaGroup, zoneId, area, overrideDNAZone=False):
+    def createGameTables(self, dnaGroup, zoneId, area, overrideDNAZone=False):
         gameTables = []
         if isinstance(dnaGroup, DNAGroup) and ('game_table' in dnaGroup.getName()):
             for i in xrange(dnaGroup.getNumChildren()):
@@ -85,7 +84,7 @@ class OZHoodAI(HoodAI.HoodAI):
             gameTables.extend(foundGameTables)
         return gameTables
 
-    def createGameTables(self):
+    def findGameTables(self):
         self.gameTables = []
         for zoneId in self.getZoneTable():
             dnaData = self.air.dnaDataMap.get(zoneId, None)
