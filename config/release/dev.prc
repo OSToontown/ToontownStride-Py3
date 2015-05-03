@@ -26,6 +26,9 @@ want-lawbot-cogdo #t
 want-achievements #f
 want-anim-props #t
 want-game-tables #t
+want-find-four #f
+want-chinese-checkers #t
+want-checkers #f
 
 # Chat:
 want-whitelist #f
