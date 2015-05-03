@@ -1,29 +1,29 @@
-from direct.controls.ControlManager import CollisionHandlerRayStart
-from direct.distributed import DistributedObject
+from pandac.PandaModules import *
+from toontown.toonbase.ToonBaseGlobal import *
+from toontown.toonbase import ToontownGlobals
 from direct.distributed.ClockDelta import *
+from direct.interval.IntervalGlobal import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from direct.gui.DirectGui import *
-from direct.interval.IntervalGlobal import *
-from direct.task.Task import Task
-import math
-from pandac.PandaModules import *
-from pandac.PandaModules import *
-
-import CannonGlobals
-from toontown.effects import DustCloud
-from toontown.effects import Splash
-from toontown.effects import Wake
-from toontown.minigame import CannonGameGlobals
-from toontown.minigame import Trajectory
-from toontown.nametag.NametagFloat3d import NametagFloat3d
-from toontown.toon import ToonHead
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import ToontownTimer
-from toontown.toonbase.ToonBaseGlobal import *
+from direct.task.Task import Task
+from toontown.minigame import Trajectory
+import math
+from toontown.toon import ToonHead
+from toontown.effects import Splash
+from toontown.effects import DustCloud
+from toontown.minigame import CannonGameGlobals
+import CannonGlobals
+from direct.gui.DirectGui import *
+from pandac.PandaModules import *
+from toontown.toonbase import TTLocalizer
+from direct.distributed import DistributedObject
+from toontown.effects import Wake
+from direct.controls.ControlManager import CollisionHandlerRayStart
 
+from toontown.nametag.NametagFloat3d import NametagFloat3d
+from toontown.nametag.Nametag import Nametag
 
 LAND_TIME = 2
 WORLD_SCALE = 2.0
@@ -258,8 +258,8 @@ class DistributedCannon(DistributedObject.DistributedObject):
                 base.cr.playGame.getPlace().setState('fishing')
                 base.localAvatar.setTeleportAvailable(0)
                 base.localAvatar.collisionsOff()
-                base.setCellsActive([base.bottomCells[3], base.bottomCells[4]], 0)
-                base.setCellsActive([base.rightCells[1]], 0)
+                base.setCellsAvailable([base.bottomCells[3], base.bottomCells[4]], 0)
+                base.setCellsAvailable([base.rightCells[1]], 0)
                 self.localToonShooting = 1
                 self.__makeGui()
                 camera.reparentTo(self.barrel)
@@ -267,7 +267,7 @@ class DistributedCannon(DistributedObject.DistributedObject):
                 self.curPinballScore = 0
                 self.curPinballMultiplier = 1
                 self.incrementPinballInfo(0, 0)
-            if self.avId in self.cr.doId2do:
+            if self.cr.doId2do.has_key(self.avId):
                 self.av = self.cr.doId2do[self.avId]
                 self.acceptOnce(self.av.uniqueName('disable'), self.__avatarGone)
                 self.av.stopSmooth()
@@ -275,8 +275,8 @@ class DistributedCannon(DistributedObject.DistributedObject):
             else:
                 self.notify.warning('Unknown avatar %d in cannon %d' % (self.avId, self.doId))
         if wasLocalToon and not self.localToonShooting:
-            base.setCellsActive([base.bottomCells[3], base.bottomCells[4]], 1)
-            base.setCellsActive([base.rightCells[1]], 1)
+            base.setCellsAvailable([base.bottomCells[3], base.bottomCells[4]], 1)
+            base.setCellsAvailable([base.rightCells[1]], 1)
 
     def __avatarGone(self):
         self.setMovie(CannonGlobals.CANNON_MOVIE_CLEAR, 0)
@@ -411,7 +411,7 @@ class DistributedCannon(DistributedObject.DistributedObject):
             self.av.loop('neutral')
             self.av.setPlayRate(1.0, 'run')
             if hasattr(self.av, 'nametag'):
-                self.av.nametag.remove(self.toonHead.tag)
+                self.av.nametag.removeNametag(self.toonHead.tag)
         if self.toonHead != None:
             self.toonHead.stopBlink()
             self.toonHead.stopLookAroundNow()
@@ -467,12 +467,11 @@ class DistributedCannon(DistributedObject.DistributedObject):
         self.toonHead.setupHead(self.av.style)
         self.toonHead.reparentTo(hidden)
         tag = NametagFloat3d()
-        tag.hideNametag()
-        tag.update()
+        tag.setContents(Nametag.CSpeech | Nametag.CThought)
         tag.setBillboardOffset(0)
         tag.setAvatar(self.toonHead)
-        toon.nametag.add(tag)
-        tagPath = self.toonHead.attachNewNode(tag.upcastToPandaNode())
+        toon.nametag.addNametag(tag)
+        tagPath = self.toonHead.attachNewNode(tag)
         tagPath.setPos(0, 0, 1)
         self.toonHead.tag = tag
         self.__loadToonInCannon()
@@ -844,6 +843,7 @@ class DistributedCannon(DistributedObject.DistributedObject):
         flyTask.info = info
         seqTask = Task.sequence(shootTask, smokeTask, flyTask)
         if self.av == base.localAvatar:
+            print 'disable controls'
             base.localAvatar.disableAvatarControls()
         taskMgr.add(seqTask, self.taskName('flyingToon') + '-' + str(avId))
         self.acceptOnce(self.uniqueName('stopFlyTask'), self.__stopFlyTask)
@@ -865,6 +865,7 @@ class DistributedCannon(DistributedObject.DistributedObject):
 
     def removeAvFromCannon(self):
         place = base.cr.playGame.getPlace()
+        print 'removeAvFromCannon'
         self.notify.debug('self.inWater = %s' % self.inWater)
         if place:
             if not hasattr(place, 'fsm'):
@@ -884,7 +885,7 @@ class DistributedCannon(DistributedObject.DistributedObject):
                 if place and not self.inWater:
                     place.fsm.request('walk')
             self.av.setPlayRate(1.0, 'run')
-            self.av.nametag.remove(self.toonHead.tag)
+            self.av.nametag.removeNametag(self.toonHead.tag)
             if self.av.getParent().getName() == 'toonOriginChange':
                 self.av.wrtReparentTo(render)
                 self.__setToonUpright(self.av)
@@ -893,6 +894,7 @@ class DistributedCannon(DistributedObject.DistributedObject):
             self.av.startSmooth()
             self.av.setScale(1, 1, 1)
             if self.av == base.localAvatar:
+                print 'enable controls'
                 base.localAvatar.enableAvatarControls()
             self.ignore(self.av.uniqueName('disable'))
             self.__destroyToonModels()
@@ -1160,6 +1162,7 @@ class DistributedCannon(DistributedObject.DistributedObject):
         if hitP[2] > ToontownGlobals.EstateWakeWaterHeight:
             self.notify.debug('we hit the ground before we hit water')
             self.__hitGround(avatar, pos, extraArgs)
+            print 'but not really'
             return
         self.inWater = 1
         self.notify.debug('hit water')
@@ -1242,7 +1245,7 @@ class DistributedCannon(DistributedObject.DistributedObject):
             for id in doIds:
                 t = self.cr.doId2do.get(id)
                 if t:
-                    pos = t.pos
+                    pos = t.nodePath.getPos()
                     rad = 10.5
                     height = 10.0
                     t_impact = trajectory.checkCollisionWithCylinderSides(pos, rad, height)
@@ -1508,7 +1511,7 @@ class DistributedCannon(DistributedObject.DistributedObject):
          (0, 1, 5, 4),
          (0, 4, 7, 3),
          (1, 2, 6, 5)]
-        for i in xrange(len(vertices)):
+        for i in range(len(vertices)):
             vertex = vertices[i]
             vertexWriter.addData3f(vertex[0], vertex[1], vertex[2])
             colorWriter.addData4f(*colors[i])
@@ -1577,4 +1580,5 @@ class DistributedCannon(DistributedObject.DistributedObject):
 
     def turnOnBumperCollision(self, whatever = 0):
         if self.bumperCol:
-            self.bumperCol.setCollideMask(ToontownGlobals.WallBitmask)# decompiled 0 files: 0 okay, 1 failed, 0 verify failed
+            self.bumperCol.setCollideMask(ToontownGlobals.WallBitmask)
+            

@@ -130,5 +130,7 @@ def getAllRentalItems():
     list = []
     for rentalType in (ToontownGlobals.RentalCannon,):
         list.append(CatalogRentalItem(rentalType, 2880, 1000))
+    for rentalType in (ToontownGlobals.RentalGameTable,):
+        list.append(CatalogRentalItem(rentalType, 2890, 1000))
 
     return list
