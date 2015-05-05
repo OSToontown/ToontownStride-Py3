@@ -451,7 +451,6 @@ from toontown.estate import DistributedAnimatedStatuary/AI
 from toontown.estate import DistributedPlantBase/AI
 from toontown.estate import DistributedLawnDecor/AI
 from toontown.minigame import DistributedTravelGame/AI
-from toontown.minigame import DistributedPairingGame/AI
 from toontown.minigame import DistributedVineGame/AI
 from toontown.golf import DistributedPhysicsWorld/AI
 from toontown.golf import DistributedGolfHole/AI
@@ -2789,16 +2788,6 @@ dclass DistributedTravelGame : DistributedMinigame {
   setMinigames(uint8[], uint8[]) broadcast;
   setBonuses(uint8[], uint8[]) broadcast;
   setBoardIndex(uint8) required broadcast ram;
-};
-
-dclass DistributedPairingGame : DistributedMinigame {
-  setDeckSeed(uint32) required broadcast ram;
-  setMaxOpenCards(uint8) broadcast ram;
-  openCardRequest(int16, int16) airecv clsend;
-  openCardResult(int16, uint32, int16, int8, int16[]) broadcast;
-  reportDone() airecv clsend;
-  setEveryoneDone() broadcast;
-  setSignaling(uint32) clsend broadcast;
 };
 
 struct golfData {

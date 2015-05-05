@@ -8301,12 +8301,6 @@ TravelGameGotBonus = '%(name)s got a bonus of %(numBeans)s Jellybeans!'
 TravelGameNoOneGotBonus = 'No one reached their secret goal.  Everyone gets 1 Jellybean.'
 TravelGameConvertingVotesToBeans = 'Converting some votes to Jellybeans...'
 TravelGameGoingBackToShop = "Only 1 toon left. Going to Goofy's Gag Shop."
-PairingGameTitle = 'Toon Memory Game'
-PairingGameInstructions = 'Press Delete to open a card. Match 2 cards to score a point.  Make a match with the bonus glow and earn an extra point.  Earn more points by keeping the flips low.'
-PairingGameInstructionsMulti = 'Press Delete to open a card. Press Control to signal another toon to open a card. Match 2 cards to score a point.  Make a match with the bonus glow and earn an extra point.  Earn more points by keeping the flips low.'
-PairingGamePerfect = 'PERFECT!!'
-PairingGameFlips = 'Flips:'
-PairingGamePoints = 'Points:'
 TrolleyHolidayStart = 'Trolley Tracks is about to begin!  Board any trolley with 2 or more toons to play.'
 TrolleyHolidayOngoing = 'Welcome! Trolley Tracks is currently in progress.'
 TrolleyHolidayEnd = "That's all for today's Trolley Tracks.  See you next week!"
@@ -8861,7 +8855,6 @@ InteractivePropTrackBonusTerms = {0: 'Super Toon-Up!',
  4: 'Super Throw!',
  5: 'Super Squirt!',
  6: ''}
-PlayingCardUnknown = 'Card Name is unknown'
 GloveSameColorMessage = 'You already have those gloves!'
 GloveNoMoneyMessage = "You don't have enough jellybeans!"
 GloveSuccessMessage = 'Have fun with your new gloves!'
