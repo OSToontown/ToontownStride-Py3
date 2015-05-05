@@ -1,16 +1,19 @@
-# Python artifacts:
+# Python artifacts
 *.pyc
 
 # PyCharm
 .idea
 
-# Mac directory info:
+# Mac directory info
 .DS_Store
 
-# Shortcuts:
+# Shortcuts
 *.lnk
 
-# Game-specific files and directories:
+# Git
+*.rej
+
+# Game-specific files and directories
 preferences.json
 *.json
 logs/

@@ -1059,23 +1059,20 @@ class BuildingQuest(CogQuest):
             type = TTLocalizer.Cog
         else:
             type = self.trackNames[self.trackCodes.index(buildingTrack)]
-        floors = TTLocalizer.QuestsBuildingQuestFloorNumbers[self.getNumFloors() - 1]
+        floors = ''
 
         if self.isCogdo():
-            if count == 1:
-                return TTLocalizer.QuestsCogdoQuestDesc
+            if buildingTrack == Any:
+                text = TTLocalizer.QuestsCogdoQuestDescU if count == 1 else TTLocalizer.QuestsCogdoQuestDescUM
             else:
-                return TTLocalizer.QuestsCogdoQuestDescC
+                text = TTLocalizer.QuestsCogdoQuestDesc if count == 1 else TTLocalizer.QuestsCogdoQuestDescM
         else:
+            floors = TTLocalizer.QuestsBuildingQuestFloorNumbers[self.getNumFloors() - 1]
+            
             if count == 1:
-                if floors == '':
-                    text = TTLocalizer.QuestsBuildingQuestDesc
-                else:
-                    text = TTLocalizer.QuestsBuildingQuestDescF
-            elif floors == '':
-                text = TTLocalizer.QuestsBuildingQuestDescC
+                text = TTLocalizer.QuestsBuildingQuestDesc if floors == '' else TTLocalizer.QuestsBuildingQuestDescF
             else:
-                text = TTLocalizer.QuestsBuildingQuestDescCF
+                text = TTLocalizer.QuestsBuildingQuestDescC if floors == '' else TTLocalizer.QuestsBuildingQuestDescCF
 
         return (text % {'count': count,
           'floors': floors,
@@ -1089,32 +1086,29 @@ class BuildingQuest(CogQuest):
             return getFinishToonTaskSCStrings(toNpcId)
         count = self.getNumBuildings()
         buildingTrack = self.getBuildingTrack()
+        floors = ''
+        
         if buildingTrack == Any:
             type = TTLocalizer.Cog
         else:
             type = self.trackNames[self.trackCodes.index(buildingTrack)]
-        floors = TTLocalizer.QuestsBuildingQuestFloorNumbers[self.getNumFloors() - 1]
         
         if self.isCogdo():
-            if count == 1:
-                return TTLocalizer.QuestsCogdoQuestDesc
+            if buildingTrack == Any:
+                text = TTLocalizer.QuestsCogdoQuestDescU if count == 1 else TTLocalizer.QuestsCogdoQuestDescMUI
             else:
-                return TTLocalizer.QuestsCogdoQuestDescI
+                text = TTLocalizer.QuestsCogdoQuestDesc if count == 1 else TTLocalizer.QuestsCogdoQuestDescMI
         else:
+            floors = TTLocalizer.QuestsBuildingQuestFloorNumbers[self.getNumFloors() - 1]
+        
             if count == 1:
-                if floors == '':
-                    text = TTLocalizer.QuestsBuildingQuestDesc
-                else:
-                    text = TTLocalizer.QuestsBuildingQuestDescF
-            elif floors == '':
-                text = TTLocalizer.QuestsBuildingQuestDescI
+                text = TTLocalizer.QuestsBuildingQuestDesc if floors == '' else TTLocalizer.QuestsBuildingQuestDescF
             else:
-                text = TTLocalizer.QuestsBuildingQuestDescIF
+                text = TTLocalizer.QuestsBuildingQuestDescI if floors == '' else TTLocalizer.QuestsBuildingQuestDescIF
         objective = text % {'floors': floors,
          'type': type}
-        location = self.getLocationName()
         return TTLocalizer.QuestsBuildingQuestSCString % {'objective': objective,
-         'location': location}
+         'location': self.getLocationName()}
 
     def getHeadlineString(self):
         return TTLocalizer.QuestsBuildingQuestHeadline
