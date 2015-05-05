@@ -20,7 +20,6 @@ import DistributedTugOfWarGameAI
 import DistributedTwoDGameAI
 import DistributedVineGameAI
 from otp.ai.MagicWordGlobal import *
-from toontown.minigame.TempMinigameAI import *
 from toontown.toonbase import ToontownGlobals
 
 

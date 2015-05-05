@@ -364,8 +364,7 @@ MinigameNames = {'race': RaceGameId,
  'ice': IceGameId,
  'thief': CogThiefGameId,
  '2d': TwoDGameId,
- 'photo': PhotoGameId,
- 'template': MinigameTemplateId}
+ 'photo': PhotoGameId}
 MinigameTemplateId = -1
 MinigameIDs = (RaceGameId,
  CannonGameId,
