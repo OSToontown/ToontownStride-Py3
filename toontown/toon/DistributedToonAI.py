@@ -4234,6 +4234,11 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.redeemedCodes.append(code)
             self.b_setRedeemedCodes(self.redeemedCodes)
 
+    def removeCode(self, code):
+        if self.isCodeRedeemed(code):
+            self.redeemedCodes.remove(code)
+            self.b_setRedeemedCodes(self.redeemedCodes)
+
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[str, int, int])
 def cheesyEffect(value, hood=0, expire=0):
@@ -5121,3 +5126,12 @@ def emblems(silver=10, gold=10):
 @magicWord(category=CATEGORY_PROGRAMMER)
 def catalog():
     simbase.air.catalogManager.deliverCatalogFor(spellbook.getTarget())
+
+@magicWord(category=CATEGORY_PROGRAMMER, types=[str])
+def remCode(code):
+    av = spellbook.getTarget()
+    if av.isCodeRedeemed(code):
+        av.removeCode(code)
+        return 'Player can now reuse the code %s' % code
+    else:
+        return "Player hasn't redeemed this code!"
