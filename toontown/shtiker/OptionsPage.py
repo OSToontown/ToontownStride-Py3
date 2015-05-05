@@ -683,6 +683,12 @@ class CodesTabPage(DirectFrame):
         elif result == 4:
             self.resultPanel['image'] = self.resultPanelErrorGui
             self.resultPanel['text'] = TTLocalizer.CdrResultAlreadyRedeemed
+        elif result == 5:
+            self.resultPanel['image'] = self.resultPanelErrorGui
+            self.resultPanel['text'] = TTLocalizer.CdrResultNotReady
+        elif result == 6:
+            self.resultPanel['image'] = self.resultPanelErrorGui
+            self.resultPanel['text'] = TTLocalizer.CdrResultNotEligible          
         if result == 0:
             self.successSfx.play()
         else:
