@@ -3,7 +3,6 @@ from PurchaseManagerConstants import *
 from direct.distributed.ClockDelta import *
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
-from toontown.minigame import TravelGameGlobals
 
 class PurchaseManager(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('PurchaseManager')
@@ -59,14 +58,10 @@ class PurchaseManager(DistributedObject.DistributedObject):
              self.moneyArray,
              self.avIds,
              self.playerStates,
-             remain,
-             self.metagameRound,
-             self.votesArray])
+             remain])
 
     def calcHasLocalToon(self):
         retval = base.localAvatar.doId not in self.newbieIds and base.localAvatar.doId in self.avIds
-        if self.metagameRound > -1 and self.metagameRound < TravelGameGlobals.FinalMetagameRoundIndex:
-            retval = base.localAvatar.doId in self.avIds
         self.notify.debug('calcHasLocalToon returning %s' % retval)
         return retval
 
@@ -98,11 +93,3 @@ class PurchaseManager(DistributedObject.DistributedObject):
             self.ignore('boughtGag')
             self.d_setInventory(base.localAvatar.inventory.makeNetString(), base.localAvatar.getMoney(), 1)
             messenger.send('purchaseOver', [self.playAgain])
-
-    def setMetagameRound(self, round):
-        self.notify.debug('setMetagameRound: %s' % (round,))
-        self.metagameRound = round
-
-    def setVotesArray(self, votesArray):
-        self.notify.debug('setVotesArray: %s' % votesArray)
-        self.votesArray = votesArray

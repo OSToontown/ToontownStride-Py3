@@ -51,8 +51,6 @@ class DistributedMinigame(DistributedObject.DistributedObject):
         self.trolleyZoneOverride = None
         self.hasLocalToon = 0
         self.frameworkFSM.enterInitialState()
-        self.startingVotes = {}
-        self.metagameRound = -1
         self._telemLimiter = None
         return
 
@@ -429,16 +427,3 @@ class DistributedMinigame(DistributedObject.DistributedObject):
 
     def unsetEmotes(self):
         Emote.globalEmote.releaseAll(base.localAvatar)
-
-    def setStartingVotes(self, startingVotesArray):
-        if not len(startingVotesArray) == len(self.avIdList):
-            self.notify.error('length does not match, startingVotes=%s, avIdList=%s' % (startingVotesArray, self.avIdList))
-            return
-        for index in xrange(len(self.avIdList)):
-            avId = self.avIdList[index]
-            self.startingVotes[avId] = startingVotesArray[index]
-
-        self.notify.debug('starting votes = %s' % self.startingVotes)
-
-    def setMetagameRound(self, metagameRound):
-        self.metagameRound = metagameRound

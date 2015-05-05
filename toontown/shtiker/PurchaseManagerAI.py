@@ -6,14 +6,13 @@ import copy
 from direct.task.Task import Task
 from direct.distributed import DistributedObjectAI
 from direct.directnotify import DirectNotifyGlobal
-from toontown.minigame import TravelGameGlobals
 from toontown.toonbase import ToontownGlobals
 from toontown.minigame import MinigameGlobals
 
 class PurchaseManagerAI(DistributedObjectAI.DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('PurchaseManagerAI')
 
-    def __init__(self, air, avArray, mpArray, previousMinigameId, trolleyZone, newbieIdList = [], votesArray = None, metagameRound = -1, desiredNextGame = None):
+    def __init__(self, air, avArray, mpArray, previousMinigameId, trolleyZone, newbieIdList = []):
         DistributedObjectAI.DistributedObjectAI.__init__(self, air)
         self.avIds = copy.deepcopy(avArray)
         self.minigamePoints = copy.deepcopy(mpArray)
@@ -21,12 +20,6 @@ class PurchaseManagerAI(DistributedObjectAI.DistributedObjectAI):
         self.trolleyZone = trolleyZone
         self.newbieIds = copy.deepcopy(newbieIdList)
         self.isShutdown = 0
-        if votesArray:
-            self.votesArray = copy.deepcopy(votesArray)
-        else:
-            self.votesArray = []
-        self.metagameRound = metagameRound
-        self.desiredNextGame = desiredNextGame
         for i in xrange(len(self.avIds), 4):
             self.avIds.append(0)
 
@@ -79,16 +72,6 @@ class PurchaseManagerAI(DistributedObjectAI.DistributedObjectAI):
                  self.trolleyZone,
                  self.avIds,
                  self.minigamePoints[avIndex]))
-                if self.metagameRound == TravelGameGlobals.FinalMetagameRoundIndex:
-                    numPlayers = len(self.votesArray)
-                    extraBeans = self.votesArray[avIndex] * TravelGameGlobals.PercentOfVotesConverted[numPlayers] / 100.0
-                    if self.air.holidayManager.isHolidayRunning(ToontownGlobals.JELLYBEAN_TROLLEY_HOLIDAY) or self.air.holidayManager.isHolidayRunning(ToontownGlobals.JELLYBEAN_TROLLEY_HOLIDAY_MONTH):
-                        extraBeans *= MinigameGlobals.JellybeanTrolleyHolidayScoreMultiplier
-                    av.addMoney(extraBeans)
-                    self.air.writeServerEvent('minigame_extraBeans', avId, '%s|%s|%s|%s' % (self.previousMinigameId,
-                     self.trolleyZone,
-                     self.avIds,
-                     extraBeans))
 
         self.receivingInventory = 1
         self.receivingButtons = 1
@@ -104,15 +87,13 @@ class PurchaseManagerAI(DistributedObjectAI.DistributedObjectAI):
         for avId in self.avIds:
             if avId not in self.newbieIds:
                 avIds.append(avId)
-            elif self.metagameRound > -1 and self.metagameRound < TravelGameGlobals.FinalMetagameRoundIndex:
-                avIds.append(avId)
 
         return avIds
 
     def getMinigamePoints(self):
         return self.minigamePoints
 
-    def getavIds(self):
+    def getAvIds(self):
         return self.avIds
 
     def getNewbieIds(self):
@@ -255,18 +236,6 @@ class PurchaseManagerAI(DistributedObjectAI.DistributedObjectAI):
         self.receivingInventory = 1
         return None
 
-    def getVotesArrayMatchingPlayAgainList(self, playAgainList):
-        retval = []
-        for playAgainIndex in xrange(len(playAgainList)):
-            avId = playAgainList[playAgainIndex]
-            origIndex = self.avIds.index(avId)
-            if self.votesArray and origIndex < len(self.votesArray):
-                retval.append(self.votesArray[origIndex])
-            else:
-                retval.append(0)
-
-        return retval
-
     def shutDown(self):
         if self.isShutdown:
             self.notify.warning('Got shutDown twice')
@@ -275,20 +244,7 @@ class PurchaseManagerAI(DistributedObjectAI.DistributedObjectAI):
         from toontown.minigame import MinigameCreatorAI
         playAgainNum = self.getNumPlayAgain()
         if playAgainNum > 0:
-            playAgainList = self.getPlayAgainList()
-            newVotesArray = self.getVotesArrayMatchingPlayAgainList(playAgainList)
-            newRound = self.metagameRound
-            newbieIdsToPass = []
-            if newRound > -1:
-                newbieIdsToPass = self.newbieIds
-                if newRound < TravelGameGlobals.FinalMetagameRoundIndex:
-                    newRound += 1
-                else:
-                    newRound = 0
-                    newVotesArray = [TravelGameGlobals.DefaultStartingVotes] * len(playAgainList)
-            if len(playAgainList) == 1 and simbase.config.GetBool('metagame-min-2-players', 1):
-                newRound = -1
-            MinigameCreatorAI.createMinigame(self.air, playAgainList, self.trolleyZone, minigameZone=self.zoneId, previousGameId=self.previousMinigameId, newbieIds=newbieIdsToPass, startingVotes=newVotesArray, metagameRound=newRound, desiredNextGame=self.desiredNextGame)
+            MinigameCreatorAI.createMinigame(self.air, self.getPlayAgainList(), self.trolleyZone, minigameZone=self.zoneId, previousGameId=self.previousMinigameId, newbieIds=self.newbieIds)
         else:
             MinigameCreatorAI.releaseMinigameZone(self.zoneId)
         self.requestDelete()
@@ -359,9 +315,3 @@ class PurchaseManagerAI(DistributedObjectAI.DistributedObjectAI):
 
     def handlePlayerLeaving(self, avId):
         pass
-
-    def getMetagameRound(self):
-        return self.metagameRound
-
-    def getVotesArray(self):
-        return self.votesArray

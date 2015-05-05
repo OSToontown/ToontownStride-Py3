@@ -450,7 +450,6 @@ from toontown.estate import DistributedChangingStatuary/AI
 from toontown.estate import DistributedAnimatedStatuary/AI
 from toontown.estate import DistributedPlantBase/AI
 from toontown.estate import DistributedLawnDecor/AI
-from toontown.minigame import DistributedTravelGame/AI
 from toontown.minigame import DistributedVineGame/AI
 from toontown.golf import DistributedPhysicsWorld/AI
 from toontown.golf import DistributedGolfHole/AI
@@ -1184,8 +1183,6 @@ dclass DistributedTarget : DistributedObject {
 dclass DistributedMinigame : DistributedObject {
   setParticipants(uint32[]) broadcast ram required;
   setTrolleyZone(uint32) broadcast ram required;
-  setStartingVotes(uint16[]) broadcast ram required;
-  setMetagameRound(int8) broadcast ram required;
   setDifficultyOverrides(int32, int32) broadcast ram required;
   setAvatarJoined() airecv clsend;
   setAvatarReady() airecv clsend;
@@ -1648,8 +1645,6 @@ dclass PurchaseManager : DistributedObject {
   setPlayerMoney(uint16, uint16, uint16, uint16) required broadcast ram;
   setPlayerStates(uint8, uint8, uint8, uint8) required broadcast ram;
   setCountdown(int16) required broadcast ram;
-  setMetagameRound(int8) required broadcast ram;
-  setVotesArray(int16[]) required broadcast ram;
   requestExit() airecv clsend;
   requestPlayAgain() airecv clsend;
   setInventory(blob, int16, uint8) airecv clsend;
@@ -2777,17 +2772,6 @@ dclass DistributedFlower : DistributedPlantBase {
 dclass DistributedGagTree : DistributedPlantBase {
   setWilted(int8) required broadcast ram;
   requestHarvest() airecv clsend;
-};
-
-dclass DistributedTravelGame : DistributedMinigame {
-  setTimerStartTime(int16) broadcast;
-  setAvatarChoice(uint16, uint8) airecv clsend;
-  setAvatarVotes(uint32, uint16) broadcast;
-  setAvatarChose(uint32) broadcast;
-  setServerChoices(int16[], uint8[], uint8, uint8) broadcast;
-  setMinigames(uint8[], uint8[]) broadcast;
-  setBonuses(uint8[], uint8[]) broadcast;
-  setBoardIndex(uint8) required broadcast ram;
 };
 
 struct golfData {
