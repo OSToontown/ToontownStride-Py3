@@ -3871,6 +3871,7 @@ CdrResultExpiredCode = "We're sorry. This code has expired."
 CdrResultMailboxFull = 'Your mailbox is full. Please remove an item, then enter your code again.'
 CdrResultAlreadyRedeemed = "You've already redeemed this item!"
 CdrResultNotReady = "This code can't be used yet!"
+CdrResultNotEligible = 'You are not eligible to use this code!'
 TrackPageTitle = 'Gag Track Training'
 TrackPageShortTitle = 'Gag Training'
 TrackPageSubtitle = 'Complete ToonTasks to learn how to use new gags!'
