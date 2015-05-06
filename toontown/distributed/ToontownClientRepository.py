@@ -78,6 +78,8 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.csm = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_CLIENT_SERVICES_MANAGER, 'ClientServicesManager')
         self.ttuFriendsManager = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_TTU_FRIENDS_MANAGER, 'TTUFriendsManager')
 
+        self.argManager = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_TTU_ARG_MANAGER, 'ARGManager')
+
         self.furnitureManager = None
         self.objectManager = None
         self.openAvatarPanels = set()
