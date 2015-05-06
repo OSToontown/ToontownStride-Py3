@@ -57,9 +57,7 @@ dclass TimeManager : DistributedObject {
   setExceptionInfo(string(0-1024)) airecv clsend;
 };
 
-dclass DistributedDirectory : DistributedObject {
-  setParentingRules(string, string) broadcast ram;
-};
+dclass DistributedDirectory : DistributedObject {};
 
 dclass DistributedDistrict : DistributedObject {
   setName(string) required broadcast ram;
