@@ -8,22 +8,11 @@ from pandac.PandaModules import Vec3
 # Portable Hole settings
 Hood2Details = {
     # hood : [pos, speedchatIndex, destination]
-    2665: [(6, 7, 9), 103, 2665], # TTC, Howdy!
-    1832: [(6, 7, 9), 103, 1832], # Howdy!
-    5502: [(6, 7, 9), 103, 5502], # Howdy!
-    4612: [(6, 7, 9), 103, 4612], # Howdy!
-    3636: [(6, 7, 9), 103, 3636], # Howdy!
-    9705: [(6, 7, 9), 103, 9705], # Howdy!
-    3823: [(6, 7, 9), 103, 3823], # Howdy!
+    2514: [(6, 7, 9), 109, 2514] # TTC, Hello?
 }
 Interior2Messages = {
-    2665: ["Mary: Oh, Hello! Oh, Hello! Say, that's the keyword that Doctor Surlee told myself and other shopkeepers just like me to remember. I take it he sent you?", "Mary: The word I'm supposed to remember is 'Sillyness'"], # DD to TTC
-    1832: ["Melville: Say, you don't look like Doctor Surlee. That is the trigger phrase, though...", "Melville: He told me to remember 'Lafter'"], # TTC to TB
-    5502: ["HQ Officer: Oh, Surlee sent you? Keep this key safe, he said it's going to be important later on.", "HQ Officer: The word is 'Springy Partlicles' -- Whatever that means."], # TB to MML
-    4612: ["Dr. Fret: Aahhh, brilliant. Surlee is up to something again, I'm sure.", "Dr. Fret: He told me to remember 'Creating Equiment'"], # MML to DG
-    3636: ["Gus Gooseburger: Keep it down! Surlee didn't give me these gloves to just give the word away.", "Gus Gooseburger: Just kidding! I have no idea why he wanted me to remember this word. It's 'Portil'"], # DG to DDL
-    9705: ["Drowsy Dave: Huh? Oh, oh! Hi. Surlee's word, right. Uhh...", "Drowsy Dave: I seem to have dozed off... Professor Flake is a good friend of the Doc, though. I bet he knows."], # DDL to AA
-    3823: ["Professor Flake: Hmm? So soon? Surlee told me that something big would be happening whenever he needed this...", "Professor Flake: I hope that you have a photographic memory like myself, because this is a long one."], # DDL to AA
+    2514: ["Banker Bob: I have a very important message for you. Do not forget it.", "Banker Bob: Li0uLiAuLSAuLS0gLS4uLiAtLS0gLSAuLi4gLyAuLS4uIC0tLSAuLi4gLg=="]
+
 }
 
 class ARGManager(DistributedObjectGlobal):
