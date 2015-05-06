@@ -41,6 +41,7 @@ class OTPClientRepository(ClientRepositoryBase):
         self.parentMgr.registerParent(OTPGlobals.SPHidden, NodePath())
         self.timeManager = None
 
+        self._proactiveLeakChecks = config.GetBool('crash-on-proactive-leak-detect', 1)
         self.activeDistrictMap = {}
         self.telemetryLimiter = TelemetryLimiter()
         self.serverVersion = serverVersion
