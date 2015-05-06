@@ -36,7 +36,6 @@ class OTPClientRepository(ClientRepositoryBase):
         self.playToken = launcher.getPlayToken()
         self.wantMagicWords = False
 
-        self.userSignature = base.config.GetString('signature', 'none')
         self.parentMgr.registerParent(OTPGlobals.SPRender, base.render)
         self.parentMgr.registerParent(OTPGlobals.SPHidden, NodePath())
         self.timeManager = None
@@ -56,8 +55,7 @@ class OTPClientRepository(ClientRepositoryBase):
                   self.exitConnect, [
                       'noConnection',
                       'login',
-                      'failedToConnect',
-                      'failedToGetServerConstants']),
+                      'failedToConnect']),
             State('login',
                   self.enterLogin,
                   self.exitLogin, [
@@ -71,12 +69,6 @@ class OTPClientRepository(ClientRepositoryBase):
                   self.exitFailedToConnect, [
                       'connect',
                       'shutdown']),
-            State('failedToGetServerConstants',
-                  self.enterFailedToGetServerConstants,
-                  self.exitFailedToGetServerConstants, [
-                      'connect',
-                      'shutdown',
-                      'noConnection']),
             State('shutdown',
                   self.enterShutdown,
                   self.exitShutdown, [
