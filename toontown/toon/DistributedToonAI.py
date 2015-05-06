@@ -4051,14 +4051,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def staticGetLogicalZoneChangeAllEvent():
         return 'DOLogicalChangeZone-all'
 
-    def _garbageInfo(self):
-        if hasattr(self, 'inventory'):
-            if not hasattr(self.inventory, '_createStack'):
-                return 'inventory has no create stack'
-            else:
-                return self.inventory._createStack
-        return 'no inventory'
-
     def flagAv(self, avId, reason, params):
         self.notify.debug('reason: %s timepassed: %s' % (reason, globalClock.getFrameTime() - DistributedToonAI.lastFlagAvTime))
         if reason == AV_FLAG_REASON_TOUCH and globalClock.getFrameTime() - DistributedToonAI.lastFlagAvTime > AV_TOUCH_CHECK_DELAY_AI:

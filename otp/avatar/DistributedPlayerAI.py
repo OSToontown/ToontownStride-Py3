@@ -1,4 +1,3 @@
-from direct.showbase import GarbageReport
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.MsgTypes import CLIENTAGENT_EJECT
 

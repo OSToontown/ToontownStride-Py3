@@ -7,34 +7,17 @@ from direct.distributed.PyDatagramIterator import PyDatagramIterator
 from direct.fsm.ClassicFSM import ClassicFSM
 from direct.fsm.State import State
 from direct.gui.DirectGui import *
-from direct.interval.IntervalGlobal import ivalMgr
-from direct.showbase import LeakDetectors
-from direct.showbase import MessengerLeakDetector
-from direct.showbase import PythonUtil, GarbageReport, BulletinBoardWatcher
-from direct.showbase.ContainerLeakDetector import ContainerLeakDetector
-from direct.showbase.GarbageReportScheduler import GarbageReportScheduler
 from direct.task import Task
-import gc
-import os
 from pandac.PandaModules import *
-import random
-import string
-import sys
-import time
-import types
-
-from otp.avatar import Avatar
-from otp.avatar import DistributedAvatar
+from otp.avatar import Avatar, DistributedAvatar
 from otp.avatar.DistributedPlayer import DistributedPlayer
-from otp.distributed import DCClassImports
-from otp.distributed import OtpDoGlobals
+from otp.distributed import DCClassImports, OtpDoGlobals
 from otp.distributed.OtpDoGlobals import *
 from otp.distributed.TelemetryLimiter import TelemetryLimiter
-from otp.otpbase import OTPGlobals
-from otp.otpbase import OTPLocalizer
+from otp.otpbase import OTPGlobals, OTPLocalizer
 from otp.otpgui import OTPDialog
 from toontown.chat.ChatGlobals import *
-
+import sys, time, types, random
 
 class OTPClientRepository(ClientRepositoryBase):
     notify = directNotify.newCategory('OTPClientRepository')
@@ -58,28 +41,6 @@ class OTPClientRepository(ClientRepositoryBase):
         self.parentMgr.registerParent(OTPGlobals.SPHidden, NodePath())
         self.timeManager = None
 
-        if config.GetBool('detect-leaks', 0) or config.GetBool('client-detect-leaks', 0):
-            self.startLeakDetector()
-
-        if config.GetBool('detect-messenger-leaks', 0) or config.GetBool('ai-detect-messenger-leaks', 0):
-            self.messengerLeakDetector = MessengerLeakDetector.MessengerLeakDetector('client messenger leak detector')
-            
-            if config.GetBool('leak-messages', 0):
-                MessengerLeakDetector._leakMessengerObject()
-
-        if config.GetBool('run-garbage-reports', 0) or config.GetBool('client-run-garbage-reports', 0):
-            noneValue = -1.0
-            reportWait = config.GetFloat('garbage-report-wait', noneValue)
-            reportWaitScale = config.GetFloat('garbage-report-wait-scale', noneValue)
-            if reportWait == noneValue:
-                reportWait = 60.0 * 2.0
-            if reportWaitScale == noneValue:
-                reportWaitScale = None
-            self.garbageReportScheduler = GarbageReportScheduler(waitBetween=reportWait,
-                                                                 waitScale=reportWaitScale)
-
-        self._proactiveLeakChecks = config.GetBool('proactive-leak-checks', 1) or config.GetBool('client-proactive-leak-checks', 1)
-        self._crashOnProactiveLeakDetect = config.GetBool('crash-on-proactive-leak-detect', 1)
         self.activeDistrictMap = {}
         self.telemetryLimiter = TelemetryLimiter()
         self.serverVersion = serverVersion
@@ -314,21 +275,6 @@ class OTPClientRepository(ClientRepositoryBase):
             if number >= 0:
                 self.dclassesByNumber[number] = dclass
 
-    def startLeakDetector(self):
-        if hasattr(self, 'leakDetector'):
-            return False
-
-        firstCheckDelay = config.GetFloat('leak-detector-first-check-delay', 2 * 60.0)
-        self.leakDetector = ContainerLeakDetector('client container leak detector', firstCheckDelay=firstCheckDelay)
-        self.objectTypesLeakDetector = LeakDetectors.ObjectTypesLeakDetector()
-        self.garbageLeakDetector = LeakDetectors.GarbageLeakDetector()
-        self.renderLeakDetector = LeakDetectors.SceneGraphLeakDetector(render)
-        self.hiddenLeakDetector = LeakDetectors.SceneGraphLeakDetector(hidden)
-        self.cppMemoryUsageLeakDetector = LeakDetectors.CppMemoryUsage()
-        self.taskLeakDetector = LeakDetectors.TaskLeakDetector()
-        self.messageListenerTypesLeakDetector = LeakDetectors.MessageListenerTypesLeakDetector()
-        return True
-
     def getGameDoId(self):
         return self.GameGlobalsId
 
@@ -512,9 +458,6 @@ class OTPClientRepository(ClientRepositoryBase):
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def exitShutdown(self):
-        if hasattr(self, 'garbageWatcher'):
-            self.garbageWatcher.destroy()
-            del self.garbageWatcher
         self.handler = None
         return
 
@@ -825,158 +768,6 @@ class OTPClientRepository(ClientRepositoryBase):
     def exitPlayingGame(self):
         self.notify.info('sending clientLogout')
         messenger.send('clientLogout')
-
-    def detectLeakedGarbage(self, callback = None):
-        if not __debug__:
-            return 0
-        self.notify.info('checking for leaked garbage...')
-        if gc.garbage:
-            self.notify.warning('garbage already contains %d items' % len(gc.garbage))
-        report = GarbageReport.GarbageReport('logout', verbose=True)
-        numCycles = report.getNumCycles()
-        if numCycles:
-            msg = "You can't leave until you take out your garbage. See report above & base.garbage"
-            self.notify.info(msg)
-        report.destroy()
-        return numCycles
-
-    def detectLeakedTasks(self, extraTasks = None):
-        allowedTasks = ['dataLoop',
-         'resetPrevTransform',
-         'doLaterProcessor',
-         'eventManager',
-         'readerPollTask',
-         'heartBeat',
-         'gridZoneLoop',
-         'igLoop',
-         'audioLoop',
-         'asyncLoad',
-         'collisionLoop',
-         'shadowCollisionLoop',
-         'ivalLoop',
-         'downloadSequence',
-         'patchAndHash',
-         'slowCloseShardCallback',
-         'tkLoop',
-         'manager-update',
-         'downloadStallTask',
-         'clientSleep',
-         jobMgr.TaskName,
-         self.GarbageCollectTaskName,
-         'garbageCollectStates',
-         TelemetryLimiter.TaskName]
-        if extraTasks is not None:
-            allowedTasks.extend(extraTasks)
-        problems = []
-        for task in taskMgr.getTasks():
-            if not hasattr(task, 'name'):
-                continue
-            if task.name in allowedTasks:
-                continue
-            else:
-                if hasattr(task, 'debugInitTraceback'):
-                    print task.debugInitTraceback
-                problems.append(task.name)
-
-        if problems:
-            print taskMgr
-            msg = "You can't leave until you clean up your tasks: {"
-            for task in problems:
-                msg += '\n  ' + task
-
-            msg += '}\n'
-            self.notify.info(msg)
-            return len(problems)
-        else:
-            return 0
-        return
-
-    def detectLeakedEvents(self, extraHooks = None):
-        allowedHooks = ['destroy-fade',
-         'f9',
-         'meta-q',
-         'meta-q-repeat',
-         'meta-m',
-         'meta-q-repeat',
-         'meta-h',
-         'meta-h-repeat',
-         'control-f9',
-         'newDistributedDirectory',
-         'page_down',
-         'page_up',
-         'panda3d-render-error',
-         'PandaPaused',
-         'PandaRestarted',
-         'press-mouse2-fade',
-         'print-fade',
-         'release-mouse2-fade',
-         'resetClock',
-         'window-event',
-         'TCRSetZoneDone',
-         'aspectRatioChanged',
-         'newDistributedDirectory',
-         CConnectionRepository.getOverflowEventName(),
-         self._getLostConnectionEvent(),
-         'render-texture-targets-changed',
-         'gotExtraFriendHandles']
-        if hasattr(loader, 'hook'):
-            allowedHooks.append(loader.hook)
-        if extraHooks is not None:
-            allowedHooks.extend(extraHooks)
-        problems = []
-        for hook in messenger.getEvents():
-            if hook not in allowedHooks:
-                problems.append(hook)
-
-        if problems:
-            msg = "You can't leave until you clean up your messenger hooks: {"
-            for hook in problems:
-                whoAccepts = messenger.whoAccepts(hook)
-                msg += '\n  %s' % hook
-                for obj in whoAccepts:
-                    msg += '\n   OBJECT:%s, %s %s' % (obj, obj.__class__, whoAccepts[obj])
-                    if hasattr(obj, 'getCreationStackTraceCompactStr'):
-                        msg += '\n   CREATIONSTACKTRACE:%s' % obj.getCreationStackTraceCompactStr()
-                    else:
-                        try:
-                            value = whoAccepts[obj]
-                            callback = value[0]
-                            guiObj = callback.im_self
-                            if hasattr(guiObj, 'getCreationStackTraceCompactStr'):
-                                msg += '\n   CREATIONSTACKTRACE:%s' % guiObj.getCreationStackTraceCompactStr()
-                        except:
-                            pass
-
-            msg += '\n}\n'
-            self.notify.warning(msg)
-            return len(problems)
-        else:
-            return 0
-        return
-
-    def detectLeakedIntervals(self):
-        numIvals = ivalMgr.getNumIntervals()
-        if numIvals > 0:
-            print "You can't leave until you clean up your intervals: {"
-            for i in xrange(ivalMgr.getMaxIndex()):
-                ival = None
-                if i < len(ivalMgr.ivals):
-                    ival = ivalMgr.ivals[i]
-                if ival == None:
-                    ival = ivalMgr.getCInterval(i)
-                if ival:
-                    print ival
-                    if hasattr(ival, 'debugName'):
-                        print ival.debugName
-                    if hasattr(ival, 'debugInitTraceback'):
-                        print ival.debugInitTraceback
-
-            print '}'
-            self.notify.info("You can't leave until you clean up your intervals.")
-            return numIvals
-        else:
-            return 0
-        return
 
     def _abandonShard(self):
         self.notify.error('%s must override _abandonShard' % self.__class__.__name__)
@@ -1475,18 +1266,6 @@ class OTPClientRepository(ClientRepositoryBase):
 
     def askAvatarKnown(self, avId):
         return 0
-
-    def hashFiles(self, pyc):
-        for dir in sys.path:
-            if dir == '':
-                dir = '.'
-            if os.path.isdir(dir):
-                for filename in os.listdir(dir):
-                    if filename.endswith('.pyo') or filename.endswith('.pyc') or filename.endswith('.py') or filename == 'library.zip':
-                        pathname = Filename.fromOsSpecific(os.path.join(dir, filename))
-                        hv = HashVal()
-                        hv.hashFile(pathname)
-                        pyc.mergeWith(hv)
 
     def queueRequestAvatarInfo(self, avId):
         pass

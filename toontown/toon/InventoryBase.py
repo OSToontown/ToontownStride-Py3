@@ -10,7 +10,6 @@ class InventoryBase(DirectObject.DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('InventoryBase')
 
     def __init__(self, toon, invStr = None):
-        self._createStack = str(StackTrace().compact())
         self.toon = toon
         if invStr == None:
             self.inventory = []
@@ -300,6 +299,3 @@ class InventoryBase(DirectObject.DirectObject):
 
         self.calcTotalProps()
         return None
-
-    def _garbageInfo(self):
-        return self._createStack
