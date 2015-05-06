@@ -16,7 +16,6 @@ class DistributedPartyManager(DistributedObject):
     def __init__(self, cr):
         DistributedObject.__init__(self, cr)
         base.cr.partyManager = self
-        self.allowUnreleased = False
         self.partyPlannerStyle = None
         self.partyPlannerName = None
         self.showDoid = False
@@ -41,16 +40,6 @@ class DistributedPartyManager(DistributedObject):
 
     def deallocateZoneIdFromPlannedParty(self, zoneId):
         self.sendUpdate('freeZoneIdFromPlannedParty', [base.localAvatar.doId, zoneId])
-
-    def allowUnreleasedClient(self):
-        return self.allowUnreleased
-
-    def setAllowUnreleaseClient(self, newValue):
-        self.allowUnreleased = newValue
-
-    def toggleAllowUnreleasedClient(self):
-        self.allowUnreleased = not self.allowUnreleased
-        return self.allowUnreleased
 
     def sendAddParty(self, hostId, startTime, endTime, isPrivate, inviteTheme, activities, decorations, inviteeIds):
         self.sendUpdate('addPartyRequest', [hostId,

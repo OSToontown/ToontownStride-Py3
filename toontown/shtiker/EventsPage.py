@@ -157,8 +157,6 @@ class EventsPage(ShtikerPage.ShtikerPage):
         else:
             textForDecoration = decorationName + ' x ' + str(count)
         assetName = PartyGlobals.DecorationIds.getString(decorBase.decorId)
-        if assetName == 'Hydra':
-            assetName = 'StageSummer'
         label = DirectLabel(relief=None, geom=self.decorationModels.find('**/partyDecoration_%s' % assetName), text=textForDecoration, text_scale=TTLocalizer.EPdecorationItemLabel, text_align=TextNode.ACenter, text_pos=(-0.01, -0.43), text_wordwrap=7.0)
         label['geom_scale'] = (2.6, 0.01, 0.05)
         label['geom_pos'] = (0.0, 0.0, -0.33)

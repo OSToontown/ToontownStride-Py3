@@ -13,8 +13,6 @@ class PartyEditorListElement(DirectButton):
         self.partyEditor = partyEditor
         self.id = id
         self.isDecoration = isDecoration
-        self.unreleased = self.calcUnreleased(id)
-        self.comingSoonTextScale = 1.0
         if self.isDecoration:
             self.name = TTLocalizer.PartyDecorationNameDict[self.id]['editor']
             colorList = ((1.0, 0.0, 1.0, 1.0),
@@ -22,10 +20,8 @@ class PartyEditorListElement(DirectButton):
              (0.0, 1.0, 1.0, 1.0),
              (0.5, 0.5, 0.5, 1.0))
             assetName = PartyGlobals.DecorationIds.getString(self.id)
-            if assetName == 'Hydra':
-                assetName = 'StageSummer'
             geom = self.partyEditor.decorationModels.find('**/partyDecoration_%s' % assetName)
-            if geom.isEmpty() or self.unreleased:
+            if geom.isEmpty():
                 helpGui = loader.loadModel('phase_3.5/models/gui/tt_m_gui_brd_help')
                 helpImageList = (helpGui.find('**/tt_t_gui_brd_helpUp'),
                  helpGui.find('**/tt_t_gui_brd_helpDown'),
@@ -35,12 +31,11 @@ class PartyEditorListElement(DirectButton):
                 geom3_color = (0.5, 0.5, 0.5, 1.0)
                 scale = Vec3(2.5, 2.5, 2.5)
                 geom_pos = (0.0, 0.0, 0.0)
-                self.comingSoonTextScale = 0.035
             else:
                 geom_pos = (0.0, 0.0, -3.0)
                 geom3_color = (0.5, 0.5, 0.5, 1.0)
                 scale = Vec3(0.06, 0.0001, 0.06)
-                if self.id in [PartyGlobals.DecorationIds.CogStatueVictory, PartyGlobals.DecorationIds.TubeCogVictory, PartyGlobals.DecorationIds.CogIceCreamVictory]:
+                if self.id in [PartyGlobals.DecorationIds.CogStatueVictory, PartyGlobals.DecorationIds.TubeCogVictory]:
                     geom_pos = (0.0, 0.0, -3.9)
                     scale = Vec3(0.05, 0.0001, 0.05)
         else:
@@ -58,7 +53,6 @@ class PartyEditorListElement(DirectButton):
             scale = 0.35
             geom3_color = (0.5, 0.5, 0.5, 1.0)
             geom_pos = (0.0, 0.0, 0.0)
-            self.comingSoonTextScale = 0.25
         optiondefs = (('geom', geom, None),
          ('geom3_color', geom3_color, None),
          ('geom_pos', geom_pos, None),
@@ -80,23 +74,6 @@ class PartyEditorListElement(DirectButton):
                 self.partyEditorGridElements.append(PartyEditorGridElement(self.partyEditor, self.id, self.isDecoration, self.checkSoldOutAndAffordability))
 
         self.activeGridElementIndex = -1
-        self.adjustForUnreleased()
-        return
-
-    def calcUnreleased(self, id):
-        if base.cr.partyManager.allowUnreleasedClient():
-            self.unreleased = False
-        elif self.isDecoration:
-            self.unreleased = id in PartyGlobals.UnreleasedDecorationIds
-        else:
-            self.unreleased = id in PartyGlobals.UnreleasedActivityIds
-        return self.unreleased
-
-    def adjustForUnreleased(self):
-        if self.unreleased:
-            textScale = self.comingSoonTextScale
-            comingSoon = DirectLabel(parent=self, text=TTLocalizer.PartyPlannerComingSoon, text_scale=textScale, text_fg=(1.0, 0, 0, 1.0), text_shadow=(0, 0, 0, 1), relief=None)
-            self['state'] = DirectGuiGlobals.DISABLED
         return
 
     def clearPartyGrounds(self):
@@ -157,10 +134,6 @@ class PartyEditorListElement(DirectButton):
             self['state'] = DirectGuiGlobals.NORMAL
             self.partyEditor.partyPlanner.elementBuyButton['text'] = TTLocalizer.PartyPlannerBuy
             self.partyEditor.partyPlanner.elementBuyButton['state'] = DirectGuiGlobals.NORMAL
-        if self.unreleased:
-            self['state'] = DirectGuiGlobals.DISABLED
-            self.partyEditor.partyPlanner.elementBuyButton['text'] = TTLocalizer.PartyPlannerCantBuy
-            self.partyEditor.partyPlanner.elementBuyButton['state'] = DirectGuiGlobals.DISABLED
 
     def clicked(self, mouseEvent):
         PartyEditorListElement.notify.debug("Element %s's icon was clicked" % self.name)

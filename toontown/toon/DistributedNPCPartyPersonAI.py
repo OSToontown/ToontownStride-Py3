@@ -30,11 +30,7 @@ class DistributedNPCPartyPersonAI(DistributedNPCToonBaseAI):
         self.busy = avId
         self.acceptOnce(self.air.getAvatarExitEvent(avId), self.__handleUnexpectedExit, extraArgs=[avId])
         parties = av.hostedParties
-        if not self.air.partyManager.canBuyParties():
-            flag = NPCToons.PARTY_MOVIE_COMINGSOON
-            self.d_setMovie(avId, flag)
-            self.sendClearMovie(None)
-        elif av.getTotalMoney() < PartyGlobals.MinimumPartyCost:
+        if av.getTotalMoney() < PartyGlobals.MinimumPartyCost:
             flag = NPCToons.PARTY_MOVIE_MINCOST
             self.d_setMovie(avId, flag)
             self.sendClearMovie(None)

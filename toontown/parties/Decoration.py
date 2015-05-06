@@ -123,26 +123,6 @@ class Decoration(NodePath):
             balloonRight.reparentTo(balloonRightLocator)
             self.heartBanner.loop('idle')
             self.heartBanner.reparentTo(self)
-        elif self.name == 'Hydra' or self.name == 'StageWinter':
-            if self.name == 'StageWinter':
-                self.hydra = Actor.Actor('phase_13/models/parties/tt_r_ara_pty_winterProps', {'dance': 'phase_13/models/parties/tt_a_ara_pty_hydra_dance'})
-            else:
-                self.hydra = Actor.Actor('phase_13/models/parties/tt_a_ara_pty_hydra_default', {'dance': 'phase_13/models/parties/tt_a_ara_pty_hydra_dance'})
-            st = random.randint(0, 10)
-            animIval = ActorInterval(self.hydra, 'dance')
-            animIvalDur = animIval.getDuration()
-            self.decSfx = loader.loadSfx('phase_13/audio/sfx/tt_s_ara_pty_propsShow_dance.ogg')
-            soundIval = SoundInterval(self.decSfx, node=self.hydra, listenerNode=base.localAvatar, volume=PartyGlobals.DECORATION_VOLUME, cutOff=PartyGlobals.DECORATION_CUTOFF, duration=animIvalDur)
-            self.animSeq = Parallel(animIval, soundIval)
-            self.animSeq.loop(st)
-            collisions = self.hydra.find('**/*collision*')
-            collisions.setPos(0, 0, -5)
-            self.hydra.flattenStrong()
-            self.hydra.reparentTo(self)
-            if self.name == 'StageWinter':
-                stageBounds = self.hydra.find('**/stage').node().getBounds()
-                self.hydra.node().setBounds(stageBounds)
-                self.hydra.node().setFinal(1)
         elif self.name == 'TubeCogVictory':
             self.tubeCog = Actor.Actor('phase_5.5/models/estate/tt_a_ara_pty_tubeCogVictory_default', {'wave': 'phase_5.5/models/estate/tt_a_ara_pty_tubeCogVictory_wave'})
             st = random.randint(0, 10)
@@ -177,10 +157,6 @@ class Decoration(NodePath):
             self.cannonVictory.reparentTo(self)
         elif self.name == 'CogStatueVictory':
             self.decorationModel = loader.loadModel('phase_13/models/parties/tt_m_ara_pty_cogDoodleVictory')
-            self.decorationModel.reparentTo(self)
-            self.decorationShadow = self.setupAnimSeq()
-        elif self.name == 'CogIceCreamVictory':
-            self.decorationModel = loader.loadModel('phase_13/models/parties/tt_m_ara_pty_cogIceCreamVictory')
             self.decorationModel.reparentTo(self)
             self.decorationShadow = self.setupAnimSeq()
         elif self.name == 'cogIceCreamWinter':
@@ -247,12 +223,6 @@ class Decoration(NodePath):
             del self.globeSphere
             self.partyGlobe.removeNode()
             del self.partyGlobe
-        elif self.name == 'Hydra' or self.name == 'StageWinter':
-            self.cleanUpAnimSequences()
-            self.hydra.removeNode()
-            del self.hydra
-            if hasattr(self, 'decSfx'):
-                del self.decSfx
         elif self.name == 'TubeCogVictory':
             self.cleanUpAnimSequences()
             self.tubeCog.removeNode()
@@ -274,7 +244,7 @@ class Decoration(NodePath):
         elif self.name == 'CannonVictory':
             self.cannonVictory.removeNode()
             del self.cannonVictory
-        elif self.name == 'CogIceCreamVictory' or self.name == 'CogStatueVictory' or self.name == 'cogIceCreamWinter' or self.name == 'CogStatueWinter':
+        elif self.name == 'CogStatueVictory' or self.name == 'cogIceCreamWinter' or self.name == 'CogStatueWinter':
             self.cleanUpAnimSequences()
             self.decorationModel.removeNode()
             self.decorationShadow.removeNode()

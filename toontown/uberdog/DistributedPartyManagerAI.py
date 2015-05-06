@@ -57,10 +57,6 @@ class DistributedPartyManagerAI(DistributedObjectAI):
         # well fuck. ud died.
         self.notify.warning("uberdog lost!")
 
-    def canBuyParties(self):
-        return True
-
-
     def addPartyRequest(self, hostId, startTime, endTime, isPrivate, inviteTheme, activities, decorations, inviteeIds):
         if hostId != simbase.air.getAvatarIdFromSender():
             self.air.writeServerEvent('suspicious',simbase.air.getAvatarIdFromSender(),'Toon tried to create a party as someone else!')

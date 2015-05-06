@@ -161,10 +161,6 @@ class DistributedNPCPartyPerson(DistributedNPCToonBase):
             chatStr = TTLocalizer.PartyPlannerHostingTooMany
             self.setChatAbsolute(chatStr, CFSpeech | CFTimeout)
             self.resetPartyPerson()
-        elif mode == NPCToons.PARTY_MOVIE_COMINGSOON:
-            chatStr = TTLocalizer.PartyPlannerNpcComingSoon
-            self.setChatAbsolute(chatStr, CFSpeech | CFTimeout)
-            self.resetPartyPerson()
         elif mode == NPCToons.PARTY_MOVIE_MINCOST:
             chatStr = TTLocalizer.PartyPlannerNpcMinCost % PartyGlobals.MinimumPartyCost
             self.setChatAbsolute(chatStr, CFSpeech | CFTimeout)
