@@ -826,39 +826,6 @@ class OTPClientRepository(ClientRepositoryBase):
         self.notify.info('sending clientLogout')
         messenger.send('clientLogout')
 
-    @report(types=['args'], dConfigParam='teleport')
-    def detectLeaks(self, okTasks = None, okEvents = None):
-        if not True:
-            return
-        leakedTasks = self.detectLeakedTasks(okTasks)
-        leakedEvents = self.detectLeakedEvents(okEvents)
-        leakedIvals = self.detectLeakedIntervals()
-        leakedGarbage = self.detectLeakedGarbage()
-        if leakedTasks or leakedEvents or leakedIvals or leakedGarbage:
-            errorCode = base.getExitErrorCode()
-            if __debug__ and not PythonUtil.configIsToday('temp-disable-leak-detection'):
-                logFunc = self.notify.error
-                allowExit = False
-            else:
-                logFunc = self.notify.warning
-                allowExit = False
-            if base.config.GetBool('direct-gui-edit', 0):
-                logFunc('There are leaks: %s tasks, %s events, %s ivals, %s garbage cycles\nLeaked Events may be due to direct gui editing' % (leakedTasks,
-                 leakedEvents,
-                 leakedIvals,
-                 leakedGarbage))
-            else:
-                logFunc('There are leaks: %s tasks, %s events, %s ivals, %s garbage cycles' % (leakedTasks,
-                 leakedEvents,
-                 leakedIvals,
-                 leakedGarbage))
-            if allowExit:
-                self.notify.info('Allowing client to leave, panda error code %s' % errorCode)
-            else:
-                base.userExit()
-        else:
-            self.notify.info('There are no leaks detected.')
-
     def detectLeakedGarbage(self, callback = None):
         if not __debug__:
             return 0

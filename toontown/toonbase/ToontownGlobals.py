@@ -1641,3 +1641,5 @@ PropIdToColor = [
     (0.96, 0.356, 0.839, 1),
     (0.196, 0.917, 0.929, 1)
 ]
+
+BugReportSite = 'https://bugs.launchpad.net/toontown-united/+filebug'

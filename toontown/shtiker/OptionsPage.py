@@ -9,7 +9,7 @@ import ShtikerPage
 from otp.speedchat import SCColorScheme
 from otp.speedchat import SCStaticTextTerminal
 from otp.speedchat import SpeedChat
-from toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer, ToontownGlobals
 from toontown.toontowngui import TTDialog
 import webbrowser
 
@@ -713,6 +713,7 @@ class ExtraOptionsTabPage(DirectFrame):
     def __init__(self, parent = aspect2d):
         self.parent = parent
         self.currentSizeIndex = None
+        self.dialog = None
 
         DirectFrame.__init__(self, parent=self.parent, relief=None, pos=(0.0, 0.0, 0.0), scale=(1.0, 1.0, 1.0))
 
@@ -721,6 +722,10 @@ class ExtraOptionsTabPage(DirectFrame):
     def destroy(self):
         self.parent = None
         
+        if self.dialog:
+            self.dialog.destroy()
+        
+        del self.dialog
         DirectFrame.destroy(self)
 
     def load(self):
@@ -740,7 +745,7 @@ class ExtraOptionsTabPage(DirectFrame):
         self.cogLevel_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord), command=self.__doToggleCogLevelGui)
         self.cogLevel_label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight))
         self.bugReportButton = DirectButton(parent=self, relief=None, text=TTLocalizer.BugReportButton, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text_pos=(0, -0.01), text_fg=(0, 0, 0, 1), 
-        command=self.openBrowser, pos=(0.0, 0.0, -0.6), text_scale=(0.045))
+        command=self.showReportNotice, pos=(0.0, 0.0, -0.6), text_scale=(0.045))
         gui.removeNode()
         guiButton.removeNode()
 
@@ -769,6 +774,12 @@ class ExtraOptionsTabPage(DirectFrame):
         self.cogLevel_label['text'] = TTLocalizer.CogLevelLabelOn if settings['cogLevel'] else TTLocalizer.CogLevelLabelOff
         self.cogLevel_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff if settings['cogLevel'] else TTLocalizer.OptionsPageToggleOn
 
-    def openBrowser(self):
-        url = 'https://bugs.launchpad.net/toontown-united/+filebug'
-        webbrowser.open(url, new=2, autoraise=True)
+    def showReportNotice(self):
+        self.dialog = TTDialog.TTDialog(style=TTDialog.YesNo, text=TTLocalizer.BugReportNotice, command=self.confirmBugReport)
+        self.dialog.show()
+
+    def confirmBugReport(self, value):
+        if value > 0:
+            webbrowser.open(ToontownGlobals.BugReportSite, new=2, autoraise=True)
+
+        self.dialog.destroy()

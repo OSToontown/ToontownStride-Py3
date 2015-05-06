@@ -426,8 +426,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         base.localAvatarName = None
         loader.abortBulkLoad()
         base.transitions.noTransitions()
-        if self._userLoggingOut:
-            self.detectLeaks(okTasks=[], okEvents=['destroy-ToontownLoadingScreenTitle', 'destroy-ToontownLoadingScreenTip', 'destroy-ToontownLoadingScreenWaitBar'])
         return
 
     def enterGameOff(self):
