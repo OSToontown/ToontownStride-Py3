@@ -139,8 +139,7 @@ Headquarters = 'Headquarters'
 SellbotFrontEntrance = 'Front Entrance'
 SellbotSideEntrance = 'Side Entrance'
 Office = 'Office'
-FactoryNames = {0: 'Factory Mockup',
- 11500: 'Sellbot Cog Factory',
+FactoryNames = {11500: 'Sellbot Cog Factory',
  11600: 'Sellbot Cog Megacorp',
  13300: 'Lawbot Cog Office'}
 FactoryTypeLeg = 'Leg'

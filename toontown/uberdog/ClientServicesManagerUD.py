@@ -975,7 +975,7 @@ class ClientServicesManagerUD(DistributedObjectGlobalUD):
             connId,
             self.air.ourChannel,
             CLIENTAGENT_EJECT)
-        datagram.addUint16(122)
+        datagram.addUint16(101)
         datagram.addString(reason)
         self.air.send(datagram)
 

@@ -23,7 +23,7 @@ class MagicWordManagerAI(DistributedObjectAI):
             self.air.writeServerEvent('suspicious', invokerId, 'Attempted to issue magic word: %s' % word)
             dg = PyDatagram()
             dg.addServerHeader(self.GetPuppetConnectionChannel(invokerId), self.air.ourChannel, CLIENTAGENT_EJECT)
-            dg.addUint16(126)
+            dg.addUint16(102)
             dg.addString('Magic Words are reserved for administrators only!')
             self.air.send(dg)
             return

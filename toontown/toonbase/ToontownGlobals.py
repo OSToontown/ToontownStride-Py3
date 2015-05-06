@@ -245,8 +245,6 @@ def dept2cogHQ(dept):
      's': SellbotHQ}
     return dept2hq[dept]
 
-
-MockupFactoryId = 0
 MintNumFloors = {CashbotMintIntA: 20,
  CashbotMintIntB: 20,
  CashbotMintIntC: 20}
@@ -293,8 +291,7 @@ FT_FullSuit = 'fullSuit'
 FT_Leg = 'leg'
 FT_Arm = 'arm'
 FT_Torso = 'torso'
-factoryId2factoryType = {MockupFactoryId: FT_FullSuit,
- SellbotFactoryInt: FT_FullSuit,
+factoryId2factoryType = {SellbotFactoryInt: FT_FullSuit,
  SellbotMegaCorpInt: FT_FullSuit,
  LawbotOfficeInt: FT_FullSuit}
 StreetNames = TTLocalizer.GlobalStreetNames

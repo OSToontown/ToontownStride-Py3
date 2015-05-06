@@ -95,41 +95,22 @@ CRNoConnectProxyNoPort = 'Could not connect to %s:%s.\n\nYou are communicating t
 CRNoDistrictsTryAgain = 'No Districts are available. Try again?'
 CRRejectRemoveAvatar = 'The avatar was not able to be deleted, try again another time.'
 CRLostConnection = 'Your internet connection to the servers has been unexpectedly broken.'
-CRBootedReasons = {1: 'An unexpected problem has occurred.  Your connection has been lost, but you should be able to connect again and go right back into the game.',
- 100: 'You have been disconnected because someone else just logged in using your account on another computer.',
- 120: 'You have been disconnected because of a problem with your authorization to use keyboard chat.',
- 122: 'Couldn\'t decode the token. Please relaunch the game from the official launcher.',
- 124: 'Your installed files are out of date.  Please launch the game from the official launcher so that it can install updates.  If you continue to get this error, contact support.',
- 125: 'Your installed files appear to be invalid.  Please use the Play button on the official website to run.',
- 126: 'You are not authorized to use administrator privileges.',
- 127: 'A problem has occurred with your Toon.  Please contact Member Services via phone or email and reference Error Code 127.  Thank you.',
- 151: 'You have been logged out by an administrator working on the servers.',
- 152: "There has been a reported violation of our Terms of Use connected to '%(name)s'. For more details, please review the message sent to the e-mail address associated with '%(name)s'.",
- 153: 'The district you were playing on has been reset.  Everyone who was playing on that district has been disconnected.  However, you should be able to connect again and go right back into the game.',
- 154: 'Toontown United is now temporarily closed for maintenance. Everyone who was playing has been disconnected from the game.\n\nFor more information, please visit the Toontown United website.',
- 288: 'Sorry, you have used up all of your available minutes this month.',
- 349: 'Sorry, you have used up all of your available minutes this month.'}
+CRBootedReasons = {100: 'You have been disconnected because someone else just logged in using your account on another computer.',
+ 101: 'Please relaunch the game from the official launcher.',
+ 102: 'You are not authorized to use administrator privileges.',
+ 103: 'You were banned by a moderator.\n\nBehave next time!',
+ 105: 'Toontown United is now temporarily closed for maintenance. Everyone who was playing has been disconnected from the game.\n\nFor more information, please visit the Toontown United website.'}
+ 153: 'The district you were playing on has been reset.  Everyone who was playing on that district has been disconnected.  However, you should be able to connect again and go right back into the game.'}
 CRBootedReasonUnknownCode = 'An unexpected problem has occurred (error code %s).  Your connection has been lost, but you should be able to connect again and go right back into the game.'
 CRTryConnectAgain = '\n\nTry to connect again?'
 CRToontownUnavailable = 'The server appears to be temporarily unavailable, still trying...'
 CRToontownUnavailableCancel = lCancel
 CRNameCongratulations = 'CONGRATULATIONS!!'
 CRNameAccepted = 'Your name has been\napproved by the Toon Council.\n\nFrom this day forth\nyou will be named\n"%s"'
-CRServerDateTryAgain = 'Could not get server date from %s. Try again?'
 CRMaintenanceCountdownMessage = 'Attention Toons! Toontown United will be going down for maintenance in %d minutes.'
 CRMaintenanceMessage = 'Attention Toons! Toontown United is now going down for maintenance.'
 AfkForceAcknowledgeMessage = 'Your toon got sleepy and went to bed.'
 CREnteringToontown = 'Entering...'
-LoginScreenUserName = 'Account Name'
-LoginScreenPassword = 'Password'
-LoginScreenLogin = 'Login'
-LoginScreenQuit = lQuit
-LoginScreenLoginPrompt = 'Please enter a user name and password.'
-LoginScreenBadPassword = 'Bad password.\nPlease try again.'
-LoginScreenInvalidUserName = 'Invalid user name.\nPlease try again.'
-LoginScreenUserNameNotFound = 'User name not found.\nPlease try again or create a new account.'
-LoginScreenNoNewAccounts = 'Sorry, we are not accepting new accounts at this time.'
-LoginScreenTryAgain = 'Try Again'
 DialogSpecial = 'ooo'
 DialogExclamation = '!'
 DialogQuestion = '?'
@@ -707,7 +688,7 @@ SpeedChatStaticTextToontown = {100: 'Hi!',
  103: 'Hey!',
  104: 'Howdy!',
  105: 'Hi everybody!',
- 106: 'Welcome to Toontown United!',
+ 106: 'Welcome to Toontown!',
  107: "What's up?",
  108: 'How are you doing?',
  109: 'Hello?',
@@ -1752,73 +1733,6 @@ SpeedChatStaticTextToontown = {100: 'Hi!',
  30451: 'Visit Green Bean Jeans and you can be green too!',
  30452: "It's on Oak Street in Daisy Gardens."}
 SpeedChatStaticText = SpeedChatStaticTextCommon
-Emotes_Root = 'EMOTES'
-Emotes_Dances = 'Dances'
-Emotes_General = 'General'
-Emotes_Music = 'Music'
-Emotes_Expressions = 'Emotions'
-Emote_MoveDenied = 'Cannot emote while moving.'
-Emote_CombatDenied = 'Cannot emote while in combat.'
-Emote_CannonDenied = 'Cannot emote while using a cannon.'
-Emote_SwimDenied = 'Cannot emote while swimming.'
-Emote_ParlorGameDenied = 'Cannot emote while playing a parlor game.'
-Emotes = (60505,
- 60506,
- 60509,
- 60510,
- 60511,
- 60516,
- 60519,
- 60520,
- 60521,
- 60522,
- 60523,
- 60524,
- 60525,
- 60526,
- 60527,
- 60528,
- 60529,
- 60530,
- 60602,
- 60607,
- 60611,
- 60614,
- 60615,
- 60622,
- 60627,
- 60629,
- 60632,
- 60636,
- 60638,
- 60640,
- 60644,
- 60652,
- 60654,
- 60657,
- 60658,
- 60663,
- 60664,
- 60665,
- 60666,
- 60668,
- 60669,
- 60612,
- 60661,
- 60645,
- 60629,
- 60641,
- 60654,
- 60630,
- 60670,
- 60633,
- 60676,
- 60677,
- 65000,
- 65001,
- 60517,
- 60678,
- 60909)
 SCFactoryMeetMenuIndexes = (1903,
  1904,
  1906,
@@ -2344,7 +2258,6 @@ AvatarPanelGoTo = 'Go To'
 AvatarPanelIgnore = 'Ignore'
 AvatarPanelStopIgnore = 'Stop Ignoring'
 AvatarPanelEndIgnore = 'End Ignore'
-AvatarPanelTrade = 'Trade'
 AvatarPanelCogLevel = 'Level: %s'
 AvatarPanelCogDetailClose = lClose
 TeleportPanelOK = lOK

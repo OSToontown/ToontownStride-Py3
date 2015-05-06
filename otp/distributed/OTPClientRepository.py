@@ -374,14 +374,8 @@ class OTPClientRepository(ClientRepositoryBase):
         messenger.send('connectionIssue')
         url = self.serverList[0]
         self.notify.warning('Failed to connect to %s (%s %s).  Notifying user.' % (url.cStr(), statusCode, statusString))
-        if statusCode == 1403 or statusCode == 1405 or statusCode == 1400:
-            message = OTPLocalizer.CRNoConnectProxyNoPort % (url.getServer(), url.getPort(), url.getPort())
-            style = OTPDialog.CancelOnly
-        else:
-            message = OTPLocalizer.CRNoConnectTryAgain % (url.getServer(), url.getPort())
-            style = OTPDialog.TwoChoice
         dialogClass = OTPGlobals.getGlobalDialogClass()
-        self.failedToConnectBox = dialogClass(message=message, doneEvent='failedToConnectAck', text_wordwrap=18, style=style)
+        self.failedToConnectBox = dialogClass(message=OTPLocalizer.CRNoConnectTryAgain % (url.getServer(), url.getPort()), doneEvent='failedToConnectAck', text_wordwrap=18, style=OTPDialog.TwoChoice)
         self.failedToConnectBox.show()
         self.notify.info(message)
         self.accept('failedToConnectAck', self.__handleFailedToConnectAck)

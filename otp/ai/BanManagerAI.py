@@ -33,8 +33,7 @@ class BanFSM(FSM):
         datagram.addServerHeader(
                 av.GetPuppetConnectionChannel(self.avId),
                 self.air.ourChannel, CLIENTAGENT_EJECT)
-        datagram.addUint16(152)
-        datagram.addString(self.avName)
+        datagram.addUint16(103)
         simbase.air.send(datagram)
 
     def dbCallback(self, dclass, fields):
@@ -116,7 +115,7 @@ def kick(reason):
     datagram.addServerHeader(
         target.GetPuppetConnectionChannel(target.doId),
         simbase.air.ourChannel, CLIENTAGENT_EJECT)
-    datagram.addUint16(155)
+    datagram.addUint16(104)
     datagram.addString('You were kicked by a moderator for the following reason: "%s"\n\nBehave next time!' % reason)
     simbase.air.send(datagram)
     simbase.air.writeServerEvent('kick', invoker.doId, target.doId, reason)
