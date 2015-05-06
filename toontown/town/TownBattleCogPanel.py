@@ -39,6 +39,7 @@ class TownBattleCogPanel(DirectFrame):
         self.setScale(0.8)
         self.initialiseoptions(TownBattleCogPanel)
         self.levelText = DirectLabel(parent=self, text='', pos=(-0.06, 0, -0.075), text_scale=0.055)
+        self.suitType = DirectLabel(parent=self, text='', pos=(0.12, 0, -0.075), text_scale=0.055)
         self.healthBar = None
         self.healthBarGlow = None
         self.hpChangeEvent = None
@@ -59,6 +60,12 @@ class TownBattleCogPanel(DirectFrame):
             return
         self.suit = suit
         self.setLevelText(self.suit.getActualLevel())
+        if self.suit.isSkeleton == 1:
+            self.type = "Skel"
+            self.setTypeText(self.type)
+        if self.suit.revives == 1:
+            self.type = "V2.0"
+            self.setTypeText(self.type)
         if self.head:
             self.head.removeNode()
         self.setSuitHead(self.suit.getStyleName())
@@ -75,8 +82,11 @@ class TownBattleCogPanel(DirectFrame):
     def getSuit(self, suit):
         return self.suit
 
-    def setLevelText(self, level):
+    def setLevelText(self, level):        
         self.levelText['text'] = 'Level '+ str(level)
+
+    def setTypeText(self, suitType):
+        self.suitType['text'] = suitType
 
     def setSuitHead(self, suitName):
         self.head = Suit.attachSuitHead(self, suitName)
