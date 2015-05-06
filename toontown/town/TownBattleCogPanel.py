@@ -60,12 +60,6 @@ class TownBattleCogPanel(DirectFrame):
             return
         self.suit = suit
         self.setLevelText(self.suit.getActualLevel())
-        if self.suit.isSkeleton == 1:
-            self.type = "Skel"
-            self.setTypeText(self.type)
-        if self.suit.revives == 1:
-            self.type = "V2.0"
-            self.setTypeText(self.type)
         if self.head:
             self.head.removeNode()
         self.setSuitHead(self.suit.getStyleName())
@@ -78,11 +72,21 @@ class TownBattleCogPanel(DirectFrame):
         self.accept(self.hpChangeEvent, self.updateHealthBar)
         self.updateHealthBar()
         self.healthBar.show()
-        
+        if self.suit.isSkelecog == 1:
+            self.type = 'Skel'
+            self.setTypeText(self.type)
+        self.suitRevives = self.suit.getSkeleRevives()
+        if self.suitRevives == 1:
+            self.type = 'v2.0'
+            self.setTypeText(self.type)
+        if self.suitRevives < 1 and self.suit.isSkelecog == 0:
+            self.type = ''
+            self.setTypeText(self.type)
+
     def getSuit(self, suit):
         return self.suit
 
-    def setLevelText(self, level):        
+    def setLevelText(self, level):
         self.levelText['text'] = 'Level '+ str(level)
 
     def setTypeText(self, suitType):
@@ -214,6 +218,7 @@ class TownBattleCogPanel(DirectFrame):
         del self.head
         self.levelText.destroy()
         del self.levelText
+        del self.suitType
         del self.healthBar
         if self.healthBarGlow is not None:
             self.healthBarGlow.removeNode()
