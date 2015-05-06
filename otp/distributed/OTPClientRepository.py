@@ -77,13 +77,7 @@ class OTPClientRepository(ClientRepositoryBase):
                   self.enterWaitForGameList,
                   self.exitWaitForGameList, [
                       'noConnection',
-                      'waitForShardList',
-                      'missingGameRootObject']),
-            State('missingGameRootObject',
-                  self.enterMissingGameRootObject,
-                  self.exitMissingGameRootObject, [
-                      'waitForGameList',
-                      'shutdown']),
+                      'waitForShardList']),
             State('waitForShardList',
                   self.enterWaitForShardList,
                   self.exitWaitForShardList, [
@@ -412,37 +406,6 @@ class OTPClientRepository(ClientRepositoryBase):
         return
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
-    def enterFailedToGetServerConstants(self, e):
-        self.handler = self.handleMessageType
-        messenger.send('connectionIssue')
-        message = OTPLocalizer.CRServerConstantsTryAgain % url.cStr()
-        style = OTPDialog.TwoChoice
-        dialogClass = OTPGlobals.getGlobalDialogClass()
-        self.failedToGetConstantsBox = dialogClass(message=message, doneEvent='failedToGetConstantsAck', text_wordwrap=18, style=style)
-        self.failedToGetConstantsBox.show()
-        self.accept('failedToGetConstantsAck', self.__handleFailedToGetConstantsAck)
-        self.notify.warning('Failed to get account server constants. Notifying user.')
-
-    @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
-    def __handleFailedToGetConstantsAck(self):
-        doneStatus = self.failedToGetConstantsBox.doneStatus
-        if doneStatus == 'ok':
-            self.loginFSM.request('connect', [self.serverList])
-            messenger.send('connectionRetrying')
-        elif doneStatus == 'cancel':
-            self.loginFSM.request('shutdown')
-        else:
-            self.notify.error('Unrecognized doneStatus: ' + str(doneStatus))
-
-    @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
-    def exitFailedToGetServerConstants(self):
-        self.handler = None
-        self.ignore('failedToGetConstantsAck')
-        self.failedToGetConstantsBox.cleanup()
-        del self.failedToGetConstantsBox
-        return
-
-    @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def enterShutdown(self, errorCode = None):
         self.handler = self.handleMessageType
         self.sendDisconnect()
@@ -457,49 +420,11 @@ class OTPClientRepository(ClientRepositoryBase):
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def enterWaitForGameList(self):
         self.gameDoDirectory = self.addTaggedInterest(self.GameGlobalsId, OTP_ZONE_ID_MANAGEMENT, self.ITAG_PERM, 'game directory', event='GameList_Complete')
-        self.acceptOnce('GameList_Complete', self.waitForGetGameListResponse)
-
-    @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
-    def waitForGetGameListResponse(self):
-        if self.isGameListCorrect():
-            self.loginFSM.request('waitForShardList')
-        else:
-            self.loginFSM.request('missingGameRootObject')
-
-    @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
-    def isGameListCorrect(self):
-        return 1
+        self.acceptOnce('GameList_Complete', self.loginFSM.request, ['waitForShardList'])
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def exitWaitForGameList(self):
         self.handler = None
-        return
-
-    @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
-    def enterMissingGameRootObject(self):
-        self.notify.warning('missing some game root objects.')
-        self.handler = self.handleMessageType
-        dialogClass = OTPGlobals.getGlobalDialogClass()
-        self.missingGameRootObjectBox = dialogClass(message=OTPLocalizer.CRMissingGameRootObject, doneEvent='missingGameRootObjectBoxAck', style=OTPDialog.TwoChoice)
-        self.missingGameRootObjectBox.show()
-        self.accept('missingGameRootObjectBoxAck', self.__handleMissingGameRootObjectAck)
-
-    @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
-    def __handleMissingGameRootObjectAck(self):
-        doneStatus = self.missingGameRootObjectBox.doneStatus
-        if doneStatus == 'ok':
-            self.loginFSM.request('waitForGameList')
-        elif doneStatus == 'cancel':
-            self.loginFSM.request('shutdown')
-        else:
-            self.notify.error('Unrecognized doneStatus: ' + str(doneStatus))
-
-    @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
-    def exitMissingGameRootObject(self):
-        self.handler = None
-        self.ignore('missingGameRootObjectBoxAck')
-        self.missingGameRootObjectBox.cleanup()
-        del self.missingGameRootObjectBox
         return
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
