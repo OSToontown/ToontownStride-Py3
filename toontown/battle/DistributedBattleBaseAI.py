@@ -1134,6 +1134,7 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                         petProxy.setFatigue(pet.getFatigue())
                         petProxy.setAnger(pet.getAnger())
                         petProxy.setSurprise(pet.getSurprise())
+                        petProxy.setTrickAptitudes(pet.getTrickAptitudes())
                         pet.requestDelete()
                         def deleted(task):
                             petProxy.doNotDeallocateChannel = True
