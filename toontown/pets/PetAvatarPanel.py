@@ -33,8 +33,8 @@ class PetAvatarPanel(AvatarPanel.AvatarPanel):
         base.panel = self
         gui = loader.loadModel('phase_3.5/models/gui/PetControlPannel')
         guiScale = 0.116
-        guiPos = (1.12, 0, 0.3)
-        self.frame = DirectFrame(parent=aspect2dp, image=gui, scale=guiScale, pos=guiPos, relief=None)
+        guiPos = (-0.213, 0, -0.70)
+        self.frame = DirectFrame(parent=base.a2dTopRight, image=gui, scale=guiScale, pos=guiPos, relief=None)
         disabledImageColor = Vec4(0.6, 0.6, 0.6, 1)
         text0Color = Vec4(1, 1, 1, 1)
         text1Color = Vec4(0.5, 1, 0.5, 1)

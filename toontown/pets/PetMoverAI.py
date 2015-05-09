@@ -20,6 +20,7 @@ def housePointCollision(x, y):
     for i, h in enumerate(houses):
         if inCircle(x, y, h, houseRadius):
             return 1
+
     return 0
 
 def generatePos():
@@ -60,6 +61,7 @@ def houseCollision(pt1, pt2):
     for i, h in enumerate(houses):
         if lineInCircle(pt1, pt2, h):
             return 1
+
     return 0
 
 def generatePath(start, end):
@@ -87,7 +89,7 @@ def angle(A, B):
 
     return math.atan2(by-ay, bx-ax)
 
-class PetMoverAI(FSM):
+class PetMoverAI(FSM):    
     def __init__(self, pet):
         self.pet = pet
         FSM.__init__(self, 'PetMoverAI-%d' % self.pet.doId)

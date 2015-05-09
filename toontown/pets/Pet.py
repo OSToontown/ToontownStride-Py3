@@ -26,7 +26,7 @@ Component2IconDict = {'boredom': 'Bored',
  'anger': 'Angry',
  'surprise': 'Surprised',
  'affection': 'Love'}
- 
+
 from toontown.nametag import *
 from toontown.nametag.NametagGlobals import *
 
