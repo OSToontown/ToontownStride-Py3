@@ -76,17 +76,17 @@ class HydrantInteractiveProp(InteractiveAnimatedProp.InteractiveAnimatedProp):
 
     def setupActor(self, node):
         InteractiveAnimatedProp.InteractiveAnimatedProp.setupActor(self, node)
-        
+
         if not self.hoodId == ToontownGlobals.TheBrrrgh:
             water = loader.loadModel('phase_5/models/char/tt_m_efx_hydrantSquirt')
             self.leftWater = water.find('**/efx_hydrantSquirtLeft')
             self.rightWater = water.find('**/efx_hydrantSquirtRight')
-            
+
             if self.leftWater:
                 self.leftWater.reparentTo(self.node.find('**/dx_left_water'))
                 base.leftWater = self.leftWater
                 self.leftWater.hide()
-            
+
             if self.rightWater:
                 self.rightWater.reparentTo(self.node.find('**/dx_right_water'))
                 self.rightWater.hide()
@@ -108,7 +108,7 @@ class HydrantInteractiveProp(InteractiveAnimatedProp.InteractiveAnimatedProp):
 
     def getOverrideIval(self, origAnimName):
         result = Sequence()
-        
+
         if self.hasOverrideIval(origAnimName):
             result.append(Func(self.showWater))
             anim = self.createAnimIval('fight0' if 'fightBoost' in origAnimName else 'fight1')

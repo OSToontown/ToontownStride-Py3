@@ -237,10 +237,10 @@ class DistributedBuilding(DistributedObject.DistributedObject):
 
     def enterToon(self, ts):
         prop = self.getInteractiveProp()
-        
+
         if prop:
             prop.buildingLiberated(self.doId)
-        
+
         self.setToToon()
 
     def exitToon(self):
@@ -935,7 +935,6 @@ class DistributedBuilding(DistributedObject.DistributedObject):
 
     def getVisZoneId(self):
         exteriorZoneId = base.cr.playGame.hood.dnaStore.getZoneFromBlockNumber(self.block)
-        
         return ZoneUtil.getTrueZoneId(exteriorZoneId, self.zoneId)
 
     def getInteractiveProp(self):
@@ -943,9 +942,9 @@ class DistributedBuilding(DistributedObject.DistributedObject):
             return self.interactiveProp
         elif base.cr.playGame.hood:
             loader = base.cr.playGame.hood.loader
-            
+
             if hasattr(loader, 'getInteractiveProp'):
                 self.interactiveProp = base.cr.playGame.hood.loader.getInteractiveProp(self.getVisZoneId())
-                
+
                 return self.interactiveProp
         return None

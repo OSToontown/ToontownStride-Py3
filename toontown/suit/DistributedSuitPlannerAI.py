@@ -853,12 +853,12 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
                 toon.b_setBattleId(toonId)
 
         pos = self.battlePosDict[canonicalZoneId]
-        
+
         interactivePropTrackBonus = -1
-        
+
         if simbase.config.GetBool('props-buff-battles', True) and canonicalZoneId in self.cellToGagBonusDict:
             interactivePropTrackBonus = self.cellToGagBonusDict[canonicalZoneId]
-        
+
         self.battleMgr.newBattle(
             zoneId, zoneId, pos, suit, toonId, self.__battleFinished,
             self.SuitHoodInfo[self.hoodInfoIdx][self.SUIT_HOOD_INFO_SMAX],

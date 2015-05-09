@@ -60,7 +60,7 @@ class DistributedSuitBase(DistributedAvatar.DistributedAvatar, Suit.Suit, SuitBa
         self.maxSkeleRevives = 0
         self.sillySurgeText = False
         self.interactivePropTrackBonus = -1
-    
+
     def setInteractivePropTrackBonus(self, trackBonus):
         self.interactivePropTrackBonus = trackBonus
 

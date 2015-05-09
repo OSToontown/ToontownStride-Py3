@@ -291,7 +291,7 @@ class TownLoader(StateData.StateData):
     def createAnimatedProps(self, nodeList):
         self.animPropDict = {}
         self.zoneIdToInteractivePropDict = {}
-        
+
         for i in nodeList:
             animPropNodes = i.findAllMatches('**/animated_prop_*')
             numAnimPropNodes = animPropNodes.getNumPaths()
@@ -313,11 +313,11 @@ class TownLoader(StateData.StateData):
                 animPropList.append(animPropObj)
 
             interactivePropNodes = i.findAllMatches('**/interactive_prop_*')
-            
+
             for j in xrange(interactivePropNodes.getNumPaths()):
                 propNode = interactivePropNodes.getPath(j)
                 propName = propNode.getName()
-                
+
                 if 'hydrant' in propName:
                     prop = HydrantInteractiveProp.HydrantInteractiveProp(propNode)
                 elif 'trashcan' in propName:
@@ -326,12 +326,12 @@ class TownLoader(StateData.StateData):
                     prop = MailboxInteractiveProp.MailboxInteractiveProp(propNode)
                 else:
                     continue
-                
+
                 if i in self.animPropDict:
                     self.animPropDict[i].append(prop)
                 else:
                     self.animPropDict[i] = [prop]
-                
+
                 self.zoneIdToInteractivePropDict[int(i.getName())] = prop
 
     def deleteAnimatedProps(self):

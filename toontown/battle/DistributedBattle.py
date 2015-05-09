@@ -134,7 +134,7 @@ class DistributedBattle(DistributedBattleBase.DistributedBattleBase):
             Emote.globalEmote.disableAll(self.toons[0], 'dbattle, enterFaceOff')
         self.__faceOff(ts, self.faceOffName, self.__handleFaceOffDone)
         prop = self.getInteractiveProp()
-        
+
         if prop:
             prop.gotoBattleCheer()
 
@@ -165,7 +165,7 @@ class DistributedBattle(DistributedBattleBase.DistributedBattleBase):
 
         self.accept('resumeAfterReward', self.handleResumeAfterReward)
         prop = self.getInteractiveProp()
-        
+
         if prop:
             prop.gotoVictory()
         self.playReward(ts)
@@ -196,7 +196,7 @@ class DistributedBattle(DistributedBattleBase.DistributedBattleBase):
         if self.hasLocalToon():
             self.removeLocalToon()
         prop = self.getInteractiveProp()
-        
+
         if prop:
             prop.requestIdleOrSad()
 

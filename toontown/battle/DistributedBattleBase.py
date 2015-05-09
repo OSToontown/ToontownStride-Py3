@@ -317,25 +317,25 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
 
     def setBattleCellId(self, battleCellId):
         pass
-    
+
     def getInteractiveProp(self):
         if config.GetBool('want-anim-props', True):        
             if self.interactiveProp:
                 return self.interactiveProp
             elif base.cr.playGame.hood and hasattr(base.cr.playGame.hood, 'loader'):
                 loader = base.cr.playGame.hood.loader
-            
+
                 if hasattr(loader, 'getInteractiveProp'):
                     self.interactiveProp = base.cr.playGame.hood.loader.getInteractiveProp(self.zoneId)
-                
+
                     return self.interactiveProp
             return None
         else:
             return None
-    
+
     def getInteractivePropTrackBonus(self):
         prop = self.getInteractiveProp()
-        
+
         return prop.BattleTrack if prop else -1
 
     def setPosition(self, x, y, z):
@@ -378,16 +378,16 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
         self.suits = []
         suitGone = 0
         prop = self.getInteractiveProp()
-        
+
         for s in suits:
             if s in self.cr.doId2do:
                 suit = self.cr.doId2do[s]
                 suit.setState('Battle')
                 self.suits.append(suit)
-                
+
                 if prop:
                     suit.interactivePropTrackBonus = prop.BattleTrack
-                
+
                 try:
                     suit.battleTrap
                 except:
@@ -1068,7 +1068,7 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
 
     def enterWaitForInput(self, ts = 0):
         prop = self.getInteractiveProp()
-        
+
         if prop:
             prop.gotoBattleCheer()
         self.choseAttackAlready = 0
@@ -1263,7 +1263,7 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
             base.cr.playGame.getPlace().setState('battle', self.localToonBattleEvent)
             if localAvatar and hasattr(localAvatar, 'inventory') and localAvatar.inventory:
                 prop = self.getInteractiveProp()
-                
+
                 if prop:
                     localAvatar.inventory.setInteractivePropTrackBonus(prop.BattleTrack)
         camera.wrtReparentTo(self)

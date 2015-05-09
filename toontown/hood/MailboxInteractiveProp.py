@@ -76,7 +76,7 @@ class MailboxInteractiveProp(InteractiveAnimatedProp.InteractiveAnimatedProp):
         self.pieActor = Actor.Actor('phase_5/models/char/tt_r_prp_ext_piePackage', {'fightBoost': 'phase_5/models/char/tt_a_prp_ext_piePackage_fightBoost'})
         self.pieActor.reparentTo(self.node)
         self.pieActor.hide()
-        
+
         InteractiveAnimatedProp.InteractiveAnimatedProp.setupActor(self, node)
 
     def hasSpecialIval(self, origAnimName):
@@ -84,10 +84,10 @@ class MailboxInteractiveProp(InteractiveAnimatedProp.InteractiveAnimatedProp):
 
     def getSpecialIval(self, origAnimName):
         result = Sequence()
-        
+
         if self.hasSpecialIval(origAnimName):
             result.append(Func(self.pieActor.show))
             result.append(self.pieActor.actorInterval('fightBoost'))
             result.append(Func(self.pieActor.hide))
-        
+
         return result
