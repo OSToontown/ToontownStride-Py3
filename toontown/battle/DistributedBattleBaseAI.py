@@ -1136,7 +1136,7 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                         petProxy.setSurprise(pet.getSurprise())
                         pet.requestDelete()
                         def deleted(task):
-                            petProxy.dbObject = 1                  
+                            petProxy.doNotDeallocateChannel = True               
                             petProxy.generateWithRequiredAndId(petId, self.air.districtId, self.zoneId)
                             petProxy.broadcastDominantMood()
                             self.pets[toonId] = petProxy

@@ -108,7 +108,7 @@ class LoadPetFSM(FSM):
         self.estate = estate
         self.toon = toon
         self.callback = callback
-        self.pet = None
+
         self.done = False
 
     def start(self):
@@ -229,7 +229,7 @@ class LoadEstateFSM(FSM):
 
     def __gotEstate(self, estate):
         self.estate = estate
-        self.estate.pets = []
+        estate.pets = []
 
         self.estate.toons = self.toonIds
         self.estate.updateToons()
@@ -268,17 +268,16 @@ class LoadEstateFSM(FSM):
                 fsm = LoadPetFSM(self.mgr, self.estate, toon, self.__petDone)
                 self.petFSMs.append(fsm)
                 fsm.start()
-            else:
-                continue
 
         if not self.petFSMs:
-            self.demand('Finished')
+            taskMgr.doMethodLater(0, lambda: self.demand('Finished'), 'nopets', extraArgs=[])
 
     def __petDone(self, pet):
         if self.state != 'LoadPets':
             pet.requestDelete()
             return
 
+        # A petFSM just finished! Let's see if all of them are done:
         if all(petFSM.done for petFSM in self.petFSMs):
             self.demand('Finished')
 
@@ -428,6 +427,12 @@ class EstateManagerAI(DistributedObjectAI):
         # Destroy estate and unmap from owner:
         estate.destroy()
         estate.owner.estate = None
+
+        # Destroy pets:
+        for pet in estate.pets:
+            pet.requestDelete()
+
+        estate.pets = []
 
         # Free estate's zone:
         self.air.deallocateZone(estate.zoneId)
