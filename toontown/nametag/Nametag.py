@@ -215,7 +215,11 @@ class Nametag:
         self.textNode.setText(text)
 
     def getText(self):
-        return self.textNode.getText()
+        try:
+            text = self.textNode.getText()
+            return text
+        except AttributeError:
+            return None
 
     def setChatText(self, chatText):
         self.chatTextNode.setText(chatText)
