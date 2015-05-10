@@ -47,19 +47,6 @@ class EstateLoader(SafeZoneLoader.SafeZoneLoader):
         self.submergeSound = base.loadSfx('phase_5.5/audio/sfx/AV_jump_in_water.ogg')
         self.birdSound = map(base.loadSfx, ['phase_4/audio/sfx/SZ_TC_bird1.ogg', 'phase_4/audio/sfx/SZ_TC_bird2.ogg', 'phase_4/audio/sfx/SZ_TC_bird3.ogg'])
         self.cricketSound = map(base.loadSfx, ['phase_4/audio/sfx/SZ_TC_bird1.ogg', 'phase_4/audio/sfx/SZ_TC_bird2.ogg', 'phase_4/audio/sfx/SZ_TC_bird3.ogg'])
-        if base.goonsEnabled:
-            invModel = loader.loadModel('phase_3.5/models/gui/inventory_icons')
-            self.invModels = []
-            from toontown.toonbase import ToontownBattleGlobals
-            for track in xrange(len(ToontownBattleGlobals.AvPropsNew)):
-                itemList = []
-                for item in xrange(len(ToontownBattleGlobals.AvPropsNew[track])):
-                    itemList.append(invModel.find('**/' + ToontownBattleGlobals.AvPropsNew[track][item]))
-
-                self.invModels.append(itemList)
-
-            invModel.removeNode()
-            del invModel
 
     def unload(self):
         self.ignoreAll()

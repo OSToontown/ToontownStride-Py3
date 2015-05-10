@@ -2166,11 +2166,10 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def setCatalogSchedule(self, currentWeek, nextTime):
         self.catalogScheduleCurrentWeek = currentWeek
         self.catalogScheduleNextTime = nextTime
-        if self.air.doLiveUpdates:
-            taskName = self.uniqueName('next-catalog')
-            taskMgr.remove(taskName)
-            duration = max(10.0, nextTime * 60 - time.time())
-            taskMgr.doMethodLater(duration, self.__deliverCatalog, taskName)
+        taskName = self.uniqueName('next-catalog')
+        taskMgr.remove(taskName)
+        duration = max(10.0, nextTime * 60 - time.time())
+        taskMgr.doMethodLater(duration, self.__deliverCatalog, taskName)
 
     def getCatalogSchedule(self):
         return (self.catalogScheduleCurrentWeek, self.catalogScheduleNextTime)
@@ -2232,7 +2231,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.onGiftOrder = CatalogItemList.CatalogItemList(onGiftOrder, store=CatalogItem.Customization | CatalogItem.DeliveryDate)
         if not hasattr(self, 'air') or self.air == None:
             return
-        if doUpdateLater and self.air.doLiveUpdates and hasattr(self, 'name'):
+        if doUpdateLater and hasattr(self, 'name'):
             taskName = 'next-bothDelivery-%s' % self.doId
             now = int(time.time() / 60 + 0.5)
             nextItem = None
@@ -3945,7 +3944,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def setAwardSchedule(self, onAwardOrder, doUpdateLater = True):
         self.onAwardOrder = CatalogItemList.CatalogItemList(onAwardOrder, store=CatalogItem.Customization | CatalogItem.DeliveryDate)
         if hasattr(self, 'name'):
-            if doUpdateLater and self.air.doLiveUpdates and hasattr(self, 'air'):
+            if doUpdateLater and hasattr(self, 'air'):
                 taskName = self.uniqueName('next-award-delivery')
                 taskMgr.remove(taskName)
                 now = int(time.time() / 60 + 0.5)

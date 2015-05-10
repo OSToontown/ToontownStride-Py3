@@ -62,7 +62,7 @@ want-toontown-central #t
 want-donalds-dock #t
 want-daisys-garden #t
 want-minnies-melodyland #t
-want-the-burrrgh #t
+want-the-brrrgh #t
 want-donalds-dreamland #t
 want-goofy-speedway #t
 want-outdoor-zone #t
@@ -75,11 +75,10 @@ want-butterflies #f
 
 # Trolley minigames:
 want-minigames #t
-want-photo-game #f
-want-travel-game #f
+want-photo-game #t
 
 # Picnic table board games:
-want-game-tables #f
+want-game-tables #t
 
 # Cog headquarters:
 want-cog-headquarters #t
@@ -87,11 +86,6 @@ want-sellbot-headquarters #t
 want-cashbot-headquarters #t
 want-lawbot-headquarters #t
 want-bossbot-headquarters #t
-
-# Cashbot boss:
-want-resistance-toonup #t
-want-resistance-restock #t
-want-resistance-dance #f
 
 # Cog battles:
 base-xp-multiplier 1.0
@@ -110,7 +104,6 @@ want-cogbuildings #t
 # Optional:
 show-total-population #t
 want-mat-all-tailors #t
-want-long-pattern-game #f
 want-talkative-tyler #f
 
 # Developer options:
@@ -122,4 +115,4 @@ smooth-lag 0.4
 want-old-fireworks #t
 
 # Live updates:
-want-live-updates #t
+estate-day-night #t

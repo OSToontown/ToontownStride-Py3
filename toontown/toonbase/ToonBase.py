@@ -204,7 +204,6 @@ class ToonBase(OTPBase.OTPBase):
         self.dayNightEnabled = self.config.GetBool('estate-day-night', 0)
         self.cloudPlatformsEnabled = self.config.GetBool('estate-clouds', 0)
         self.greySpacing = self.config.GetBool('allow-greyspacing', 0)
-        self.goonsEnabled = self.config.GetBool('estate-goon', 0)
         self.slowQuietZone = self.config.GetBool('slow-quiet-zone', 0)
         self.slowQuietZoneDelay = self.config.GetFloat('slow-quiet-zone-delay', 5)
         self.killInterestResponse = self.config.GetBool('kill-interest-response', 0)
