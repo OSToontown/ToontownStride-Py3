@@ -221,7 +221,11 @@ class Nametag:
         self.chatTextNode.setText(chatText)
 
     def getChatText(self):
-        return self.chatTextNode.getText()
+        try:
+            text = self.chatTextNode.getText()
+            return text
+        except AttributeError:
+            return None
 
     def setWordWrap(self, wordWrap):
         if wordWrap is None:
