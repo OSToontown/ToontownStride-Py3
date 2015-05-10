@@ -27,7 +27,7 @@ class DDSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):
         self.foghornSound = base.loadSfx('phase_5/audio/sfx/SZ_DD_foghorn.ogg')
         self.bellSound = base.loadSfx('phase_6/audio/sfx/SZ_DD_shipbell.ogg')
         self.waterSound = base.loadSfx('phase_6/audio/sfx/SZ_DD_waterlap.ogg')
-        
+
         if not self.boat.isEmpty():
             wheel = self.boat.find('**/wheel')
 
@@ -36,20 +36,20 @@ class DDSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):
 
             self.boat.stash()
             self.donald = NPCToons.createLocalNPC(7011)
-            
+
             self.donald.setPos(0, -1, 3.95)
             self.donald.reparentTo(self.boat)
             self.donald.setHat(48, 0, 0)
-            
+
             self.donaldSpeech = Sequence()
             random.shuffle(TTLocalizer.DonaldChatter)
-            
+
             for speechText in TTLocalizer.DonaldChatter:
                 self.donaldSpeech.append(Func(self.donald.setChatAbsolute, speechText, CFSpeech))
                 self.donaldSpeech.append(Wait(len(speechText.split(' '))))
                 self.donaldSpeech.append(Func(self.donald.clearChat))
                 self.donaldSpeech.append(Wait(15))
-            
+
             self.donaldSpeech.loop(0)
 
     def unload(self):
