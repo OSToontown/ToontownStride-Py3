@@ -3,6 +3,7 @@ from pandac.PandaModules import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 from direct.task.Task import Task
+from panda3d.core import PythonTask
 from toontown.toontowngui import TTDialog
 from toontown.toonbase.ToonBaseGlobal import *
 from toontown.toonbase import ToontownGlobals
@@ -244,7 +245,7 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
             self.flyingToonCloudsHit = 0
         cannon.updateModel(zRot, angle)
         toonId = cannon.getToonInside().doId
-        task = Task(self.__fireCannonTask)
+        task = PythonTask(self.__fireCannonTask)
         task.toonId = toonId
         task.cannon = cannon
         taskMgr.add(task, self.taskNameFireCannon)
@@ -267,7 +268,7 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
             self.notify.debug('start velocity: ' + str(startVel))
             self.notify.debug('time of launch: ' + str(launchTime))
         cannon.removeToonReadyToFire()
-        shootTask = Task(self.__shootTask, self.taskNameShoot)
+        shootTask = PythonTask(self.__shootTask, self.taskNameShoot)
         shootTask.info = {'toonId': toonId,
          'cannon': cannon}
         if self.isLocalToonId(toonId):
@@ -300,7 +301,7 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
             info['toon'] = self.localFlyingToon
             info['hRot'] = cannon.getRotation()
             camera.wrtReparentTo(self.localFlyingToon)
-            flyTask = Task(self.__localFlyTask, self.taskNameFly)
+            flyTask = PythonTask(self.__localFlyTask, self.taskNameFly)
             flyTask.info = info
             seqTask = Task.sequence(shootTask, flyTask)
             self.__startCollisionHandler()
