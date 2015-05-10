@@ -1,18 +1,11 @@
-from direct.interval.IntervalGlobal import *
-from direct.distributed.ClockDelta import *
-from direct.showbase import Audio3DManager
-from DistributedToonInterior import DistributedToonInterior
-from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import ClassicFSM, State
-from direct.distributed import DistributedObject
-from direct.fsm import State
 from direct.actor import Actor
+from direct.interval.IntervalGlobal import *
+from direct.showbase import Audio3DManager
 from otp.ai.MagicWordGlobal import *
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase.ToonBaseGlobal import *
 from toontown.dna.DNAParser import *
 from toontown.hood import ZoneUtil
-from toontown.toon.DistributedNPCToonBase import DistributedNPCToonBase
+from toontown.toon import DistributedNPCToonBase
+from DistributedToonInterior import DistributedToonInterior
 import ToonInteriorColors, random
 
 class DistributedToonHallInterior(DistributedToonInterior):
@@ -45,7 +38,7 @@ class DistributedToonHallInterior(DistributedToonInterior):
         del self.dnaStore
         del self.randomGenerator
         self.interior.flattenMedium()
-        for npcToon in self.cr.doFindAllInstances(DistributedNPCToonBase):
+        for npcToon in self.cr.doFindAllInstances(DistributedNPCToonBase.DistributedNPCToonBase):
             npcToon.initToonState()
         
         self.createSillyMeter()
@@ -400,62 +393,6 @@ class DistributedToonHallInterior(DistributedToonInterior):
     def exitOff(self):
         pass
 
-    def enterToon(self):
-        self.toonhallView = (Point3(0, -5, 3),
-         Point3(0, 12.0, 7.0),
-         Point3(0.0, 10.0, 5.0),
-         Point3(0.0, 10.0, 5.0),
-         1)
-        self.setupCollisions(2.5)
-        self.firstEnter = 1
-        self.accept('CamChangeColl' + '-into', self.handleCloseToWall)
-
-    def exitToon(self):
-        pass
-
-    def handleCloseToWall(self, collEntry):
-        if self.firstEnter == 0:
-            return
-        interiorRopes = self.interior.find('**/*interior_ropes')
-        if interiorRopes == collEntry.getIntoNodePath().getParent():
-            return
-        self.restoreCam()
-        self.accept('CamChangeColl' + '-exit', self.handleAwayFromWall)
-
-    def handleAwayFromWall(self, collEntry):
-        if self.firstEnter == 1:
-            self.cleanUpCollisions()
-            self.setupCollisions(0.75)
-            self.oldView = base.localAvatar.cameraIndex
-            base.localAvatar.addCameraPosition(self.toonhallView)
-            self.firstEnter = 0
-            self.setUpToonHallCam()
-            return
-        flippy = self.interior.find('**/*Flippy*/*NPCToon*')
-        if flippy == collEntry.getIntoNodePath():
-            self.setUpToonHallCam()
-
-    def setupCollisions(self, radius):
-        r = base.localAvatar.getClampedAvatarHeight() * radius
-        cs = CollisionSphere(0, 0, 0, r)
-        cn = CollisionNode('CamChangeColl')
-        cn.addSolid(cs)
-        cn.setFromCollideMask(ToontownGlobals.WallBitmask)
-        cn.setIntoCollideMask(BitMask32.allOff())
-        self.camChangeNP = base.localAvatar.getPart('torso', '1000').attachNewNode(cn)
-        self.cHandlerEvent = CollisionHandlerEvent()
-        self.cHandlerEvent.addInPattern('%fn-into')
-        self.cHandlerEvent.addOutPattern('%fn-exit')
-        base.cTrav.addCollider(self.camChangeNP, self.cHandlerEvent)
-
-    def cleanUpCollisions(self):
-        base.cTrav.removeCollider(self.camChangeNP)
-        self.camChangeNP.detachNode()
-        if hasattr(self, 'camChangeNP'):
-            del self.camChangeNP
-        if hasattr(self, 'cHandlerEvent'):
-            del self.cHandlerEvent
-
     def cleanUpSounds(self):
 
         def __cleanUpSound__(soundFile):
@@ -488,22 +425,8 @@ class DistributedToonHallInterior(DistributedToonInterior):
             __cleanUpSound__(self.arrowSfx)
             del self.arrowSfx
 
-    def setUpToonHallCam(self):
-        base.localAvatar.setCameraFov(75)
-        base.localAvatar.setCameraSettings(self.toonhallView)
-
-    def restoreCam(self):
-        base.localAvatar.setCameraFov(ToontownGlobals.DefaultCameraFov)
-        if hasattr(self, 'oldView'):
-            base.localAvatar.setCameraPositionByIndex(self.oldView)
-
     def disable(self):
-        self.setUpToonHallCam()
-        base.localAvatar.removeCameraPosition()
-        base.localAvatar.resetCameraPosition()
-        self.restoreCam()
         self.ignoreAll()
-        self.cleanUpCollisions()
         self.stopSillyMeter()
         self.enterOff()
         DistributedToonInterior.disable(self)
