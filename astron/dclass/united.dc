@@ -320,7 +320,6 @@ from toontown.building import DistributedHQInterior/AI
 from toontown.building import DistributedGagshopInterior/AI
 from toontown.building import DistributedPetshopInterior/AI
 from toontown.building import DistributedKartShopInterior/AI
-from toontown.building import DistributedLibraryInterior/AI
 from toontown.building import DistributedDoor/AI
 from toontown.estate import DistributedHouseDoor/AI
 from toontown.coghq import DistributedCogHQDoor/AI
@@ -501,10 +500,8 @@ from toontown.safezone import DistributedChineseCheckers/AI
 from toontown.safezone import DistributedCheckers/AI
 from toontown.safezone import DistributedFindFour/AI
 from toontown.uberdog.DistributedPartyManager/AI/UD import DistributedPartyManager/AI/UD
-from toontown.rpc.AwardManager/UD import AwardManager/UD
 from toontown.coderedemption.TTCodeRedemptionMgr/AI import TTCodeRedemptionMgr/AI
 from toontown.friends.TrueFriendsMgr/AI import TrueFriendsMgr/AI
-from toontown.ai import DistributedSillyMeterMgr/AI
 from toontown.cogdominium import DistributedCogdoInterior/AI
 from toontown.cogdominium import DistributedCogdoBattleBldg/AI
 from toontown.cogdominium import DistributedCogdoElevatorExt/AI
@@ -1847,10 +1844,6 @@ dclass DistributedPetshopInterior : DistributedObject {
 };
 
 dclass DistributedKartShopInterior : DistributedObject {
-  setZoneIdAndBlock(uint32, uint16) required broadcast ram;
-};
-
-dclass DistributedLibraryInterior : DistributedObject {
   setZoneIdAndBlock(uint32, uint16) required broadcast ram;
 };
 
@@ -3286,10 +3279,6 @@ dclass ClientServicesManager : DistributedObjectGlobal {
   systemMessage(string message);
 };
 
-dclass AwardManager : DistributedObjectGlobal {
-  giveAwardToToon(uint32, DoId, string, DoId, uint32, uint32);
-};
-
 dclass TTCodeRedemptionMgr : DistributedObject {
   redeemCode(char [0-256]) airecv clsend;
   redeemCodeResult(uint32);
@@ -3365,13 +3354,6 @@ dclass TTUFriendsManager : DistributedObjectGlobal {
 
   sleepAutoReply(uint32 toId) clsend;
   setSleepAutoReply(uint32 fromId);
-};
-
-dclass DistributedSillyMeterMgr : DistributedObject {
-  setNumPhases(uint8) required broadcast ram;
-  setDates(datetime []) broadcast required;
-  setCurPhase(int8) required broadcast ram;
-  setIsRunning(bool) required broadcast ram;
 };
 
 dclass ARGManager : DistributedObjectGlobal {
