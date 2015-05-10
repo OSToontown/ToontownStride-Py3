@@ -4914,19 +4914,6 @@ def dna(part, value):
         invoker.b_setDNAString(dna.makeNetString())
         return 'Laughing Man set to: ' + str(dna.laughingMan)
 
-    if part == 'save':
-        backup = simbase.backups.load('toon', (invoker.doId,), default={})
-        backup.setdefault('dna', {})[value] = invoker.getDNAString()
-        simbase.backups.save('toon', (invoker.doId,), backup)
-        return 'Saved a DNA backup for %s under the name: %s' % (invoker.getName(), value)
-
-    if part == 'restore':
-        backup = simbase.backups.load('toon', (invoker.doId,), default={})
-        if value not in backup.get('dna', {}):
-            return "Couldn't find a DNA backup for %s under the name: %s" % (invoker.getName(), value)
-        invoker.b_setDNAString(backup['dna'][value])
-        return 'Restored a DNA backup for %s under the name: %s' % (invoker.getName(), value)
-
     if part == 'show':
         return dna.asTuple()
     return 'Invalid part: ' + part
