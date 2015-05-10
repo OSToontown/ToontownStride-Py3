@@ -318,7 +318,9 @@ def doLaugh(toon, volume = 1):
 
 
 def doTaunt(toon, volume=1):
-    sfx = base.loadSfx('phase_4/audio/sfx/avatar_emotion_taunt.ogg')
+    duration = toon.getDuration('angry', 'torso')
+    sfx = None
+    sfx = base.loadSfx('phase_4/audio/sfx/furious_03.ogg')
 
     track = Sequence(
         Func(toon.blinkEyes),
@@ -326,6 +328,17 @@ def doTaunt(toon, volume=1):
         Func(base.playSfx, sfx, volume=volume, node=toon)
     )
     duration = toon.getDuration('taunt')
+    return (track, duration, None)
+
+def doRage(toon, volume=1):
+    sfx = base.loadSfx('phase_4/audio/sfx/avatar_emotion_taunt.ogg')
+
+    track = Sequence(
+        Func(toon.blinkEyes),
+        Func(toon.play, 'good-putt', fromFrame=12),
+        Func(base.playSfx, sfx, volume=volume, node=toon)
+    )
+    duration = toon.getDuration('rage')
     return (track, duration, None)
 
 def returnToLastAnim(toon):
@@ -362,7 +375,8 @@ EmoteFunc = [[doWave, 0],
  [doDelighted, 0],
  [doFurious, 0],
  [doLaugh, 0],
- [doTaunt, 0]]
+ [doTaunt, 0],
+ [doRage, 0]]
 
 class TTEmote(Emote.Emote):
     notify = DirectNotifyGlobal.directNotify.newCategory('TTEmote')
@@ -390,7 +404,8 @@ class TTEmote(Emote.Emote):
          22,
          23,
          24,
-         25]
+         25,
+         26]
         self.headEmotes = [2,
          17,
          18,
