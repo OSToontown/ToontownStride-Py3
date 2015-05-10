@@ -1,5 +1,10 @@
+from direct.interval.IntervalGlobal import Sequence, Func, Wait
 from toontown.safezone import SafeZoneLoader
 from toontown.safezone import DDPlayground
+from toontown.chat.ChatGlobals import CFSpeech
+from toontown.toon import NPCToons
+from toontown.toonbase import TTLocalizer
+import random
 
 class DDSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):
 
@@ -18,22 +23,44 @@ class DDSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):
         self.swimSound = base.loadSfx('phase_4/audio/sfx/AV_swim_single_stroke.ogg')
         self.submergeSound = base.loadSfx('phase_5.5/audio/sfx/AV_jump_in_water.ogg')
         self.boat = self.geom.find('**/donalds_boat')
-        if self.boat.isEmpty():
-            self.notify.error('Boat not found')
-        else:
-            wheel = self.boat.find('**/wheel')
-            if wheel.isEmpty():
-                self.notify.warning('Wheel not found')
-            else:
-                wheel.hide()
-            self.boat.stash()
         self.dockSound = base.loadSfx('phase_6/audio/sfx/SZ_DD_dockcreak.ogg')
         self.foghornSound = base.loadSfx('phase_5/audio/sfx/SZ_DD_foghorn.ogg')
         self.bellSound = base.loadSfx('phase_6/audio/sfx/SZ_DD_shipbell.ogg')
         self.waterSound = base.loadSfx('phase_6/audio/sfx/SZ_DD_waterlap.ogg')
+        
+        if not self.boat.isEmpty():
+            wheel = self.boat.find('**/wheel')
+
+            if not wheel.isEmpty():
+                wheel.hide()
+
+            self.boat.stash()
+            self.donald = NPCToons.createLocalNPC(7011)
+            
+            self.donald.setPos(0, -1, 3.95)
+            self.donald.reparentTo(self.boat)
+            self.donald.setHat(48, 0, 0)
+            
+            self.donaldSpeech = Sequence()
+            random.shuffle(TTLocalizer.DonaldChatter)
+            
+            for speechText in TTLocalizer.DonaldChatter:
+                self.donaldSpeech.append(Func(self.donald.setChatAbsolute, speechText, CFSpeech))
+                self.donaldSpeech.append(Wait(len(speechText.split(' '))))
+                self.donaldSpeech.append(Func(self.donald.clearChat))
+                self.donaldSpeech.append(Wait(15))
+            
+            self.donaldSpeech.loop(0)
 
     def unload(self):
         SafeZoneLoader.SafeZoneLoader.unload(self)
+
+        if hasattr(self, 'donald'):
+            self.donaldSpeech.pause()
+            self.donald.delete()
+            del self.donaldSpeech
+            del self.donald
+
         del self.seagullSound
         del self.underwaterSound
         del self.swimSound
