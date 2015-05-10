@@ -779,11 +779,7 @@ class OTPClientRepository(ClientRepositoryBase):
     def _removeLocalAvFromStateServer(self):
         self.sendSetAvatarIdMsg(0)
         self._removeAllOV()
-        callback = Functor(self.loginFSM.request, self._closeShardLoginState)
-        if base.slowCloseShard:
-            taskMgr.doMethodLater(base.slowCloseShardDelay * 0.5, Functor(self.removeShardInterest, callback), 'slowCloseShard')
-        else:
-            self.removeShardInterest(callback)
+        self.removeShardInterest(Functor(self.loginFSM.request, self._closeShardLoginState))
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def _removeAllOV(self):
@@ -804,16 +800,7 @@ class OTPClientRepository(ClientRepositoryBase):
         self.cleanGameExit = True
         self.cache.flush()
         self.doDataCache.flush()
-        if base.slowCloseShard:
-            taskMgr.doMethodLater(base.slowCloseShardDelay * 0.5, Functor(self._callRemoveShardInterestCallback, callback), 'slowCloseShardCallback')
-        else:
-            self._callRemoveShardInterestCallback(callback, None)
-        return
-
-    @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
-    def _callRemoveShardInterestCallback(self, callback, task):
         callback()
-        return Task.done
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def _removeCurrentShardInterest(self, callback):
