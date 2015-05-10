@@ -8940,4 +8940,4 @@ DonaldChatter = ["I'm glad you're here today!",
  'I hope you are enjoying your stay in Toontown!',
  'I like what you are wearing.',
  'I love to play tag. Do you?']
- NPCFriendUnavailable = 'Unavailable'
+NPCFriendUnavailable = 'Unavailable'
