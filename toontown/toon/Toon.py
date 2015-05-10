@@ -1789,6 +1789,19 @@ class Toon(Avatar.Avatar, ToonHead):
         self.holeClipPath = self.attachNewNode(holeClip)
         self.getGeomNode().setClipPlane(self.holeClipPath)
         self.nametag3d.setClipPlane(self.holeClipPath)
+        avHeight = max(self.getHeight(), 3)
+        def lerpCam(task):
+            degrees = task.time * 52.941
+            radians = degrees * (math.pi / 180.0)
+            x = -12 * math.sin(radians)
+            y = -12 * math.cos(radians)
+            z = base.localAvatar.getHeight()
+            camera.setPos(x, y, z)
+            camera.setH(-degrees)
+            if task.time > 3.4:
+                return Task.done
+            return Task.cont
+        taskMgr.add(lerpCam, 'lerpCam')
         self.track.start(ts)
         self.setActiveShadow(0)
 
