@@ -1998,7 +1998,6 @@ TeleportPanelIgnored = '%s is ignoring you.'
 TeleportPanelNotOnline = "%s isn't online right now."
 TeleportPanelWentAway = '%s went away.'
 TeleportPanelUnknownHood = "You don't know how to get to %s!"
-TeleportPanelUnavailableHood = '%s is not available right now; try again later.'
 TeleportPanelDenySelf = "You can't go to yourself!"
 TeleportPanelOtherShard = "%(avName)s is in district %(shardName)s, and you're in district %(myShardName)s.  Do you want to switch to %(shardName)s?"
 TeleportPanelBusyShard = '%(avName)s is in a full District.'
@@ -8941,3 +8940,4 @@ DonaldChatter = ["I'm glad you're here today!",
  'I hope you are enjoying your stay in Toontown!',
  'I like what you are wearing.',
  'I love to play tag. Do you?']
+ NPCFriendUnavailable = 'Unavailable'
