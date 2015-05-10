@@ -6720,6 +6720,7 @@ NPCToonNames = {20000: 'Tutorial Tom',
  7008: 'Ima Cagedtoon',
  7009: 'Jimmy Thelock',
  7010: 'Little Blinky',
+ 7011: 'Donald',
  91917: 'Magic Cat'}
 zone2TitleDict = {2513: ('Toon Hall', ''),
  2514: ('Toontown Bank', ''),
@@ -8928,3 +8929,18 @@ def getPetNameId(name):
     return 0
 
 PropIdToName = [InventoryHealString, MovieNPCSOSTrap, MovieNPCSOSLure, MovieNPCSOSSound, MovieNPCSOSThrow, MovieNPCSOSSquirt, MovieNPCSOSDrop]
+DonaldChatter = ["I'm glad you're here today!",
+ "You look like you're having fun.",
+ "Oh boy, I'm having a good day.",
+ 'I hope you are enjoying your ride!',
+ 'I like meeting new people.',
+ 'Have fun in my neighborhood.',
+ 'I like to make people laugh.',
+ 'Watch out for the Cogs!',
+ 'Come aboard!',
+ "I heard it's snowing at the Brrrgh.",
+ 'Looks like the trolley is coming!',
+ 'Sometimes I play trolley games just to eat the fruit pie!',
+ 'I hope you are enjoying your stay in Toontown!',
+ 'I like what you are wearing.',
+ 'I love to play tag. Do you?']
