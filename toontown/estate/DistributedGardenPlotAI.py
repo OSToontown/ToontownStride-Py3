@@ -1,20 +1,26 @@
 from direct.directnotify import DirectNotifyGlobal
 from toontown.estate.DistributedLawnDecorAI import DistributedLawnDecorAI
+import DistributedToonStatuaryAI
+import DistributedStatuaryAI
 
 class DistributedGardenPlotAI(DistributedLawnDecorAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedGardenPlotAI")
 
-    def plantFlower(self, todo0, todo1):
-        pass
+    def plantFlower(self, species, variety):
+        flower = DistributedFlowerAI.DistributedFlowerAI()
 
-    def plantGagTree(self, todo0, todo1):
-        pass
+    def plantGagTree(self, gagTrack, gagLevel):
+        tree = DistributedGagTreeAI.DistributedGagTreeAI()
 
-    def plantStatuary(self, todo0):
-        pass
+    def plantStatuary(self, species):
+        statue = DistributedStatuaryAI.DistributedStatuaryAI()
 
-    def plantToonStatuary(self, todo0, todo1):
-        pass
+    def plantToonStatuary(self, species, dnaCode):
+        statue = DistributedToonStatuaryAI.DistributedToonStatuaryAI()
 
-    def plantNothing(self, todo0):
-        pass
+    def plantNothing(self, burntBeans):
+        avId = self.air.getAvatarIdFromSender()
+        av = self.air.doId2do[avId]
+        money = av.getMoney()
+        av.setMoney(money - burntBeans)
+        av.d_setMoney(money - burntBeans)

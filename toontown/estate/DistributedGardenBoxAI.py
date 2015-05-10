@@ -4,5 +4,5 @@ from toontown.estate.DistributedLawnDecorAI import DistributedLawnDecorAI
 class DistributedGardenBoxAI(DistributedLawnDecorAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedGardenBoxAI")
 
-    def setTypeIndex(self, todo0):
+    def setTypeIndex(self, index):
         pass
