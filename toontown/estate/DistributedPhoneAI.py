@@ -126,7 +126,7 @@ class DistributedPhoneAI(DistributedFurnitureItemAI):
             av.takeMoney(item.getPrice(priceType))
 
         if item.getDeliveryTime():
-            if len(av.onOrder) > 5:
+            if len(av.onOrder) > 25:
                 self.sendUpdateToAvatarId(avId, 'requestPurchaseResponse', [context, ToontownGlobals.P_OnOrderListFull])
                 return
 
