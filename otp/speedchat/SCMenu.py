@@ -10,8 +10,8 @@ import types
 class SCMenu(SCObject, NodePath):
     config = getConfigShowbase()
     SpeedChatRolloverTolerance = config.GetFloat('speedchat-rollover-tolerance', 0.08)
-    WantFade = config.GetBool('want-speedchat-fade', 0)
-    FadeDuration = config.GetFloat('speedchat-fade-duration', 0.2)
+    WantFade = config.GetBool('want-speedchat-fade', 1)
+    FadeDuration = config.GetFloat('speedchat-fade-duration', 0.4)
     SerialNum = 0
     BackgroundModelName = None
     GuiModelName = None
@@ -163,7 +163,7 @@ class SCMenu(SCObject, NodePath):
             else:
                 self.stopFade()
                 self.fadeIval = LerpFunctionInterval(self.fadeFunc, fromData=0.0, toData=1.0, duration=SCMenu.FadeDuration)
-                self.fadeIval.play()
+                self.fadeIval.start()
                 if parentMenu is not None:
                     parentMenu.childHasFaded = 1
         return

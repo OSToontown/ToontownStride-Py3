@@ -86,7 +86,6 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.wantEmblems = self.config.GetBool('want-emblems', True)
         self.wantCogbuildings = self.config.GetBool('want-cogbuildings', True)
         self.wantCogdominiums = self.config.GetBool('want-cogdominiums', True)
-        self.doLiveUpdates = self.config.GetBool('want-live-updates', False)
         self.wantTrackClsends = self.config.GetBool('want-track-clsends', False)
         self.wantGloveNpc = self.config.GetBool('want-glove-npc', True)
         self.baseXpMultiplier = self.config.GetFloat('base-xp-multiplier', 1.0)
@@ -155,7 +154,7 @@ class ToontownAIRepository(ToontownInternalRepository):
             self.hoods.append(DGHoodAI.DGHoodAI(self))
         if self.config.GetBool('want-minnies-melodyland', True):
             self.hoods.append(MMHoodAI.MMHoodAI(self))
-        if self.config.GetBool('want-the-burrrgh', True):
+        if self.config.GetBool('want-the-brrrgh', True):
             self.hoods.append(BRHoodAI.BRHoodAI(self))
         if self.config.GetBool('want-donalds-dreamland', True):
             self.hoods.append(DLHoodAI.DLHoodAI(self))

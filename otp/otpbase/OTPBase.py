@@ -1,29 +1,17 @@
-import math
-import re
-import time
-
-import OTPGlobals
-import OTPRender
 from direct.showbase.ShowBase import ShowBase
 from otp.ai.MagicWordGlobal import *
 from pandac.PandaModules import Camera, TPLow, VBase4, ColorWriteAttrib, Filename, getModelPath, NodePath, Vec4
+import OTPGlobals, OTPRender, math
 
 class OTPBase(ShowBase):
 
     def __init__(self, windowType = None):
         self.wantEnviroDR = False
         ShowBase.__init__(self, windowType=windowType)
-        if config.GetBool('want-phase-checker', 0):
-            from direct.showbase import Loader
-            Loader.phaseChecker = self.loaderPhaseChecker
-            self.errorAccumulatorBuffer = ''
-            taskMgr.add(self.delayedErrorCheck, 'delayedErrorCheck', priority=10000)
         self.idTags = config.GetBool('want-id-tags', 0)
         if not self.idTags:
             del self.idTags
         self.wantNametags = self.config.GetBool('want-nametags', 1)
-        self.slowCloseShard = self.config.GetBool('slow-close-shard', 0)
-        self.slowCloseShardDelay = self.config.GetFloat('slow-close-shard-delay', 10.0)
         self.fillShardsToIdealPop = self.config.GetBool('fill-shards-to-ideal-pop', 1)
         self.wantDynamicShadows = 1
         self.stereoEnabled = False
@@ -31,8 +19,6 @@ class OTPBase(ShowBase):
         self.enviroCam = None
         self.pixelZoomSetup = False
         self.gameOptionsCode = ''
-        self.locationCode = ''
-        self.locationCodeChanged = time.time()
         if base.cam:
             if self.wantEnviroDR:
                 base.cam.node().setCameraMask(OTPRender.MainCameraBitmask)
@@ -176,47 +162,6 @@ class OTPBase(ShowBase):
 
     def getShardPopLimits(self):
         return (100, 200, -1)
-
-    def setLocationCode(self, locationCode):
-        if locationCode != self.locationCode:
-            self.locationCode = locationCode
-            self.locationCodeChanged = time.time()
-
-    def delayedErrorCheck(self, task):
-        if self.errorAccumulatorBuffer:
-            buffer = self.errorAccumulatorBuffer
-            self.errorAccumulatorBuffer = ''
-            self.notify.error('\nAccumulated Phase Errors!:\n %s' % buffer)
-        return task.cont
-
-    def loaderPhaseChecker(self, path, loaderOptions):
-        if 'audio/' in path:
-            return 1
-        file = Filename(path)
-        if not file.getExtension():
-            file.setExtension('bam')
-        mp = getModelPath()
-        path = mp.findFile(file).cStr()
-        if not path:
-            return
-        match = re.match('.*phase_([^/]+)/', path)
-        if not match:
-            if 'dmodels' in path:
-                return
-            else:
-                self.errorAccumulatorBuffer += 'file not in phase (%s, %s)\n' % (file, path)
-                return
-        basePhase = float(match.groups()[0])
-        model = loader.loader.loadSync(Filename(path), loaderOptions)
-        if model:
-            model = NodePath(model)
-            for tex in model.findAllTextures():
-                texPath = tex.getFullpath().cStr()
-                match = re.match('.*phase_([^/]+)/', texPath)
-                if match:
-                    texPhase = float(match.groups()[0])
-                    if texPhase > basePhase:
-                        self.errorAccumulatorBuffer += 'texture phase is higher than the models (%s, %s)\n' % (path, texPath)
 
     def getRepository(self):
         return self.cr

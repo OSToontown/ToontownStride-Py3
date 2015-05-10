@@ -70,14 +70,11 @@ NPC_SMART = 13
 NPC_GLOVE = 14
 CLERK_COUNTDOWN_TIME = 120
 TAILOR_COUNTDOWN_TIME = 300
-RTDNAFile = '/RTDNAFile.txt'
-saveDNA = False
 
 def getRandomDNA(seed, gender):
     randomDNA = ToonDNA.ToonDNA()
     randomDNA.newToonRandom(seed, gender, 1)
     return randomDNA.asTuple()
-
 
 def createNPC(air, npcId, desc, zoneId, posIndex = 0, questCallback = None):
     import DistributedNPCToonAI
@@ -130,31 +127,6 @@ def createNPC(air, npcId, desc, zoneId, posIndex = 0, questCallback = None):
         dnaList = getRandomDNA(npcId, gender)
     else:
         dnaList = dnaType
-    if saveDNA:
-        strList = []
-        strList.append('\n\nNPC Id: ')
-        strList.append(str(npcId))
-        strList.append('\nDNA: ')
-        count = 0
-        strList.append('(')
-        for item in dnaList:
-            if count < 4:
-                strList.append('"' + str(item) + '"')
-            else:
-                strList.append(str(item))
-            count += 1
-            strList.append(' ,')
-
-        strList.append(')')
-        rtDNA = ''.join(strList)
-        if os.path.isfile(RTDNAFile):
-            rtDnaFile = open(RTDNAFile, 'r+')
-            rtDnaFile.seek(0, 2)
-            rtDnaFile.writelines(rtDNA)
-        else:
-            rtDnaFile = open(RTDNAFile, 'w')
-            rtDnaFile.writelines(rtDNA)
-        rtDnaFile.close()
     dna.newToonFromProperties(*dnaList)
     npc.setDNAString(dna.makeNetString())
     npc.setHp(15)
