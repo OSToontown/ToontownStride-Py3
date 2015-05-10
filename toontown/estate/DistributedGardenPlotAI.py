@@ -32,3 +32,4 @@ class DistributedGardenPlotAI(DistributedLawnDecorAI):
         money = av.getMoney()
         av.setMoney(money - burntBeans)
         av.d_setMoney(money - burntBeans)
+        self.planted = None

@@ -4,6 +4,13 @@ from direct.distributed.DistributedNodeAI import DistributedNodeAI
 class DistributedLawnDecorAI(DistributedNodeAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedLawnDecorAI")
 
+    def __init__(self, air):
+        self.air = air
+        self.plot = None
+        self.heading = 0
+        self.pos = (0, 0, 0)
+        self.ownerIndex = 0
+
     def setPlot(self, plot):
         self.plot = plot
 

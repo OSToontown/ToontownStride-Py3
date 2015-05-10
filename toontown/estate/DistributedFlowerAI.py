@@ -4,8 +4,14 @@ from toontown.estate.DistributedPlantBaseAI import DistributedPlantBaseAI
 class DistributedFlowerAI(DistributedPlantBaseAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedFlowerAI")
 
+    def __init__(self, air, species, variety):
+        self.air = air
+        self.species = species
+        self.variety = variety
+        self.typeIndex = None
+
     def setTypeIndex(self, index):
-        pass
+        self.typeIndex = index
 
     def setVariety(self, variety):
-        pass
+        self.variety = variety

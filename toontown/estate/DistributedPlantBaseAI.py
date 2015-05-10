@@ -4,14 +4,20 @@ from toontown.estate.DistributedLawnDecorAI import DistributedLawnDecorAI
 class DistributedPlantBaseAI(DistributedLawnDecorAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedPlantBaseAI")
 
+    def __init__(self, air):
+        self.air = air
+        self.typeIndex = 0
+        self.water = 0
+        self.growth = 0
+
     def setTypeIndex(self, index):
-        pass
+        self.typeIndex = index
 
     def setWaterLevel(self, water):
-        pass
+        self.water = water
 
     def setGrowthLevel(self, growth):
-        pass
+        self.growth = growth
 
     def waterPlant(self):
         pass
