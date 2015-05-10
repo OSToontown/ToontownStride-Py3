@@ -2,7 +2,7 @@ from direct.task.Task import Task
 import math
 from panda3d.core import BillboardEffect, Vec3, Point3, PGButton, VBase4
 from panda3d.core import DepthWriteAttrib
-
+from direct.interval.IntervalGlobal import *
 from toontown.chat.ChatBalloon import ChatBalloon
 from toontown.nametag import NametagGlobals
 from toontown.nametag.Nametag import Nametag
@@ -97,10 +97,20 @@ class Nametag3d(Nametag, Clickable3d):
         if self.isClickable() and (self.lastClickState != PGButton.SDepressed):
             base.playSfx(NametagGlobals.rolloverSound)
 
-    def update(self):
-        self.contents.node().removeAllChildren()
+    def removeContents(self):
+        if self.contents:
+            self.contents.node().removeAllChildren()
 
-        Nametag.update(self)
+    def update(self):
+        if not self.chatBalloon:
+            self.removeContents()
+            Nametag.update(self)
+        else:
+            scaleLerp = Sequence(LerpScaleInterval(self.chatBalloon, 0.25, VBase3(0, 0, 0), blendType='easeInOut'),
+                                 Wait(0.25),
+                                 Func(self.removeContents),
+                                 Func(Nametag.update, self))
+            scaleLerp.start()
 
     def tick(self, task):
         distance = self.contents.getPos(base.cam).length()
@@ -138,7 +148,10 @@ class Nametag3d(Nametag, Clickable3d):
             foreground=foreground, background=background,
             reversed=self.chatReversed,
             button=self.chatButton[self.clickState])
+        self.chatBalloon.setScale(0)
         self.chatBalloon.reparentTo(self.contents)
+        scaleLerp = Sequence(Wait(0.15), LerpScaleInterval(self.chatBalloon, 0.25, VBase3(1, 1, 1), blendType='easeInOut'))
+        scaleLerp.start()
 
     def drawNametag(self):
         if self.font is None:

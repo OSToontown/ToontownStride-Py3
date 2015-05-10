@@ -1,7 +1,7 @@
 from direct.task.Task import Task
 import math
 from panda3d.core import PGButton, VBase4, DepthWriteAttrib, Point3
-
+from direct.interval.IntervalGlobal import *
 from toontown.chat.ChatBalloon import ChatBalloon
 from toontown.margins import MarginGlobals
 from toontown.margins.MarginVisible import MarginVisible

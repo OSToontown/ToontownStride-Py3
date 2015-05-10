@@ -1,6 +1,6 @@
 from direct.task.Task import Task
 from pandac.PandaModules import TextNode, VBase4
-
+from direct.interval.IntervalGlobal import *
 from toontown.chat.ChatBalloon import ChatBalloon
 from toontown.nametag import NametagGlobals
 
@@ -67,17 +67,9 @@ class Nametag:
 
         self.chatButton = NametagGlobals.noButton
 
-        if self.chatBalloon is not None:
-            self.chatBalloon.removeNode()
-            self.chatBalloon = None
-
-        if self.icon is not None:
-            self.icon.removeAllChildren()
-            self.icon = None
-
-        if self.panel is not None:
-            self.panel.removeNode()
-            self.panel = None
+        self.removeBalloon()
+        self.removeIcon()
+        self.removePanel()
 
         self.avatar = None
 
@@ -265,14 +257,24 @@ class Nametag:
     def clearShadow(self):
         self.textNode.clearShadow()
 
-    def update(self):
-        if self.chatBalloon is not None:
+    def removeBalloon(self):
+        if self.chatBalloon:
             self.chatBalloon.removeNode()
             self.chatBalloon = None
 
-        if self.panel is not None:
+    def removePanel(self):
+        if self.panel:
             self.panel.removeNode()
             self.panel = None
+
+    def removeIcon(self):
+        if self.icon:
+            self.icon.removeAllChildren()
+            self.icon = None
+
+    def update(self):
+        self.removeBalloon()
+        self.removePanel()
 
         if self.getChatText():
             if self.chatBalloonType == NametagGlobals.CHAT_BALLOON:
