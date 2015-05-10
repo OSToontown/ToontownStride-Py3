@@ -5,4 +5,4 @@ class DistributedGardenBoxAI(DistributedLawnDecorAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedGardenBoxAI")
 
     def setTypeIndex(self, index):
-        pass
+        self.typeIndex = index

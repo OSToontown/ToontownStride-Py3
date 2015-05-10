@@ -6,17 +6,25 @@ import DistributedStatuaryAI
 class DistributedGardenPlotAI(DistributedLawnDecorAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedGardenPlotAI")
 
+    def __init__(self, air):
+        self.air = air
+        self.planted = None
+
     def plantFlower(self, species, variety):
-        flower = DistributedFlowerAI.DistributedFlowerAI()
+        flower = DistributedFlowerAI.DistributedFlowerAI(self.air, species, variety)
+        self.planted = flower
 
     def plantGagTree(self, gagTrack, gagLevel):
-        tree = DistributedGagTreeAI.DistributedGagTreeAI()
+        tree = DistributedGagTreeAI.DistributedGagTreeAI(self.air, gagTrack, gagLevel)
+        self.planted = tree
 
     def plantStatuary(self, species):
-        statue = DistributedStatuaryAI.DistributedStatuaryAI()
+        statue = DistributedStatuaryAI.DistributedStatuaryAI(self.air, species)
+        self.planted = statue
 
     def plantToonStatuary(self, species, dnaCode):
-        statue = DistributedToonStatuaryAI.DistributedToonStatuaryAI()
+        statue = DistributedToonStatuaryAI.DistributedToonStatuaryAI(self.air, species, dnaCode)
+        self.planted = statue
 
     def plantNothing(self, burntBeans):
         avId = self.air.getAvatarIdFromSender()

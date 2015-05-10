@@ -5,16 +5,18 @@ class DistributedLawnDecorAI(DistributedNodeAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedLawnDecorAI")
 
     def setPlot(self, plot):
-        pass
+        self.plot = plot
 
     def setHeading(self, h):
-        pass
+        self.heading = h
+        self.sendUpdate('setH', [h])
 
     def setPosition(self, x, y, z):
-        pass
+        self.pos = (x, y, z)
+        self.sendUpdate('setPos', [x, y, z])
 
     def setOwnerIndex(self, index):
-        pass
+        self.ownerIndex = index
 
     def plotEntered(self):
         pass
