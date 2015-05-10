@@ -1911,7 +1911,6 @@ dclass DistributedNPCFlippyInToonHall : DistributedNPCToon {
 };
 
 dclass DistributedNPCScientist : DistributedNPCToonBase {
-  setChat(char [0-1024], uint8, uint32, uint8, uint8) ownsend broadcast;
 };
 
 dclass DistributedNPCClerk : DistributedNPCToonBase {
@@ -3280,7 +3279,7 @@ dclass ClientServicesManager : DistributedObjectGlobal {
 };
 
 dclass TTCodeRedemptionMgr : DistributedObject {
-  redeemCode(char [0-256]) airecv clsend;
+  redeemCode(char [0-50]) airecv clsend;
   redeemCodeResult(uint32);
 };
 

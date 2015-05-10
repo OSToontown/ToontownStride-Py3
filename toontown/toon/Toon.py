@@ -1789,6 +1789,22 @@ class Toon(Avatar.Avatar, ToonHead):
         self.holeClipPath = self.attachNewNode(holeClip)
         self.getGeomNode().setClipPlane(self.holeClipPath)
         self.nametag3d.setClipPlane(self.holeClipPath)
+        avHeight = max(self.getHeight(), 3)
+
+        if self == base.localAvatar:
+            def lerpCam(task):
+                degrees = task.time * 52.941
+                radians = degrees * (math.pi / 180.0)
+                x = -12 * math.sin(radians)
+                y = -12 * math.cos(radians)
+                z = base.localAvatar.getHeight()
+                camera.setPos(x, y, z)
+                camera.setH(-degrees)
+                if task.time > 3.4:
+                    return Task.done
+                return Task.cont
+            taskMgr.add(lerpCam, 'lerpCam')
+
         self.track.start(ts)
         self.setActiveShadow(0)
 
@@ -2977,8 +2993,6 @@ class Toon(Avatar.Avatar, ToonHead):
 
     def enterScientistJealous(self, animMultiplier = 1, ts = 0, callback = None, extraArgs = []):
         self.loop('scientistJealous')
-        if hasattr(self, 'showScientistProp'):
-            self.showScientistProp()
 
     def exitScientistJealous(self):
         self.stop()
@@ -3003,12 +3017,20 @@ class Toon(Avatar.Avatar, ToonHead):
 
     def enterScientistPlay(self, animMultiplier = 1, ts = 0, callback = None, extraArgs = []):
         self.loop('scientistGame')
-        if hasattr(self, 'scientistPlay'):
-            self.scientistPlay()
 
     def exitScientistPlay(self):
         self.stop()
 
+    def createTalkSequence(self, speech, waitTime):
+        sequence = Sequence()
+
+        for text in speech:
+            sequence.append(Func(self.setChatAbsolute, text, CFSpeech))
+            sequence.append(Wait(len(text.split(' '))))
+            sequence.append(Func(self.clearChat))
+            sequence.append(Wait(waitTime))
+
+        return sequence
 
 loadModels()
 compileGlobalAnimList()

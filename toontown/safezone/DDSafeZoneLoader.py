@@ -1,7 +1,4 @@
-from direct.interval.IntervalGlobal import Sequence, Func, Wait
-from toontown.safezone import SafeZoneLoader
-from toontown.safezone import DDPlayground
-from toontown.chat.ChatGlobals import CFSpeech
+from toontown.safezone import SafeZoneLoader, DDPlayground
 from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer
 import random
@@ -40,16 +37,9 @@ class DDSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):
             self.donald.setPos(0, -1, 3.95)
             self.donald.reparentTo(self.boat)
             self.donald.setHat(48, 0, 0)
-
-            self.donaldSpeech = Sequence()
+            
             random.shuffle(TTLocalizer.DonaldChatter)
-
-            for speechText in TTLocalizer.DonaldChatter:
-                self.donaldSpeech.append(Func(self.donald.setChatAbsolute, speechText, CFSpeech))
-                self.donaldSpeech.append(Wait(len(speechText.split(' '))))
-                self.donaldSpeech.append(Func(self.donald.clearChat))
-                self.donaldSpeech.append(Wait(15))
-
+            self.donaldSpeech = self.donald.createTalkSequence(TTLocalizer.DonaldChatter, 15)
             self.donaldSpeech.loop(0)
 
     def unload(self):

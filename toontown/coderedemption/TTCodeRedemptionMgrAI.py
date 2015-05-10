@@ -43,7 +43,6 @@ only include the comma if there are multiple arguments.
 class TTCodeRedemptionMgrAI(DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("TTCodeRedemptionMgrAI")
     codes = {
-        # weed code is for testing purposes, remove when done.
         'weed': {
             'items': [
                 CatalogClothingItem.CatalogClothingItem(1821, 0)
@@ -54,6 +53,11 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
         'gardening': {
             'items': [
                 CatalogGardenStarterItem.CatalogGardenStarterItem()
+            ]
+        },
+        'sillymeter': {
+            'items': [
+                CatalogClothingItem.CatalogClothingItem(1753, 0)
             ]
         }
     }
@@ -76,6 +80,8 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
 
         if not av:
             return
+
+        code = code.lower()
 
         if code in self.codes:
             if av.isCodeRedeemed(code):
