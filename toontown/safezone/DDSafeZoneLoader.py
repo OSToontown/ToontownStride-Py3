@@ -1,7 +1,4 @@
-from direct.interval.IntervalGlobal import Sequence, Func, Wait
-from toontown.safezone import SafeZoneLoader
-from toontown.safezone import DDPlayground
-from toontown.chat.ChatGlobals import CFSpeech
+from toontown.safezone import SafeZoneLoader, DDPlayground
 from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer
 import random

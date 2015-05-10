@@ -358,24 +358,6 @@ class DistributedToonHallInterior(DistributedToonInterior):
         self.sillyMeter.stop()
         self.ignore('SillyMeterPhase')
 
-    def enterPhase15(self):
-        self.animSeq = Parallel(ActorInterval(self.sillyMeter, 'phaseFive', duration=604800, constrainedLoop=1, startFrame=1, endFrame=48), Sequence(Func(self.phase5Sfx.play), Func(self.audio3d.attachSoundToObject, self.phase5Sfx, self.sillyMeter)))
-        self.animSeq.start()
-        self.smPhase2.show()
-        self.smPhase3.show()
-        self.smPhase4.show()
-        self.accept('SillyMeterPhase', self.startSillyMeter)
-
-    def exitPhase15(self):
-        self.animSeq.finish()
-        del self.animSeq
-        self.smPhase2.hide()
-        self.smPhase3.hide()
-        self.smPhase4.hide()
-        self.audio3d.detachSound(self.phase5Sfx)
-        self.phase5Sfx.stop()
-        self.sillyMeter.stop()
-
     def enterOff(self):
         self.ignore('SillyMeterPhase')
         if hasattr(self, 'sillyMeter'):
@@ -440,8 +422,8 @@ def sillyPhase(phase):
     Set the silly meter phase.
     """
     
-    if phase < -1 or phase > 15:
-        return 'Phase number must be between 0 and 15!'
+    if phase < -1 or phase > 14:
+        return 'Phase number must be between 0 and 14!'
     
     messenger.send('SillyMeterPhase', [phase])
     return 'Successfully set the silly meter phase!'

@@ -133,8 +133,8 @@ def createNPC(air, npcId, desc, zoneId, posIndex = 0, questCallback = None):
     npc.setMaxHp(15)
     npc.setPositionIndex(posIndex)
     npc.generateWithRequired(zoneId)
-    if hasattr(npc, 'startAnimState'):
-        npc.d_setAnimState(npc.startAnimState, 1.0)
+    if hasattr(npc, 'getStartAnimState'):
+        npc.d_setAnimState(npc.getStartAnimState(), 1.0)
     else:
         npc.d_setAnimState('neutral', 1.0)
     return npc

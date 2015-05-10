@@ -1,26 +1,7 @@
-from pandac.PandaModules import *
-from toontown.toonbase import TTLocalizer, ToontownGlobals
-import DistributedNPCToonBase
+from toontown.toonbase import TTLocalizer
+from DistributedNPCToonBase import DistributedNPCToonBase
 
-class DistributedNPCScientist(DistributedNPCToonBase.DistributedNPCToonBase):
-
-    def __init__(self, cr):
-        DistributedNPCToonBase.DistributedNPCToonBase.__init__(self, cr)
-        if base.cr.newsManager.isHolidayRunning(ToontownGlobals.SILLYMETER_HOLIDAY) or base.cr.newsManager.isHolidayRunning(ToontownGlobals.SILLYMETER_EXT_HOLIDAY):
-            self.show()
-        else:
-            self.hide()
-        self.accept('SillyMeterIsRunning', self.sillyMeterIsRunning)
-
-    def disable(self):
-        self.ignore('SillyMeterIsRunning')
-        DistributedNPCToonBase.DistributedNPCToonBase.disable(self)
-
-    def sillyMeterIsRunning(self, isRunning):
-        if isRunning:
-            self.show()
-        else:
-            self.hide()
+class DistributedNPCScientist(DistributedNPCToonBase):
 
     def getCollSphereRadius(self):
         return 2.5
@@ -33,86 +14,53 @@ class DistributedNPCScientist(DistributedNPCToonBase.DistributedNPCToonBase):
         self.nametag3d.setDepthTest(0)
         self.nametag3d.setBin('fixed', 0)
 
-    def setChat(self, topic, partPos, partId, progress, flags):
-        msg = TTLocalizer.toontownDialogues[topic][partPos, partId][progress]
-        self.setChatMuted(msg, flags)
-
-    def announceGenerate(self):
-        DistributedNPCToonBase.DistributedNPCToonBase.announceGenerate(self)
-        if base.cr.newsManager.isHolidayRunning(ToontownGlobals.SILLYMETER_HOLIDAY) or base.cr.newsManager.isHolidayRunning(ToontownGlobals.SILLYMETER_EXT_HOLIDAY):
-            self.show()
-        else:
-            self.hide()
+    def setModelHand(self, path):
+        model = loader.loadModel(path)
+        
+        for hand in self.getRightHands():
+            placeholder = hand.attachNewNode('RightHandObj')
+            placeholder.setH(180)
+            placeholder.setScale(render, 1.0)
+            placeholder.setPos(0, 0, 0.1)
+            model.instanceTo(placeholder)
 
     def generateToon(self):
-        self.setLODs()
-        self.generateToonLegs()
-        self.generateToonHead()
-        self.generateToonTorso()
-        self.generateToonColor()
-        self.parentToonParts()
-        self.rescaleToon()
-        self.resetHeight()
-        self.rightHands = []
-        self.leftHands = []
-        self.headParts = []
-        self.hipsParts = []
-        self.torsoParts = []
-        self.legsParts = []
-        self.__bookActors = []
-        self.__holeActors = []
+        DistributedNPCToonBase.generateToon(self)
         self.setupToonNodes()
-        if self.style.getTorsoSize() == 'short' and self.style.getAnimal() == 'duck':
-            sillyReader = loader.loadModel('phase_4/models/props/tt_m_prp_acs_sillyReader')
-            for rHand in self.getRightHands():
-                placeholder = rHand.attachNewNode('SillyReader')
-                sillyReader.instanceTo(placeholder)
-                placeholder.setH(180)
-                placeholder.setScale(render, 1.0)
-                placeholder.setPos(0, 0, 0.1)
-
-        elif self.style.getTorsoSize() == 'long' and self.style.getAnimal() == 'monkey' or self.style.getTorsoSize() == 'medium' and self.style.getAnimal() == 'horse':
-            clipBoard = loader.loadModel('phase_4/models/props/tt_m_prp_acs_clipboard')
-            for rHand in self.getRightHands():
-                placeholder = rHand.attachNewNode('ClipBoard')
-                clipBoard.instanceTo(placeholder)
-                placeholder.setH(180)
-                placeholder.setScale(render, 1.0)
-                placeholder.setPos(0, 0, 0.1)
+        self.setModelHand('phase_4/models/props/tt_m_prp_acs_%s' % ('sillyReader' if self.style.getAnimal() == 'duck' else 'clipboard'))
+        self.startSequence(config.GetInt('silly-meter-phase', 12))
+        self.accept('SillyMeterPhase', self.startSequence)
 
     def startLookAround(self):
         pass
+    
+    def startSequence(self, phase):
+        if not self.style.getAnimal() == 'horse':
+            return
 
-    def scientistPlay(self):
-        if self.style.getTorsoSize() == 'short' and self.style.getAnimal() == 'duck':
-            sillyReaders = self.findAllMatches('**/SillyReader')
-            for sillyReader in sillyReaders:
-                if not sillyReader.isEmpty():
-                    sillyReader.stash()
-                sillyReader = None
+        if phase < 4:
+            dialogue = TTLocalizer.ScientistPhase1Dialogue
+        elif phase < 8:
+            dialogue = TTLocalizer.ScientistPhase2Dialogue
+        elif phase < 12:
+            dialogue = TTLocalizer.ScientistPhase3Dialogue
+        elif phase == 12:
+            dialogue = TTLocalizer.ScientistPhase4Dialogue
+        elif phase == 13:
+            dialogue = TTLocalizer.ScientistPhase5Dialogue
+        else:
+            dialogue = TTLocalizer.ScientistPhase6Dialogue
 
-        elif self.style.getTorsoSize() == 'long' and self.style.getAnimal() == 'monkey':
-            clipBoards = self.findAllMatches('**/ClipBoard')
-            for clipBoard in clipBoards:
-                if not clipBoard.isEmpty():
-                    clipBoard.stash()
-                clipBoard = None
+        self.stopSequence()
+        self.sequence = self.createTalkSequence(dialogue, 1)
+        self.sequence.loop(0)
 
-        return
+    def stopSequence(self):
+        if hasattr(self, 'sequence'):
+            self.sequence.pause()
+            del self.sequence
 
-    def showScientistProp(self):
-        if self.style.getTorsoSize() == 'short' and self.style.getAnimal() == 'duck':
-            sillyReaders = self.findAllMatches('**/SillyReader;+s')
-            for sillyReader in sillyReaders:
-                if not sillyReader.isEmpty():
-                    sillyReader.unstash()
-                sillyReader = None
-
-        elif self.style.getTorsoSize() == 'long' and self.style.getAnimal() == 'monkey':
-            clipBoards = self.findAllMatches('**/ClipBoard;+s')
-            for clipBoard in clipBoards:
-                if not clipBoard.isEmpty():
-                    clipBoard.unstash()
-                clipBoard = None
-
-        return
+    def disable(self):
+        self.stopSequence()
+        self.ignore('SillyMeterPhase')
+        DistributedNPCToonBase.disable(self)

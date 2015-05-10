@@ -1911,7 +1911,6 @@ dclass DistributedNPCFlippyInToonHall : DistributedNPCToon {
 };
 
 dclass DistributedNPCScientist : DistributedNPCToonBase {
-  setChat(char [0-1024], uint8, uint32, uint8, uint8) ownsend broadcast;
 };
 
 dclass DistributedNPCClerk : DistributedNPCToonBase {
