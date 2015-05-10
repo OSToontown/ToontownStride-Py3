@@ -11,7 +11,6 @@ import DistributedIceGameAI
 import DistributedMazeGameAI
 import DistributedMinigameTemplateAI
 import DistributedPatternGameAI
-import DistributedPhotoGameAI
 import DistributedRaceGameAI
 import DistributedRingGameAI
 import DistributedTagGameAI
@@ -69,8 +68,7 @@ def createMinigame(air, playerArray, trolleyZone, minigameZone=None,
         ToontownGlobals.VineGameId: DistributedVineGameAI.DistributedVineGameAI,
         ToontownGlobals.IceGameId: DistributedIceGameAI.DistributedIceGameAI,
         ToontownGlobals.CogThiefGameId: DistributedCogThiefGameAI.DistributedCogThiefGameAI,
-        ToontownGlobals.TwoDGameId: DistributedTwoDGameAI.DistributedTwoDGameAI,
-        ToontownGlobals.PhotoGameId: DistributedPhotoGameAI.DistributedPhotoGameAI
+        ToontownGlobals.TwoDGameId: DistributedTwoDGameAI.DistributedTwoDGameAI
     }
     try:
         mg = mgCtors[mgId](air, mgId)

@@ -343,7 +343,6 @@ VineGameId = 11
 IceGameId = 12
 CogThiefGameId = 13
 TwoDGameId = 14
-PhotoGameId = 15
 MinigameNames = {'race': RaceGameId,
  'cannon': CannonGameId,
  'tag': TagGameId,
@@ -360,8 +359,7 @@ MinigameNames = {'race': RaceGameId,
  'vine': VineGameId,
  'ice': IceGameId,
  'thief': CogThiefGameId,
- '2d': TwoDGameId,
- 'photo': PhotoGameId}
+ '2d': TwoDGameId}
 MinigameTemplateId = -1
 MinigameIDs = (RaceGameId,
  CannonGameId,
@@ -376,13 +374,12 @@ MinigameIDs = (RaceGameId,
  VineGameId,
  IceGameId,
  CogThiefGameId,
- TwoDGameId,
- PhotoGameId)
+ TwoDGameId)
 MinigamePlayerMatrix = {
-    1: (CannonGameId, MazeGameId, TugOfWarGameId, RingGameId, VineGameId, CogThiefGameId, TwoDGameId, DivingGameId, CatchGameId, TargetGameId, PhotoGameId),
-    2: (CannonGameId, MazeGameId, TugOfWarGameId, PatternGameId, TagGameId, RingGameId, VineGameId, IceGameId, CogThiefGameId, TwoDGameId, DivingGameId, CatchGameId, TargetGameId, PhotoGameId),
-    3: (CannonGameId, MazeGameId, TugOfWarGameId, PatternGameId, RaceGameId, TagGameId, VineGameId, RingGameId, IceGameId, CogThiefGameId, TwoDGameId, DivingGameId, CatchGameId, TargetGameId, PhotoGameId),
-    4: (CannonGameId, MazeGameId, TugOfWarGameId, PatternGameId, RaceGameId, TagGameId, VineGameId, RingGameId, IceGameId, CogThiefGameId, TwoDGameId, DivingGameId, CatchGameId, TargetGameId, PhotoGameId),
+    1: (CannonGameId, MazeGameId, TugOfWarGameId, RingGameId, VineGameId, CogThiefGameId, TwoDGameId, DivingGameId, CatchGameId, TargetGameId),
+    2: (CannonGameId, MazeGameId, TugOfWarGameId, PatternGameId, TagGameId, RingGameId, VineGameId, IceGameId, CogThiefGameId, TwoDGameId, DivingGameId, CatchGameId, TargetGameId),
+    3: (CannonGameId, MazeGameId, TugOfWarGameId, PatternGameId, RaceGameId, TagGameId, VineGameId, RingGameId, IceGameId, CogThiefGameId, TwoDGameId, DivingGameId, CatchGameId, TargetGameId),
+    4: (CannonGameId, MazeGameId, TugOfWarGameId, PatternGameId, RaceGameId, TagGameId, VineGameId, RingGameId, IceGameId, CogThiefGameId, TwoDGameId, DivingGameId, CatchGameId, TargetGameId),
 }
 KeyboardTimeout = 300
 phaseMap = {Tutorial: 4,

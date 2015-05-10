@@ -286,7 +286,6 @@ from toontown.minigame import DistributedMinigame/AI
 from toontown.minigame import DistributedMinigameTemplate/AI
 from toontown.minigame import DistributedRaceGame/AI
 from toontown.minigame import DistributedCannonGame/AI
-from toontown.minigame import DistributedPhotoGame/AI
 from toontown.minigame import DistributedPatternGame/AI
 from toontown.minigame import DistributedRingGame/AI
 from toontown.minigame import DistributedTagGame/AI
@@ -1211,12 +1210,6 @@ dclass DistributedCannonGame : DistributedMinigame {
   setCannonWillFire(uint32, int32/100, int32/100, uint32/100) broadcast;
   setToonWillLandInWater(int32/100) airecv clsend;
   announceToonWillLandInWater(uint32, int32/100) broadcast;
-};
-
-dclass DistributedPhotoGame : DistributedMinigame {
-  newClientPhotoScore(uint8, char [0-256], uint32/100) airecv clsend;
-  newAIPhotoScore(uint32, uint8, uint32/100) broadcast;
-  filmOut() airecv clsend;
 };
 
 dclass DistributedPatternGame : DistributedMinigame {
