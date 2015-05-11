@@ -2,7 +2,7 @@
 from pandac.PandaModules import *
 
 
-hashVal = 3970808174L
+hashVal = 3008682321L
 
 
 from toontown.coghq import DistributedCashbotBossSafe, DistributedCashbotBossCrane, DistributedBattleFactory, DistributedCashbotBossTreasure, DistributedCogHQDoor, DistributedSellbotHQDoor, DistributedFactoryElevatorExt, DistributedMintElevatorExt, DistributedLawOfficeElevatorExt, DistributedLawOfficeElevatorInt, LobbyManager, DistributedMegaCorp, DistributedFactory, DistributedLawOffice, DistributedLawOfficeFloor, DistributedLift, DistributedDoorEntity, DistributedSwitch, DistributedButton, DistributedTrigger, DistributedCrushableEntity, DistributedCrusherEntity, DistributedStomper, DistributedStomperPair, DistributedLaserField, DistributedGolfGreenGame, DistributedSecurityCamera, DistributedMover, DistributedElevatorMarker, DistributedBarrelBase, DistributedGagBarrel, DistributedBeanBarrel, DistributedHealBarrel, DistributedGrid, ActiveCell, DirectionalCell, CrusherCell, DistributedCrate, DistributedSinkingPlatform, BattleBlocker, DistributedMint, DistributedMintRoom, DistributedMintBattle, DistributedStage, DistributedStageRoom, DistributedStageBattle, DistributedLawbotBossGavel, DistributedLawbotCannon, DistributedLawbotChair, DistributedCogKart, DistributedCountryClub, DistributedCountryClubRoom, DistributedMoleField, DistributedCountryClubBattle, DistributedMaze, DistributedFoodBelt, DistributedBanquetTable, DistributedGolfSpot
@@ -34,7 +34,7 @@ from toontown.cogdominium import DistributedCogdoInterior, DistributedCogdoBattl
 from toontown.uberdog.ARGManager import ARGManager
 from otp.distributed import Account, DistributedDistrict, DistributedDirectory
 from toontown.estate import DistributedCannon, DistributedTarget, EstateManager, DistributedEstate, DistributedHouse, DistributedHouseInterior, DistributedGarden, DistributedHouseDoor, DistributedMailbox, DistributedFurnitureManager, DistributedFurnitureItem, DistributedBank, DistributedCloset, DistributedTrunk, DistributedPhone, DistributedTreasureChest, DistributedFireworksCannon, DistributedLawnDecor, DistributedGardenPlot, DistributedGardenBox, DistributedFlower, DistributedGagTree, DistributedStatuary, DistributedToonStatuary, DistributedChangingStatuary, DistributedAnimatedStatuary, DistributedPlantBase, DistributedLawnDecor
-from toontown.toon import DistributedToon, DistributedNPCToonBase, DistributedNPCToon, DistributedSmartNPC, DistributedNPCSpecialQuestGiver, DistributedNPCFlippyInToonHall, DistributedNPCScientist, DistributedNPCClerk, DistributedNPCTailor, DistributedNPCBlocker, DistributedNPCFisherman, DistributedNPCPartyPerson, DistributedNPCPetclerk, DistributedNPCKartClerk, DistributedNPCGlove
+from toontown.toon import DistributedToon, DistributedNPCToonBase, DistributedNPCToon, DistributedSmartNPC, DistributedNPCSpecialQuestGiver, DistributedNPCFlippyInToonHall, DistributedNPCScientist, DistributedNPCClerk, DistributedNPCTailor, DistributedNPCBlocker, DistributedNPCFisherman, DistributedNPCPartyPerson, DistributedNPCPetclerk, DistributedNPCKartClerk, DistributedNPCGlove, DistributedNPCLaffRestock
 from toontown.tutorial import DistributedBattleTutorial, TutorialManager
 from toontown.pets import DistributedPetProxy
 from toontown.coderedemption.TTCodeRedemptionMgr import TTCodeRedemptionMgr

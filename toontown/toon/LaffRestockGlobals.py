@@ -1,0 +1,3 @@
+NO_LAFF = 0
+NO_MONEY = 1
+SUCCESS = 2

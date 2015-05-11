@@ -1638,3 +1638,4 @@ PropIdToColor = [
 
 BugReportSite = 'https://bugs.launchpad.net/toontown-united/+filebug'
 TreasureChestSphereRadius = 1.0
+CostPerLaffRestock = 3

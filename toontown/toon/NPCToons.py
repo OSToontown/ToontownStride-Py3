@@ -66,8 +66,9 @@ NPC_PARTYPERSON = 8
 NPC_SPECIALQUESTGIVER = 9
 NPC_FLIPPYTOONHALL = 10
 NPC_SCIENTIST = 11
-NPC_SMART = 13
-NPC_GLOVE = 14
+NPC_SMART = 12
+NPC_GLOVE = 13
+NPC_LAFF_RESTOCK = 14
 CLERK_COUNTDOWN_TIME = 120
 TAILOR_COUNTDOWN_TIME = 300
 
@@ -90,6 +91,7 @@ def createNPC(air, npcId, desc, zoneId, posIndex = 0, questCallback = None):
     import DistributedNPCScientistAI
     import DistributedSmartNPCAI
     import DistributedNPCGloveAI
+    import DistributedNPCLaffRestockAI
     canonicalZoneId, name, dnaType, gender, protected, type = desc
     if type == NPC_REGULAR:
         npc = DistributedNPCToonAI.DistributedNPCToonAI(air, npcId, questCallback=questCallback)
@@ -119,6 +121,8 @@ def createNPC(air, npcId, desc, zoneId, posIndex = 0, questCallback = None):
         npc = DistributedSmartNPCAI.DistributedSmartNPCAI(air, npcId)
     elif type == NPC_GLOVE and simbase.air.wantGloveNpc:
         npc = DistributedNPCGloveAI.DistributedNPCGloveAI(air, npcId)
+    elif type == NPC_LAFF_RESTOCK:
+        npc = DistributedNPCLaffRestockAI.DistributedNPCLaffRestockAI(air, npcId)
     else:
         print 'createNPC() error!!!'
     npc.setName(name)
