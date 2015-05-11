@@ -772,9 +772,6 @@ class DistributedDivingGame(DistributedMinigame):
             fish.removeNode()
             del fish
             del self.spawners[spawnerId].fishArray[spawnId]
-        else:
-            import pdb
-            pdb.setTrace()
         return
 
     def setTreasureGrabbed(self, avId, chestId):

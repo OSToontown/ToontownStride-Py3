@@ -188,9 +188,6 @@ class CogdoFlyingGame(DirectObject):
         self.ignore(CogdoFlyingLegalEagle.RequestAddTargetAgainEventName)
         self.ignore(CogdoFlyingLegalEagle.RequestRemoveTargetEventName)
         self.ignore(CogdoFlyingLocalPlayer.PlayWaitingMusicEventName)
-        if __debug__ and base.config.GetBool('schellgames-dev', True):
-            self.ignore('end')
-            self.ignore('home')
         self.level.update(0.0)
         for eagle in self.legalEagles:
             eagle.gameEnd()

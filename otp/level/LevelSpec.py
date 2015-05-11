@@ -82,14 +82,3 @@ class LevelSpec:
 
     def privGetScenarioEntityDict(self, scenario):
         return self.specDict['scenarios'][scenario]
-
-    def printZones(self):
-        allIds = self.getAllEntIds()
-        type2id = self.getEntType2ids(allIds)
-        zoneIds = type2id['zone']
-        if 0 in zoneIds:
-            zoneIds.remove(0)
-        zoneIds.sort()
-        for zoneNum in zoneIds:
-            spec = self.getEntitySpec(zoneNum)
-            print 'zone %s: %s' % (zoneNum, spec['name'])

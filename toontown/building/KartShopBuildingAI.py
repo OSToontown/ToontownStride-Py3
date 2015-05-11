@@ -5,11 +5,6 @@ from toontown.building.DistributedDoorAI import DistributedDoorAI
 from toontown.building.DistributedKartShopInteriorAI import DistributedKartShopInteriorAI
 from toontown.toon import NPCToons
 
-
-if __debug__:
-    import pdb
-
-
 class KartShopBuildingAI:
     notify = directNotify.newCategory('KartShopBuildingAI')
 

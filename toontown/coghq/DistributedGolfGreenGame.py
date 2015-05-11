@@ -179,9 +179,6 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
                  None]
                 groundCircle = loader.loadModel('phase_12/models/bossbotHQ/bust_a_cog_hole')
                 groundCircle.reparentTo(self.spriteNode)
-                if groundCircle == None:
-                    import pdb
-                    pdb.set_trace()
                 groundCircle.setTransparency(TransparencyAttrib.MAlpha)
                 groundCircle.setPos(newCell[1], -self.radiusBall, newCell[2])
                 groundCircle.setScale(1.2)
@@ -528,8 +525,6 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
         return
 
     def __acceptExit(self, buttonValue = None):
-        import pdb
-        pdb.set_trace()
         if hasattr(self, 'frame'):
             self.hide()
             self.unload()

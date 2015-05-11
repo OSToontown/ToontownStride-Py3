@@ -64,8 +64,6 @@ class GSPlayground(Playground.Playground):
         return
 
     def enterStartingBlock(self, distStartingBlock):
-        import pdb
-        pdb.set_trace()
         self.accept(self.startingBlockDoneEvent, self.handleStartingBlockDone)
         self.startingBlock = Elevator.Elevator(self.fsm.getStateNamed('startingBlock'), self.startingBlockDoneEvent, distStartingBlock)
         distStartingBlock.elevatorFSM = self.startingBlock
@@ -79,8 +77,6 @@ class GSPlayground(Playground.Playground):
         del self.startingBlock
 
     def detectedStartingBlockCollision(self, distStartingBlock):
-        import pdb
-        pdb.set_trace()
         self.fsm.request('startingBlock', [distStartingBlock])
 
     def handleStartingBlockDone(self, doneStatus):

@@ -661,8 +661,6 @@ class DistributedBossbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         t = max(t0, t1)
         progVal = fromValue + (toValue - fromValue) * min(t, 1)
         self.notify.debug('progVal=%s' % progVal)
-        import pdb
-        pdb.set_trace()
         return progVal
 
     def __doDirectedAttack(self):

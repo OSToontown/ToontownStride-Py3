@@ -535,8 +535,6 @@ class DistributedRace(DistributedObject.DistributedObject):
         t = projLength2 / segLength2
         if self.debugIt:
             self.notify.debug('self.debugIt = %d' % self.debugIt)
-            import pdb
-            pdb.set_trace()
         if nextPole < self.currentPole:
             newT = self.curveTs[self.currentPole] * (1 - t) + self.curve.getMaxT() * t
         else:

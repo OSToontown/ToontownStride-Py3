@@ -8,8 +8,6 @@ from toontown.shtiker.ShtikerPage import ShtikerPage
 from toontown.toonbase import ToontownGlobals, TTLocalizer
 from FishPage import FishingTrophy
 from toontown.golf import GolfGlobals
-if (__debug__):
-    import pdb
 PageMode = PythonUtil.Enum('Records, Trophy')
 
 class GolfPage(ShtikerPage):

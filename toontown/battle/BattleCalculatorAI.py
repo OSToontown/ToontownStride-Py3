@@ -1389,10 +1389,6 @@ class BattleCalculatorAI:
             self.__printSuitAtkStats()
         return None
 
-    def __calculateFiredCogs():
-        import pdb
-        pdb.set_trace()
-
     def toonLeftBattle(self, toonId):
         if self.notify.getDebug():
             self.notify.debug('toonLeftBattle()' + str(toonId))

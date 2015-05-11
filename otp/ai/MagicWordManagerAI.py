@@ -44,10 +44,9 @@ class MagicWordManagerAI(DistributedObjectAI):
 
 @magicWord(category=CATEGORY_COMMUNITY_MANAGER, types=[str])
 def help(wordName=None):
-    print 'help called with %s' % (wordName)    
     if not wordName:
         return "What were you interested getting help for?"
-    word = spellbook.words.get(wordName.lower())   # look it up by its lower case value
+    word = spellbook.words.get(wordName.lower())
     if not word:
         accessLevel = spellbook.getInvoker().getAdminAccess()
         wname = wordName.lower()
@@ -55,7 +54,7 @@ def help(wordName=None):
             if spellbook.words.get(key).access <= accessLevel:
                 if wname in key:
                     return 'Did you mean %s' % (spellbook.words.get(key).name)
-        return 'I have no clue what %s is refering to' % (wordName)
+        return 'I have no clue what %s is referring to' % (wordName)
     return word.doc
             
 @magicWord(category=CATEGORY_COMMUNITY_MANAGER, types=[])

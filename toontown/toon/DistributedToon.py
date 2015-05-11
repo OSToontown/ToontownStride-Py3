@@ -64,8 +64,6 @@ from toontown.battle import BattleParticles
 
 if base.wantKarts:
     from toontown.racing.KartDNA import *
-if (__debug__):
-    import pdb
 
 
 class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, DistributedSmoothNode.DistributedSmoothNode, DelayDeletable):

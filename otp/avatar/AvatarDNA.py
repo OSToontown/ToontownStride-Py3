@@ -13,11 +13,6 @@ class AvatarDNA:
     def makeNetString(self):
         notify.error('called makeNetString on avatarDNA parent class')
 
-    def printNetString(self):
-        string = self.makeNetString()
-        dg = PyDatagram(string)
-        dg.dumpHex(ostream)
-
     def makeFromNetString(self, string):
         notify.error('called makeFromNetString on avatarDNA parent class')
 

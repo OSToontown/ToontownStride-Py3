@@ -710,9 +710,6 @@ class NewsManager(DistributedObject.DistributedObject):
             self.weekDaysInMonth[i] = (i, 4)
 
         startingWeekDay, numDays = calendar.monthrange(year, month)
-        if startingWeekDay > 6:
-            import pdb
-            pdb.set_trace()
         for i in xrange(4):
             if numDays == self.numDaysCorMatrix[i][0]:
                 break
