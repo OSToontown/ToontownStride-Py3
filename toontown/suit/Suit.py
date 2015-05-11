@@ -73,6 +73,7 @@ hh = (('pen-squirt', 'fountain-pen', 7),
  ('glower', 'glower', 5),
  ('throw-paper', 'throw-paper', 5),
  ('magic1', 'magic1', 5),
+ ('magic3', 'magic3', 5),
  ('roll-o-dex', 'roll-o-dex', 5))
 cr = (('pickpocket', 'pickpocket', 5), ('throw-paper', 'throw-paper', 3.5), ('glower', 'glower', 5))
 tbc = (('cigar-smoke', 'cigar-smoke', 8),
@@ -100,6 +101,7 @@ ms = (('effort', 'effort', 5),
 tf = (('phone', 'phone', 5),
  ('smile', 'smile', 5),
  ('throw-object', 'throw-object', 5),
+ ('magic3', 'magic3', 5),
  ('glower', 'glower', 5))
 m = (('speak', 'speak', 5),
  ('magic2', 'magic2', 5),
