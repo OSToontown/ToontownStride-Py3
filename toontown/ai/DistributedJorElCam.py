@@ -25,7 +25,7 @@ class DistributedJorElCam(DistributedObject):
         self.head.setScale(10)
         self.head.startBlink()
         self.head.startLookAround()
-        
+
         pieces = [['*head*', '*muzzle*'], ['*ears*', '*nose*']]
         for p in pieces[0]:
             pc = '**/%s' % p
@@ -37,7 +37,7 @@ class DistributedJorElCam(DistributedObject):
             for node in self.head.findAllMatches(pc):
                 if not node.is_empty():
                     node.setColor(0, 0, 0, 1)
-        
+
         base.cr.jorElHead = self.head
 
     def delete(self):

@@ -100,14 +100,13 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
                 self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [5])
                 print ("%s attempted to redeem code %s but it wasn't usable yet!" % (avId, code))
                 return
-            
+
             av.redeemCode(code)
             self.requestCodeRedeem(avId, av, codeInfo['items'])
             print ('%s successfully redeemed %s' % (avId, code))
         else:
             self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [1])
             print ('%s tried to redeem non-existant code %s' % (avId, code))
-            
 
     def requestCodeRedeem(self, avId, av, items):
         count = self.getMailboxCount(items)
