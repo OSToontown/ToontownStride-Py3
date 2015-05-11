@@ -9,7 +9,7 @@ class DistributedTreasureChest(DistributedObject):
     def __init__(self, cr):
         DistributedObject.__init__(self, cr)
         self.cr = cr
-        self.createModel(45, -165.75, 0.025, 30)
+        self.createModel(45, -165.75, 0.025, 210)
         self.initCollisions()
 
     def delete(self):
@@ -38,7 +38,7 @@ class DistributedTreasureChest(DistributedObject):
         self.model.setH(h)
 
     def initCollisions(self):
-        self.cSphere = CollisionTube(0.0, 1.0, 0.0, 0.0, 1.0, 5.0, ToontownGlobals.TreasureChestSphereRadius)
+        self.cSphere = CollisionTube(0.0, 0.0, 0.0, 0.0, 0.0, 5.0, ToontownGlobals.TreasureChestSphereRadius)
         self.cSphere.setTangible(0)
         self.cSphereNode = CollisionNode('cSphereNode')
         self.cSphereNode.addSolid(self.cSphere)

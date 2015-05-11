@@ -19,7 +19,7 @@ class DistributedNPCLaffRestock(DistributedNPCToonBase):
         if hasattr(self, 'dialog'):
             self.dialog.cleanup()
             del self.dialog
-    
+
     def initToonState(self):
         self.setAnimState('neutral', 0.9, None, None)
         if self.name in NPCToons.LaffRestockPositions:
