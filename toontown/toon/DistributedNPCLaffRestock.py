@@ -1,6 +1,7 @@
 from toontown.chat.ChatGlobals import CFSpeech, CFTimeout
 from toontown.toonbase import TTLocalizer, ToontownGlobals
 from toontown.toontowngui import TTDialog
+from toontown.toon import NPCToons
 from DistributedNPCToonBase import DistributedNPCToonBase
 import LaffRestockGlobals
 
@@ -18,6 +19,13 @@ class DistributedNPCLaffRestock(DistributedNPCToonBase):
         if hasattr(self, 'dialog'):
             self.dialog.cleanup()
             del self.dialog
+    
+    def initToonState(self):
+        self.setAnimState('neutral', 0.9, None, None)
+        if self.name in NPCToons.LaffRestockPositions:
+            pos = NPCToons.LaffRestockPositions[self.name]
+            self.setPos(*pos[0])
+            self.setH(pos[1])
 
     def getCollSphereRadius(self):
         return 1.0
