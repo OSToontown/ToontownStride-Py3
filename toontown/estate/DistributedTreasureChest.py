@@ -12,15 +12,16 @@ class DistributedTreasureChest(DistributedObject.DistributedObject):
         self.createModel(45, -165.75, 0.025, 30)
         self.initCollisions()
 
-    def destroy(self):
+    def delete(self):
         self.ignore('enter' + self.cSphereNode.getName())
         self.cSphereNodePath.removeNode()
-        self.model.destroy()
+        self.model.removeNode()
         self.destroyFishGui()
         del self.cSphere
         del self.cSphereNode
         del self.cSphereNodePath
         del self.model
+        DistributedObject.DistributedObject.delete(self)
 
     def destroyFishGui(self):
         self.ignore('treasureChestSell')
