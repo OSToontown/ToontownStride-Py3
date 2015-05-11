@@ -10,8 +10,6 @@ from toontown.racing import RaceGlobals
 from toontown.shtiker.ShtikerPage import ShtikerPage
 from toontown.toonbase import ToontownGlobals, TTLocalizer
 from FishPage import FishingTrophy
-if (__debug__):
-    import pdb
 PageMode = PythonUtil.Enum('Customize, Records, Trophy')
 
 class KartPage(ShtikerPage):

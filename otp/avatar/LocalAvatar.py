@@ -577,23 +577,6 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
                 self.cameraPositions.remove(camPos)
             self.nextCameraPos(1)
 
-    def printCameraPositions(self):
-        print '['
-        for i in xrange(len(self.cameraPositions)):
-            self.printCameraPosition(i)
-            print ','
-
-        print ']'
-
-    def printCameraPosition(self, index):
-        cp = self.cameraPositions[index]
-        print '(Point3(%0.2f, %0.2f, %0.2f),' % (cp[0][0], cp[0][1], cp[0][2])
-        print 'Point3(%0.2f, %0.2f, %0.2f),' % (cp[1][0], cp[1][1], cp[1][2])
-        print 'Point3(%0.2f, %0.2f, %0.2f),' % (cp[2][0], cp[2][1], cp[2][2])
-        print 'Point3(%0.2f, %0.2f, %0.2f),' % (cp[3][0], cp[3][1], cp[3][2])
-        print '%d,' % cp[4]
-        print ')',
-
     def posCamera(self, lerp, time):
         if not lerp:
             self.positionCameraWithPusher(self.getCompromiseCameraPos(), self.getLookAtPoint())
@@ -1112,7 +1095,6 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
     def startChat(self):
         self.chatMgr.start()
         self.accept(OTPGlobals.ThinkPosHotkey, self.thinkPos)
-        self.accept(OTPGlobals.PrintCamPosHotkey, self.printCamPos)
         if self.__enableMarkerPlacement:
             self.accept(OTPGlobals.PlaceMarkerHotkey, self.__placeMarker)
 
@@ -1120,15 +1102,8 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         self.chatMgr.stop()
         self.ignore(OTPGlobals.WhisperIncomingEvent)
         self.ignore(OTPGlobals.ThinkPosHotkey)
-        self.ignore(OTPGlobals.PrintCamPosHotkey)
         if self.__enableMarkerPlacement:
             self.ignore(OTPGlobals.PlaceMarkerHotkey)
-
-    def printCamPos(self):
-        node = base.camera.getParent()
-        pos = base.cam.getPos(node)
-        hpr = base.cam.getHpr(node)
-        print 'cam pos = ', `pos`, ', cam hpr = ', `hpr`
 
     def d_broadcastPositionNow(self):
         self.d_clearSmoothing()

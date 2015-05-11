@@ -12,8 +12,6 @@ from KartShopGlobals import *
 from toontown.racing.Kart import Kart
 from toontown.shtiker.KartPage import KartViewer
 from KartDNA import *
-if (__debug__):
-    import pdb
 MENUS = PythonUtil.Enum('MainMenu, BuyKart, BuyAccessory, ReturnKart, ConfirmBuyAccessory, ConfirmBuyKart, BoughtKart, BoughtAccessory')
 MM_OPTIONS = PythonUtil.Enum('Cancel, BuyAccessory, BuyKart', -1)
 BK_OPTIONS = PythonUtil.Enum('Cancel, BuyKart', -1)

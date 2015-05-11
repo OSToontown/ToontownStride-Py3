@@ -21,8 +21,6 @@ from toontown.racing.Kart import Kart
 from toontown.racing.KartShopGlobals import KartGlobals
 from toontown.racing import RaceGlobals
 from toontown.toontowngui.TTDialog import TTGlobalDialog
-if (__debug__):
-    import pdb
 
 class DistributedStartingBlock(DistributedObject.DistributedObject, FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedStartingBlock')

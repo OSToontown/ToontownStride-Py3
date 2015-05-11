@@ -331,8 +331,6 @@ def leftHand(prop=None):
 @magicWord(category=CATEGORY_PROGRAMMER, types=[])
 def getPos():
     """
-    print av position
+    Return your target's position.
     """
-    target = spellbook.getTarget()
-    pos = target.getPos()
-    print(pos)
+    return spellbook.getTarget().getPos()

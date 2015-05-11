@@ -1597,9 +1597,6 @@ def doReOrg(attack):
     partTrack = getPartTrack(sprayEffect, 1.0, 1.9, [sprayEffect, suit, 0])
     if dmg > 0:
         headParts = toon.getHeadParts()
-        if __debug__:
-            print '***********headParts pos=', headParts[0].getPos()
-            print '***********headParts hpr=', headParts[0].getHpr()
         headTracks = Parallel()
         for partNum in xrange(0, headParts.getNumPaths()):
             part = headParts.getPath(partNum)
@@ -1619,8 +1616,6 @@ def doReOrg(attack):
         arms = toon.findAllMatches('**/arms')
         sleeves = toon.findAllMatches('**/sleeves')
         hands = toon.findAllMatches('**/hands')
-        if __debug__:
-            print '*************arms hpr=', arms[0].getHpr()
         for partNum in xrange(0, arms.getNumPaths()):
             chestTracks.append(getChestTrack(arms.getPath(partNum)))
             chestTracks.append(getChestTrack(sleeves.getPath(partNum)))

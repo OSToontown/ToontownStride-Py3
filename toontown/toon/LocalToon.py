@@ -59,8 +59,6 @@ from toontown.toonbase.ToontownGlobals import *
 from toontown.friends.FriendHandle import FriendHandle
 
 ClaraBaseXPos = 0.12
-if (__debug__):
-    import pdb
 
 class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
     neverDisable = 1
@@ -1405,8 +1403,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         return
 
     def setPlantToWater(self, plantId):
-        import pdb
-        pdb.set_trace()
         if self.plantToWater == None:
             self.plantToWater = plantId
             self.notify.debug('setting plant to water %s' % plantId)
