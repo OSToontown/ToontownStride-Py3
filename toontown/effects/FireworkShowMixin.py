@@ -104,7 +104,7 @@ class FireworkShowMixin:
         else:
             FireworkShowMixin.notify.warning('Invalid fireworks event ID: %d' % eventId)
             return None
-                    
+
         self.showMusic = loader.loadMusic(musicFile)
         self.showMusic.setVolume(1)
 
@@ -157,7 +157,7 @@ class FireworkShowMixin:
         else:
             FireworkShowMixin.notify.warning('Invalid fireworks event ID: %d' % eventId)
             return None
-                
+
         if self.__checkHoodValidity() and hasattr(base.cr.playGame.hood, 'sky') and base.cr.playGame.hood.sky:
             postShow = Sequence(Func(base.cr.playGame.hood.sky.show), Parallel(LerpColorScaleInterval(base.cr.playGame.hood.sky, 2.5, Vec4(1, 1, 1, 1)), LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, 2.5, Vec4(1, 1, 1, 1)), LerpColorScaleInterval(base.localAvatar, 2.5, Vec4(1, 1, 1, 1))), Func(self.__restoreDDFog), Func(self.restoreCameraLens), Func(base.setBackgroundColor, DefaultBackgroundColor), Func(self.showMusic.stop), Func(base.localAvatar.setSystemMessage, 0, endMessage))
         if self.restorePlaygroundMusic:

@@ -372,7 +372,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             self.setChatAbsolute(chatString, CFSpeech | CFTimeout)
         ResistanceChat.doEffect(msgIndex, self, nearbyToons)
 
-    def d_battleSOS(self, requesterId, sendToId):
+    def d_battleSOS(self, sendToId):
         self.cr.ttuFriendsManager.d_battleSOS(sendToId)
 
     def battleSOS(self, requesterId):

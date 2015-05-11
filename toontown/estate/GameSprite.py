@@ -1,14 +1,3 @@
-########################## TOONTOWN ADVENTURE ##########################
-# Filename: GameSprite.py
-# Created by: sillypeppymacspeed
-# Date: March 28th, 2014
-####
-# Description:
-#
-# This codes the sprites for the Garden Drop estate game.
-####
-### DEFINITELY NOT COPIED FROM TOONTOWN HOUSE
- 
 import math
 
 class GameSprite:

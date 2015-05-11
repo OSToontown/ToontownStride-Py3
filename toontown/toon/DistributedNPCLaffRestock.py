@@ -18,7 +18,7 @@ class DistributedNPCLaffRestock(DistributedNPCToonBase):
         if hasattr(self, 'dialog'):
             self.dialog.cleanup()
             del self.dialog
-    
+
     def getCollSphereRadius(self):
         return 1.0
 
@@ -51,7 +51,7 @@ class DistributedNPCLaffRestock(DistributedNPCToonBase):
             self.setChatAbsolute(TTLocalizer.RestockLaffCancelMessage, CFSpeech|CFTimeout)
 
         self.destroyDialog()
-    
+
     def restockResult(self, state, cost):
         if state == LaffRestockGlobals.NO_LAFF:
             message = TTLocalizer.RestockFullLaffMessage

@@ -44,7 +44,8 @@ class DistributedTarget(DistributedObject.DistributedObject):
 
     def load(self):
         self.timer = ToontownTimer.ToontownTimer()
-        self.timer.setPos(1.1, 0, -0.15)
+        self.timer.reparentTo(base.a2dBottomRight)
+        self.timer.setPos(-0.233, 0, 0.85)
         self.timer.hide()
         self.geom = loader.loadModel('phase_5.5/models/estate/target')
         self.geom.reparentTo(base.cr.playGame.hood.loader.geom)

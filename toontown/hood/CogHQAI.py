@@ -40,7 +40,7 @@ class CogHQAI:
         if simbase.config.GetBool('want-boarding-groups', True):
             self.createBoardingParty()
         self.npcs = NPCToons.createNpcsInZone(self.air, self.zoneId)
-    
+
     def shutdown(self):
         for npc in self.npcs:
             npc.requestDelete()

@@ -7,15 +7,15 @@ class DistributedNPCGloveAI(DistributedNPCToonBaseAI):
     def requestTransformation(self, color):
         avId = self.air.getAvatarIdFromSender()
         av = self.air.doId2do.get(avId)
-        
+
         if av is None or not hasattr(av, 'dna'):
             return
-        
+
         if av.dna.gloveColor == color:
             self.sendUpdate('doTransformation', [avId, 1])
             return
-        
-        if av.getMoney() < ToontownGlobals.GloveCost:
+
+        if av.getTotalMoney() < ToontownGlobals.GloveCost:
             self.sendUpdate('doTransformation', [avId, 2])
             return
 

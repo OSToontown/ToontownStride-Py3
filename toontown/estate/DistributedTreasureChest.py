@@ -1,13 +1,13 @@
-from direct.distributed import DistributedObject
+from direct.distributed.DistributedObject import DistributedObject
 from pandac.PandaModules import *
 from toontown.fishing import FishSellGUI
 from toontown.toonbase import ToontownGlobals, TTLocalizer
 import TreasureChestGlobals
 
-class DistributedTreasureChest(DistributedObject.DistributedObject):
+class DistributedTreasureChest(DistributedObject):
 
     def __init__(self, cr):
-        DistributedObject.DistributedObject.__init__(self, cr)
+        DistributedObject.__init__(self, cr)
         self.cr = cr
         self.createModel(45, -165.75, 0.025, 30)
         self.initCollisions()
@@ -21,7 +21,7 @@ class DistributedTreasureChest(DistributedObject.DistributedObject):
         del self.cSphereNode
         del self.cSphereNodePath
         del self.model
-        DistributedObject.DistributedObject.delete(self)
+        DistributedObject.delete(self)
 
     def destroyFishGui(self):
         self.ignore('treasureChestSell')
@@ -46,7 +46,7 @@ class DistributedTreasureChest(DistributedObject.DistributedObject):
         self.cSphereNodePath.hide()
         self.cSphereNode.setCollideMask(ToontownGlobals.WallBitmask)
         self.accept('enter' + self.cSphereNode.getName(), self.handleCollisionSphereEnter)
-    
+
     def handleCollisionSphereEnter(self, collEntry):
         if not base.localAvatar.fishTank.getFish():
             base.localAvatar.setSystemMessage(0, TTLocalizer.STOREOWNER_NOFISH)
@@ -56,13 +56,13 @@ class DistributedTreasureChest(DistributedObject.DistributedObject):
         base.cr.playGame.getPlace().setState('stopped')
         self.acceptOnce('treasureChestSell', self.handleSaleDone)
         self.fishGui = FishSellGUI.FishSellGUI('treasureChestSell')
-    
+
     def handleSaleDone(self, sell):
         self.destroyFishGui()
         base.setCellsActive(base.bottomCells, 1)
         base.cr.playGame.getPlace().setState('walk')
         self.sendUpdate('completeSale', [sell])
-    
+
     def completeSaleResult(self, state, numFish, maxFish):
         if state == TreasureChestGlobals.TROPHY:
             base.localAvatar.setSystemMessage(0, TTLocalizer.STOREOWNER_TROPHY % (numFish, maxFish))
