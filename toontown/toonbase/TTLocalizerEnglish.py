@@ -8438,3 +8438,4 @@ DonaldChatter = ["I'm glad you're here today!",
  'I like what you are wearing.',
  'I love to play tag. Do you?']
 NPCFriendUnavailable = 'Unavailable'
+FireTalkMessage = "You're fired!"
