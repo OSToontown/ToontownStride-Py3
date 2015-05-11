@@ -2,6 +2,7 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObject import DistributedObject
 from direct.interval.IntervalGlobal import *
 from toontown.toon import ToonHead
+from toontown.toon import ToonDNA
 from toontown.nametag import NametagGroup
 from otp.otpbase import OTPGlobals
 
@@ -19,7 +20,7 @@ class DistributedJorElCam(DistributedObject):
         self.dna.newToonRandom()
         self.head = ToonHead.ToonHead()
         self.head.setupHead(self.dna)
-        self.head.reparentTo(self.cr.playGame.hood.loader)
+        self.head.reparentTo(render)
         self.head.setPos(75, 0, 20)
         self.head.setHpr(90, 0, 0)
         self.head.setScale(10)
