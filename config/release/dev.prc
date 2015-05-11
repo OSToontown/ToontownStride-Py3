@@ -40,6 +40,7 @@ want-resistance-dance #t
 
 # Optional:
 want-glove-npc #t
+want-jor-el-cam #f
 
 # Developer options:
 show-population #t

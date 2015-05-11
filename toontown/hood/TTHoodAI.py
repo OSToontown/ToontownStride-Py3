@@ -7,6 +7,7 @@ from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
 from toontown.ai import DistributedTrickOrTreatTargetAI
 from toontown.ai import DistributedWinterCarolingTargetAI
+from toontown.ai import DistributedJorElCamAI
 
 
 class TTHoodAI(HoodAI.HoodAI):
@@ -41,9 +42,12 @@ class TTHoodAI(HoodAI.HoodAI):
             self.WinterCarolingTargetManager = DistributedWinterCarolingTargetAI.DistributedWinterCarolingTargetAI(self.air)
             self.WinterCarolingTargetManager.generateWithRequired(2649)
 
+        if simbase.air.wantJorElCam:
+            self.JorElCamManager = DistributedJorElCamAI.DistributedJorElCamAI(self.air)
+            self.JorElCamManager.generateWithRequired(self.zoneId)
+
     def shutdown(self):
         HoodAI.HoodAI.shutdown(self)
-
         ButterflyGlobals.clearIndexes(self.zoneId)
 
     def createTrolley(self):
