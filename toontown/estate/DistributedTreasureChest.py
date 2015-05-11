@@ -9,7 +9,7 @@ class DistributedTreasureChest(DistributedObject):
     def __init__(self, cr):
         DistributedObject.__init__(self, cr)
         self.cr = cr
-        self.createModel(45, -165.75, 0.025, 30)
+        self.createModel(45, -165.75, 0.025, 200)
         self.initCollisions()
 
     def delete(self):
