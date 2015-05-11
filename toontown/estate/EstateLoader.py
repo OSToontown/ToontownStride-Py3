@@ -3,7 +3,7 @@ from toontown.toonbase.ToontownGlobals import *
 from direct.interval.IntervalGlobal import *
 from direct.fsm import ClassicFSM, State
 from toontown.safezone import SafeZoneLoader
-import random, math,  House, Estate, HouseGlobals
+import random, math, House, Estate, HouseGlobals
 from toontown.coghq import MovingPlatform
 from direct.directnotify import DirectNotifyGlobal
 

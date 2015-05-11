@@ -1,0 +1,3 @@
+TROPHY = 0
+COMPLETE = 1
+NONE = 2

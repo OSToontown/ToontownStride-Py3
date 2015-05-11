@@ -1,9 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from toontown.toonbase import ToontownGlobals
-import HouseGlobals
-import time, random
-
 from toontown.fishing.DistributedFishingPondAI import DistributedFishingPondAI
 from toontown.fishing.DistributedFishingTargetAI import DistributedFishingTargetAI
 from toontown.fishing.DistributedPondBingoManagerAI import DistributedPondBingoManagerAI
@@ -12,12 +9,9 @@ from toontown.safezone.DistributedFishingSpotAI import DistributedFishingSpotAI
 from toontown.safezone.SZTreasurePlannerAI import SZTreasurePlannerAI
 from toontown.safezone import DistributedTreasureAI
 from toontown.safezone import TreasureGlobals
-
 from DistributedCannonAI import *
 from DistributedTargetAI import *
-import CannonGlobals
-
-import TableGlobals
+import DistributedTreasureChestAI, CannonGlobals, TableGlobals, HouseGlobals, time, random
 
 class Rental:
     def __init__(self, estate):
@@ -168,6 +162,9 @@ class DistributedEstateAI(DistributedObjectAI):
         spot.generateWithRequired(self.zoneId)
         self.spots.append(spot)
 
+        self.treasureChest = DistributedTreasureChestAI.DistributedTreasureChestAI(self.air)
+        self.treasureChest.generateWithRequired(self.zoneId)
+        
         self.createTreasurePlanner()
 
 
@@ -189,6 +186,9 @@ class DistributedEstateAI(DistributedObjectAI):
         if self.rentalHandle:
             self.rentalHandle.destroy()
             self.rentalHandle = None
+        
+        if self.treasureChest:
+            self.treasureChest.requestDelete()
 
         self.requestDelete()
 
