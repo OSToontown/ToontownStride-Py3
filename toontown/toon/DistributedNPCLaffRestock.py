@@ -18,7 +18,7 @@ class DistributedNPCLaffRestock(DistributedNPCToonBase):
         if hasattr(self, 'dialog'):
             self.dialog.cleanup()
             del self.dialog
-
+    
     def getCollSphereRadius(self):
         return 1.0
 
