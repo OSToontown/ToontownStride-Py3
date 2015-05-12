@@ -1637,5 +1637,7 @@ PropIdToColor = [
 ]
 
 BugReportSite = 'https://bugs.launchpad.net/toontown-united/+filebug'
-TreasureChestSphereRadius = 1.0
 CostPerLaffRestock = 3
+FISHSALE_NONE = 0
+FISHSALE_COMPLETE = 1
+FISHSALE_TROPHY = 2

@@ -363,7 +363,6 @@ from toontown.estate import DistributedBank/AI
 from toontown.estate import DistributedCloset/AI
 from toontown.estate import DistributedTrunk/AI
 from toontown.estate import DistributedPhone/AI
-from toontown.estate import DistributedTreasureChest/AI
 from toontown.effects import DistributedFireworkShow/AI
 from toontown.estate import DistributedFireworksCannon/AI
 from toontown.coghq import LobbyManager/AI
@@ -1343,6 +1342,8 @@ dclass DistributedEstate : DistributedObject {
   setSlot5Items(lawnItem items[] = []) required airecv db;
   setIdList(uint32 []) broadcast ram;
   completeFlowerSale(uint8) airecv clsend;
+  completeFishSale(uint8) airecv clsend;
+  thankSeller(int8, int8, int8);
   awardedTrophy(uint32) broadcast;
   setClouds(uint8) required broadcast ram;
   cannonsOver() broadcast;
@@ -2228,11 +2229,6 @@ dclass DistributedPhone : DistributedFurnitureItem {
   requestGiftPurchaseMessage(uint16, uint32, blob, int32) airecv clsend;
   requestGiftPurchaseResponse(uint16, int8);
   purchaseItemComplete();
-};
-
-dclass DistributedTreasureChest : DistributedObject {
-  completeSale(bool) airecv clsend;
-  completeSaleResult(int8, int8, int8);
 };
 
 dclass DistributedFireworkShow : DistributedObject {

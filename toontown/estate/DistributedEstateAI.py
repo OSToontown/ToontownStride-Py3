@@ -11,7 +11,12 @@ from toontown.safezone import DistributedTreasureAI
 from toontown.safezone import TreasureGlobals
 from DistributedCannonAI import *
 from DistributedTargetAI import *
-import DistributedTreasureChestAI, CannonGlobals, TableGlobals, HouseGlobals, time, random
+import CannonGlobals
+import TableGlobals
+import HouseGlobals
+import time
+import random
+from toontown.fishing import FishGlobals
 
 class Rental:
     def __init__(self, estate):
@@ -158,9 +163,6 @@ class DistributedEstateAI(DistributedObjectAI):
         spot.generateWithRequired(self.zoneId)
         self.spots.append(spot)
 
-        self.treasureChest = DistributedTreasureChestAI.DistributedTreasureChestAI(self.air)
-        self.treasureChest.generateWithRequired(self.zoneId)
-
         self.createTreasurePlanner()
 
     def destroy(self):
@@ -181,9 +183,6 @@ class DistributedEstateAI(DistributedObjectAI):
         if self.rentalHandle:
             self.rentalHandle.destroy()
             self.rentalHandle = None
-
-        if self.treasureChest:
-            self.treasureChest.requestDelete()
 
         self.requestDelete()
 
@@ -482,6 +481,19 @@ class DistributedEstateAI(DistributedObjectAI):
 
     def completeFlowerSale(self, todo0):
         pass
+
+    def completeFishSale(self, sell):
+        avId = self.air.getAvatarIdFromSender()
+        av = self.air.doId2do.get(avId)
+        if av:
+            if sell:
+                trophyResult = self.air.fishManager.creditFishTank(av)
+                if trophyResult:
+                    self.sendUpdateToAvatarId(avId, 'thankSeller', [ToontownGlobals.FISHSALE_TROPHY, len(av.fishCollection), FishGlobals.getTotalNumFish()])
+                else:
+                    self.sendUpdateToAvatarId(avId, 'thankSeller', [ToontownGlobals.FISHSALE_COMPLETE, 0, 0])
+            else:
+                self.sendUpdateToAvatarId(avId, 'thankSeller', [ToontownGlobals.FISHSALE_NONE, 0, 0])
 
     def awardedTrophy(self, todo0):
         pass
