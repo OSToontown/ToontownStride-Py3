@@ -81,7 +81,7 @@ class DistributedNPCLaffRestockAI(DistributedNPCToonBaseAI):
         self.d_setMovie(0, NPCToons.SELL_MOVIE_CLEAR)
         return Task.done
 
-    def restock(self, avId, cost):
+    def restock(self, avId, laff, cost):
         sendAvId = self.air.getAvatarIdFromSender()
         if self.busy != avId:
             self.air.writeServerEvent('suspicious', avId, 'DistributedNPCLaffRestockAI.restock busy with %s' % self.busy)
@@ -91,4 +91,4 @@ class DistributedNPCLaffRestockAI(DistributedNPCToonBaseAI):
         if av:
             movieType = NPCToons.SELL_MOVIE_COMPLETE
             av.takeMoney(cost)
-            av.b_setHp(av.getMaxHp())
+            av.b_setHp(av.getHp() + laff)

@@ -92,8 +92,8 @@ class DistributedNPCLaffRestock(DistributedNPCToonBase):
             self.setChatAbsolute(TTLocalizer.RestockNoMoneyMessage, CFSpeech | CFTimeout)
             self.resetLaffClerk()
 
-    def __handleRestock(self, cost):
-        self.sendUpdate('restock', [self.av.doId, cost])
+    def __handleRestock(self, laff, cost):
+        self.sendUpdate('restock', [self.av.doId, laff, cost])
 
     def __handleGuiDone(self, bTimedOut=False):
         self.ignoreAll()
@@ -107,5 +107,4 @@ class DistributedNPCLaffRestock(DistributedNPCToonBase):
         self.setChatAbsolute('', CFSpeech)
         self.accept('restockLaff', self.__handleRestock)
         self.acceptOnce('guiDone', self.__handleGuiDone)
-        self.laffGui = LaffShopGui(text=TTLocalizer.RestockAskMessage % (laff, cost),
-                                   extraArgs=[cost])
+        self.laffGui = LaffShopGui(text=TTLocalizer.RestockAskMessage % (laff, cost))
