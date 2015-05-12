@@ -2177,7 +2177,8 @@ CustomSCStrings = {10: 'Oh, well.',
  14008: 'Cannon Pinball rocks!',
  14009: 'Your Estate rocks!',
  14010: 'Your Garden is cool!',
- 14011: 'Your Estate is cool!'}
+ 14011: 'Your Estate is cool!',
+ 14012: 'Wanna tussle m8?'}
 SCMenuCommonCogIndices = (20000, 20004)
 SCMenuCustomCogIndices = {'bf': (20005, 20014),
  'nc': (20015, 20024),
