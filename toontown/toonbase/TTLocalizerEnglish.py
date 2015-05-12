@@ -8443,8 +8443,7 @@ DonaldChatter = ["I'm glad you're here today!",
  'I love to play tag. Do you?']
 NPCFriendUnavailable = 'Unavailable'
 FireTalkMessage = "You're fired!"
-RestockFullLaffMessage = "Sorry, but you're already happy!"
-RestockNoMoneyMessage = "Sorry, but you need %s jellybeans to restock your laff!"
+RestockFullLaffMessage = "You're already happy!"
+RestockNoMoneyMessage = "You need more jellybeans to restock your laff!"
+RestockLaffMessage = "Have fun!"
 RestockAskMessage = "Would you like to restock %s laff for %s jellybeans?"
-RestockLaffMessage = "Enjoy your happiness!"
-RestockLaffCancelMessage = "Alright. Come back here if you change your mind."

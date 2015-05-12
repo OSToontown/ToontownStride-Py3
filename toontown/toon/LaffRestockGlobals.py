@@ -1,3 +1,4 @@
-NO_LAFF = 0
-NO_MONEY = 1
-SUCCESS = 2
+LAFFCLERK_TIMER = 30
+FullLaff = 12
+NoMoney = 14
+Success = 1

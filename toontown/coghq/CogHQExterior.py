@@ -18,6 +18,7 @@ class CogHQExterior(BattlePlace.BattlePlace):
           'teleportIn',
           'doorIn']),
          State.State('walk', self.enterWalk, self.exitWalk, ['stickerBook',
+          'purchase',
           'teleportOut',
           'tunnelOut',
           'doorOut',
@@ -38,6 +39,7 @@ class CogHQExterior(BattlePlace.BattlePlace):
           'doorOut',
           'squished',
           'died']),
+         State.State('purchase', self.enterPurchase, self.exitPurchase, ['walk']),
          State.State('WaitForBattle', self.enterWaitForBattle, self.exitWaitForBattle, ['battle', 'walk']),
          State.State('battle', self.enterBattle, self.exitBattle, ['walk', 'teleportOut', 'died']),
          State.State('squished', self.enterSquished, self.exitSquished, ['walk', 'died', 'teleportOut']),
@@ -85,6 +87,19 @@ class CogHQExterior(BattlePlace.BattlePlace):
             self.loader.geom.reparentTo(hidden)
         self.ignoreAll()
         BattlePlace.BattlePlace.exit(self)
+
+    def enterPurchase(self):
+        base.localAvatar.b_setAnimState('neutral', 1)
+        self.accept('teleportQuery', self.handleTeleportQuery)
+        base.localAvatar.setTeleportAvailable(1)
+        base.localAvatar.laffMeter.start()
+        base.localAvatar.obscureMoveFurnitureButton(1)
+
+    def exitPurchase(self):
+        base.localAvatar.setTeleportAvailable(0)
+        self.ignore('teleportQuery')
+        base.localAvatar.laffMeter.stop()
+        base.localAvatar.obscureMoveFurnitureButton(-1)
 
     def enterTunnelOut(self, requestStatus):
         fromZoneId = self.zoneId - self.zoneId % 100

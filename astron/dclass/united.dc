@@ -1957,14 +1957,15 @@ dclass DistributedNPCKartClerk : DistributedNPCToonBase {
   transactionDone() airecv clsend;
 };
 
+dclass DistributedNPCLaffRestock : DistributedNPCToonBase {
+  setMovie(uint8, uint32, uint32, uint32[], int16) broadcast ram;
+  restock(uint32, uint8) airecv clsend;
+  transactionDone() airecv clsend;
+};
+
 dclass DistributedNPCGlove : DistributedNPCToonBase {
   doTransformation(uint32 avId, uint32) broadcast;
   requestTransformation(uint32) airecv clsend;
-};
-
-dclass DistributedNPCLaffRestock : DistributedNPCToonBase {
-  restock() airecv clsend;
-  restockResult(int8, int16);
 };
 
 dclass DistributedKnockKnockDoor : DistributedAnimatedProp {

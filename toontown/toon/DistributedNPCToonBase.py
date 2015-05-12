@@ -17,6 +17,7 @@ from toontown.toonbase import ToontownGlobals
 
 
 class DistributedNPCToonBase(DistributedToon.DistributedToon):
+
     def __init__(self, cr):
         try:
             self.DistributedNPCToon_initialized

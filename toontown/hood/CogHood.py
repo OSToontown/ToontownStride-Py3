@@ -14,10 +14,27 @@ class CogHood(Hood):
     def __init__(self, parentFSM, doneEvent, dnaStore, hoodId):
         Hood.__init__(self, parentFSM, doneEvent, dnaStore, hoodId)
 
-        self.fsm = ClassicFSM.ClassicFSM('Hood', [State.State('start', self.enterStart, self.exitStart, ['cogHQLoader']),
-         State.State('cogHQLoader', self.enterCogHQLoader, self.exitCogHQLoader, ['quietZone']),
-         State.State('quietZone', self.enterQuietZone, self.exitQuietZone, ['cogHQLoader']),
-         State.State('final', self.enterFinal, self.exitFinal, [])], 'start', 'final')
+        self.fsm = ClassicFSM.ClassicFSM(
+            'Hood',
+            [State.State('start',
+                         self.enterStart,
+                         self.exitStart,
+                         ['cogHQLoader']),
+             State.State('cogHQLoader',
+                         self.enterCogHQLoader,
+                         self.exitCogHQLoader,
+                         ['quietZone']),
+             State.State('quietZone',
+                         self.enterQuietZone,
+                         self.exitQuietZone,
+                         ['cogHQLoader']),
+             State.State('final',
+                         self.enterFinal,
+                         self.exitFinal,
+                         [])
+             ],
+            'start',
+            'final')
         self.fsm.enterInitialState()
 
         # Until Hood is cleaned up, we will need to define some variables:

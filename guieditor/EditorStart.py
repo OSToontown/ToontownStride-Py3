@@ -13,7 +13,7 @@ from direct.gui.DirectGui import *
 
 """
 
-def inject():
+def inject(_):
     code = textbox.GetValue()
     exec(code, globals())
 

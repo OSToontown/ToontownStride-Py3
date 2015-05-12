@@ -15,6 +15,7 @@ ChoiceTimeout = 20
 
 
 class DistributedNPCToon(DistributedNPCToonBase):
+
     def __init__(self, cr):
         DistributedNPCToonBase.__init__(self, cr)
 
