@@ -16,7 +16,7 @@ class DistributedJorElCamAI(DistributedObjectAI):
         DistributedObjectAI.generate(self)
 
     def delete(self):
-        self.dna = None
+        del self.dna
         DistributedObjectAI.delete(self)
 
     def disable(self):
