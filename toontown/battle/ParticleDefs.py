@@ -4837,6 +4837,69 @@ def snowdisk(self):
 
 
 @particle
+def smoke(self):
+    self.reset()
+    self.setPos(0.000, 3.500, 5.100)
+    self.setHpr(-180.000, 80.000, -180.000)
+    self.setScale(0.0250, 0.0250, 0.0250)
+    p0 = Particles.Particles('particles-1')
+
+    p0.setFactory("PointParticleFactory")
+    p0.setRenderer("SpriteParticleRenderer")
+    p0.setEmitter("SphereVolumeEmitter")
+    p0.setPoolSize(50)
+    p0.setBirthRate(0.0300)
+    p0.setLitterSize(1)
+    p0.setLitterSpread(1)
+    p0.setSystemLifespan(0.0000)
+    p0.setLocalVelocityFlag(1)
+    p0.setSystemGrowsOlderFlag(0)
+
+    p0.factory.setLifespanBase(1.6000)
+    p0.factory.setLifespanSpread(0.0000)
+    p0.factory.setMassBase(1.0000)
+    p0.factory.setMassSpread(0.0000)
+    p0.factory.setTerminalVelocityBase(400.0000)
+    p0.factory.setTerminalVelocitySpread(0.0000)
+
+    p0.renderer.setAlphaMode(BaseParticleRenderer.PRALPHAUSER)
+    p0.renderer.setUserAlpha(1.00)
+
+    p0.renderer.setIgnoreScale(1)
+    p0.renderer.addTextureFromFile('phase_6/maps/tt_t_efx_ext_smoke_a.rgb')
+    p0.renderer.setColor(Vec4(0.10, 0.10, 0.10, 0.10))
+    p0.renderer.setXScaleFlag(1)
+    p0.renderer.setYScaleFlag(1)
+    p0.renderer.setAnimAngleFlag(0)
+    p0.renderer.setInitialXScale(0.6)
+    p0.renderer.setFinalXScale(0.3)
+    p0.renderer.setInitialYScale(0.6)
+    p0.renderer.setFinalYScale(0.3)
+    p0.renderer.setNonanimatedTheta(0.0000)
+    p0.renderer.setAlphaBlendMethod(BaseParticleRenderer.PPBLENDLINEAR)
+    p0.renderer.setAlphaDisable(0)
+
+    p0.emitter.setEmissionType(BaseParticleEmitter.ETRADIATE)
+    p0.emitter.setAmplitude(2.0000)
+    p0.emitter.setAmplitudeSpread(0.0000)
+    p0.emitter.setOffsetForce(Vec3(0.0000, 0.0000, -4.0000))
+    p0.emitter.setExplicitLaunchVector(Vec3(1.0000, 0.0000, 0.0000))
+    p0.emitter.setRadiateOrigin(Point3(0.0000, 0.0000, 0.0000))
+
+    p0.emitter.setRadius(0.0200)
+    self.addParticles(p0)
+    f0 = ForceGroup.ForceGroup('forces')
+
+    force0 = LinearSinkForce(Point3(0.0000, 0.0000, -4.0000), LinearDistanceForce.FTONEOVERR, 1.0000, 2.5308, 1)
+    force0.setActive(1)
+    f0.addForce(force0)
+    force1 = LinearVectorForce(Vec3(0.0000, -5.0000, 0.0000), 1.0000, 0)
+    force1.setActive(1)
+    f0.addForce(force1)
+    self.addForceGroup(f0)
+
+
+@particle
 def bossCogFrontAttack(self):
     self.reset()
     self.setPos(0.000, 0.000, 4.600)
