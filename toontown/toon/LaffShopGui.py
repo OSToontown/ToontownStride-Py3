@@ -12,18 +12,7 @@ from LaffMeter import LaffMeter
 class LaffShopGui(DirectFrame):
 
     def __init__(self, text):
-        DirectFrame.__init__(
-            self,
-            parent=aspect2d,
-            relief=None,
-            geom=DGG.getDefaultDialogGeom(),
-            geom_color=ToontownGlobals.GlobalDialogColor,
-            geom_scale=(1.33, 1, 1.1),
-            pos=(0, 0, 0),
-            text=text,
-            text_scale=0.07,
-            text_pos=(0, 0.475),
-        )
+        DirectFrame.__init__(self, parent=aspect2d, relief=None, geom=DGG.getDefaultDialogGeom(), geom_color=ToontownGlobals.GlobalDialogColor, geom_scale=(1.33, 1, 1.1), pos=(0, 0, 0), text=text, text_scale=0.07, text_pos=(0, 0.475))
         self.initialiseoptions(LaffShopGui)
         self.text = text
         self.timer = ToontownTimer.ToontownTimer()
@@ -43,66 +32,20 @@ class LaffShopGui(DirectFrame):
         self.__bindButtons()
         self.laffMeter = LaffMeter(base.localAvatar.style, self.hp, self.maxHp)
         self.laffMeter.reparentTo(self)
-        self.laffMeter.setPos(0, 0, 0.15)
+        self.laffMeter.setPos(0, 0, 0.165)
         self.laffMeter.setScale(0.13)
         self.__updateLaffMeter(0)
 
     def __setupButtons(self):
         buttons = loader.loadModel('phase_3/models/gui/dialog_box_buttons_gui')
         arrowGui = loader.loadModel('phase_3/models/gui/create_a_toon_gui')
-        okImageList = (
-            buttons.find('**/ChtBx_OKBtn_UP'),
-            buttons.find('**/ChtBx_OKBtn_DN'),
-            buttons.find('**/ChtBx_OKBtn_Rllvr'),
-        )
-        cancelImageList = (
-            buttons.find('**/CloseBtn_UP'),
-            buttons.find('**/CloseBtn_DN'),
-            buttons.find('**/CloseBtn_Rllvr'),
-        )
-        arrowImageList = (
-            arrowGui.find('**/CrtATn_R_Arrow_UP'),
-            arrowGui.find('**/CrtATn_R_Arrow_DN'),
-            arrowGui.find('**/CrtATn_R_Arrow_RLVR'),
-            arrowGui.find('**/CrtATn_R_Arrow_UP'),
-        )
-        self.cancelButton = DirectButton(
-            parent=self,
-            relief=None,
-            image=cancelImageList,
-            pos=(-0.2, 0, -0.4),
-            text=LaffRestockGlobals.GuiCancel,
-            text_scale=0.06,
-            text_pos=(0, -0.1),
-            command=self.__cancel,
-        )
-        self.okButton = DirectButton(
-            parent=self,
-            relief=None,
-            image=okImageList,
-            pos=(0.2, 0, -0.4),
-            text=LaffRestockGlobals.GuiOk,
-            text_scale=0.06,
-            text_pos=(0, -0.1),
-            command=self.__requestLaff,
-            extraArgs=[],
-        )
-        self.upArrow = DirectButton(
-            parent=self,
-            relief=None,
-            image=arrowImageList,
-            image_scale=(1, 1, 1),
-            image3_color=Vec4(0.6, 0.6, 0.6, 0.25),
-            pos=(0.2, 0, -0.165),
-        )
-        self.downArrow = DirectButton(
-            parent=self,
-            relief=None,
-            image=arrowImageList,
-            image_scale=(-1, 1, 1),
-            image3_color=Vec4(0.6, 0.6, 0.6, 0.25),
-            pos=(-0.2, 0, -0.165),
-        )
+        okImageList = (buttons.find('**/ChtBx_OKBtn_UP'), buttons.find('**/ChtBx_OKBtn_DN'), buttons.find('**/ChtBx_OKBtn_Rllvr'))
+        cancelImageList = (buttons.find('**/CloseBtn_UP'), buttons.find('**/CloseBtn_DN'), buttons.find('**/CloseBtn_Rllvr'))
+        arrowImageList = (arrowGui.find('**/CrtATn_R_Arrow_UP'), arrowGui.find('**/CrtATn_R_Arrow_DN'), arrowGui.find('**/CrtATn_R_Arrow_RLVR'), arrowGui.find('**/CrtATn_R_Arrow_UP'))
+        self.cancelButton = DirectButton(parent=self, relief=None, image=cancelImageList, pos=(-0.2, 0, -0.4), text=LaffRestockGlobals.GuiCancel, text_scale=0.06, text_pos=(0, -0.1), command=self.__cancel)
+        self.okButton = DirectButton(parent=self, relief=None, image=okImageList, pos=(0.2, 0, -0.4), text=LaffRestockGlobals.GuiOk, text_scale=0.06, text_pos=(0, -0.1), command=self.__requestLaff)
+        self.upArrow = DirectButton(parent=self, relief=None, image=arrowImageList, image_scale=(1, 1, 1), image3_color=Vec4(0.6, 0.6, 0.6, 0.25), pos=(0.2, 0, -0.165))
+        self.downArrow = DirectButton(parent=self, relief=None, image=arrowImageList, image_scale=(-1, 1, 1), image3_color=Vec4(0.6, 0.6, 0.6, 0.25), pos=(-0.2, 0, -0.165))
         buttons.removeNode()
         arrowGui.removeNode()
 
