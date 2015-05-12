@@ -377,7 +377,6 @@ class OTPClientRepository(ClientRepositoryBase):
         dialogClass = OTPGlobals.getGlobalDialogClass()
         self.failedToConnectBox = dialogClass(message=OTPLocalizer.CRNoConnectTryAgain % (url.getServer(), url.getPort()), doneEvent='failedToConnectAck', text_wordwrap=18, style=OTPDialog.TwoChoice)
         self.failedToConnectBox.show()
-        self.notify.info(message)
         self.accept('failedToConnectAck', self.__handleFailedToConnectAck)
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
