@@ -3,14 +3,12 @@ from pandac.PandaModules import *
 from toontown.fishing import FishSellGUI
 from toontown.toonbase import ToontownGlobals, TTLocalizer
 import TreasureChestGlobals
-import time
 
 class DistributedTreasureChest(DistributedObject):
 
     def __init__(self, cr):
         DistributedObject.__init__(self, cr)
         self.cr = cr
-        self.lastCollision = 0
         self.createModel(45, -165.75, 0.025, 210)
         self.initCollisions()
 
@@ -27,6 +25,7 @@ class DistributedTreasureChest(DistributedObject):
 
     def destroyFishGui(self):
         self.ignore('treasureChestSell')
+
         if hasattr(self, 'fishGui'):
             self.fishGui.destroy()
             del self.fishGui
@@ -49,12 +48,10 @@ class DistributedTreasureChest(DistributedObject):
         self.accept('enter' + self.cSphereNode.getName(), self.handleCollisionSphereEnter)
 
     def handleCollisionSphereEnter(self, collEntry):
-        if self.lastCollision != 0 and self.lastCollision > time.time():
-            return
-        self.lastCollision = time.time() + ToontownGlobals.NPCCollisionDelay
         if not base.localAvatar.fishTank.getFish():
             base.localAvatar.setSystemMessage(0, TTLocalizer.STOREOWNER_NOFISH)
             return
+
         base.setCellsActive(base.bottomCells, 0)
         base.cr.playGame.getPlace().setState('stopped')
         self.acceptOnce('treasureChestSell', self.handleSaleDone)
