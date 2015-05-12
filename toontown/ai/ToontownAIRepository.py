@@ -30,7 +30,6 @@ from toontown.distributed.ToontownInternalRepository import ToontownInternalRepo
 from toontown.coderedemption.TTCodeRedemptionMgrAI import TTCodeRedemptionMgrAI
 from toontown.dna.DNAParser import loadDNAFileAI
 from toontown.estate.EstateManagerAI import EstateManagerAI
-from toontown.friends.TrueFriendsMgrAI import TrueFriendsMgrAI
 from toontown.hood import BRHoodAI
 from toontown.hood import BossbotHQAI
 from toontown.hood import CashbotHQAI
@@ -127,8 +126,6 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.buildingQueryMgr = DistributedBuildingQueryMgrAI(self)
         self.buildingQueryMgr.generateWithRequired(2)
         self.groupManager.generateWithRequired(2)
-        self.trueFriendsMgr = TrueFriendsMgrAI(self)
-        self.trueFriendsMgr.generateWithRequired(2)
         if self.wantFishing:
             self.fishManager = FishManagerAI(self)
         if self.wantHousing:

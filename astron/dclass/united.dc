@@ -503,7 +503,6 @@ from toontown.safezone import DistributedCheckers/AI
 from toontown.safezone import DistributedFindFour/AI
 from toontown.uberdog.DistributedPartyManager/AI/UD import DistributedPartyManager/AI/UD
 from toontown.coderedemption.TTCodeRedemptionMgr/AI import TTCodeRedemptionMgr/AI
-from toontown.friends.TrueFriendsMgr/AI import TrueFriendsMgr/AI
 from toontown.cogdominium import DistributedCogdoInterior/AI
 from toontown.cogdominium import DistributedCogdoBattleBldg/AI
 from toontown.cogdominium import DistributedCogdoElevatorExt/AI
@@ -664,7 +663,6 @@ dclass DistributedToon : DistributedPlayer {
   takeDamage(uint16) broadcast ownrecv;
   setBattleId(uint32 = 0) required broadcast ram;
   setExperience(blob = [0*14]) required broadcast db;
-  setTrueFriends(uint32[]) required ownrecv db;
   setIgnored(uint32[]) required clsend airecv ownrecv db;
   setReported(uint32[]) required ownrecv db;
   setMaxCarry(uint8 = 20) required ownrecv db;
@@ -3297,13 +3295,6 @@ dclass TTCodeRedemptionMgr : DistributedObject {
   redeemCodeResult(uint32);
 };
 
-dclass TrueFriendsMgr : DistributedObject {
-  requestId() airecv clsend;
-  requestIdResult(uint32, string, string);
-  redeemId(string) airecv clsend;
-  redeemIdResult(uint32, string);
-};
-
 struct Friend
 {
 uint32 doId;
@@ -3346,12 +3337,6 @@ dclass TTUFriendsManager : DistributedObjectGlobal {
 
   whisperSCEmoteTo(uint32 toId, uint16 emoteId) clsend;
   setWhisperSCEmoteFrom(uint32 fromId, uint16 emoteId);
-
-  requestSecret() clsend;
-  requestSecretResponse(int8 status, string secret);
-
-  submitSecret(string(0-256) secret) clsend;
-  submitSecretResponse(int8 status, int32 avId);
 
   sendTalkWhisper(uint32 toId, string message) clsend;
   receiveTalkWhisper(uint32 fromId, string message);

@@ -28,7 +28,6 @@ from toontown.toonbase.ToontownGlobals import *
 from toontown.distributed import DelayDelete
 from toontown.friends import FriendHandle
 from toontown.friends import FriendsListPanel
-from toontown.friends import ToontownFriendSecret
 from toontown.login import AvatarChooser
 from toontown.makeatoon import MakeAToon
 from toontown.pets import DistributedPet, PetDetail, PetHandle
@@ -407,7 +406,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         if self.objectManager != None:
             self.objectManager.destroy()
             self.objectManager = None
-        ToontownFriendSecret.unloadFriendSecret()
         FriendsListPanel.unloadFriendsList()
         messenger.send('cancelFriendInvitation')
         base.removeGlitchMessage()

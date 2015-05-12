@@ -3,7 +3,6 @@ from direct.gui.DirectGui import *
 from pandac.PandaModules import *
 from direct.fsm import StateData
 from toontown.toon import ToonAvatarPanel
-from toontown.friends import ToontownFriendSecret
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 from otp.otpbase import OTPGlobals
@@ -247,7 +246,7 @@ class FriendsListPanel(DirectFrame, StateData.StateData):
 
     def __secrets(self):
         messenger.send('wakeup')
-        ToontownFriendSecret.showFriendSecret()
+        # TODO
 
     def __newFriend(self):
         messenger.send('wakeup')

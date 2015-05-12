@@ -111,15 +111,3 @@ class FriendManagerAI(DistributedObjectAI):
 
     def inviteeCancelFriendQuery(self, todo0):
         pass
-
-    def requestSecret(self):
-        pass
-
-    def requestSecretResponse(self, todo0, todo1):
-        pass
-
-    def submitSecret(self, todo0):
-        pass
-
-    def submitSecretResponse(self, todo0, todo1):
-        pass
