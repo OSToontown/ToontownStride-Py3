@@ -136,7 +136,7 @@ def doSuitAttack(attack):
     elif name == CHOMP:
         suitTrack = doChomp(attack)
     elif name == CIGAR_SMOKE:
-        suitTrack = doDefault(attack)
+        suitTrack = doCigarSmoke(attack)
     elif name == CLIPON_TIE:
         suitTrack = doClipOnTie(attack)
     elif name == CRUNCH:
@@ -2246,6 +2246,60 @@ def doPickPocket(attack):
         soundTrack = getSoundTrack('SA_pick_pocket.ogg', delay=0.2, node=suit)
         multiTrackList.append(billPropTrack)
         multiTrackList.append(soundTrack)
+    return multiTrackList
+
+
+def doCigarSmoke(attack):
+    suit = attack['suit']
+    battle = attack['battle']
+    target = attack['target']
+    toon = target['toon']
+    dmg = target['hp']
+    BattleParticles.loadParticles()
+    smoke = BattleParticles.createParticleEffect('Smoke')
+    BattleParticles.setEffectTexture(smoke, 'snow-particle')
+    cigar = globalPropPool.getProp('cigar')
+    suitTrack = getSuitTrack(attack)
+    cigarPosPoints = [Point3(-0.05, -0.2, -0.25), VBase3(180.0, 0.0, 0.0)]
+    cigarPropTrack = getPropTrack(cigar, suit.getRightHand(), cigarPosPoints, 0.6, 3.6, scaleUpPoint=Point3(6.0, 6.0, 6.0))
+    toonTrack = getToonTrack(attack, 3.55, ['cringe'], 3.0, ['sidestep'])
+    multiTrackList = Parallel(suitTrack, toonTrack)
+    smokeTrack = getPartTrack(smoke, 3.45, 1.5, [smoke, suit, 0])
+    multiTrackList.append(cigarPropTrack)
+    multiTrackList.append(smokeTrack)
+
+    def changeColor(parts):
+        track = Parallel()
+        for partNum in xrange(0, parts.getNumPaths()):
+            nextPart = parts.getPath(partNum)
+            track.append(Func(nextPart.setColorScale, Vec4(0, 0, 0, 1)))
+
+        return track
+
+    def resetColor(parts):
+        track = Parallel()
+        for partNum in xrange(0, parts.getNumPaths()):
+            nextPart = parts.getPath(partNum)
+            track.append(Func(nextPart.clearColorScale))
+
+        return track
+
+    if dmg > 0:
+        headParts = toon.getHeadParts()
+        torsoParts = toon.getTorsoParts()
+        legsParts = toon.getLegsParts()
+        colorTrack = Sequence()
+        colorTrack.append(Wait(3.6))
+        colorTrack.append(Func(battle.movie.needRestoreColor))
+        colorTrack.append(changeColor(headParts))
+        colorTrack.append(changeColor(torsoParts))
+        colorTrack.append(changeColor(legsParts))
+        colorTrack.append(Wait(2.2))
+        colorTrack.append(resetColor(headParts))
+        colorTrack.append(resetColor(torsoParts))
+        colorTrack.append(resetColor(legsParts))
+        colorTrack.append(Func(battle.movie.clearRestoreColor))
+        multiTrackList.append(colorTrack)
     return multiTrackList
 
 

@@ -23,7 +23,16 @@ class DistributedNPCLaffRestock(DistributedNPCToonBase):
             self.laffGui = None
         self.av = None
         DistributedNPCToonBase.disable(self)
+<<<<<<< HEAD
     
+=======
+
+    def destroyDialog(self):
+        if hasattr(self, 'dialog'):
+            self.dialog.cleanup()
+            del self.dialog
+
+>>>>>>> 36e553a9416c719237c2360890f114f311c821d8
     def initToonState(self):
         self.setAnimState('neutral', 0.9, None, None)
         if self.name in NPCToons.LaffRestockPositions:
