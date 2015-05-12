@@ -319,9 +319,7 @@ def doLaugh(toon, volume = 1):
 
 def doTaunt(toon, volume=1):
     duration = toon.getDuration('angry', 'torso')
-    sfx = None
-    sfx = base.loadSfx('phase_4/audio/sfx/furious_03.ogg')
-
+    sfx = base.loadSfx('phase_4/audio/sfx/avatar_emotion_taunt.ogg')
     track = Sequence(
         Func(toon.blinkEyes),
         Func(toon.play, 'taunt'),
@@ -331,8 +329,7 @@ def doTaunt(toon, volume=1):
     return (track, duration, None)
 
 def doRage(toon, volume=1):
-    sfx = base.loadSfx('phase_4/audio/sfx/avatar_emotion_taunt.ogg')
-
+    sfx = base.loadSfx('phase_4/audio/sfx/furious_03.ogg')
     track = Sequence(
         Func(toon.blinkEyes),
         Func(toon.play, 'good-putt', fromFrame=12),

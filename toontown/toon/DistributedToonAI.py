@@ -116,7 +116,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.fishingRod = 0
         self.fishingTrophies = []
         self.trackArray = []
-        self.emoteAccess = [0] * 26
+        self.emoteAccess = [0] * 27
         self.maxMoney = 0
         self.maxBankMoney = 0
         self.gardenSpecials = []
