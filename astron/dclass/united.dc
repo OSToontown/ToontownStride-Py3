@@ -1379,7 +1379,7 @@ dclass DistributedHouseInterior : DistributedObject {
 
 dclass DistributedGarden : DistributedObject {
   sendNewProp(uint8, int16/10, int16/10, int16/10) broadcast;
-  setProps(uint8[]);
+  setProps(uint8[]) airecv clsend;
 };
 
 dclass DistributedParty : DistributedObject {

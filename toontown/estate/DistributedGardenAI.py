@@ -21,15 +21,8 @@ class DistributedGardenAI(DistributedObjectAI):
     def delete(self):
         DistributedObjectAI.delete(self)
 
-    def b_setProps(self, props):
-        self.setProps(props)
-        self.d_setProps(props)
-
-    def d_setProps(self, props):
-        aProps = []
-        for prop in props:
-            aProps = aProps + prop
-        self.sendUpdate('setProps', [aProps])
-
     def setProps(self, props):
         self.props = props
+
+    def d_sendNewProp(self, prop, x, y, z):
+        self.sendUpdate('sendNewProp', [prop, x, y, z])
