@@ -1,21 +1,13 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from PartyGlobals import *
-import PartyUtils
-import time
-# ugh all these activities
-from toontown.parties.DistributedPartyJukeboxActivityAI import DistributedPartyJukeboxActivityAI
-from toontown.parties.DistributedPartyDanceActivityAI import DistributedPartyDanceActivityAI
-from toontown.parties.DistributedPartyJukebox40ActivityAI import DistributedPartyJukebox40ActivityAI
-from toontown.parties.DistributedPartyDance20ActivityAI import DistributedPartyDance20ActivityAI
-from toontown.parties.DistributedPartyCogActivityAI import DistributedPartyCogActivityAI
-from toontown.parties.DistributedPartyTrampolineActivityAI import DistributedPartyTrampolineActivityAI
-from toontown.parties.DistributedPartyVictoryTrampolineActivityAI import DistributedPartyVictoryTrampolineActivityAI
-from toontown.parties.DistributedPartyCatchActivityAI import DistributedPartyCatchActivityAI
-from toontown.parties.DistributedPartyTugOfWarActivityAI import DistributedPartyTugOfWarActivityAI
-from toontown.parties.DistributedPartyCannonActivityAI import DistributedPartyCannonActivityAI
-from toontown.parties.DistributedPartyCannonAI import DistributedPartyCannonAI
-from toontown.parties.DistributedPartyFireworksActivityAI import DistributedPartyFireworksActivityAI
+import DistributedPartyCannonAI, DistributedPartyCannonActivityAI, DistributedPartyCatchActivityAI, DistributedPartyCogActivityAI, DistributedPartyDanceActivityAI
+import DistributedPartyDance20ActivityAI, DistributedPartyFireworksActivityAI, DistributedPartyJukeboxActivityAI, DistributedPartyJukebox40ActivityAI
+import DistributedPartyTrampolineActivityAI, DistributedPartyTugOfWarActivityAI, DistributedPartyValentineDanceActivityAI
+import DistributedPartyValentineDance20ActivityAI, DistributedPartyValentineJukeboxActivityAI, DistributedPartyValentineJukebox40ActivityAI
+import DistributedPartyValentineTrampolineActivityAI, DistributedPartyVictoryTrampolineActivityAI, DistributedPartyWinterCatchActivityAI
+import DistributedPartyWinterCogActivityAI, DistributedPartyWinterTrampolineActivityAI
+import PartyUtils, time
 
 """
 dclass DistributedParty : DistributedObject {
@@ -59,16 +51,23 @@ class DistributedPartyAI(DistributedObjectAI):
         DistributedObjectAI.generate(self)
         # make stuff
         actId2Class = {
-            ActivityIds.PartyJukebox: DistributedPartyJukeboxActivityAI,
-            ActivityIds.PartyTrampoline: DistributedPartyTrampolineActivityAI,
-            ActivityIds.PartyVictoryTrampoline: DistributedPartyVictoryTrampolineActivityAI,
-            ActivityIds.PartyCatch: DistributedPartyCatchActivityAI,
-            ActivityIds.PartyDance: DistributedPartyDanceActivityAI, 
-            ActivityIds.PartyTugOfWar: DistributedPartyTugOfWarActivityAI,
-            ActivityIds.PartyFireworks: DistributedPartyFireworksActivityAI,
-            ActivityIds.PartyJukebox40: DistributedPartyJukebox40ActivityAI,
-            ActivityIds.PartyDance20: DistributedPartyDance20ActivityAI,
-            ActivityIds.PartyCog: DistributedPartyCogActivityAI,
+            ActivityIds.PartyCatch: DistributedPartyCatchActivityAI.DistributedPartyCatchActivityAI,
+            ActivityIds.PartyCog: DistributedPartyCogActivityAI.DistributedPartyCogActivityAI,
+            ActivityIds.PartyDance: DistributedPartyDanceActivityAI.DistributedPartyDanceActivityAI,
+            ActivityIds.PartyDance20: DistributedPartyDance20ActivityAI.DistributedPartyDance20ActivityAI,
+            ActivityIds.PartyFireworks: DistributedPartyFireworksActivityAI.DistributedPartyFireworksActivityAI,
+            ActivityIds.PartyJukebox: DistributedPartyJukeboxActivityAI.DistributedPartyJukeboxActivityAI,
+            ActivityIds.PartyJukebox40: DistributedPartyJukebox40ActivityAI.DistributedPartyJukebox40ActivityAI,
+            ActivityIds.PartyTrampoline: DistributedPartyTrampolineActivityAI.DistributedPartyTrampolineActivityAI,
+            ActivityIds.PartyTugOfWar: DistributedPartyTugOfWarActivityAI.DistributedPartyTugOfWarActivityAI,
+            ActivityIds.PartyValentineDance: DistributedPartyValentineDanceActivityAI.DistributedPartyValentineDanceActivityAI,
+            ActivityIds.PartyValentineDance20: DistributedPartyValentineDance20ActivityAI.DistributedPartyValentineDance20ActivityAI,
+            ActivityIds.PartyValentineJukebox: DistributedPartyValentineJukeboxActivityAI.DistributedPartyValentineJukeboxActivityAI,
+            ActivityIds.PartyValentineJukebox40: DistributedPartyValentineJukebox40ActivityAI.DistributedPartyValentineJukebox40ActivityAI,
+            ActivityIds.PartyValentineTrampoline: DistributedPartyValentineTrampolineActivityAI.DistributedPartyValentineTrampolineActivityAI,
+            ActivityIds.PartyVictoryTrampoline: DistributedPartyVictoryTrampolineActivityAI.DistributedPartyVictoryTrampolineActivityAI,
+            ActivityIds.PartyWinterCatch: DistributedPartyWinterCatchActivityAI.DistributedPartyWinterCatchActivityAI,
+            ActivityIds.PartyWinterCog: DistributedPartyWinterCogActivityAI.DistributedPartyWinterCogActivityAI
         }
         for activity in self.info['activities']:
             actId = activity[0]
@@ -78,9 +77,9 @@ class DistributedPartyAI(DistributedObjectAI):
                 self.activities.append(act)
             elif actId == ActivityIds.PartyCannon:
                 if not self.cannonActivity:
-                    self.cannonActivity = DistributedPartyCannonActivityAI(self.air, self.doId, activity)
+                    self.cannonActivity = DistributedPartyCannonActivityAI.DistributedPartyCannonActivityAI(self.air, self.doId, activity)
                     self.cannonActivity.generateWithRequired(self.zoneId)
-                act = DistributedPartyCannonAI(self.air)
+                act = DistributedPartyCannonAI.DistributedPartyCannonAI(self.air)
                 act.setActivityDoId(self.cannonActivity.doId)
                 x, y, h = activity[1:] # ignore activity ID
                 x = PartyUtils.convertDistanceFromPartyGrid(x, 0)

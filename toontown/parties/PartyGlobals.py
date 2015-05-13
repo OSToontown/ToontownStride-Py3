@@ -70,10 +70,10 @@ ChangePartyFieldErrorCode = PythonUtil.Enum(('AllOk',
  'AlreadyRefunded'))
 ActivityTypes = PythonUtil.Enum(('HostInitiated', 'GuestInitiated', 'Continuous'))
 PartyGateDenialReasons = PythonUtil.Enum(('Unavailable', 'Full'))
-ActivityIds = PythonUtil.Enum(('PartyJukebox',
+ActivityIds = PythonUtil.Enum(('PartyCatch',
+ 'PartyJukebox',
  'PartyCannon',
  'PartyTrampoline',
- 'PartyCatch',
  'PartyDance',
  'PartyTugOfWar',
  'PartyFireworks',
@@ -110,24 +110,9 @@ PartyEditorActivityOrder = [ ActivityIds.PartyClock,
  ActivityIds.PartyCog,
  ActivityIds.PartyWinterCog,
  ActivityIds.PartyFireworks]
-MutuallyExclusiveActivities = ((ActivityIds.PartyJukebox, ActivityIds.PartyJukebox40),
- (ActivityIds.PartyValentineJukebox, ActivityIds.PartyValentineJukebox40),
+MutuallyExclusiveActivities = ((ActivityIds.PartyJukebox, ActivityIds.PartyJukebox40, ActivityIds.PartyValentineJukebox, ActivityIds.PartyValentineJukebox40),
  (ActivityIds.PartyDance, ActivityIds.PartyDance20),
  (ActivityIds.PartyValentineDance, ActivityIds.PartyValentineDance20))
-VictoryPartyActivityIds = frozenset([ActivityIds.PartyVictoryTrampoline])
-VictoryPartyReplacementActivityIds = frozenset([ActivityIds.PartyTrampoline])
-WinterPartyActivityIds = frozenset([ActivityIds.PartyWinterCatch, ActivityIds.PartyWinterTrampoline, ActivityIds.PartyWinterCog])
-WinterPartyReplacementActivityIds = frozenset([ActivityIds.PartyCatch, ActivityIds.PartyTrampoline, ActivityIds.PartyCog])
-ValentinePartyActivityIds = frozenset([ActivityIds.PartyValentineDance,
- ActivityIds.PartyValentineDance20,
- ActivityIds.PartyValentineJukebox,
- ActivityIds.PartyValentineJukebox40,
- ActivityIds.PartyValentineTrampoline])
-ValentinePartyReplacementActivityIds = frozenset([ActivityIds.PartyDance,
- ActivityIds.PartyDance20,
- ActivityIds.PartyJukebox,
- ActivityIds.PartyJukebox40,
- ActivityIds.PartyTrampoline])
 DecorationIds = PythonUtil.Enum(('BalloonAnvil',
  'BalloonStage',
  'Bow',
@@ -156,21 +141,6 @@ DecorationIds = PythonUtil.Enum(('BalloonAnvil',
  'BalloonAnvilValentine'))
 DECORATION_VOLUME = 1.0
 DECORATION_CUTOFF = 45
-VictoryPartyDecorationIds = frozenset([DecorationIds.BannerVictory,
- DecorationIds.CannonVictory,
- DecorationIds.CogStatueVictory,
- DecorationIds.TubeCogVictory])
-WinterPartyDecorationIds = frozenset([DecorationIds.cogIceCreamWinter,
- DecorationIds.StageWinter,
- DecorationIds.CogStatueWinter,
- DecorationIds.snowman,
- DecorationIds.snowDoodle])
-VictoryPartyReplacementDecorationIds = frozenset([DecorationIds.BannerJellyBean])
-ValentinePartyDecorationIds = frozenset([DecorationIds.BalloonAnvilValentine,
- DecorationIds.HeartBanner,
- DecorationIds.HeartTarget,
- DecorationIds.FlyingHeart])
-ValentinePartyReplacementDecorationIds = frozenset([DecorationIds.BalloonAnvil, DecorationIds.BannerJellyBean])
 GoToPartyStatus = PythonUtil.Enum(('AllowedToGo',
  'PartyFull',
  'PrivateParty',

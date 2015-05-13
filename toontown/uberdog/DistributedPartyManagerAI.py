@@ -21,16 +21,9 @@ class DistributedPartyManagerAI(DistributedObjectAI):
         self.id2Party = {}
         self.pubPartyInfo = {}
         self.idPool = range(self.air.ourChannel, self.air.ourChannel + 100000)
-        # get 100 ids at the start and top up
-        #taskMgr.doMethodLater(0, self.__getIds, 'DistributedPartyManagerAI___getIds')
 
     def receiveId(self, ids):
         self.idPool += ids
-
-#    def __getIds(self, task):
-#        if len(self.idPool) < 50:
-#            self.air.globalPartyMgr.allocIds(100 - len(self.idPool))
-#        taskMgr.doMethodLater(180, self.__getIds, 'DistributedPartyManagerAI___getIds')
 
     def _makePartyDict(self, struct):
         PARTY_TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
@@ -47,15 +40,6 @@ class DistributedPartyManagerAI(DistributedObjectAI):
         party['decorations'] = struct[15]
         # struct[16] = partystatus
         return party
-
-    # Management stuff
-    def partyManagerUdStartingUp(self):
-        # This is sent in reply to the GPMAI's hello
-        self.notify.info("uberdog has said hello")
-
-    def partyManagerUdLost(self):
-        # well fuck. ud died.
-        self.notify.warning("uberdog lost!")
 
     def addPartyRequest(self, hostId, startTime, endTime, isPrivate, inviteTheme, activities, decorations, inviteeIds):
         if hostId != simbase.air.getAvatarIdFromSender():
