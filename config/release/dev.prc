@@ -26,20 +26,14 @@ want-lawbot-cogdo #t
 want-achievements #f
 want-anim-props #t
 want-game-tables #t
-want-find-four #f
+want-find-four #t
 want-chinese-checkers #t
-want-checkers #f
+want-checkers #t
 
 # Chat:
 want-whitelist #f
 
-# Cashbot boss:
-want-resistance-toonup #t
-want-resistance-restock #t
-want-resistance-dance #t
-
 # Optional:
-want-glove-npc #t
 want-jor-el-cam #f
 
 # Developer options:

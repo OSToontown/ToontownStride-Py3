@@ -91,16 +91,3 @@ class FriendManager(DistributedObject.DistributedObject):
         self.notify.debug('Client: inviteeCancelFriendQuery(%d)' % context)
         messenger.send('cancelFriendInvitation', [context])
         self.up_inviteeAcknowledgeCancel(context)
-
-    def up_requestSecret(self):
-        self.notify.warning('Sending Request')
-        self.sendUpdate('requestSecret', [])
-
-    def requestSecretResponse(self, result, secret):
-        messenger.send('requestSecretResponse', [result, secret])
-
-    def up_submitSecret(self, secret):
-        self.sendUpdate('submitSecret', [secret])
-
-    def submitSecretResponse(self, result, avId):
-        messenger.send('submitSecretResponse', [result, avId])

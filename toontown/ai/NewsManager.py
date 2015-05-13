@@ -1,29 +1,21 @@
+from otp.ai.MagicWordGlobal import *
 from pandac.PandaModules import *
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.battle import SuitBattleGlobals
-from toontown.toonbase import TTLocalizer
-import HolidayDecorator
-import HalloweenHolidayDecorator
-import CrashedLeaderBoardDecorator
 from direct.interval.IntervalGlobal import *
-import calendar
-from copy import deepcopy
+from toontown.toonbase import TTLocalizer, ToontownGlobals, ToontownBattleGlobals
+from toontown.battle import SuitBattleGlobals
 from toontown.suit import SuitDNA
-from otp.ai.MagicWordGlobal import *
-
+from copy import deepcopy
+import HolidayDecorator, HalloweenHolidayDecorator, calendar
 
 decorationHolidays = [ToontownGlobals.WINTER_DECORATIONS,
  ToontownGlobals.WACKY_WINTER_DECORATIONS,
  ToontownGlobals.HALLOWEEN_PROPS,
  ToontownGlobals.SPOOKY_PROPS,
  ToontownGlobals.HALLOWEEN_COSTUMES,
- ToontownGlobals.SPOOKY_COSTUMES,
- ToontownGlobals.CRASHED_LEADERBOARD]
+ ToontownGlobals.SPOOKY_COSTUMES]
 promotionalSpeedChatHolidays = []
-
 
 class NewsManager(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('NewsManager')
@@ -186,8 +178,6 @@ class NewsManager(DistributedObject.DistributedObject):
                 if hasattr(base.cr.playGame, 'dnaStore') and hasattr(base.cr.playGame, 'hood') and hasattr(base.cr.playGame.hood, 'loader'):
                     if holidayId == ToontownGlobals.HALLOWEEN_COSTUMES or holidayId == ToontownGlobals.SPOOKY_COSTUMES:
                         self.holidayDecorator = HalloweenHolidayDecorator.HalloweenHolidayDecorator()
-                    elif holidayId == ToontownGlobals.CRASHED_LEADERBOARD:
-                        self.holidayDecorator = CrashedLeaderBoardDecorator.CrashedLeaderBoardDecorator()
                     else:
                         self.holidayDecorator = HolidayDecorator.HolidayDecorator()
                     self.holidayDecorator.decorate()
@@ -303,8 +293,6 @@ class NewsManager(DistributedObject.DistributedObject):
                 if hasattr(base.cr.playGame, 'dnaStore') and hasattr(base.cr.playGame, 'hood') and hasattr(base.cr.playGame.hood, 'loader'):
                     if holidayId == ToontownGlobals.HALLOWEEN_COSTUMES or holidayId == ToontownGlobals.SPOOKY_COSTUMES:
                         self.holidayDecorator = HalloweenHolidayDecorator.HalloweenHolidayDecorator()
-                    elif holidayId == ToontownGlobals.CRASHED_LEADERBOARD:
-                        self.holidayDecorator = CrashedLeaderBoardDecorator.CrashedLeaderBoardDecorator()
                     else:
                         self.holidayDecorator = HolidayDecorator.HolidayDecorator()
                     self.holidayDecorator.undecorate()

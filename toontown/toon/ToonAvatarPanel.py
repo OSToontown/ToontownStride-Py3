@@ -10,7 +10,6 @@ from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
-from toontown.friends import ToontownFriendSecret
 import ToonAvatarDetailPanel
 import AvatarPanelBase
 from toontown.toontowngui import TTDialog
@@ -369,7 +368,7 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
 
     def __handleSecrets(self):
         base.localAvatar.chatMgr.noWhisper()
-        ToontownFriendSecret.showFriendSecret()
+        # TODO
 
     def __handleFriend(self):
         base.localAvatar.chatMgr.noWhisper()

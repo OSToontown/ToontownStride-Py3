@@ -179,7 +179,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self._gmDisabled = False
         self.buffs = []
         self.redeemedCodes = []
-        self.trueFriends = []
         self.ignored = []
         self.reported = []
 
@@ -430,27 +429,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def getExperience(self):
         return self.experience.makeNetString()
-    
-    def b_setTrueFriends(self, trueFriends):
-        self.d_setTrueFriends(trueFriends)
-        self.setTrueFriends(trueFriends)
-    
-    def d_setTrueFriends(self, trueFriends):
-        self.sendUpdate('setTrueFriends', [trueFriends])
-    
-    def setTrueFriends(self, trueFriends):
-        self.trueFriends = trueFriends
-    
-    def getTrueFriends(self):
-        return self.trueFriends
-    
-    def isTrueFriend(self, doId):
-        return doId in self.trueFriends
-    
-    def addTrueFriend(self, doId):
-        if not self.isTrueFriend(doId):
-            self.trueFriends.append(doId)
-            self.d_setTrueFriends(self.trueFriends)
     
     def b_setIgnored(self, ignored):
         self.d_setIgnored(ignored)

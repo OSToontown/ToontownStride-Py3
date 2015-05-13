@@ -182,7 +182,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.gmNameTagString = ''
         self.buffs = []
         self.redeemedCodes = []
-        self.trueFriends = []
         self.ignored = []
         self.reported = []
 
@@ -2577,12 +2576,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def setRedeemedCodes(self, redeemedCodes):
         self.redeemedCodes = redeemedCodes
-    
-    def setTrueFriends(self, trueFriends):
-        self.trueFriends = trueFriends
-    
-    def isTrueFriend(self, doId):
-        return doId in self.trueFriends
     
     def b_setIgnored(self, ignored):
         self.setIgnored(ignored)

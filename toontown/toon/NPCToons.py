@@ -119,7 +119,7 @@ def createNPC(air, npcId, desc, zoneId, posIndex = 0, questCallback = None):
         npc = DistributedNPCScientistAI.DistributedNPCScientistAI(air, npcId)
     elif type == NPC_SMART:
         npc = DistributedSmartNPCAI.DistributedSmartNPCAI(air, npcId)
-    elif type == NPC_GLOVE and simbase.air.wantGloveNpc:
+    elif type == NPC_GLOVE:
         npc = DistributedNPCGloveAI.DistributedNPCGloveAI(air, npcId)
     elif type == NPC_LAFF_RESTOCK:
         npc = DistributedNPCLaffRestockAI.DistributedNPCLaffRestockAI(air, npcId)
