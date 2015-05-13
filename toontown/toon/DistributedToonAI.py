@@ -97,6 +97,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.emoteAccess = [0] * 27
         self.maxMoney = 0
         self.maxBankMoney = 0
+        self.bankMoney = 0
         self.gardenSpecials = []
         self.houseId = 0
         self.posIndex = 0
