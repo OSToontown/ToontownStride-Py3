@@ -23,7 +23,7 @@ class PetManagerAI:
         self.seeds = {}
         for hood in (ToontownGlobals.ToontownCentral, ToontownGlobals.DonaldsDock, ToontownGlobals.DaisyGardens,
                      ToontownGlobals.MinniesMelodyland, ToontownGlobals.TheBrrrgh, ToontownGlobals.DonaldsDreamland):
-            self.seeds[hood] = [seeds.pop() for _ in xrange(self.NUM_DAILY_PETS)]
+            self.seeds[str(hood)] = [seeds.pop() for _ in xrange(self.NUM_DAILY_PETS)]
 
         self.seeds['day'] = getDayId()
         simbase.backups.save('pet-seeds', (self.air.districtId,), self.seeds)
@@ -32,7 +32,7 @@ class PetManagerAI:
         if self.seeds.get('day', -1) != getDayId():
             self.generateSeeds()
 
-        return self.seeds[safezoneId] if safezoneId in self.seeds else self.seeds[str(safezoneId)]
+        return self.seeds.get(str(safezoneId), [random.randint(0, 255)])
 
     def createNewPetFromSeed(self, avId, seed, nameIndex, gender, safeZoneId):
         av = self.air.doId2do[avId]
