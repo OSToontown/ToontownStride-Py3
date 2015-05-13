@@ -1,12 +1,8 @@
+from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.distributed.DistributedObjectGlobalUD import DistributedObjectGlobalUD
 from direct.distributed.PyDatagram import *
-from direct.task import Task
-from direct.directnotify.DirectNotifyGlobal import directNotify
-import string
-import random
-import functools
-import time
 from direct.fsm.FSM import FSM
+import time
 
 # -- FSMS --
 class OperationFSM(FSM):
@@ -199,7 +195,6 @@ class TTUFriendsManagerUD(DistributedObjectGlobalUD):
         self.tpRequests = {}
         self.whisperRequests = {}
         self.operations = []
-        self.secret2avId = {}
         self.delayTime = 1.0
 
     # -- Friends list --
@@ -396,31 +391,6 @@ class TTUFriendsManagerUD(DistributedObjectGlobalUD):
         self.whisperRequests[fromId] = currStamp
         self.sendUpdateToAvatarId(toId, 'receiveTalkWhisper', [fromId, message])
         self.air.writeServerEvent('whisper-said', fromId, toId, message)
-
-    # -- Secret Friends --
-    def requestSecret(self):
-        avId = self.air.getAvatarIdFromSender()
-        allowed = string.lowercase + string.digits
-        secret = ''
-        for i in xrange(6):
-            secret += random.choice(allowed)
-            if i == 2:
-                secret += ' '
-        self.secret2avId[secret] = avId
-        self.sendUpdateToAvatarId(avId, 'requestSecretResponse', [1, secret])
-
-    def submitSecret(self, secret):
-        requester = self.air.getAvatarIdFromSender()
-        owner = self.secret2avId.get(secret)
-        if not owner:
-            self.sendUpdateToAvatarId(requester, 'submitSecretResponse', [0, 0])
-            return
-        if owner == requester:
-            del self.secret2avId[secret]
-            self.sendUpdateToAvatarId(requester, 'submitSecretResponse', [3, 0])
-            return
-
-        self.sendUpdateToAvatarId(requester, 'submitSecretResponse', [5, 0])
 
     # -- Routes --
     def battleSOS(self, toId):

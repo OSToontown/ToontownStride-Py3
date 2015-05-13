@@ -170,7 +170,7 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
         if base.localAvatar.isIgnored(self.avId):
             self.whisperButton['state'] = DGG.DISABLED
 
-        self.secretsButton = DirectButton(
+        self.trueFriendsButton = DirectButton(
             parent=self.frame,
             image=(
                 gui.find('**/Amuse_Btn_UP'),
@@ -181,20 +181,18 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
             image_scale=0.9,
             relief=None,
             pos=(-0.103, 0, -0.13),
-            text=TTLocalizer.AvatarPanelSecrets,
+            text=TTLocalizer.AvatarPanelTrueFriends,
             text0_fg=self.text0Color,
             text1_fg=self.text1Color,
             text2_fg=self.text2Color,
             text3_fg=self.text3Color,
-            text_scale=TTLocalizer.TAPsecretsButton,
+            text_scale=TTLocalizer.TAPtruefriendsButton,
             text_pos=(0.055, -0.01),
             text_align=TextNode.ALeft,
-            command=self.__handleSecrets)
-
-
+            command=self.__handleTrueFriends)
 
         if base.localAvatar.isIgnored(self.avId):
-            self.secretsButton['state'] = DGG.DISABLED
+            self.trueFriendsButton['state'] = DGG.DISABLED
         ignoreStr, ignoreCmd, ignoreScale = self.getIgnoreButtonInfo()
 
         self.ignoreButton = DirectButton(
@@ -294,7 +292,7 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
         self.reportButton['state'] = DGG.DISABLED
         self.ignoreButton['state'] = DGG.DISABLED
         self.goToButton['state'] = DGG.DISABLED
-        self.secretsButton['state'] = DGG.DISABLED
+        self.trueFriendsButton['state'] = DGG.DISABLED
         self.whisperButton['state'] = DGG.DISABLED
         self.petButton['state'] = DGG.DISABLED
         self.friendButton['state'] = DGG.DISABLED
@@ -366,7 +364,7 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
     def __handleWhisper(self):
         base.localAvatar.chatMgr.whisperTo(self.avName, self.avId)
 
-    def __handleSecrets(self):
+    def __handleTrueFriends(self):
         base.localAvatar.chatMgr.noWhisper()
         # TODO
 

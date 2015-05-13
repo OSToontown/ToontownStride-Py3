@@ -1565,7 +1565,7 @@ AnimPropTypes = Enum(('Unknown',
  'Trashcan'), start=-1)
 EmblemTypes = Enum(('Silver', 'Gold'))
 NumEmblemTypes = 2
-MaxBankMoney = 25000
+MaxBankMoney = 30000
 DefaultBankItemId = 1300
 ToonAnimStates = set(['off',
  'neutral',

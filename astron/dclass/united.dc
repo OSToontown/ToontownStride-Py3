@@ -210,10 +210,6 @@ dclass FriendManager : DistributedObject {
   friendResponse(int8, int32);
   inviteeFriendQuery(int32, string, blob, int32);
   inviteeCancelFriendQuery(int32);
-  requestSecret() airecv clsend;
-  requestSecretResponse(int8, string);
-  submitSecret(string(0-256)) airecv clsend;
-  submitSecretResponse(int8, int32);
 };
 
 struct leaderBoardRecordResponces {

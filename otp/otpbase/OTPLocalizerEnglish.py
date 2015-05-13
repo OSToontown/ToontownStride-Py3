@@ -48,12 +48,12 @@ ChatManagerWhisperToName = 'Whisper To:\n%s'
 ChatManagerCancel = lCancel
 ChatManagerWhisperOffline = '%s is offline.'
 # True Friends
-NoSecretChatAtAllTitle = 'Open Chat With True Friends'
-NoSecretChatAtAll = 'Open Chat with True Friends allows real-life friends to chat openly with each other by means of a True Friend Code that must be shared outside of the game.\n\nTo activate these features or to learn more, exit Toontown and then click on Membership and select Manage Account. Log in to edit your "Community Settings."'
+NoTrueFriendsAtAllTitle = 'Open Chat With True Friends'
+NoTrueFriendsAtAll = 'Open Chat with True Friends allows real-life friends to chat openly with each other by means of a True Friend Code that must be shared outside of the game.\n\nTo activate these features or to learn more, exit Toontown and then click on Membership and select Manage Account. Log in to edit your "Community Settings."'
 # Speedchat Plus
-NoSecretChatAtAllAndNoWhitelistTitle = 'Chat Button'
-NoSecretChatAtAllAndNoWhitelist = 'You can use the blue Chat button to communicate with other Toons by using Speechat Plus or Open Chat with True Friends.\n\nSpeedchat Plus is a form of type chat that allows users to communicate by using the SpeedChat Plus dictionary.\n\nOpen Chat with True Friends allows real-life friends to chat openly with each other by means of a True Friend Code that must be shared outside of the game.\n\nTo activate these features or to learn more, exit Toontown and then click on Membership and select Manage Account.  Log in to edit your "Community Settings."'
-NoSecretChatAtAllOK = lOK
+NoTrueFriendsAtAllAndNoWhitelistTitle = 'Chat Button'
+NoTrueFriendsAtAllAndNoWhitelist = 'You can use the blue Chat button to communicate with other Toons by using Speechat Plus or Open Chat with True Friends.\n\nSpeedchat Plus is a form of type chat that allows users to communicate by using the SpeedChat Plus dictionary.\n\nOpen Chat with True Friends allows real-life friends to chat openly with each other by means of a True Friend Code that must be shared outside of the game.\n\nTo activate these features or to learn more, exit Toontown and then click on Membership and select Manage Account.  Log in to edit your "Community Settings."'
+NoTrueFriendsAtAllOK = lOK
 WhisperToFormat = 'To %s %s'
 WhisperToFormatName = 'To %s'
 WhisperFromFormatName = '%s whispers'
@@ -2252,7 +2252,7 @@ AvatarDetailPanelOnline = 'District: %(district)s\nLocation: %(location)s'
 AvatarDetailPanelOffline = 'District: offline\nLocation: offline'
 AvatarPanelFriends = 'Friends'
 AvatarPanelWhisper = 'Whisper'
-AvatarPanelSecrets = 'True Friends'
+AvatarPanelTrueFriends = 'True Friends'
 AvatarPanelGoTo = 'Go To'
 AvatarPanelIgnore = 'Ignore'
 AvatarPanelStopIgnore = 'Stop Ignoring'

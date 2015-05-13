@@ -1904,7 +1904,7 @@ AvatarDetailPanelOffline = 'District: offline\nLocation: offline'
 OfflineLocation = 'Offline'
 AvatarPanelFriends = 'Friends'
 AvatarPanelWhisper = 'Whisper'
-AvatarPanelSecrets = 'True Friends'
+AvatarPanelTrueFriends = 'True Friends'
 AvatarPanelGoTo = 'Go To'
 AvatarPanelPet = 'Show Doodle'
 AvatarPanelIgnore = 'Ignore'
@@ -3238,7 +3238,6 @@ ScientistPhase6Dialogue = ['Congratulations Toons!',
                           'So in the meantime, keep up the Cog fight...',
                           'And enjoy the silliest place ever, Toontown!']
 FriendsListPanelNewFriend = 'New Friend'
-FriendsListPanelSecrets = 'True Friend'
 FriendsListPanelOnlineFriends = 'ONLINE TOON\nFRIENDS'
 FriendsListPanelAllFriends = 'ALL TOON\nFRIENDS'
 FriendsListPanelPets = 'NEARBY\nPETS'

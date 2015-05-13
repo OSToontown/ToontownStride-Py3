@@ -131,18 +131,6 @@ class TTUFriendsManager(DistributedObjectGlobal):
         if toon:
             base.localAvatar.setTalkWhisper(fromId, 0, toon.getName(), message, [], 0)
 
-    def d_requestSecret(self):
-        self.sendUpdate('requestSecret', [])
-
-    def requestSecretResponse(self, result, secret):
-        messenger.send('requestSecretResponse', [result, secret])
-
-    def d_submitSecret(self, secret):
-        self.sendUpdate('submitSecret', [secret])
-
-    def submitSecretResponse(self, result, avId):
-        messenger.send('submitSecretResponse', [result, avId])
-
     def d_battleSOS(self, toId):
         self.sendUpdate('battleSOS', [toId])
 
