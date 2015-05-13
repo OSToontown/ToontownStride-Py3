@@ -29,7 +29,8 @@ a,ah,ahh,ahhh,ahhhhh,ahhhhhh:zzz,sees,$,'s
 ace,as,ash,ask,asp,ashton:hole,whole,ole,ooo le,holes,zzz,'s
 ack:ools
 ai,ay,ayy,ayyy,ayyyy:ds
-al:coco ol,cool
+al:coco ol,cool,a ack bar,ah ack bar,ah ache bar,ah snack bar
+all:a ack bar,ah ack bar,ah ache bar,ah snack bar
 an:a hon,a honda,a con,a cone,ail,ails,ailed,ailing,al,ale,ales,all,awl,us,u.s.,u.s.a.,u si,usa,use,used,using,uses,uss
 ann:a hon,a honda,a con,a cone,al,ails,ailed,ailing,ale,ales,all,awl,us,u.s.,u.s.a.,u si,usa,use,used,using,uses,uss
 anna:hon,honda,con da,con duh,cone da,cone duh
@@ -40,6 +41,7 @@ apes:me,you,him,his,their,him,them,your,yourself,ur self
 ate:me out,you out,u out,her out
 ball:it more
 ban:gg
+bangs:me,her,him,it,them
 bass:hole,whole,ole,stir,stir ed,stair,stair ed,tar,star,stared,tt a r ed,holes
 bat:star,stair,stair ed,star,stared
 bay:be maker
@@ -321,8 +323,8 @@ tea:bag,bagged,bagging,bags
 test:i cools,i cool,tickle,tickles
 the:di,hello,flunk
 tho:tt,tea,tee,ty
-to:he'll
-too:he'll
+to:he'll,bangs
+too:he'll,bangs
 truck:eh ru,ing,eng,you,u,up,ed,her,or
 tt:its,its,it
 two:he'll
@@ -334,7 +336,7 @@ vague:in a,i nah
 vern:gen
 vet:china
 via:grape
-wanna:duck
+wanna:duck,bangs
 wat:the hello,the fork,the duck,the freaky,the yuck,your sky,ur sky,the fire truck,the truck,the he'll
 we,whee:ed,neigh is,knees
 what:the hello,the fork,the duck,the freaky,the yuck,your sky,ur sky,the truck,the fire truck,the he'll

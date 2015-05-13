@@ -565,6 +565,7 @@ WHITELIST = [
     'aching',
     'achoo',
     'achy',
+    'ack',
     'acknowledge',
     'acknowledged',
     'acknowledgement',
