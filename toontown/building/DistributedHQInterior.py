@@ -27,7 +27,6 @@ class DistributedHQInterior(DistributedObject.DistributedObject):
         self.interior = loader.loadModel('phase_3.5/models/modules/HQ_interior')
         self.interior.reparentTo(render)
         self.interior.find('**/cream').hide()
-        self.interior.find('**/crashed_piano').hide()
         self.buildLeaderBoard()
 
     def announceGenerate(self):
