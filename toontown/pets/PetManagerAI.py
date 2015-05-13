@@ -1,12 +1,10 @@
 from toontown.toonbase import ToontownGlobals, TTLocalizer
 import PetUtil, PetDNA, time, random
 
-MINUTE = 60
-HOUR = 60 * MINUTE
-DAY = 24 * HOUR
+DAY = 24 * 60 * 60
 
 def getDayId():
-    return int(time.time() // DAY)
+    return int(time.time() / DAY)
 
 class PetManagerAI:
     NUM_DAILY_PETS = 5
@@ -15,7 +13,7 @@ class PetManagerAI:
         self.air = air
         self.seeds = simbase.backups.load('pet-seeds', (self.air.districtId,), default={})
         
-        if self.seeds.get('day', -1) != getDayId() or len(self.seeds.get(ToontownGlobals.ToontownCentral, [])) != self.NUM_DAILY_PETS:
+        if self.seeds.get('day', -1) != getDayId():
             self.generateSeeds()
 
     def generateSeeds(self):
