@@ -1,8 +1,5 @@
-from direct.fsm.FSM import FSM
-import PetUtil, PetDNA
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-import cPickle, time, random, os
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+import PetUtil, PetDNA, time, random
 
 MINUTE = 60
 HOUR = 60 * MINUTE
@@ -12,20 +9,13 @@ def getDayId():
     return int(time.time() // DAY)
 
 class PetManagerAI:
-    NUM_DAILY_PETS = 5 # Per hood.
-    cachePath = config.GetString('air-pet-cache', 'astron/databases/air_cache/')
+    NUM_DAILY_PETS = 5
 
     def __init__(self, air):
         self.air = air
-        self.cacheFile = '%spets_%d.pets' % (self.cachePath, self.air.districtId)
-        if os.path.isfile(self.cacheFile):
-            with open(self.cacheFile, 'rb') as f:
-                data = f.read()
-
-            self.seeds = cPickle.loads(data)
-            if self.seeds.get('day', -1) != getDayId() or len(self.seeds.get(ToontownGlobals.ToontownCentral, [])) != self.NUM_DAILY_PETS:
-                self.generateSeeds()
-        else:
+        self.seeds = simbase.backups.load('pet-seeds', (self.air.districtId,), default={})
+        
+        if self.seeds.get('day', -1) != getDayId() or len(self.seeds.get(ToontownGlobals.ToontownCentral, [])) != self.NUM_DAILY_PETS:
             self.generateSeeds()
 
     def generateSeeds(self):
@@ -38,9 +28,7 @@ class PetManagerAI:
             self.seeds[hood] = [seeds.pop() for _ in xrange(self.NUM_DAILY_PETS)]
 
         self.seeds['day'] = getDayId()
-
-        with open(self.cacheFile, 'wb') as f:
-            f.write(cPickle.dumps(self.seeds))
+        simbase.backups.save('pet-seeds', (self.air.districtId,), self.seeds)
 
     def getAvailablePets(self, seed, safezoneId):
         if self.seeds.get('day', -1) != getDayId():

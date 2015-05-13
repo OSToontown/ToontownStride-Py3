@@ -412,7 +412,7 @@ from toontown.coghq import DistributedMintBattle/AI
 from toontown.coghq import DistributedStage/AI
 from toontown.coghq import DistributedStageRoom/AI
 from toontown.coghq import DistributedStageBattle/AI
-from toontown.pets.PetDCImports/AI import *
+from toontown.pets.DistributedPet/AI import *
 from toontown.pets import DistributedPetProxy/AI
 from toontown.distributed import ToontownDistrict/AI
 from toontown.distributed import ToontownDistrictStats/AI
@@ -828,7 +828,6 @@ dclass DistributedToon : DistributedPlayer {
   setNeverStartedPartyRefunded(uint64, int8, uint16) ownrecv;
   setDISLname(string) ram;
   setDISLid(uint32) ram db airecv;
-  flagAv(uint32, uint16, string []) airecv ownsend;
   setAnimalSound(uint8 index) ram broadcast ownrecv;
   setBuffs(uint32[] = []) required ownrecv db;
   setRedeemedCodes(string [] = []) required ownrecv db;

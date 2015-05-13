@@ -1,55 +1,36 @@
+from pandac.PandaModules import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedSmoothNodeAI
 from direct.distributed.ClockDelta import *
 from direct.distributed.MsgTypes import *
 from direct.distributed.PyDatagram import PyDatagram
 from direct.task import Task
-from pandac.PandaModules import *
-import random
-import time
-import re
-
-import Experience
-import InventoryBase
-from NPCToons import npcFriends
-import ToonDNA
 from otp.ai.AIBaseGlobal import *
 from otp.ai.MagicWordGlobal import *
-from otp.avatar import DistributedAvatarAI
-from otp.avatar import DistributedPlayerAI
-from otp.otpbase import OTPGlobals
-from otp.otpbase import OTPLocalizer
+from otp.avatar import DistributedAvatarAI, DistributedPlayerAI
+from otp.otpbase import OTPGlobals, OTPLocalizer
 from toontown.battle import SuitBattleGlobals
-from toontown.catalog import CatalogAccessoryItem
-from toontown.catalog import CatalogItem
-from toontown.catalog import CatalogItemList
+from toontown.catalog import CatalogAccessoryItem, CatalogItem, CatalogItemList
 from toontown.chat import ResistanceChat
 from toontown.coghq import CogDisguiseGlobals
-from toontown.estate import FlowerBasket
-from toontown.estate import FlowerCollection
-from toontown.estate import GardenGlobals
-from toontown.fishing import FishCollection
-from toontown.fishing import FishTank
+from toontown.estate import FlowerBasket, FlowerCollection, GardenGlobals
+from toontown.fishing import FishCollection, FishTank
 from toontown.golf import GolfGlobals
 from toontown.hood import ZoneUtil
-from toontown.minigame import MinigameCreatorAI
 from toontown.parties import PartyGlobals
 from toontown.parties.InviteInfo import InviteInfoBase
 from toontown.parties.PartyGlobals import InviteStatus
 from toontown.parties.PartyInfo import PartyInfoAI
 from toontown.parties.PartyReplyInfo import PartyReplyInfoBase
-from toontown.quest import QuestRewardCounter
-from toontown.quest import Quests
+from toontown.quest import QuestRewardCounter, Quests
 from toontown.racing import RaceGlobals
 from toontown.shtiker import CogPageGlobals
 from toontown.suit import SuitDNA
 from toontown.toon import NPCToons
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer, ToontownBattleGlobals, ToontownGlobals
 from toontown.toonbase.ToontownGlobals import *
-from toontown.toonbase.TTLocalizerEnglish import SuitNameDropper
-
+from NPCToons import npcFriends
+import Experience, InventoryBase, ToonDNA, random, time
 
 if simbase.wantPets:
     from toontown.pets import PetLookerAI, PetObserve
@@ -72,8 +53,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
      ToontownGlobals.FT_Leg: (CogDisguiseGlobals.leftLegIndex, CogDisguiseGlobals.rightLegIndex),
      ToontownGlobals.FT_Arm: (CogDisguiseGlobals.leftArmIndex, CogDisguiseGlobals.rightArmIndex),
      ToontownGlobals.FT_Torso: (CogDisguiseGlobals.torsoIndex,)}
-    lastFlagAvTime = globalClock.getFrameTime()
-    flagCounts = {}
     petId = None
 
     def __init__(self, air):
@@ -85,7 +64,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
         self.air = air
         self.dna = ToonDNA.ToonDNA()
-        self.magicWordDNABackups = {}
         self.inventory = None
         self.fishCollection = None
         self.fishTank = None
@@ -2108,7 +2086,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         return 0
 
     def restockAllResistanceMessages(self, charges = 1):
-        from toontown.chat import ResistanceChat
         msgs = []
         for menuIndex in ResistanceChat.resistanceMenu:
             for itemIndex in ResistanceChat.getItems(menuIndex):
@@ -3583,9 +3560,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         senderId = self.air.getAvatarIdFromSender()
         eventStr = 'senderId=%s ' % senderId
         eventStr += eventName
-        strSearch = re.compile('AvatarHackWarning! nodename')
-        if strSearch.search(eventName, 0, 100):
-            self.air.district.recordSuspiciousEventData(len(eventStr))
         self.air.writeServerEvent('suspicious', self.doId, eventStr)
         if simbase.config.GetBool('want-ban-setAnimState', True):
             if eventName.startswith('setAnimState: '):
@@ -4008,91 +3982,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     @staticmethod
     def staticGetLogicalZoneChangeAllEvent():
         return 'DOLogicalChangeZone-all'
-
-    def flagAv(self, avId, reason, params):
-        self.notify.debug('reason: %s timepassed: %s' % (reason, globalClock.getFrameTime() - DistributedToonAI.lastFlagAvTime))
-        if reason == AV_FLAG_REASON_TOUCH and globalClock.getFrameTime() - DistributedToonAI.lastFlagAvTime > AV_TOUCH_CHECK_DELAY_AI:
-            DistributedToonAI.lastFlagAvTime = globalClock.getFrameTime()
-            av = self.air.doId2do.get(avId)
-            otherAv = self.air.doId2do.get(int(params[0]))
-            self.notify.debug('checking suspicious avatar positioning %s for %s with %s' % (avId, reason, params))
-            if av and otherAv and isinstance(av, DistributedToonAI) and isinstance(otherAv, DistributedToonAI) and av.zoneId == otherAv.zoneId and av.zoneId not in MinigameCreatorAI.MinigameZoneRefs:
-                self.notify.debug('...in zone %s' % av.zoneId)
-                componentNode = av.getParent().attachNewNode('blah')
-                componentNode.setPos(av.getComponentX(), av.getComponentY(), av.getComponentZ())
-                avPos = componentNode.getPos(av.getRender())
-                componentNode.reparentTo(otherAv.getParent())
-                componentNode.setPos(otherAv.getComponentX(), otherAv.getComponentY(), otherAv.getComponentZ())
-                otherAvPos = componentNode.getPos(otherAv.getRender())
-                componentNode.removeNode()
-                zDist = avPos.getZ() - otherAvPos.getZ()
-                avPos2D = copy.copy(avPos)
-                avPos2D.setZ(0)
-                otherAvPos2D = copy.copy(otherAvPos)
-                otherAvPos2D.setZ(0)
-                moveVec = avPos2D - otherAvPos2D
-                dist = moveVec.length()
-                self.notify.debug('2d dist between avs is %s %s %s' % (dist, avPos, otherAvPos))
-                if dist < AV_TOUCH_CHECK_DIST and zDist < AV_TOUCH_CHECK_DIST_Z:
-                    self.notify.debug('...moving!')
-                    if dist == 0.0:
-                        moveVec = Vec3(1.0, 0, 0)
-                    else:
-                        moveVec.normalize()
-                    moveVec = moveVec * AV_TOUCH_CHECK_DIST
-                    avHpr = av.getHpr(av.getRender())
-                    newX = avPos.getX() + moveVec.getX()
-                    newY = avPos.getY() + moveVec.getY()
-                    newZ = avPos.getZ() + moveVec.getZ()
-                    newH = avHpr.getX()
-                    newP = avHpr.getY()
-                    newR = avHpr.getZ()
-                    av.setPosHpr(av.getRender(), newX, newY, newZ, newH, newP, newR)
-                    newAvPos = av.getPos()
-                    if newAvPos.getX() > 3000 or newAvPos.getX() < -3000 or newAvPos.getY() > 3000 or newAvPos.getY() < -3000:
-                        return
-                    av.d_setXY(newAvPos.getX(), newAvPos.getY())
-                    self.notify.debug('setting ai pos: %s %s %s and sending pos: %s' % (newX,
-                     newY,
-                     newZ,
-                     newAvPos))
-                    if len(DistributedToonAI.flagCounts) > AV_FLAG_HISTORY_LEN:
-                        DistributedToonAI.flagCounts = {}
-                    avPairKey = str(min(av.doId, otherAv.doId)) + '+' + str(max(av.doId, otherAv.doId))
-                    prevCount = DistributedToonAI.flagCounts.setdefault(avPairKey, [{}, globalClock.getFrameTime(), {}])
-                    if av.doId not in prevCount[2]:
-                        prevCount[2][av.doId] = [None, None]
-                    if av.doId not in prevCount[0]:
-                        prevCount[0][av.doId] = 0
-                    self.notify.debug('moving av %s, newPos: %s oldPos: %s' % (av.doId, prevCount[2][av.doId], avPos))
-                    if prevCount[2][av.doId][0] == None or prevCount[2][av.doId][1] == None:
-                        pass
-                    elif prevCount[2][av.doId][0] != avPos.getX() or prevCount[2][av.doId][1] != avPos.getY():
-                        prevCount[0][av.doId] += 1
-                    prevCount[2][av.doId] = [newX, newY]
-                    if prevCount[0][av.doId] > AV_TOUCH_COUNT_LIMIT:
-                        if globalClock.getFrameTime() - prevCount[1] < AV_TOUCH_COUNT_TIME:
-                            zoneId = not hasattr(av, 'zoneId') and 'undef' or av.zoneId
-                            battleId = not hasattr(av, 'battleId') and 'undef' or av.battleId
-                            animName = not hasattr(av, 'animName') and 'undef' or av.animName
-                            inEstate = not hasattr(av, 'isInEstate') and 'undef' or av.isInEstate()
-                            ghostMode = not hasattr(av, 'ghostMode') and 'undef' or av.ghostMode
-                            immortalMode = not hasattr(av, 'immortalMode') and 'undef' or av.immortalMode
-                            isGm = not hasattr(av, '_isGM') and 'undef' or av._isGM
-                            valStr = '%s %s %s %s %s %s %s %s' % (otherAv.doId,
-                             zoneId,
-                             battleId,
-                             animName,
-                             inEstate,
-                             ghostMode,
-                             immortalMode,
-                             isGm)
-                            self.notify.info('av %s is consistently in an inappropriate position with %s...' % (av.doId, valStr))
-                            self.air.writeServerEvent('suspicious', avId, ' consistently in an inappropriate position with toon %s' % valStr)
-                            response = simbase.config.GetString('toon-pos-hack-response', 'nothing')
-                            av.handleHacking(response, 'collision and position hacking', [otherAv])
-                        del DistributedToonAI.flagCounts[avPairKey]
-        return
 
     def handleHacking(self, response, comment, coconspirators = []):
         if response == 'quietzone':
