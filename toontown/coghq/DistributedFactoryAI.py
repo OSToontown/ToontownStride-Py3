@@ -1,16 +1,10 @@
-from otp.level import DistributedLevelAI
 from direct.directnotify import DirectNotifyGlobal
-import cPickle
-import LevelSuitPlannerAI
-import FactoryBase
 from direct.task import Task
-import FactoryEntityCreatorAI
-import FactorySpecs
-from otp.level import LevelSpec
-import CogDisguiseGlobals
+from otp.level import DistributedLevelAI, LevelSpec
 from toontown.suit import DistributedFactorySuitAI
 from toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
 from toontown.coghq import DistributedBattleFactoryAI
+import FactoryBase, FactoryEntityCreatorAI, FactorySpecs, LevelSuitPlannerAI
 
 class DistributedFactoryAI(DistributedLevelAI.DistributedLevelAI, FactoryBase.FactoryBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedFactoryAI')
