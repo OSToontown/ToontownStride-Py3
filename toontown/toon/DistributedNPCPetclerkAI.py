@@ -27,7 +27,7 @@ class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
         if self.isBusy():
             self.freeAvatar(avId)
             return
-        self.petSeeds = self.air.petMgr.getAvailablePets(3, ZoneUtil.getCanonicalHoodId(self.zoneId))
+        self.petSeeds = self.air.petMgr.getAvailablePets(ZoneUtil.getCanonicalHoodId(self.zoneId))
         numGenders = len(PetDNA.PetGenders)
         self.petSeeds *= numGenders
         self.petSeeds.sort()

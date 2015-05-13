@@ -7,7 +7,7 @@ def getDayId():
     return int(time.time() / DAY)
 
 class PetManagerAI:
-    NUM_DAILY_PETS = 5
+    NUM_DAILY_PETS = 10
 
     def __init__(self, air):
         self.air = air
@@ -28,11 +28,11 @@ class PetManagerAI:
         self.seeds['day'] = getDayId()
         simbase.backups.save('pet-seeds', (self.air.districtId,), self.seeds)
 
-    def getAvailablePets(self, seed, safezoneId):
+    def getAvailablePets(self, safezoneId):
         if self.seeds.get('day', -1) != getDayId():
             self.generateSeeds()
 
-        return list(set(self.seeds.get(safezoneId, [seed])))
+        return self.seeds[safezoneId] if safezoneId in self.seeds else self.seeds[str(safezoneId)]
 
     def createNewPetFromSeed(self, avId, seed, nameIndex, gender, safeZoneId):
         av = self.air.doId2do[avId]
