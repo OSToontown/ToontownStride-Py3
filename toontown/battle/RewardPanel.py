@@ -195,7 +195,6 @@ class RewardPanel(DirectFrame):
             totalMerits = CogDisguiseGlobals.getTotalMerits(toon, i)
             merits = meritList[i]
             self.meritIncLabels[i].hide()
-            promoStatus = toon.promotionStatus[i]
             if CogDisguiseGlobals.isSuitComplete(toon.cogParts, i):
                 if not self.trackBarsOffset:
                     trackBarOffset = 0.47
@@ -206,19 +205,14 @@ class RewardPanel(DirectFrame):
                 if totalMerits:
                     meritBar['range'] = totalMerits
                     meritBar['value'] = merits
-                    if promoStatus != ToontownGlobals.PendingPromotion:
+                    if merits == totalMerits:
+                        meritBar['text'] = TTLocalizer.RewardPanelMeritAlert
+                    else:
                         meritBar['text'] = '%s/%s %s' % (merits, totalMerits, TTLocalizer.RewardPanelMeritBarLabels[i])
-                maxSuitType = SuitDNA.suitsPerDept - 1
-                maxSuitLevel = (SuitDNA.levelsPerSuit-1) + maxSuitType
-                if toon.cogLevels[i] == maxSuitLevel:
-                    if promoStatus == ToontownGlobals.PendingPromotion:
-                        meritBar['range'] = 1
-                        meritBar['value'] = 1
-                        meritBar['text'] = TTLocalizer.RewardPanelMeritsMaxed
-                elif promoStatus == ToontownGlobals.PendingPromotion:
+                else:
                     meritBar['range'] = 1
                     meritBar['value'] = 1
-                    meritBar['text'] = TTLocalizer.RewardPanelPromotionPending
+                    meritBar['text'] = TTLocalizer.RewardPanelMeritsMaxed
                 self.resetMeritBarColor(i)
             else:
                 meritBar.hide()
@@ -276,12 +270,18 @@ class RewardPanel(DirectFrame):
 
     def incrementMerits(self, toon, dept, newValue, totalMerits):
         meritBar = self.meritBars[dept]
-        promoStatus = toon.promotionStatus[dept]
+        oldValue = meritBar['value']
         if totalMerits:
             newValue = min(totalMerits, newValue)
             meritBar['range'] = totalMerits
             meritBar['value'] = newValue
-            if promoStatus != ToontownGlobals.PendingPromotion:
+            if newValue == totalMerits:
+                meritBar['text'] = TTLocalizer.RewardPanelMeritAlert
+                meritBar['barColor'] = (DisguisePage.DeptColors[dept][0],
+                 DisguisePage.DeptColors[dept][1],
+                 DisguisePage.DeptColors[dept][2],
+                 1)
+            else:
                 meritBar['text'] = '%s/%s %s' % (newValue, totalMerits, TTLocalizer.RewardPanelMeritBarLabels[dept])
 
     def resetMeritBarColor(self, dept):
