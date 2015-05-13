@@ -4485,7 +4485,6 @@ PleaseTypeName = 'Please type your name:'
 AllNewNames = 'All new names must be\napproved by the Toon Council.'
 NameMessages = 'Be creative, and remember:\nno NPC names, please.'
 NameShopNameRejected = 'The name you\nsubmitted has\nbeen rejected.'
-NameShopNameAccepted = 'Congratulations!\nThe name you\nsubmitted has\nbeen accepted!'
 NoPunctuation = "You can't use punctuation marks in your name!"
 PeriodOnlyAfterLetter = 'You can use a period in your name, but only after a letter.'
 ApostropheOnlyAfterLetter = 'You can use an apostrophe in your name, but only after a letter.'
