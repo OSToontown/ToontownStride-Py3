@@ -1,13 +1,9 @@
+from pandac.PandaModules import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-from pandac.PandaModules import *
 from toontown.hood import ZoneUtil
 from toontown.safezone.SafeZoneLoader import SafeZoneLoader
 from toontown.safezone.GSPlayground import GSPlayground
-from toontown.effects.CarSmoke import CarSmoke
-from toontown.toonbase import ToontownGlobals
-import random
 
 class GSSafeZoneLoader(SafeZoneLoader):
 
@@ -24,23 +20,14 @@ class GSSafeZoneLoader(SafeZoneLoader):
          State.State('quietZone', self.enterQuietZone, self.exitQuietZone, ['playground', 'toonInterior', 'racetrack']),
          State.State('racetrack', self.enterRacetrack, self.exitRacetrack, ['quietZone', 'playground']),
          State.State('final', self.enterFinal, self.exitFinal, ['start'])], 'start', 'final')
-        self.smoke = None
-        return
 
     def load(self):
         SafeZoneLoader.load(self)
-        if base.cr.newsManager:
-            holidayIds = base.cr.newsManager.getDecorationHolidayId()
-            if ToontownGlobals.CRASHED_LEADERBOARD in holidayIds:
-                self.startSmokeEffect()
         self.birdSound = map(base.loadSfx, ['phase_4/audio/sfx/SZ_TC_bird1.ogg', 'phase_4/audio/sfx/SZ_TC_bird2.ogg', 'phase_4/audio/sfx/SZ_TC_bird3.ogg'])
 
     def unload(self):
         del self.birdSound
-        if self.smoke != None:
-            self.stopSmokeEffect()
         SafeZoneLoader.unload(self)
-        return
 
     def enterPlayground(self, requestStatus):
         self.playgroundClass = GSPlayground
@@ -51,7 +38,6 @@ class GSSafeZoneLoader(SafeZoneLoader):
         self.hood.hideTitleText()
         SafeZoneLoader.exitPlayground(self)
         self.playgroundClass = None
-        return
 
     def handlePlaygroundDone(self):
         status = self.place.doneStatus
@@ -63,7 +49,6 @@ class GSSafeZoneLoader(SafeZoneLoader):
         else:
             self.doneStatus = status
             messenger.send(self.doneEvent)
-        return
 
     def enteringARace(self, status):
         if not status['where'] == 'racetrack':
@@ -93,21 +78,4 @@ class GSSafeZoneLoader(SafeZoneLoader):
          'hoodId': 8000,
          'shardId': None}
         self.fsm.request('quietZone', [req])
-        return
-
-    def startSmokeEffect(self):
-        if base.config.GetBool('want-crashedLeaderBoard-Smoke', 1):
-            leaderBoard = self.geom.find('**/*crashed*')
-            locator = leaderBoard.find('**/*locator_smoke*')
-            if locator != None:
-                self.smoke = CarSmoke(locator)
-                self.smoke.start()
-        return
-
-    def stopSmokeEffect(self):
-        if base.config.GetBool('want-crashedLeaderBoard-Smoke', 1):
-            if self.smoke != None:
-                self.smoke.stop()
-                self.smoke.destroy()
-                self.smoke = None
         return

@@ -1,7 +1,5 @@
 from pandac.PandaModules import *
 from direct.directnotify import DirectNotifyGlobal
-from direct.showbase import AppRunnerGlobal
-import os
 
 class BattleSounds:
     notify = DirectNotifyGlobal.directNotify.newCategory('BattleSounds')
@@ -15,7 +13,6 @@ class BattleSounds:
             self.mgr.setCacheLimit(limit)
             base.addSfxManager(self.mgr)
             self.setupSearchPath()
-        return
 
     def setupSearchPath(self):
         self.sfxSearchPath = DSearchPath()
@@ -45,6 +42,5 @@ class BattleSounds:
             else:
                 return self.mgr.getSound(filename.getFullpath())
         return self.mgr.getNullSound()
-
 
 globalBattleSoundCache = BattleSounds()

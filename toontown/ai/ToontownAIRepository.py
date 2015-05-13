@@ -87,7 +87,6 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.wantCogbuildings = self.config.GetBool('want-cogbuildings', True)
         self.wantCogdominiums = self.config.GetBool('want-cogdominiums', True)
         self.wantTrackClsends = self.config.GetBool('want-track-clsends', False)
-        self.wantGloveNpc = self.config.GetBool('want-glove-npc', True)
         self.baseXpMultiplier = self.config.GetFloat('base-xp-multiplier', 1.0)
         self.wantHalloween = self.config.GetBool('want-halloween', False)
         self.wantChristmas = self.config.GetBool('want-christmas', False)
