@@ -70,10 +70,10 @@ ChangePartyFieldErrorCode = PythonUtil.Enum(('AllOk',
  'AlreadyRefunded'))
 ActivityTypes = PythonUtil.Enum(('HostInitiated', 'GuestInitiated', 'Continuous'))
 PartyGateDenialReasons = PythonUtil.Enum(('Unavailable', 'Full'))
-ActivityIds = PythonUtil.Enum(('PartyCatch',
- 'PartyJukebox',
+ActivityIds = PythonUtil.Enum(('PartyJukebox',
  'PartyCannon',
  'PartyTrampoline',
+ 'PartyCatch',
  'PartyDance',
  'PartyTugOfWar',
  'PartyFireworks',
