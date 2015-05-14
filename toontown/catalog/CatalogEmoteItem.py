@@ -114,10 +114,7 @@ class CatalogEmoteItem(CatalogItem.CatalogItem):
     def decodeDatagram(self, di, versionNumber, store):
         CatalogItem.CatalogItem.decodeDatagram(self, di, versionNumber, store)
         self.emoteIndex = di.getUint8()
-        if versionNumber >= 6:
-            self.isSpecial = di.getBool()
-        else:
-            self.isSpecial = False
+        self.isSpecial = di.getBool()
         if self.emoteIndex > len(OTPLocalizer.EmoteList):
             raise ValueError
 

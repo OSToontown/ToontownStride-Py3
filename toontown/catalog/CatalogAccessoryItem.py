@@ -382,10 +382,7 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
     def decodeDatagram(self, di, versionNumber, store):
         CatalogItem.CatalogItem.decodeDatagram(self, di, versionNumber, store)
         self.accessoryType = di.getUint16()
-        if versionNumber >= 6:
-            self.isSpecial = di.getBool()
-        else:
-            self.isSpecial = False
+        self.isSpecial = di.getBool()
         str = AccessoryTypes[self.accessoryType][ATString]
         if self.isHat():
             defn = ToonDNA.HatStyles[str]

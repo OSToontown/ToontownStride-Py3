@@ -556,10 +556,7 @@ class CatalogClothingItem(CatalogItem.CatalogItem):
         CatalogItem.CatalogItem.decodeDatagram(self, di, versionNumber, store)
         self.clothingType = di.getUint16()
         self.colorIndex = di.getUint8()
-        if versionNumber >= 6:
-            self.isSpecial = di.getBool()
-        else:
-            self.isSpecial = False
+        self.isSpecial = di.getBool()
         str = ClothingTypes[self.clothingType][CTString]
         if self.isShirt():
             color = ToonDNA.ShirtStyles[str][2][self.colorIndex]

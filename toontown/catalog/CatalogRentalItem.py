@@ -92,10 +92,7 @@ class CatalogRentalItem(CatalogItem.CatalogItem):
 
     def decodeDatagram(self, di, versionNumber, store):
         CatalogItem.CatalogItem.decodeDatagram(self, di, versionNumber, store)
-        if versionNumber >= 7:
-            self.cost = di.getUint16()
-        else:
-            self.cost = 1000
+        self.cost = di.getUint16()
         self.duration = di.getUint16()
         self.typeIndex = di.getUint16()
 
