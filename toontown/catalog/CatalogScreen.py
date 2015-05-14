@@ -644,7 +644,7 @@ class CatalogScreen(DirectFrame):
             if item.loyaltyRequirement() != 0:
                 self.loyaltyPanelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeLoyalty, parentCatalogScreen=self))
             elif item.getEmblemPrices():
-                self.emblemPanelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeBackOrder, parentCatalogScreen=self))
+                self.emblemPanelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeBackorder, parentCatalogScreen=self))
             else:
                 self.backPanelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeBackorder, parentCatalogScreen=self))
 

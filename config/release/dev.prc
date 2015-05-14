@@ -29,6 +29,7 @@ want-game-tables #t
 want-find-four #t
 want-chinese-checkers #t
 want-checkers #t
+want-house-types #t
 
 # Chat:
 want-whitelist #f

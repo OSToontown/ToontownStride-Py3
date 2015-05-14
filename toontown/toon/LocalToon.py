@@ -162,6 +162,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.oldPos = None
             self.questMap = None
             self.prevToonIdx = 0
+            self.houseType = 0
 
     def setDNA(self, dna):
         base.localAvatarStyle = dna
