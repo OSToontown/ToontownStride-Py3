@@ -51,9 +51,6 @@ class TTULauncher:
     def getValue(self, key, default = None):
         return os.environ.get(key, default)
 
-    def setValue(self, key, value):
-        os.environ[key] = str(value)
-    
     def setPandaErrorCode(self):
         pass
     
