@@ -10,23 +10,23 @@ echo.
 set /P INPUT=
 set server=unset
 
-if %INPUT%==1 set server=127.0.0.1
-if %INPUT%==3 set server=71.200.196.180
+if %INPUT%==1 set TTU_GAMESERVER=127.0.0.1
+if %INPUT%==3 set TTU_GAMESERVER=71.200.196.180
 
-if %server%==unset (
+if %TTU_GAMESERVER%==unset (
     echo.
-    set /P server=Gameserver: 
+    set /P TTU_GAMESERVER=Gameserver: 
 )
 
 echo.
-set /P user=Username: 
+set /P TTU_PLAYCOOKIE=Username: 
 
 echo ===============================
 echo Starting Toontown United...
 echo ppython: %PPYTHON_PATH%
-echo Username: %user%
-echo Gameserver: %server%
+echo Username: %TTU_PLAYCOOKIE%
+echo Gameserver: %TTU_GAMESERVER%
 echo ===============================
 
-%PPYTHON_PATH% -m toontown.toonbase.ClientStart %user% %server%
+%PPYTHON_PATH% -m toontown.toonbase.ClientStart
 pause
