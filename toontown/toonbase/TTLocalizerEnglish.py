@@ -5163,12 +5163,8 @@ FurnitureNames = {100: 'Armchair',
  10020: 'Winter Tree',
  10030: 'Winter Wreath'}
 ClothingArticleNames = ('Shirt',
- 'Shirt',
- 'Shirt',
  'Shorts',
- 'Shorts',
- 'Skirt',
- 'Shorts')
+ 'Skirt')
 ClothingTypeNames = {1001: 'Ghost Shirt',
  1002: 'Pumpkin Shirt',
  1112: 'Bee Shirt',
