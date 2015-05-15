@@ -18,8 +18,6 @@ FLIsTable = 32
 FLPhone = 64
 FLBillboard = 128
 FLTrunk = 256
-FLBoysOnly = 512
-FLGirlsOnly = 1024
 furnitureColors = [
   (0.792, 0.353, 0.29, 1.0),
   (0.176, 0.592, 0.439, 1.0),
@@ -163,8 +161,7 @@ FurnitureTypes = {
  210: ('phase_5.5/models/estate/girly_bed',
        None,
        None,
-       450,
-       FLGirlsOnly),
+       450),
  220: ('phase_5.5/models/estate/bathtub_bed',
        None,
        None,
@@ -208,8 +205,7 @@ FurnitureTypes = {
  410: ('phase_5.5/models/estate/FireplaceGirlee',
        None,
        None,
-       800,
-       FLGirlsOnly),
+       800),
  420: ('phase_5.5/models/estate/FireplaceRound',
        None,
        None,
@@ -251,7 +247,7 @@ FurnitureTypes = {
        None,
        None,
        1100,
-       FLGirlsOnly,
+	   None,
        None,
        0.5),
  491: ('phase_5.5/models/estate/tt_m_prp_int_fireplace_bugRoom',
@@ -917,23 +913,7 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
                 return not forBoys
             else:
                 return forBoys
-        if self.forBoysOnly():
-            if avatar.getStyle().getGender() == 'm':
-                return 0
-            else:
-                return 1
-        elif self.forGirlsOnly():
-            if avatar.getStyle().getGender() == 'f':
-                return 0
-            else:
-                return 1
         return 0
-
-    def forBoysOnly(self):
-        return self.getFlags() & FLBoysOnly > 0
-
-    def forGirlsOnly(self):
-        return self.getFlags() & FLGirlsOnly > 0
 
     def isDeletable(self):
         return self.getFlags() & (FLBank | FLCloset | FLPhone | FLTrunk) == 0
