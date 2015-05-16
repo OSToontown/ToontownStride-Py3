@@ -43,7 +43,6 @@ class DisplaySettingsDialog(DirectFrame, StateData.StateData):
 
         self.isLoaded = 1
         self.anyChanged = 0
-        self.apiChanged = 0
 
         if len(base.resDict[base.nativeRatio]) > 1:
             # We have resolutions that match our native ratio and fit it:
@@ -87,8 +86,6 @@ class DisplaySettingsDialog(DirectFrame, StateData.StateData):
 
         self.introText = DirectLabel(parent=self, relief=None, scale=TTLocalizer.DSDintroText, text=TTLocalizer.DisplaySettingsIntro, text_wordwrap=TTLocalizer.DSDintroTextWordwrap, text_align=TextNode.ALeft, pos=(-0.725, 0, 0.3))
         self.introTextSimple = DirectLabel(parent=self, relief=None, scale=0.06, text=TTLocalizer.DisplaySettingsIntroSimple, text_wordwrap=25, text_align=TextNode.ALeft, pos=(-0.725, 0, 0.3))
-        self.apiLabel = DirectLabel(parent=self, relief=None, scale=0.06, text=TTLocalizer.DisplaySettingsApi, text_align=TextNode.ARight, pos=(-0.08, 0, 0))
-        self.apiMenu = DirectOptionMenu(parent=self, relief=DGG.RAISED, scale=0.06, items=['x'], pos=(0, 0, 0))
         self.screenSizeLabel = DirectLabel(parent=self, relief=None, scale=0.06, text=TTLocalizer.DisplaySettingsResolution, text_align=TextNode.ARight, pos=(-0.08, 0, -0.1))
         self.screenSizeLeftArrow = DirectButton(parent=self, relief=None, image=(gui.find('**/Horiz_Arrow_UP'), gui.find('**/Horiz_Arrow_DN'), gui.find('**/Horiz_Arrow_Rllvr'), gui.find('**/Horiz_Arrow_UP')), scale=(-1.0, 1.0, 1.0), pos=(0.04, 0, -0.085), command=self.__doScreenSizeLeft)
         self.screenSizeRightArrow = DirectButton(parent=self, relief=None, image=(gui.find('**/Horiz_Arrow_UP'), gui.find('**/Horiz_Arrow_DN'), gui.find('**/Horiz_Arrow_Rllvr'), gui.find('**/Horiz_Arrow_UP')), pos=(0.54, 0, -0.085), command=self.__doScreenSizeRight)
@@ -105,7 +102,7 @@ class DisplaySettingsDialog(DirectFrame, StateData.StateData):
 
         self.hide()
 
-    def enter(self, changeDisplaySettings, changeDisplayAPI):
+    def enter(self, changeDisplaySettings):
         if self.isEntered == 1:
             return
 
@@ -130,19 +127,12 @@ class DisplaySettingsDialog(DirectFrame, StateData.StateData):
         else:
             self.displayMode = self.WindowedMode
 
-        self.updateApiMenu(changeDisplaySettings, changeDisplayAPI)
         self.updateWindowed()
         self.updateScreenSize()
 
         if changeDisplaySettings:
             self.introText.show()
             self.introTextSimple.hide()
-            if changeDisplayAPI and len(self.apis) > 1:
-                self.apiLabel.show()
-                self.apiMenu.show()
-            else:
-                self.apiLabel.hide()
-                self.apiMenu.hide()
             self.c1b.show()
             self.windowedButton.show()
             self.c2b.show()
@@ -151,8 +141,6 @@ class DisplaySettingsDialog(DirectFrame, StateData.StateData):
         else:
             self.introText.hide()
             self.introTextSimple.show()
-            self.apiLabel.hide()
-            self.apiMenu.hide()
             self.windowedButton.hide()
             self.fullscreenButton.hide()
             self.c1b.hide()
@@ -160,7 +148,6 @@ class DisplaySettingsDialog(DirectFrame, StateData.StateData):
             self.c3b.hide()
 
         self.anyChanged = 0
-        self.apiChanged = 0
 
         self.show()
 
@@ -177,7 +164,7 @@ class DisplaySettingsDialog(DirectFrame, StateData.StateData):
         self.ignoreAll()
         self.hide()
 
-        messenger.send(self.doneEvent, [self.anyChanged, self.apiChanged])
+        messenger.send(self.doneEvent, [self.anyChanged])
 
     def cleanupDialogs(self):
         if self.applyDialog is not None:
@@ -192,19 +179,6 @@ class DisplaySettingsDialog(DirectFrame, StateData.StateData):
         if self.revertDialog is not None:
             self.revertDialog.cleanup()
             self.revertDialog = None
-
-    def updateApiMenu(self, changeDisplaySettings, changeDisplayAPI):
-        self.apis = []
-        self.apiPipes = []
-        if changeDisplayAPI:
-            base.makeAllPipes()
-        for pipe in base.pipeList:
-            if pipe.isValid():
-                self.apiPipes.append(pipe)
-                self.apis.append(pipe.getInterfaceName())
-
-        self.apiMenu['items'] = self.apis
-        self.apiMenu.set(base.pipe.getInterfaceName())
 
     def updateWindowed(self):
         if self.displayMode == self.FullscreenMode:
@@ -275,15 +249,13 @@ class DisplaySettingsDialog(DirectFrame, StateData.StateData):
         base.transitions.fadeScreen(0.5)
         if command != DGG.DIALOG_OK:
             return
-        self.origPipe = base.pipe
         self.origProperties = base.win.getProperties()
-        pipe = self.apiPipes[self.apiMenu.selectedIndex]
         properties = WindowProperties()
         xSize, ySize = self.screenSizes[self.screenSizeIndex]
         properties.setSize(xSize, ySize)
         properties.setFullscreen(self.displayMode == self.FullscreenMode)
         fullscreen = self.displayMode == self.FullscreenMode
-        if not self.changeDisplayProperties(pipe, xSize, ySize, fullscreen):
+        if not self.changeDisplayProperties(xSize, ySize, fullscreen):
             self.__revertBack(1)
             return
         self.clearBin()
@@ -293,12 +265,11 @@ class DisplaySettingsDialog(DirectFrame, StateData.StateData):
         self.timeoutStart = None
         taskMgr.add(self.__timeoutCountdown, self.TimeoutCountdownTask)
 
-    def changeDisplayProperties(self, pipe, width, height, fullscreen = False):
+    def changeDisplayProperties(self, width, height, fullscreen = False):
         result = False
-        self.current_pipe = base.pipe
         self.current_properties = WindowProperties(base.win.getProperties())
         properties = self.current_properties
-        if self.current_pipe == pipe  and self.current_properties.getFullscreen() == fullscreen and self.current_properties.getXSize() == width and self.current_properties.getYSize() == height:
+        if self.current_properties.getFullscreen() == fullscreen and self.current_properties.getXSize() == width and self.current_properties.getYSize() == height:
             self.notify.info('DISPLAY NO CHANGE REQUIRED')
             state = True
         else:
@@ -322,7 +293,7 @@ class DisplaySettingsDialog(DirectFrame, StateData.StateData):
             properties.setFullscreen(fullscreen)
             properties.setParentWindow(0)
             original_sort = base.win.getSort()
-            if self.resetDisplayProperties(pipe, properties):
+            if self.resetDisplayProperties(properties):
                 properties = base.win.getProperties()
                 if properties.getFullscreen() == fullscreen and properties.getXSize() == width and properties.getYSize() == height:
                     self.notify.info('DISPLAY CHANGE VERIFIED')
@@ -362,7 +333,7 @@ class DisplaySettingsDialog(DirectFrame, StateData.StateData):
         self.__revertBack(0)
 
     def __revertBack(self, reason):
-        if not self.resetDisplayProperties(self.origPipe, self.origProperties):
+        if not self.resetDisplayProperties(self.origProperties):
             self.notify.warning("Couldn't restore original display settings!")
             base.panda3dRenderError()
         self.clearBin()
@@ -382,7 +353,7 @@ class DisplaySettingsDialog(DirectFrame, StateData.StateData):
     def __cancel(self):
         self.exit()
 
-    def resetDisplayProperties(self, pipe, properties):
+    def resetDisplayProperties(self, properties):
         if base.win:
             currentProperties = base.win.getProperties()
             gsg = base.win.getGsg()
@@ -391,13 +362,9 @@ class DisplaySettingsDialog(DirectFrame, StateData.StateData):
             gsg = None
         newProperties = WindowProperties(currentProperties)
         newProperties.addProperties(properties)
-        if base.pipe != pipe:
-            self.apiChanged = 1
-            gsg = None
         if gsg == None or currentProperties.getFullscreen() != newProperties.getFullscreen() or currentProperties.getParentWindow() != newProperties.getParentWindow():
             self.notify.debug('window properties: %s' % properties)
             self.notify.debug('gsg: %s' % gsg)
-            base.pipe = pipe
             if not base.openMainWindow(props=properties, gsg=gsg, keepCamera=True):
                 self.notify.warning('OPEN MAIN WINDOW FAILED')
                 return 0
