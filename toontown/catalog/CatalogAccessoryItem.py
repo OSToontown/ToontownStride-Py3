@@ -363,9 +363,6 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
         dg.addUint16(self.accessoryType)
         dg.addBool(self.isSpecial)
 
-    def isGift(self):
-        return not self.getEmblemPrices()
-
 def getAllAccessories(*accessoryTypes):
     list = []
     for accessoryType in accessoryTypes:

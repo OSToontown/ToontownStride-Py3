@@ -295,7 +295,6 @@ from toontown.estate import DistributedEstate/AI
 from toontown.estate import DistributedHouse/AI
 from toontown.estate import DistributedHouseInterior/AI
 from toontown.estate import DistributedGarden/AI
-from toontown.shtiker import DeleteManager/AI
 from toontown.groups import GroupManager/AI/UD
 from toontown.ai import NewsManager/AI
 from toontown.shtiker import PurchaseManager/AI
@@ -303,7 +302,6 @@ from toontown.shtiker import NewbiePurchaseManager/AI
 from toontown.safezone import SafeZoneManager/AI
 from toontown.tutorial import TutorialManager/AI
 from toontown.catalog import CatalogManager/AI
-from toontown.catalog import AccountDate/AI
 from toontown.safezone import DistributedTreasure/AI
 from toontown.coghq import DistributedCashbotBossTreasure/AI
 from toontown.building import DistributedTrophyMgr/AI
@@ -1545,10 +1543,6 @@ dclass DistributedPartyTugOfWarActivity : DistributedPartyTeamActivity {
   updateToonPositions(int16/1000) broadcast;
 };
 
-dclass DeleteManager : DistributedObject {
-  setInventory(blob) airecv clsend;
-};
-
 dclass GroupManager : DistributedObject {
   setChildId() clsend airecv;
   isPlayerGrouped(uint32);
@@ -1657,11 +1651,6 @@ dclass TutorialManager : DistributedObject {
 
 dclass CatalogManager : DistributedObject {
   startCatalog() airecv clsend;
-};
-
-dclass AccountDate : DistributedObject {
-  requestDate() airecv clsend;
-  requestDateResult(string);
 };
 
 dclass DistributedTreasure : DistributedObject {
