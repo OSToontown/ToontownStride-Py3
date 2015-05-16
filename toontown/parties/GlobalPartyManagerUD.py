@@ -166,7 +166,14 @@ class GlobalPartyManagerUD(DistributedObjectGlobalUD):
         self.__updatePartyCount(partyId)
 
     def partyManagerAIHello(self, channel):
+        # Upon AI boot, DistributedPartyManagerAIs are supposed to say hello. 
+        # They send along the DPMAI's doId as well, so that I can talk to them later.
+        print 'AI with base channel %s, will send replies to DPM %s' % (simbase.air.getAvatarIdFromSender(), channel)
         self.senders2Mgrs[simbase.air.getAvatarIdFromSender()] = channel
+        self.sendToAI('partyManagerUdStartingUp', [])
+        
+        # In addition, set up a postRemove where we inform this AI that the UD has died
+        self.air.addPostRemove(self._makeAIMsg('partyManagerUdLost', [], channel))
         
     def addParty(self, avId, partyId, start, end, isPrivate, inviteTheme, activities, decorations, inviteeIds):
         PARTY_TIME_FORMAT = '%Y-%m-%d %H:%M:%S'

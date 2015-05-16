@@ -3214,6 +3214,8 @@ dclass DistributedPartyManager : DistributedObject {
   updateToPublicPartyCountUdToAllAi(uint32 partyCount, uint64 partyId) airecv;
   requestShardIdZoneIdForHostId(uint32) clsend airecv;
   sendShardIdZoneIdToAvatar(uint32, uint32);
+  partyManagerUdStartingUp() airecv;
+  partyManagerUdLost() airecv;
   updateAllPartyInfoToUd(uint32, uint64, uint32, uint32, uint8, uint8, string, uint8 [], uint64);
   forceCheckStart();
   requestMw(uint32, string, uint32, uint32);

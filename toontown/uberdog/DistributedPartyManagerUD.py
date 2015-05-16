@@ -7,6 +7,8 @@ class DistributedPartyManagerUD(DistributedObjectUD):
     def announceGenerate(self):
         DistributedObjectUD.announceGenerate(self)
 
+        self.sendUpdate('partyManagerUdStartingUp') # Shouldn't have to send to anyone special, as the field is airecv
+
     def addParty(self, todo0, todo1, todo2, todo3, todo4, todo5, todo6, todo7, todo8, todo9):
         pass
 
@@ -110,6 +112,9 @@ class DistributedPartyManagerUD(DistributedObjectUD):
         pass
 
     def sendShardIdZoneIdToAvatar(self, shardId, zoneId):
+        pass
+
+    def partyManagerUdStartingUp(self):
         pass
 
     def updateAllPartyInfoToUd(self, todo0, todo1, todo2, todo3, todo4, todo5, todo6, todo7, todo8):
