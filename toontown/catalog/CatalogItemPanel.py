@@ -313,7 +313,7 @@ class CatalogItemPanel(DirectFrame):
             self.buyButton['state'] = DGG.DISABLED
         elif self['item'].getEmblemPrices() and not base.localAvatar.isEnoughMoneyAndEmblemsToBuy(self['item'].getPrice(self['type']), self['item'].getEmblemPrices()):
             self.buyButton['state'] = DGG.DISABLED
-        elif self['item'].__class__.__name__ == "CatalogHouseItem" and self['item'].houseId == localAvatar.houseType:
+        elif hasattr(self['item'], 'houseId') and self['item'].houseId == localAvatar.houseType:
             auxText = TTLocalizer.CatalogPurchasedMaxText
         elif self['item'].getPrice(self['type']) <= base.localAvatar.getMoney() + base.localAvatar.getBankMoney():
             self.buyButton['state'] = DGG.NORMAL
