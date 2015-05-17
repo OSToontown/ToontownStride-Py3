@@ -26,7 +26,7 @@ print 'Starting the deployment process...'
 
 # Stop the user if they are missing vital files:
 missingFiles = []
-for filename in ('deploy.json', 'unitedcipher'):
+for filename in ('deploy.json', 'stridecipher'):
     if sys.platform == 'win32':
         # On the Windows platform, if there is no extension, we must infer that
         # this is an executable file. Therefore, let's append '.exe':
@@ -229,9 +229,9 @@ os.system(cmd)
 # ...and encrypt the product:
 os.chdir('build')
 if sys.platform == 'win32':
-    os.system('..\\unitedcipher.exe %s GameData.bin' % output)
+    os.system('..\\stridecipher.exe %s GameData.bin' % output)
 else:
-    os.system('../unitedcipher %s GameData.bin' % output)
+    os.system('../stridecipher %s GameData.bin' % output)
 
 # Copy the necessary patcher includes:
 for include in patcherIncludes:
@@ -346,7 +346,7 @@ for filepath in updatedFiles:
     print 'Compressing %s...' % filepath
     compressFile(os.path.join('build', filepath))
 
-print 'Uploading files to download.toontownunited.com...'
+print 'Uploading files to download.toontownstride.com...'
 ftp = ftplib.FTP(ftpAddress, ftpUsername, ftpPassword)
 ftp.cwd(deployToken)
 

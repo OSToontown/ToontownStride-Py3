@@ -39,7 +39,7 @@ http.setVerifySsl(0)
 
 def executeHttpRequest(url, extras):
     request = urllib2.Request(accountServerEndpoint + url)
-    request.add_header('User-Agent', 'TTU-Game')
+    request.add_header('User-Agent', 'TTS-Game')
     request.add_header('Secret-Key', accountServerSecret)
     for k, v in extras.items():
         request.add_header(k, v)
@@ -84,7 +84,7 @@ def judgeName(name):
 
 
 # --- ACCOUNT DATABASES ---
-# These classes make up the available account databases for Toontown United.
+# These classes make up the available account databases for Toontown Stride.
 # Databases with login tokens use the PyCrypto module for decrypting them.
 # DeveloperAccountDB is a special database that accepts a username, and assigns
 # each user with 700 access automatically upon login.
@@ -898,7 +898,7 @@ class UnloadAvatarFSM(OperationFSM):
     def enterUnloadAvatar(self):
         channel = self.csm.GetAccountConnectionChannel(self.target)
 
-        # Tell TTUFriendsManager somebody is logging off:
+        # Tell TTSFriendsManager somebody is logging off:
         self.csm.air.friendsManager.toonOffline(self.avId)
 
         # Clear off POSTREMOVE:
