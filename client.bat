@@ -9,13 +9,11 @@ echo #3 - Developer Server (Steve)
 echo #4 - Custom
 echo.
 set /P INPUT=
-set server=unset
 
 if %INPUT%==1 set TTS_GAMESERVER=127.0.0.1
 if %INPUT%==2 set TTS_GAMESERVER=71.200.196.180
 if %INPUT%==3 set TTS_GAMESERVER=192.99.167.192
-
-if %TTS_GAMESERVER%==unset (
+if %INPUT%==4 (
     echo.
     set /P TTS_GAMESERVER=Gameserver: 
 )
