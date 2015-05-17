@@ -19,13 +19,13 @@ class LogAndOutput:
         self.log.flush()
         self.orig.flush()
 
-class TTULauncher:
-    notify = DirectNotifyGlobal.directNotify.newCategory('TTULauncher')
+class TTSLauncher:
+    notify = DirectNotifyGlobal.directNotify.newCategory('TTSLauncher')
 
     def __init__(self):
         self.http = HTTPClient()
 
-        self.logPrefix = 'united-'
+        self.logPrefix = 'stride-'
 
         ltime = 1 and time.localtime()
         logSuffix = '%02d%02d%02d_%02d%02d%02d' % (ltime[0] - 2000,  ltime[1], ltime[2], ltime[3], ltime[4], ltime[5])
@@ -43,10 +43,10 @@ class TTULauncher:
         sys.stderr = logErr
 
     def getPlayToken(self):
-        return self.getValue('TTU_PLAYCOOKIE')
+        return self.getValue('TTS_PLAYCOOKIE')
 
     def getGameServer(self):
-        return self.getValue('TTU_GAMESERVER')
+        return self.getValue('TTS_GAMESERVER')
 
     def getValue(self, key, default = None):
         return os.environ.get(key, default)

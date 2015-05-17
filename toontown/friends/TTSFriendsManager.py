@@ -2,7 +2,7 @@ from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
 from otp.otpbase import OTPLocalizer
 from toontown.hood import ZoneUtil
 
-class TTUFriendsManager(DistributedObjectGlobal):
+class TTSFriendsManager(DistributedObjectGlobal):
     def d_removeFriend(self, friendId):
         self.sendUpdate('removeFriend', [friendId])
 

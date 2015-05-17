@@ -75,9 +75,9 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.toontownTimeManager = ToontownTimeManager.ToontownTimeManager()
 
         self.csm = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_CLIENT_SERVICES_MANAGER, 'ClientServicesManager')
-        self.ttuFriendsManager = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_TTU_FRIENDS_MANAGER, 'TTUFriendsManager')
+        self.ttsFriendsManager = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_TTS_FRIENDS_MANAGER, 'TTSFriendsManager')
 
-        self.argManager = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_TTU_ARG_MANAGER, 'ARGManager')
+        self.argManager = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_TTS_ARG_MANAGER, 'ARGManager')
 
         self.furnitureManager = None
         self.objectManager = None
@@ -330,9 +330,9 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
 
     def __sendGetAvatarDetails(self, avId, pet=0):
         if pet:
-            self.ttuFriendsManager.d_getPetDetails(avId)
+            self.ttsFriendsManager.d_getPetDetails(avId)
         else:
-            self.ttuFriendsManager.d_getAvatarDetails(avId)
+            self.ttsFriendsManager.d_getAvatarDetails(avId)
 
     def n_handleGetAvatarDetailsResp(self, avId, fields):
         self.notify.info('Query reponse for avId %d' % avId)
@@ -695,7 +695,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         return 1
 
     def removeFriend(self, avatarId):
-        self.ttuFriendsManager.d_removeFriend(avatarId)
+        self.ttsFriendsManager.d_removeFriend(avatarId)
 
     def clearFriendState(self):
         self.friendsMap = {}
@@ -706,7 +706,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
     def sendGetFriendsListRequest(self):
         self.friendsMapPending = 1
         self.friendsListError = 0
-        self.ttuFriendsManager.d_requestFriendsList()
+        self.ttsFriendsManager.d_requestFriendsList()
 
     def cleanPetsFromFriendsMap(self):
         for objId, obj in self.friendsMap.items():
@@ -988,7 +988,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
     def requestAvatarInfo(self, avId):
         if avId == 0:
             return
-        self.ttuFriendsManager.d_requestAvatarInfo([avId])
+        self.ttsFriendsManager.d_requestAvatarInfo([avId])
 
     def queueRequestAvatarInfo(self, avId):
         removeTask = 0
@@ -1005,4 +1005,4 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             return
         if len(self.avatarInfoRequests) == 0:
             return
-        self.ttuFriendsManager.d_requestAvatarInfo(self.avatarInfoRequests)
+        self.ttsFriendsManager.d_requestAvatarInfo(self.avatarInfoRequests)

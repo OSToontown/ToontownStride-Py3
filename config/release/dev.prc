@@ -5,7 +5,7 @@ distribution dev
 model-path ../resources/
 
 # Server:
-server-version ttu-dev
+server-version tts-dev
 min-access-level 600
 accountdb-type developer
 shard-low-pop 50
@@ -16,7 +16,7 @@ want-rpc-server #f
 rpc-server-endpoint http://localhost:8080/
 
 # DClass files (in reverse order):
-dc-file astron/dclass/united.dc
+dc-file astron/dclass/stride.dc
 
 # Core features:
 want-pets #t
