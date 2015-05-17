@@ -4,7 +4,7 @@ from toontown.toontowngui import TTDialog
 import os
 
 class LanguageSelector:
-    
+
     def __init__(self, leaveFunction):
         self.title = None
         self.current = None
@@ -14,13 +14,13 @@ class LanguageSelector:
         self.backButton = None
         self.confirmDialog = None
         self.leaveFunction = leaveFunction
-    
+
     def create(self):
         self.background = OnscreenImage(parent=render2d, image="phase_3.5/maps/blackboardEmpty.jpg")
         self.gui = loader.loadModel('phase_3/models/gui/tt_m_gui_mat_mainGui')
         self.shuffleUp = self.gui.find('**/tt_t_gui_mat_shuffleUp')
         self.shuffleDown = self.gui.find('**/tt_t_gui_mat_shuffleDown')
-        
+
         self.title = DirectLabel(aspect2d, relief=None, text=TTLocalizer.LanguageSelectorTitle,
                      text_fg=(0, 1, 0, 1), text_scale=0.15, text_font=ToontownGlobals.getSuitFont(),
                      pos=(0, 0, 0.70), text_shadow=(0, 0.392, 0, 1))
@@ -51,22 +51,22 @@ class LanguageSelector:
             if element:
                 element.destroy()
                 element = None
-        
+
         self.leaveFunction()
-    
+
     def switchLanguage(self, language):
         if language == settings['language']:
             self.confirmDialog = TTDialog.TTDialog(style=TTDialog.Acknowledge, text=TTLocalizer.LanguageSelectorSameLanguage, command=self.cleanupDialog)
         else:
             self.confirmDialog = TTDialog.TTDialog(style=TTDialog.YesNo, text=TTLocalizer.LanguageSelectorConfirm % language, command=self.confirmSwitchLanguage, extraArgs=[language])
         self.confirmDialog.show()
-    
+
     def confirmSwitchLanguage(self, value, language):
         if value > 0:
             settings['language'] = language
             os._exit(1)
         else:
             self.cleanupDialog()
-    
+
     def cleanupDialog(self, value=0):
         self.confirmDialog.cleanup()

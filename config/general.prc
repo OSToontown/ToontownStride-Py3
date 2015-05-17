@@ -92,7 +92,7 @@ base-xp-multiplier 1.0
 # SOS toons:
 sos-card-reward 2
 
-# Cog Dominiums
+# CogDominiums (Field Offices):
 want-emblems #t
 cogdo-want-barrel-room #t
 want-lawbot-cogdo #t
@@ -104,6 +104,8 @@ want-cogbuildings #t
 show-total-population #t
 want-mat-all-tailors #t
 want-talkative-tyler #f
+estate-day-night #t
+want-language-selection #t
 
 # Developer options:
 want-dev #f
@@ -112,6 +114,3 @@ want-pstats 0
 # Temporary:
 smooth-lag 0.4
 want-old-fireworks #t
-
-# Live updates:
-estate-day-night #t

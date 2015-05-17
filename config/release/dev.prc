@@ -15,7 +15,7 @@ shard-mid-pop 100
 want-rpc-server #f
 rpc-server-endpoint http://localhost:8080/
 
-# DClass files (in reverse order):
+# DClass file:
 dc-file astron/dclass/stride.dc
 
 # Core features:
@@ -23,7 +23,6 @@ want-pets #t
 want-parties #t
 want-cogdominiums #t
 want-lawbot-cogdo #t
-want-achievements #f
 want-anim-props #t
 want-game-tables #t
 want-find-four #t
