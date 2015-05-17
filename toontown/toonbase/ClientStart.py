@@ -13,7 +13,9 @@ from direct.extensions_native import VBase3_extensions
 from direct.extensions_native import VBase4_extensions
 from direct.extensions_native import NodePath_extensions
 
+
 from panda3d.core import loadPrcFile
+
 
 if __debug__:
     import wx, sys
@@ -73,8 +75,8 @@ if 'toonChatSounds' not in settings:
     settings['toonChatSounds'] = True
 if 'language' not in settings:
     settings['language'] = 'English'
-if 'cogInterface' not in settings:
-    settings['cogInterface'] = True
+if 'cogLevel' not in settings:
+    settings['cogLevel'] = True
 if 'speedchatPlus' not in settings:
     settings['speedchatPlus'] = True
 if 'trueFriends' not in settings:
