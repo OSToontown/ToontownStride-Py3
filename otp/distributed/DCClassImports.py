@@ -2,11 +2,7 @@
 from pandac.PandaModules import *
 
 
-<<<<<<< HEAD
-hashVal = 4040859151L
-=======
-hashVal = 2005027427
->>>>>>> parent of 0f4521a... Initial work on gifting (still broken right now), and sry zach
+hashVal = 2028736653
 
 
 from toontown.coghq import DistributedCashbotBossSafe, DistributedCashbotBossCrane, DistributedBattleFactory, DistributedCashbotBossTreasure, DistributedCogHQDoor, DistributedSellbotHQDoor, DistributedFactoryElevatorExt, DistributedMintElevatorExt, DistributedLawOfficeElevatorExt, DistributedLawOfficeElevatorInt, LobbyManager, DistributedMegaCorp, DistributedFactory, DistributedLawOffice, DistributedLawOfficeFloor, DistributedLift, DistributedDoorEntity, DistributedSwitch, DistributedButton, DistributedTrigger, DistributedCrushableEntity, DistributedCrusherEntity, DistributedStomper, DistributedStomperPair, DistributedLaserField, DistributedGolfGreenGame, DistributedSecurityCamera, DistributedMover, DistributedElevatorMarker, DistributedBarrelBase, DistributedGagBarrel, DistributedBeanBarrel, DistributedHealBarrel, DistributedGrid, ActiveCell, DirectionalCell, CrusherCell, DistributedCrate, DistributedSinkingPlatform, BattleBlocker, DistributedMint, DistributedMintRoom, DistributedMintBattle, DistributedStage, DistributedStageRoom, DistributedStageBattle, DistributedLawbotBossGavel, DistributedLawbotCannon, DistributedLawbotChair, DistributedCogKart, DistributedCountryClub, DistributedCountryClubRoom, DistributedMoleField, DistributedCountryClubBattle, DistributedMaze, DistributedFoodBelt, DistributedBanquetTable, DistributedGolfSpot
