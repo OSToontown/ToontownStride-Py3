@@ -122,3 +122,6 @@ class CatalogEmoteItem(CatalogItem.CatalogItem):
         CatalogItem.CatalogItem.encodeDatagram(self, dg, store)
         dg.addUint8(self.emoteIndex)
         dg.addBool(self.isSpecial)
+
+    def isGift(self):
+        return not self.getEmblemPrices()

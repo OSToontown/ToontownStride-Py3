@@ -115,7 +115,9 @@ class CatalogItem:
         return self.saleItem
 
     def isGift(self):
-        return not self.getEmblemPrices()
+        if self.getEmblemPrices():
+            return 0
+        return 1
 
     def isRental(self):
         return 0

@@ -548,6 +548,9 @@ class CatalogClothingItem(CatalogItem.CatalogItem):
         dg.addUint8(self.colorIndex)
         dg.addBool(self.isSpecial)
 
+    def isGift(self):
+        return not self.getEmblemPrices()
+
 def getAllClothes(*clothingTypes):
     list = []
     for clothingType in clothingTypes:

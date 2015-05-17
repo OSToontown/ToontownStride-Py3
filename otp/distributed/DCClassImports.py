@@ -2,7 +2,11 @@
 from pandac.PandaModules import *
 
 
+<<<<<<< HEAD
 hashVal = 4040859151L
+=======
+hashVal = 2005027427
+>>>>>>> parent of 0f4521a... Initial work on gifting (still broken right now), and sry zach
 
 
 from toontown.coghq import DistributedCashbotBossSafe, DistributedCashbotBossCrane, DistributedBattleFactory, DistributedCashbotBossTreasure, DistributedCogHQDoor, DistributedSellbotHQDoor, DistributedFactoryElevatorExt, DistributedMintElevatorExt, DistributedLawOfficeElevatorExt, DistributedLawOfficeElevatorInt, LobbyManager, DistributedMegaCorp, DistributedFactory, DistributedLawOffice, DistributedLawOfficeFloor, DistributedLift, DistributedDoorEntity, DistributedSwitch, DistributedButton, DistributedTrigger, DistributedCrushableEntity, DistributedCrusherEntity, DistributedStomper, DistributedStomperPair, DistributedLaserField, DistributedGolfGreenGame, DistributedSecurityCamera, DistributedMover, DistributedElevatorMarker, DistributedBarrelBase, DistributedGagBarrel, DistributedBeanBarrel, DistributedHealBarrel, DistributedGrid, ActiveCell, DirectionalCell, CrusherCell, DistributedCrate, DistributedSinkingPlatform, BattleBlocker, DistributedMint, DistributedMintRoom, DistributedMintBattle, DistributedStage, DistributedStageRoom, DistributedStageBattle, DistributedLawbotBossGavel, DistributedLawbotCannon, DistributedLawbotChair, DistributedCogKart, DistributedCountryClub, DistributedCountryClubRoom, DistributedMoleField, DistributedCountryClubBattle, DistributedMaze, DistributedFoodBelt, DistributedBanquetTable, DistributedGolfSpot
@@ -11,7 +15,7 @@ from toontown.building import DistributedAnimatedProp, DistributedTrophyMgr, Dis
 from toontown.uberdog.DistributedPartyManager import DistributedPartyManager
 from otp.friends import FriendManager
 from otp.level import DistributedLevel, DistributedEntity, DistributedInteractiveEntity
-from toontown.shtiker import PurchaseManager, NewbiePurchaseManager
+from toontown.shtiker import DeleteManager, PurchaseManager, NewbiePurchaseManager
 from toontown.groups import GroupManager
 from toontown.uberdog.ClientServicesManager import ClientServicesManager
 from toontown.ai import WelcomeValleyManager, NewsManager, DistributedAprilToonsMgr, DistributedBlackCatMgr, DistributedReportMgr, DistributedPolarPlaceEffectMgr, DistributedGreenToonEffectMgr, DistributedResistanceEmoteMgr, DistributedScavengerHuntTarget, DistributedTrickOrTreatTarget, DistributedWinterCarolingTarget, DistributedJorElCam
@@ -25,7 +29,7 @@ from toontown.safezone import DistributedTrolley, DistributedPartyGate, Distribu
 from toontown.fishing import DistributedFishingPond, DistributedFishingTarget, DistributedPondBingoManager
 from toontown.minigame import DistributedMinigame, DistributedMinigameTemplate, DistributedRaceGame, DistributedCannonGame, DistributedPatternGame, DistributedRingGame, DistributedTagGame, DistributedMazeGame, DistributedTugOfWarGame, DistributedCatchGame, DistributedDivingGame, DistributedTargetGame, DistributedVineGame, DistributedIceGame, DistributedCogThiefGame, DistributedTwoDGame
 from toontown.racing import DistributedVehicle, DistributedStartingBlock, DistributedRace, DistributedKartPad, DistributedRacePad, DistributedViewPad, DistributedStartingBlock, DistributedLeaderBoard, DistributedGag, DistributedProjectile
-from toontown.catalog import CatalogManager
+from toontown.catalog import CatalogManager, AccountDate
 from toontown.parties import DistributedParty, DistributedPartyActivity, DistributedPartyTeamActivity, DistributedPartyCannon, DistributedPartyCannonActivity, DistributedPartyCatchActivity, DistributedPartyWinterCatchActivity, DistributedPartyCogActivity, DistributedPartyWinterCogActivity, DistributedPartyFireworksActivity, DistributedPartyDanceActivityBase, DistributedPartyDanceActivity, DistributedPartyDance20Activity, DistributedPartyValentineDanceActivity, DistributedPartyValentineDance20Activity, DistributedPartyTrampolineActivity, DistributedPartyValentineTrampolineActivity, DistributedPartyVictoryTrampolineActivity, DistributedPartyWinterTrampolineActivity, DistributedPartyTugOfWarActivity, DistributedPartyJukeboxActivityBase, DistributedPartyJukeboxActivity, DistributedPartyJukebox40Activity, DistributedPartyValentineJukeboxActivity, DistributedPartyValentineJukebox40Activity
 from toontown.pets.DistributedPet import *
 from toontown.friends import TTSFriendsManager

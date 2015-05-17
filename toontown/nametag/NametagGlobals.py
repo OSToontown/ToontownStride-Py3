@@ -135,8 +135,6 @@ def getModelWidthHeight(model):
     height = maxPoint.getZ() - minPoint.getZ()
     return (width, height)
 
-def getFriendColor(flag):
-    return CCNormal if flag == 1 and settings['trueFriends'] else CCFreeChat
 
 # Foreground, background:
 NametagColors = {
