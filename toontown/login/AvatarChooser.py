@@ -212,12 +212,15 @@ class AvatarChooser(StateData.StateData):
         elif panelDoneStatus == 'nameIt':
             self.__handleChoice()
         elif panelDoneStatus == 'delete':
-            self.__handleChoice()
+            self.__handleDelete()
         elif panelDoneStatus == 'create':
             self.__handleChoice()
 
     def __handleChoice(self):
         base.transitions.fadeOut(finishIval=EventInterval(self.doneEvent, [self.doneStatus]))
+
+    def __handleDelete(self):
+        messenger.send(self.doneEvent, [self.doneStatus])
 
     def __handleQuit(self):
         cleanupDialog('globalDialog')
@@ -226,7 +229,7 @@ class AvatarChooser(StateData.StateData):
 
     def getChoice(self):
         return self.choice
-    
+
     def openLanguageGui(self):
         self.exit()
         LanguageSelector.LanguageSelector(self.enter).create()
