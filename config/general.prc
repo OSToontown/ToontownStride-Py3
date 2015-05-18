@@ -106,6 +106,7 @@ want-mat-all-tailors #t
 want-talkative-tyler #f
 estate-day-night #t
 want-language-selection #t
+active-holidays 64, 65, 66
 
 # Developer options:
 want-dev #f

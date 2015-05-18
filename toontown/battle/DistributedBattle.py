@@ -39,6 +39,25 @@ class DistributedBattle(DistributedBattleBase.DistributedBattleBase):
         self.ignore(self.PlayGameSetPlaceEvent)
         self.removeCollisionData()
 
+    def setInteractivePropTrackBonus(self, trackBonus):
+        DistributedBattleBase.DistributedBattleBase.setInteractivePropTrackBonus(self, trackBonus)
+        if self.interactivePropTrackBonus >= 0:
+            if base.cr.playGame.hood:
+                self.calcInteractiveProp()
+            else:
+                self.acceptOnce(self.PlayGameSetPlaceEvent, self.calcInteractiveProp)
+
+    def calcInteractiveProp(self):
+        if base.cr.playGame.hood:
+            loader = base.cr.playGame.hood.loader
+            if hasattr(loader, 'getInteractiveProp'):
+                self.interactiveProp = loader.getInteractiveProp(self.zoneId)
+                self.notify.debug('self.interactiveProp = %s' % self.interactiveProp)
+            else:
+                self.notify.warning('no loader.getInteractiveProp self.interactiveProp is None')
+        else:
+            self.notify.warning('no hood  self.interactiveProp is None')
+
     def setMembers(self, suits, suitsJoining, suitsPending, suitsActive, suitsLured, suitTraps, toons, toonsJoining, toonsPending, toonsActive, toonsRunning, timestamp):
         if self.battleCleanedUp():
             return
@@ -133,10 +152,8 @@ class DistributedBattle(DistributedBattleBase.DistributedBattleBase):
         if len(self.toons) > 0 and base.localAvatar == self.toons[0]:
             Emote.globalEmote.disableAll(self.toons[0], 'dbattle, enterFaceOff')
         self.__faceOff(ts, self.faceOffName, self.__handleFaceOffDone)
-        prop = self.getInteractiveProp()
-
-        if prop:
-            prop.gotoBattleCheer()
+        if self.interactiveProp:
+            self.interactiveProp.gotoFaceoff()
 
     def __handleFaceOffDone(self):
         self.notify.debug('FaceOff done')
@@ -164,10 +181,8 @@ class DistributedBattle(DistributedBattleBase.DistributedBattleBase):
             toon.startSmooth()
 
         self.accept('resumeAfterReward', self.handleResumeAfterReward)
-        prop = self.getInteractiveProp()
-
-        if prop:
-            prop.gotoVictory()
+        if self.interactiveProp:
+            self.interactiveProp.gotoVictory()
         self.playReward(ts)
 
     def playReward(self, ts):
@@ -195,10 +210,8 @@ class DistributedBattle(DistributedBattleBase.DistributedBattleBase):
         self.notify.debug('enterResume()')
         if self.hasLocalToon():
             self.removeLocalToon()
-        prop = self.getInteractiveProp()
-
-        if prop:
-            prop.requestIdleOrSad()
+        if self.interactiveProp:
+            self.interactiveProp.requestIdleOrSad()
 
     def exitResume(self):
         pass

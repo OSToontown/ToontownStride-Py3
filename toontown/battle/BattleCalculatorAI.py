@@ -260,7 +260,10 @@ class BattleCalculatorAI:
         return
 
     def __checkPropBonus(self, track):
-        return self.battle.getInteractivePropTrackBonus() == track
+        result = False
+        if self.battle.getInteractivePropTrackBonus() == track:
+            result = True
+        return result
 
     def __targetDefense(self, suit, atkTrack):
         if atkTrack == HEAL:

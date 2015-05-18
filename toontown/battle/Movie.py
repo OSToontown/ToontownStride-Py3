@@ -400,7 +400,8 @@ class Movie(DirectObject.DirectObject):
             if ival:
                 track.append(ival)
                 camTrack.append(camIval)
-            ival, camIval = MovieHeal.doHeals(self.__findToonAttack(HEAL), self.battle.getInteractivePropTrackBonus() == HEAL)
+            hasHealBonus = self.battle.getInteractivePropTrackBonus() == HEAL
+            ival, camIval = MovieHeal.doHeals(self.__findToonAttack(HEAL), hasHealBonus)
             if ival:
                 track.append(ival)
                 camTrack.append(camIval)

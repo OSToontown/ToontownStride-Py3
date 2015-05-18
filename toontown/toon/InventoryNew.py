@@ -1187,7 +1187,10 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         messenger.send('exitTrackFrame', [track])
 
     def checkPropBonus(self, track):
-        return track == self.interactivePropTrackBonus
+        result = False
+        if track == self.interactivePropTrackBonus:
+            result = True
+        return result
 
     def stopAndClearPropBonusIval(self):
         if self.propBonusIval and self.propBonusIval.isPlaying():

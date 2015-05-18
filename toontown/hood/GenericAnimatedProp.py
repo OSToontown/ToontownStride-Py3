@@ -46,7 +46,19 @@ class GenericAnimatedProp(AnimatedProp.AnimatedProp):
     def enter(self):
         self.node.postFlatten()
         AnimatedProp.AnimatedProp.enter(self)
-        self.node.loop('anim')
+        doAnimLoop = True
+        try:
+            if type(self).__name__ == 'instance':
+                if self.__class__.__name__ == 'GenericAnimatedProp':
+                    if base.cr.newsManager.isHolidayRunning(ToontownGlobals.HYDRANTS_BUFF_BATTLES):
+                        doAnimLoop = True
+                    else:
+                        doAnimLoop = False
+        except:
+            pass
+
+        if doAnimLoop:
+            self.node.loop('anim')
 
     def exit(self):
         AnimatedProp.AnimatedProp.exit(self)
