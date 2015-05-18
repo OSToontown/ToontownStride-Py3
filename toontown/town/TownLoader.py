@@ -218,11 +218,6 @@ class TownLoader(StateData.StateData):
             nodePath = npc.getPath(i)
             nodePath.wrtReparentTo(bucket)
 
-        npc = self.geom.findAllMatches('**/sb*:*animated_building*_DNARoot')
-        for i in xrange(npc.getNumPaths()):
-            nodePath = npc.getPath(i)
-            nodePath.wrtReparentTo(bucket)
-
     def makeDictionaries(self, dnaStore):
         self.nodeDict = {}
         self.zoneDict = {}
@@ -337,24 +332,6 @@ class TownLoader(StateData.StateData):
                         self.zoneIdToInteractivePropDict[zoneId] = interactivePropObj
                     else:
                         self.notify.error('already have interactive prop %s in zone %s' % (self.zoneIdToInteractivePropDict, zoneId))
-
-            animatedBuildingNodes = i.findAllMatches('**/*:animated_building_*;-h')
-            for np in animatedBuildingNodes:
-                if np.getName().startswith('sb'):
-                    animatedBuildingNodes.removePath(np)
-
-            numAnimatedBuildingNodes = animatedBuildingNodes.getNumPaths()
-            for j in xrange(numAnimatedBuildingNodes):
-                animatedBuildingNode = animatedBuildingNodes.getPath(j)
-                className = 'GenericAnimatedBuilding'
-                symbols = {}
-                base.cr.importModule(symbols, 'toontown.hood', [className])
-                classObj = getattr(symbols[className], className)
-                animatedBuildingObj = classObj(animatedBuildingNode)
-                animPropList = self.animPropDict.get(i)
-                if animPropList is None:
-                    animPropList = self.animPropDict.setdefault(i, [])
-                animPropList.append(animatedBuildingObj)
 
         return
 
