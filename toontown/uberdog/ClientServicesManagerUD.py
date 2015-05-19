@@ -29,24 +29,30 @@ if accountDBType == 'remote':
 # developer server:
 minAccessLevel = simbase.config.GetInt('min-access-level', 100)
 
-accountServerEndpoint = simbase.config.GetString('account-server-endpoint', 'http://127.0.0.1:45749/')
-accountServerSecret = simbase.config.GetString('account-server-secret', '1X5oN69^#0^fCw7s#uyQTWYJ!8m9z!6Midphf90gMQYl*L5Uy!Ri5KTP6@BbZ5#Tlm37bJAI')
+accountServerEndpoint = simbase.config.GetString(
+    'account-server-endpoint', 'http://tigercat1.me/tmpremote/api2/')
+accountServerSecret = simbase.config.GetString(
+    'account-server-secret', '9sj6816aj1hs795j')
 
 
 http = HTTPClient()
 http.setVerifySsl(0)
 
 
-def executeHttpRequest(url, extras):
-    request = urllib2.Request(accountServerEndpoint + url)
-    request.add_header('User-Agent', 'TTS-Game')
-    request.add_header('Secret-Key', accountServerSecret)
+def executeHttpRequest(url, **extras):
+    request = urllib2.Request('http://tigercat1.me/tmpremote/api2/' + url)
+    timestamp = str(int(time.time()))
+    signature = hashlib.sha256(timestamp + accountServerSecret + "h*^ahJGHA017JI&A&*uyhU07")
+    request.add_header('User-Agent', 'TTS-CSM')
+    request.add_header('X-CSM-Timestamp', timestamp)
+    request.add_header('X-CSM-Signature', signature.hexdigest())
     for k, v in extras.items():
-        request.add_header(k, v)
+        request.add_header('X-CSM-' + k, v)
     try:
         return urllib2.urlopen(request).read()
     except:
         return None
+
 
 notify = directNotify.newCategory('ClientServicesManagerUD')
 
@@ -71,17 +77,15 @@ def executeHttpRequestAndLog(url, **extras):
 def judgeName(name):
     if not name:
         return False
-
-    for namePart in name.split(' '):
-        namePart = namePart.lower()
-
-        if len(namePart) < 1:
-            return False
-
-        if namePart in NameJudgeBlacklist.blacklist:
-            return False
+    if blacklist:
+        for namePart in name.split(' '):
+            namePart = namePart.lower()
+            if len(namePart) < 1:
+                return False
+            for banned in blacklist.get(namePart[0], []):
+                if banned in namePart:
+                    return False             
     return True
-
 
 # --- ACCOUNT DATABASES ---
 # These classes make up the available account databases for Toontown Stride.
@@ -151,22 +155,29 @@ class RemoteAccountDB(AccountDB):
     notify = directNotify.newCategory('RemoteAccountDB')
 
     def addNameRequest(self, avId, name):
-        executeHttpRequestAndLog('nameadd', id=avId, name=name)
-        return True
+        return executeHttpRequest('names/append', ID=str(avId), Name=name)
 
     def getNameStatus(self, avId):
-        data = executeHttpRequestAndLog('nameget', id=avId)
-
-        if data is None:
-            return 'PENDING'
-
-        return data['state']
+        return executeHttpRequest('names/status/?Id=' + str(avId))
 
     def removeNameRequest(self, avId):
-        executeHttpRequestAndLog('nameremove', id=avId)
+        return executeHttpRequest('names/remove', ID=str(avId))
 
     def lookup(self, token, callback):
-        if (not token) or (len(token) != 36):
+        # First, base64 decode the token:
+        try:
+            token = base64.b64decode(token)
+        except TypeError:
+            self.notify.warning('Could not decode the provided token!')
+            response = {
+                'success': False,
+                'reason': "Can't decode this token."
+            }
+            callback(response)
+            return response
+
+        # Ensure this token is a valid size:
+        if (not token) or ((len(token) % 16) != 0):
             self.notify.warning('Invalid token length!')
             response = {
                 'success': False,
@@ -175,25 +186,82 @@ class RemoteAccountDB(AccountDB):
             callback(response)
             return response
 
-        cookie = executeHttpRequestAndLog('cookie', cookie=token)
+        # Next, decrypt the token using AES-128 in CBC mode:
+        accountServerSecret = simbase.config.GetString(
+            'account-server-secret', '9sj6816aj1hs795j')
 
-        if cookie is None or 'error' in cookie:
+        # Ensure that our secret is the correct size:
+        if len(accountServerSecret) > AES.block_size:
+            self.notify.warning('account-server-secret is too big!')
+            accountServerSecret = accountServerSecret[:AES.block_size]
+        elif len(accountServerSecret) < AES.block_size:
+            self.notify.warning('account-server-secret is too small!')
+            accountServerSecret += '\x80'
+            while len(accountServerSecret) < AES.block_size:
+                accountServerSecret += '\x00'
+
+        # Take the initialization vector off the front of the token:
+        iv = token[:AES.block_size]
+
+        # Truncate the token to get our cipher text:
+        cipherText = token[AES.block_size:]
+
+        # Decrypt!
+        cipher = AES.new(accountServerSecret, mode=AES.MODE_CBC, IV=iv)
+        try:
+            token = json.loads(cipher.decrypt(cipherText).replace('\x00', ''))
+            if ('timestamp' not in token) or (not isinstance(token['timestamp'], int)):
+                raise ValueError
+            if ('userid' not in token) or (not isinstance(token['userid'], int)):
+                raise ValueError
+            if ('accesslevel' not in token) or (not isinstance(token['accesslevel'], int)):
+                raise ValueError
+        except ValueError, e:
+            print e
+            self.notify.warning('Invalid token.')
             response = {
                 'success': False,
-                'reason': "Couldn't contact login server."
+                'reason': 'Invalid token.'
             }
             callback(response)
             return response
 
-        username = str(cookie['username'])
-        response = {
-            'success': True,
-            'userId': username,
-            'accountId': int(self.dbm[username]) if username in self.dbm else 0,
-            'accessLevel': max(cookie['accessLevel'], minAccessLevel)
-        }
-        callback(response)
-        return response
+        # Next, check if this token has expired:
+        expiration = simbase.config.GetInt('account-token-expiration', 1800)
+        tokenDelta = int(time.time()) - token['timestamp']
+        if tokenDelta > expiration:
+            response = {
+                'success': False,
+                'reason': 'This token has expired.'
+            }
+            callback(response)
+            return response
+
+        # This token is valid. That's all we need to know. Next, let's check if
+        # this user's ID is in your account database bridge:
+        if str(token['userid']) not in self.dbm:
+
+            # Nope. Let's associate them with a brand new Account object!
+            response = {
+                'success': True,
+                'userId': token['userid'],
+                'accountId': 0,
+                'accessLevel': max(int(token['accesslevel']), minAccessLevel)
+            }
+            callback(response)
+            return response
+
+        else:
+
+            # Yep. Let's return their account ID and access level!
+            response = {
+                'success': True,
+                'userId': token['userid'],
+                'accountId': int(self.dbm[str(token['userid'])]),
+                'accessLevel': max(int(token['accesslevel']), minAccessLevel)
+            }
+            callback(response)
+            return response
 
 
 # --- FSMs ---
