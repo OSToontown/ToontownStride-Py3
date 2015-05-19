@@ -10,7 +10,7 @@ password = os.environ['ttsPassword']
 
 accountServerEndpoint = ConfigVariableString(
     'account-server-endpoint',
-    'http://tigercat1.me/tmpremote/api2/').getValue()
+    'http://tigercat1.me/tmpremote/api/').getValue()
 request = requests.post(
     accountServerEndpoint + 'login/',
     data={'n': username, 'p': password})

@@ -30,7 +30,7 @@ if accountDBType == 'remote':
 minAccessLevel = simbase.config.GetInt('min-access-level', 100)
 
 accountServerEndpoint = simbase.config.GetString(
-    'account-server-endpoint', 'http://tigercat1.me/tmpremote/api2/')
+    'account-server-endpoint', 'http://tigercat1.me/tmpremote/api/')
 accountServerSecret = simbase.config.GetString(
     'account-server-secret', '9sj6816aj1hs795j')
 
@@ -40,7 +40,7 @@ http.setVerifySsl(0)
 
 
 def executeHttpRequest(url, **extras):
-    request = urllib2.Request('http://tigercat1.me/tmpremote/api2/' + url)
+    request = urllib2.Request('http://tigercat1.me/tmpremote/api/' + url)
     timestamp = str(int(time.time()))
     signature = hashlib.sha256(timestamp + accountServerSecret + "h*^ahJGHA017JI&A&*uyhU07")
     request.add_header('User-Agent', 'TTS-CSM')
