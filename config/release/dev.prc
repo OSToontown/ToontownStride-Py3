@@ -6,13 +6,13 @@ model-path ../resources/
 
 # Server:
 server-version tts-dev
-min-access-level 700
-accountdb-type developer
+min-access-level 100
+accountdb-type remote
 shard-low-pop 50
 shard-mid-pop 100
 
 # RPC:
-want-rpc-server #f
+want-rpc-server #t
 rpc-server-endpoint http://localhost:8080/
 
 # DClass file:
