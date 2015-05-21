@@ -89,6 +89,11 @@ class DistributedNPCLaffRestockAI(DistributedNPCToonBaseAI):
             return
         av = simbase.air.doId2do.get(avId)
         if av:
-            movieType = NPCToons.SELL_MOVIE_COMPLETE
-            av.takeMoney(cost)
-            av.b_setHp(av.getHp() + laff)
+			if av.getMaxHp() < (av.getHp() + laff):
+				movieType = NPCToons.SELL_MOVIE_CHEATER
+				self.air.writeServerEvent('suspicious', avId, 'DistributedNPCLaffRestockAI.restock invalid restock')
+				self.notify.warning('somebody tried to buy an invalid hp restock! avId: %s' % avId)
+			else:
+				movieType = NPCToons.SELL_MOVIE_COMPLETE
+				av.takeMoney(cost)
+				av.b_setHp(av.getHp() + laff)
