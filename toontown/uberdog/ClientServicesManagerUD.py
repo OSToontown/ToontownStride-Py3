@@ -74,6 +74,10 @@ def executeHttpRequestAndLog(url, **extras):
 
     return data
 
+blacklist = executeHttpRequest('names/blacklist.json')
+if blacklist:
+    blacklist = json.loads(blacklist)
+
 def judgeName(name):
     if not name:
         return False
@@ -158,7 +162,8 @@ class RemoteAccountDB(AccountDB):
         return executeHttpRequest('names/append', ID=str(avId), Name=name)
 
     def getNameStatus(self, avId):
-        return executeHttpRequest('names/status/?Id=' + str(avId))
+        #return executeHttpRequest('names/status/?Id=' + str(avId))
+        return 'APPROVED' # Override temporarily.
 
     def removeNameRequest(self, avId):
         return executeHttpRequest('names/remove', ID=str(avId))
