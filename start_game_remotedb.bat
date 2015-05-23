@@ -8,7 +8,7 @@ rem Get the user input:
 set /P ttsUsername="Username: "
 set /P ttsPassword="Password: "
 echo Using Steve's dev server.
-set TTS_GAMESERVER=192.99.167.192
+set TTS_GAMESERVER=167.114.220.172
 
 echo ===============================
 echo Starting Toontown Stride...
