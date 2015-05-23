@@ -36,10 +36,8 @@ def loadDNAFileAI(dnaStorage, file):
 def setupDoor(a, b, c, d, e, f):
     try:
         e = int(str(e).split('_')[0])
-        
     except:
         print 'setupDoor: error parsing', e
         e = 9999
-        
-    DNADoor.setupDoor(a, b, c, d, e, f)
 
+    DNADoor.setupDoor(a, b, c, d, e, f)
