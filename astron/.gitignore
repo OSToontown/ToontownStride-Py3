@@ -1,4 +1,3 @@
-*.dll
-astrond
+# We'll want production astron to be included, but not the debug builds
 astrond_debug
 astrond_debug.exe
