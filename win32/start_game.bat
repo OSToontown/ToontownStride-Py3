@@ -1,19 +1,23 @@
 @echo off
 cd..
-title TTS Local Game Launcher
+
+title TTS Game Launcher
+
+rem Read the contents of PPYTHON_PATH into %PPYTHON_PATH%:
 set /P PPYTHON_PATH=<PPYTHON_PATH
 
 echo Choose your game server!
 echo #1 - Localhost
-echo #2 - Loudrob
-echo #3 - Custom
-rem Steve's (dev server) can't be used here because it's set as the remotedb and this doesn't connect through that protocol
+echo #2 - Custom
+echo #3 - Loudrob
 echo.
 set /P INPUT=
+set TTS_GAMESERVER=unset
 
 if %INPUT%==1 set TTS_GAMESERVER=127.0.0.1
-if %INPUT%==2 set TTS_GAMESERVER=71.200.196.180
-if %INPUT%==3 (
+if %INPUT%==3 set TTS_GAMESERVER=71.200.196.180
+
+if %TTS_GAMESERVER%==unset (
     echo.
     set /P TTS_GAMESERVER=Gameserver: 
 )
