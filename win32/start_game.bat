@@ -12,7 +12,7 @@ echo #2 - Custom
 echo #3 - Loudrob
 echo.
 set /P INPUT=
-set server=unset
+set TTS_GAMESERVER=unset
 
 if %INPUT%==1 set TTS_GAMESERVER=127.0.0.1
 if %INPUT%==3 set TTS_GAMESERVER=71.200.196.180
