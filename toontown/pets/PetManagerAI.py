@@ -12,7 +12,7 @@ class PetManagerAI:
     def __init__(self, air):
         self.air = air
         self.seeds = simbase.backups.load('pet-seeds', (self.air.districtId,), default={})
-        
+
         if self.seeds.get('day', -1) != getDayId():
             self.generateSeeds()
 
