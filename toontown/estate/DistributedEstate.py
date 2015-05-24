@@ -105,6 +105,10 @@ class DistributedEstate(DistributedObject.DistributedObject):
             self.flowerSellBox.removeNode()
             del self.flowerSellBox
             self.flowerSellBox = None
+        if self.fishSellBox:
+            self.fishSellBox.removeNode()
+            del self.fishSellBox
+            self.fishSellBox = None
         GardenDropGame.GardenDropGame().endGame()
         return
 

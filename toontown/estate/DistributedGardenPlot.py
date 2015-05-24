@@ -25,6 +25,7 @@ class DistributedGardenPlot(DistributedLawnDecor.DistributedLawnDecor):
         self.defaultModel = 'phase_5.5/models/estate/dirt_mound'
         self.colorScaler = Vec4(1, 1, 1, 1)
         self.plantingGui = None
+        self.planted = None
         return
 
     def delete(self):
@@ -83,6 +84,8 @@ class DistributedGardenPlot(DistributedLawnDecor.DistributedLawnDecor):
         return self.getPlantingText()
 
     def handleEnterPlot(self, entry = None):
+        #Force Gardens -Zach
+        base.localAvatar.setGardenStarted(True)
         dist = self.getDistance(localAvatar)
         if self.canBePlanted():
             base.localAvatar.addShovelRelatedDoId(self.doId)
@@ -109,6 +112,8 @@ class DistributedGardenPlot(DistributedLawnDecor.DistributedLawnDecor):
     def canBePlanted(self):
         retval = True
         if not base.localAvatar.doId == self.getOwnerId():
+            retval = False
+        if hasattr(self, 'planted') and self.planted:
             retval = False
         return retval
 
@@ -139,12 +144,12 @@ class DistributedGardenPlot(DistributedLawnDecor.DistributedLawnDecor):
             if recipeKey >= 0:
                 species, variety = GardenGlobals.getSpeciesVarietyGivenRecipe(recipeKey)
                 if species >= 0 and variety >= 0:
-                    self.sendUpdate('plantFlower', [species, variety])
+                    self.sendUpdate('plantFlower', [species, variety, base.localAvatar.doId])
                     successPlanting = True
             else:
                 self.notify.debug('%s %d is not a valid recipe' % (recipeStr, special))
                 burntBeans = len(recipeStr)
-                self.sendUpdate('plantNothing', [burntBeans])
+                self.sendUpdate('plantNothing', [burntBeans, base.localAvatar.doId])
         if successPlanting:
             flowerName = GardenGlobals.getFlowerVarietyName(species, variety)
             stringToShow = TTLocalizer.getResultPlantedSomethingSentence(flowerName)
@@ -204,11 +209,11 @@ class DistributedGardenPlot(DistributedLawnDecor.DistributedLawnDecor):
                         if species >= 205 and species <= 208:
                             successToonStatue = True
                         else:
-                            self.sendUpdate('plantStatuary', [species])
+                            self.sendUpdate('plantStatuary', [species, base.localAvatar.doId])
             else:
                 self.notify.debug('%s %d is not a valid recipe' % (recipeStr, special))
                 burntBeans = len(recipeStr)
-                self.sendUpdate('plantNothing', [burntBeans])
+                self.sendUpdate('plantNothing', [burntBeans, base.localAvatar.doId])
         if successPlanting:
             itemName = GardenGlobals.PlantAttributes[species]['name']
             stringToShow = TTLocalizer.getResultPlantedSomethingSentence(itemName)
@@ -247,7 +252,7 @@ class DistributedGardenPlot(DistributedLawnDecor.DistributedLawnDecor):
         base.localAvatar.showGardeningGui()
         base.localAvatar.removeShovelRelatedDoId(self.doId)
         if willPlant:
-            self.sendUpdate('plantToonStatuary', [species, dnaCode])
+            self.sendUpdate('plantToonStatuary', [species, dnaCode, base.localAvatar.doId])
         else:
             self.popupItemPlantingGui()
         return
@@ -266,10 +271,20 @@ class DistributedGardenPlot(DistributedLawnDecor.DistributedLawnDecor):
         base.localAvatar.showGardeningGui()
         base.localAvatar.removeShovelRelatedDoId(self.doId)
         if willPlant:
-            self.sendUpdate('plantGagTree', [gagTrack, gagLevel])
+            self.sendUpdate('plantGagTree', [gagTrack, gagLevel, base.localAvatar.doId])
         else:
             self.finishInteraction()
         return
+
+    def plantedItem(self, doId):
+        self.planted = doId
+
+    def removePlanted(self):
+        if self.planted:
+            item = base.cr.doId2do.get(self.planted)
+            if item:
+                item.delete()
+            self.planted = None
 
     def setMovie(self, mode, avId):
         if mode == GardenGlobals.MOVIE_PLANT:
@@ -301,8 +316,8 @@ class DistributedGardenPlot(DistributedLawnDecor.DistributedLawnDecor):
         self.movie.append(Func(toon.detachShovel))
         if self.model:
             pos = self.model.getPos()
-            pos.setZ(pos[2] - 1)
-            animProp = LerpPosInterval(self.model, 3, self.model.getPos(), pos)
+            pos.setZ(pos[2] + 1)
+            animProp = LerpPosInterval(self.model, 3, pos, self.model.getPos())
             shrinkProp = LerpScaleInterval(self.model, 3, scale=self.plotScale, startScale=0.01)
             objAnimShrink = ParallelEndTogether(animProp, shrinkProp)
             self.movie.append(objAnimShrink)
@@ -310,10 +325,16 @@ class DistributedGardenPlot(DistributedLawnDecor.DistributedLawnDecor):
         self.movie.append(Func(toon.loop, 'neutral'))
         if avId == localAvatar.doId:
             self.movie.append(Func(self.finishInteraction))
-            self.movie.append(Func(self.movieDone))
+            self.movie.append(Func(self.removePlanted))
         self.movie.start()
 
     def doPlaceItemTrack(self, avId, item = None):
+        if avId == 999999999:
+            pos = self.model.getPos()
+            pos.setZ(pos[2] - 1)
+            self.model.setPos(pos)
+            self.model.setScale(0.01)
+            return
         toon = base.cr.doId2do.get(avId)
         if not toon:
             return
@@ -327,14 +348,24 @@ class DistributedGardenPlot(DistributedLawnDecor.DistributedLawnDecor):
         self.movie = Sequence(self.startCamIval(avId), moveTrack, Func(shovel.show), placeItemTrack)
         if avId == localAvatar.doId:
             self.expectingReplacement = 1
-            self.movie.append(Func(self.movieDone))
+            self.movie.append(Func(self.sendUpdate, 'finishPlanting', [avId]))
         self.movie.start()
 
     def generatePlaceItemTrack(self, toon, item):
         sound = loader.loadSfx('phase_5.5/audio/sfx/burrow.ogg')
         sound.setPlayRate(0.5)
         placeItemTrack = Parallel()
-        placeItemTrack.append(Sequence(ActorInterval(toon, 'start-dig'), Parallel(ActorInterval(toon, 'loop-dig', loop=1, duration=5.13), Sequence(Wait(0.25), SoundInterval(sound, node=toon, duration=0.55), Wait(0.8), SoundInterval(sound, node=toon, duration=0.55), Wait(1.35), SoundInterval(sound, node=toon, duration=0.55))), ActorInterval(toon, 'start-dig', playRate=-1), Func(toon.loop, 'neutral'), Func(toon.detachShovel)))
+        placeItemTrack.append(Sequence(ActorInterval(toon, 'start-dig'),
+                                       Parallel(ActorInterval(toon, 'loop-dig', loop=1, duration=5.13),
+                                                Sequence(Wait(0.25),
+                                                         SoundInterval(sound, node=toon, duration=0.55),
+                                                         Wait(0.8),
+                                                         SoundInterval(sound, node=toon, duration=0.55),
+                                                         Wait(1.35),
+                                                         SoundInterval(sound, node=toon, duration=0.55))),
+                                       ActorInterval(toon, 'start-dig', playRate=-1),
+                                       Func(toon.loop, 'neutral'),
+                                       Func(toon.detachShovel)))
         if self.model:
             pos = self.model.getPos()
             pos.setZ(pos[2] - 1)
@@ -343,7 +374,12 @@ class DistributedGardenPlot(DistributedLawnDecor.DistributedLawnDecor):
             objAnimShrink = ParallelEndTogether(animProp, shrinkProp)
             placeItemTrack.append(objAnimShrink)
         if item:
-            placeItemTrack.append(Sequence(Func(item.reparentTo, toon.rightHand), Wait(0.55), Func(item.wrtReparentTo, render), Parallel(LerpHprInterval(item, hpr=self.getHpr(render), duration=1.2), ProjectileInterval(item, endPos=self.getPos(render), duration=1.2, gravityMult=0.45)), Func(item.removeNode)))
+            placeItemTrack.append(Sequence(Func(item.reparentTo, toon.rightHand),
+                                           Wait(0.55),
+                                           Func(item.wrtReparentTo, render),
+                                           Parallel(LerpHprInterval(item, hpr=self.getHpr(render), duration=1.2),
+                                                    ProjectileInterval(item, endPos=self.getPos(render), duration=1.2, gravityMult=0.45)),
+                                           Func(item.removeNode)))
         return placeItemTrack
 
     def makeMovieNode(self):

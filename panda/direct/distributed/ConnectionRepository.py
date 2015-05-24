@@ -175,6 +175,10 @@ class ConnectionRepository(
 
         return retVal
 
+    def removeObject(self, di):
+        if self.doId2do.get(di):
+            del self.doId2do[di]
+
     def generateGlobalObject(self, doId, dcname, values=None):
         def applyFieldValues(distObj, dclass, values):
             for i in range(dclass.getNumInheritedFields()):

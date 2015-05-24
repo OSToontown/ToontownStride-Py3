@@ -2177,14 +2177,16 @@ def weightedChoice(choiceList, rng=random.random, sum=None):
 
     rand = rng()
     accum = rand * sum
+    ite = None
     for weight, item in choiceList:
         accum -= weight
         if accum <= 0.:
             return item
+	ite = item
     # rand is ~1., and floating-point error prevented accum from hitting 0.
     # Or you passed in a 'sum' that was was too large.
     # Return the last item.
-    return item
+    return ite
 
 def randFloat(a, b=0., rng=random.random):
     """returns a random float in [a, b]

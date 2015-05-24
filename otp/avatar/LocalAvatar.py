@@ -629,8 +629,9 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         self.posCamera(1, 0.7)
 
     def unsetCameraPosForPetInteraction(self):
-        self.setIdealCameraPos(self.prevIdealPos)
-        del self.prevIdealPos
+        if hasattr(self, 'prevIdealPos'):
+            self.setIdealCameraPos(self.prevIdealPos)
+            del self.prevIdealPos
         self.posCamera(1, 0.7)
 
     def setCameraSettings(self, camSettings):

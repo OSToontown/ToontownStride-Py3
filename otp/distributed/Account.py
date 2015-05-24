@@ -1,6 +1,6 @@
-from direct.distributed import DistributedObject
+from direct.distributed.DistributedObject import DistributedObject
 
-class Account(DistributedObject.DistributedObject):
+class Account(DistributedObject):
 
     def __init__(self, cr):
-        pass
+        DistributedObject.__init__(self, cr)

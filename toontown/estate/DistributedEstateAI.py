@@ -14,24 +14,36 @@ from DistributedTargetAI import *
 import CannonGlobals
 import TableGlobals
 import HouseGlobals
+import GardenGlobals
+from DistributedGardenPlotAI import DistributedGardenPlotAI
+from DistributedGardenBoxAI import DistributedGardenBoxAI
+from DistributedFlowerAI import DistributedFlowerAI
+from DistributedGagTreeAI import DistributedGagTreeAI
+from DistributedStatuaryAI import DistributedStatuaryAI
+from DistributedToonStatuaryAI import DistributedToonStatuaryAI
 import time
 import random
 from toontown.fishing import FishGlobals
 
 class Rental:
+
     def __init__(self, estate):
         self.estate = estate
         self.objects = set()
 
     def destroy(self):
         del self.estate
-        for object in self.objects:
-            if not object.isDeleted():
-                object.requestDelete()
-                taskMgr.remove(object.uniqueName('delete'))
+        for obj in self.objects:
+            if not obj.isDeleted():
+                obj.requestDelete()
+                taskMgr.remove(obj.uniqueName('delete'))
         self.objects = set()
 
 class CannonRental(Rental):
+
+    def __init__(self, estate):
+        Rental.__init__(self, estate)
+
     def generateObjects(self):
         target = DistributedTargetAI(self.estate.air)
         target.generateWithRequired(self.estate.zoneId)
@@ -93,8 +105,12 @@ class CannonRental(Rental):
         av.toonUp(3)
         return 1
 
-class TableRental(Rental):
 # Once we make rental game tables.
+class TableRental(Rental):
+
+    def __init__(self, estate):
+        Rental.__init__(self, estate)
+
     def generateObjects(self):
         for drop in TableGlobals.tableDrops:
             table = None
@@ -108,10 +124,13 @@ class TableRental(Rental):
 
 class DistributedEstateAI(DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedEstateAI")
+
     def __init__(self, air):
         DistributedObjectAI.__init__(self, air)
         self.toons = [0, 0, 0, 0, 0, 0]
         self.items = [[], [], [], [], [], []]
+        self.boxes = [[], [], [], [], [], []]
+        self.plots = [[], [], [], [], [], []]
         self.decorData = []
         self.cloudType = 0
         self.dawnTime = 0
@@ -123,7 +142,6 @@ class DistributedEstateAI(DistributedObjectAI):
         self.pond = None
         self.spots = []
         self.targets = []
-
         self.owner = None
 
     def generate(self):
@@ -165,11 +183,70 @@ class DistributedEstateAI(DistributedObjectAI):
 
         self.createTreasurePlanner()
 
+    def generateRegisteredObjects(self, slot):
+        if len(self.plots[slot]) > 0:
+            for item in self.items[slot]:
+                plotData = GardenGlobals.estatePlots[slot][item[0]]
+                if item[1] == GardenGlobals.FLOWER_TYPE:
+                    newItem = DistributedFlowerAI(self.air)
+                    newItem.setEstate(self.doId)
+                    newItem.setOwnerPlot(self.plots[slot][item[0]].doId)
+                    newItem.setPlot(item[0])
+                    newItem.setHeading(plotData[2])
+                    newItem.setPosition(plotData[0], plotData[1], 1.3)
+                    newItem.setOwnerIndex(slot)
+                    newItem.setWaterLevel(item[4])
+                    newItem.setGrowthLevel(item[5])
+                    newItem.setTypeIndex(item[2])
+                    newItem.setVariety(item[3])
+                elif item[1] == GardenGlobals.GAG_TREE_TYPE:
+                    newItem = DistributedGagTreeAI(self.air)
+                    newItem.setEstate(self.doId)
+                    newItem.setOwnerPlot(self.plots[slot][item[0]].doId)
+                    newItem.setPlot(item[0])
+                    newItem.setHeading(plotData[2])
+                    newItem.setPosition(plotData[0], plotData[1], 1.3)
+                    newItem.setOwnerIndex(slot)
+                    newItem.setTypeIndex(item[2])
+                    newItem.setWaterLevel(item[4])
+                    newItem.setGrowthLevel(item[5])
+                elif item[1] == GardenGlobals.STATUARY_TYPE:
+                    newItem = DistributedStatuaryAI(self.air)
+                    newItem.setEstate(self.doId)
+                    newItem.setOwnerPlot(self.plots[slot][item[0]].doId)
+                    newItem.setPlot(item[0])
+                    newItem.setHeading(plotData[2])
+                    newItem.setPosition(plotData[0], plotData[1], 1.3)
+                    newItem.setOwnerIndex(slot)
+                    newItem.setTypeIndex(item[2])
+                    newItem.setWaterLevel(item[4])
+                    newItem.setGrowthLevel(item[5])
+                elif item[1] == GardenGlobals.TOON_STATUARY_TYPE:
+                    newItem = DistributedToonStatuaryAI(self.air)
+                    newItem.setEstate(self.doId)
+                    newItem.setOwnerPlot(self.plots[slot][item[0]].doId)
+                    newItem.setPlot(item[0])
+                    newItem.setHeading(plotData[2])
+                    newItem.setPosition(plotData[0], plotData[1], 1.3)
+                    newItem.setOwnerIndex(slot)
+                    newItem.setTypeIndex(item[2])
+                    newItem.setWaterLevel(item[4])
+                    newItem.setGrowthLevel(item[5])
+                    newItem.setOptional(item[6])
+                else:
+                    continue
+                newItem.generateWithRequired(self.zoneId)
+                self.plots[slot][item[0]].planted = newItem
+                self.plots[slot][item[0]].sendUpdate('plantedItem', [newItem.doId])
+                self.plots[slot][item[0]].sendUpdate('setMovie', [GardenGlobals.MOVIE_PLANT, 999999999])
+                        
+
     def destroy(self):
         for house in self.houses:
             if house:
                 house.requestDelete()
         del self.houses[:]
+        
         if self.pond:
             self.pond.requestDelete()
             for spot in self.spots:
@@ -327,7 +404,7 @@ class DistributedEstateAI(DistributedObjectAI):
         self.items[0] = items
 
     def d_setSlot0Items(self, items):
-        self.sendUpdate('setSlot5Items', [items])
+        self.sendUpdate('setSlot0Items', [items])
 
     def b_setSlot0Items(self, items):
         self.setSlot0Items(items)
@@ -353,11 +430,11 @@ class DistributedEstateAI(DistributedObjectAI):
         self.items[1] = items
 
     def d_setSlot1Items(self, items):
-        self.sendUpdate('setSlot2Items', [items])
+        self.sendUpdate('setSlot1Items', [items])
 
     def b_setSlot1Items(self, items):
-        self.setSlot2Items(items)
-        self.d_setSlot2Items(items)
+        self.setSlot1Items(items)
+        self.d_setSlot1Items(items)
 
     def getSlot1Items(self):
         return self.items[1]
@@ -477,7 +554,7 @@ class DistributedEstateAI(DistributedObjectAI):
 
     def b_setIdList(self, idList):
         self.setIdList(idList)
-        self.d_setIdLst(idList)
+        self.d_setIdList(idList)
 
     def completeFlowerSale(self, todo0):
         pass
@@ -516,6 +593,46 @@ class DistributedEstateAI(DistributedObjectAI):
 
     def gameTableOver(self):
         pass
+
+    def placeStarterGarden(self, avatar):
+        avId = avatar.doId
+        slot = self.toons.index(avId)
+        plotPos = GardenGlobals.estatePlots[slot]
+        boxPos = GardenGlobals.estateBoxes[slot]
+        for p, n in enumerate(boxPos):
+            x, y, h, i = n
+            newBox = DistributedGardenBoxAI(self.air)
+            newBox.setEstate(self.doId)
+            newBox.setTypeIndex(i)
+            newBox.setPlot(p)
+            newBox.setOwnerIndex(slot)
+            newBox.setPosition(x, y, 0)
+            newBox.setHeading(h)
+            newBox.generateWithRequired(self.zoneId)
+            self.boxes[slot].append(newBox)
+        for p, n in enumerate(plotPos):
+            i = n[3]
+            if i in [GardenGlobals.GAG_TREE_TYPE, GardenGlobals.STATUARY_TYPE]:
+                x, y, h = n[:3]
+                newPlot = DistributedGardenPlotAI(self.air)
+                newPlot.setEstate(self.doId)
+                newPlot.setPlot(p)
+                newPlot.setOwnerIndex(slot)
+                newPlot.setPosition(x, y, 0)
+                newPlot.setHeading(h)
+                newPlot.generateWithRequired(self.zoneId)
+                self.plots[slot].append(newPlot)
+            elif i == GardenGlobals.FLOWER_TYPE:
+                x, y, h = n[:3]
+                newPlot = DistributedGardenPlotAI(self.air)
+                newPlot.setEstate(self.doId)
+                newPlot.setPlot(p)
+                newPlot.setOwnerIndex(slot)
+                newPlot.setPosition(x, y, 1.3)
+                newPlot.setHeading(h)
+                newPlot.generateWithRequired(self.zoneId)
+                self.plots[slot].append(newPlot)
+        self.generateRegisteredObjects(slot)
 
     def updateToons(self):
         self.d_setSlot0ToonId(self.toons[0])

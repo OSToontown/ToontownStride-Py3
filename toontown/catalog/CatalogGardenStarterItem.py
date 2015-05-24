@@ -30,15 +30,14 @@ class CatalogGardenStarterItem(CatalogItem.CatalogItem):
         return TTLocalizer.GardenStarterTypeName
 
     def recordPurchase(self, avatar, optional):
-        print 'rental-- record purchase'
         if avatar:
-            print 'starter garden-- has avater'
             estate = simbase.air.estateManager.toon2estate.get(avatar)
             if estate:
-                print 'starter garden-- has estate'
+                av = simbase.air.doId2do.get(avatar)
+                if av:
+                    av.b_setGardenStarted(True)
+                    print('garden saved')
                 estate.placeStarterGarden(avatar)
-            else:
-                print 'starter garden-- something not there'
         return ToontownGlobals.P_ItemAvailable
 
     def getPicture(self, avatar):

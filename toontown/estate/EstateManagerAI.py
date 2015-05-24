@@ -8,6 +8,7 @@ import functools
 
 class LoadHouseFSM(FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('LoadHouseFSM')
+
     def __init__(self, mgr, estate, houseIndex, toon, callback):
         FSM.__init__(self, 'LoadHouseFSM')
         self.mgr = mgr

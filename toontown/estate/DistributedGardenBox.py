@@ -30,7 +30,7 @@ class DistributedGardenBox(DistributedLawnDecor.DistributedLawnDecor):
         elif self.typeIndex == GardenGlobals.BOX_TWO:
             self.defaultModel = 'phase_5.5/models/estate/planterC'
         else:
-            self.defaultModel = 'phase_5.5/models/estate/planterD'
+            self.defaultModel = 'phase_5.5/models/estate/planterB'
             self.collSphereOffset = 0.0
             self.collSphereRadius = self.collSphereRadius * 1.41
             self.plotScale = Vec3(1.0, 1.0, 1.0)

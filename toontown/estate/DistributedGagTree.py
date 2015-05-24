@@ -141,6 +141,8 @@ class DistributedGagTree(DistributedPlantBase.DistributedPlantBase):
         self.confirmDialog.destroy()
         self.confirmDialog = None
         if value > 0:
+            base.localAvatar.showGardeningGui()
+            base.localAvatar.removeShovelRelatedDoId(self.doId)
             self.doPicking()
         else:
             self.finishInteraction()
@@ -149,7 +151,7 @@ class DistributedGagTree(DistributedPlantBase.DistributedPlantBase):
     def doPicking(self):
         if not self.canBePicked():
             return
-        self.sendUpdate('removeItem', [])
+        self.sendUpdate('removeItem', [base.localAvatar.doId])
 
     def createBackupFruits(self):
         if not hasattr(self, 'fruits'):
@@ -182,7 +184,13 @@ class DistributedGagTree(DistributedPlantBase.DistributedPlantBase):
             for fruit in self.backupFruits:
                 fruit.show()
 
-        self.sendUpdate('requestHarvest', [])
+        self.sendUpdate('requestHarvest', [base.localAvatar.doId])
+
+    def hideItems(self):
+        seq = Parallel()
+        for item in self.fruits:
+            seq.append(LerpFunc(item.setAlphaScale, fromData=1, toData=0, duration=1))
+        seq.start()
 
     def getTrack(self):
         return self.gagTrack
@@ -259,6 +267,7 @@ class DistributedGagTree(DistributedPlantBase.DistributedPlantBase):
         self.movie.append(Func(toon.loop, 'neutral'))
         if avId == localAvatar.doId:
             self.movie.append(Func(self.finishInteraction))
+            self.movie.append(Func(self.hideItems))
             self.movie.append(Func(self.movieDone))
             self.movie.append(Func(self.doResultDialog))
         self.movie.start()

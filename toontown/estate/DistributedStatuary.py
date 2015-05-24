@@ -37,6 +37,12 @@ class DistributedStatuary(DistributedLawnDecor.DistributedLawnDecor):
         attrib = GardenGlobals.PlantAttributes[self.typeIndex]
         self.stick2Ground()
 
+    def setOwnerPlot(self, owner):
+        self.ownerPlot = owner
+
+    def getOwnerPlot(self):
+        return self.ownerPlot
+
     def setTypeIndex(self, typeIndex):
         self.typeIndex = typeIndex
         self.name = GardenGlobals.PlantAttributes[typeIndex]['name']

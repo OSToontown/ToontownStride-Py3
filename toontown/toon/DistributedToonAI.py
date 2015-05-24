@@ -5111,3 +5111,19 @@ def remCode(code):
         return 'Player can now reuse the code %s' % code
     else:
         return "Player hasn't redeemed this code!"
+
+@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+def shovelSkill(skill):
+    """
+    Update shovel skill.
+    """
+    av = spellbook.getTarget()
+    av.b_setShovelSkill(skill)
+
+@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+def canSkill(skill):
+    """
+    Update watering can skill.
+    """
+    av = spellbook.getTarget()
+    av.b_setWateringCanSkill(skill)
