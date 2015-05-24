@@ -415,21 +415,24 @@ class Suit(Avatar.Avatar):
         self.isSkeleton = 0
 
         if dna.name in SuitGlobals.suitProperties:
-            self.scale = SuitGlobals.suitProperties[dna.name][SuitGlobals.SCALE_INDEX]
-            self.handColor = SuitGlobals.suitProperties[dna.name][SuitGlobals.HAND_COLOR_INDEX]
+            properties = SuitGlobals.suitProperties[dna.name]
+            self.scale = properties[SuitGlobals.SCALE_INDEX]
+            self.handColor = properties[SuitGlobals.HAND_COLOR_INDEX]
 
             if dna.name == 'cc':
                 self.headColor = SuitGlobals.ColdCallerHead
 
             self.generateBody()
 
-            if SuitGlobals.suitProperties[dna.name][SuitGlobals.HEAD_TEXTURE_INDEX]:
-                self.headTexture = SuitGlobals.suitProperties[dna.name][SuitGlobals.HEAD_TEXTURE_INDEX]
+            if properties[SuitGlobals.HEAD_TEXTURE_INDEX]:
+                self.headTexture = properties[SuitGlobals.HEAD_TEXTURE_INDEX]
 
-            for head in SuitGlobals.suitProperties[dna.name][SuitGlobals.HEADS_INDEX]:
+            for head in properties[SuitGlobals.HEADS_INDEX]:
                 self.generateHead(head)
 
-            self.setHeight(SuitGlobals.suitProperties[dna.name][SuitGlobals.HEIGHT_INDEX])
+            self.setHeight(properties[SuitGlobals.HEIGHT_INDEX])
+            if len(properties) > SuitGlobals.NAMETAG_WRAP_INDEX:
+                self.nametag.setWordWrap(properties[SuitGlobals.NAMETAG_WRAP_INDEX])
 
         self.setName(SuitBattleGlobals.SuitAttributes[dna.name]['name'])
         self.getGeomNode().setScale(self.scale)
