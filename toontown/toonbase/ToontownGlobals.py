@@ -179,7 +179,6 @@ HoodHierarchy = {ToontownCentral: (SillyStreet, LoopyLane, PunchlinePlace),
  DaisyGardens: (ElmStreet, MapleStreet, OakStreet),
  DonaldsDreamland: (LullabyLane, PajamaPlace),
  GoofySpeedway: ()}
-WelcomeValleyToken = 0
 BossbotHQ = 10000
 BossbotLobby = 10100
 BossbotCountryClubIntA = 10500
@@ -208,9 +207,7 @@ MyEstate = 16000
 GolfZone = 17000
 PartyHood = 18000
 HoodsAlwaysVisited = [17000, 18000]
-WelcomeValleyBegin = 22000
-WelcomeValleyEnd = 61000
-DynamicZonesBegin = 61000
+DynamicZonesBegin = 22000
 DynamicZonesEnd = 1 << 20
 cogDept2index = {'c': 0,
  'l': 1,

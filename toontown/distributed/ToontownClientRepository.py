@@ -67,7 +67,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.trophyManager = None
         self.catalogManager = None
         self.tutorialManager = None
-        self.welcomeValleyManager = None
         self.newsManager = None
         self.distributedDistrict = None
         self.partyManager = None

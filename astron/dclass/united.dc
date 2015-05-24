@@ -245,7 +245,6 @@ dclass CallbackObject {
 };
 
 from direct.distributed import DistributedObjectGlobal
-from toontown.ai import WelcomeValleyManager/AI
 from toontown.building import DistributedAnimatedProp/AI
 from toontown.toon import DistributedToon/AI/UD
 from toontown.safezone import DistributedTrolley/AI
@@ -624,12 +623,6 @@ dclass ToontownDistrictStats : DistributedObject {
   setNewAvatarCount(uint32) broadcast required ram;
   setInvasionStatus(uint8) broadcast required ram;
   setStats : setAvatarCount, setNewAvatarCount;
-};
-
-dclass WelcomeValleyManager : DistributedObject {
-  clientSetZone(uint32) airecv clsend;
-  requestZoneIdMessage(uint32, uint16) airecv clsend;
-  requestZoneIdResponse(uint32, uint16);
 };
 
 dclass DistributedAnimatedProp : DistributedObject {

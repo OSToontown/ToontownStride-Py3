@@ -52,7 +52,7 @@ class OZHoodAI(HoodAI.HoodAI):
                     picnicTable.generateWithRequired(zoneId)
                     picnicTables.append(picnicTable)
         elif isinstance(dnaGroup, DNAVisGroup) and (not overrideDNAZone):
-            zoneId = ZoneUtil.getTrueZoneId(int(dnaGroup.getName().split(':')[0]), zoneId)
+            zoneId = int(dnaGroup.getName().split(':')[0])
         for i in xrange(dnaGroup.getNumChildren()):
             foundPicnicTables = self.findPicnicTables(
                 dnaGroup.at(i), zoneId, area, overrideDNAZone=overrideDNAZone)
@@ -63,7 +63,6 @@ class OZHoodAI(HoodAI.HoodAI):
         self.picnicTables = []
         for zoneId in self.getZoneTable():
             dnaData = self.air.dnaDataMap.get(zoneId, None)
-            zoneId = ZoneUtil.getTrueZoneId(zoneId, self.zoneId)
             if dnaData.getName() == 'root':
                 area = ZoneUtil.getCanonicalZoneId(zoneId)
                 foundPicnicTables = self.findPicnicTables(
@@ -86,7 +85,7 @@ class OZHoodAI(HoodAI.HoodAI):
                     gameTable.setTableIndex(tableIndex)
                     gameTable.generateOtpObject(simbase.air.districtId, zoneId, ['setX', 'setY', 'setZ', 'setH', 'setP', 'setR'])
         elif isinstance(dnaGroup, DNAVisGroup) and (not overrideDNAZone):
-            zoneId = ZoneUtil.getTrueZoneId(int(dnaGroup.getName().split(':')[0]), zoneId)
+            zoneId = int(dnaGroup.getName().split(':')[0])
         for i in xrange(dnaGroup.getNumChildren()):
             foundGameTables = self.findGameTables(
                 dnaGroup.at(i), zoneId, area, overrideDNAZone=overrideDNAZone)
@@ -97,7 +96,6 @@ class OZHoodAI(HoodAI.HoodAI):
         self.gameTables = []
         for zoneId in self.getZoneTable():
             dnaData = self.air.dnaDataMap.get(zoneId, None)
-            zoneId = ZoneUtil.getTrueZoneId(zoneId, self.zoneId)
             if dnaData.getName() == 'root':
                 area = ZoneUtil.getCanonicalZoneId(zoneId)
                 foundGameTables = self.findGameTables(

@@ -132,7 +132,7 @@ class Street(BattlePlace.BattlePlace):
         self.accept('doorDoneEvent', self.handleDoorDoneEvent)
         self.accept('DistributedDoor_doorTrigger', self.handleDoorTrigger)
         self.enterZone(requestStatus['zoneId'])
-        self.tunnelOriginList = base.cr.hoodMgr.addLinkTunnelHooks(self, self.loader.nodeList, self.zoneId)
+        self.tunnelOriginList = base.cr.hoodMgr.addLinkTunnelHooks(self, self.loader.nodeList)
         self.fsm.request(requestStatus['how'], [requestStatus])
         return
 

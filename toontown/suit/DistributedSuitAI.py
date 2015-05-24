@@ -216,7 +216,7 @@ class DistributedSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
         self.setPathPosition(0, self.pathStartTime)
         self.pathState = 1
         self.currentLeg = 0
-        self.zoneId = ZoneUtil.getTrueZoneId(self.legList.getZoneId(0), self.branchId)
+        self.zoneId = self.legList.getZoneId(0)
         self.legType = self.legList.getType(0)
         if self.notify.getDebug():
             self.notify.debug('creating suit in zone %s' % self.zoneId)
@@ -236,7 +236,6 @@ class DistributedSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
             self.currentLeg = nextLeg
             self.__beginLegType(self.legList.getType(nextLeg))
             zoneId = self.legList.getZoneId(nextLeg)
-            zoneId = ZoneUtil.getTrueZoneId(zoneId, self.branchId)
             if zoneId:
                 self.__enterZone(zoneId)
             self.notify.debug('Suit %s reached leg %s of %s in zone %s.' % (self.getDoId(),

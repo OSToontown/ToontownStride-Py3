@@ -17,7 +17,6 @@ from toontown.toonbase import TTLocalizer
 from toontown.distributed import DelayDelete
 from toontown.toon import TTEmote
 from otp.avatar import Emote
-from toontown.hood import ZoneUtil
 import sys
 FO_DICT = {'s': 'tt_m_ara_cbe_fieldOfficeMoverShaker',
  'l': 'tt_m_ara_cbe_fieldOfficeLegalEagle',
@@ -445,7 +444,6 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         level = int(self.difficulty / 2) + 1
         suitNP = dnaStore.findNode('suit_landmark_' + chr(self.track) + str(level))
         zoneId = dnaStore.getZoneFromBlockNumber(self.block)
-        zoneId = ZoneUtil.getTrueZoneId(zoneId, self.interiorZoneId)
         newParentNP = base.cr.playGame.hood.loader.zoneDict[zoneId]
         suitBuildingNP = suitNP.copyTo(newParentNP)
         buildingTitle = dnaStore.getTitleFromBlockNumber(self.block)
@@ -548,7 +546,6 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         if not suitNP:
             suitNP = loader.loadModel('phase_5/models/cogdominium/%s' % FO_DICT[chr(self.track)])
         zoneId = dnaStore.getZoneFromBlockNumber(self.block)
-        zoneId = ZoneUtil.getTrueZoneId(zoneId, self.interiorZoneId)
         newParentNP = base.cr.playGame.hood.loader.zoneDict[zoneId]
         suitBuildingNP = suitNP.copyTo(newParentNP)
         buildingTitle = dnaStore.getTitleFromBlockNumber(self.block)
@@ -934,8 +931,7 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         pass
 
     def getVisZoneId(self):
-        exteriorZoneId = base.cr.playGame.hood.dnaStore.getZoneFromBlockNumber(self.block)
-        return ZoneUtil.getTrueZoneId(exteriorZoneId, self.zoneId)
+        return base.cr.playGame.hood.dnaStore.getZoneFromBlockNumber(self.block)
 
     def getInteractiveProp(self):
         if self.interactiveProp:
