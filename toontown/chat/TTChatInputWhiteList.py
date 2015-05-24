@@ -28,7 +28,6 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
          'suppressKeys': 0,
          'suppressMouse': 1,
          'command': self.sendChat,
-         'failedCommand': self.sendFailed,
          'focus': 0,
          'text': '',
          'sortOrder': DGG.FOREGROUND_SORT_INDEX}
@@ -78,17 +77,13 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
         self.typeGrabbed = 0
 
     def typeCallback(self, extraArgs):
-        try:
-            if self.typeGrabbed:
-                return
-            self.applyFilter(extraArgs)
-            if localAvatar.chatMgr.chatInputWhiteList.isActive():
-                return
-            else:
-                messenger.send('wakeup')
-                messenger.send('enterNormalChat')
-        except UnicodeDecodeError:
+        if self.typeGrabbed:
             return
+        self.applyFilter(extraArgs)
+        if localAvatar.chatMgr.chatInputWhiteList.isActive():
+            return
+        messenger.send('wakeup')
+        messenger.send('enterNormalChat')
 
     def destroy(self):
         self.chatEntry.destroy()
@@ -132,10 +127,7 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
         return
 
     def chatButtonPressed(self):
-        if self.okayToSubmit:
-            self.sendChat(self.chatEntry.get())
-        else:
-            self.sendFailed(self.chatEntry.get())
+        self.sendChat(self.chatEntry.get())
 
     def cancelButtonPressed(self):
         self.requestMode('Off')
@@ -166,12 +158,10 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
 
     def applyFilter(self, keyArgs, strict = False):
         text = self.chatEntry.get(plain=True)
-        if text.startswith('~'):
-            self.okayToSubmit = True
-        else:
+
+        if not text.startswith('~'):
             words = text.split(' ')
             newwords = []
-            self.okayToSubmit = True
             flag = 0
             for friendId, flags in base.localAvatar.friendsList:
                 if flags & ToontownGlobals.FriendChat:
@@ -181,10 +171,6 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
                 if word == '' or self.whiteList.isWord(word) or not settings['speedchatPlus']:
                     newwords.append(word)
                 else:
-                    if self.checkBeforeSend:
-                        self.okayToSubmit = False
-                    else:
-                        self.okayToSubmit = True
                     if flag:
                         newwords.append('\x01WLDisplay\x01' + word + '\x02')
                     else:
@@ -192,15 +178,11 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
 
             if not strict:
                 lastword = words[-1]
-                try:
-                    if lastword == '' or self.whiteList.isPrefix(lastword) or not settings['speedchatPlus']:
-                        newwords[-1] = lastword
-                    elif flag:
-                        newwords[-1] = '\x01WLDisplay\x01' + lastword + '\x02'
-                    else:
-                        newwords[-1] = '\x01WLEnter\x01' + lastword + '\x02'
-                except UnicodeDecodeError:
-                    self.okayToSubmit = False
+                if lastword == '' or self.whiteList.isPrefix(lastword) or not settings['speedchatPlus']:
+                    newwords[-1] = lastword
+                elif flag:
+                    newwords[-1] = '\x01WLDisplay\x01' + lastword + '\x02'
+                else:
+                    newwords[-1] = '\x01WLEnter\x01' + lastword + '\x02'
             newtext = ' '.join(newwords)
             self.chatEntry.set(newtext)
-        self.chatEntry.guiItem.setAcceptEnabled(self.okayToSubmit)

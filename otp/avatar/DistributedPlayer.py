@@ -206,6 +206,8 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
         self.sendUpdate('setChat', [chatString, chatFlags, 0])
 
     def setTalk(self, fromAV, fromAC, avatarName, chat, mods, flags):
+        if not base.cr.verifyMessage(chat):
+            return
         if base.localAvatar.isIgnored(fromAV):
             return
         newText, scrubbed = self.scrubTalk(chat, mods)
@@ -218,6 +220,8 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
         return
 
     def setTalkWhisper(self, fromAV, fromAC, avatarName, chat, mods, flags):
+        if not base.cr.verifyMessage(chat):
+            return
         if base.localAvatar.isIgnored(fromAV):
             return
         newText, scrubbed = self.scrubTalk(chat, mods)
