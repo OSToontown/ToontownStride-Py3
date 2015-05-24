@@ -3348,7 +3348,7 @@ dclass ClientServicesManager : DistributedObjectGlobal {
 
 dclass TTCodeRedemptionMgr : DistributedObject {
   redeemCode(char [0-50]) airecv clsend;
-  redeemCodeResult(uint32);
+  redeemCodeResult(uint8);
 };
 
 struct Friend
