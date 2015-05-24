@@ -10,9 +10,10 @@ from toontown.toontowngui.Clickable3d import Clickable3d
 
 
 class Nametag3d(Nametag, Clickable3d):
-    SCALING_MIN_DISTANCE = 1
-    SCALING_MAX_DISTANCE = 50
+    MAX_SCALE = 2.5
     SCALING_FACTOR = 0.065
+    SCALING_MIN_DISTANCE = 1
+    SCALING_MAX_DISTANCE = math.pow(MAX_SCALE / SCALING_FACTOR, 2)
 
     def __init__(self):
         Nametag.__init__(self)
