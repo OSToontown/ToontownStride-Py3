@@ -1200,6 +1200,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         return
 
     def d_playSplashEffect(self, x, y, z):
+        self.playSplashEffect(x, y, z)
         self.sendUpdate('playSplashEffect', [x, y, z])
 
     def setTrackAccess(self, trackArray):
