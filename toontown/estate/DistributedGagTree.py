@@ -187,10 +187,11 @@ class DistributedGagTree(DistributedPlantBase.DistributedPlantBase):
         self.sendUpdate('requestHarvest', [base.localAvatar.doId])
 
     def hideItems(self):
-        seq = Parallel()
-        for item in self.fruits:
-            seq.append(LerpFunc(item.setAlphaScale, fromData=1, toData=0, duration=1))
-        seq.start()
+        if hasattr(self, 'fruits') and self.fruits:
+            seq = Parallel()
+            for item in self.fruits:
+                seq.append(LerpFunc(item.setAlphaScale, fromData=1, toData=0, duration=1))
+            seq.start()
 
     def getTrack(self):
         return self.gagTrack
