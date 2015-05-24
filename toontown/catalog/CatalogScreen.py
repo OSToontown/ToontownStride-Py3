@@ -112,8 +112,8 @@ class CatalogScreen(DirectFrame):
     def setNumBackPages(self, numBackPages):
         self.numBackPages = numBackPages
 
-    def setNumLoyaltyPages(self, numLoyaltyPages):
-        self.numLoyaltyPages = numLoyaltyPages
+    def setNumSpecialPages(self, numSpecialPages):
+        self.numSpecialPages = numSpecialPages
 
     def setNumEmblemPages(self, numEmblemPages):
         self.numEmblemPages = numEmblemPages
@@ -127,49 +127,49 @@ class CatalogScreen(DirectFrame):
     def enableBackorderCatalogButton(self):
         self.backCatalogButton['state'] = DGG.NORMAL
         self.newCatalogButton['state'] = DGG.DISABLED
-        self.loyaltyCatalogButton['state'] = DGG.DISABLED
+        self.specialCatalogButton['state'] = DGG.DISABLED
         self.emblemCatalogButton['state'] = DGG.DISABLED
 
     def enableNewCatalogButton(self):
         self.backCatalogButton['state'] = DGG.DISABLED
         self.newCatalogButton['state'] = DGG.NORMAL
-        self.loyaltyCatalogButton['state'] = DGG.DISABLED
+        self.specialCatalogButton['state'] = DGG.DISABLED
         self.emblemCatalogButton['state'] = DGG.DISABLED
 
-    def enableLoyaltyCatalogButton(self):
+    def enableSpecialCatalogButton(self):
         self.backCatalogButton['state'] = DGG.DISABLED
         self.newCatalogButton['state'] = DGG.DISABLED
-        self.loyaltyCatalogButton['state'] = DGG.NORMAL
+        self.specialCatalogButton['state'] = DGG.NORMAL
         self.emblemCatalogButton['state'] = DGG.DISABLED
 
     def enableEmblemCatalogButton(self):
         self.backCatalogButton['state'] = DGG.DISABLED
         self.newCatalogButton['state'] = DGG.DISABLED
-        self.loyaltyCatalogButton['state'] = DGG.DISABLED
+        self.specialCatalogButton['state'] = DGG.DISABLED
         self.emblemCatalogButton['state'] = DGG.NORMAL
 
     def modeBackorderCatalog(self):
         self.backCatalogButton['state'] = DGG.DISABLED
         self.newCatalogButton['state'] = DGG.NORMAL
-        self.loyaltyCatalogButton['state'] = DGG.NORMAL
+        self.specialCatalogButton['state'] = DGG.NORMAL
         self.emblemCatalogButton['state'] = DGG.NORMAL
 
     def modeNewCatalog(self):
         self.backCatalogButton['state'] = DGG.NORMAL
         self.newCatalogButton['state'] = DGG.DISABLED
-        self.loyaltyCatalogButton['state'] = DGG.NORMAL
+        self.specialCatalogButton['state'] = DGG.NORMAL
         self.emblemCatalogButton['state'] = DGG.NORMAL
 
-    def modeLoyaltyCatalog(self):
+    def modeSpecialCatalog(self):
         self.backCatalogButton['state'] = DGG.NORMAL
         self.newCatalogButton['state'] = DGG.NORMAL
-        self.loyaltyCatalogButton['state'] = DGG.DISABLED
+        self.specialCatalogButton['state'] = DGG.DISABLED
         self.emblemCatalogButton['state'] = DGG.NORMAL
 
     def modeEmblemCatalog(self):
         self.backCatalogButton['state'] = DGG.NORMAL
         self.newCatalogButton['state'] = DGG.NORMAL
-        self.loyaltyCatalogButton['state'] = DGG.NORMAL
+        self.specialCatalogButton['state'] = DGG.NORMAL
         self.emblemCatalogButton['state'] = DGG.DISABLED
 
     def showNewItems(self, index = None):
@@ -206,15 +206,15 @@ class CatalogScreen(DirectFrame):
         self.showPageItems()
         return
 
-    def showLoyaltyItems(self, index = None):
+    def showSpecialItems(self, index = None):
         if config.GetBool('want-qa-regression', 0):
             self.notify.info('QA-REGRESSION: CATALOG: Special item')
         taskMgr.remove('clarabelleHelpText1')
         messenger.send('wakeup')
-        self.viewing = 'Loyalty'
-        self.modeLoyaltyCatalog()
-        self.setMaxPageIndex(self.numLoyaltyPages)
-        if self.numLoyaltyPages == 0:
+        self.viewing = 'Special'
+        self.modeSpecialCatalog()
+        self.setMaxPageIndex(self.numSpecialPages)
+        if self.numSpecialPages == 0:
             self.setPageIndex(-1)
         elif index is not None:
             self.setPageIndex(index)
@@ -249,11 +249,11 @@ class CatalogScreen(DirectFrame):
             self.viewing == 'New'
         if self.viewing == 'New' and self.pageIndex > self.maxPageIndex and self.numBackPages > 0:
             self.showBackorderItems()
-        if self.viewing == 'New' and self.pageIndex > self.maxPageIndex and self.numLoyaltyPages > 0:
-            self.showLoyaltyItems()
-        elif self.viewing == 'Backorder' and self.pageIndex > self.maxPageIndex and self.numLoyaltyPages > 0:
-            self.showLoyaltyItems()
-        elif self.viewing == 'Loyalty' and self.pageIndex > self.maxPageIndex and self.numEmblemPages > 0:
+        if self.viewing == 'New' and self.pageIndex > self.maxPageIndex and self.numSpecialPages > 0:
+            self.showSpecialItems()
+        elif self.viewing == 'Backorder' and self.pageIndex > self.maxPageIndex and self.numSpecialPages > 0:
+            self.showSpecialItems()
+        elif self.viewing == 'Special' and self.pageIndex > self.maxPageIndex and self.numEmblemPages > 0:
             self.showEmblemItems()
         else:
             self.pageIndex = min(self.pageIndex, self.maxPageIndex)
@@ -266,10 +266,10 @@ class CatalogScreen(DirectFrame):
         self.pageIndex = self.pageIndex - 1
         if self.viewing == 'Backorder' and self.pageIndex < 0 and self.numNewPages > 0:
             self.showNewItems(self.numNewPages - 1)
-        elif self.viewing == 'Loyalty' and self.pageIndex < 0 and self.numBackPages > 0:
+        elif self.viewing == 'Special' and self.pageIndex < 0 and self.numBackPages > 0:
             self.showBackorderItems(self.numBackPages - 1)
-        elif self.viewing == 'Emblem' and self.pageIndex < 0 and self.numLoyaltyPages > 0:
-            self.showLoyaltyItems(self.numLoyaltyPages - 1)
+        elif self.viewing == 'Emblem' and self.pageIndex < 0 and self.numSpecialPages > 0:
+            self.showSpecialItems(self.numSpecialPages - 1)
         else:
             self.pageIndex = max(self.pageIndex, -1)
             self.showPageItems()
@@ -285,16 +285,16 @@ class CatalogScreen(DirectFrame):
                 self.openCover()
             if self.viewing == 'New':
                 page = self.pageList[self.pageIndex]
-                newOrBackOrLoyalty = 0
+                newOrBackOrSpecial = 0
             elif self.viewing == 'Backorder':
                 page = self.backPageList[self.pageIndex]
-                newOrBackOrLoyalty = 1
-            elif self.viewing == 'Loyalty':
-                page = self.loyaltyPageList[self.pageIndex]
-                newOrBackOrLoyalty = 2
+                newOrBackOrSpecial = 1
+            elif self.viewing == 'Special':
+                page = self.specialPageList[self.pageIndex]
+                newOrBackOrSpecial = 2
             elif self.viewing == 'Emblem':
                 page = self.emblemPageList[self.pageIndex]
-                newOrBackOrLoyalty = 3
+                newOrBackOrSpecial = 3
             page.show()
             for panel in self.panelDict[page.get_key()]:
                 panel.load()
@@ -304,7 +304,7 @@ class CatalogScreen(DirectFrame):
 
             pIndex = 0
             randGen = random.Random()
-            randGen.seed(base.localAvatar.catalogScheduleCurrentWeek + (self.pageIndex << 8) + (newOrBackOrLoyalty << 16))
+            randGen.seed(base.localAvatar.catalogScheduleCurrentWeek + (self.pageIndex << 8) + (newOrBackOrSpecial << 16))
             for i in range(NUM_CATALOG_ROWS):
                 for j in range(NUM_CATALOG_COLS):
                     if pIndex < len(self.visiblePanels):
@@ -319,8 +319,8 @@ class CatalogScreen(DirectFrame):
 
             if self.viewing == 'New':
                 text = TTLocalizer.CatalogNew
-            elif self.viewing == 'Loyalty':
-                text = TTLocalizer.CatalogLoyalty
+            elif self.viewing == 'Special':
+                text = TTLocalizer.CatalogSpecial
             elif self.viewing == 'Backorder':
                 text = TTLocalizer.CatalogBackorder
             elif self.viewing == 'Emblem':
@@ -328,13 +328,13 @@ class CatalogScreen(DirectFrame):
             self.pageLabel['text'] = text + ' - %d' % (self.pageIndex + 1)
             if self.pageIndex < self.maxPageIndex:
                 self.nextPageButton.show()
-            elif self.viewing == 'New' and self.numBackPages == 0 and self.numLoyaltyPages == 0:
+            elif self.viewing == 'New' and self.numBackPages == 0 and self.numSpecialPages == 0:
                 self.nextPageButton.hide()
-            elif self.viewing == 'Backorder' and self.numLoyaltyPages == 0:
+            elif self.viewing == 'Backorder' and self.numSpecialPages == 0:
                 self.nextPageButton.hide()
-            elif self.viewing == 'Loyalty' and self.numEmblemPages == 0:
+            elif self.viewing == 'Special' and self.numEmblemPages == 0:
                 self.nextPageButton.hide()
-            elif self.viewing == 'Loyalty' and self.numEmblemPages > 0:
+            elif self.viewing == 'Special' and self.numEmblemPages > 0:
                 self.nextPageButton.show()
             elif self.viewing == 'Emblem':
                 self.nextPageButton.hide()
@@ -369,7 +369,7 @@ class CatalogScreen(DirectFrame):
         for page in self.backPageList:
             page.hide()
 
-        for page in self.loyaltyPageList:
+        for page in self.specialPageList:
             page.hide()
 
         for page in self.emblemPageList:
@@ -400,26 +400,26 @@ class CatalogScreen(DirectFrame):
             self.newCatalogButton2.show()
         if self.numBackPages > 0:
             self.backCatalogButton2.show()
-        if self.numLoyaltyPages > 0:
-            self.loyaltyCatalogButton2.show()
+        if self.numSpecialPages > 0:
+            self.specialCatalogButton2.show()
         if self.numEmblemPages > 0:
             self.emblemCatalogButton2.show()
         self.newCatalogButton.hide()
         self.backCatalogButton.hide()
-        self.loyaltyCatalogButton.hide()
+        self.specialCatalogButton.hide()
         self.emblemCatalogButton.hide()
 
     def hideDummyTabs(self):
         self.newCatalogButton2.hide()
         self.backCatalogButton2.hide()
-        self.loyaltyCatalogButton2.hide()
+        self.specialCatalogButton2.hide()
         self.emblemCatalogButton2.hide()
         if self.numNewPages > 0:
             self.newCatalogButton.show()
         if self.numBackPages > 0:
             self.backCatalogButton.show()
-        if self.numLoyaltyPages > 0:
-            self.loyaltyCatalogButton.show()
+        if self.numSpecialPages > 0:
+            self.specialCatalogButton.show()
         if self.numEmblemPages > 0:
             self.emblemCatalogButton.show()
 
@@ -453,14 +453,14 @@ class CatalogScreen(DirectFrame):
         self.maxPageIndex = 0
         self.numNewPages = 0
         self.numBackPages = 5
-        self.numLoyaltyPages = 0
+        self.numSpecialPages = 0
         self.viewing = 'New'
         self.panelList = []
         self.backPanelList = []
         self.pageList = []
         self.backPageList = []
-        self.loyaltyPanelList = []
-        self.loyaltyPageList = []
+        self.specialPanelList = []
+        self.specialPageList = []
         self.emblemPanelList = []
         self.emblemPageList = []
         self.panelDict = {}
@@ -516,19 +516,19 @@ class CatalogScreen(DirectFrame):
          -0.2,
          0.4), image_scale=(1.0, 1.0, smash), image_pos=(0.0, 0.0, lift), image=backDown, pressEffect=0, command=self.showBackorderItems, text=TTLocalizer.CatalogBackorder, text_font=ToontownGlobals.getSignFont(), text_pos=(0.25 - lift, 0.132), text_scale=TTLocalizer.CSbackCatalogButton, text_fg=(0.392, 0.549, 0.627, 1.0), text2_fg=(0.392, 0.349, 0.427, 1.0))
         self.backCatalogButton2.hide()
-        self.loyaltyCatalogButton = DirectButton(self.base, relief=None, pos=(0, 0, 0.469), frameSize=(-0.2,
+        self.specialCatalogButton = DirectButton(self.base, relief=None, pos=(0, 0, 0.469), frameSize=(-0.2,
          0.25,
          -0.85,
          -0.3), image=[newDown,
          newDown,
          newDown,
-         newUp], image_scale=(1.0, 1.0, smash), image_pos=(0.0, 0.0, -1.4 + lift), pressEffect=0, command=self.showLoyaltyItems, text=TTLocalizer.CatalogLoyalty, text_font=ToontownGlobals.getSignFont(), text_pos=(1.0 - lift, 0.132), text3_pos=(1.0 - lift, 0.112), text_scale=0.065, text_fg=(0.353, 0.627, 0.627, 1.0), text2_fg=(0.353, 0.427, 0.427, 1.0))
-        self.loyaltyCatalogButton.hide()
-        self.loyaltyCatalogButton2 = DirectButton(self.base, relief=None, pos=(0, 0, 0.469), frameSize=(-0.2,
+         newUp], image_scale=(1.0, 1.0, smash), image_pos=(0.0, 0.0, -1.4 + lift), pressEffect=0, command=self.showSpecialItems, text=TTLocalizer.CatalogSpecial, text_font=ToontownGlobals.getSignFont(), text_pos=(1.0 - lift, 0.132), text3_pos=(1.0 - lift, 0.112), text_scale=0.065, text_fg=(0.353, 0.627, 0.627, 1.0), text2_fg=(0.353, 0.427, 0.427, 1.0))
+        self.specialCatalogButton.hide()
+        self.specialCatalogButton2 = DirectButton(self.base, relief=None, pos=(0, 0, 0.469), frameSize=(-0.2,
          0.25,
          -0.85,
-         -0.3), image_scale=(1.0, 1.0, smash), image_pos=(0.0, 0.0, -1.4 + lift), image=newDown, pressEffect=0, command=self.showLoyaltyItems, text=TTLocalizer.CatalogLoyalty, text_font=ToontownGlobals.getSignFont(), text_pos=(1.0 - lift, 0.132), text_scale=0.065, text_fg=(0.353, 0.627, 0.627, 1.0), text2_fg=(0.353, 0.427, 0.427, 1.0))
-        self.loyaltyCatalogButton2.hide()
+         -0.3), image_scale=(1.0, 1.0, smash), image_pos=(0.0, 0.0, -1.4 + lift), image=newDown, pressEffect=0, command=self.showSpecialItems, text=TTLocalizer.CatalogSpecial, text_font=ToontownGlobals.getSignFont(), text_pos=(1.0 - lift, 0.132), text_scale=0.065, text_fg=(0.353, 0.627, 0.627, 1.0), text2_fg=(0.353, 0.427, 0.427, 1.0))
+        self.specialCatalogButton2.hide()
         self.emblemCatalogButton = DirectButton(self.base, relief=None, pos=(0, 0, 1.05), frameSize=(-0.2,
          0.25,
          -2.0,
@@ -578,8 +578,8 @@ class CatalogScreen(DirectFrame):
             self.newCatalogButton2.component('text%d' % i).setR(90)
             self.backCatalogButton.component('text%d' % i).setR(90)
             self.backCatalogButton2.component('text%d' % i).setR(90)
-            self.loyaltyCatalogButton.component('text%d' % i).setR(90)
-            self.loyaltyCatalogButton2.component('text%d' % i).setR(90)
+            self.specialCatalogButton.component('text%d' % i).setR(90)
+            self.specialCatalogButton2.component('text%d' % i).setR(90)
             self.emblemCatalogButton.component('text%d' % i).setR(90)
             self.emblemCatalogButton2.component('text%d' % i).setR(90)
 
@@ -623,8 +623,8 @@ class CatalogScreen(DirectFrame):
                 continue
             if isMaxBankOffered and item in allBankItems and item.furnitureType != CatalogFurnitureItem.MaxBankId:
                 continue
-            if item.loyaltyRequirement() != 0:
-                self.loyaltyPanelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeLoyalty, parentCatalogScreen=self))
+            if item.getIsSpecial():
+                self.specialPanelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeSpecial, parentCatalogScreen=self))
             elif item.getEmblemPrices():
                 self.emblemPanelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeWeekly, parentCatalogScreen=self))
             else:
@@ -641,10 +641,10 @@ class CatalogScreen(DirectFrame):
                 continue
             if isMaxBankOffered and item in allBankItems and item.furnitureType != CatalogFurnitureItem.MaxBankId:
                 continue
-            if item.loyaltyRequirement() != 0:
-                self.loyaltyPanelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeLoyalty, parentCatalogScreen=self))
+            if item.getIsSpecial():
+                self.specialPanelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeSpecial, parentCatalogScreen=self))
             elif item.getEmblemPrices():
-                self.emblemPanelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeBackOrder, parentCatalogScreen=self))
+                self.emblemPanelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeBackorder, parentCatalogScreen=self))
             else:
                 self.backPanelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeBackorder, parentCatalogScreen=self))
 
@@ -652,8 +652,8 @@ class CatalogScreen(DirectFrame):
         self.setNumNewPages(numPages)
         numPages = self.packPages(self.backPanelList, self.backPageList, 'back')
         self.setNumBackPages(numPages)
-        numPages = self.packPages(self.loyaltyPanelList, self.loyaltyPageList, 'loyalty')
-        self.setNumLoyaltyPages(numPages)
+        numPages = self.packPages(self.specialPanelList, self.specialPageList, 'special')
+        self.setNumSpecialPages(numPages)
         numPages = self.packPages(self.emblemPanelList, self.emblemPageList, 'emblem')
         self.setNumEmblemPages(numPages)
         currentWeek = base.localAvatar.catalogScheduleCurrentWeek - 1
@@ -766,7 +766,7 @@ class CatalogScreen(DirectFrame):
         self.clarabelleFrame.setPosHprScale(-0.01, 0.0, -0.01, 0.0, 0.0, 0.0, 1.02, 1.0, 1.02)
 
     def reload(self):
-        for panel in self.panelList + self.backPanelList + self.loyaltyPanelList + self.emblemPanelList:
+        for panel in self.panelList + self.backPanelList + self.specialPanelList + self.emblemPanelList:
             panel.destroy()
 
         def priceSort(a, b, type):
@@ -778,23 +778,23 @@ class CatalogScreen(DirectFrame):
         self.maxPageIndex = 0
         self.numNewPages = 0
         self.numBackPages = 5
-        self.numLoyaltyPages = 0
+        self.numSpecialPages = 0
         self.viewing = 'New'
         self.panelList = []
         self.backPanelList = []
-        self.loyaltyList = []
+        self.specialList = []
         self.pageList = []
         self.backPageList = []
-        self.loyaltyPanelList = []
-        self.loyaltyPageList = []
+        self.specialPanelList = []
+        self.specialPageList = []
         self.panelDict = {}
         self.visiblePanels = []
         itemList = base.localAvatar.monthlyCatalog + base.localAvatar.weeklyCatalog
         itemList.sort(lambda a, b: priceSort(a, b, CatalogItem.CatalogTypeWeekly))
         itemList.reverse()
         for item in itemList:
-            if item.loyaltyRequirement() != 0:
-                self.loyaltyPanelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeLoyalty, parentCatalogScreen=self))
+            if item.getIsSpecial():
+                self.specialPanelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeSpecial, parentCatalogScreen=self))
             else:
                 self.panelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeWeekly))
 
@@ -802,8 +802,8 @@ class CatalogScreen(DirectFrame):
         itemList.sort(lambda a, b: priceSort(a, b, CatalogItem.CatalogTypeBackorder))
         itemList.reverse()
         for item in itemList:
-            if item.loyaltyRequirement() != 0:
-                self.loyaltyPanelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeLoyalty, parentCatalogScreen=self))
+            if item.getIsSpecial():
+                self.specialPanelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeSpecial, parentCatalogScreen=self))
             else:
                 self.backPanelList.append(CatalogItemPanel.CatalogItemPanel(parent=hidden, item=item, type=CatalogItem.CatalogTypeBackorder))
 
@@ -811,8 +811,8 @@ class CatalogScreen(DirectFrame):
         self.setNumNewPages(numPages)
         numPages = self.packPages(self.backPanelList, self.backPageList, 'back')
         self.setNumBackPages(numPages)
-        numPages = self.packPages(self.loyaltyPanelList, self.loyaltyPageList, 'loyalty')
-        self.setNumLoyaltyPages(numPages)
+        numPages = self.packPages(self.specialPanelList, self.specialPageList, 'special')
+        self.setNumSpecialPages(numPages)
         seriesNumber = (base.localAvatar.catalogScheduleCurrentWeek - 1) / ToontownGlobals.CatalogNumWeeksPerSeries + 1
         self.catalogSeries['text'] = Localizer.CatalogSeriesLabel % seriesNumber
         weekNumber = (base.localAvatar.catalogScheduleCurrentWeek - 1) % ToontownGlobals.CatalogNumWeeksPerSeries + 1
@@ -835,7 +835,7 @@ class CatalogScreen(DirectFrame):
         self.destroy()
         del self.base
         del self.squares
-        for panel in self.panelList + self.backPanelList + self.loyaltyPanelList + self.emblemPanelList:
+        for panel in self.panelList + self.backPanelList + self.specialPanelList + self.emblemPanelList:
             panel.destroy()
 
         del self.panelList
@@ -853,8 +853,8 @@ class CatalogScreen(DirectFrame):
         del self.newCatalogButton2
         del self.backCatalogButton
         del self.backCatalogButton2
-        del self.loyaltyCatalogButton
-        del self.loyaltyCatalogButton2
+        del self.specialCatalogButton
+        del self.specialCatalogButton2
         del self.pageLabel
         if self.createdGiftGui:
             del self.giftToggle
@@ -899,8 +899,8 @@ class CatalogScreen(DirectFrame):
         self.newCatalogButton2.hide()
         self.backCatalogButton.hide()
         self.backCatalogButton2.hide()
-        self.loyaltyCatalogButton.hide()
-        self.loyaltyCatalogButton2.hide()
+        self.specialCatalogButton.hide()
+        self.specialCatalogButton2.hide()
         self.emblemCatalogButton.hide()
         self.emblemCatalogButton2.hide()
         self.hangup.hide()
@@ -924,7 +924,7 @@ class CatalogScreen(DirectFrame):
         if hasattr(self, 'beanBank'):
             self.beanBank['text'] = str(base.localAvatar.getTotalMoney())
             if lock == 0:
-                for item in self.panelList + self.backPanelList + self.loyaltyPanelList + self.emblemPanelList:
+                for item in self.panelList + self.backPanelList + self.specialPanelList + self.emblemPanelList:
                     if type(item) != type(''):
                         item.updateButtons(self.gifting)
 

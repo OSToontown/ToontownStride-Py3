@@ -4,7 +4,7 @@ daemon:
 general:
     eventlogger: 127.0.0.1:7198
     dc_files:
-        - ../dclass/united.dc
+        - ../dclass/stride.dc
 
 messagedirector:
     bind: 127.0.0.1:7100
@@ -22,7 +22,7 @@ uberdogs:
       id: 4501
       anonymous: false
 
-    - class: TTUFriendsManager
+    - class: TTSFriendsManager
       id: 4666
       anonymous: false
 
@@ -33,7 +33,7 @@ uberdogs:
 roles:
     - type: clientagent
       bind: 0.0.0.0:7199
-      version: "ttu-dev"
+      version: "tts-dev"
       client:
        relocate: true
        add_interest: enabled

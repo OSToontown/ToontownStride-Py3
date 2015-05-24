@@ -91,6 +91,9 @@ class DistributedNPCLaffRestock(DistributedNPCToonBase):
         elif mode == LaffRestockGlobals.NoMoney:
             self.setChatAbsolute(TTLocalizer.RestockNoMoneyMessage, CFSpeech | CFTimeout)
             self.resetLaffClerk()
+        elif mode == NPCToons.SELL_MOVIE_CHEATER:
+            self.setChatAbsolute(TTLocalizer.RestockCheaterMessage, CFSpeech | CFTimeout)
+            self.resetLaffClerk()
 
     def __handleRestock(self, laff, cost):
         self.sendUpdate('restock', [self.av.doId, laff, cost])

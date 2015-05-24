@@ -1,6 +1,8 @@
 from pandac.PandaModules import *
 from direct.directnotify import DirectNotifyGlobal
-import os, sys, time, argparse
+import os
+import sys
+import time
 
 class LogAndOutput:
     def __init__(self, orig, log):
@@ -17,17 +19,13 @@ class LogAndOutput:
         self.log.flush()
         self.orig.flush()
 
-class TTULauncher:
-    notify = DirectNotifyGlobal.directNotify.newCategory('TTULauncher')
+class TTSLauncher:
+    notify = DirectNotifyGlobal.directNotify.newCategory('TTSLauncher')
 
     def __init__(self):
-        self.logPrefix = 'united-'
         self.http = HTTPClient()
-        
-        parser = argparse.ArgumentParser()
-        parser.add_argument('token')
-        parser.add_argument('server')
-        self.args = parser.parse_args()
+
+        self.logPrefix = 'stride-'
 
         ltime = 1 and time.localtime()
         logSuffix = '%02d%02d%02d_%02d%02d%02d' % (ltime[0] - 2000,  ltime[1], ltime[2], ltime[3], ltime[4], ltime[5])
@@ -45,11 +43,14 @@ class TTULauncher:
         sys.stderr = logErr
 
     def getPlayToken(self):
-        return self.args.token
+        return self.getValue('TTS_PLAYCOOKIE')
 
     def getGameServer(self):
-        return self.args.server
-    
+        return self.getValue('TTS_GAMESERVER')
+
+    def getValue(self, key, default = None):
+        return os.environ.get(key, default)
+
     def setPandaErrorCode(self):
         pass
     

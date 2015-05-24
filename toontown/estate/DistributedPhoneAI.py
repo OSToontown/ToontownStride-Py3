@@ -98,9 +98,6 @@ class DistributedPhoneAI(DistributedFurnitureItemAI):
         if isinstance(item, CatalogInvalidItem):
             self.air.writeServerEvent('suspicious', avId, 'Tried to purchase invalid catalog item.')
             return
-        if item.loyaltyRequirement():
-            self.air.writeServerEvent('suspicious', avId, 'Tried to purchase an unimplemented loyalty item!')
-            return
         if item in av.backCatalog:
             price = item.getPrice(CatalogItem.CatalogTypeBackorder)
         elif item in av.weeklyCatalog or item in av.monthlyCatalog:

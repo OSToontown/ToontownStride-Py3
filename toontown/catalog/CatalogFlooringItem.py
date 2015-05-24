@@ -108,11 +108,8 @@ class CatalogFlooringItem(CatalogSurfaceItem):
 
     def decodeDatagram(self, di, versionNumber, store):
         CatalogAtticItem.CatalogAtticItem.decodeDatagram(self, di, versionNumber, store)
-        if versionNumber < 3:
-            self.patternIndex = di.getUint8()
-        else:
-            self.patternIndex = di.getUint16()
-        if versionNumber < 4 or store & CatalogItem.Customization:
+        self.patternIndex = di.getUint16()
+        if store & CatalogItem.Customization:
             self.colorIndex = di.getUint8()
         else:
             self.colorIndex = 0

@@ -1,12 +1,7 @@
 from pandac.PandaModules import *
-import random
-import string
-import copy
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-import os
-from direct.showbase import AppRunnerGlobal
 from direct.directnotify import DirectNotifyGlobal
+from toontown.toonbase import TTLocalizer, ToontownGlobals
+import random
 
 class NameGenerator:
     text = TextNode('text')

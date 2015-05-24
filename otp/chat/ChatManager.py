@@ -43,8 +43,8 @@ class ChatManager(DirectObject.DirectObject):
         self.wantBackgroundFocus = 1
         self.__scObscured = 0
         self.__normalObscured = 0
-        self.noSecretChatAtAll = None
-        self.noSecretChatAtAllAndNoWhitelist = None
+        self.noTrueFriendsAtAll = None
+        self.noTrueFriendsAtAllAndNoWhitelist = None
         self.fsm = ClassicFSM.ClassicFSM('chatManager', [State.State('off', self.enterOff, self.exitOff),
          State.State('mainMenu', self.enterMainMenu, self.exitMainMenu),
          State.State('speedChat', self.enterSpeedChat, self.exitSpeedChat),
@@ -52,8 +52,8 @@ class ChatManager(DirectObject.DirectObject):
          State.State('whisper', self.enterWhisper, self.exitWhisper),
          State.State('whisperChat', self.enterWhisperChat, self.exitWhisperChat),
          State.State('whisperSpeedChat', self.enterWhisperSpeedChat, self.exitWhisperSpeedChat),
-         State.State('noSecretChatAtAll', self.enterNoSecretChatAtAll, self.exitNoSecretChatAtAll),
-         State.State('noSecretChatAtAllAndNoWhitelist', self.enterNoSecretChatAtAllAndNoWhitelist, self.exitNoSecretChatAtAllAndNoWhitelist),
+         State.State('noTrueFriendsAtAll', self.enterNoTrueFriendsAtAll, self.exitNoTrueFriendsAtAll),
+         State.State('noTrueFriendsAtAllAndNoWhitelist', self.enterNoTrueFriendsAtAllAndNoWhitelist, self.exitNoTrueFriendsAtAllAndNoWhitelist),
          State.State('otherDialog', self.enterOtherDialog, self.exitOtherDialog),
          State.State('whiteListOpenChat', self.enterWhiteListOpenChat, self.exitWhiteListOpenChat),
          State.State('whiteListAvatarChat', self.enterWhiteListAvatarChat, self.exitWhiteListAvatarChat)], 'off', 'off')
@@ -69,12 +69,12 @@ class ChatManager(DirectObject.DirectObject):
         del self.chatInputNormal
         self.chatInputSpeedChat.delete()
         del self.chatInputSpeedChat
-        if self.noSecretChatAtAll:
-            self.noSecretChatAtAll.destroy()
-            self.noSecretChatAtAll = None
-        if self.noSecretChatAtAllAndNoWhitelist:
-            self.noSecretChatAtAllAndNoWhitelist.destroy()
-            self.noSecretChatAtAllAndNoWhitelist = None
+        if self.noTrueFriendsAtAll:
+            self.noTrueFriendsAtAll.destroy()
+            self.noTrueFriendsAtAll = None
+        if self.noTrueFriendsAtAllAndNoWhitelist:
+            self.noTrueFriendsAtAllAndNoWhitelist.destroy()
+            self.noTrueFriendsAtAllAndNoWhitelist = None
         del self.localAvatar
         del self.cr
         return
@@ -280,17 +280,17 @@ class ChatManager(DirectObject.DirectObject):
     def exitNormalChat(self):
         self.chatInputNormal.deactivate()
 
-    def enterNoSecretChatAtAll(self):
-        self.notify.error('called enterNoSecretChatAtAll() on parent class')
+    def enterNoTrueFriendsAtAll(self):
+        self.notify.error('called enterNoTrueFriendsAtAll() on parent class')
 
-    def exitNoSecretChatAtAll(self):
-        self.notify.error('called exitNoSecretChatAtAll() on parent class')
+    def exitNoTrueFriendsAtAll(self):
+        self.notify.error('called exitNoTrueFriendsAtAll() on parent class')
 
-    def enterNoSecretChatAtAllAndNoWhitelist(self):
-        self.notify.error('called enterNoSecretChatAtAllAndNoWhitelist() on parent class')
+    def enterNoTrueFriendsAtAllAndNoWhitelist(self):
+        self.notify.error('called enterNoTrueFriendsAtAllAndNoWhitelist() on parent class')
 
-    def exitNoSecretChatAtAllAndNoWhitelist(self):
-        self.notify.error('called exitNoSecretChatAtAllAndNoWhitelist() on parent class')
+    def exitNoTrueFriendsAtAllAndNoWhitelist(self):
+        self.notify.error('called exitNoTrueFriendsAtAllAndNoWhitelist() on parent class')
 
     def enterOtherDialog(self):
         pass

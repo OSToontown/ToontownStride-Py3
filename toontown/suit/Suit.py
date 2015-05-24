@@ -1,19 +1,12 @@
-from direct.actor import Actor
-from otp.avatar import Avatar
-import SuitDNA
-from toontown.toonbase import ToontownGlobals
 from pandac.PandaModules import *
-from toontown.battle import SuitBattleGlobals
-from toontown.nametag import NametagGlobals
+from direct.actor import Actor
 from direct.task.Task import Task
-from toontown.battle import BattleProps
-from toontown.toonbase import TTLocalizer
-from pandac.PandaModules import VirtualFileMountHTTP, VirtualFileSystem, Filename, DSearchPath
-from direct.showbase import AppRunnerGlobal
-from toontown.nametag import NametagGroup
-import string
-import os
+from otp.avatar import Avatar
+from toontown.battle import BattleProps, SuitBattleGlobals
+from toontown.nametag import NametagGlobals
+from toontown.toonbase import TTLocalizer, ToontownGlobals
 from toontown.suit import SuitGlobals
+import SuitDNA, string
 
 aSize = 6.06
 bSize = 5.29

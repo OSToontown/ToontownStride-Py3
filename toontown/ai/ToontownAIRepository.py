@@ -30,7 +30,6 @@ from toontown.distributed.ToontownInternalRepository import ToontownInternalRepo
 from toontown.coderedemption.TTCodeRedemptionMgrAI import TTCodeRedemptionMgrAI
 from toontown.dna.DNAParser import loadDNAFileAI
 from toontown.estate.EstateManagerAI import EstateManagerAI
-from toontown.friends.TrueFriendsMgrAI import TrueFriendsMgrAI
 from toontown.hood import BRHoodAI
 from toontown.hood import BossbotHQAI
 from toontown.hood import CashbotHQAI
@@ -87,7 +86,6 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.wantCogbuildings = self.config.GetBool('want-cogbuildings', True)
         self.wantCogdominiums = self.config.GetBool('want-cogdominiums', True)
         self.wantTrackClsends = self.config.GetBool('want-track-clsends', False)
-        self.wantGloveNpc = self.config.GetBool('want-glove-npc', True)
         self.baseXpMultiplier = self.config.GetFloat('base-xp-multiplier', 1.0)
         self.wantHalloween = self.config.GetBool('want-halloween', False)
         self.wantChristmas = self.config.GetBool('want-christmas', False)
@@ -128,8 +126,6 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.buildingQueryMgr = DistributedBuildingQueryMgrAI(self)
         self.buildingQueryMgr.generateWithRequired(2)
         self.groupManager.generateWithRequired(2)
-        self.trueFriendsMgr = TrueFriendsMgrAI(self)
-        self.trueFriendsMgr.generateWithRequired(2)
         if self.wantFishing:
             self.fishManager = FishManagerAI(self)
         if self.wantHousing:

@@ -18,9 +18,6 @@ class DistributedToonUD(DistributedObjectUD):
     
     def setMaxMoney(self, todo0):
         pass
-    
-    def setMaxBankMoney(self, todo0):
-        pass
 
     def setMoney(self, todo0):
         pass
@@ -541,11 +538,5 @@ class DistributedToonUD(DistributedObjectUD):
     def setDISLid(self, todo0):
         pass
 
-    def flagAv(self, todo0, todo1, todo2):
-        pass
-
     def setRedeemedCodes(self, redeemedCodes):
-        pass
-
-    def setTrueFriends(self, trueFriends):
         pass

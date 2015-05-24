@@ -210,10 +210,6 @@ dclass FriendManager : DistributedObject {
   friendResponse(int8, int32);
   inviteeFriendQuery(int32, string, blob, int32);
   inviteeCancelFriendQuery(int32);
-  requestSecret() airecv clsend;
-  requestSecretResponse(int8, string);
-  submitSecret(string(0-256)) airecv clsend;
-  submitSecretResponse(int8, int32);
 };
 
 struct leaderBoardRecordResponces {
@@ -416,7 +412,7 @@ from toontown.coghq import DistributedMintBattle/AI
 from toontown.coghq import DistributedStage/AI
 from toontown.coghq import DistributedStageRoom/AI
 from toontown.coghq import DistributedStageBattle/AI
-from toontown.pets.PetDCImports/AI import *
+from toontown.pets.DistributedPet/AI import *
 from toontown.pets import DistributedPetProxy/AI
 from toontown.distributed import ToontownDistrict/AI
 from toontown.distributed import ToontownDistrictStats/AI
@@ -477,7 +473,7 @@ from toontown.parties import DistributedPartyJukeboxActivity/AI
 from toontown.parties import DistributedPartyJukebox40Activity/AI
 from toontown.parties import DistributedPartyValentineJukeboxActivity/AI
 from toontown.parties import DistributedPartyValentineJukebox40Activity/AI
-from toontown.friends import TTUFriendsManager/UD
+from toontown.friends import TTSFriendsManager/UD
 from toontown.safezone import DistributedGolfKart/AI
 from toontown.safezone import DistributedPicnicBasket/AI
 from toontown.distributed import DistributedTimer/AI
@@ -503,7 +499,6 @@ from toontown.safezone import DistributedCheckers/AI
 from toontown.safezone import DistributedFindFour/AI
 from toontown.uberdog.DistributedPartyManager/AI/UD import DistributedPartyManager/AI/UD
 from toontown.coderedemption.TTCodeRedemptionMgr/AI import TTCodeRedemptionMgr/AI
-from toontown.friends.TrueFriendsMgr/AI import TrueFriendsMgr/AI
 from toontown.cogdominium import DistributedCogdoInterior/AI
 from toontown.cogdominium import DistributedCogdoBattleBldg/AI
 from toontown.cogdominium import DistributedCogdoElevatorExt/AI
@@ -654,17 +649,16 @@ typedef int16 pair16[2];
 dclass DistributedToon : DistributedPlayer {
   setDNAString(blob) required broadcast ownrecv db;
   setGM(uint16 = 0) required broadcast ownrecv db;
-  setMoney(int16 = 0) required ownrecv db;
-  setBankMoney(int32 = 0) required ownrecv;
-  setMaxMoney(int16 = 40) required broadcast ownrecv db;
-  setMaxBankMoney(int32 = 10000) required broadcast ownrecv db;
+  setMaxBankMoney(int16 maxMoney = 10000) required broadcast ownrecv db;
+  setBankMoney(int16 money = 0) required broadcast ownrecv db;
+  setMaxMoney(int16 maxMoney = 40) required broadcast ownrecv db;
+  setMoney(int16 money = 0) required broadcast ownrecv db;
   setMaxHp(int16 = 15) required broadcast ownrecv db;
   setHp(int16 = 15) required broadcast ownrecv db;
   toonUp(uint16) broadcast ownrecv;
   takeDamage(uint16) broadcast ownrecv;
   setBattleId(uint32 = 0) required broadcast ram;
   setExperience(blob = [0*14]) required broadcast db;
-  setTrueFriends(uint32[]) required ownrecv db;
   setIgnored(uint32[]) required clsend airecv ownrecv db;
   setReported(uint32[]) required ownrecv db;
   setMaxCarry(uint8 = 20) required ownrecv db;
@@ -739,8 +733,6 @@ dclass DistributedToon : DistributedPlayer {
   setCogTypes(uint8[] = [0 * 4]) required broadcast ownrecv db;
   setCogParts(uint32[] = [0 * 4]) required broadcast ownrecv db;
   setCogMerits(uint16[] = [0 * 4]) required ownrecv db;
-  setPromotionStatus(uint8[] = [0 * 4]) required broadcast ownrecv db;
-  requestPromotion(uint8) ownsend airecv;
   setCogIndex(int8) broadcast ram;
   setDisguisePageFlag(int8) ownrecv;
   setSosPageFlag(int8) ownrecv;
@@ -836,7 +828,6 @@ dclass DistributedToon : DistributedPlayer {
   setNeverStartedPartyRefunded(uint64, int8, uint16) ownrecv;
   setDISLname(string) ram;
   setDISLid(uint32) ram db airecv;
-  flagAv(uint32, uint16, string []) airecv ownsend;
   setAnimalSound(uint8 index) ram broadcast ownrecv;
   setBuffs(uint32[] = []) required ownrecv db;
   setRedeemedCodes(string [] = []) required ownrecv db;
@@ -3307,13 +3298,6 @@ dclass TTCodeRedemptionMgr : DistributedObject {
   redeemCodeResult(uint32);
 };
 
-dclass TrueFriendsMgr : DistributedObject {
-  requestId() airecv clsend;
-  requestIdResult(uint32, string, string);
-  redeemId(string) airecv clsend;
-  redeemIdResult(uint32, string);
-};
-
 struct Friend
 {
 uint32 doId;
@@ -3322,7 +3306,7 @@ blob dna;
 uint32 petId;
 };
 
-dclass TTUFriendsManager : DistributedObjectGlobal {
+dclass TTSFriendsManager : DistributedObjectGlobal {
   removeFriend(uint32) clsend;
   requestAvatarInfo(uint32[]) clsend;
 
@@ -3356,12 +3340,6 @@ dclass TTUFriendsManager : DistributedObjectGlobal {
 
   whisperSCEmoteTo(uint32 toId, uint16 emoteId) clsend;
   setWhisperSCEmoteFrom(uint32 fromId, uint16 emoteId);
-
-  requestSecret() clsend;
-  requestSecretResponse(int8 status, string secret);
-
-  submitSecret(string(0-256) secret) clsend;
-  submitSecretResponse(int8 status, int32 avId);
 
   sendTalkWhisper(uint32 toId, string message) clsend;
   receiveTalkWhisper(uint32 fromId, string message);

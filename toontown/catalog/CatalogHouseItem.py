@@ -40,6 +40,9 @@ class CatalogHouseItem(CatalogItem.CatalogItem):
 
     def getName(self):
         return TTLocalizer.HouseNames[self.houseId]
+
+    def getDeliveryTime(self):
+        return 0
         
     def getEmblemPrices(self):
         return HouseGlobals.HouseEmblemPrices[self.houseId]

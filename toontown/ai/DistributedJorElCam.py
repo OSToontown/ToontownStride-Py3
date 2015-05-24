@@ -42,10 +42,11 @@ class DistributedJorElCam(DistributedObject):
         base.cr.jorElHead = self.head
 
     def delete(self):
-        self.head = None
+        del self.head
         del base.cr.jorElHead
         DistributedObject.delete(self)
 
     def disable(self):
+        self.head.cleanup()
         self.head.removeNode()
         DistributedObject.disable(self)

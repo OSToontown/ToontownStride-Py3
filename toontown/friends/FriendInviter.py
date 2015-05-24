@@ -179,6 +179,9 @@ class FriendInviter(DirectFrame):
 
     def enterCheckAvailability(self):
         self.accept(self.avDisableName, self.__handleDisableAvatar)
+        if base.localAvatar.hasPet() and base.localAvatar.getPetId() == self.avId:
+            self.fsm.request('askingPet')
+            return
         if self.avId not in base.cr.doId2do:
             self.fsm.request('wentAway')
             return
@@ -262,13 +265,12 @@ class FriendInviter(DirectFrame):
         return Task.done
 
     def enterAskingPet(self):
-        self['text'] = OTPLocalizer.FriendInviterAskingPet % self.getName()
-        if base.localAvatar.hasPet():
-            if base.localAvatar.getPetId() == self.avId:
-                self['text'] = OTPLocalizer.FriendInviterAskingMyPet % self.getName()
+        if base.localAvatar.hasPet() and base.localAvatar.getPetId() == self.avId:
+            self['text'] = OTPLocalizer.FriendInviterAskingMyPet % self.getName()
+        else:
+            self['text'] = OTPLocalizer.FriendInviterAskingPet % self.getName()
         self.context = None
         self.bOk.show()
-        return
 
     def exitAskingPet(self):
         self.bOk.hide()

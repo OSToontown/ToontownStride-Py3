@@ -180,10 +180,8 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.gmNameTagEnabled = 0
         self.gmNameTagColor = 'whiteGM'
         self.gmNameTagString = ''
-        self.promotionStatus = [0, 0, 0, 0]
         self.buffs = []
         self.redeemedCodes = []
-        self.trueFriends = []
         self.ignored = []
         self.reported = []
 
@@ -371,7 +369,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         ResistanceChat.doEffect(msgIndex, self, nearbyToons)
 
     def d_battleSOS(self, sendToId):
-        self.cr.ttuFriendsManager.d_battleSOS(sendToId)
+        self.cr.ttsFriendsManager.d_battleSOS(sendToId)
 
     def battleSOS(self, requesterId):
         avatar = base.cr.identifyAvatar(requesterId)
@@ -473,7 +471,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             print ':%s: setTalk: %r, %r, %r' % (timestamp, fromAV, avatarName, chat)
         if base.config.GetBool('want-sleep-reply-on-regular-chat', 0):
             if base.localAvatar.sleepFlag == 1:
-                base.cr.ttuFriendsManager.d_sleepAutoReply(fromAV)
+                base.cr.ttsFriendsManager.d_sleepAutoReply(fromAV)
         newText, scrubbed = self.scrubTalk(chat, mods)
         self.displayTalk(newText)
         base.talkAssistant.receiveOpenTalk(fromAV, avatarName, fromAC, None, newText)
@@ -491,7 +489,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             return
         if base.localAvatar.sleepFlag == 1:
             if not base.cr.identifyAvatar(fromAV) == base.localAvatar:
-                base.cr.ttuFriendsManager.d_sleepAutoReply(fromAV)
+                base.cr.ttsFriendsManager.d_sleepAutoReply(fromAV)
         newText, scrubbed = self.scrubTalk(chat, mods)
         self.displayTalkWhisper(fromAV, avatarName, chat, mods)
         timestamp = time.strftime('%m-%d-%Y %H:%M:%S', time.localtime())
@@ -518,7 +516,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             return
         if base.localAvatar.sleepFlag == 1:
             if not base.cr.identifyAvatar(fromId) == base.localAvatar:
-                base.cr.ttuFriendsManager.d_sleepAutoReply(fromId)
+                base.cr.ttsFriendsManager.d_sleepAutoReply(fromId)
         chatString = SCDecoders.decodeSCEmoteWhisperMsg(emoteId, handle.getName())
         if chatString:
             self.displayWhisper(fromId, chatString, WTEmote)
@@ -539,7 +537,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             return
         if base.localAvatar.sleepFlag == 1:
             if not base.cr.identifyAvatar(fromId) == base.localAvatar:
-                base.cr.ttuFriendsManager.d_sleepAutoReply(fromId)
+                base.cr.ttsFriendsManager.d_sleepAutoReply(fromId)
         chatString = SCDecoders.decodeSCStaticTextMsg(msgIndex)
         if chatString:
             self.displayWhisper(fromId, chatString, WTQuickTalker)
@@ -558,7 +556,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def whisperSCToontaskTo(self, taskId, toNpcId, toonProgress, msgIndex, sendToId):
         messenger.send('wakeup')
 
-        base.cr.ttuFriendsManager.d_whisperSCToontaskTo(sendToId, taskId,
+        base.cr.ttsFriendsManager.d_whisperSCToontaskTo(sendToId, taskId,
             toNpcId, toonProgress, msgIndex
         )
 
@@ -890,9 +888,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         if self.disguisePage:
             self.disguisePage.updatePage()
 
-    def getCogTypes(self):
-        return self.cogTypes
-
     def setCogLevels(self, levels):
         self.cogLevels = levels
         if self.disguisePage:
@@ -935,9 +930,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
                 self.putOnSuit(cog)
             else:
                 self.putOnSuit(index, rental=True)
-
-    def setPromotionStatus(self, status):
-        self.promotionStatus = status
 
     def isCog(self):
         if self.cogIndex == -1:
@@ -2585,12 +2577,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def setRedeemedCodes(self, redeemedCodes):
         self.redeemedCodes = redeemedCodes
     
-    def setTrueFriends(self, trueFriends):
-        self.trueFriends = trueFriends
-    
-    def isTrueFriend(self, doId):
-        return doId in self.trueFriends
-    
     def b_setIgnored(self, ignored):
         self.setIgnored(ignored)
         self.d_setIgnored(ignored)
@@ -2658,15 +2644,6 @@ def zone(zoneId):
     """
     base.cr.sendSetZoneMsg(zoneId, [zoneId])
     return 'You have been moved to zone %d.' % zoneId
-
-@magicWord(category=CATEGORY_ADMINISTRATOR, types=[int])
-def promote(deptIndex):
-    """
-    sends a request to promote the invoker's [deptIndex] Cog disguise.
-    """
-    invoker = spellbook.getInvoker()
-    invoker.sendUpdate('requestPromotion', [deptIndex])
-    return 'Your promotion request has been sent.'
 
 @magicWord(category=CATEGORY_ADMINISTRATOR)
 def blackCat():

@@ -1,11 +1,10 @@
+from pandac.PandaModules import *
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import TTLocalizer
 from toontown.racing import KartShopGlobals
+from toontown.toonbase import TTLocalizer
 from toontown.toonbase.ToonBaseGlobal import *
-from pandac.PandaModules import *
 from toontown.toonbase.ToontownGlobals import *
-import random
 import cPickle
 
 class DistributedLeaderBoard(DistributedObject.DistributedObject):
@@ -20,7 +19,6 @@ class DistributedLeaderBoard(DistributedObject.DistributedObject):
         self.updateCount = 0
         self.board = None
         self.surface = None
-        return
 
     def generateInit(self):
         DistributedObject.DistributedObject.generateInit(self)
@@ -33,18 +31,6 @@ class DistributedLeaderBoard(DistributedObject.DistributedObject):
     def announceGenerate(self):
         DistributedObject.DistributedObject.announceGenerate(self)
         self.board.reparentTo(render)
-        self.accept('decorator-holiday-%d-ending' % ToontownGlobals.CRASHED_LEADERBOARD, self.showLists)
-        self.accept('decorator-holiday-%d-starting' % ToontownGlobals.CRASHED_LEADERBOARD, self.hideLists)
-        newsManager = base.cr.newsManager
-        if newsManager:
-            if ToontownGlobals.CRASHED_LEADERBOARD in newsManager.holidayIdList:
-                self.hideLists()
-
-    def showLists(self):
-        self.board.show()
-
-    def hideLists(self):
-        self.board.hide()
 
     def setPosHpr(self, x, y, z, h, p, r):
         self.surface.setPosHpr(x, y, z, h, p, r)

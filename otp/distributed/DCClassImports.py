@@ -2,7 +2,7 @@
 from pandac.PandaModules import *
 
 
-hashVal = 1929413177
+hashVal = 3632903811L
 
 
 from toontown.coghq import DistributedCashbotBossSafe, DistributedCashbotBossCrane, DistributedBattleFactory, DistributedCashbotBossTreasure, DistributedCogHQDoor, DistributedSellbotHQDoor, DistributedFactoryElevatorExt, DistributedMintElevatorExt, DistributedLawOfficeElevatorExt, DistributedLawOfficeElevatorInt, LobbyManager, DistributedMegaCorp, DistributedFactory, DistributedLawOffice, DistributedLawOfficeFloor, DistributedLift, DistributedDoorEntity, DistributedSwitch, DistributedButton, DistributedTrigger, DistributedCrushableEntity, DistributedCrusherEntity, DistributedStomper, DistributedStomperPair, DistributedLaserField, DistributedGolfGreenGame, DistributedSecurityCamera, DistributedMover, DistributedElevatorMarker, DistributedBarrelBase, DistributedGagBarrel, DistributedBeanBarrel, DistributedHealBarrel, DistributedGrid, ActiveCell, DirectionalCell, CrusherCell, DistributedCrate, DistributedSinkingPlatform, BattleBlocker, DistributedMint, DistributedMintRoom, DistributedMintBattle, DistributedStage, DistributedStageRoom, DistributedStageBattle, DistributedLawbotBossGavel, DistributedLawbotCannon, DistributedLawbotChair, DistributedCogKart, DistributedCountryClub, DistributedCountryClubRoom, DistributedMoleField, DistributedCountryClubBattle, DistributedMaze, DistributedFoodBelt, DistributedBanquetTable, DistributedGolfSpot
@@ -18,7 +18,6 @@ from toontown.ai import WelcomeValleyManager, NewsManager, DistributedAprilToons
 from otp.chat import ChatAgent
 from toontown.parties.GlobalPartyManager import GlobalPartyManager
 from toontown.racing.DistributedStartingBlock import DistributedViewingBlock
-from toontown.pets.PetDCImports import *
 from toontown.suit import DistributedSuitPlanner, DistributedSuitBase, DistributedSuit, DistributedTutorialSuit, DistributedFactorySuit, DistributedMintSuit, DistributedStageSuit, DistributedSellbotBoss, DistributedCashbotBoss, DistributedCashbotBossGoon, DistributedGoon, DistributedGridGoon, DistributedLawbotBoss, DistributedLawbotBossSuit, DistributedBossbotBoss
 from toontown.distributed import ToontownDistrict, ToontownDistrictStats, DistributedTimer
 from toontown.effects import DistributedFireworkShow
@@ -28,8 +27,8 @@ from toontown.minigame import DistributedMinigame, DistributedMinigameTemplate, 
 from toontown.racing import DistributedVehicle, DistributedStartingBlock, DistributedRace, DistributedKartPad, DistributedRacePad, DistributedViewPad, DistributedStartingBlock, DistributedLeaderBoard, DistributedGag, DistributedProjectile
 from toontown.catalog import CatalogManager, AccountDate
 from toontown.parties import DistributedParty, DistributedPartyActivity, DistributedPartyTeamActivity, DistributedPartyCannon, DistributedPartyCannonActivity, DistributedPartyCatchActivity, DistributedPartyWinterCatchActivity, DistributedPartyCogActivity, DistributedPartyWinterCogActivity, DistributedPartyFireworksActivity, DistributedPartyDanceActivityBase, DistributedPartyDanceActivity, DistributedPartyDance20Activity, DistributedPartyValentineDanceActivity, DistributedPartyValentineDance20Activity, DistributedPartyTrampolineActivity, DistributedPartyValentineTrampolineActivity, DistributedPartyVictoryTrampolineActivity, DistributedPartyWinterTrampolineActivity, DistributedPartyTugOfWarActivity, DistributedPartyJukeboxActivityBase, DistributedPartyJukeboxActivity, DistributedPartyJukebox40Activity, DistributedPartyValentineJukeboxActivity, DistributedPartyValentineJukebox40Activity
-from toontown.friends.TrueFriendsMgr import TrueFriendsMgr
-from toontown.friends import TTUFriendsManager
+from toontown.pets.DistributedPet import *
+from toontown.friends import TTSFriendsManager
 from toontown.cogdominium import DistributedCogdoInterior, DistributedCogdoBattleBldg, DistributedCogdoElevatorExt, DistributedCogdoElevatorInt, DistributedCogdoBarrel, DistCogdoGame, DistCogdoLevelGame, DistCogdoBoardroomGame, DistCogdoCraneGame, DistCogdoMazeGame, DistCogdoFlyingGame, DistCogdoCrane, DistCogdoCraneMoneyBag, DistCogdoCraneCog
 from toontown.uberdog.ARGManager import ARGManager
 from otp.distributed import Account, DistributedDistrict, DistributedDirectory

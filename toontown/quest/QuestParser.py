@@ -1,17 +1,12 @@
+from pandac.PandaModules import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
-from direct.showbase import AppRunnerGlobal
 from direct.showbase import DirectObject
-from direct.showbase import PythonUtil
-from pandac.PandaModules import *
 from otp.speedchat import SpeedChatGlobals
-from toontown.ai import DistributedBlackCatMgr
 from toontown.chat.ChatGlobals import *
-from toontown.suit import Suit
-from toontown.suit import SuitDNA
+from toontown.suit import Suit, SuitDNA
 from toontown.toon import ToonHeadFrame
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownBattleGlobals
+from toontown.toonbase import TTLocalizer, ToontownBattleGlobals
 from toontown.quest import QuestScripts
 import copy, re, tokenize, BlinkingArrows, StringIO
 

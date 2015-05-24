@@ -22,7 +22,6 @@ class PhotoAlbumPage(ShtikerPage.ShtikerPage):
         self.photos = {}
         self.selectedFileName = None
         self.selectedFilePath = None
-        #TODO: Localizer support for screenshot storing and names
         self.installPath = os.getcwd()
         self.photoPath = TTLocalizer.ScreenshotPath
         self.photoIndex = 0
@@ -232,7 +231,7 @@ class PhotoAlbumPage(ShtikerPage.ShtikerPage):
         files = os.listdir(self.photoPath)
         photos = []
         for fileName in files:
-            if fileName[0:17] == 'united-screenshot' and fileName[-4:] == '.jpg':
+            if fileName[0:17] == 'stride-screenshot' and fileName[-4:] == '.jpg':
                 photos.append(fileName)          
 
         return photos

@@ -48,12 +48,12 @@ ChatManagerWhisperToName = 'Whisper To:\n%s'
 ChatManagerCancel = lCancel
 ChatManagerWhisperOffline = '%s is offline.'
 # True Friends
-NoSecretChatAtAllTitle = 'Open Chat With True Friends'
-NoSecretChatAtAll = 'Open Chat with True Friends allows real-life friends to chat openly with each other by means of a True Friend Code that must be shared outside of the game.\n\nTo activate these features or to learn more, exit Toontown and then click on Membership and select Manage Account. Log in to edit your "Community Settings."'
+NoTrueFriendsAtAllTitle = 'Open Chat With True Friends'
+NoTrueFriendsAtAll = 'Open Chat with True Friends allows real-life friends to chat openly with each other by means of a True Friend Code that must be shared outside of the game.\n\nTo activate these features or to learn more, exit Toontown and then click on Membership and select Manage Account. Log in to edit your "Community Settings."'
 # Speedchat Plus
-NoSecretChatAtAllAndNoWhitelistTitle = 'Chat Button'
-NoSecretChatAtAllAndNoWhitelist = 'You can use the blue Chat button to communicate with other Toons by using Speechat Plus or Open Chat with True Friends.\n\nSpeedchat Plus is a form of type chat that allows users to communicate by using the SpeedChat Plus dictionary.\n\nOpen Chat with True Friends allows real-life friends to chat openly with each other by means of a True Friend Code that must be shared outside of the game.\n\nTo activate these features or to learn more, exit Toontown and then click on Membership and select Manage Account.  Log in to edit your "Community Settings."'
-NoSecretChatAtAllOK = lOK
+NoTrueFriendsAtAllAndNoWhitelistTitle = 'Chat Button'
+NoTrueFriendsAtAllAndNoWhitelist = 'You can use the blue Chat button to communicate with other Toons by using Speechat Plus or Open Chat with True Friends.\n\nSpeedchat Plus is a form of type chat that allows users to communicate by using the SpeedChat Plus dictionary.\n\nOpen Chat with True Friends allows real-life friends to chat openly with each other by means of a True Friend Code that must be shared outside of the game.\n\nTo activate these features or to learn more, exit Toontown and then click on Membership and select Manage Account.  Log in to edit your "Community Settings."'
+NoTrueFriendsAtAllOK = lOK
 WhisperToFormat = 'To %s %s'
 WhisperToFormatName = 'To %s'
 WhisperFromFormatName = '%s whispers'
@@ -99,7 +99,7 @@ CRBootedReasons = {100: 'You have been disconnected because someone else just lo
  101: 'Please relaunch the game from the official launcher.',
  102: 'You are not authorized to use administrator privileges.',
  103: 'You were banned by a moderator.\n\nBehave next time!',
- 105: 'Toontown United is now temporarily closed for maintenance. Everyone who was playing has been disconnected from the game.\n\nFor more information, please visit the Toontown United website.',
+ 105: 'Toontown Stride is now temporarily closed for maintenance. Everyone who was playing has been disconnected from the game.\n\nFor more information, please visit the Toontown Stride website.',
  153: 'The district you were playing on has been reset.  Everyone who was playing on that district has been disconnected.  However, you should be able to connect again and go right back into the game.'}
 CRBootedReasonUnknownCode = 'An unexpected problem has occurred (error code %s).  Your connection has been lost, but you should be able to connect again and go right back into the game.'
 CRTryConnectAgain = '\n\nTry to connect again?'
@@ -107,8 +107,8 @@ CRToontownUnavailable = 'The server appears to be temporarily unavailable, still
 CRToontownUnavailableCancel = lCancel
 CRNameCongratulations = 'CONGRATULATIONS!!'
 CRNameAccepted = 'Your name has been\napproved by the Toon Council.\n\nFrom this day forth\nyou will be named\n"%s"'
-CRMaintenanceCountdownMessage = 'Attention Toons! Toontown United will be going down for maintenance in %d minutes.'
-CRMaintenanceMessage = 'Attention Toons! Toontown United is now going down for maintenance.'
+CRMaintenanceCountdownMessage = 'Attention Toons! Toontown Stride will be going down for maintenance in %d minutes.'
+CRMaintenanceMessage = 'Attention Toons! Toontown Stride is now going down for maintenance.'
 AfkForceAcknowledgeMessage = 'Your toon got sleepy and went to bed.'
 CREnteringToontown = 'Entering...'
 DialogSpecial = 'ooo'
@@ -201,14 +201,10 @@ FriendInviterConfirmRemove = 'Remove'
 FriendInviterYes = lYes
 FriendInviterNo = lNo
 FriendInviterClickToon = 'Click on the toon you would like to make friends with.'
-FriendInviterTooMany = 'You have too many friends on your list to add another one now. You will have to remove some friends if you want to make friends with %s.'
 FriendInviterToonTooMany = 'You have too many toon friends on your list to add another one now. You will have to remove some toon friends if you want to make friends with %s.'
 FriendInviterNotYet = 'Would you like to make friends with %s?'
 FriendInviterCheckAvailability = 'Seeing if %s is available.'
 FriendInviterNotAvailable = '%s is busy right now; try again later.'
-FriendInviterCantSee = 'This only works if you can see %s.'
-FriendInviterNotOnline = 'This only works if %s is online'
-FriendInviterNotOpen = '%s does not have open chat, use secrets to make friends'
 FriendInviterWentAway = '%s went away.'
 FriendInviterAlready = '%s is already your friend.'
 FriendInviterAlreadyInvited = '%s has already been invited.'
@@ -2256,7 +2252,7 @@ AvatarDetailPanelOnline = 'District: %(district)s\nLocation: %(location)s'
 AvatarDetailPanelOffline = 'District: offline\nLocation: offline'
 AvatarPanelFriends = 'Friends'
 AvatarPanelWhisper = 'Whisper'
-AvatarPanelSecrets = 'True Friends'
+AvatarPanelTrueFriends = 'True Friends'
 AvatarPanelGoTo = 'Go To'
 AvatarPanelIgnore = 'Ignore'
 AvatarPanelStopIgnore = 'Stop Ignoring'

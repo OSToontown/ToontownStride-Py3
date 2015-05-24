@@ -17,7 +17,8 @@ from toontown.toon.Toon import teleportDebug
 from toontown.battle import BattleParticles
 from direct.fsm import StateData
 from toontown.building import ToonInterior
-from toontown.hood import QuietZoneState, ZoneUtil, HydrantInteractiveProp, MailboxInteractiveProp, TrashcanInteractiveProp
+from toontown.hood import QuietZoneState
+from toontown.hood import ZoneUtil
 from direct.interval.IntervalGlobal import *
 from toontown.dna.DNAParser import DNABulkLoader
 
@@ -217,11 +218,6 @@ class TownLoader(StateData.StateData):
             nodePath = npc.getPath(i)
             nodePath.wrtReparentTo(bucket)
 
-        npc = self.geom.findAllMatches('**/sb*:*animated_building*_DNARoot')
-        for i in xrange(npc.getNumPaths()):
-            nodePath = npc.getPath(i)
-            nodePath.wrtReparentTo(bucket)
-
     def makeDictionaries(self, dnaStore):
         self.nodeDict = {}
         self.zoneDict = {}
@@ -291,7 +287,6 @@ class TownLoader(StateData.StateData):
     def createAnimatedProps(self, nodeList):
         self.animPropDict = {}
         self.zoneIdToInteractivePropDict = {}
-
         for i in nodeList:
             animPropNodes = i.findAllMatches('**/animated_prop_*')
             numAnimPropNodes = animPropNodes.getNumPaths()
@@ -313,26 +308,32 @@ class TownLoader(StateData.StateData):
                 animPropList.append(animPropObj)
 
             interactivePropNodes = i.findAllMatches('**/interactive_prop_*')
+            numInteractivePropNodes = interactivePropNodes.getNumPaths()
+            for j in xrange(numInteractivePropNodes):
+                interactivePropNode = interactivePropNodes.getPath(j)
+                className = 'InteractiveAnimatedProp'
+                if 'hydrant' in interactivePropNode.getName():
+                    className = 'HydrantInteractiveProp'
+                elif 'trashcan' in interactivePropNode.getName():
+                    className = 'TrashcanInteractiveProp'
+                elif 'mailbox' in interactivePropNode.getName():
+                    className = 'MailboxInteractiveProp'
+                symbols = {}
+                base.cr.importModule(symbols, 'toontown.hood', [className])
+                classObj = getattr(symbols[className], className)
+                interactivePropObj = classObj(interactivePropNode)
+                animPropList = self.animPropDict.get(i)
+                if animPropList is None:
+                    animPropList = self.animPropDict.setdefault(i, [])
+                animPropList.append(interactivePropObj)
+                if interactivePropObj.getCellIndex() == 0:
+                    zoneId = int(i.getName())
+                    if zoneId not in self.zoneIdToInteractivePropDict:
+                        self.zoneIdToInteractivePropDict[zoneId] = interactivePropObj
+                    else:
+                        self.notify.error('already have interactive prop %s in zone %s' % (self.zoneIdToInteractivePropDict, zoneId))
 
-            for j in xrange(interactivePropNodes.getNumPaths()):
-                propNode = interactivePropNodes.getPath(j)
-                propName = propNode.getName()
-
-                if 'hydrant' in propName:
-                    prop = HydrantInteractiveProp.HydrantInteractiveProp(propNode)
-                elif 'trashcan' in propName:
-                    prop = TrashcanInteractiveProp.TrashcanInteractiveProp(propNode)
-                elif 'mailbox' in propName:
-                    prop = MailboxInteractiveProp.MailboxInteractiveProp(propNode)
-                else:
-                    continue
-
-                if i in self.animPropDict:
-                    self.animPropDict[i].append(prop)
-                else:
-                    self.animPropDict[i] = [prop]
-
-                self.zoneIdToInteractivePropDict[int(i.getName())] = prop
+        return
 
     def deleteAnimatedProps(self):
         for zoneNode, animPropList in self.animPropDict.items():
@@ -350,6 +351,7 @@ class TownLoader(StateData.StateData):
             animProp.exit()
 
     def getInteractiveProp(self, zoneId):
+        result = None
         if zoneId in self.zoneIdToInteractivePropDict:
-            return self.zoneIdToInteractivePropDict[zoneId]
-        return None
+            result = self.zoneIdToInteractivePropDict[zoneId]
+        return result

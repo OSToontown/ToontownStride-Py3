@@ -2,7 +2,7 @@ from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
 from otp.otpbase import OTPLocalizer
 from toontown.hood import ZoneUtil
 
-class TTUFriendsManager(DistributedObjectGlobal):
+class TTSFriendsManager(DistributedObjectGlobal):
     def d_removeFriend(self, friendId):
         self.sendUpdate('removeFriend', [friendId])
 
@@ -130,18 +130,6 @@ class TTUFriendsManager(DistributedObjectGlobal):
         toon = base.cr.identifyAvatar(fromId)
         if toon:
             base.localAvatar.setTalkWhisper(fromId, 0, toon.getName(), message, [], 0)
-
-    def d_requestSecret(self):
-        self.sendUpdate('requestSecret', [])
-
-    def requestSecretResponse(self, result, secret):
-        messenger.send('requestSecretResponse', [result, secret])
-
-    def d_submitSecret(self, secret):
-        self.sendUpdate('submitSecret', [secret])
-
-    def submitSecretResponse(self, result, avId):
-        messenger.send('submitSecretResponse', [result, avId])
 
     def d_battleSOS(self, toId):
         self.sendUpdate('battleSOS', [toId])

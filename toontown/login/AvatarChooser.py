@@ -39,7 +39,8 @@ class AvatarChooser(StateData.StateData):
         base.disableMouse()
         self.title.reparentTo(aspect2d)
         self.quitButton.show()
-        self.languageButton.show()
+        if config.GetBool('want-language-selection', False):
+            self.languageButton.show()
         self.pickAToonBG.setBin('background', 1)
         self.pickAToonBG.reparentTo(aspect2d)
         base.setBackgroundColor(Vec4(0.145, 0.368, 0.78, 1))
@@ -80,6 +81,7 @@ class AvatarChooser(StateData.StateData):
         self.quitButton.reparentTo(base.a2dBottomRight)
         self.languageButton = DirectButton(relief=None, image=(quitHover, quitHover, quitHover), text=TTLocalizer.LanguageButtonText, text_font=ToontownGlobals.getSignFont(), text_fg=(0.977, 0.816, 0.133, 1), text_scale=TTLocalizer.AClanguageButton, text_pos=(0, -0.025), pos=(0.25, 0, 0.075), image_scale=1.05, image1_scale=1.05, image2_scale=1.05, scale=1.05, command=self.openLanguageGui)
         self.languageButton.reparentTo(base.a2dBottomLeft)
+        self.languageButton.hide()
         gui.removeNode()
         gui2.removeNode()
         newGui.removeNode()
@@ -212,12 +214,15 @@ class AvatarChooser(StateData.StateData):
         elif panelDoneStatus == 'nameIt':
             self.__handleChoice()
         elif panelDoneStatus == 'delete':
-            self.__handleChoice()
+            self.__handleDelete()
         elif panelDoneStatus == 'create':
             self.__handleChoice()
 
     def __handleChoice(self):
         base.transitions.fadeOut(finishIval=EventInterval(self.doneEvent, [self.doneStatus]))
+
+    def __handleDelete(self):
+        messenger.send(self.doneEvent, [self.doneStatus])
 
     def __handleQuit(self):
         cleanupDialog('globalDialog')
@@ -226,7 +231,7 @@ class AvatarChooser(StateData.StateData):
 
     def getChoice(self):
         return self.choice
-    
+
     def openLanguageGui(self):
         self.exit()
         LanguageSelector.LanguageSelector(self.enter).create()

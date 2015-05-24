@@ -78,11 +78,9 @@ class NameShop(StateData.StateData):
          State.State('PickAName', self.enterPickANameState, self.exitPickANameState, ['TypeAName', 'Done']),
          State.State('TypeAName', self.enterTypeANameState, self.exitTypeANameState, ['PickAName',
           'Approval',
-          'Accepted',
           'Rejected']),
          State.State('Approval', self.enterApprovalState, self.exitApprovalState, ['PickAName', 'ApprovalAccepted']),
          State.State('ApprovalAccepted', self.enterApprovalAcceptedState, self.exitApprovalAcceptedState, ['Done']),
-         State.State('Accepted', self.enterAcceptedState, self.exitAcceptedState, ['Done']),
          State.State('Rejected', self.enterRejectedState, self.exitRejectedState, ['TypeAName']),
          State.State('Done', self.enterDone, self.exitDone, ['Init'])], 'Init', 'Done')
         self.parentFSM = makeAToon.fsm
@@ -762,21 +760,6 @@ class NameShop(StateData.StateData):
         messenger.send(self.doneEvent)
 
     def exitApprovalAcceptedState(self):
-        pass
-
-    def enterAcceptedState(self):
-        self.notify.debug('enterAcceptedState')
-        self.acceptedDialog = TTDialog.TTGlobalDialog(doneEvent='acceptedDone', message=TTLocalizer.NameShopNameAccepted, style=TTDialog.Acknowledge)
-        self.acceptedDialog.show()
-        self.acceptOnce('acceptedDone', self.__handleAccepted)
-
-    def __handleAccepted(self):
-        self.acceptedDialog.cleanup()
-        self.doneStatus = 'done'
-        self.storeSkipTutorialRequest()
-        messenger.send(self.doneEvent)
-
-    def exitAcceptedState(self):
         pass
 
     def enterRejectedState(self):

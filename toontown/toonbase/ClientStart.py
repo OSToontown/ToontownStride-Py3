@@ -115,9 +115,9 @@ import time
 import sys
 import random
 import __builtin__
-from toontown.launcher.TTULauncher import TTULauncher
+from toontown.launcher.TTSLauncher import TTSLauncher
 
-__builtin__.launcher = TTULauncher()
+__builtin__.launcher = TTSLauncher()
 
 notify.info('Starting the game...')
 tempLoader = Loader()

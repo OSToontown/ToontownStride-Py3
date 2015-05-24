@@ -84,10 +84,7 @@ class CatalogWainscotingItem(CatalogSurfaceItem):
 
     def decodeDatagram(self, di, versionNumber, store):
         CatalogAtticItem.CatalogAtticItem.decodeDatagram(self, di, versionNumber, store)
-        if versionNumber < 3:
-            self.patternIndex = di.getUint8()
-        else:
-            self.patternIndex = di.getUint16()
+        self.patternIndex = di.getUint16()
         self.colorIndex = di.getUint8()
         wtype = WainscotingTypes[self.patternIndex]
 

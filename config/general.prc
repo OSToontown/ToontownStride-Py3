@@ -1,5 +1,5 @@
 # Window settings:
-window-title Toontown United
+window-title Toontown Stride
 win-origin -1 -1
 icon-filename phase_3/etc/icon.ico
 cursor-filename phase_3/etc/toonmono.cur
@@ -92,7 +92,7 @@ base-xp-multiplier 1.0
 # SOS toons:
 sos-card-reward 2
 
-# Cog Dominiums
+# CogDominiums (Field Offices):
 want-emblems #t
 cogdo-want-barrel-room #t
 want-lawbot-cogdo #t
@@ -104,6 +104,9 @@ want-cogbuildings #t
 show-total-population #t
 want-mat-all-tailors #t
 want-talkative-tyler #f
+estate-day-night #t
+want-language-selection #t
+active-holidays 64, 65, 66
 
 # Developer options:
 want-dev #f
@@ -112,6 +115,3 @@ want-pstats 0
 # Temporary:
 smooth-lag 0.4
 want-old-fireworks #t
-
-# Live updates:
-estate-day-night #t

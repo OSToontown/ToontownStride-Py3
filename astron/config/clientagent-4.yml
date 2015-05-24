@@ -20,7 +20,7 @@ uberdogs:
       id: 4501
       anonymous: false
 
-    - class: TTUFriendsManager
+    - class: TTSFriendsManager
       id: 4666
       anonymous: false
 
@@ -34,7 +34,7 @@ messagedirector:
 roles:
     - type: clientagent
       bind: 0.0.0.0:7599
-      version: "united-dev"
+      version: "stride-dev"
       client:
         relocate: true
         add_interest: enabled

@@ -1904,7 +1904,7 @@ AvatarDetailPanelOffline = 'District: offline\nLocation: offline'
 OfflineLocation = 'Offline'
 AvatarPanelFriends = 'Friends'
 AvatarPanelWhisper = 'Whisper'
-AvatarPanelSecrets = 'True Friends'
+AvatarPanelTrueFriends = 'True Friends'
 AvatarPanelGoTo = 'Go To'
 AvatarPanelPet = 'Show Doodle'
 AvatarPanelIgnore = 'Ignore'
@@ -2228,12 +2228,12 @@ RewardPanelCongratsStrings = ['Yeah!',
 RewardPanelNewGag = 'New %(gagName)s gag for %(avName)s!'
 RewardPanelUberGag = '%(avName)s earned the %(gagName)s gag with %(exp)s experience points!'
 RewardPanelEndTrack = 'Yay! %(avName)s has reached the end of the %(gagName)s Gag Track!'
-RewardPanelPromotionPending = 'Pending promotion...'
 RewardPanelMeritsMaxed = 'Maxed'
 RewardPanelMeritBarLabels = ['Stock Options',
  'Jury Notices',
  'Cogbucks',
  'Merits']
+RewardPanelMeritAlert = 'Ready for promotion!'
 RewardPanelCogPart = 'You gained a Cog disguise part!'
 RewardPanelPromotion = 'Ready for promotion in %s  track!'
 RewardPanelSkip = 'Skip'
@@ -2500,6 +2500,11 @@ SuitAttackTaunts = {'Audit': ["I believe your books don't balance.",
            "I'm going to have you for dinner.",
            'I love to feed on Toons!'],
  'CigarSmoke': ['Gentlemen.',
+                "It's a good day to have a smoke.",
+                'Take a breath of this.',
+                "It's tradition you know.",
+                'Another day another dollar.',
+                'I always have the occasional cigar.',
                 'I need a good smoke.',
                 'Smoking is a dirty habit.'],
  'ClipOnTie': ['Better dress for our meeting.',
@@ -2710,7 +2715,7 @@ SuitAttackTaunts = {'Audit': ["I believe your books don't balance.",
               "You aren't above the law!",
               'There should be a law against you.',
               "There's no ex post facto with me!",
-              "The opinions expressed in this attack are not those of Toontown United.",
+              "The opinions expressed in this attack are not those of Toontown Stride.",
               'We cannot be held responsible for damages suffered in this attack.',
               'Your results for this attack may vary.',
               'This attack is void where prohibited.',
@@ -3001,9 +3006,15 @@ SuitAttackTaunts = {'Audit': ["I believe your books don't balance.",
             'Watch the birdie!',
             'Keep your eye on the ball!',
             'Mind if I play through?'],
- 'ThrowBook': ['I graduated Law School.',
-               'You should really get a lawyer.',
-               "I'll see you in court."],
+ 'ThrowBook': ['My book from Law School should help.',
+               'You better have a good lawyer.',
+               "I'll have to take legal action.",
+               'Legal Eagle will be pleased to see this.',
+               'Objection!',
+               'Under article 14 subsection C...',
+               'I see you have broken the law!',
+               "It seems you don't understand the authority of law.", 
+               "I'll see you in court, Toon."],
  'Tremor': ['Did you feel that?',
             'Not afraid of a little tremor are you?',
             'A tremor is only the beginning.',
@@ -3238,7 +3249,6 @@ ScientistPhase6Dialogue = ['Congratulations Toons!',
                           'So in the meantime, keep up the Cog fight...',
                           'And enjoy the silliest place ever, Toontown!']
 FriendsListPanelNewFriend = 'New Friend'
-FriendsListPanelSecrets = 'True Friend'
 FriendsListPanelOnlineFriends = 'ONLINE TOON\nFRIENDS'
 FriendsListPanelAllFriends = 'ALL TOON\nFRIENDS'
 FriendsListPanelPets = 'NEARBY\nPETS'
@@ -3415,7 +3425,7 @@ MusicEncntrGeneralBg = 'Encounter With Cogs'
 MusicTcSzActivity = 'Toontorial Medley'
 MusicTcSz = 'Strolling Along'
 MusicCreateAToon = 'The New Toon in Town'
-MusicTtuTheme = 'The Toontown United Theme'
+MusicTtsTheme = 'The Toontown Stride Theme'
 MusicTtTheme = 'The Toontown Theme'
 MusicMinigameRace = 'Slow and Steady'
 MusicTcNbrhood = 'Toontown Central'
@@ -4486,7 +4496,6 @@ PleaseTypeName = 'Please type your name:'
 AllNewNames = 'All new names must be\napproved by the Toon Council.'
 NameMessages = 'Be creative, and remember:\nno NPC names, please.'
 NameShopNameRejected = 'The name you\nsubmitted has\nbeen rejected.'
-NameShopNameAccepted = 'Congratulations!\nThe name you\nsubmitted has\nbeen accepted!'
 NoPunctuation = "You can't use punctuation marks in your name!"
 PeriodOnlyAfterLetter = 'You can use a period in your name, but only after a letter.'
 ApostropheOnlyAfterLetter = 'You can use an apostrophe in your name, but only after a letter.'
@@ -4529,9 +4538,6 @@ NumToColor = ['White',
  'Gray',
  'Neon Orange',
  'Sapphire',
- 'Pure Red',
- 'Pure Blue',
- 'Pure Green',
  'Crimson',
  'Emerald',
  'Bronze']
@@ -4693,9 +4699,9 @@ BossBattleHowToGetPies = 'Jump up to touch the cage to get pies.'
 BossBattleHowToThrowPies = 'Press the Delete key to throw pies!'
 CagedToonYippee = 'Yippee!'
 CagedToonThankYou = "It's great to be free!\x07Thanks for all your help!\x07I am in your debt.\x07Here's my card. If you ever need a hand in battle, give a shout!\x07Just click on your SOS button."
-CagedToonLevelPromotion = "\x07Say--that V.P. Cog left behind your promotion papers.\x07I'll file them for you on the way out, so you'll get your promotion!"
-CagedToonSuitPromotion = "\x07It seems like you've reached the highest level you can for a %s.\x07You can continue upgrading your Cog suit through the disguise page in your Shticker Book.\x07Along with getting a new Cog suit, you will also get a 1 point Laff boost!"
-CagedToonLastPromotion = "\x07Wow, you've reached level %s on your Cog suit!\x07I'm pretty sure Cogs don't get promoted higher than that.\x07You can't upgrade your Cog suit anymore, but you can certainly keep rescuing Toons!"
+CagedToonPromotion = "\x07Say--that V.P. Cog left behind your promotion papers.\x07I'll file them for you on the way out, so you'll get your promotion!"
+CagedToonLastPromotion = "\x07Wow, you've reached level %s on your Cog suit!\x07Cogs don't get promoted higher than that.\x07You can't upgrade your Cog suit anymore, but you can certainly keep rescuing Toons!"
+CagedToonHPBoost = "\x07You've rescued a lot of Toons from this HQ.\x07The Toon Council has decided to give you another Laff point. Congratulations!"
 CagedToonMaxed = '\x07I see that you have a level %s Cog suit. Very impressive!\x07On behalf of the Toon Council, thank you for coming back to rescue more Toons!'
 CagedToonGoodbye = 'See ya!'
 CagedToonBattleThree = {10: 'Nice jump, %(toon)s.  Here are some pies!',
@@ -4723,9 +4729,8 @@ ResistanceToonMoneyInstructions = 'all the Toons near you will gain %s Jellybean
 ResistanceToonMoneyAllInstructions = 'all the Toons near you will fill their Jellybean jars'
 ResistanceToonRestockInstructions = 'all the Toons near you will restock their "%s" gags'
 ResistanceToonRestockAllInstructions = 'all the Toons near you will restock all their gags'
-ResistanceToonLevelPromotion = "\x07Say--that C.F.O. Cog left behind your promotion papers.\x07I'll file them for you on the way out, so you'll get your promotion!"
-ResistanceToonSuitPromotion = "\x07It seems like you've reached the highest level you can for a %s.\x07You can continue upgrading your Cog suit through the disguise page in your Shticker Book.\x07Along with getting a new Cog suit, you will also get a 1 point Laff boost!"
-ResistanceToonLastPromotion = "\x07Wow, you've reached level %s on your Cog suit!\x07I'm pretty sure Cogs don't get promoted higher than that.\x07You can't upgrade your Cog suit anymore, but you can certainly keep working for the Resistance!!"
+ResistanceToonLastPromotion = "\x07Wow, you've reached level %s on your Cog suit!\x07Cogs don't get promoted higher than that.\x07You can't upgrade your Cog suit anymore, but you can certainly keep working for the Resistance!"
+ResistanceToonHPBoost = "\x07You've done a lot of work for the Resistance.\x07The Toon Council has decided to give you another Laff point. Congratulations!"
 ResistanceToonMaxed = '\x07I see that you have a level %s Cog suit. Very impressive!\x07On behalf of the Toon Council, thank you for coming back to rescue more Toons!'
 CashbotBossCogAttack = 'Get them!!!'
 ResistanceToonWelcome = 'Hey, you made it!  Follow me to the main vault before the C.F.O. finds us!'
@@ -5429,7 +5434,7 @@ CatalogCurrency = 'beans'
 CatalogHangUp = 'Hang Up'
 CatalogNew = 'NEW'
 CatalogBackorder = 'BACKORDER'
-CatalogLoyalty = 'SPECIAL'
+CatalogSpecial = 'SPECIAL'
 CatalogEmblem = 'EMBLEM'
 CatalogPagePrefix = 'Page'
 CatalogGreeting = "Hello! Thanks for calling Clarabelle's Cattlelog. Can I help you?"
@@ -6889,7 +6894,7 @@ TipDict = {TIP_NONE: ('',),
                'Open or close your Shticker Book by pressing the "F8" key.',
                'You can look up by pressing the "Page Up" key and look down by pressing the "Page Down" key.',
                'Press the "Control" key to jump.',
-               'Press the "F9" key to take a screenshot, which will be saved in your Toontown United folder on your computer.',
+               'Press the "F9" key to take a screenshot, which will be saved in your Toontown Stride folder on your computer.',
                'You can change your screen resolution, adjust audio, and control other options on the Options Page in the Shticker Book.',
                "Try on your friend's clothing at the closet in their house.",
                'You can go to your house using the "Go Home" button on your map.',
@@ -6903,7 +6908,7 @@ TipDict = {TIP_NONE: ('',),
                'Change to different views of your Toon by pressing the Tab Key.',
                'Sometimes you can find several different ToonTasks offered for the same reward. Shop around!',
                'Finding friends with similar ToonTasks is a fun way to progress through the game.',
-               'You never need to save your Toontown progress. The Toontown United servers continually save all the necessary information.',
+               'You never need to save your Toontown progress. The Toontown Stride servers continually save all the necessary information.',
                'You can whisper to other Toons either by clicking on them or by selecting them from your Friends List.',
                'Some SpeedChat phrases play emotion animations on your Toon.',
                'If the area you are in is crowded, try changing Districts. Go to the District Page in the Shticker Book and select a different one.',
@@ -7524,10 +7529,9 @@ WitnessToonSomeJurors = 'Cool! There are %d Toons in the jury!'
 WitnessToonAllJurors = 'Awesome! All the jurors are Toons!'
 WitnessToonPrepareBattleThree = 'Hurry, touch the witness stand to get evidence.\x07Press the Delete key to throw the evidence at the lawyers, or at the defense pan.'
 WitnessToonCongratulations = "You did it!  Thank you for a spectacular defense!\x07Here, take these papers the Chief Justice left behind.\x07With it you'll be able to summon Cogs from your Cog Gallery page."
-WitnessToonLevelPromotion = "\x07Say--that C.J. Cog left behind your promotion papers.\x07I'll file them for you on the way out, so you'll get your promotion!"
-WitnessToonSuitPromotion = "\x07It seems like you've reached the highest level you can for a %s.\x07You can continue upgrading your Cog suit through the disguise page in your Shticker Book.\x07Along with getting a new Cog suit, you will also get a 1 point Laff boost!"
-WitnessToonLastPromotion = "\x07Wow, you've reached level %s on your Cog suit!\x07I'm pretty sure Cogs don't get promoted higher than that.\x07You can't upgrade your Cog suit anymore, but you can certainly keep working for the Resistance!!"
-WitnessToonMaxed = '\x07I see that you have a level %s Cog suit. Very impressive!\x07On behalf of the Toon Council, thank you for coming back to rescue more Toons!'
+WitnessToonLastPromotion = "\x07Wow, you've reached level %s on your Cog Suit!\x07Cogs don't get promoted higher than that.\x07You can't upgrade your Cog Suit anymore, but you can certainly keep working for the Resistance!"
+WitnessToonHPBoost = "\x07You've done a lot of work for the Resistance.\x07The Toon Council has decided to give you another Laff point. Congratulations!"
+WitnessToonMaxed = '\x07I see that you have a level %s Cog Suit. Very impressive!\x07On behalf of the Toon Council, thank you for coming back to defend more Toons!'
 WitnessToonBonus = 'Wonderful! All the lawyers are stunned. Your evidence weight is %s times heavier for %s seconds'
 WitnessToonJuryWeightBonusSingular = {6: 'This is a tough case. You seated %d Toon juror, so your evidence has a bonus weight of %d.',
  7: 'This is a very tough case. You seated %d Toon juror, so your evidence has a bonus weight of %d.',
@@ -8067,10 +8071,9 @@ BossbotGolfSpotAdvice = 'Use the left and right keys to rotate.\nCtrl to fire.'
 BossbotRewardSpeech1 = "No! The Chairman won't like this."
 BossbotRewardSpeech2 = 'Arrrggghhh!!!!'
 BossbotRTCongratulations = "You did it!  You've demoted the C.E.O.!\x07Here, take these pink slips the C.E.O. left behind.\x07With it you'll be able to fire Cogs in a battle."
-BossbotRTLevelPromotion = "\x07Say--that C.E.O. Cog left behind your promotion papers.\x07I'll file them for you on the way out, so you'll get your promotion!"
-BossbotRTSuitPromotion = "\x07It seems like you've reached the highest level you can for a %s.\x07You can continue upgrading your Cog suit through the disguise page in your Shticker Book.\x07Along with getting a new Cog suit, you will also get a 1 point Laff boost!"
-BossbotRTLastPromotion = "\x07Wow, you've reached level %s on your Cog suit!\x07I'm pretty sure Cogs don't get promoted higher than that.\x07You can't upgrade your Cog suit anymore, but you can certainly keep working for the Resistance!!"
-BossbotRTMaxed = '\x07I see that you have a level %s Cog suit. Very impressive!\x07On behalf of the Toon Council, thank you for coming back to rescue more Toons!'
+BossbotRTHPBoost = "\x07You've done a lot of work for the Resistance.\x07The Toon Council has decided to give you another Laff point. Congratulations!"
+BossbotRTMaxed = '\x07I see that you have a level %s Cog Suit. Very impressive!\x07On behalf of the Toon Council, thank you for coming back to defend more Toons!'
+BossbotRTLastPromotion = "\x07Wow, you've reached level %s on your Cog Suit!\x07Cogs don't get promoted higher than that.\x07You can't upgrade your Cog Suit anymore, but you can certainly keep working for the Resistance!"
 GolfAreaAttackTaunt = 'Fore!'
 OvertimeAttackTaunts = ["It's time to reorganize.", "Now let's downsize."]
 ElevatorBossBotBoss = 'Bossbot Clubhouse'
@@ -8090,7 +8093,6 @@ ElevatorLawBotCourse0 = 'Office A'
 ElevatorLawBotCourse1 = 'Office B'
 ElevatorLawBotCourse2 = 'Office C'
 ElevatorLawBotCourse3 = 'Office D'
-DaysToGo = 'Wait\n%s Days'
 IceGameTitle = 'Ice Slide'
 IceGameInstructions = 'Get as close to the center by the end of the second round. Use arrow keys to change direction and force. Press Ctrl to launch your toon.  Hit barrels for extra points and avoid the TNT!'
 IceGameInstructionsNoTnt = 'Get as close to the center by the end of the second round. Use arrow keys to change direction and force. Press Ctrl to launch your toon.  Hit barrels for extra points.'
@@ -8349,20 +8351,6 @@ PickTrackTitle = 'Pick your third track!'
 PickTrackNotice = 'Choose a track!'
 CogLevelLabelOn = 'The cog level GUI is on.'
 CogLevelLabelOff = 'The cog level GUI is off.'
-FriendSecretIntro = "If you are playing Toontown United with someone you know in the real world, you can become True Friends.  You can chat using the keyboard with your True Friends.  Other Toons won't understand what you're saying.\n\nYou do this by getting a True Friend Code.  Tell the True Friend Code to your friend, but not to anyone else.  When your friend types in your True Friend Code on his or her screen, you'll be True Friends in Toontown!"
-FriendSecretGetSecret = 'Get a True Friend Code'
-FriendSecretEnterSecret = 'If you have a True Friend Code from someone you know, type it here.'
-FriendSecretOK = lOK
-FriendSecretEnter = 'Enter True Friend Code'
-FriendSecretCancel = lCancel
-FriendSecretGettingSecret = 'Getting True Friend Code...'
-FriendSecretGotSecret = "Here is your new True Friend Code.  Be sure to write it down!\n\nYou may give this True Friend Code to one person only.  Once someone types in your True Friend Code, it will not work for anyone else.  If you want to give a True Friend Code to more than one person, get another True Friend Code.\n\nThe True Friend Code will only work until %s.  Your friend will have to type it in before it goes away, or it won't work.\n\nYour True Friend Code is:"
-FriendSecretTryingSecret = 'Trying True Friend Code. . .'
-FriendSecretNoServer = 'True Friends is not set up on this server!'
-FriendSecretNoServerResponse = "Couldn't contact the True Friends server!"
-FriendSecretEnteredCodeSelf = 'You just typed in your own True Friend Code!  Now no one else can use that True Friend Code.'
-FriendSecretAlreadyTrueFriend = 'You are True Friends with that toon already!'
-FriendSecretSuccess = 'Congratulations! You are now True Friends with %s!'
 
 HouseNames = ("Bungalow", "Tiki", "Teepee", "Castle", "Cupcake", "Cabin")
 CatalogPurchaseHouseType = "When you buy a new house type, the current one is replaced by it. To recover the old type, you'll need to buy it back. Continue?"
@@ -8450,3 +8438,4 @@ RestockFullLaffMessage = "You're already happy!"
 RestockNoMoneyMessage = "You need more jellybeans to restock your laff!"
 RestockLaffMessage = "Have fun!"
 RestockAskMessage = "Would you like to\nrestock %s laff for %s jellybeans?"
+RestockCheaterMessage = "No cheaters allowed! Your transaction has been declined."

@@ -93,19 +93,19 @@ class ToontownChatManager(ChatManager.ChatManager):
         else:
             ChatManager.ChatManager.enterMainMenu(self)
 
-    def enterNoSecretChatAtAll(self):
-        if self.noSecretChatAtAll == None:
+    def enterNoTrueFriendsAtAll(self):
+        if self.noTrueFriendsAtAll == None:
             buttons = loader.loadModel('phase_3/models/gui/dialog_box_buttons_gui')
             okButtonImage = (buttons.find('**/ChtBx_OKBtn_UP'), buttons.find('**/ChtBx_OKBtn_DN'), buttons.find('**/ChtBx_OKBtn_Rllvr'))
-            self.noSecretChatAtAll = DirectFrame(parent=aspect2dp, pos=(0.0, 0.1, 0.2), relief=None, image=DGG.getDefaultDialogGeom(), image_color=OTPGlobals.GlobalDialogColor, image_scale=(1.4, 1.0, 1.1), text=OTPLocalizer.NoSecretChatAtAll, text_wordwrap=20, textMayChange=0, text_scale=0.06, text_pos=(0, 0.3))
-            DirectLabel(parent=self.noSecretChatAtAll, relief=None, pos=(0, 0, 0.4), text=OTPLocalizer.NoSecretChatAtAllTitle, textMayChange=0, text_scale=0.08)
-            DirectButton(self.noSecretChatAtAll, image=okButtonImage, relief=None, text=OTPLocalizer.NoSecretChatAtAllOK, text_scale=0.05, text_pos=(0.0, -0.1), textMayChange=0, pos=(0.0, 0.0, -0.4), command=self.__handleNoSecretChatAtAllOK)
+            self.noTrueFriendsAtAll = DirectFrame(parent=aspect2dp, pos=(0.0, 0.1, 0.2), relief=None, image=DGG.getDefaultDialogGeom(), image_color=OTPGlobals.GlobalDialogColor, image_scale=(1.4, 1.0, 1.1), text=OTPLocalizer.NoTrueFriendsAtAll, text_wordwrap=20, textMayChange=0, text_scale=0.06, text_pos=(0, 0.3))
+            DirectLabel(parent=self.noTrueFriendsAtAll, relief=None, pos=(0, 0, 0.4), text=OTPLocalizer.NoTrueFriendsAtAllTitle, textMayChange=0, text_scale=0.08)
+            DirectButton(self.noTrueFriendsAtAll, image=okButtonImage, relief=None, text=OTPLocalizer.NoTrueFriendsAtAllOK, text_scale=0.05, text_pos=(0.0, -0.1), textMayChange=0, pos=(0.0, 0.0, -0.4), command=self.__handleNoTrueFriendsAtAllOK)
             buttons.removeNode()
-        self.noSecretChatAtAll.show()
+        self.noTrueFriendsAtAll.show()
         return
 
-    def exitNoSecretChatAtAll(self):
-        self.noSecretChatAtAll.hide()
+    def exitNoTrueFriendsAtAll(self):
+        self.noTrueFriendsAtAll.hide()
 
     def __normalButtonPressed(self):
         if base.config.GetBool('want-qa-regression', 0):
@@ -143,19 +143,19 @@ class ToontownChatManager(ChatManager.ChatManager):
             self.fsm.request('mainMenu')
         return
 
-    def enterNoSecretChatAtAllAndNoWhitelist(self):
-        if self.noSecretChatAtAllAndNoWhitelist == None:
+    def enterNoTrueFriendsAtAllAndNoWhitelist(self):
+        if self.noTrueFriendsAtAllAndNoWhitelist == None:
             buttons = loader.loadModel('phase_3/models/gui/dialog_box_buttons_gui')
             okButtonImage = (buttons.find('**/ChtBx_OKBtn_UP'), buttons.find('**/ChtBx_OKBtn_DN'), buttons.find('**/ChtBx_OKBtn_Rllvr'))
-            self.noSecretChatAtAllAndNoWhitelist = DirectFrame(parent=aspect2dp, pos=(0.0, 0.1, 0.05), relief=None, image=DGG.getDefaultDialogGeom(), image_color=OTPGlobals.GlobalDialogColor, image_scale=(1.4, 1.0, 1.58), text=OTPLocalizer.NoSecretChatAtAllAndNoWhitelist, text_wordwrap=20, textMayChange=0, text_scale=0.06, text_pos=(0, 0.55))
-            DirectLabel(parent=self.noSecretChatAtAllAndNoWhitelist, relief=None, pos=(0, 0, 0.67), text=OTPLocalizer.NoSecretChatAtAllAndNoWhitelistTitle, textMayChange=0, text_scale=0.08)
-            DirectButton(self.noSecretChatAtAllAndNoWhitelist, image=okButtonImage, relief=None, text=OTPLocalizer.NoSecretChatAtAllOK, text_scale=0.05, text_pos=(0.0, -0.1), textMayChange=0, pos=(0.0, 0.0, -0.64), command=self.__handleNoSecretChatAtAllOK)
+            self.noTrueFriendsAtAllAndNoWhitelist = DirectFrame(parent=aspect2dp, pos=(0.0, 0.1, 0.05), relief=None, image=DGG.getDefaultDialogGeom(), image_color=OTPGlobals.GlobalDialogColor, image_scale=(1.4, 1.0, 1.58), text=OTPLocalizer.NoTrueFriendsAtAllAndNoWhitelist, text_wordwrap=20, textMayChange=0, text_scale=0.06, text_pos=(0, 0.55))
+            DirectLabel(parent=self.noTrueFriendsAtAllAndNoWhitelist, relief=None, pos=(0, 0, 0.67), text=OTPLocalizer.NoTrueFriendsAtAllAndNoWhitelistTitle, textMayChange=0, text_scale=0.08)
+            DirectButton(self.noTrueFriendsAtAllAndNoWhitelist, image=okButtonImage, relief=None, text=OTPLocalizer.NoTrueFriendsAtAllOK, text_scale=0.05, text_pos=(0.0, -0.1), textMayChange=0, pos=(0.0, 0.0, -0.64), command=self.__handleNoTrueFriendsAtAllOK)
             buttons.removeNode()
-        self.noSecretChatAtAllAndNoWhitelist.show()
+        self.noTrueFriendsAtAllAndNoWhitelist.show()
         return
 
-    def exitNoSecretChatAtAllAndNoWhitelist(self):
-        self.noSecretChatAtAllAndNoWhitelist.hide()
+    def exitNoTrueFriendsAtAllAndNoWhitelist(self):
+        self.noTrueFriendsAtAllAndNoWhitelist.hide()
 
     def __whisperScButtonPressed(self, avatarName, avatarId):
         messenger.send('wakeup')
@@ -168,7 +168,7 @@ class ToontownChatManager(ChatManager.ChatManager):
     def __whisperCancelPressed(self):
         self.fsm.request('mainMenu')
 
-    def __handleNoSecretChatAtAllOK(self):
+    def __handleNoTrueFriendsAtAllOK(self):
         self.fsm.request('mainMenu')
 
     def messageSent(self):

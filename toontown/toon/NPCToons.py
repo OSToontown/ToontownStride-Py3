@@ -44,6 +44,7 @@ SELL_MOVIE_TIMEOUT = 8
 SELL_MOVIE_PETRETURNED = 9
 SELL_MOVIE_PETADOPTED = 10
 SELL_MOVIE_PETCANCELED = 11
+SELL_MOVIE_CHEATER = 15
 PARTY_MOVIE_CLEAR = 0
 PARTY_MOVIE_START = 1
 PARTY_MOVIE_COMPLETE = 2
@@ -119,7 +120,7 @@ def createNPC(air, npcId, desc, zoneId, posIndex = 0, questCallback = None):
         npc = DistributedNPCScientistAI.DistributedNPCScientistAI(air, npcId)
     elif type == NPC_SMART:
         npc = DistributedSmartNPCAI.DistributedSmartNPCAI(air, npcId)
-    elif type == NPC_GLOVE and simbase.air.wantGloveNpc:
+    elif type == NPC_GLOVE:
         npc = DistributedNPCGloveAI.DistributedNPCGloveAI(air, npcId)
     elif type == NPC_LAFF_RESTOCK:
         npc = DistributedNPCLaffRestockAI.DistributedNPCLaffRestockAI(air, npcId)

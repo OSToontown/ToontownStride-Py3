@@ -14,8 +14,6 @@ CFOElevatorFov = 43.0
 CJElevatorFov = 59.0
 CEOElevatorFov = 59.0
 CBElevatorFov = 42.0
-WantPromotion = 0
-PendingPromotion = 1
 CeilingBitmask = BitMask32(256)
 FloorEventBitmask = BitMask32(16)
 PieBitmask = BitMask32(256)
@@ -99,11 +97,16 @@ FM_RecoveredItem = 4
 SPDonaldsBoat = 3
 SPMinniesPiano = 4
 CEVirtual = 14
-MaxHpLimit = 145
+MaxHpLimit = 137
 MaxCarryLimit = 80
 MaxQuestCarryLimit = 4
 GravityValue = 32.174
-MaxCogSuitLevel = 12 - 1
+MaxCogSuitLevel = 50 - 1
+CogSuitHPLevels = (15 - 1,
+ 20 - 1,
+ 30 - 1,
+ 40 - 1,
+ 50 - 1)
 setInterfaceFont(TTLocalizer.InterfaceFont)
 setSignFont(TTLocalizer.SignFont)
 from toontown.toontowngui import TTDialog
@@ -852,7 +855,6 @@ HALLOWEEN_PROPS = 26
 HALLOWEEN_COSTUMES = 27
 DECEMBER_INVASION = 28
 APRIL_FOOLS_COSTUMES = 29
-CRASHED_LEADERBOARD = 30
 OCTOBER31_FIREWORKS = 31
 NOVEMBER19_FIREWORKS = 32
 SELLBOT_SURPRISE_1 = 33
@@ -884,6 +886,9 @@ WINTER_CAROLING = 57
 VALENTINES_DAY = 59
 SILLYMETER_HOLIDAY = 60
 SILLY_SURGE_HOLIDAY = 63
+HYDRANTS_BUFF_BATTLES = 64
+MAILBOXES_BUFF_BATTLES = 65
+TRASHCANS_BUFF_BATTLES = 66
 SILLY_CHATTER_ONE = 67
 SILLY_CHATTER_TWO = 68
 SILLY_CHATTER_THREE = 69
@@ -1563,7 +1568,7 @@ AnimPropTypes = Enum(('Unknown',
  'Trashcan'), start=-1)
 EmblemTypes = Enum(('Silver', 'Gold'))
 NumEmblemTypes = 2
-MaxBankMoney = 25000
+MaxBankMoney = 30000
 DefaultBankItemId = 1300
 ToonAnimStates = set(['off',
  'neutral',

@@ -37,6 +37,8 @@ class ARGManager(DistributedObjectGlobal):
 
     def setupPortableHoleEvent(self):
         def phraseSaid(phraseId):
+            if not hasattr(base.cr.playGame, 'place'):
+                return
             position, speedchatIndex, destination = Hood2Details.get(base.cr.playGame.getPlace().getZoneId(), [None, None, None])
             if not position or not speedchatIndex or not destination:
                 return
