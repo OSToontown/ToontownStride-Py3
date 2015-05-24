@@ -6,6 +6,11 @@ class LevelMgr(LevelMgrBase.LevelMgrBase):
     def __init__(self, level, entId):
         LevelMgrBase.LevelMgrBase.__init__(self, level, entId)
         self.geom = loader.loadModel(self.modelFilename)
+        
+        if hasattr(self, 'removeNodes'):
+            for node in self.removeNodes:
+                self.geom.find(node).removeNode()
+
         self.zoneNums = []
         self.level.zoneNum2zoneId = {}
         self.level.zoneId2zoneNum = {}

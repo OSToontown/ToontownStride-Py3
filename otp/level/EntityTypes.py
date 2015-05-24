@@ -13,7 +13,7 @@ class Entity(EntityTypeDesc):
 class LevelMgr(Entity):
     type = 'levelMgr'
     permanent = 1
-    attribs = (('name', 'LevelMgr', 'const'), ('parentEntId', 0, 'const'), ('modelFilename', '', 'const'))
+    attribs = (('name', 'LevelMgr', 'const'), ('parentEntId', 0, 'const'), ('modelFilename', '', 'const'), ('removeNodes', [], 'const'))
 
 
 class AttribModifier(Entity):
