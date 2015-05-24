@@ -6,7 +6,7 @@ from toontown.nametag import NametagGlobals
 
 
 class Nametag:
-    TEXT_WORD_WRAP = 8
+    TEXT_WORD_WRAP = 7
     TEXT_Y_OFFSET = -0.05
 
     CHAT_TEXT_WORD_WRAP = 12

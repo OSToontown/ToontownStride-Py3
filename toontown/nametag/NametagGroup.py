@@ -35,8 +35,8 @@ class NametagGroup:
         self.chatColor = NametagGlobals.ChatColors[NametagGlobals.CCNormal]
         self.speedChatColor = VBase4(1, 1, 1, 1)
 
-        self.wordWrap = 8
-        self.chatWordWrap = 12
+        self.wordWrap = 7
+        self.chatWordWrap = 10
 
         self.text = ''
 
