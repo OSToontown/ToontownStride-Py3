@@ -10,10 +10,10 @@ class GroupManagerAI(DistributedObjectAI.DistributedObjectAI):
 
     def __init__(self, air):
         DistributedObjectAI.DistributedObjectAI.__init__(self, air)
-        self.sellGroup = GlobalGroup('VP', SellbotHQ)
-        self.cashGroup = GlobalGroup('CFO', CashbotHQ)
-        self.lawGroup  = GlobalGroup('CJ', LawbotHQ)
-        self.bossGroup = GlobalGroup('CEO', BossbotHQ)
+        self.sellGroup = GlobalGroup('SBHQ', SellbotHQ)
+        self.cashGroup = GlobalGroup('CBHQ', CashbotHQ)
+        self.lawGroup  = GlobalGroup('LBHQ', LawbotHQ)
+        self.bossGroup = GlobalGroup('BBHQ', BossbotHQ)
         self.shardGroups = {
             SellbotHQ: self.sellGroup,
             CashbotHQ: self.cashGroup,
@@ -27,10 +27,10 @@ class GroupManagerAI(DistributedObjectAI.DistributedObjectAI):
             BossbotHQ: [],
         }
         self.id2type = {
-            SellbotHQ: 'VP',
-            CashbotHQ: 'CFO',
-            LawbotHQ: 'CJ',
-            BossbotHQ: 'CEO',
+            SellbotHQ: 'SBHQ',
+            CashbotHQ: 'CBHQ',
+            LawbotHQ: 'LBHQ',
+            BossbotHQ: 'BBHQ',
         }
         self.childId = None
 
