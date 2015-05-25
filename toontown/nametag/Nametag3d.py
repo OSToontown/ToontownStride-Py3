@@ -102,15 +102,8 @@ class Nametag3d(Nametag, Clickable3d):
             self.contents.node().removeAllChildren()
 
     def update(self):
-        if not self.chatBalloon:
-            self.removeContents()
-            Nametag.update(self)
-        else:
-            scaleLerp = Sequence(LerpScaleInterval(self.chatBalloon, 0.25, VBase3(0, 0, 0), blendType='easeInOut'),
-                                 Wait(0.25),
-                                 Func(self.removeContents),
-                                 Func(Nametag.update, self))
-            scaleLerp.start()
+        self.removeContents()
+        Nametag.update(self)
 
     def tick(self, task):
         distance = self.contents.getPos(base.cam).length()
@@ -148,9 +141,8 @@ class Nametag3d(Nametag, Clickable3d):
             foreground=foreground, background=background,
             reversed=self.chatReversed,
             button=self.chatButton[self.clickState])
-        self.chatBalloon.setScale(0)
         self.chatBalloon.reparentTo(self.contents)
-        scaleLerp = Sequence(Wait(0.15), LerpScaleInterval(self.chatBalloon, 0.25, VBase3(1, 1, 1), blendType='easeInOut'))
+        scaleLerp = Sequence(LerpScaleInterval(self.chatBalloon, 0.2, VBase3(1, 1, 1), VBase3(0, 0, 0), blendType='easeInOut'))
         scaleLerp.start()
 
     def drawNametag(self):
