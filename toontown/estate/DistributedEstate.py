@@ -80,6 +80,8 @@ class DistributedEstate(DistributedObject.DistributedObject):
         self.loadFishSellBox()
         self.oldClear = base.win.getClearColor()
         base.win.setClearColor(Vec4(0.09, 0.55, 0.21, 1.0))
+        if config.GetBool('want-garden-game', False):
+            self.startGame()
 
     def unload(self):
         self.ignoreAll()
@@ -110,6 +112,8 @@ class DistributedEstate(DistributedObject.DistributedObject):
             self.fishSellBox.removeNode()
             del self.fishSellBox
             self.fishSellBox = None
+        if config.GetBool('want-garden-game', False):
+            GardenDropGame.GardenDropGame().endGame()
         return
 
     def announceGenerate(self):
@@ -117,7 +121,10 @@ class DistributedEstate(DistributedObject.DistributedObject):
         self.accept('gardenGame', self.startGame)
 
     def startGame(self):
-        self.game = GardenDropGame.GardenDropGame()
+        if config.GetBool('want-garden-game', False):
+            self.game = GardenDropGame.GardenDropGame().playGardenDrop()
+        else:
+            self.game = GardenDropGame.GardenDropGame()
 
     def loadAirplane(self):
         self.airplane = loader.loadModel('phase_4/models/props/airplane.bam')
