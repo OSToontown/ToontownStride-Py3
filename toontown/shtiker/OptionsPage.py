@@ -283,6 +283,7 @@ class OptionsTabPage(DirectFrame):
         self.displaySettingsApiChanged = 0
         guiButton = loader.loadModel('phase_3/models/gui/quit_button')
         gui = loader.loadModel('phase_3.5/models/gui/friendslist_gui')
+        circleModel = loader.loadModel('phase_3/models/gui/tt_m_gui_mat_nameShop')
         titleHeight = 0.61
         textStartHeight = 0.45
         textRowHeight = 0.145
@@ -294,16 +295,22 @@ class OptionsTabPage(DirectFrame):
         options_text_scale = 0.052
         disabled_arrow_color = Vec4(0.6, 0.6, 0.6, 1.0)
         self.speed_chat_scale = 0.055
-        self.Music_Label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, pos=(leftMargin, 0, textStartHeight))
-        self.SoundFX_Label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - textRowHeight))
+        self.Music_Label = DirectLabel(parent=self, relief=None, text='Music Volume:', text_align=TextNode.ALeft, text_scale=options_text_scale, pos=(leftMargin, 0, textStartHeight))
+        self.SoundFX_Label = DirectLabel(parent=self, relief=None, text='SFX Volume:', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - textRowHeight))
         self.Friends_Label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - 3 * textRowHeight))
         self.Whispers_Label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - 4 * textRowHeight))
         self.DisplaySettings_Label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=10, pos=(leftMargin, 0, textStartHeight - 5 * textRowHeight))
         self.SpeedChatStyle_Label = DirectLabel(parent=self, relief=None, text=TTLocalizer.OptionsPageSpeedChatStyleLabel, text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=10, pos=(leftMargin, 0, textStartHeight - 6 * textRowHeight))
         self.ToonChatSounds_Label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=15, pos=(leftMargin, 0, textStartHeight - 2 * textRowHeight + 0.025))
         self.ToonChatSounds_Label.setScale(0.9)
-        self.Music_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord), command=self.__doToggleMusic)
-        self.SoundFX_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight), command=self.__doToggleSfx)
+        self.Music_toggleSlider = DirectSlider(parent=self, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord),
+                                               value=settings['musicVol']*100, pageSize=5, range=(0, 100), command=self.__doMusicLevel,
+                                               thumb_geom=(circleModel.find('**/tt_t_gui_mat_namePanelCircle')), thumb_relief=None, thumb_geom_scale=2)
+        self.Music_toggleSlider.setScale(0.25)
+        self.SoundFX_toggleSlider = DirectSlider(parent=self, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight),
+                                               value=settings['sfxVol']*100, pageSize=5, range=(0, 100), command=self.__doSfxLevel,
+                                               thumb_geom=(circleModel.find('**/tt_t_gui_mat_namePanelCircle')), thumb_relief=None, thumb_geom_scale=2)
+        self.SoundFX_toggleSlider.setScale(0.25)
         self.Friends_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight * 3), command=self.__doToggleAcceptFriends)
         self.Whispers_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight * 4), command=self.__doToggleAcceptWhispers)
         self.DisplaySettingsButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image3_color=Vec4(0.5, 0.5, 0.5, 0.5), image_scale=button_image_scale, text=TTLocalizer.OptionsPageChange, text3_fg=(0.5, 0.5, 0.5, 0.75), text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight * 5), command=self.__doDisplaySettings)
@@ -332,8 +339,6 @@ class OptionsTabPage(DirectFrame):
         self.show()
         taskMgr.remove(self.DisplaySettingsTaskName)
         self.settingsChanged = 0
-        self.__setMusicButton()
-        self.__setSoundFXButton()
         self.__setAcceptFriendsButton()
         self.__setAcceptWhispersButton()
         self.__setDisplaySettings()
@@ -361,8 +366,8 @@ class OptionsTabPage(DirectFrame):
             self.displaySettings.unload()
         self.displaySettings = None
         self.exitButton.destroy()
-        self.Music_toggleButton.destroy()
-        self.SoundFX_toggleButton.destroy()
+        self.Music_toggleSlider.destroy()
+        self.SoundFX_toggleSlider.destroy()
         self.Friends_toggleButton.destroy()
         self.Whispers_toggleButton.destroy()
         self.DisplaySettingsButton.destroy()
@@ -385,35 +390,31 @@ class OptionsTabPage(DirectFrame):
         del self.speedChatStyleText
         self.currentSizeIndex = None
 
-    def __doToggleMusic(self):
-        messenger.send('wakeup')
-        if base.musicActive:
-            base.enableMusic(0)
+    def __doMusicLevel(self):
+        vol = self.Music_toggleSlider['value']
+        vol = float(vol) / 100
+        settings['musicVol'] = vol
+        base.musicManager.setVolume(vol)
+        if vol == 0.0:
             settings['music'] = False
+            base.musicActive = False
         else:
-            base.enableMusic(1)
             settings['music'] = True
-        self.settingsChanged = 1
-        self.__setMusicButton()
+            base.musicActive = True
 
-    def __setMusicButton(self):
-        if base.musicActive:
-            self.Music_Label['text'] = TTLocalizer.OptionsPageMusicOnLabel
-            self.Music_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff
-        else:
-            self.Music_Label['text'] = TTLocalizer.OptionsPageMusicOffLabel
-            self.Music_toggleButton['text'] = TTLocalizer.OptionsPageToggleOn
-
-    def __doToggleSfx(self):
-        messenger.send('wakeup')
-        if base.sfxActive:
-            base.enableSoundEffects(0)
+    def __doSfxLevel(self):
+        vol = self.SoundFX_toggleSlider['value']
+        vol = float(vol) / 100
+        settings['sfxVol'] = vol
+        for sfm in base.sfxManagerList:
+            sfm.setVolume(vol)
+        if vol == 0.0:
             settings['sfx'] = False
+            base.sfxActive = False
         else:
-            base.enableSoundEffects(1)
             settings['sfx'] = True
-        self.settingsChanged = 1
-        self.__setSoundFXButton()
+            base.sfxActive = True
+        self.__setToonChatSoundsButton()
 
     def __doToggleToonChatSounds(self):
         messenger.send('wakeup')
@@ -424,15 +425,6 @@ class OptionsTabPage(DirectFrame):
             base.toonChatSounds = 1
             settings['toonChatSounds'] = True
         self.settingsChanged = 1
-        self.__setToonChatSoundsButton()
-
-    def __setSoundFXButton(self):
-        if base.sfxActive:
-            self.SoundFX_Label['text'] = TTLocalizer.OptionsPageSFXOnLabel
-            self.SoundFX_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff
-        else:
-            self.SoundFX_Label['text'] = TTLocalizer.OptionsPageSFXOffLabel
-            self.SoundFX_toggleButton['text'] = TTLocalizer.OptionsPageToggleOn
         self.__setToonChatSoundsButton()
 
     def __setToonChatSoundsButton(self):
