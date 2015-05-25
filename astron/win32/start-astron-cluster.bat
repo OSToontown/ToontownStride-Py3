@@ -1,4 +1,4 @@
 @echo off
-cd astron/
+cd ..
 astrond --loglevel info config/cluster.yml
 pause
