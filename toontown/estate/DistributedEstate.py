@@ -66,6 +66,8 @@ class DistributedEstate(DistributedObject.DistributedObject):
         DistributedObject.DistributedObject.delete(self)
 
     def load(self):
+        self.defaultSignModel = loader.loadModel('phase_13/models/parties/eventSign')
+        self.activityIconsModel = loader.loadModel('phase_4/models/parties/eventSignIcons')
         self.lt = base.localAvatar
         newsManager = base.cr.newsManager
         if newsManager:

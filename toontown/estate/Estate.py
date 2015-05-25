@@ -64,6 +64,7 @@ class Estate(Place.Place):
          State.State('doorOut', self.enterDoorOut, self.exitDoorOut, ['final', 'walk']),
          State.State('final', self.enterFinal, self.exitFinal, ['teleportIn']),
          State.State('quest', self.enterQuest, self.exitQuest, ['walk']),
+         State.State('activity', self.enterActivity, self.exitActivity, ['walk', 'stopped']),
          State.State('fishing', self.enterFishing, self.exitFishing, ['walk', 'stopped']),
          State.State('mailbox', self.enterMailbox, self.exitMailbox, ['walk', 'stopped']),
          State.State('stopped', self.enterStopped, self.exitStopped, ['walk']),
@@ -176,6 +177,18 @@ class Estate(Place.Place):
 
     def exitInit(self):
         pass
+
+    def enterActivity(self, setAnimState = True):
+        if setAnimState:
+            base.localAvatar.b_setAnimState('neutral', 1)
+        self.accept('teleportQuery', self.handleTeleportQuery)
+        base.localAvatar.setTeleportAvailable(False)
+        base.localAvatar.laffMeter.start()
+
+    def exitActivity(self):
+        base.localAvatar.setTeleportAvailable(True)
+        self.ignore('teleportQuery')
+        base.localAvatar.laffMeter.stop()
 
     def enterPetTutorial(self, bDummy = True):
         self.notify.info('remove estate-check-toon-underwater to TaskMgr in enterPetTutorial()')

@@ -24,6 +24,7 @@ from DistributedToonStatuaryAI import DistributedToonStatuaryAI
 import time
 import random
 from toontown.fishing import FishGlobals
+from toontown.parties.DistributedPartyJukeboxActivityAI import DistributedPartyJukeboxActivityAI
 
 class Rental:
 
@@ -142,7 +143,12 @@ class DistributedEstateAI(DistributedObjectAI):
         self.pond = None
         self.spots = []
         self.targets = []
+        self.jukebox = None
         self.owner = None
+
+    @property
+    def hostId(self):
+        return 1000000001
 
     def generate(self):
         DistributedObjectAI.generate(self)
@@ -180,6 +186,17 @@ class DistributedEstateAI(DistributedObjectAI):
         spot.setPosHpr(46.8254, -113.682, 0.46015, 135, 0, 0)
         spot.generateWithRequired(self.zoneId)
         self.spots.append(spot)
+
+        self.jukebox = DistributedPartyJukeboxActivityAI(
+            self.air,
+            self.doId,
+            (0, 0, 0, 0)
+        )
+        self.jukebox.generateWithRequired(self.zoneId)
+        self.jukebox.sendUpdate('setX', [-21.8630])
+        self.jukebox.sendUpdate('setY', [-154.669])
+        self.jukebox.sendUpdate('setH', [148.7050])
+        self.jukebox.sendUpdate('unloadSign')
 
         self.createTreasurePlanner()
 
@@ -253,6 +270,9 @@ class DistributedEstateAI(DistributedObjectAI):
                 spot.requestDelete()
             for target in self.targets:
                 target.requestDelete()
+
+        if self.jukebox:
+            self.jukebox.requestDelete()
 
         if self.treasurePlanner:
             self.treasurePlanner.stop()

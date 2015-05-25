@@ -1389,10 +1389,11 @@ dclass DistributedParty : DistributedObject {
 };
 
 dclass DistributedPartyActivity : DistributedObject {
-  setX(int16/10) broadcast required;
-  setY(int16/10) broadcast required;
-  setH(uint16%360/100) broadcast required;
-  setPartyDoId(uint32) broadcast required;
+  setX(int16/10) required broadcast ram;
+  setY(int16/10) required broadcast ram;
+  setH(uint16%360/100) required broadcast ram;
+  setPartyDoId(uint32) required broadcast;
+  unloadSign() broadcast ram;
   toonJoinRequest() airecv clsend;
   toonExitRequest() airecv clsend;
   toonExitDemand() airecv clsend;
