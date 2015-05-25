@@ -249,6 +249,7 @@ from toontown.ai import WelcomeValleyManager/AI
 from toontown.building import DistributedAnimatedProp/AI
 from toontown.toon import DistributedToon/AI/UD
 from toontown.safezone import DistributedTrolley/AI
+from toontown.safezone import DistributedPillow/AI
 from toontown.safezone import DistributedPartyGate/AI
 from toontown.suit import DistributedSuitPlanner/AI
 from toontown.suit import DistributedSuitBase/AI
@@ -856,6 +857,9 @@ dclass DistributedTrolley : DistributedObject {
   rejectBoard(uint32);
   requestExit() airecv clsend;
   setMinigameZone(uint32, uint16);
+};
+
+dclass DistributedPillow : DistributedObject {
 };
 
 dclass DistributedSuitPlanner : DistributedObject {

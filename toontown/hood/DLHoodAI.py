@@ -1,5 +1,5 @@
 from toontown.hood import HoodAI
-from toontown.safezone import DistributedTrolleyAI
+from toontown.safezone import DistributedTrolleyAI, DistributedPillowAI
 from toontown.toonbase import ToontownGlobals
 from toontown.ai import DistributedResistanceEmoteMgrAI
 from toontown.ai import DistributedTrickOrTreatTargetAI
@@ -27,7 +27,13 @@ class DLHoodAI(HoodAI.HoodAI):
             self.TrickOrTreatTargetManager = DistributedTrickOrTreatTargetAI.DistributedTrickOrTreatTargetAI(self.air)
             self.TrickOrTreatTargetManager.generateWithRequired(9619)
 
+        self.createPillow()
+
     def createTrolley(self):
         self.trolley = DistributedTrolleyAI.DistributedTrolleyAI(self.air)
         self.trolley.generateWithRequired(self.zoneId)
         self.trolley.start()
+
+    def createPillow(self):
+        self.pillow = DistributedPillowAI.DistributedPillowAI(self.air)
+        self.pillow.generateWithRequired(self.zoneId)
