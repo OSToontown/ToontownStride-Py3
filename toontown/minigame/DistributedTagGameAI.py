@@ -3,6 +3,7 @@ from TagTreasurePlannerAI import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.task import Task
+from toontown.safezone import TreasureGlobals
 import random
 import TagGameGlobals
 
@@ -19,6 +20,7 @@ class DistributedTagGameAI(DistributedMinigameAI):
             self.addChildGameFSM(self.gameFSM)
             self.treasureScores = {}
             self.itAvId = None
+            self.healAmount = 3
             self.tagBack = 1
 
         return
@@ -60,11 +62,15 @@ class DistributedTagGameAI(DistributedMinigameAI):
         self.notify.debug('enterPlay')
         self.b_setIt(random.choice(self.avIdList))
         taskMgr.doMethodLater(self.DURATION, self.timerExpired, self.taskName('gameTimer'))
-        self.tagTreasurePlanner = TagTreasurePlannerAI(self.zoneId, self, self.treasureGrabCallback)
-        self.tagTreasurePlanner.placeRandomTreasure()
-        self.tagTreasurePlanner.placeRandomTreasure()
-        self.tagTreasurePlanner.placeRandomTreasure()
-        self.tagTreasurePlanner.placeRandomTreasure()
+        
+        safezoneId = self.getSafezoneId()
+
+        if safezoneId in TreasureGlobals.SafeZoneTreasureSpawns:
+            treasureType, self.healAmount, spawnPoints, spawnRate, maxTreasures = TreasureGlobals.SafeZoneTreasureSpawns[safezoneId]
+        else:
+            treasureType, self.healAmount = TreasureGlobals.TreasureTT, 3
+
+        self.tagTreasurePlanner = TagTreasurePlannerAI(self.zoneId, self, self.treasureGrabCallback, treasureType, TagGameGlobals.getTreasurePoints(safezoneId))
         self.tagTreasurePlanner.start()
 
     def timerExpired(self, task):
@@ -91,7 +97,7 @@ class DistributedTagGameAI(DistributedMinigameAI):
         if avId not in self.avIdList:
             self.air.writeServerEvent('suspicious', avId, 'TagGameAI.treasureGrabCallback non-player avId')
             return
-        self.treasureScores[avId] += 2
+        self.treasureScores[avId] += self.healAmount
         self.notify.debug('treasureGrabCallback: ' + str(avId) + ' grabbed a treasure, new score: ' + str(self.treasureScores[avId]))
         self.scoreDict[avId] = self.treasureScores[avId]
         treasureScoreParams = []
