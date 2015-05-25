@@ -642,16 +642,10 @@ class Avatar(Actor, ShadowCaster):
         return Actor.loop(self, animName, restart, partName, fromFrame, toFrame)
 
 
-@magicWord(category=CATEGORY_COMMUNITY_MANAGER, types=[])
+@magicWord(category=CATEGORY_COMMUNITY_MANAGER)
 def target():
     """
     Returns the current Spellbook target.
     """
     target = spellbook.getTarget()
-    print 'called target'
-    print 'name: ' + target.getName()
-    thisdoid = str(int(target.doId))
-    print 'doId: ',  thisdoid
-    thisadminacc = str(int(target.getAdminAccess()))
-    print 'admin access: ', thisadminacc
-    return 'Target: %s-%d [%d]' % (target.getName(), int(target.doId), int(target.getAdminAccess()))
+    return 'Target: %s-%d [%d]' % (target.getName(), target.doId, target.getAdminAccess())

@@ -1,7 +1,5 @@
 @echo off
 
-set /P PPYTHON_PATH=<../../PPYTHON_PATH
-
 rem Define some constants for our AI server:
 set MAX_CHANNELS=999999
 set STATESERVER=4002
@@ -16,7 +14,7 @@ set BASE_CHANNEL=401000000
 
 echo ===============================
 echo Starting Toontown Stride AI server...
-echo ppython: %PPYTHON_PATH%
+echo ppython: "panda/python/ppython.exe"
 echo District name: %DISTRICT_NAME%
 echo Base channel: %BASE_CHANNEL%
 echo Max channels: %MAX_CHANNELS%
@@ -26,7 +24,7 @@ echo Event Logger IP: %EVENTLOGGER_IP%
 echo ===============================
 
 :main
-%PPYTHON_PATH% ^
+"panda/python/ppython.exe" ^
 	-m toontown.ai.ServiceStart ^
 	--base-channel %BASE_CHANNEL% ^
 	--max-channels %MAX_CHANNELS% ^

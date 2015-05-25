@@ -1,7 +1,5 @@
 @echo off
 
-set /P PPYTHON_PATH=<../../PPYTHON_PATH
-
 rem Define some constants for our UberDOG server:
 set MAX_CHANNELS=999999
 set STATESERVER=4002
@@ -14,7 +12,7 @@ set BASE_CHANNEL=1000000
 
 echo ===============================
 echo Starting Toontown Stride UberDOG server...
-echo ppython: %PPYTHON_PATH%
+echo ppython: "panda/python/ppython.exe"
 echo Base channel: %BASE_CHANNEL%
 echo Max channels: %MAX_CHANNELS%
 echo State Server: %STATESERVER%
@@ -23,7 +21,7 @@ echo Event Logger IP: %EVENTLOGGER_IP%
 echo ===============================
 
 :main
-%PPYTHON_PATH% ^
+"panda/python/ppython.exe" ^
 	-m toontown.uberdog.ServiceStart ^
 	--base-channel %BASE_CHANNEL% ^
 	--max-channels %MAX_CHANNELS% ^
