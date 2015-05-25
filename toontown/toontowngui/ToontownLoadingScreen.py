@@ -162,8 +162,9 @@ class ToontownLoadingScreen:
             self.gui.setPos(0, -0.1, 0)
             self.gui.reparentTo(aspect2d, LOADING_SCREEN_SORT_INDEX)
             self.gui.setTexture(self.background, 1)
-            if self.loadingScreenTex == self.defaultTex:
-                self.logo.reparentTo(base.a2dpTopCenter, LOADING_SCREEN_SORT_INDEX)
+            #if self.loadingScreenTex == self.defaultTex:
+            #    self.logo.reparentTo(base.a2dpTopCenter, LOADING_SCREEN_SORT_INDEX)
+            self.logo.reparentTo(base.a2dpTopCenter, LOADING_SCREEN_SORT_INDEX)
         else:
             self.title.reparentTo(base.a2dpBottomLeft, LOADING_SCREEN_SORT_INDEX)
             self.gui.reparentTo(hidden)
