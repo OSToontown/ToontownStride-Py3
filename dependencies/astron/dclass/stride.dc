@@ -1973,8 +1973,8 @@ dclass DistributedNPCLaffRestock : DistributedNPCToonBase {
 };
 
 dclass DistributedNPCGlove : DistributedNPCToonBase {
-  doTransformation(uint32 avId, uint32) broadcast;
-  requestTransformation(uint32) airecv clsend;
+  changeGlove(uint8) airecv clsend;
+  changeGloveResult(uint32 avId, uint8) broadcast;
 };
 
 dclass DistributedKnockKnockDoor : DistributedAnimatedProp {

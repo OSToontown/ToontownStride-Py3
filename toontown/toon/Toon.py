@@ -2258,17 +2258,9 @@ class Toon(Avatar.Avatar, ToonHead):
 
     def __doPumpkinHeadSwitch(self, lerpTime, toPumpkin):
         node = self.getGeomNode()
-
-        def getDustCloudIval():
-            dustCloud = DustCloud.DustCloud(fBillboard=0, wantSound=1)
-            dustCloud.setBillboardAxis(2.0)
-            dustCloud.setZ(3)
-            dustCloud.setScale(0.4)
-            dustCloud.createTrack()
-            return Sequence(Func(dustCloud.reparentTo, self), dustCloud.track, Func(dustCloud.destroy), name='dustCloadIval')
-
-        dust = getDustCloudIval()
+        dust = self.getDustCloud(0.0)
         track = Sequence()
+
         if toPumpkin:
             track.append(Func(self.stopBlink))
             track.append(Func(self.closeEyes))
@@ -2310,17 +2302,9 @@ class Toon(Avatar.Avatar, ToonHead):
 
     def __doSnowManHeadSwitch(self, lerpTime, toSnowMan):
         node = self.getGeomNode()
-
-        def getDustCloudIval():
-            dustCloud = DustCloud.DustCloud(fBillboard=0, wantSound=0)
-            dustCloud.setBillboardAxis(2.0)
-            dustCloud.setZ(3)
-            dustCloud.setScale(0.4)
-            dustCloud.createTrack()
-            return Sequence(Func(dustCloud.reparentTo, self), dustCloud.track, Func(dustCloud.destroy), name='dustCloadIval')
-
-        dust = getDustCloudIval()
+        dust = self.getDustCloud(0.0)
         track = Sequence()
+
         if toSnowMan:
             track.append(Func(self.stopBlink))
             track.append(Func(self.closeEyes))
@@ -2370,16 +2354,8 @@ class Toon(Avatar.Avatar, ToonHead):
         track = Sequence()
         greenTrack = Parallel()
 
-        def getDustCloudIval():
-            dustCloud = DustCloud.DustCloud(fBillboard=0, wantSound=1)
-            dustCloud.setBillboardAxis(2.0)
-            dustCloud.setZ(3)
-            dustCloud.setScale(0.4)
-            dustCloud.createTrack()
-            return Sequence(Func(dustCloud.reparentTo, self), dustCloud.track, Func(dustCloud.destroy), name='dustCloadIval')
-
         if lerpTime > 0.0:
-            dust = getDustCloudIval()
+            dust = self.getDustCloud(0.0)
             track.append(Func(dust.start))
             track.append(Wait(0.5))
         if toGreen:
@@ -3014,6 +2990,21 @@ class Toon(Avatar.Avatar, ToonHead):
             sequence.append(Wait(len(text.split(' '))))
             sequence.append(Func(self.clearChat))
             sequence.append(Wait(waitTime))
+
+        return sequence
+
+    def getDustCloud(self, delay=0.5, color=False):
+        dustCloud = DustCloud.DustCloud(fBillboard=0, wantSound=1)
+
+        dustCloud.setBillboardAxis(2.0)
+        dustCloud.setZ(3)
+        dustCloud.setScale(0.4)
+        dustCloud.createTrack()
+        sequence = Sequence(Wait(delay), Func(dustCloud.reparentTo, self), dustCloud.track, Func(dustCloud.destroy), name='dustCloudIval')
+
+        if color is not None and hasattr(self, 'laffMeter'):
+            self.laffMeter.color = color
+            sequence.append(Func(self.laffMeter.adjustFace, self.hp, self.maxHp))
 
         return sequence
 

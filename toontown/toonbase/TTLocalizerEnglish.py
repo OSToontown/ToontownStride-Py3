@@ -8355,15 +8355,16 @@ InteractivePropTrackBonusTerms = {0: 'Super Toon-Up!',
  4: 'Super Throw!',
  5: 'Super Squirt!',
  6: ''}
-GloveSameColorMessage = 'You already have those gloves!'
+GloveInvalidColorMessage = "That's an unpainted color."
+GloveSameColorMessage = "You're already wearing those gloves!"
 GloveNoMoneyMessage = "You don't have enough jellybeans!"
+GloveMoreMoneyMessage = 'You need %s jellybeans to buy new gloves!'
 GloveSuccessMessage = 'Have fun with your new gloves!'
-GloveByeMessage = 'See you later!'
 GlovePickColorMessage = 'Feel free to choose!'
 GloveGuiTitle = 'Choose a glove color!'
 GloveGuiNotice = 'Costs %s jellybeans.'
 GloveGuiBuy = 'Buy'
-GloveGuiCancel = 'Cancel'
+GloveGuiSameColor = 'You already have these!'
 LanguageButtonText = 'Language'
 LanguageSelectorTitle = 'Choose your language!'
 LanguageSelectorCurrent = 'Current language: %s'
