@@ -258,10 +258,6 @@ class DistributedPartyActivity(DistributedObject.DistributedObject):
         self.signFlatWithNote.stash()
         self.signTextLocator.stash()
 
-    def unloadSign(self):
-        self.sign.removeNode()
-        del self.sign
-
     def loadLever(self):
         self.lever = self.root.attachNewNode('%sLever' % self.activityName)
         self.leverModel = self.party.defaultLeverModel.copyTo(self.lever)
@@ -413,9 +409,8 @@ class DistributedPartyActivity(DistributedObject.DistributedObject):
         self._disableCollisions()
         self.signModel.removeNode()
         del self.signModel
-        if hasattr(self, 'sign'):
-            self.sign.removeNode()
-            del self.sign
+        self.sign.removeNode()
+        del self.sign
         self.ignoreAll()
         if self.wantLever:
             self.unloadLever()

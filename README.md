@@ -1,4 +1,4 @@
-# src #
+# Toontown Stride - src #
 
 The source code for Toontown Stride.
 
