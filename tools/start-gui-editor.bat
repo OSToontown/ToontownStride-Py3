@@ -3,8 +3,5 @@ cd..
 
 title GUI Editor
 
-rem Read the contents of PPYTHON_PATH into %PPYTHON_PATH%:
-set /P PPYTHON_PATH=<PPYTHON_PATH
-
-%PPYTHON_PATH% -m guieditor.EditorStart
+"panda/python/ppython.exe" -m guieditor.EditorStart
 pause
