@@ -1,5 +1,7 @@
 @echo off
 
+set /P PPYTHON_PATH=<PPYTHON_PATH
+
 title Toontown Stride Game Launcher
 
 echo Choose your connection method!
@@ -33,7 +35,7 @@ echo.
 
 echo ===============================
 echo Starting Toontown Stride...
-echo ppython: "panda/python/ppython.exe"
+echo ppython: %PPYTHON_PATH%
 
 if %INPUT%==2 (
     echo Username: %ttsUsername%
@@ -45,9 +47,9 @@ echo Gameserver: %TTS_GAMESERVER%
 echo ===============================
 
 if %INPUT%==2 (
-    "panda/python/ppython.exe" -m toontown.toonbase.ClientStartRemoteDB
+    %PPYTHON_PATH% -m toontown.toonbase.ClientStartRemoteDB
 ) else (
-    "panda/python/ppython.exe" -m toontown.toonbase.ClientStart
+    %PPYTHON_PATH% -m toontown.toonbase.ClientStart
 )
 
 pause
