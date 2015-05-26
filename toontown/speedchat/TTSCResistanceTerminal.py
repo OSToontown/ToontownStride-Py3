@@ -1,10 +1,10 @@
 from otp.speedchat.SCTerminal import SCTerminal
 from toontown.chat import ResistanceChat
+
 TTSCResistanceMsgEvent = 'TTSCResistanceMsg'
 
 def decodeTTSCResistanceMsg(textId):
     return ResistanceChat.getChatText(textId)
-
 
 class TTSCResistanceTerminal(SCTerminal):
 

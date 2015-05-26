@@ -15,7 +15,6 @@ decorationHolidays = [ToontownGlobals.WINTER_DECORATIONS,
  ToontownGlobals.SPOOKY_PROPS,
  ToontownGlobals.HALLOWEEN_COSTUMES,
  ToontownGlobals.SPOOKY_COSTUMES]
-promotionalSpeedChatHolidays = []
 
 class NewsManager(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('NewsManager')
@@ -182,9 +181,6 @@ class NewsManager(DistributedObject.DistributedObject):
                         self.holidayDecorator = HolidayDecorator.HolidayDecorator()
                     self.holidayDecorator.decorate()
                     messenger.send('decorator-holiday-%d-starting' % holidayId)
-            elif holidayId in promotionalSpeedChatHolidays:
-                if hasattr(base, 'TTSCPromotionalMenu'):
-                    base.TTSCPromotionalMenu.startHoliday(holidayId)
             elif holidayId == ToontownGlobals.SILLY_SATURDAY_BINGO:
                 self.setBingoOngoing()
             elif holidayId == ToontownGlobals.MORE_XP_HOLIDAY:
@@ -297,9 +293,6 @@ class NewsManager(DistributedObject.DistributedObject):
                         self.holidayDecorator = HolidayDecorator.HolidayDecorator()
                     self.holidayDecorator.undecorate()
                     messenger.send('decorator-holiday-%d-ending' % holidayId)
-            elif holidayId in promotionalSpeedChatHolidays:
-                if hasattr(base, 'TTSCPromotionalMenu'):
-                    base.TTSCPromotionalMenu.endHoliday(holidayId)
             elif holidayId == ToontownGlobals.SILLY_SATURDAY_BINGO:
                 self.setBingoEnd()
             elif holidayId == ToontownGlobals.MORE_XP_HOLIDAY:
