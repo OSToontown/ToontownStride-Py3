@@ -6,6 +6,14 @@ from toontown.toonbase import TTLocalizer
 from direct.task import Task
 import LaffRestockGlobals
 from toontown.toon import NPCToons
+from DistributedToonAI import DistributedToonAI
+
+zone2id = {
+    10000: 0,
+    13000: 1,
+    12000: 2,
+    11000: 3,
+}
 
 class DistributedNPCLaffRestockAI(DistributedNPCToonBaseAI):
 
@@ -13,6 +21,10 @@ class DistributedNPCLaffRestockAI(DistributedNPCToonBaseAI):
         DistributedNPCToonBaseAI.__init__(self, air, npcId)
         self.givesQuests = 0
         self.busy = 0
+
+    def generate(self):
+        DistributedToonAI.generate(self)
+        self.b_setCogIndex(zone2id[self.zoneId])
 
     def delete(self):
         taskMgr.remove(self.uniqueName('clearMovie'))

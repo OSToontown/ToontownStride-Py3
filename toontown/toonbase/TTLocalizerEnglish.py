@@ -6228,8 +6228,7 @@ NPCToonNames = {20000: 'Tutorial Tom',
  10001: 'Healer Sara',
  11001: 'Healer Gabriel',
  12001: 'Healer Bill',
- 13001: 'Healer Clover',
- 91917: 'Magic Cat'}
+ 13001: 'Healer Clover'}
 zone2TitleDict = {2513: ('Toon Hall', ''),
  2514: ('Toontown Bank', ''),
  2516: ('Toontown School House', ''),
