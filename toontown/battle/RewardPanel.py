@@ -571,10 +571,12 @@ class RewardPanel(DirectFrame):
             isForeman = flags & ToontownBattleGlobals.DLF_FOREMAN
             isVP = flags & ToontownBattleGlobals.DLF_VP
             isCFO = flags & ToontownBattleGlobals.DLF_CFO
+            isCJ = flags & ToontownBattleGlobals.DLF_CJ
+            isCEO = flags & ToontownBattleGlobals.DLF_CEO
             isSupervisor = flags & ToontownBattleGlobals.DLF_SUPERVISOR
             isVirtual = flags & ToontownBattleGlobals.DLF_VIRTUAL
             hasRevives = flags & ToontownBattleGlobals.DLF_REVIVES
-            if isVP or isCFO:
+            if isVP or isCFO or isCJ or isCEO:
                 cogType = None
                 cogTrack = SuitDNA.suitDepts[cogIndex]
             else:
@@ -587,6 +589,8 @@ class RewardPanel(DirectFrame):
              'isForeman': isForeman,
              'isVP': isVP,
              'isCFO': isCFO,
+             'isCJ': isCJ,
+             'isCEO': isCEO,
              'isSupervisor': isSupervisor,
              'isVirtual': isVirtual,
              'hasRevives': hasRevives,
@@ -622,6 +626,10 @@ class RewardPanel(DirectFrame):
                             num = quest.doesVPCount(avId, cogDict, zoneId, toonShortList)
                         elif cogDict['isCFO']:
                             num = quest.doesCFOCount(avId, cogDict, zoneId, toonShortList)
+                        elif cogDict['isCJ']:
+                            num = quest.doesCJCount(avId, cogDict, zoneId, toonShortList)
+                        elif cogDict['isCEO']:
+                            num = quest.doesCEOCount(avId, cogDict, zoneId, toonShortList)
                         else:
                             num = quest.doesCogCount(avId, cogDict, zoneId, toonShortList)
                         if num:

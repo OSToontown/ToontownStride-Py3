@@ -236,6 +236,12 @@ class Quest:
 
     def checkNumCFOs(self, num):
         self.check(num > 0, 'invalid number of CFOs: %s' % num)
+    
+    def checkNumCJs(self, num):
+        self.check(num > 0, 'invalid number of CJs: %s' % num)
+    
+    def checkNumCEOs(self, num):
+        self.check(num > 0, 'invalid number of CEOs: %s' % num)
 
     def checkNumBuildings(self, num):
         self.check(1, 'invalid num buildings: %s' % num)
@@ -356,6 +362,12 @@ class Quest:
         return 0
 
     def doesCFOCount(self, avId, cogDict, zoneId, avList):
+        return 0
+
+    def doesCJCount(self, avId, cogDict, zoneId, avList):
+        return 0
+
+    def doesCEOCount(self, avId, cogDict, zoneId, avList):
         return 0
 
     def doesFactoryCount(self, avId, location, avList):
@@ -905,7 +917,6 @@ class SupervisorNewbieQuest(SupervisorQuest, NewbieQuest):
         else:
             return 0
 
-
 class CFOQuest(CogQuest):
     def __init__(self, id, quest):
         CogQuest.__init__(self, id, quest)
@@ -915,18 +926,38 @@ class CFOQuest(CogQuest):
         return Any
 
     def getCogNameString(self):
-        numCogs = self.getNumCogs()
-        if numCogs == 1:
-            return TTLocalizer.ACogCFO
-        else:
-            return TTLocalizer.CogCFOs
-
-    def doesCogCount(self, avId, cogDict, zoneId, avList):
-        return 0
+        return TTLocalizer.ACogCFO if self.getNumCogs() == 1 else TTLocalizer.CogCFOs
 
     def doesCFOCount(self, avId, cogDict, zoneId, avList):
         return self.isLocationMatch(zoneId)
 
+class CJQuest(CogQuest):
+    def __init__(self, id, quest):
+        CogQuest.__init__(self, id, quest)
+        self.checkNumCJs(self.quest[1])
+
+    def getCogType(self):
+        return Any
+
+    def getCogNameString(self):
+        return TTLocalizer.ACogCJ if self.getNumCogs() == 1 else TTLocalizer.CogCJs
+
+    def doesCJCount(self, avId, cogDict, zoneId, avList):
+        return self.isLocationMatch(zoneId)
+
+class CEOQuest(CogQuest):
+    def __init__(self, id, quest):
+        CogQuest.__init__(self, id, quest)
+        self.checkNumCEOs(self.quest[1])
+
+    def getCogType(self):
+        return Any
+
+    def getCogNameString(self):
+        return TTLocalizer.ACogCEO if self.getNumCogs() == 1 else TTLocalizer.CogCEOs
+
+    def doesCEOCount(self, avId, cogDict, zoneId, avList):
+        return self.isLocationMatch(zoneId)
 
 class CFONewbieQuest(CFOQuest, NewbieQuest):
     def __init__(self, id, quest):
@@ -3283,7 +3314,7 @@ QuestDict = {
     8185: (DL_TIER + 2, OBSOLETE, (SkelecogLevelQuest, ToontownGlobals.SellbotHQ, 16, 6), Any, ToonHQ, Any, NA, DefaultDialog),
     8186: (DL_TIER + 2, OBSOLETE, (ForemanQuest, ToontownGlobals.SellbotHQ, 12), Any, ToonHQ, Any, NA, DefaultDialog),
     8187: (DL_TIER + 2, OBSOLETE, (ForemanQuest, ToontownGlobals.SellbotHQ, 16), Any, ToonHQ, Any, NA, DefaultDialog),
-    8188: (DL_TIER + 2, OBSOLETE, (VPQuest, ToontownGlobals.SellbotHQ, 2), Any, ToonHQ, Any, NA, DefaultDialog),
+    8188: (DL_TIER + 2, Start, (VPQuest, ToontownGlobals.SellbotHQ, 2), Any, ToonHQ, Any, NA, DefaultDialog),
     8189: (DL_TIER + 2, OBSOLETE, (RescueQuest, ToontownGlobals.SellbotHQ, 2), Any, ToonHQ, Any, NA, DefaultDialog),
     8190: (DL_TIER + 2, OBSOLETE, (CogNewbieQuest, ToontownGlobals.SellbotHQ, 30, Any, SELLBOT_HQ_NEWBIE_HP), Any, ToonHQ, 610, NA, DefaultDialog),
     8191: (DL_TIER + 2, OBSOLETE, (CogNewbieQuest, ToontownGlobals.SellbotHQ, 30, Any, SELLBOT_HQ_NEWBIE_HP), Any, ToonHQ, 610, NA, DefaultDialog),
@@ -3401,7 +3432,7 @@ QuestDict = {
     9185: (DL_TIER + 3, OBSOLETE, (SkelecogLevelQuest, ToontownGlobals.SellbotHQ, 32, 6), Any, ToonHQ, Any, NA, DefaultDialog),
     9186: (DL_TIER + 3, OBSOLETE, (ForemanQuest, ToontownGlobals.SellbotHQ, 25), Any, ToonHQ, Any, NA, DefaultDialog),
     9187: (DL_TIER + 3, OBSOLETE, (ForemanQuest, ToontownGlobals.SellbotHQ, 35), Any, ToonHQ, Any, NA, DefaultDialog),
-    9188: (DL_TIER + 3, OBSOLETE, (VPQuest, ToontownGlobals.SellbotHQ, 3), Any, ToonHQ, Any, NA, DefaultDialog),
+    9188: (DL_TIER + 3, Start, (VPQuest, ToontownGlobals.SellbotHQ, 3), Any, ToonHQ, Any, NA, DefaultDialog),
     9189: (DL_TIER + 3, OBSOLETE, (RescueQuest, ToontownGlobals.SellbotHQ, 3), Any, ToonHQ, Any, NA, DefaultDialog),
     9190: (DL_TIER + 3, OBSOLETE, (CogNewbieQuest, ToontownGlobals.SellbotHQ, 35, Any, SELLBOT_HQ_NEWBIE_HP), Any, ToonHQ, 611, NA, DefaultDialog),
     9191: (DL_TIER + 3, OBSOLETE, (CogNewbieQuest, ToontownGlobals.SellbotHQ, 35, Any, SELLBOT_HQ_NEWBIE_HP), Any, ToonHQ, 611, NA, DefaultDialog),
@@ -3468,7 +3499,7 @@ QuestDict = {
     10120: (ELDER_TIER, OBSOLETE, (CogQuest, ToontownGlobals.SellbotHQ, 60, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     10121: (ELDER_TIER, OBSOLETE, (FactoryQuest, ToontownGlobals.SellbotHQ, 10), Any, ToonHQ, Any, NA, DefaultDialog),
     10122: (ELDER_TIER, OBSOLETE, (ForemanQuest, ToontownGlobals.SellbotHQ, 10), Any, ToonHQ, Any, NA, DefaultDialog),
-    10123: (ELDER_TIER, OBSOLETE, (VPQuest, ToontownGlobals.SellbotHQ, 2), Any, ToonHQ, Any, NA, DefaultDialog),
+    10123: (ELDER_TIER, Start, (VPQuest, ToontownGlobals.SellbotHQ, 2), Any, ToonHQ, Any, NA, DefaultDialog),
     10124: (ELDER_TIER, OBSOLETE, (RescueQuest, ToontownGlobals.SellbotHQ, 2), Any, ToonHQ, Any, NA, DefaultDialog),
     10130: (ELDER_TIER, OBSOLETE, (CogNewbieQuest, ToontownGlobals.SellbotHQ, 40, Any, SELLBOT_HQ_NEWBIE_HP), Any, ToonHQ, Any, NA, DefaultDialog),
     10131: (ELDER_TIER, OBSOLETE, (FactoryNewbieQuest, ToontownGlobals.SellbotHQ, 3, SELLBOT_HQ_NEWBIE_HP), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -3480,6 +3511,8 @@ QuestDict = {
     10145: (ELDER_TIER, Start, (CogNewbieQuest, ToontownGlobals.CashbotHQ, 40, Any, CASHBOT_HQ_NEWBIE_HP), Any, ToonHQ, Any, NA, DefaultDialog),
     10146: (ELDER_TIER, Start, (MintNewbieQuest, ToontownGlobals.CashbotHQ, 3, CASHBOT_HQ_NEWBIE_HP), Any, ToonHQ, Any, NA, DefaultDialog),
     10147: (ELDER_TIER, Start, (SupervisorNewbieQuest, ToontownGlobals.CashbotHQ, 3, CASHBOT_HQ_NEWBIE_HP), Any, ToonHQ, 611, NA, DefaultDialog),
+    10148: (ELDER_TIER, Start, (CJQuest, ToontownGlobals.LawbotHQ, 2), Any, ToonHQ, Any, NA, DefaultDialog),
+    10149: (ELDER_TIER, Start, (CEOQuest, ToontownGlobals.BossbotHQ, 2), Any, ToonHQ, Any, NA, DefaultDialog),
     10200: (ELDER_TIER, Start, (CogQuest, Anywhere, 100, Any), Any, ToonHQ, NA, 10201, DefaultDialog),
     10201: (ELDER_TIER, Cont, (DeliverItemQuest, 1000), Any, ToonTailor, 1000, NA, DefaultDialog),
     10202: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 25, Any, 1, 0), Any, ToonHQ, NA, 10203, DefaultDialog),

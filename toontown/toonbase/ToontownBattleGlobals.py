@@ -445,9 +445,11 @@ DLF_SKELECOG = 1
 DLF_FOREMAN = 2
 DLF_VP = 4
 DLF_CFO = 8
-DLF_SUPERVISOR = 16
-DLF_VIRTUAL = 32
-DLF_REVIVES = 64
+DLF_CJ = 16
+DLF_CEO = 32
+DLF_SUPERVISOR = 64
+DLF_VIRTUAL = 128
+DLF_REVIVES = 256
 pieNames = ['tart',
  'fruitpie-slice',
  'creampie-slice',

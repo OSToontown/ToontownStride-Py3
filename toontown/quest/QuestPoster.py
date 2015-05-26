@@ -705,6 +705,19 @@ class QuestPoster(DirectFrame):
                 infoText = quest.getLocationName()
                 if infoText == '':
                     infoText = TTLocalizer.QuestPosterAnywhere
+        elif quest.getType() == Quests.CJQuest or quest.getType() == Quests.CEOQuest:
+            self.teleportButton.hide()
+            cj = quest.getType() == Quests.CJQuest
+            frameBgColor = 'blue' if cj else 'brown'
+            cardMaker = CardMaker('boss-cm')
+            cardMaker.setFrame(-0.5, 0.5, -0.5, 0.5)
+            lIconGeom = NodePath(cardMaker.generate())
+            lIconGeom.setTexture(loader.loadTexture('phase_3.5/maps/' + 'cj_icon.jpg' if cj else 'ceo_icon.jpg'))
+            lIconGeomScale = 0.13
+            if not fComplete:
+                infoText = quest.getLocationName()
+                if infoText == '':
+                    infoText = TTLocalizer.QuestPosterAnywhere
         elif quest.getType() == Quests.CFONewbieQuest:
             self.teleportButton.hide()
             frameBgColor = 'blue'

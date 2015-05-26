@@ -335,6 +335,8 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
          'isForeman': 0,
          'isVP': 1,
          'isCFO': 0,
+         'isCJ': 0,
+         'isCEO': 0,
          'isSupervisor': 0,
          'isVirtual': 0,
          'activeToons': self.involvedToons[:]})
