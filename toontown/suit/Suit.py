@@ -437,11 +437,9 @@ class Suit(Avatar.Avatar):
         self.generateCorporateMedallion()
 
     def generateBody(self):
-        global Preloaded
         animDict = self.generateAnimDict()
         filePrefix, bodyPhase = ModelDict[self.style.body]
-        filepath = 'phase_3.5' + filePrefix + 'mod'
-        self.loadModel(Preloaded[filepath], copy = True)
+        self.loadModel('phase_3.5' + filePrefix + 'mod')
         self.loadAnims(animDict)
         self.setSuitClothes()
 
