@@ -40,6 +40,14 @@ class LanguageSelector:
         self.french = DirectButton(aspect2d, relief=None, text='French',
                       text_fg=(1, 0.549, 0, 1), text_scale=0.09, text_font=ToontownGlobals.getSuitFont(),
                       pos=(0, 0, -0.25), text_shadow=(1, 0.27, 0, 1), command=self.switchLanguage, extraArgs=['French'])
+    
+        self.brazilian = DirectButton(aspect2d, relief=None, text='Brazilian',
+                      text_fg=(1, 0.549, 0, 1), text_scale=0.09, text_font=ToontownGlobals.getSuitFont(),
+                      pos=(0, 0, -0.35), text_shadow=(1, 0.27, 0, 1), command=self.switchLanguage, extraArgs=['Brazilian'])
+     
+        self.german = DirectButton(aspect2d, relief=None, text='German',
+                      text_fg=(1, 0.549, 0, 1), text_scale=0.09, text_font=ToontownGlobals.getSuitFont(),
+                      pos=(0, 0, -0.45), text_shadow=(1, 0.27, 0, 1), command=self.switchLanguage, extraArgs=['German'])
 
         self.backButton = DirectButton(aspect2d, relief=None, image=(self.shuffleUp, self.shuffleDown),
                           text=TTLocalizer.LanguageSelectorBack, text_font=ToontownGlobals.getInterfaceFont(),
