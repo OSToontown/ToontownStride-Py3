@@ -11,6 +11,8 @@ class LanguageSelector:
         self.available = None
         self.english = None
         self.french = None
+        self.portuguese = None
+        self.german = None
         self.backButton = None
         self.confirmDialog = None
         self.leaveFunction = leaveFunction
