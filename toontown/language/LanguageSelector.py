@@ -55,7 +55,7 @@ class LanguageSelector:
                           text_shadow=(0, 0, 0, 1), command=self.destroy)
 
     def destroy(self):
-        for element in [self.background, self.title, self.current, self.available, self.english, self.french, self.backButton, self.confirmDialog]:
+        for element in [self.background, self.title, self.current, self.available, self.english, self.french, self.portuguese, self.german, self.backButton, self.confirmDialog]:
             if element:
                 element.destroy()
                 element = None
