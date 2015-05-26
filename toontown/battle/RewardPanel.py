@@ -622,16 +622,8 @@ class RewardPanel(DirectFrame):
                         earned = itemList.count(questItem)
                 else:
                     for cogDict in cogList:
-                        if cogDict['isVP']:
-                            num = quest.doesVPCount(avId, cogDict, zoneId, toonShortList)
-                        elif cogDict['isCFO']:
-                            num = quest.doesCFOCount(avId, cogDict, zoneId, toonShortList)
-                        elif cogDict['isCJ']:
-                            num = quest.doesCJCount(avId, cogDict, zoneId, toonShortList)
-                        elif cogDict['isCEO']:
-                            num = quest.doesCEOCount(avId, cogDict, zoneId, toonShortList)
-                        else:
-                            num = quest.doesCogCount(avId, cogDict, zoneId, toonShortList)
+                        num = quest.doesCogCount(avId, cogDict, zoneId, toonShortList)
+
                         if num:
                             if base.config.GetBool('battle-passing-no-credit', True):
                                 if avId in helpfulToonsList:

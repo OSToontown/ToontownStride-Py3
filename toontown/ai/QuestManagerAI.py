@@ -476,7 +476,20 @@ class QuestManagerAI:
         pass
 
     def toonKilledCogs(self, av, suitsKilled, zoneId, activeToonList):
-        pass
+        avQuests = av.getQuests()
+        questList = []
+
+        for i in xrange(0, len(avQuests), 5):
+            questDesc = avQuests[i : i + 5]
+            questClass = Quests.getQuest(questDesc[QuestIdIndex])
+
+            if isinstance(questClass, Quests.CogQuest):
+                for suit in suitsKilled:
+                    for x in xrange(questClass.doesCogCount(av.getDoId(), suit, zoneId, activeToonList)):
+                        questDesc[QuestProgressIndex] += 1
+            
+            questList.append(questDesc)
+        av.b_setQuests(questList)
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[str, int, int])
 def quests(command, arg0=0, arg1=0):
