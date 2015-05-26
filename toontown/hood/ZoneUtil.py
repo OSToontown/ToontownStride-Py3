@@ -87,7 +87,7 @@ def getWhereName(zoneId, isToon):
             where = 'toonInterior'
         elif zoneId in tutorialDict['exteriors']:
             where = 'street'
-        elif zoneId == ToontownCentral:
+        elif zoneId == ToontownCentral or zoneId == WelcomeValleyToken:
             where = 'playground'
         else:
             zoneUtilNotify.error('No known zone: ' + str(zoneId))
