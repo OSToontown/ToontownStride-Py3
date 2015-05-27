@@ -9,6 +9,9 @@ echo #2 - Dev Server
 echo #3 - Custom
 echo.
 
+:selection
+
+set INPUT=-1
 set /P INPUT=Selection: 
 
 if %INPUT%==1 (
@@ -18,7 +21,9 @@ if %INPUT%==1 (
 ) else if %INPUT%==3 (
     echo.
     set /P TTS_GAMESERVER=Gameserver: 
-) else exit
+) else (
+	goto selection
+)
 
 echo.
 
