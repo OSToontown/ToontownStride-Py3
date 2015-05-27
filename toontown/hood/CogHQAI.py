@@ -1,6 +1,6 @@
 from toontown.building import DoorTypes
 from toontown.building.DistributedBoardingPartyAI import DistributedBoardingPartyAI
-from toontown.coghq import DistributedCogHQDoorAI, LobbyManagerAI
+from toontown.coghq import DistributedCogHQDoorAI, DistributedCogHQExteriorDoorAI, LobbyManagerAI
 from toontown.toonbase import TTLocalizer, ToontownGlobals
 from toontown.toon import NPCToons
 
@@ -61,7 +61,11 @@ class CogHQAI:
             doorIndex=intDoorIndex, lockValue=lock)
         intDoor.zoneId = destinationZone
 
-        extDoor = DistributedCogHQDoorAI.DistributedCogHQDoorAI(
+        # it works with
+        # DistributedCogHQDoorAI.DistributedCogHQDoorAI
+        # so idfk
+        # figure it out
+        extDoor = DistributedCogHQExteriorDoorAI.DistributedCogHQExteriorDoorAI(
             self.air, 0, DoorTypes.EXT_COGHQ, destinationZone,
             doorIndex=extDoorIndex, lockValue=lock)
 

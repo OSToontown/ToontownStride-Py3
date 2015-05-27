@@ -320,6 +320,7 @@ from toontown.building import DistributedKartShopInterior/AI
 from toontown.building import DistributedDoor/AI
 from toontown.estate import DistributedHouseDoor/AI
 from toontown.coghq import DistributedCogHQDoor/AI
+from toontown.coghq import DistributedCogHQExteriorDoor/AI
 from toontown.coghq import DistributedSellbotHQDoor/AI
 from toontown.toon import DistributedNPCToonBase/AI
 from toontown.toon import DistributedNPCToon/AI
@@ -1873,9 +1874,14 @@ dclass DistributedHouseDoor : DistributedDoor {
 dclass DistributedCogHQDoor : DistributedDoor {
 };
 
+dclass DistributedCogHQExteriorDoor : DistributedCogHQDoor {
+  selectLobby(uint32) broadcast ram;
+  confirmEntrance(uint32, bool) airecv clsend;
+};
+
 dclass DistributedSellbotHQDoor : DistributedCogHQDoor {
   informPlayer(uint8) broadcast ram;
-};
+}
 
 dclass DistributedNPCToonBase : DistributedNode {
   setName(string) required broadcast ram;
