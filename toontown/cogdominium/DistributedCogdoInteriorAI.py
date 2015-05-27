@@ -14,6 +14,7 @@ from SuitPlannerCogdoInteriorAI import SuitPlannerCogdoInteriorAI
 from toontown.cogdominium import CogdoBarrelRoomConsts
 
 from toontown.toon import NPCToons
+from toontown.quest import Quests
 import random, math
 
 NUM_FLOORS_DICT = {
@@ -464,7 +465,7 @@ class DistributedCogdoInteriorAI(DistributedObjectAI, FSM.FSM):
             toon = self.air.doId2do.get(v)
             if toon:
                 if self.FOType == 's':
-                    if not toon.attemptAddNPCFriend(self.sosNPC):
+                    if not toon.attemptAddNPCFriend(self.sosNPC, Quests.InFO):
                         self.notify.info('%s unable to add NPCFriend %s to %s.' % (self.doId, self.sosNPC, v))
                 elif self.FOType == 'l':
                     reward = self.getEmblemsReward()

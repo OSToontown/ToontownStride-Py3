@@ -9,7 +9,7 @@ from toontown.suit import Suit
 from toontown.hood import ZoneUtil
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
-import string, types
+import string, types, random
 from toontown.toon import LaffMeter
 from toontown.toonbase.ToontownBattleGlobals import AvPropsNew
 from direct.directnotify import DirectNotifyGlobal
@@ -672,34 +672,9 @@ class QuestPoster(DirectFrame):
         elif quest.getType() == Quests.RescueQuest:
             self.teleportButton.hide()
             frameBgColor = 'blue'
-            lIconGeom = self.createNpcToonHead(2001)
+            lIconGeom = self.createNpcToonHead(random.choice(NPCToons.HQnpcFriends.keys()))
             lIconGeomScale = 0.13
-            if not fComplete:
-                infoText = quest.getLocationName()
-                if infoText == '':
-                    infoText = TTLocalizer.QuestPosterAnywhere
-        elif quest.getType() == Quests.RescueNewbieQuest:
-            self.teleportButton.hide()
-            frameBgColor = 'blue'
-            rIconGeom = self.createNpcToonHead(2001)
-            rIconGeomScale = 0.13
-            if not fComplete:
-                headlineString = TTLocalizer.QuestsNewbieQuestHeadline
-                captions = [quest.getCaption()]
-                captions.append(map(string.capwords, quest.getObjectiveStrings()))
-                auxText = TTLocalizer.QuestsRescueQuestAux
-                lPos.setX(-0.18)
-                self.laffMeter = self.createLaffMeter(quest.getNewbieLevel())
-                self.laffMeter.setScale(0.04)
-                lIconGeom = None
-                infoText = quest.getLocationName()
-                if infoText == '':
-                    infoText = TTLocalizer.QuestPosterAnywhere
-            else:
-                lIconGeom = rIconGeom
-                rIconGeom = None
-                lIconGeomScale = rIconGeomScale
-                rIconGeomScale = 1
+            infoText = quest.getLocationName().strip()
         elif quest.getType() == Quests.FriendQuest:
             self.teleportButton.hide()
             frameBgColor = 'brown'

@@ -281,8 +281,22 @@ class QuestManagerAI:
         for i in xrange(0, len(avQuests), 5):
             questDesc = avQuests[i : i + 5]
             questClass = Quests.getQuest(questDesc[QuestIdIndex])
-            if isinstance(questClass, Quests.FriendQuest):
-                questDesc[QuestProgressIndex] = 1
+            if isinstance(questClass, Quests.FriendQuest) and questClass.getCompletionStatus(av, questDesc) == Quests.INCOMPLETE:
+                questDesc[QuestProgressIndex] += 1
+            questList.append(questDesc)
+
+        av.b_setQuests(questList)
+
+    def toonMadeNPCFriend(self, av, count, method):
+        avQuests = av.getQuests()
+        questList = []
+
+        for i in xrange(0, len(avQuests), 5):
+            questDesc = avQuests[i : i + 5]
+            questClass = Quests.getQuest(questDesc[QuestIdIndex])
+
+            if isinstance(questClass, Quests.RescueQuest) and questClass.getCompletionStatus(av, questDesc) == Quests.INCOMPLETE and questClass.isMethodMatch(method):
+                questDesc[QuestProgressIndex] += count
             questList.append(questDesc)
 
         av.b_setQuests(questList)

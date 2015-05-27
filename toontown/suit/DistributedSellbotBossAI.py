@@ -11,6 +11,7 @@ from toontown.battle import BattleExperienceAI
 from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
+from toontown.quest import Quests
 from otp.ai.MagicWordGlobal import *
 
 
@@ -347,7 +348,7 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         for toonId in self.involvedToons:
             toon = self.air.doId2do.get(toonId)
             if toon:
-                if not toon.attemptAddNPCFriend(self.cagedToonNpcId):
+                if not toon.attemptAddNPCFriend(self.cagedToonNpcId, Quests.InVP):
                     self.notify.info('%s.unable to add NPCFriend %s to %s.' % (self.doId, self.cagedToonNpcId, toonId))
                 toon.b_promote(self.deptIndex)
 
