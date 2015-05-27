@@ -428,14 +428,11 @@ class QuestManagerAI:
         for i in xrange(0, len(avQuests), 5):
             questDesc = avQuests[i : i + 5]
             questClass = Quests.getQuest(questDesc[QuestIdIndex])
-            if questClass.getCompletionStatus(av, questDesc) == Quests.INCOMPLETE:
-                if isinstance(questClass, Quests.BuildingQuest):
-                    if questClass.isLocationMatch(zoneId):
-                        if questClass.doesBuildingTypeCount(type):
-                            if questClass.isCogdo() == cogdo:
-                                if questClass.doesBuildingCount(av, activeToons):
-                                    if floors >= questClass.getNumFloors():
-                                        questDesc[QuestProgressIndex] += 1
+            if isinstance(questClass, Quests.BuildingQuest) and questClass.getCompletionStatus(av, questDesc) == Quests.INCOMPLETE:
+                if questClass.isLocationMatch(zoneId) and questClass.doesBuildingTypeCount(type):
+                    if questClass.isCogdo() == cogdo and questClass.doesBuildingCount(av, activeToons):
+                        if floors >= questClass.getNumFloors():
+                            questDesc[QuestProgressIndex] += 1
             questList.append(questDesc)
 
         av.b_setQuests(questList)

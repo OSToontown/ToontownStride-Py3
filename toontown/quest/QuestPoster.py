@@ -349,7 +349,17 @@ class QuestPoster(DirectFrame):
         objectiveStrings = quest.getObjectiveStrings()
         captions = map(string.capwords, quest.getObjectiveStrings())
         imageColor = Vec4(*self.colors['white'])
-        if quest.getType() == Quests.DeliverGagQuest or quest.getType() == Quests.DeliverItemQuest:
+        if isinstance(quest, Quests.TexturedQuest) and quest.hasFrame():
+            self.teleportButton.hide()
+            frame = quest.getFrame()
+            frameBgColor = frame[1]
+            lIconGeom = frame[0]
+            lIconGeomScale = 0.13
+            if not fComplete:
+                infoText = quest.getLocationName()
+                if infoText == '':
+                    infoText = TTLocalizer.QuestPosterAnywhere
+        elif quest.getType() == Quests.DeliverGagQuest or quest.getType() == Quests.DeliverItemQuest:
             frameBgColor = 'red'
             if fComplete:
                 self.teleportButton.show()
@@ -659,16 +669,6 @@ class QuestPoster(DirectFrame):
                 rIconGeom = None
                 lIconGeomScale = rIconGeomScale
                 rIconGeomScale = 1
-        elif isinstance(quest, Quests.TexturedQuest):
-            self.teleportButton.hide()
-            frame = quest.getFrame()
-            frameBgColor = frame[1]
-            lIconGeom = frame[0]
-            lIconGeomScale = 0.13
-            if not fComplete:
-                infoText = quest.getLocationName()
-                if infoText == '':
-                    infoText = TTLocalizer.QuestPosterAnywhere
         elif quest.getType() == Quests.RescueQuest:
             self.teleportButton.hide()
             frameBgColor = 'blue'

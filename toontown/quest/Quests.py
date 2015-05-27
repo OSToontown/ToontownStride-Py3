@@ -836,6 +836,9 @@ class TexturedQuest:
         node.setTexture(loader.loadTexture(texture))
         return node
 
+    def hasFrame(self):
+        return True
+
     def getFrame(self):
         print 'getFrame from TexturedQuest not implemented!'
         return [None, None]
@@ -953,7 +956,13 @@ class RescueNewbieQuest(RescueQuest, NewbieQuest):
         else:
             return 0
 
-class BuildingQuest(CogQuest):
+BUILDING_NAMES = {
+ Any: ['phase_3.5/maps/cogdo_icon.jpg', 'brown'],
+ 'l': ['phase_3.5/maps/lawbot_cogdo_icon.jpg', 'blue'],
+ 's': ['phase_3.5/maps/sellbot_cogdo_icon.jpg', 'red']
+}
+
+class BuildingQuest(CogQuest, TexturedQuest):
     trackCodes = ['c',
      'l',
      'm',
@@ -969,6 +978,15 @@ class BuildingQuest(CogQuest):
         self.checkBuildingTrack(self.quest[2])
         self.checkBuildingFloors(self.quest[3])
         self.checkBuildingType(self.quest[4])
+
+    def hasFrame(self):
+        return self.isCogdo()
+
+    def getFrame(self):
+        print self.quest[2]
+        building = BUILDING_NAMES[self.quest[2]]
+
+        return [self.getModelFromTexture(building[0]), building[1]]
 
     def getNumFloors(self):
         return self.quest[3]
@@ -1042,9 +1060,9 @@ class BuildingQuest(CogQuest):
         
         if self.isCogdo():
             if buildingTrack == Any:
-                text = TTLocalizer.QuestsCogdoQuestDescU if count == 1 else TTLocalizer.QuestsCogdoQuestDescMUI
+                text = TTLocalizer.QuestsCogdoQuestDescU if count == 1 else TTLocalizer.QuestsCogdoQuestDescMI
             else:
-                text = TTLocalizer.QuestsCogdoQuestDesc if count == 1 else TTLocalizer.QuestsCogdoQuestDescMI
+                text = TTLocalizer.QuestsCogdoQuestDesc if count == 1 else TTLocalizer.QuestsCogdoQuestDescMUI
         else:
             floors = TTLocalizer.QuestsBuildingQuestFloorNumbers[self.getNumFloors() - 1]
         

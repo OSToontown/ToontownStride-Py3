@@ -330,7 +330,7 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
                 self.air.writeServerEvent('buildingDefeated', t, '%s|%s|%s|%s' % (self.track, self.numFloors, self.zoneId, victorList))
             
             if toon != None:
-                self.air.questManager.toonKilledBuilding(toon, self.track, self.difficulty, self.numFloors, self.zoneId, activeToons, 1)
+                self.air.questManager.toonKilledBuilding(toon, self.track, self.difficulty, 5, self.zoneId, activeToons, 1)
                 continue
         
         victorList.extend([None, None, None, None])
