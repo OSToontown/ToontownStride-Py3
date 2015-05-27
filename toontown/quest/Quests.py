@@ -982,7 +982,6 @@ class BuildingQuest(CogQuest, TexturedQuest):
         return self.isCogdo()
 
     def getFrame(self):
-        print self.quest[2]
         building = BUILDING_NAMES[self.quest[2]]
 
         return [self.getModelFromTexture(building[0]), building[1]]
