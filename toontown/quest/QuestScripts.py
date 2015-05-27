@@ -303,31 +303,6 @@ UPON_TIMEOUT SHOW inventory
 UPON_TIMEOUT SEND_EVENT "enableGagPanel"
 UPON_TIMEOUT SEND_EVENT "enableBackToPlayground"
 
-ID quest_incomplete_120
-CHAT_CONFIRM npc QuestScript120_1
-CHAT_CONFIRM npc QuestScript120_2 1
-FINISH_QUEST_MOVIE
-
-ID quest_assign_121
-CHAT_CONFIRM npc QuestScript121_1 1
-FINISH_QUEST_MOVIE
-
-ID quest_assign_130
-CHAT_CONFIRM npc QuestScript130_1 1
-FINISH_QUEST_MOVIE
-
-ID quest_assign_131
-CHAT_CONFIRM npc QuestScript131_1 1
-FINISH_QUEST_MOVIE
-
-ID quest_assign_140
-CHAT_CONFIRM npc QuestScript140_1 1
-FINISH_QUEST_MOVIE
-
-ID quest_assign_141
-CHAT_CONFIRM npc QuestScript141_1 1
-FINISH_QUEST_MOVIE
-
 ID quest_incomplete_145
 CHAT_CONFIRM npc QuestScript145_1 1
 LOAD frame "phase_4/models/gui/tfa_images" "FrameBlankA"

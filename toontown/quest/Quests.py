@@ -2001,18 +2001,19 @@ def isQuestJustForFun(questId, rewardId):
     else:
         return False
 
-NoRewardTierZeroQuests = (101, 110, 121, 131, 141, 145, 150, 160, 161, 162, 163)
+NoRewardTierZeroQuests = (101, 110, 120, 121, 130, 131, 140, 141, 142, 145, 150, 160, 161, 162, 163)
 RewardTierZeroQuests = ()
 PreClarabelleQuestIds = NoRewardTierZeroQuests + RewardTierZeroQuests
 QuestDict = {
     101: (TT_TIER, Start, (CogQuest, Anywhere, 1, 'f'), Any, ToonHQ, NA, 110, DefaultDialog),
-    110: (TT_TIER, Cont, (TrolleyQuest,), Any, ToonHQ, NA, 145, DefaultDialog),
-    120: (TT_TIER, OBSOLETE, (DeliverItemQuest, 5), ToonHQ, 2002, NA, 121, DefaultDialog),
-    121: (TT_TIER, OBSOLETE, (RecoverItemQuest, ToontownGlobals.ToontownCentral, 1, 2, VeryEasy, Any, 'type'), 2002, 2002, NA, 150, DefaultDialog),
-    130: (TT_TIER, OBSOLETE, (DeliverItemQuest, 6), ToonHQ, 2003, NA, 131, DefaultDialog),
-    131: (TT_TIER, OBSOLETE, (RecoverItemQuest, ToontownGlobals.ToontownCentral, 1, 3, VeryEasy, Any, 'type'), 2003, 2003, NA, 150, DefaultDialog),
-    140: (TT_TIER, OBSOLETE, (DeliverItemQuest, 4), ToonHQ, 2005, NA, 141, DefaultDialog),
-    141: (TT_TIER, OBSOLETE, (RecoverItemQuest, ToontownGlobals.ToontownCentral, 1, 1, VeryEasy, Any, 'type'), 2005, 2005, NA, 150, DefaultDialog),
+    110: (TT_TIER, Cont, (TrolleyQuest,), Any, ToonHQ, NA, (120, 130, 140, 145), DefaultDialog),
+    120: (TT_TIER, Cont, (DeliverItemQuest, 5), ToonHQ, 2002, NA, 121, TTLocalizer.QuestDialogDict[120]),
+    121: (TT_TIER, Cont, (RecoverItemQuest, ToontownGlobals.ToontownCentral, 1, 2, VeryEasy, Any, 'type'), Same, 2002, NA, 142, TTLocalizer.QuestDialogDict[121]),
+    130: (TT_TIER, Cont, (DeliverItemQuest, 6), ToonHQ, 2003, NA, 131, TTLocalizer.QuestDialogDict[130]),
+    131: (TT_TIER, Cont, (RecoverItemQuest, ToontownGlobals.ToontownCentral, 1, 3, VeryEasy, Any, 'type'), Same, 2003, NA, 142, TTLocalizer.QuestDialogDict[131]),
+    140: (TT_TIER, Cont, (DeliverItemQuest, 4), ToonHQ, 2005, NA, 141, TTLocalizer.QuestDialogDict[140]),
+    141: (TT_TIER, Cont, (RecoverItemQuest, ToontownGlobals.ToontownCentral, 1, 1, VeryEasy, Any, 'type'), Same, 2005, NA, 142, TTLocalizer.QuestDialogDict[141]),
+    142: (TT_TIER, Cont, (VisitQuest,), Same, ToonHQ, NA, 150, TTLocalizer.QuestDialogDict[142]),
     145: (TT_TIER, Cont, (RecoverItemQuest, ToontownGlobals.ToontownCentral, 1, 20, VeryEasy, Any, 'type'), ToonHQ, ToonHQ, NA, 150, DefaultDialog),
     150: (TT_TIER, Cont, (FriendQuest,), Same, Same, NA, 175, DefaultDialog),
     160: (TT_TIER, OBSOLETE, (CogTrackQuest, ToontownGlobals.ToontownCentral, 3, 'c'), Same, ToonHQ, NA, 175, TTLocalizer.QuestDialogDict[160]),
