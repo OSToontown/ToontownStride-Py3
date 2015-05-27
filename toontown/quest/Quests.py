@@ -860,7 +860,6 @@ class BossQuest(CogQuest, TexturedQuest):
         return BOSS_NAMES[self.quest[0]][self.getNumCogs() > 1]
 
     def doesCogCount(self, avId, cogDict, zoneId, avList):
-        print cogDict
         return cogDict['isBoss'] > 0 and self.isLocationMatch(zoneId)
 
 class SupervisorQuest(CogQuest):
