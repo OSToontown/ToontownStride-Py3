@@ -11,11 +11,12 @@ class DistributedCogHQExteriorDoor(DistributedCogHQDoor.DistributedCogHQDoor):
 
     def __init__(self, cr):
         DistributedCogHQDoor.DistributedCogHQDoor.__init__(self, cr)
+        self.lobbyGui = None
 
     def selectLobby(self, avId):
         self.lobbyGui = BossLobbyGui(self.sendConfirmation, avId)
 
     def sendConfirmation(self, avId, status):
         self.lobbyGui.destroy()
-        del self.lobbyGui
+        self.lobbyGui = None
         self.sendUpdate('confirmEntrance', [avId, status])

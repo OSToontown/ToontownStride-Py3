@@ -7,12 +7,13 @@ from direct.fsm import State
 from toontown.toonbase import ToontownGlobals
 import CogDisguiseGlobals
 from toontown.building import FADoorCodes
+from toontown.building import DoorTypes
 
 class DistributedCogHQExteriorDoorAI(DistributedCogHQDoorAI.DistributedCogHQDoorAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCogHQExteriorDoorAI')
 
     def __init__(self, air, blockNumber, doorType, destinationZone, doorIndex = 0, lockValue = FADoorCodes.SB_DISGUISE_INCOMPLETE, swing = 3):
-        DistributedCogHQDoorAI.DistributedCogHQDoorAI.__init__(self, air, blockNumber, doorType, doorIndex, lockValue, swing)
+        DistributedCogHQDoorAI.DistributedCogHQDoorAI.__init__(self, air, blockNumber, doorType, destinationZone, doorIndex, lockValue, swing)
 
     def requestEnter(self):
         avId = self.air.getAvatarIdFromSender()

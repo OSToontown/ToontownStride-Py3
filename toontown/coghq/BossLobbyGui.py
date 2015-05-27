@@ -35,15 +35,23 @@ class BossLobbyGui(DirectFrame):
             DirectFrame.__init__(self, relief=None)
             self.initialiseoptions(BossLobbyGui.InitialFrame)
             self.callback = callback
-            self.load()
             self.selection = -1
+            self.load()
 
         def destroy(self):
-            self.title.destroy()
-            for button in self.buttons:
-                button.destroy()
-            self.okButton.destroy()
-            self.cancelButton.destroy()
+            if hasattr(self, 'title') and self.title:
+                self.title.destroy()
+                del self.title
+            if hasattr(self, 'buttons') and len(self.buttons):
+                for button in self.buttons:
+                    button.destroy()
+                del self.buttons
+            if hasattr(self, 'okButton') and self.okButton:
+                self.okButton.destroy()
+                del self.okButton
+            if hasattr(self, 'cancelButton') and self.cancelButton:
+                self.cancelButton.destroy()
+                del self.cancelButton
             DirectFrame.destroy(self)
 
         def load(self):
@@ -67,18 +75,6 @@ class BossLobbyGui(DirectFrame):
                 public,
                 private
             ])
-
-        def unload(self):
-            self.title.destroy()
-            self.public.destroy()
-            self.private.destroy()
-            self.okButton.destroy()
-            self.cancelButton.destroy()
-            del self.title
-            del self.public
-            del self.private
-            del self.okButton
-            del self.cancelButton
 
         def setSelection(self, buttonId):
             newSelection = self.buttons[buttonId]
@@ -114,6 +110,7 @@ class BossLobbyGui(DirectFrame):
     def destroy(self):
         if hasattr(self, 'frame') and self.frame:
             self.frame.destroy()
+            del self.frame
         DirectFrame.destroy(self)
 
     def loadFrame(self, frameNum, args={}):
