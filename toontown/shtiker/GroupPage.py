@@ -26,3 +26,10 @@ class GroupPage(ShtikerPage):
         
     def destroy(self):
         DirectFrame.destroy(self)
+
+        
+  def cleanupDialog(self, value=0):        
+      self.confirmDialog.cleanup()
+
+   def create(self):
+                self.background = OnscreenImage(parent = render2d, image="phase_3.5/map/toontown_central_tutorial_palette_4amla_1.jpg")
