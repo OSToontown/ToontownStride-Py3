@@ -443,13 +443,10 @@ CarryLimits = (((10,
 MaxProps = ((15, 40), (30, 60), (75, 80))
 DLF_SKELECOG = 1
 DLF_FOREMAN = 2
-DLF_VP = 4
-DLF_CFO = 8
-DLF_CJ = 16
-DLF_CEO = 32
-DLF_SUPERVISOR = 64
-DLF_VIRTUAL = 128
-DLF_REVIVES = 256
+DLF_BOSS = 4
+DLF_SUPERVISOR = 8
+DLF_VIRTUAL = 16
+DLF_REVIVES = 32
 pieNames = ['tart',
  'fruitpie-slice',
  'creampie-slice',

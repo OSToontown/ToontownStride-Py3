@@ -85,7 +85,7 @@ def getBattleExperience(numToons, activeToons, toonExp, toonSkillPtsGained, toon
     for deathRecord in suitsKilled:
         level = deathRecord['level']
         type = deathRecord['type']
-        if deathRecord['isVP'] or deathRecord['isCFO'] or deathRecord['isCJ'] or deathRecord['isCEO']:
+        if deathRecord['isBoss'] > 0:
             level = 0
             typeNum = SuitDNA.suitDepts.index(deathRecord['track'])
         else:
@@ -101,14 +101,8 @@ def getBattleExperience(numToons, activeToons, toonExp, toonSkillPtsGained, toon
             flags |= ToontownBattleGlobals.DLF_SKELECOG
         if deathRecord['isForeman']:
             flags |= ToontownBattleGlobals.DLF_FOREMAN
-        if deathRecord['isVP']:
-            flags |= ToontownBattleGlobals.DLF_VP
-        if deathRecord['isCFO']:
-            flags |= ToontownBattleGlobals.DLF_CFO
-        if deathRecord['isCJ']:
-            flags |= ToontownBattleGlobals.DLF_CJ
-        if deathRecord['isCEO']:
-            flags |= ToontownBattleGlobals.DLF_CEO
+        if deathRecord['isBoss'] > 0:
+            flags |= ToontownBattleGlobals.DLF_BOSS
         if deathRecord['isSupervisor']:
             flags |= ToontownBattleGlobals.DLF_SUPERVISOR
         if deathRecord['isVirtual']:

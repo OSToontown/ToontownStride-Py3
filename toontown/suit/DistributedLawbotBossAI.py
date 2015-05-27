@@ -633,10 +633,7 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
          'track': self.dna.dept,
          'isSkelecog': 0,
          'isForeman': 0,
-         'isVP': 0,
-         'isCFO': 0,
-         'isCJ': 1,
-         'isCEO': 0,
+         'isBoss': 1,
          'isSupervisor': 0,
          'isVirtual': 0,
          'activeToons': self.involvedToons[:]})

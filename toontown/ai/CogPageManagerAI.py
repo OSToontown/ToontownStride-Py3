@@ -17,7 +17,7 @@ class CogPageManagerAI:
         cogCounts = toon.cogCounts
         cogs = toon.cogs
         for cog in killedCogs:
-            if cog['isSkelecog'] or cog['isVP'] or cog['isCFO'] or cog['isCJ'] or cog['isCEO']:
+            if cog['isSkelecog'] or cog['isBoss'] > 0:
                 continue
             if toon.getDoId() in cog['activeToons']:
                 deptIndex = SuitDNA.suitDepts.index(cog['track'])

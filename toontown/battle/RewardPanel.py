@@ -569,14 +569,11 @@ class RewardPanel(DirectFrame):
 
             isSkelecog = flags & ToontownBattleGlobals.DLF_SKELECOG
             isForeman = flags & ToontownBattleGlobals.DLF_FOREMAN
-            isVP = flags & ToontownBattleGlobals.DLF_VP
-            isCFO = flags & ToontownBattleGlobals.DLF_CFO
-            isCJ = flags & ToontownBattleGlobals.DLF_CJ
-            isCEO = flags & ToontownBattleGlobals.DLF_CEO
+            isBoss = flags & ToontownBattleGlobals.DLF_BOSS
             isSupervisor = flags & ToontownBattleGlobals.DLF_SUPERVISOR
             isVirtual = flags & ToontownBattleGlobals.DLF_VIRTUAL
             hasRevives = flags & ToontownBattleGlobals.DLF_REVIVES
-            if isVP or isCFO or isCJ or isCEO:
+            if isBoss > 0:
                 cogType = None
                 cogTrack = SuitDNA.suitDepts[cogIndex]
             else:
@@ -587,10 +584,7 @@ class RewardPanel(DirectFrame):
              'track': cogTrack,
              'isSkelecog': isSkelecog,
              'isForeman': isForeman,
-             'isVP': isVP,
-             'isCFO': isCFO,
-             'isCJ': isCJ,
-             'isCEO': isCEO,
+             'isBoss': isBoss,
              'isSupervisor': isSupervisor,
              'isVirtual': isVirtual,
              'hasRevives': hasRevives,
