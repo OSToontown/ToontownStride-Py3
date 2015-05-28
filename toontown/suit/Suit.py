@@ -437,9 +437,11 @@ class Suit(Avatar.Avatar):
         self.generateCorporateMedallion()
 
     def generateBody(self):
+        global Preloaded
         animDict = self.generateAnimDict()
         filePrefix, bodyPhase = ModelDict[self.style.body]
-        self.loadModel('phase_3.5' + filePrefix + 'mod')
+        filepath = 'phase_3.5' + filePrefix + 'mod'
+        self.loadModel(Preloaded[filepath], copy = True)
         self.loadAnims(animDict)
         self.setSuitClothes()
 
@@ -506,7 +508,7 @@ class Suit(Avatar.Avatar):
         modelRoot.find('**/torso').setTexture(torsoTex, 1)
         modelRoot.find('**/arms').setTexture(armTex, 1)
         modelRoot.find('**/legs').setTexture(legTex, 1)
-        modelRoot.find('**/hands').setColor(self.handColor)
+        modelRoot.find('**/hands').setColorScale(self.handColor)
         self.leftHand = self.find('**/joint_Lhold')
         self.rightHand = self.find('**/joint_Rhold')
         self.shadowJoint = self.find('**/joint_shadow')
