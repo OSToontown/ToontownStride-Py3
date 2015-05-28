@@ -43,12 +43,6 @@ class CatalogNametagItem(CatalogItem.CatalogItem):
         else:
             name = name + TTLocalizer.NametagLabel
         return name
-        if self.nametagStyle == 0:
-            name = TTLocalizer.NametagCitizen
-        elif self.nametagStyle == 1:
-            name = TTLocalizer.NametagAction
-        elif self.nametagStyle == 2:
-            name = TTLocalizer.NametagFrilly
 
     def recordPurchase(self, avatar, optional):
         if avatar:

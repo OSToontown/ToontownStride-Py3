@@ -30,7 +30,8 @@ NametagFonts = (
     'phase_3/models/fonts/Danger.bam',
     'phase_3/models/fonts/Alie.bam',
     'phase_3/models/fonts/OysterBar.bam',
-    'phase_3/models/fonts/RedDogSaloon.bam'
+    'phase_3/models/fonts/RedDogSaloon.bam',
+    'phase_3/models/fonts/PBN.ttf'
 )
 NametagFontNames = (
     'Default',
@@ -47,7 +48,8 @@ NametagFontNames = (
     'Action',
     'Poetic',
     'Boardwalk',
-    'Western'
+    'Western',
+    'Pixelated'
 )
 NametagLabel = ' Nametag'
 BasicNameTag = 'Basic'
@@ -5038,9 +5040,6 @@ EstateCannonGameEnd = 'The Cannon Game rental is over.'
 GameTableRentalEnd = 'The Game Table rental is over.'
 MessageConfirmRent = 'Begin rental? Cancel to save the rental for later'
 MessageConfirmGarden = 'Are you sure you want to start a garden?'
-NametagCitizen = 'Citizen Name Tag'
-NametagAction = 'Action Name Tag'
-NametagFrilly = 'Frilly Name Tag'
 FurnitureYourOldCloset = 'your old wardrobe'
 FurnitureYourOldBank = 'your old bank'
 FurnitureYourOldTrunk = 'your old trunk'
