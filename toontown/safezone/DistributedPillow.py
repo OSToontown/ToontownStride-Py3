@@ -3,6 +3,7 @@ from pandac.PandaModules import CollisionPolygon
 from otp.otpbase import OTPGlobals
 from direct.distributed.DistributedObject import DistributedObject
 from direct.fsm import ClassicFSM, State
+from toontown.toonbase import ToontownGlobals
 
 class DistributedPillow(DistributedObject):
 
@@ -38,15 +39,6 @@ class DistributedPillow(DistributedObject):
         self.wallpolys = []
         self.npaths = []
         self.np = None
-        self.fsm = ClassicFSM.ClassicFSM(
-            'DistributedPillow',
-            [
-                State.State('off', self.enterOff, self.exitOff,
-                            ['entering']),
-                State.State('bounce', self.enterBounce, self.exitBounce,
-                            ['off']),
-            ], 'off', 'off')
-        self.fsm.enterInitialState()
 
     def generate(self):
         DistributedObject.generate(self)
@@ -64,12 +56,12 @@ class DistributedPillow(DistributedObject):
             polyNode.setFromCollideMask(OTPGlobals.FloorBitmask)
             polyNodePath = self.np.attachNewNode(polyNode)
             self.npaths.append(polyNodePath)
-            self.accept("enterFloorPoly-%d" % n, self.printEntry)
+            self.accept("enterFloorPoly-%d" % n, self.gravityLow)
         for wall in DistributedPillow.walls:
             ab = DistributedPillow.points[wall[0]]
             bb = DistributedPillow.points[wall[1]]
-            cb = Point3(bb.getX(), bb.getY(), bb.getZ() + 15)
-            db = Point3(ab.getX(), ab.getY(), ab.getZ() + 15)
+            cb = Point3(bb.getX(), bb.getY(), bb.getZ() + 20)
+            db = Point3(ab.getX(), ab.getY(), ab.getZ() + 20)
             self.wallpolys.append(CollisionPolygon(ab, bb, cb, db))
         for n, p in enumerate(self.wallpolys):
             polyNode = CollisionNode("WallPoly-%d" % n)
@@ -88,28 +80,12 @@ class DistributedPillow(DistributedObject):
         self.np = None
         if hasattr(self, 'loader'):
             del self.loader
-        self.ignoreAll()
-        self.fsm.request('off')
 
     def delete(self):
         if self.np:
             self.np.removeNode()
         self.np = None
-        self.ignoreAll()
         DistributedObject.delete(self)
-        del self.fsm
 
-    def enterOff(self):
-        pass
-
-    def exitOff(self):
-        pass
-
-    def enterBounce(self):
-        pass
-
-    def exitBounce(self):
-        pass
-
-    def printEntry(self, entry):
-        print(entry)
+    def gravityLow(self, entry):
+        base.localAvatar.controlManager.currentControls.setGravity(ToontownGlobals.GravityValue * 1.25)
