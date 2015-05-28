@@ -264,6 +264,9 @@ class CatalogItem:
     def getEmblemPrices(self):
         return ()
 
+    def hasEmblemPrices(self):
+        return len(self.getEmblemPrices()) >= ToontownGlobals.NumEmblemTypes
+
     def loadModel(self):
         return None
 

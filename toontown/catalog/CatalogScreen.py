@@ -941,10 +941,9 @@ class CatalogScreen(DirectFrame):
             self.update()
             return
 
-        if item.__class__.__name__ == "CatalogHouseItem":
-            if retCode == ToontownGlobals.P_ItemAvailable:
-                localAvatar.houseType = item.houseId
-                self.update()
+        if hasattr(item, 'houseId') and retCode == ToontownGlobals.P_ItemAvailable:
+            localAvatar.houseType = item.houseId
+            self.update()
 
         self.setClarabelleChat(item.getRequestPurchaseErrorText(retCode), item.getRequestPurchaseErrorTextTimeout())
 

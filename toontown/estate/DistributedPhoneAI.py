@@ -102,25 +102,10 @@ class DistributedPhoneAI(DistributedFurnitureItemAI):
             price = item.getPrice(CatalogItem.CatalogTypeBackorder)
         elif item in av.weeklyCatalog or item in av.monthlyCatalog:
             price = item.getPrice(0)
+        elif item.hasEmblemPrices():
+            price = 0
         else:
             return
-
-        def _getEmblemPrices():
-            if config.GetBool('catalog-emblems-OR', False):
-                ep = list(item.getEmblemPrices())
-                if len(ep) != 2:
-                    return []
-                if all(ep):
-                    ep[payMethod] = 0
-            else:
-                ep = item.getEmblemPrices()
-            return ep
-
-        def charge():
-            ep = _getEmblemPrices()
-            if ep:
-                av.subtractEmblems(ep)
-            av.takeMoney(item.getPrice(priceType))
 
         if item.getDeliveryTime():
             if len(av.onOrder) > 25:
@@ -130,7 +115,7 @@ class DistributedPhoneAI(DistributedFurnitureItemAI):
             if len(av.mailboxContents) + len(av.onOrder) >= ToontownGlobals.MaxMailboxContents:
                 self.sendUpdateToAvatarId(avId, 'requestPurchaseResponse', [context, ToontownGlobals.P_MailboxFull])
 
-            if not av.takeMoney(price):
+            if not (av.takeMoney(price) and av.subtractEmblems(item.getEmblemPrices())):
                 return
 
             item.deliveryDate = int(time.time()/60) + item.getDeliveryTime()
@@ -139,7 +124,7 @@ class DistributedPhoneAI(DistributedFurnitureItemAI):
             self.sendUpdateToAvatarId(avId, 'requestPurchaseResponse', [context, ToontownGlobals.P_ItemOnOrder])
             taskMgr.doMethodLater(0.2, self.sendUpdateToAvatarId, 'purchaseItemComplete-%d' % self.getDoId(), extraArgs=[avId, 'purchaseItemComplete', []])
         else:
-            if not av.takeMoney(price):
+            if not (av.takeMoney(price) and av.subtractEmblems(item.getEmblemPrices())):
                 return
 
             resp = item.recordPurchase(av, optional)

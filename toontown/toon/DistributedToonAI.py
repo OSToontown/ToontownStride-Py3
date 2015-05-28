@@ -2414,11 +2414,18 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.b_setEmblems(newEmblems)
 
     def subtractEmblems(self, emblemsToSubtract):
+        if len(emblemsToSubtract) < ToontownGlobals.NumEmblemTypes:
+            return True
+
         newEmblems = self.emblems[:]
         for i in xrange(ToontownGlobals.NumEmblemTypes):
+            if newEmblems[i] < emblemsToSubtract[i]:
+                return False
+
             newEmblems[i] -= emblemsToSubtract[i]
 
         self.b_setEmblems(newEmblems)
+        return True
 
     def isEnoughEmblemsToBuy(self, itemEmblemPrices):
         for emblemIndex, emblemPrice in enumerate(itemEmblemPrices):
