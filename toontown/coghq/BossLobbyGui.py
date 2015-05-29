@@ -56,14 +56,11 @@ class BossLobbyGui(DirectFrame):
 
         def load(self):
             empty = loader.loadModel("phase_3.5/models/gui/matching_game_gui.bam")
-            check = loader.loadModel("phase_3.5/models/gui/name_star")
             buttons = loader.loadModel("phase_3/models/gui/dialog_box_buttons_gui")
             self.emptyList = (empty.find("**/minnieCircle"), empty.find("**/minnieCircle"), empty.find("**/minnieCircle"))
-            self.checkList = (check.find("**/*"), check.find("**/*"), check.find("**/*"))
             okImageList = (buttons.find('**/ChtBx_OKBtn_UP'), buttons.find('**/ChtBx_OKBtn_DN'), buttons.find('**/ChtBx_OKBtn_Rllvr'))
             cancelImageList = (buttons.find('**/CloseBtn_UP'), buttons.find('**/CloseBtn_DN'), buttons.find('**/CloseBtn_Rllvr'))
             empty.removeNode()
-            check.removeNode()
             buttons.removeNode()
             self.title = DirectLabel(parent=self, relief=None, text="Select a Lobby", textMayChange=1, text_scale=0.1, pos=(0, 0, 0.25))
             self.okButton = DirectButton(parent=self, relief=None, image=okImageList, pos=(-0.1, 0, -0.275), command=self.nextFrame, extraArgs=[True])
@@ -80,11 +77,7 @@ class BossLobbyGui(DirectFrame):
             newSelection = self.buttons[buttonId]
             if newSelection:
                 for button in self.buttons:
-                    button['image'] = self.emptyList
-                    button['image_scale'] = 0.55
                     button.setColor(1, 1, 1, 1)
-                newSelection['image'] = self.checkList
-                newSelection['image_scale'] = 0.11
                 newSelection.setColor(0, 1, 0, 1)
             self.selection = buttonId
 
