@@ -10,7 +10,7 @@ import json
 from pandac.PandaModules import *
 import time
 import urllib2
-
+import os
 from otp.ai.MagicWordGlobal import *
 from otp.distributed import OtpDoGlobals
 from toontown.makeatoon.NameGenerator import NameGenerator
@@ -106,6 +106,8 @@ class AccountDB:
 
         filename = simbase.config.GetString(
             'account-bridge-filename', 'account-bridge.db')
+        filename = os.path.join("dependencies", filename)
+        
         self.dbm = anydbm.open(filename, 'c')
 
     def addNameRequest(self, avId, name):

@@ -238,11 +238,11 @@ class PhotoAlbumPage(ShtikerPage.ShtikerPage):
 
     def openPhotoDirectory(self):
         if platform == "darwin":
-            OSXPhotoDir = self.installPath + '/screenshots'
+            OSXPhotoDir = self.installPath + '/user/screenshots'
             os.system('open "%s"' % OSXPhotoDir)
             self.notify.debug(OSXPhotoDir)
         elif platform == "win32":
-            PhotoDir = self.installPath + '\\screenshots\\'
+            PhotoDir = self.installPath + '/user/screenshots/'
             os.startfile(PhotoDir)
             self.notify.debug(PhotoDir)
 

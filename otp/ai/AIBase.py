@@ -77,7 +77,7 @@ class AIBase:
         self.GEMdemoWhisperRecipientDoid = self.config.GetBool('gem-demo-whisper-recipient-doid', 0)
         self.sqlAvailable = self.config.GetBool('sql-available', 1)
         self.backups = BackupManager.BackupManager(
-            filepath=self.config.GetString('backups-filepath', 'backups/'),
+            filepath=self.config.GetString('backups-filepath', 'dependencies/backups/'),
             extension=self.config.GetString('backups-extension', '.json'))
         self.createStats()
         self.restart()

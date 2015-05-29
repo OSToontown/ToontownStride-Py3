@@ -14,7 +14,7 @@ class ContentPacksManager:
     notify = directNotify.newCategory('ContentPacksManager')
     notify.setInfo(True)
 
-    def __init__(self, filepath='contentpacks/', sortFilename='sort.yaml'):
+    def __init__(self, filepath='user/contentpacks/', sortFilename='sort.yaml'):
         self.filepath = filepath
         self.sortFilename = os.path.join(self.filepath, sortFilename)
 

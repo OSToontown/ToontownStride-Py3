@@ -30,11 +30,11 @@ class TTSLauncher:
         ltime = 1 and time.localtime()
         logSuffix = '%02d%02d%02d_%02d%02d%02d' % (ltime[0] - 2000,  ltime[1], ltime[2], ltime[3], ltime[4], ltime[5])
 
-        if not os.path.exists('logs/'):
-            os.mkdir('logs/')
+        if not os.path.exists('user/logs/'):
+            os.mkdir('user/logs/client/')
             self.notify.info('Made new directory to save logs.')
 
-        logfile = os.path.join('logs', self.logPrefix + logSuffix + '.log')
+        logfile = os.path.join('user/logs', self.logPrefix + logSuffix + '.log')
 
         log = open(logfile, 'a')
         logOut = LogAndOutput(sys.stdout, log)

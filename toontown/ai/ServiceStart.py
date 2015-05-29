@@ -8,6 +8,15 @@ __builtin__.process = 'ai'
 __builtin__.__dict__.update(__import__('pandac.PandaModules', fromlist=['*']).__dict__)
 from direct.extensions_native import HTTPChannel_extensions
 
+import sys, os
+sys.path.append(
+    os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__),
+            "../../dependencies"
+        )
+    )
+)
 
 from direct.showbase import PythonUtil
 
@@ -20,7 +29,7 @@ parser.add_argument('--stateserver', help="The control channel of this AI's desi
 parser.add_argument('--district-name', help="What this AI Server's district will be named.")
 parser.add_argument('--astron-ip', help="The IP address of the Astron Message Director to connect to.")
 parser.add_argument('--eventlogger-ip', help="The IP address of the Astron Event Logger to log to.")
-parser.add_argument('config', nargs='*', default=['config/general.prc', 'config/release/dev.prc'], help="PRC file(s) to load.")
+parser.add_argument('config', nargs='*', default=['dependencies/config/general.prc', 'dependencies/config/release/dev.prc'], help="PRC file(s) to load.")
 args = parser.parse_args()
 
 for prc in args.config:
@@ -55,6 +64,4 @@ except SystemExit:
 except Exception:
     info = PythonUtil.describeException()
     simbase.air.writeServerEvent('ai-exception', avId=simbase.air.getAvatarIdFromSender(), accId=simbase.air.getAccountIdFromSender(), exception=info)
-    with open(config.GetString('ai-crash-log-name', 'ai-crash.txt'), 'w+') as file:
-        file.write(info + "\n")
     raise

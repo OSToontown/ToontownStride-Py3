@@ -1,9 +1,17 @@
 #!/usr/bin/env python2
 import __builtin__
 
-
 __builtin__.process = 'client'
 
+import sys, os
+sys.path.append(
+    os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__),
+            "../../dependencies"
+        )
+    )
+)
 
 # Temporary hack patch:
 __builtin__.__dict__.update(__import__('pandac.PandaModules', fromlist=['*']).__dict__)
@@ -21,8 +29,8 @@ if __debug__:
     import wx, sys
     from direct.stdpy import threading
     
-    loadPrcFile('config/general.prc')
-    loadPrcFile('config/release/dev.prc')
+    loadPrcFile('dependencies/config/general.prc')
+    loadPrcFile('dependencies/config/release/dev.prc')
 
     defaultText = ""
 
@@ -56,9 +64,15 @@ from otp.settings.Settings import Settings
 
 
 preferencesFilename = ConfigVariableString(
-    'preferences-filename', 'preferences.json').getValue()
+    'preferences-filename',
+    'user/preferences.json'
+).getValue()
+
 notify.info('Reading %s...' % preferencesFilename)
+
 __builtin__.settings = Settings(preferencesFilename)
+if 'res' not in settings:
+    settings['res'] = (800, 600)
 if 'fullscreen' not in settings:
     settings['fullscreen'] = False
 if 'music' not in settings:
@@ -81,7 +95,7 @@ if 'speedchatPlus' not in settings:
     settings['speedchatPlus'] = True
 if 'trueFriends' not in settings:
     settings['trueFriends'] = True
-loadPrcFileData('Settings: res', 'win-size %d %d' % tuple(settings.get('res', (800, 600))))
+loadPrcFileData('Settings: res', 'win-size %d %d' % tuple(settings['res']))
 loadPrcFileData('Settings: fullscreen', 'fullscreen %s' % settings['fullscreen'])
 loadPrcFileData('Settings: music', 'audio-music-active %s' % settings['music'])
 loadPrcFileData('Settings: sfx', 'audio-sfx-active %s' % settings['sfx'])
@@ -96,7 +110,7 @@ from toontown.toonbase.ContentPacksManager import ContentPacksManager
 
 
 contentPacksFilepath = ConfigVariableString(
-    'content-packs-filepath', 'contentpacks/').getValue()
+    'content-packs-filepath', 'user/contentpacks/').getValue()
 contentPacksSortFilename = ConfigVariableString(
     'content-packs-sort-filename', 'sort.yaml').getValue()
 if not os.path.exists(contentPacksFilepath):
