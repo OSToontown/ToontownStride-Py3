@@ -28,7 +28,7 @@ content-packs-filepath user/contentpacks/
 content-packs-sort-filename sort.yaml
 
 # Backups:
-backups-filepath backups/
+backups-filepath dependencies/backups/
 backups-extension .json
 
 # Server:
