@@ -15,7 +15,7 @@ from toontown.cogdominium import CogdoUtil
 from toontown.chat import ResistanceChat
 from toontown.coghq import CogDisguiseGlobals
 from toontown.estate import FlowerBasket, FlowerCollection, GardenGlobals
-from toontown.fishing import FishCollection, FishTank
+from toontown.fishing import FishCollection, FishTank, FishGlobals
 from toontown.golf import GolfGlobals
 from toontown.hood import ZoneUtil
 from toontown.parties import PartyGlobals
@@ -4391,8 +4391,8 @@ def maxFishTank(maxFishTank):
     """
     Modify the target's max fish tank value.
     """
-    if not 20 <= maxFishTank <= 99:
-        return 'Max fish tank value must be in xrange (20-99).'
+    if not 20 <= maxFishTank <= FishGlobals.MaxTank:
+        return 'Max fish tank value must be in xrange (20-%s).' % FishGlobals.MaxTank
     target = spellbook.getTarget()
     target.b_setMaxFishTank(maxFishTank)
     return "Set %s's max fish tank value to %d!" % (target.getName(), maxFishTank)

@@ -12,6 +12,7 @@ from CatalogMouldingItem import CatalogMouldingItem, getAllMouldings
 from CatalogWainscotingItem import CatalogWainscotingItem, getAllWainscotings
 from CatalogWindowItem import CatalogWindowItem
 from CatalogPoleItem import nextAvailablePole, getAllPoles
+from CatalogTankItem import nextAvailableTank, getAllTanks
 from CatalogPetTrickItem import CatalogPetTrickItem, getAllPetTricks
 from CatalogGardenItem import CatalogGardenItem
 from CatalogToonStatueItem import CatalogToonStatueItem
@@ -843,7 +844,8 @@ WeeklySchedule = ((100,
   CatalogFurnitureItem(100),
   nextAvailablePole,
   nextAvailableCloset,
-  nextAvailableBank),
+  nextAvailableBank,
+  nextAvailableTank),
  (100,
   (5, 2000),
   CatalogFurnitureItem(1420),
@@ -866,7 +868,8 @@ WeeklySchedule = ((100,
   CatalogClothingItem(117, 0),
   CatalogClothingItem(217, 0),
   nextAvailableCloset,
-  nextAvailableBank),
+  nextAvailableBank,
+  nextAvailableTank),
  (100,
   (5, 2000),
   CatalogFurnitureItem(1430),
@@ -889,7 +892,8 @@ WeeklySchedule = ((100,
   CatalogClothingItem(409, 0),
   nextAvailablePole,
   nextAvailableCloset,
-  nextAvailableBank),
+  nextAvailableBank,
+  nextAvailableTank),
  (300,
   (5, 2000),
   CatalogEmoteItem(13),
@@ -910,7 +914,8 @@ WeeklySchedule = ((100,
   CatalogClothingItem(118, 0),
   CatalogClothingItem(218, 0),
   nextAvailableCloset,
-  nextAvailableBank),
+  nextAvailableBank,
+  nextAvailableTank),
  (100,
   (5, 2000),
   3000,
@@ -930,7 +935,8 @@ WeeklySchedule = ((100,
   CatalogFurnitureItem(620),
   nextAvailablePole,
   nextAvailableCloset,
-  nextAvailableBank),
+  nextAvailableBank,
+  nextAvailableTank),
  (300,
   (5, 2000),
   3000,
@@ -952,7 +958,8 @@ WeeklySchedule = ((100,
   CatalogEmoteItem(11),
   CatalogNametagItem(11),
   nextAvailableCloset,
-  nextAvailableBank),
+  nextAvailableBank,
+  nextAvailableTank),
  (100,
   (2, 2000),
   (3, 2010),
@@ -978,7 +985,8 @@ WeeklySchedule = ((100,
   nextAvailablePole,
   5000,
   nextAvailableCloset,
-  nextAvailableBank),
+  nextAvailableBank,
+  nextAvailableTank),
  (100,
   (2, 2000),
   (3, 2010),
@@ -1001,7 +1009,8 @@ WeeklySchedule = ((100,
   CatalogFurnitureItem(1500),
   CatalogEmoteItem(6),
   nextAvailableCloset,
-  nextAvailableBank),
+  nextAvailableBank,
+  nextAvailableTank),
  (300,
   (2, 2000),
   (3, 2010),
@@ -1547,6 +1556,9 @@ class CatalogGenerator:
             if nextAvailableBank not in schedule:
                 weeklyCatalog += self.__selectItem(avatar, nextAvailableBank, monthlyCatalog, saleItem=0)
             
+            if nextAvailableTank not in schedule:
+                weeklyCatalog += self.__selectItem(avatar, nextAvailableTank, monthlyCatalog, saleItem=0)
+            
             weeklyCatalog += self.__selectItem(avatar, get50ItemTrunk, monthlyCatalog, saleItem=0)
         if time.time() < 1096617600.0:
 
@@ -1784,6 +1796,8 @@ class CatalogGenerator:
                     item = getAllClosets()
                 elif item == nextAvailableBank:
                     item = getAllBanks()
+                elif item == nextAvailableTank:
+                    item = getAllTanks()
                 elif item == get50ItemCloset:
                     item = getMaxClosets()
                 elif item == get50ItemTrunk:

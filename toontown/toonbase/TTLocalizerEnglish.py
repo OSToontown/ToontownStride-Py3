@@ -3922,11 +3922,16 @@ FishPageTrophyTab = 'Trophies'
 FishPickerTotalValue = 'Bucket: %s / %s\nValue: %d Jellybeans'
 UnknownFish = '???'
 FishingRod = '%s Rod'
+FishTank = '%s Fishing Bucket'
 FishingRodNameDict = {0: 'Twig',
  1: 'Bamboo',
  2: 'Hardwood',
  3: 'Steel',
  4: 'Gold'}
+FishTankNameDict = {40: 'Medium',
+ 60: 'Big',
+ 80: 'Large',
+ 100: 'Ultra'}
 FishTrophyNameDict = {0: 'Guppy',
  1: 'Minnow',
  2: 'Fish',
@@ -4782,6 +4787,7 @@ ChatTypeName = 'SpeedChat Phrase'
 EmoteTypeName = 'Acting Lessons'
 BeanTypeName = 'Jellybeans'
 PoleTypeName = 'Fishing Pole'
+TankTypeName = 'Fishing Bucket'
 WindowViewTypeName = 'Window View'
 PetTrickTypeName = 'Doodle Training'
 GardenTypeName = 'Garden Supplies'
@@ -4789,26 +4795,6 @@ RentalTypeName = 'Rental Item'
 GardenStarterTypeName = 'Gardening Kit'
 NametagTypeName = 'Name tag'
 AccessoryTypeName = 'Accessory'
-CatalogItemTypeNames = {0: 'INVALID_ITEM',
- 1: FurnitureTypeName,
- 2: ChatTypeName,
- 3: ClothingTypeName,
- 4: EmoteTypeName,
- 5: 'WALLPAPER',
- 6: 'Window View',
- 7: 'FLOORING',
- 8: 'MOULDING',
- 9: 'WAINSCOTING',
- 10: PoleTypeName,
- 11: PetTrickTypeName,
- 12: BeanTypeName,
- 13: GardenTypeName,
- 14: RentalTypeName,
- 15: GardenStarterTypeName,
- 16: NametagTypeName,
- 17: 'TOON_STATUE',
- 18: 'ANIMATED FURNITURE',
- 19: AccessoryTypeName}
 HatStylesDescriptions = {'hbb1': 'Green Baseball Cap',
  'kmh1': 'Mouskateer',
  'hbb2': 'Blue Baseball Cap',
@@ -5494,6 +5480,8 @@ CatalogAcceptBackpack = 'You are now wearing your new backpack.  The backpack yo
 CatalogAcceptShoes = 'You are now wearing your new shoes.  The shoes you were wearing before have been moved to your trunk.'
 CatalogAcceptPole = "You're now ready to go catch some bigger fish with your new pole!"
 CatalogAcceptPoleUnneeded = 'You already have a better pole than this one!'
+CatalogAcceptTank = "You're now ready to catch more fish!"
+CatalogAcceptTankUnneeded = 'You already have a bigger tank than this one!'
 CatalogAcceptChat = 'You now have a new SpeedChat!'
 CatalogAcceptEmote = 'You now have a new Emotion!'
 CatalogAcceptBeans = 'You received some jelly beans!'

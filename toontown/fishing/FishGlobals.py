@@ -51,12 +51,22 @@ RodPriceDict = {0: 0,
  2: 800,
  3: 1200,
  4: 2000}
+TankPriceDict = {0: 0,
+ 40: 400,
+ 60: 800,
+ 80: 1200,
+ 100: 2000}
+NextTank = {20: 40,
+ 40: 60,
+ 60: 80,
+ 80: 100}
 RodRarityFactor = {0: 1.0 / (GlobalRarityDialBase * 1),
  1: 1.0 / (GlobalRarityDialBase * 0.975),
  2: 1.0 / (GlobalRarityDialBase * 0.95),
  3: 1.0 / (GlobalRarityDialBase * 0.9),
  4: 1.0 / (GlobalRarityDialBase * 0.85)}
 MaxRodId = 4
+MaxTank = 100
 FishAudioFileDict = {-1: ('Clownfish.ogg',
       1,
       1.5,
