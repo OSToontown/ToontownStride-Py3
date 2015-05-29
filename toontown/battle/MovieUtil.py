@@ -262,6 +262,7 @@ def createSuitReviveTrack(suit, toon, battle, npcs = []):
     suitTrack.append(Func(removeReviveSuit, suit, deathSuit, name='remove-death-suit'))
     suitTrack.append(Func(notify.debug, 'after removeDeathSuit'))
     suitTrack.append(Func(suit.loop, 'neutral'))
+    suitTrack.append(Func(messenger.send, suit.uniqueName('hpChange')))
     spinningSound = base.loadSfx('phase_3.5/audio/sfx/Cog_Death.ogg')
     deathSound = base.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart.ogg')
     deathSoundTrack = Sequence(Wait(0.8), SoundInterval(spinningSound, duration=1.2, startTime=1.5, volume=0.2), SoundInterval(spinningSound, duration=3.0, startTime=0.6, volume=0.8), SoundInterval(deathSound, volume=0.32))

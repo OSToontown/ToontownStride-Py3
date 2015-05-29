@@ -3275,9 +3275,7 @@ FriendsListPanelOnlineFriends = 'ONLINE TOON\nFRIENDS'
 FriendsListPanelAllFriends = 'ALL TOON\nFRIENDS'
 FriendsListPanelPets = 'NEARBY\nPETS'
 FriendInviterClickToon = 'Click on the toon you would like to make friends with.\n\n(You have %s friends)'
-FriendInviterToon = 'Toon'
 FriendInviterThatToon = 'That toon'
-FriendInviterBegin = 'What type of friend would you like to make?'
 FriendInviterToonTooMany = 'You have too many toon friends to add another one now. You will have to remove some toon friends if you want to make friends with %s.'
 FriendInviterToonAlready = '%s is already your toon friend.'
 FriendInviterStopBeingToonFriends = 'Stop being toon friends'
@@ -3311,7 +3309,6 @@ DateOfBirthEntryMonths = ['Jan',
  'Oct',
  'Nov',
  'Dec']
-DateOfBirthEntryDefaultLabel = 'Date of Birth'
 PhotoPageTitle = 'Snapshots'
 PhotoPageNoName = 'Unnamed'
 PhotoPageUnknownName = 'Unknown'
