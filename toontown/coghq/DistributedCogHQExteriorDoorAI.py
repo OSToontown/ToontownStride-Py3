@@ -31,11 +31,14 @@ class DistributedCogHQExteriorDoorAI(DistributedCogHQDoorAI.DistributedCogHQDoor
             if not allowed:
                 self.sendReject(avId, self.isLockedDoor())
             else:
+                print("********\nRequesting Lobby GUI...\n********")
                 self.sendUpdate('selectLobby', [avId])
 
     def confirmEntrance(self, avId, status):
         if status:
+            print("********\nAvatar Heading to Lobby...\n********")
             self.enqueueAvatarIdEnter(avId)
             self.sendUpdateToAvatarId(avId, 'setOtherZoneIdAndDoId', [self.destinationZone, self.otherDoor.getDoId()])
         else:
+            print("********\nAvatar Canceled Entrance.\n********")
             self.sendReject(avId, 0)
