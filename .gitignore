@@ -1,6 +1,9 @@
 # Python artifacts
 *.pyc
 
+# Batch
+*.bat
+
 # PyCharm
 .idea
 
@@ -12,15 +15,3 @@
 
 # Git
 *.rej
-
-# Game-specific files and directories
-preferences.json
-*.json
-logs/
-screenshots/
-backups/
-contentpacks/
-resources/
-save.dat
-ai-crash.txt
-gentokenlr.py
