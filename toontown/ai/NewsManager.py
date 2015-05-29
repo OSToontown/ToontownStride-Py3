@@ -120,7 +120,7 @@ class NewsManager(DistributedObject.DistributedObject):
         elif msgType == ToontownGlobals.V2InvasionBegin:
             messages.append(TTLocalizer.V2InvasionBegin1)
             messages.append(TTLocalizer.V2InvasionBegin2)
-            messages.append(TTLocalizer.V2InvasionBegin3)
+            messages.append(TTLocalizer.V2InvasionBegin3 % suitNamePlural)
             self.invading = 1
         elif msgType == ToontownGlobals.V2InvasionEnd:
             messages.append(TTLocalizer.V2InvasionEnd1)
@@ -129,7 +129,7 @@ class NewsManager(DistributedObject.DistributedObject):
         elif msgType == ToontownGlobals.V2InvasionBulletin:
             messages.append(TTLocalizer.V2InvasionBulletin1)
             messages.append(TTLocalizer.V2InvasionBulletin2)
-            messages.append(TTLocalizer.V2InvasionBulletin3)
+            messages.append(TTLocalizer.V2InvasionBulletin3 % suitNamePlural)
             self.invading = 1
         else:
             self.notify.warning('setInvasionStatus: invalid msgType: %s' % msgType)

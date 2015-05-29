@@ -1793,12 +1793,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.effect.play()
 
     def d_reqCogSummons(self, type, suitIndex):
-        if type == 'single':
-            pass
-        elif type == 'building':
-            pass
-        elif type == 'invasion':
-            pass
         self.sendUpdate('reqCogSummons', [type, suitIndex])
 
     def cogSummonsResponse(self, returnCode, suitIndex, doId):
@@ -1813,12 +1807,14 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def hasCogSummons(self, suitIndex, type = None):
         summons = self.getCogSummonsEarned()
         curSetting = summons[suitIndex]
-        if type == 'single':
+        if type == 'building':
             return curSetting & 1
-        elif type == 'building':
-            return curSetting & 2
         elif type == 'invasion':
+            return curSetting & 2
+        elif type == 'cogdo':
             return curSetting & 4
+        elif type == 'v2invasion':
+            return curSetting & 8
         return curSetting
 
     def setFlowerCollection(self, speciesList, varietyList):

@@ -37,16 +37,12 @@ class SuitInvasionManagerAI:
 
     def startInvasion(self, suitDeptIndex=None, suitTypeIndex=None, flags=0,
                       type=INVASION_TYPE_NORMAL):
-        if self.invading:
+        if self.invading: 
             # An invasion is currently in progress; ignore this request.
             return False
 
         if (suitDeptIndex is None) and (suitTypeIndex is None) and (not flags):
             # This invasion is no-op.
-            return False
-
-        if flags and ((suitDeptIndex is not None) or (suitTypeIndex is not None)):
-            # For invasion flags to be present, it must be a generic invasion.
             return False
 
         if (suitDeptIndex is None) and (suitTypeIndex is not None):

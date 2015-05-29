@@ -11,6 +11,7 @@ from otp.avatar import DistributedAvatarAI, DistributedPlayerAI
 from otp.otpbase import OTPGlobals, OTPLocalizer
 from toontown.battle import SuitBattleGlobals
 from toontown.catalog import CatalogAccessoryItem, CatalogItem, CatalogItemList
+from toontown.cogdominium import CogdoUtil
 from toontown.chat import ResistanceChat
 from toontown.coghq import CogDisguiseGlobals
 from toontown.estate import FlowerBasket, FlowerCollection, GardenGlobals
@@ -25,7 +26,7 @@ from toontown.parties.PartyReplyInfo import PartyReplyInfoBase
 from toontown.quest import QuestRewardCounter, Quests
 from toontown.racing import RaceGlobals
 from toontown.shtiker import CogPageGlobals
-from toontown.suit import SuitDNA
+from toontown.suit import SuitDNA, SuitInvasionGlobals
 from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer, ToontownBattleGlobals, ToontownGlobals
 from toontown.toonbase.ToontownGlobals import *
@@ -3057,7 +3058,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.kart.start()
 
     def reqCogSummons(self, type, suitIndex):
-        if type not in ('single', 'building', 'invasion'):
+        if type not in ('building', 'invasion', 'cogdo', 'v2invasion'):
             self.air.writeServerEvent('suspicious', self.doId, 'invalid cog summons type: %s' % type)
             self.sendUpdate('cogSummonsResponse', ['fail', suitIndex, 0])
             return
@@ -3070,14 +3071,15 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.sendUpdate('cogSummonsResponse', ['fail', suitIndex, 0])
             return
         returnCode = None
-        if type == 'single':
-            returnCode = self.doSummonSingleCog(suitIndex)
-        elif type == 'building':
+        if type == 'building':
             returnCode = self.doBuildingTakeover(suitIndex)
-        elif type == 'invasion':
+        elif type == 'cogdo':
+            returnCode = self.doCogdoTakeOver(suitIndex)
+        elif type.endswith('invasion'):
             suitDeptIndex = suitIndex / SuitDNA.suitsPerDept
             suitTypeIndex = suitIndex % SuitDNA.suitsPerDept
-            returnCode = self.doCogInvasion(suitDeptIndex, suitTypeIndex)
+            flags = SuitInvasionGlobals.IFV2 if type.startswith('v2') else 0
+            returnCode = self.doCogInvasion(suitDeptIndex, suitTypeIndex, flags)
         if returnCode:
             if returnCode[0] == 'success':
                 self.air.writeServerEvent('cogSummoned', self.doId, '%s|%s|%s' % (type, suitIndex, self.zoneId))
@@ -3129,19 +3131,28 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
          building.block,
          self.zoneId))
         return ['success', suitIndex, building.doId]
-
-    def doCogdoTakeOver(self, difficulty, buildingHeight):
+    
+    def doCogdoTakeOver(self, suitIndex):
+        if suitIndex >= len(SuitDNA.suitHeadTypes):
+            self.notify.warning('Bad suit index: %s' % suitIndex)
+            return ['badIndex', suitIndex, 0]
+        suitName = SuitDNA.suitHeadTypes[suitIndex]
+        track = CogdoUtil.getCogdoTrack(suitName)
+        if not track:
+            return ['disabled', 0, 0]
         streetId = ZoneUtil.getBranchZone(self.zoneId)
         if streetId not in self.air.suitPlanners:
             self.notify.warning('Street %d is not known.' % streetId)
-            return ['badlocation', difficulty, 0]
+            return ['badlocation', 0, 0]
         building = self.findClosestDoor()
-        if building is None:
-            return ['badlocation', difficulty, 0]
-        building.cogdoTakeOver(difficulty, buildingHeight)
-        return ['success', difficulty, building.doId]
+        if building == None:
+            return ['badlocation', 0, 0]
+        sp = self.air.suitPlanners[streetId]
+        level, type, track = sp.pickLevelTypeAndTrack(None, SuitDNA.getSuitType(suitName), track)
+        building.cogdoTakeOver(level, 2, track)
+        return ['success', level, building.doId]
 
-    def doCogInvasion(self, suitDeptIndex, suitTypeIndex):
+    def doCogInvasion(self, suitDeptIndex, suitTypeIndex, flags=0):
         if self.air.suitInvasionManager.getInvading():
             return ['busy', 0, 0]
 
@@ -3149,7 +3160,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         suitIndex = SuitDNA.suitHeadTypes.index(suitName)
 
         if self.air.suitInvasionManager.startInvasion(
-                suitDeptIndex=suitDeptIndex, suitTypeIndex=suitTypeIndex):
+                suitDeptIndex=suitDeptIndex, suitTypeIndex=suitTypeIndex, flags=flags):
             return ['success', suitIndex, 0]
 
         return ['fail', suitIndex, 0]
@@ -3169,19 +3180,21 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def restockAllCogSummons(self):
         numSuits = len(SuitDNA.suitHeadTypes)
-        fullSetForSuit = 1 | 2 | 4
+        fullSetForSuit = 1 | 2 | 4 | 8
         allSummons = numSuits * [fullSetForSuit]
         self.b_setCogSummonsEarned(allSummons)
 
     def addCogSummonsEarned(self, suitIndex, type):
         summons = self.getCogSummonsEarned()
         curSetting = summons[suitIndex]
-        if type == 'single':
+        if type == 'building':
             curSetting |= 1
-        elif type == 'building':
-            curSetting |= 2
         elif type == 'invasion':
+            curSetting |= 2
+        elif type == 'cogdo':
             curSetting |= 4
+        elif type == 'v2invasion':
+            curSetting |= 8
         summons[suitIndex] = curSetting
         self.b_setCogSummonsEarned(summons)
 
@@ -3189,12 +3202,14 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         summons = self.getCogSummonsEarned()
         curSetting = summons[suitIndex]
         if self.hasCogSummons(suitIndex, type):
-            if type == 'single':
+            if type == 'building':
                 curSetting &= -2
-            elif type == 'building':
-                curSetting &= -3
             elif type == 'invasion':
+                curSetting &= -3
+            elif type == 'cogdo':
                 curSetting &= -5
+            elif type == 'v2invasion':
+                curSetting &= -9
             summons[suitIndex] = curSetting
             self.b_setCogSummonsEarned(summons)
             if hasattr(self, 'autoRestockSummons') and self.autoRestockSummons:
@@ -3206,12 +3221,14 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def hasCogSummons(self, suitIndex, type = None):
         summons = self.getCogSummonsEarned()
         curSetting = summons[suitIndex]
-        if type == 'single':
+        if type == 'building':
             return curSetting & 1
-        elif type == 'building':
-            return curSetting & 2
         elif type == 'invasion':
+            return curSetting & 2
+        elif type == 'cogdo':
             return curSetting & 4
+        elif type == 'v2invasion':
+            return curSetting & 8
         return curSetting
 
     def hasParticularCogSummons(self, deptIndex, level, type):
@@ -3239,11 +3256,12 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         else:
             numSuits = len(SuitDNA.suitHeadTypes)
             suitIndex = random.randrange(0, numSuits)
-        if summonType in ['single', 'building', 'invasion']:
+        summonTypes = ['building', 'invasion', 'cogdo', 'v2invasion']
+        if summonType in summonTypes:
             type = summonType
         else:
-            typeWeights = ['single'] * 70 + ['building'] * 25 + ['invasion'] * 5
-            type = random.choice(typeWeights)
+            #typeWeights = ['single'] * 70 + ['building'] * 25 + ['invasion'] * 5
+            type = random.choice(summonTypes)
         if suitIndex >= len(SuitDNA.suitHeadTypes):
             self.notify.warning('Bad suit index: %s' % suitIndex)
         self.addCogSummonsEarned(suitIndex, type)
@@ -4139,7 +4157,7 @@ def allSummons():
     invoker = spellbook.getInvoker()
 
     numSuits = len(SuitDNA.suitHeadTypes)
-    fullSetForSuit = 1 | 2 | 4
+    fullSetForSuit = 1 | 2 | 4 | 8
     allSummons = numSuits * [fullSetForSuit]
     invoker.b_setCogSummonsEarned(allSummons)
     return 'Lots of summons!'
@@ -4948,9 +4966,8 @@ def immortal():
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[str, int]) 
 def summoncogdo(track="s", difficulty=5):
-    tracks = ['s']
-    if config.GetBool('want-lawbot-cogdo', True):
-        tracks.append('l')
+    tracks = CogdoUtil.getAllowedTracks()
+
     if track not in tracks:
         return "Invalid track!"
 

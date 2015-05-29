@@ -1,4 +1,7 @@
 from pandac.PandaModules import ColorBlendAttrib
+from toontown.suit import SuitDNA
+import random
+
 ModelPhase = 5
 ModelTypes = {'animation': 'a',
  'model': 'm',
@@ -8,6 +11,26 @@ ModelGroups = {'area': 'ara',
 Games = {'flying': 'cfg',
  'maze': 'cmg',
  'shared': 'csa'}
+
+def getAllowedTracks():
+    tracks = []
+
+    if config.GetBool('want-sellbot-cogdo', True):
+        tracks.append('s')
+    if config.GetBool('want-lawbot-cogdo', True):
+        tracks.append('l')
+
+    return tracks
+
+def getCogdoTrack(suitName):
+    tracks = getAllowedTracks()
+    
+    if not tracks:
+        return None
+
+    track = SuitDNA.getSuitDept(suitName)
+    
+    return track if track in tracks else random.choice(tracks)
 
 def loadFlyingModel(baseName, type = 'model', group = 'area'):
     return loadModel(baseName, 'flying', type=type, group=group)
