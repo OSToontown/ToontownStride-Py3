@@ -24,7 +24,7 @@ texture-anisotropic-degree 16
 preferences-filename user/preferences.json
 
 # Content packs:
-content-packs-filepath contentpacks/
+content-packs-filepath user/contentpacks/
 content-packs-sort-filename sort.yaml
 
 # Backups:
