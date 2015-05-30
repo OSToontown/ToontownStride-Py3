@@ -144,10 +144,6 @@ class Avatar(Actor, ShadowCaster):
         elif self.playerType not in (NametagGlobals.CCNormal, NametagGlobals.CCSpeedChat):
             self.understandable = 1
             self.setPlayerType(NametagGlobals.CCNonPlayer)
-        elif False and hasattr(self, 'adminAccess') and self.adminAccess >= CATEGORY_COMMUNITY_MANAGER:
-            print 'admin'
-            self.understandable = 1
-            self.setPlayerType(NametagGlobals.CCNormal)
         elif settings['trueFriends'] and base.cr.getFriendFlags(self.doId) & OTPGlobals.FriendChat:
             self.understandable = 2
             self.setPlayerType(NametagGlobals.CCNormal)
