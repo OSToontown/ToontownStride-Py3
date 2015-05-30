@@ -2993,7 +2993,7 @@ class Toon(Avatar.Avatar, ToonHead):
 
         return sequence
 
-    def getDustCloud(self, delay=0.5, color=False):
+    def getDustCloud(self, delay=0.5, color=None):
         dustCloud = DustCloud.DustCloud(fBillboard=0, wantSound=1)
 
         dustCloud.setBillboardAxis(2.0)
