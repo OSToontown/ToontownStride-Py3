@@ -204,7 +204,7 @@ class TownBattleSOSPanel(DirectFrame, StateData.StateData):
         else:
             self.title['text'] = TTLocalizer.TownBattleSOSWhichFriend
 
-    def __friendOnline(self, doId, commonChatFlags, whitelistChatFlags):
+    def __friendOnline(self, doId):
         self.__updateScrollList()
         self.__updateTitleText()
 

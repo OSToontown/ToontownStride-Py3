@@ -8,8 +8,6 @@ class FriendHandle:
     def __init__(self, doId, name, style, petId, isAPet = False):
         self.doId = doId
         self.style = style
-        self.commonChatFlags = 0
-        self.whitelistChatFlags = 0
         self.petId = petId
         self.isAPet = isAPet
         self.chatGarbler = ToonChatGarbler.ToonChatGarbler()
@@ -62,19 +60,11 @@ class FriendHandle:
         base.cr.ttsFriendsManager.d_teleportGiveup(self.doId)
 
     def isUnderstandable(self):
-        if self.commonChatFlags & base.localAvatar.commonChatFlags & ToontownGlobals.CommonChat:
-            understandable = 1
-        elif self.commonChatFlags & ToontownGlobals.SuperChat:
-            understandable = 1
-        elif base.localAvatar.commonChatFlags & ToontownGlobals.SuperChat:
-            understandable = 1
-        elif base.cr.getFriendFlags(self.doId) & ToontownGlobals.FriendChat:
-            understandable = 1
-        elif self.whitelistChatFlags & base.localAvatar.whitelistChatFlags:
-            understandable = 1
-        else:
-            understandable = 0
-        return understandable
+        if settings['speedchatPlus']:
+            return 1
+        elif settings['trueFriends'] and base.cr.getFriendFlags(self.doId) & ToontownGlobals.FriendChat:
+            return 1
+        return 0
 
     def scrubTalk(self, message, mods):
         scrubbed = 0
@@ -117,7 +107,3 @@ class FriendHandle:
 
         newText = ' '.join(newwords)
         return newText
-
-    def setCommonAndWhitelistChatFlags(self, commonChatFlags, whitelistChatFlags):
-        self.commonChatFlags = commonChatFlags
-        self.whitelistChatFlags = whitelistChatFlags

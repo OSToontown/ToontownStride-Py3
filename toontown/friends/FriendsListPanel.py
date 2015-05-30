@@ -377,7 +377,7 @@ class FriendsListPanel(DirectFrame, StateData.StateData):
         else:
             self.right['state'] = 'normal'
 
-    def __friendOnline(self, doId, commonChatFlags, whitelistChatFlags):
+    def __friendOnline(self, doId):
         if self.panelType == FLPOnline:
             self.__updateScrollList()
 

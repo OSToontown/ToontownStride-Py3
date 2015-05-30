@@ -173,8 +173,6 @@ dclass DistributedPlayer : DistributedAvatar {
   setWhisperSCCustomFrom(DoId fromAv, uint16 msgIndex) ownrecv clsend;
   setWhisperSCEmoteFrom(DoId fromAv, uint16 emoteId) ownrecv clsend;
   setSystemMessage(DoId aboutId, string(0-256) chatString) ownrecv;
-  setCommonChatFlags(uint8) broadcast ownrecv ram airecv;
-  setWhitelistChatFlags(uint8) broadcast ownrecv ram airecv;
   setSC(uint16 msgIndex) broadcast ownsend airecv;
   setSCCustom(uint16 msgIndex) broadcast ownsend airecv;
   setFriendsList(FriendEntry[] = []) ownrecv required db airecv;
@@ -3363,7 +3361,7 @@ dclass TTSFriendsManager : DistributedObjectGlobal {
   friendInfo(Friend);
   friendList(Friend []);
 
-  friendOnline(uint32, uint8, uint8);
+  friendOnline(uint32);
   friendOffline(uint32);
 
   goingOffline(uint32 avId);

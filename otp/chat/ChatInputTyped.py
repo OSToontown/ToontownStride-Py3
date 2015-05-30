@@ -77,9 +77,6 @@ class ChatInputTyped(DirectObject.DirectObject):
         self.cancelButton.show()
         self.typedChatButton.hide()
         self.typedChatBar.hide()
-        if self.whisperId and not base.talkAssistant.checkWhisperTypedChatAvatar(self.whisperId):
-            messenger.send('Chat-Failed avatar typed chat test')
-            self.deactivate()
 
     def deactivate(self):
         self.chatEntry.set('')

@@ -1,15 +1,13 @@
 from pandac.PandaModules import VBase4
-
+from otp.otpbase import OTPGlobals
 
 CCNormal = 0
-CCNoChat = 1
-CCNonPlayer = 2
-CCSuit = 3
-CCToonBuilding = 4
-CCSuitBuilding = 5
-CCHouseBuilding = 6
-CCSpeedChat = 7
-CCFreeChat = 8
+CCNonPlayer = 1
+CCSuit = 2
+CCToonBuilding = 3
+CCSuitBuilding = 4
+CCHouseBuilding = 5
+CCSpeedChat = 6
 
 CHAT = 0
 SPEEDCHAT = 1
@@ -135,22 +133,18 @@ def getModelWidthHeight(model):
     height = maxPoint.getZ() - minPoint.getZ()
     return (width, height)
 
+def getFriendColor(id):
+    return CCNormal if settings['trueFriends'] and base.cr.getFriendFlags(id) & OTPGlobals.FriendChat else CCNormal
 
 # Foreground, background:
 NametagColors = {
-    CCNormal: (
+    CCNormal: ( # Blue
         (VBase4(0.3, 0.3, 0.7, 1.0), VBase4(0.8, 0.8, 0.8, 0.375)),   # Normal
         (VBase4(0.3, 0.3, 0.7, 1.0), VBase4(0.2, 0.2, 0.2, 0.1875)),  # Down
         (VBase4(0.5, 0.5, 1.0, 1.0), VBase4(1.0, 1.0, 1.0, 0.5625)),  # Rollover
         (VBase4(0.3, 0.3, 0.7, 1.0), VBase4(1.0, 1.0, 1.0, 0.375))    # Disabled
     ),
-    CCNoChat: (
-        (VBase4(0.8, 0.4, 0.0, 1.0), VBase4(0.8, 0.8, 0.8, 0.375)),   # Normal
-        (VBase4(1.0, 0.5, 0.5, 1.0), VBase4(0.2, 0.2, 0.2, 0.1875)),  # Click
-        (VBase4(1.0, 0.5, 0.0, 1.0), VBase4(1.0, 1.0, 1.0, 0.5625)),  # Rollover
-        (VBase4(0.8, 0.4, 0.0, 1.0), VBase4(0.8, 0.8, 0.8, 0.375))    # Disabled
-    ),
-    CCNonPlayer: (
+    CCNonPlayer: ( # Orange
         (VBase4(0.8, 0.4, 0.0, 1.0), VBase4(0.8, 0.8, 0.8, 0.375)),   # Normal
         (VBase4(0.8, 0.4, 0.0, 1.0), VBase4(0.8, 0.8, 0.8, 0.1875)),  # Down
         (VBase4(0.8, 0.4, 0.0, 1.0), VBase4(0.8, 0.8, 0.8, 0.5625)),  # Rollover
@@ -181,17 +175,11 @@ NametagColors = {
         (VBase4(0.5, 0.5, 1.0, 1.0), VBase4(1.0, 1.0, 1.0, 0.5625)),  # Rollover
         (VBase4(0.0, 0.6, 0.2, 1.0), VBase4(0.8, 0.8, 0.8, 0.375))    # Disabled
     ),
-    CCSpeedChat: (
+    CCSpeedChat: ( # Green
         (VBase4(0.0, 0.6, 0.2, 1.0), VBase4(0.8, 0.8, 0.8, 0.375)),   # Normal
         (VBase4(0.0, 0.5, 0.0, 1.0), VBase4(0.5, 0.5, 0.5, 0.1875)),  # Down
         (VBase4(0.0, 0.7, 0.2, 1.0), VBase4(1.0, 1.0, 1.0, 0.5625)),  # Rollover
         (VBase4(0.0, 0.6, 0.2, 1.0), VBase4(0.8, 0.8, 0.8, 0.375))    # Disabled
-    ),
-    CCFreeChat: (
-        (VBase4(0.3, 0.3, 0.7, 1.0), VBase4(0.8, 0.8, 0.8, 0.375)),   # Normal
-        (VBase4(0.2, 0.2, 0.5, 1.0), VBase4(0.2, 0.2, 0.2, 0.1875)),  # Down
-        (VBase4(0.5, 0.5, 1.0, 1.0), VBase4(1.0, 1.0, 1.0, 0.5625)),  # Rollover
-        (VBase4(0.3, 0.3, 0.7, 1.0), VBase4(0.8, 0.8, 0.8, 0.375))    # Disabled
     )
 }
 
@@ -200,12 +188,6 @@ ChatColors = {
     CCNormal: (
         (VBase4(0.0, 0.0, 0.0, 1.0), VBase4(1.0, 1.0, 1.0, 1.0)),  # Normal
         (VBase4(1.0, 0.5, 0.5, 1.0), VBase4(1.0, 1.0, 1.0, 1.0)),  # Down
-        (VBase4(0.0, 0.6, 0.6, 1.0), VBase4(1.0, 1.0, 1.0, 1.0)),  # Rollover
-        (VBase4(0.0, 0.0, 0.0, 1.0), VBase4(1.0, 1.0, 1.0, 1.0))   # Disabled
-    ),
-    CCNoChat: (
-        (VBase4(0.0, 0.0, 0.0, 1.0), VBase4(1.0, 1.0, 1.0, 1.0)),  # Normal
-        (VBase4(1.0, 0.5, 0.5, 1.0), VBase4(1.0, 1.0, 1.0, 1.0)),  # Click
         (VBase4(0.0, 0.6, 0.6, 1.0), VBase4(1.0, 1.0, 1.0, 1.0)),  # Rollover
         (VBase4(0.0, 0.0, 0.0, 1.0), VBase4(1.0, 1.0, 1.0, 1.0))   # Disabled
     ),
@@ -240,12 +222,6 @@ ChatColors = {
         (VBase4(0.0, 0.0, 0.0, 1.0), VBase4(1.0, 1.0, 1.0, 1.0))   # Disabled
     ),
     CCSpeedChat: (
-        (VBase4(0.0, 0.0, 0.0, 1.0), VBase4(1.0, 1.0, 1.0, 1.0)),  # Normal
-        (VBase4(1.0, 0.5, 0.5, 1.0), VBase4(1.0, 1.0, 1.0, 1.0)),  # Down
-        (VBase4(0.0, 0.6, 0.6, 1.0), VBase4(1.0, 1.0, 1.0, 1.0)),  # Rollover
-        (VBase4(0.0, 0.0, 0.0, 1.0), VBase4(1.0, 1.0, 1.0, 1.0))   # Disabled
-    ),
-    CCFreeChat: (
         (VBase4(0.0, 0.0, 0.0, 1.0), VBase4(1.0, 1.0, 1.0, 1.0)),  # Normal
         (VBase4(1.0, 0.5, 0.5, 1.0), VBase4(1.0, 1.0, 1.0, 1.0)),  # Down
         (VBase4(0.0, 0.6, 0.6, 1.0), VBase4(1.0, 1.0, 1.0, 1.0)),  # Rollover

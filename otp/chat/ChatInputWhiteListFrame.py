@@ -79,19 +79,6 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
     def requestMode(self, mode, *args):
         return self.request(mode, *args)
 
-    def defaultFilter(self, request, *args):
-        if request == 'AllChat':
-            if not base.talkAssistant.checkAnyTypedChat():
-                messenger.send('Chat-Failed open typed chat test')
-                self.notify.warning('Chat-Failed open typed chat test')
-                return None
-        elif request == 'AvatarWhisper':
-            if not base.talkAssistant.checkWhisperTypedChatAvatar(self.whisperId):
-                messenger.send('Chat-Failed avatar typed chat test')
-                self.notify.warning('Chat-Failed avatar typed chat test')
-                return None
-        return FSM.FSM.defaultFilter(self, request, *args)
-
     def enterOff(self):
         self.deactivate()
         localAvatar.chatMgr.fsm.request('mainMenu')

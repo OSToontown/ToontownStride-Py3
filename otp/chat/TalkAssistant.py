@@ -204,45 +204,6 @@ class TalkAssistant(DirectObject.DirectObject):
              message.getSenderAccountName(),
              message.getBody())
 
-    def checkOpenTypedChat(self):
-        if base.localAvatar.commonChatFlags & OTPGlobals.CommonChat:
-            return True
-        return False
-
-    def checkAnyTypedChat(self):
-        if base.localAvatar.commonChatFlags & OTPGlobals.CommonChat:
-            return True
-        if base.localAvatar.canChat():
-            return True
-        return False
-
-    def checkOpenSpeedChat(self):
-        return True
-
-    def checkWhisperTypedChatAvatar(self, avatarId):
-        remoteAvatar = base.cr.doId2do.get(avatarId)
-        if remoteAvatar:
-            if remoteAvatar.isUnderstandable():
-                return True
-        if base.localAvatar.commonChatFlags & OTPGlobals.SuperChat:
-            return True
-        remoteAvatarOrHandleOrInfo = base.cr.identifyAvatar(avatarId)
-        if remoteAvatarOrHandleOrInfo and hasattr(remoteAvatarOrHandleOrInfo, 'isUnderstandable'):
-            if remoteAvatarOrHandleOrInfo.isUnderstandable():
-                return True
-        if base.cr.getFriendFlags(avatarId) & OTPGlobals.FriendChat:
-            return True
-        return False
-
-    def checkWhisperSpeedChatAvatar(self, avatarId):
-        return True
-
-    def checkOpenSpeedChat(self):
-        return True
-
-    def checkWhisperSpeedChatAvatar(self, avatarId):
-        return True
-
     def receiveOpenTalk(self, senderAvId, avatarName, accountId, accountName, message, scrubbed = 0):
         error = None
         if not avatarName and senderAvId:

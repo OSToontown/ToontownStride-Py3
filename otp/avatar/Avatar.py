@@ -67,7 +67,6 @@ class Avatar(Actor, ShadowCaster):
         self.battleTubeHeight = 0.0
         self.battleTubeRadius = 0.0
         self.style = None
-        self.commonChatFlags = 0
         self.understandable = 1
         self.setPlayerType(NametagGlobals.CCNormal)
         self.ghostMode = 0
@@ -81,7 +80,6 @@ class Avatar(Actor, ShadowCaster):
         self.__chatLocal = 0
         self.__chatQuitButton = False
         self.__currentDialogue = None
-        self.whitelistChatFlags = 0
 
     def delete(self):
         try:
@@ -127,50 +125,34 @@ class Avatar(Actor, ShadowCaster):
             chatColor = NametagGlobals.ChatColors[self.playerType]
             self.nametag.setChatColor(chatColor)
         else:
-            nametagColor = NametagGlobals.NametagColors[NametagGlobals.CCNoChat]
+            nametagColor = NametagGlobals.NametagColors[NametagGlobals.CCNonPlayer]
             self.nametag.setNametagColor(nametagColor)
-            chatColor = NametagGlobals.ChatColors[NametagGlobals.CCNoChat]
+            chatColor = NametagGlobals.ChatColors[NametagGlobals.CCNonPlayer]
             self.nametag.setChatColor(chatColor)
         self.nametag.updateAll()
 
-    def setCommonChatFlags(self, commonChatFlags):
-        self.commonChatFlags = commonChatFlags
-        self.considerUnderstandable()
-        if self == base.localAvatar:
-            reconsiderAllUnderstandable()
-
-    def setWhitelistChatFlags(self, whitelistChatFlags):
-        self.whitelistChatFlags = whitelistChatFlags
-        self.considerUnderstandable()
-        if self == base.localAvatar:
-            reconsiderAllUnderstandable()
-
     def considerUnderstandable(self):
-        if self.playerType in (NametagGlobals.CCNormal, NametagGlobals.CCFreeChat, NametagGlobals.CCSpeedChat):
+        if self.playerType in (NametagGlobals.CCNormal, NametagGlobals.CCSpeedChat):
             self.setPlayerType(NametagGlobals.CCSpeedChat)
         if hasattr(base, 'localAvatar') and (self == base.localAvatar):
             self.understandable = 1
-            self.setPlayerType(NametagGlobals.CCFreeChat)
+            self.setPlayerType(NametagGlobals.CCNormal)
         elif self.playerType == NametagGlobals.CCSuit:
             self.understandable = 1
             self.setPlayerType(NametagGlobals.CCSuit)
-        elif self.playerType not in (NametagGlobals.CCNormal, NametagGlobals.CCFreeChat, NametagGlobals.CCSpeedChat):
+        elif self.playerType not in (NametagGlobals.CCNormal, NametagGlobals.CCSpeedChat):
             self.understandable = 1
-            self.setPlayerType(NametagGlobals.CCNoChat)
-        elif hasattr(base, 'localAvatar') and self.commonChatFlags & base.localAvatar.commonChatFlags & OTPGlobals.CommonChat:
+            self.setPlayerType(NametagGlobals.CCNonPlayer)
+        elif False and hasattr(self, 'adminAccess') and self.adminAccess >= CATEGORY_COMMUNITY_MANAGER:
+            print 'admin'
             self.understandable = 1
-            self.setPlayerType(NametagGlobals.CCFreeChat)
-        elif self.commonChatFlags & OTPGlobals.SuperChat:
+            self.setPlayerType(NametagGlobals.CCNormal)
+        elif settings['trueFriends'] and base.cr.getFriendFlags(self.doId) & OTPGlobals.FriendChat:
             self.understandable = 1
-            self.setPlayerType(NametagGlobals.CCFreeChat)
-        elif hasattr(base, 'localAvatar') and base.localAvatar.commonChatFlags & OTPGlobals.SuperChat:
+            self.setPlayerType(NametagGlobals.CCNormal)
+        elif settings['speedchatPlus']:
             self.understandable = 1
-            self.setPlayerType(NametagGlobals.CCFreeChat)
-        elif base.cr.getFriendFlags(self.doId) & OTPGlobals.FriendChat:
-            self.understandable = 1
-            self.setPlayerType(NametagGlobals.CCFreeChat)
-        elif hasattr(base, 'localAvatar') and self.whitelistChatFlags & base.localAvatar.whitelistChatFlags:
-            self.understandable = 1
+            self.setPlayerType(NametagGlobals.CCSpeedChat)
         else:
             self.understandable = 0
         if not hasattr(self, 'nametag'):

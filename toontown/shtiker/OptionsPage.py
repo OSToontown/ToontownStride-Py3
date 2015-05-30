@@ -6,6 +6,7 @@ from pandac.PandaModules import *
 
 import DisplaySettingsDialog
 import ShtikerPage
+from otp.avatar import Avatar
 from otp.speedchat import SCColorScheme
 from otp.speedchat import SCStaticTextTerminal
 from otp.speedchat import SpeedChat
@@ -762,9 +763,31 @@ class ExtraOptionsTabPage(DirectFrame):
         self.settingsChanged = 1
         self.__setCogLevelGuiButton()
 
+    def __doToggleSpeedchatPlus(self):
+        messenger.send('wakeup')
+        settings['speedchatPlus'] = not settings['speedchatPlus']
+        Avatar.reconsiderAllUnderstandable()
+        self.settingsChanged = 1
+        self.__setSpeedchatPlusButton()
+        
     def __setCogLevelGuiButton(self):
         self.cogLevel_label['text'] = TTLocalizer.CogLevelLabelOn if settings['cogLevel'] else TTLocalizer.CogLevelLabelOff
         self.cogLevel_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff if settings['cogLevel'] else TTLocalizer.OptionsPageToggleOn
+
+    def __setSpeedchatPlusButton(self):
+        self.speedchatPlus_label['text'] = TTLocalizer.SpeedchatPlusLabelOn if settings['speedchatPlus'] else TTLocalizer.SpeedchatPlusLabelOff
+        self.speedchatPlus_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff if settings['speedchatPlus'] else TTLocalizer.OptionsPageToggleOn
+    
+    def __doToggleTrueFriends(self):
+        messenger.send('wakeup')
+        settings['trueFriends'] = not settings['trueFriends']
+        Avatar.reconsiderAllUnderstandable()
+        self.settingsChanged = 1
+        self.__setTrueFriendsButton()
+
+    def __setTrueFriendsButton(self):
+        self.trueFriends_label['text'] = TTLocalizer.TrueFriendsLabelOn if settings['trueFriends'] else TTLocalizer.TrueFriendsLabelOff
+        self.trueFriends_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff if settings['trueFriends'] else TTLocalizer.OptionsPageToggleOn
 
     def showReportNotice(self):
         self.dialog = TTDialog.TTDialog(style=TTDialog.YesNo, text=TTLocalizer.BugReportNotice, command=self.confirmBugReport)

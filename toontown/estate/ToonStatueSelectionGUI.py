@@ -112,7 +112,7 @@ class ToonStatueSelectionGUI(DirectFrame):
                 if hasattr(handle, 'getName'):
                     colorCode = NametagGlobals.CCSpeedChat
                     if flags & ToontownGlobals.FriendChat:
-                        colorCode = NametagGlobals.CCFreeChat
+                        colorCode = NametagGlobals.CCNormal
                     newFF = (friendPair[0], handle.getName(), colorCode)
                     self.ffList.append(newFF)
                 else:

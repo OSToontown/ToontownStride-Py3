@@ -71,12 +71,6 @@ class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.Pl
     def d_setSystemMessage(self, aboutId, chatString):
         self.sendUpdate('setSystemMessage', [aboutId, chatString])
 
-    def d_setCommonChatFlags(self, flags):
-        self.sendUpdate('setCommonChatFlags', [flags])
-
-    def setCommonChatFlags(self, flags):
-        pass
-
     def d_friendsNotify(self, avId, status):
         self.sendUpdate('friendsNotify', [avId, status])
 

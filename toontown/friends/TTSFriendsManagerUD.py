@@ -248,8 +248,7 @@ class TTSFriendsManagerUD(DistributedObjectGlobalUD):
             dnaString =  fields['setDNAString'][0]
             experience = fields['setExperience'][0]
             trackBonusLevel = fields['setTrackBonusLevel'][0]
-            # We need an actual way to send the fields to the client...............
-            # Inventory, trackAccess, trophies, Hp, maxHp, defaultshard, lastHood, dnastring
+
             self.sendUpdateToAvatarId(senderId, 'friendDetails', [avId, inventory, trackAccess, trophies, hp, maxHp, defaultShard, lastHood, dnaString, experience, trackBonusLevel])
         self.air.dbInterface.queryObject(self.air.dbId, avId, handleToon)
     
@@ -287,8 +286,8 @@ class TTSFriendsManagerUD(DistributedObjectGlobalUD):
         for friend in friendsList:
             friendId = friend[0]
             if friend[0] in self.onlineToons:
-                self.sendUpdateToAvatarId(doId, 'friendOnline', [friendId, 0, 0])
-            self.sendUpdateToAvatarId(friendId, 'friendOnline', [doId, 0, 0])
+                self.sendUpdateToAvatarId(doId, 'friendOnline', [friendId])
+            self.sendUpdateToAvatarId(friendId, 'friendOnline', [doId])
 
     def goingOffline(self, avId):
         self.toonOffline(avId)

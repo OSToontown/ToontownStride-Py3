@@ -94,7 +94,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.friendsOnline = {}
         self.friendsMapPending = 0
         self.friendsListError = 0
-        self.friendPendingChatSettings = {}
         self.elderFriendsMap = {}
         self.__queryAvatarMap = {}
         self.hoodMgr = HoodMgr.HoodMgr(self)
@@ -762,9 +761,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             self.friendsMap[doId] = handle
             if doId in self.friendsOnline:
                 self.friendsOnline[doId] = handle
-            if doId in self.friendPendingChatSettings:
-                self.notify.debug('calling setCommonAndWL %s' % str(self.friendPendingChatSettings[doId]))
-                handle.setCommonAndWhitelistChatFlags(*self.friendPendingChatSettings[doId])
 
         if base.wantPets and base.localAvatar.hasPet():
 
@@ -798,13 +794,11 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         if avatarHandleList:
             messenger.send('gotExtraFriendHandles', [avatarHandleList])
 
-    def handleFriendOnline(self, doId, commonChatFlags, whitelistChatFlags):
-        self.notify.debug('Friend %d now online. common=%d whitelist=%d' % (doId, commonChatFlags, whitelistChatFlags))
+    def handleFriendOnline(self, doId):
+        self.notify.debug('Friend %d now online.' % doId)
         if doId not in self.friendsOnline:
             self.friendsOnline[doId] = self.identifyFriend(doId)
-            messenger.send('friendOnline', [doId, commonChatFlags, whitelistChatFlags])
-            if not self.friendsOnline[doId]:
-                self.friendPendingChatSettings[doId] = (commonChatFlags, whitelistChatFlags)
+            messenger.send('friendOnline', [doId])
 
     def handleFriendOffline(self, doId):
         self.notify.debug('Friend %d now offline.' % doId)

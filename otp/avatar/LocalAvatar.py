@@ -54,7 +54,6 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         self.customMessages = []
         self.chatMgr = chatMgr
         base.talkAssistant = talkAssistant
-        self.commonChatFlags = 0
         self.garbleChat = 1
         self.teleportAllowed = 1
         self.lockedDown = 0
@@ -1128,10 +1127,8 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         self.ccPusherTrav.traverse(n)
         return
 
-    def __friendOnline(self, doId, commonChatFlags = 0, whitelistChatFlags = 0):
+    def __friendOnline(self, doId):
         friend = base.cr.identifyFriend(doId)
-        if friend != None and hasattr(friend, 'setCommonAndWhitelistChatFlags'):
-            friend.setCommonAndWhitelistChatFlags(commonChatFlags, whitelistChatFlags)
         if self.oldFriendsList != None:
             now = globalClock.getFrameTime()
             elapsed = now - self.timeFriendsListChanged

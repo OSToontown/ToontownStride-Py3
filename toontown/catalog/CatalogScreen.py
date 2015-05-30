@@ -1024,7 +1024,7 @@ class CatalogScreen(DirectFrame):
 
     def __makeFFlist(self):
         for id, handle in base.cr.friendsMap.items():
-            self.ffList.append((id, handle.getName(), NametagGlobals.CCFreeChat))
+            self.ffList.append((id, handle.getName(), NametagGlobals.getFriendColor(id)))
 
     def __makeScrollList(self):
         for ff in self.ffList:

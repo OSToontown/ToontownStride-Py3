@@ -19,7 +19,6 @@ AICollMovePriority = 8
 MaxFriends = 200
 MaxBackCatalog = 48
 FriendChat = 1
-CommonChat = 1
 SuperChat = 2
 MaxCustomMessages = 25
 SPInvalid = 0

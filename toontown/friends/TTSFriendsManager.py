@@ -18,8 +18,8 @@ class TTSFriendsManager(DistributedObjectGlobal):
     def friendList(self, resp):
         base.cr.handleGetFriendsList(resp)
 
-    def friendOnline(self, id, commonChatFlags, whitelistChatFlags):
-        base.cr.handleFriendOnline(id, commonChatFlags, whitelistChatFlags)
+    def friendOnline(self, id):
+        base.cr.handleFriendOnline(id)
 
     def friendOffline(self, id):
         base.cr.handleFriendOffline(id)
