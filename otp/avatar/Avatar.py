@@ -152,6 +152,7 @@ class Avatar(Actor, ShadowCaster):
             self.setPlayerType(NametagGlobals.CCSpeedChat)
         else:
             self.understandable = 0
+            self.setPlayerType(NametagGlobals.CCSpeedChat)
         if not hasattr(self, 'nametag'):
             self.notify.warning('no nametag attributed, but would have been used')
         else:
