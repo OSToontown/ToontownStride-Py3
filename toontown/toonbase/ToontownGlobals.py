@@ -208,7 +208,7 @@ MyEstate = 16000
 GolfZone = 17000
 PartyHood = 18000
 HoodsAlwaysVisited = [17000, 18000]
-DynamicZonesBegin = 22000
+DynamicZonesBegin = 22001
 DynamicZonesEnd = 1 << 20
 cogDept2index = {'c': 0,
  'l': 1,
