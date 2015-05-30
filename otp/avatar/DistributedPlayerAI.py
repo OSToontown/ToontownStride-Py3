@@ -64,16 +64,6 @@ class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.Pl
     def decrementPopulation(self):
         simbase.air.decrementPopulation()
 
-    def b_setChat(self, chatString, chatFlags):
-        self.setChat(chatString, chatFlags)
-        self.d_setChat(chatString, chatFlags)
-
-    def d_setChat(self, chatString, chatFlags):
-        self.sendUpdate('setChat', [chatString, chatFlags])
-
-    def setChat(self, chatString, chatFlags):
-        pass
-
     def d_setMaxHp(self, maxHp):
         DistributedAvatarAI.DistributedAvatarAI.d_setMaxHp(self, maxHp)
         self.air.writeServerEvent('setMaxHp', self.doId, '%s' % maxHp)

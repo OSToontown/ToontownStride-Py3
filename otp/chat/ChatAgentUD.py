@@ -39,7 +39,7 @@ class ChatAgentUD(DistributedObjectGlobalUD):
         else:
             cleanMessage, modifications = message, []
         self.air.writeServerEvent('chat-said', avId=sender, chatMode=chatMode, msg=message, cleanMsg=cleanMessage)
-
+        
         # TODO: The above is probably a little too ugly for my taste... Maybe AIR
         # should be given an API for sending updates for unknown objects?
         if chatMode != 0:

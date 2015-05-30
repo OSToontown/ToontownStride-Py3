@@ -188,23 +188,6 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
         if not quiet:
             pass
 
-    def b_setChat(self, chatString, chatFlags):
-        if self.cr.wantMagicWords and len(chatString) > 0 and chatString[0] == '~':
-            messenger.send('magicWord', [chatString])
-        else:
-            if base.config.GetBool('want-chatfilter-hacks', 0):
-                if base.config.GetBool('want-chatfilter-drop-offending', 0):
-                    if badwordpy.test(chatString):
-                        return
-                else:
-                    chatString = badwordpy.scrub(chatString)
-            messenger.send('wakeup')
-            self.setChatAbsolute(chatString, chatFlags)
-            self.d_setChat(chatString, chatFlags)
-
-    def d_setChat(self, chatString, chatFlags):
-        self.sendUpdate('setChat', [chatString, chatFlags, 0])
-
     def setTalk(self, fromAV, fromAC, avatarName, chat, mods, flags):
         if not base.cr.verifyMessage(chat):
             return
@@ -234,20 +217,6 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
 
     def scrubTalk(self, chat, mods):
         return chat
-
-    def setChat(self, chatString, chatFlags, DISLid):
-        self.notify.error('Should call setTalk')
-        chatString = base.talkAssistant.whiteListFilterMessage(chatString)
-        if base.localAvatar.isIgnored(self.doId):
-            return
-        if base.localAvatar.garbleChat and not self.isUnderstandable():
-            chatString = self.chatGarbler.garble(self, chatString)
-        chatFlags &= ~(CFQuicktalker | CFPageButton | CFQuitButton)
-        if chatFlags & CFThought:
-            chatFlags &= ~(CFSpeech | CFTimeout)
-        else:
-            chatFlags |= CFSpeech | CFTimeout
-        self.setChatAbsolute(chatString, chatFlags)
 
     def b_setSC(self, msgIndex):
         self.setSC(msgIndex)
