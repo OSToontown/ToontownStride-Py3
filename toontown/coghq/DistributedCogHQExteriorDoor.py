@@ -16,6 +16,7 @@ class DistributedCogHQExteriorDoor(DistributedCogHQDoor.DistributedCogHQDoor):
     def selectLobby(self, avId):
         print("********\nCreating Lobby GUI...\n********")
         self.lobbyGui = BossLobbyGui(self.sendConfirmation, avId)
+        self.lobbyGui.loadFrame(0)
 
     def sendConfirmation(self, avId, status):
         self.lobbyGui.destroy()
