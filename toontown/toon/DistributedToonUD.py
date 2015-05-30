@@ -67,16 +67,10 @@ class DistributedToonUD(DistributedObjectUD):
     def setDefaultZone(self, todo0):
         pass
 
-    def setShtickerBook(self, todo0):
-        pass
-
     def setZonesVisited(self, todo0):
         pass
 
     def setHoodsVisited(self, todo0):
-        pass
-
-    def setInterface(self, todo0):
         pass
 
     def setLastHood(self, todo0):
@@ -284,9 +278,6 @@ class DistributedToonUD(DistributedObjectUD):
         pass
 
     def setGhostMode(self, todo0):
-        pass
-
-    def setPosIndex(self, todo0):
         pass
 
     def setFishCollection(self, todo0, todo1, todo2):

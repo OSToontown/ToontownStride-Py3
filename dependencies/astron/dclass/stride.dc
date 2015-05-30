@@ -183,8 +183,6 @@ dclass DistributedPlayer : DistributedAvatar {
   OwningAccount(DoId);
   WishName(string = "") db ram;
   WishNameState(string = "OPEN") db ram;
-  setPreviousAccess(uint8 = 0) required db airecv;
-  setAccess(uint8 = 2) broadcast ownrecv required ram airecv;
   setAdminAccess(uint16 = 0) broadcast ownrecv required airecv;
   setAsGM(bool = 0) required ram broadcast ownrecv airecv;
 };
@@ -673,10 +671,8 @@ dclass DistributedToon : DistributedPlayer {
   setNPCFriendsDict(FriendEntry[] = []) required ownrecv db;
   setDefaultShard(uint32 = 0) required ownrecv broadcast db;
   setDefaultZone(uint32 = 0) required ownrecv broadcast db;
-  setShtickerBook(blob = []) required ownrecv db;
   setZonesVisited(uint32[] = [ 2000 ]) required ownrecv db;
   setHoodsVisited(uint32[] = [ 2000 ]) required ownrecv db;
-  setInterface(blob = []) required ownrecv db;
   setLastHood(uint32 = 0) required ownrecv broadcast db;
   setTutorialAck(uint8) required ownrecv db;
   setMaxClothes(uint32 = 10) required ownrecv db;
@@ -747,7 +743,6 @@ dclass DistributedToon : DistributedPlayer {
   requestDeleteQuest(uint32[]) ownsend airecv;
   setCheesyEffect(int16 = 0, uint32 = 0, uint32 = 0) required broadcast ownrecv db;
   setGhostMode(uint8) broadcast ownrecv ram;
-  setPosIndex(uint8 = 0) required ownrecv db;
   setFishCollection(uint8[] = [], uint8[] = [], uint16[] = []) required ownrecv db;
   setMaxFishTank(uint8 = 20) required ownrecv db;
   setFishTank(uint8[] = [], uint8[] = [], uint16[] = []) required ownrecv db;

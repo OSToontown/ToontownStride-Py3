@@ -101,7 +101,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.bankMoney = 0
         self.gardenSpecials = []
         self.houseId = 0
-        self.posIndex = 0
         self.savedCheesyEffect = ToontownGlobals.CENormal
         self.savedCheesyHoodId = 0
         self.savedCheesyExpireTime = 0
@@ -498,12 +497,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def getDefaultZone(self):
         return self.defaultZone
-
-    def setShtickerBook(self, string):
-        self.notify.debug('setting shticker book to %s' % string)
-
-    def getShtickerBook(self):
-        return ''
 
     def d_setFriendsList(self, friendsList):
         self.sendUpdate('setFriendsList', [friendsList])
@@ -1030,12 +1023,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def d_setEarnedExperience(self, earnedExp):
         self.sendUpdate('setEarnedExperience', [earnedExp])
-
-    def setInterface(self, string):
-        self.notify.debug('setting interface to %s' % string)
-
-    def getInterface(self):
-        return ''
 
     def setZonesVisited(self, hoods):
         self.safeZonesVisited = hoods
@@ -2029,12 +2016,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def getHouseId(self):
         return self.houseId
-
-    def setPosIndex(self, index):
-        self.posIndex = index
-
-    def getPosIndex(self):
-        return self.posIndex
 
     def b_setCustomMessages(self, customMessages):
         self.d_setCustomMessages(customMessages)
@@ -4102,7 +4083,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.redeemedCodes.remove(code)
             self.b_setRedeemedCodes(self.redeemedCodes)
 
-
 @magicWord(category=CATEGORY_PROGRAMMER, types=[str, int, int])
 def cheesyEffect(value, hood=0, expire=0):
     """
@@ -4148,6 +4128,14 @@ def maxHp(maxHp):
     invoker.b_setMaxHp(maxHp)
     invoker.toonUp(maxHp - invoker.getHp())
     return 'Set your max HP to: %d' % maxHp
+
+@magicWord(category=CATEGORY_PROGRAMMER, types=[str])
+def textColor(color):
+    """
+    Modify the target's text color.
+    """
+    spellbook.getTarget().b_setTextColor(color)
+    return 'Set your color to: %s' % color
 
 @magicWord(category=CATEGORY_MODERATOR, types=[str])
 def allSummons():
@@ -4909,8 +4897,7 @@ def getZone():
 
 @magicWord(category=CATEGORY_PROGRAMMER)
 def getPos():
-    invoker = spellbook.getInvoker()
-    return 'Pos: %s, PosIndex: %s' % (invoker.getPos(), invoker.getPosIndex())
+    return 'Pos: %s' % spellbook.getInvoker().getPos()
 
 @magicWord(category=CATEGORY_MODERATOR, types=[int])
 def nametagStyle(nametagStyle):

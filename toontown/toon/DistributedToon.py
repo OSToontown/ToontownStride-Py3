@@ -144,7 +144,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.tunnelCenterOffset = 9.0
         self.tunnelCenterInfluence = 0.6
         self.pivotAngle = 90 + 45
-        self.posIndex = 0
         self.houseId = 0
         self.money = 0
         self.bankMoney = 0
@@ -415,9 +414,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             return
         self.defaultZone = zoneId
 
-    def setShtickerBook(self, string):
-        pass
-
     def setAsGM(self, state):
         self.notify.debug('Setting GM State: %s' % state)
         DistributedPlayer.DistributedPlayer.setAsGM(self, state)
@@ -687,9 +683,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
                   'avId': -1,
                   'battle': 1}])
         return
-
-    def setInterface(self, string):
-        pass
 
     def setZonesVisited(self, hoods):
         self.safeZonesVisited = hoods
@@ -1286,12 +1279,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def getHouseId(self):
         return self.houseId
-
-    def setPosIndex(self, index):
-        self.posIndex = index
-
-    def getPosIndex(self):
-        return self.posIndex
 
     def b_setSpeedChatStyleIndex(self, index):
         realIndexToSend = 0
