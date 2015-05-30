@@ -219,10 +219,6 @@ class HoodMgr(DirectObject.DirectObject):
             self.currentDropPoint = (self.currentDropPoint + 1) % len(dropPointList)
             return dropPointList[droppnt]
 
-    def getPhaseFromHood(self, hoodId):
-        hoodId = ZoneUtil.getCanonicalHoodId(hoodId)
-        return ToontownGlobals.phaseMap[hoodId]
-
     def getPlaygroundCenterFromId(self, hoodId):
         dropPointList = self.dropPoints.get(hoodId, None)
         if dropPointList:
