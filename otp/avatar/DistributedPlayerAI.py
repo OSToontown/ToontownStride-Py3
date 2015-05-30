@@ -16,7 +16,6 @@ class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.Pl
         PlayerBase.PlayerBase.__init__(self)
         ClsendTracker.__init__(self)
         self.friendsList = []
-        self.DISLname = ''
         self.DISLid = 0
         self.adminAccess = 0
 
@@ -76,12 +75,6 @@ class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.Pl
 
     def friendsNotify(self, avId, status):
         pass
-
-    def setAccountName(self, accountName):
-        self.accountName = accountName
-
-    def getAccountName(self):
-        return self.accountName
 
     def setDISLid(self, id):
         self.DISLid = id

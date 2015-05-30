@@ -151,10 +151,7 @@ class DatabaseObject:
     def fillin(self, do, dclass):
         do.doId = self.doId
         for field, value in self.values.items():
-            if field == 'setZonesVisited' and value.getLength() == 1:
-                self.notify.warning('Ignoring broken setZonesVisited')
-            else:
-                dclass.directUpdate(do, field, value)
+            dclass.directUpdate(do, field, value)
 
     def reload(self, do, dclass, fields):
         self.doId = do.doId

@@ -1024,13 +1024,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def d_setEarnedExperience(self, earnedExp):
         self.sendUpdate('setEarnedExperience', [earnedExp])
 
-    def setZonesVisited(self, hoods):
-        self.safeZonesVisited = hoods
-        self.notify.debug('setting safe zone list to %s' % self.safeZonesVisited)
-
-    def getZonesVisited(self):
-        return self.safeZonesVisited
-
     def setHoodsVisited(self, hoods):
         self.hoodsVisited = hoods
         self.notify.debug('setting hood zone list to %s' % self.hoodsVisited)

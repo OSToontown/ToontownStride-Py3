@@ -89,7 +89,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.trophyScore = 0
         self.trophyStar = None
         self.trophyStarSpeed = 0
-        self.safeZonesVisited = []
         self.NPCFriendsDict = {}
         self.earnedExperience = None
         self.track = None
@@ -230,7 +229,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             self.DistributedToon_deleted
         except:
             self.DistributedToon_deleted = 1
-            del self.safeZonesVisited
             DistributedPlayer.DistributedPlayer.delete(self)
             Toon.Toon.delete(self)
             DistributedSmoothNode.DistributedSmoothNode.delete(self)
@@ -660,9 +658,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
                   'avId': -1,
                   'battle': 1}])
         return
-
-    def setZonesVisited(self, hoods):
-        self.safeZonesVisited = hoods
 
     def setHoodsVisited(self, hoods):
         self.hoodsVisited = hoods

@@ -144,7 +144,6 @@ struct FriendEntry {
 
 dclass DistributedPlayer : DistributedAvatar {
   arrivedOnDistrict(DoId districtId) ownrecv ram;
-  setAccountName(string name = "") required ownrecv db;
   setWhisperSCFrom(DoId fromAv, uint16 msgIndex) ownrecv clsend;
   setWhisperSCCustomFrom(DoId fromAv, uint16 msgIndex) ownrecv clsend;
   setWhisperSCEmoteFrom(DoId fromAv, uint16 emoteId) ownrecv clsend;
@@ -152,9 +151,7 @@ dclass DistributedPlayer : DistributedAvatar {
   setSC(uint16 msgIndex) broadcast ownsend airecv;
   setSCCustom(uint16 msgIndex) broadcast ownsend airecv;
   setFriendsList(FriendEntry[] = []) ownrecv required db airecv;
-  setDISLname(string) broadcast ownrecv ram;
   setDISLid(uint32 = 0) broadcast ownrecv ram db airecv required;
-  OwningAccount(DoId);
   WishName(string = "") db ram;
   WishNameState(string = "OPEN") db ram;
   setAdminAccess(uint16 = 0) broadcast ownrecv required airecv;
@@ -644,7 +641,6 @@ dclass DistributedToon : DistributedPlayer {
   setNPCFriendsDict(FriendEntry[] = []) required ownrecv db;
   setDefaultShard(uint32 = 0) required ownrecv broadcast db;
   setDefaultZone(uint32 = 0) required ownrecv broadcast db;
-  setZonesVisited(uint32[] = [ 2000 ]) required ownrecv db;
   setHoodsVisited(uint32[] = [ 2000 ]) required ownrecv db;
   setLastHood(uint32 = 0) required ownrecv broadcast db;
   setTutorialAck(uint8) required ownrecv db;
@@ -797,7 +793,6 @@ dclass DistributedToon : DistributedPlayer {
   setPartyStatus(uint64, uint8) ownrecv airecv;
   announcePartyStarted(uint64) ownrecv;
   setNeverStartedPartyRefunded(uint64, int8, uint16) ownrecv;
-  setDISLname(string) ram;
   setDISLid(uint32) ram db airecv;
   setAnimalSound(uint8 index) ram broadcast ownrecv;
   setBuffs(uint32[] = []) required ownrecv db;

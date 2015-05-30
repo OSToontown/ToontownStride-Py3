@@ -34,7 +34,6 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
             self.timeFriendsListChanged = None
             self.lastFailedTeleportMessage = {}
             self._districtWeAreGeneratedOn = None
-            self.DISLname = ''
             self.DISLid = 0
             self.adminAccess = 0
             self.autoRun = 0
@@ -119,9 +118,6 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
     def hasParentingRules(self):
         if self is localAvatar:
             return True
-
-    def setAccountName(self, accountName):
-        self.accountName = accountName
 
     def setSystemMessage(self, aboutId, chatString, whisperType = WTSystem):
         self.displayWhisper(aboutId, chatString, whisperType)
@@ -356,9 +352,6 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
         self.timeFriendsListChanged = globalClock.getFrameTime()
         messenger.send('friendsListChanged')
         Avatar.reconsiderAllUnderstandable()
-
-    def setDISLname(self, name):
-        self.DISLname = name
 
     def setDISLid(self, id):
         self.DISLid = id

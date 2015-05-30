@@ -67,9 +67,6 @@ class DistributedToonUD(DistributedObjectUD):
     def setDefaultZone(self, todo0):
         pass
 
-    def setZonesVisited(self, todo0):
-        pass
-
     def setHoodsVisited(self, todo0):
         pass
 
@@ -521,9 +518,6 @@ class DistributedToonUD(DistributedObjectUD):
         pass
 
     def setNeverStartedPartyRefunded(self, todo0, todo1, todo2):
-        pass
-
-    def setDISLname(self, todo0):
         pass
 
     def setDISLid(self, todo0):

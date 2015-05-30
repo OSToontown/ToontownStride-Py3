@@ -189,12 +189,12 @@ class MapPage(ShtikerPage.ShtikerPage):
                 self.hoodLabel.hide()
         else:
             self.hoodLabel.hide()
-        safeZonesVisited = base.localAvatar.hoodsVisited
+        hoodsVisited = base.localAvatar.hoodsVisited
         hoodTeleportList = base.localAvatar.getTeleportAccess()
         for hood in self.allZones:
             label = self.labels[self.allZones.index(hood)]
             clouds = self.clouds[self.allZones.index(hood)]
-            if not self.book.safeMode and hood in safeZonesVisited:
+            if not self.book.safeMode and hood in hoodsVisited:
                 label['text_fg'] = (0, 0, 0, 1)
                 label.show()
                 for cloud in clouds:
