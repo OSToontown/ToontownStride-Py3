@@ -89,3 +89,6 @@ class DistributedPillow(DistributedObject):
 
     def gravityLow(self, entry):
         base.localAvatar.controlManager.currentControls.setGravity(ToontownGlobals.GravityValue * 1.25)
+
+    def gravityHigh(self, entry):
+        base.localAvatar.controlManager.currentControls.setGravity(ToontownGlobals.GravityValue * 2.00)
