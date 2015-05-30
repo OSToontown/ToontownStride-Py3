@@ -113,8 +113,8 @@ class DistributedLobbyManagerAI(DistributedObjectAI):
         for lobbyId in self.pubLobbyInfo:
             lobby = self.pubLobbyInfo[lobbyId]
             toons = lobby.get('numToons', 0)
-            if toons > 255:
-                toons = 255
+            if toons > 8:
+                toons = 8
             elif toons < 0:
                 toons = 0
             p.append([lobby['shardId'], lobby['zoneId'], toons, lobby.get('hostName', '')])
