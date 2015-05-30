@@ -26,7 +26,7 @@ class ColorShop(StateData.StateData):
 
         return colorList
 
-    def enter(self, toon):
+    def enter(self, toon, shopsVisited = []):
         base.disableMouse()
         self.toon = toon
         self.dna = toon.getStyle()

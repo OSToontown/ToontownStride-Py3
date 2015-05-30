@@ -30,13 +30,15 @@ ServerDialogTimeout = 3.0
 class NameShop(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('NameShop')
 
-    def __init__(self, makeAToon, doneEvent, avList, index):
+    def __init__(self, makeAToon, doneEvent, avList, index, isPaid):
         StateData.StateData.__init__(self, doneEvent)
         self.makeAToon = makeAToon
         self.avList = avList
         self.index = index
+        self.shopsVisited = []
         self.avId = -1
         self.avExists = 0
+        self.isPaid = isPaid
         self.names = ['',
          '',
          '',
@@ -531,6 +533,9 @@ class NameShop(StateData.StateData):
             return problem
         return None
 
+    def setShopsVisited(self, list):
+        self.shopsVisited = list
+
     def __handleDone(self):
         if self.fsm.getCurrentState().getName() == 'TypeAName':
             self.__typedAName()
@@ -887,7 +892,7 @@ class NameShop(StateData.StateData):
         self.newDNA = style.makeNetString()
         self.requestingSkipTutorial = skipTutorial
         if not self.avExists or self.avExists and self.avId == 'deleteMe':
-            base.cr.csm.sendCreateAvatar(style, self.thirdTrack, self.index)
+            base.cr.csm.sendCreateAvatar(style, '', self.index)
             self.accept('nameShopCreateAvatarDone', self.handleCreateAvatarResponse)
         else:
             self.checkNameTyped()

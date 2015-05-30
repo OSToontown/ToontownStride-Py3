@@ -7,8 +7,14 @@ from direct.gui.DirectGui import *
 from direct.interval.IntervalGlobal import *
 from direct.task import Task
 from pandac.PandaModules import *
-import random, BodyShop, ColorShop, GenderShop, MakeClothesGUI, TrackShop, NameShop
+import random
+
+import BodyShop
+import ColorShop
+import GenderShop
 from MakeAToonGlobals import *
+import MakeClothesGUI
+import NameShop
 from otp.avatar import Avatar
 from toontown.chat.ChatGlobals import *
 from toontown.distributed.ToontownMsgTypes import *
@@ -41,7 +47,6 @@ class MakeAToon(StateData.StateData):
         self.slide = 0
         self.nameList = []
         self.warp = 0
-        self.visitedGenderShop = 0
         for av in avList:
             if av.position == index:
                 self.warp = 1
@@ -52,9 +57,8 @@ class MakeAToon(StateData.StateData):
          State.State('GenderShop', self.enterGenderShop, self.exitGenderShop, ['BodyShop']),
          State.State('BodyShop', self.enterBodyShop, self.exitBodyShop, ['GenderShop', 'ColorShop']),
          State.State('ColorShop', self.enterColorShop, self.exitColorShop, ['BodyShop', 'ClothesShop']),
-         State.State('ClothesShop', self.enterClothesShop, self.exitClothesShop, ['ColorShop', 'TrackShop']),
-         State.State('TrackShop', self.enterTrackShop, self.exitTrackShop, ['ClothesShop', 'NameShop']),
-         State.State('NameShop', self.enterNameShop, self.exitNameShop, ['TrackShop']),
+         State.State('ClothesShop', self.enterClothesShop, self.exitClothesShop, ['ColorShop', 'NameShop']),
+         State.State('NameShop', self.enterNameShop, self.exitNameShop, ['ClothesShop']),
          State.State('Done', self.enterDone, self.exitDone, [])], 'Init', 'Done')
         self.parentFSM = parentFSM
         self.parentFSM.getStateNamed('createAvatar').addChild(self.fsm)
@@ -62,9 +66,16 @@ class MakeAToon(StateData.StateData):
         self.bs = BodyShop.BodyShop('BodyShop-done')
         self.cos = ColorShop.ColorShop('ColorShop-done')
         self.cls = MakeClothesGUI.MakeClothesGUI('ClothesShop-done')
-        self.ts = TrackShop.TrackShop('TrackShop-done')
-        self.ns = NameShop.NameShop(self, 'NameShop-done', avList, index)
+        self.ns = NameShop.NameShop(self, 'NameShop-done', avList, index, True)
         self.shop = GENDERSHOP
+        self.shopsVisited = []
+        if self.warp:
+            self.shopsVisited = [
+                GENDERSHOP,
+                BODYSHOP,
+                COLORSHOP,
+                CLOTHESSHOP,
+            ]
         self.music = None
         self.soundBack = None
         self.fsm.enterInitialState()
@@ -299,13 +310,11 @@ class MakeAToon(StateData.StateData):
         self.bs.unload()
         self.cos.unload()
         self.cls.unload()
-        self.ts.unload()
         self.ns.unload()
         del self.gs
         del self.bs
         del self.cos
         del self.cls
-        del self.ts
         del self.ns
         self.guiTopBar.destroy()
         self.guiBottomBar.destroy()
@@ -398,6 +407,7 @@ class MakeAToon(StateData.StateData):
 
     def __handleCancel(self):
         self.doneStatus = 'cancel'
+        self.shopsVisited = []
         base.transitions.fadeOut(finishIval=EventInterval(self.doneEvent))
 
     def toggleSlide(self):
@@ -411,8 +421,6 @@ class MakeAToon(StateData.StateData):
             self.fsm.request('ColorShop')
         elif self.shop == COLORSHOP:
             self.fsm.request('ClothesShop')
-        elif self.shop == CLOTHESSHOP:
-            self.fsm.request('TrackShop')
         else:
             self.fsm.request('NameShop')
 
@@ -424,10 +432,8 @@ class MakeAToon(StateData.StateData):
             self.fsm.request('BodyShop')
         elif self.shop == CLOTHESSHOP:
             self.fsm.request('ColorShop')
-        elif self.shop == TRACKSHOP:
+        else:
             self.fsm.request('ClothesShop')
-        elif self.shop == NAMESHOP:
-            self.fsm.request('TrackShop')
 
     def enterInit(self):
         pass
@@ -437,14 +443,14 @@ class MakeAToon(StateData.StateData):
 
     def enterGenderShop(self):
         self.shop = GENDERSHOP
-        if self.visitedGenderShop:
-            self.dropRoom(self.genderWalls, self.genderProps)
-        else:
+        if GENDERSHOP not in self.shopsVisited:
+            self.shopsVisited.append(GENDERSHOP)
             self.genderWalls.reparentTo(self.squishJoint)
             self.genderProps.reparentTo(self.propJoint)
             self.roomSquishActor.pose('squish', 0)
             self.guiNextButton['state'] = DGG.DISABLED
-        self.visitedGenderShop = True
+        else:
+            self.dropRoom(self.genderWalls, self.genderProps)
         self.guiTopBar['text'] = TTLocalizer.CreateYourToonTitle
         self.guiTopBar['text_fg'] = (1, 0.92, 0.2, 1)
         self.guiTopBar['text_scale'] = TTLocalizer.MATenterGenderShop
@@ -482,7 +488,9 @@ class MakeAToon(StateData.StateData):
         self.guiTopBar['text_scale'] = TTLocalizer.MATenterBodyShop
         self.accept('BodyShop-done', self.__handleBodyShopDone)
         self.dropRoom(self.bodyWalls, self.bodyProps)
-        self.bs.enter(self.toon)
+        self.bs.enter(self.toon, self.shopsVisited)
+        if BODYSHOP not in self.shopsVisited:
+            self.shopsVisited.append(BODYSHOP)
         self.bodyShopOpening()
 
     def exitBodyShop(self):
@@ -517,7 +525,9 @@ class MakeAToon(StateData.StateData):
         self.dropRoom(self.colorWalls, self.colorProps)
         self.toon.setPos(self.toonPosition)
         self.colorShopOpening()
-        self.cos.enter(self.toon)
+        self.cos.enter(self.toon, self.shopsVisited)
+        if COLORSHOP not in self.shopsVisited:
+            self.shopsVisited.append(COLORSHOP)
 
     def exitColorShop(self):
         self.squishRoom(self.colorWalls)
@@ -555,6 +565,8 @@ class MakeAToon(StateData.StateData):
             self.toon.setHpr(self.toonHpr)
         self.clothesShopOpening()
         self.cls.enter(self.toon)
+        if CLOTHESSHOP not in self.shopsVisited:
+            self.shopsVisited.append(CLOTHESSHOP)
 
     def exitClothesShop(self):
         self.squishRoom(self.clothesWalls)
@@ -571,50 +583,14 @@ class MakeAToon(StateData.StateData):
         else:
             self.cls.hideButtons()
             self.goToLastShop()
-    
-    def trackShopOpening(self):
-        self.guiNextButton.show()
-        self.guiLastButton.show()
-        self.ts.load()
-        self.ts.showButtons()
-
-    def enterTrackShop(self):
-        self.shop = TRACKSHOP
-        self.guiTopBar['text'] = TTLocalizer.PickTrackTitle
-        self.guiTopBar['text_fg'] = (0.607, 0.06, 0.117, 1)
-        self.guiTopBar['text_scale'] = TTLocalizer.MATenterTrackShop
-        self.accept('TrackShop-done', self.__handleTrackShopDone)
-        self.dropRoom(self.genderWalls, self.genderProps)
-        self.toon.setScale(self.toonScale)
-        self.spotlight.setPos(2, -1.95, 0.41)
-        self.toon.setPos(Point3(1.5, -4, 0))
-        self.toon.setH(120)
-        self.rotateLeftButton.hide()
-        self.rotateRightButton.hide()
-        self.trackShopOpening()
-        self.ts.enter()
-
-    def exitTrackShop(self):
-        self.squishRoom(self.genderWalls)
-        self.squishProp(self.genderProps)
-        self.ts.exit()
-        self.ignore('TrackShop-done')
-
-    def __handleTrackShopDone(self):
-        self.guiNextButton.hide()
-        self.guiLastButton.hide()
-        self.ts.hideButtons()
-        self.ns.thirdTrack = self.ts.index
-        if self.ts.doneStatus == 'next':
-            self.goToNextShop()
-        else:
-            self.goToLastShop()
 
     def nameShopOpening(self, task):
         self.guiCheckButton.show()
         self.guiLastButton.show()
         if self.warp:
             self.guiLastButton.hide()
+        if NAMESHOP not in self.shopsVisited:
+            self.shopsVisited.append(NAMESHOP)
         return Task.done
 
     def enterNameShop(self):
@@ -624,6 +600,11 @@ class MakeAToon(StateData.StateData):
         self.guiTopBar['text_scale'] = TTLocalizer.MATenterNameShop
         self.accept('NameShop-done', self.__handleNameShopDone)
         self.dropRoom(self.nameWalls, self.nameProps)
+        self.spotlight.setPos(2, -1.95, 0.41)
+        self.toon.setPos(Point3(1.5, -4, 0))
+        self.toon.setH(120)
+        self.rotateLeftButton.hide()
+        self.rotateRightButton.hide()
         if self.progressing:
             waittime = self.leftTime
         else:

@@ -6,6 +6,7 @@ OL.SpeedChatStaticText = OL.SpeedChatStaticTextToontown.copy()
 for key in OL.SpeedChatStaticTextCommon.iterkeys():
     OL.SpeedChatStaticText[key] = OL.SpeedChatStaticTextCommon[key]
 
+commitmantst = 'kptmptest - removable'
 InterfaceFont = 'phase_3/models/fonts/ImpressBT.ttf'
 ToonFont = 'phase_3/models/fonts/ImpressBT.ttf'
 SuitFont = 'phase_3/models/fonts/vtRemingtonPortable.ttf'
@@ -8346,8 +8347,6 @@ LanguageSelectorAvailable = 'Available languages:'
 LanguageSelectorBack = 'Back'
 LanguageSelectorConfirm = 'Are you sure you want to change your language to %s? This will close your game.'
 LanguageSelectorSameLanguage = "You're already using that language!"
-PickTrackTitle = 'Pick your third track!'
-PickTrackNotice = 'Choose a track!'
 CogLevelLabelOn = 'The cog level GUI is on.'
 CogLevelLabelOff = 'The cog level GUI is off.'
 
@@ -8391,10 +8390,6 @@ def getPetName(uniqueID):
     except:
         return PetNameDictionary[0]
 
-def getPropNameById(id):
-    if id == 0:
-        return MovieNPCSOSTo
-
 def getRandomPetName(gender = None, seed = None):
     if seed is not None:
         random.seed(seed)
@@ -8415,7 +8410,6 @@ def getPetNameId(name):
 
     return 0
 
-PropIdToName = [InventoryHealString, MovieNPCSOSTrap, MovieNPCSOSLure, MovieNPCSOSSound, MovieNPCSOSThrow, MovieNPCSOSSquirt, MovieNPCSOSDrop]
 DonaldChatter = ["I'm glad you're here today!",
  "You look like you're having fun.",
  "Oh boy, I'm having a good day.",
