@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 import CatalogItem
 import CatalogItemList
-from CatalogFurnitureItem import CatalogFurnitureItem, nextAvailableCloset, nextAvailableBank, getAllClosets, get50ItemCloset, getMaxClosets, get50ItemTrunk
+from CatalogFurnitureItem import CatalogFurnitureItem, nextAvailableCloset, nextAvailableBank, getAllClosets, get50ItemCloset, getMaxClosets, get50ItemTrunk, getAllBanks
 from CatalogAnimatedFurnitureItem import CatalogAnimatedFurnitureItem
 from CatalogClothingItem import CatalogClothingItem, getAllClothes
 from CatalogChatItem import CatalogChatItem, getChatRange
@@ -401,29 +401,7 @@ MonthlySchedule = ((7,
   15,
   8,
   15,
-  2010,
-  2010,
   ((4, 2940),)),
- (9,
-  1,
-  9,
-  30,
-  (CatalogGardenItem(135, 1),)),
- (1,
-  1,
-  1,
-  31,
-  (CatalogGardenItem(135, 1),)),
- (4,
-  1,
-  4,
-  30,
-  (CatalogGardenItem(135, 1),)),
- (6,
-  1,
-  6,
-  30,
-  (CatalogGardenItem(135, 1),)),
  (6,
   26,
   7,
@@ -482,22 +460,16 @@ MonthlySchedule = ((7,
   9,
   7,
   15,
-  2010,
-  2010,
   (CatalogClothingItem(1751, 0),)),
  (6,
   14,
   7,
   15,
-  2010,
-  2010,
   (CatalogClothingItem(1754, 0), CatalogClothingItem(1755, 0), CatalogClothingItem(1756, 0))),
  (7,
   21,
   8,
   17,
-  2010,
-  2010,
   (CatalogClothingItem(1749, 0),
    CatalogClothingItem(1750, 0),
    CatalogClothingItem(1757, 0),
@@ -506,8 +478,6 @@ MonthlySchedule = ((7,
   25,
   9,
   21,
-  2010,
-  2010,
   (CatalogClothingItem(1763, 0),)),
  (6,
   5,
@@ -528,6 +498,7 @@ MonthlySchedule = ((7,
    CatalogRentalItem(2, 2890, 1000),
    CatalogGardenStarterItem(),
    CatalogNametagItem(0),
+   CatalogFurnitureItem(1530),
    CatalogClothingItem(1605, 0, True),
    CatalogClothingItem(1602, 0, True),
    CatalogClothingItem(1604, 0, True),
@@ -549,15 +520,11 @@ MonthlySchedule = ((7,
   26,
   6,
   30,
-  2013,
-  2013,
   (CatalogAccessoryItem(175),)),
  (8,
   27,
   9,
   5,
-  2013,
-  2013,
   ((3, 2900),
    CatalogChatItem(10003),
    CatalogClothingItem(1001, 0),
@@ -607,8 +574,6 @@ MonthlySchedule = ((7,
   3,
   9,
   12,
-  2013,
-  2013,
   ((3, 2910),
    CatalogFurnitureItem(680),
    CatalogFurnitureItem(681),
@@ -643,8 +608,6 @@ MonthlySchedule = ((7,
   20,
   9,
   19,
-  2013,
-  2013,
   (CatalogAccessoryItem(101),
    CatalogAccessoryItem(103),
    CatalogAccessoryItem(117),
@@ -1517,12 +1480,9 @@ class CatalogGenerator:
 
     def __init__(self):
         self.__itemLists = {}
-        self.__releasedItemLists = {}
-
-    def getReleasedCatalogList(self, weekStart):
-        dayNumber = int(weekStart / (24 * 60))
-        itemLists = self.__getReleasedItemLists(dayNumber, weekStart)
-        return itemLists
+        
+        if config.GetBool('save-catalog-schedule', False):
+            self.outputSchedule('catalog-schedule.txt')
 
     def generateMonthlyCatalog(self, avatar, weekStart):
         dayNumber = int(weekStart / (24 * 60))
@@ -1560,7 +1520,7 @@ class CatalogGenerator:
                 weeklyCatalog += self.__selectItem(avatar, nextAvailableTank, monthlyCatalog, saleItem=0)
             
             weeklyCatalog += self.__selectItem(avatar, get50ItemTrunk, monthlyCatalog, saleItem=0)
-        if time.time() < 1096617600.0:
+        if True:
 
             def hasPetTrick(catalog):
                 for item in catalog:
@@ -1570,7 +1530,6 @@ class CatalogGenerator:
                 return 0
 
             if not hasPetTrick(weeklyCatalog) and not hasPetTrick(avatar.weeklyCatalog) and not hasPetTrick(avatar.backCatalog):
-                self.notify.debug('Artificially adding pet trick to catalog')
                 weeklyCatalog += self.__selectItem(avatar, 5000, monthlyCatalog, saleItem=saleItem)
         self.notify.debug('Generated catalog: %s' % weeklyCatalog)
         return weeklyCatalog
@@ -1600,45 +1559,12 @@ class CatalogGenerator:
 
         return backCatalog
 
-    def __getReleasedItemLists(self, dayNumber, weekStart):
-        itemLists = self.__releasedItemLists.get(dayNumber)
-        if itemLists != None:
-            return itemLists
-        else:
-            self.__releasedItemLists.clear()
-        testDaysAhead = config.GetInt('test-server-holiday-days-ahead', 0)
-        nowtuple = time.localtime(weekStart * 60 + testDaysAhead * 24 * 60 * 60)
-        year = nowtuple[0]
-        month = nowtuple[1]
-        day = nowtuple[2]
-        itemLists = []
-        for monthlyItems in MonthlySchedule:
-            startMM = monthlyItems[0]
-            startDD = monthlyItems[1]
-            endMM = monthlyItems[2]
-            endDD = monthlyItems[3]
-            if len(monthlyItems) == 7:
-                startYYYY = monthlyItems[4]
-                endYYYY = monthlyItems[5]
-                list = monthlyItems[6]
-            else:
-                startYYYY = 1969
-                endYYYY = year
-                list = monthlyItems[4]
-            pastStart = year > startYYYY or (year == startYYYY and (month > startMM or (month == startMM and day >= startDD)))
-            if pastStart:
-                itemLists.append(list)
-
-        self.__releasedItemLists[dayNumber] = itemLists
-        return itemLists
-
     def __getMonthlyItemLists(self, dayNumber, weekStart):
         itemLists = self.__itemLists.get(dayNumber)
         if itemLists != None:
             return itemLists
         testDaysAhead = config.GetInt('test-server-holiday-days-ahead', 0)
         nowtuple = time.localtime(weekStart * 60 + testDaysAhead * 24 * 60 * 60)
-        year = nowtuple[0]
         month = nowtuple[1]
         day = nowtuple[2]
         self.notify.debug('Generating seasonal itemLists for %s/%s.' % (month, day))
@@ -1648,16 +1574,9 @@ class CatalogGenerator:
             startDD = monthlyItems[1]
             endMM = monthlyItems[2]
             endDD = monthlyItems[3]
-            if len(monthlyItems) == 7:
-                startYYYY = monthlyItems[4]
-                endYYYY = monthlyItems[5]
-                list = monthlyItems[6]
-            else:
-                startYYYY = 1969
-                endYYYY = year
-                list = monthlyItems[4]
-            pastStart = year >= startYYYY and (month > startMM or (month == startMM and day >= startDD))
-            beforeEnd = year <= endYYYY and (month < endMM or (month == endMM and day <= endDD))
+            list = monthlyItems[4]
+            pastStart = month > startMM or (month == startMM and day >= startDD)
+            beforeEnd = month < endMM or (month == endMM and day <= endDD)
             if endMM < startMM:
                 if pastStart or beforeEnd:
                     itemLists.append(list)
@@ -1788,33 +1707,35 @@ class CatalogGenerator:
     def __recordSchedule(self, sched, weekCode, schedule):
         if isinstance(schedule, Sale):
             schedule = schedule.args
-        for item in schedule:
-            if callable(item):
-                if item == nextAvailablePole:
-                    item = getAllPoles()
-                elif item == nextAvailableCloset:
-                    item = getAllClosets()
-                elif item == nextAvailableBank:
-                    item = getAllBanks()
-                elif item == nextAvailableTank:
-                    item = getAllTanks()
-                elif item == get50ItemCloset:
-                    item = getMaxClosets()
-                elif item == get50ItemTrunk:
-                    item = getMaxTrunks()
-                else:
-                    self.notify.warning("Don't know how to interpret function " % repr(name))
-                    item = None
-            elif isinstance(item, types.TupleType):
-                item = item[1]
-            if isinstance(item, types.IntType):
-                item = MetaItems[item]
-            if isinstance(item, CatalogItem.CatalogItem):
-                self.__recordScheduleItem(sched, weekCode, None, item)
-            elif item != None:
-                for i in item:
-                    self.__recordScheduleItem(sched, None, weekCode, i)
-
+        try:
+            for item in list(schedule):
+                if callable(item):
+                    if item == nextAvailablePole:
+                        item = getAllPoles()
+                    elif item == nextAvailableCloset:
+                        item = getAllClosets()
+                    elif item == nextAvailableBank:
+                        item = getAllBanks()
+                    elif item == nextAvailableTank:
+                        item = getAllTanks()
+                    elif item == get50ItemCloset:
+                        item = getMaxClosets()
+                    elif item == get50ItemTrunk:
+                        item = getMaxTrunks()
+                    else:
+                        self.notify.warning("Don't know how to interpret function " % repr(name))
+                        item = None
+                elif isinstance(item, types.TupleType):
+                    item = item[1]
+                if isinstance(item, types.IntType):
+                    item = MetaItems[item]
+                if isinstance(item, CatalogItem.CatalogItem):
+                    self.__recordScheduleItem(sched, weekCode, None, item)
+                elif item != None:
+                    for i in item:
+                        self.__recordScheduleItem(sched, None, weekCode, i)
+        except:
+            print 'Wrong: %s' % schedule
         return
 
     def __recordScheduleItem(self, sched, weekCode, maybeWeekCode, item):

@@ -89,7 +89,7 @@ def nextAvailableTank(avatar, duplicateItems):
 
 def getAllTanks():
     list = []
-    for old, new in FishGlobals.NextTank:
-        list.append(CatalogPoleItem(new))
+    for old, new in FishGlobals.NextTank.iteritems():
+        list.append(CatalogTankItem(new))
 
     return list
