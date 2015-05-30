@@ -148,7 +148,7 @@ class Avatar(Actor, ShadowCaster):
             self.understandable = 1
             self.setPlayerType(NametagGlobals.CCNormal)
         elif settings['trueFriends'] and base.cr.getFriendFlags(self.doId) & OTPGlobals.FriendChat:
-            self.understandable = 1
+            self.understandable = 2
             self.setPlayerType(NametagGlobals.CCNormal)
         elif settings['speedchatPlus']:
             self.understandable = 1

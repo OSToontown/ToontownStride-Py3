@@ -19,7 +19,7 @@ class WhiteList:
         return i != self.numWords and self.words[i].startswith(text)
     
     def getReplacement(self, text, av=None, garbler=None):
-        return '\x01%s\x01%s\x02' % ('WLDisplay' if garbler else 'WLRed', text if not garbler else garbler.garble(av, text, 2))
+        return '\x01WLRed\x01%s\x02' % text if not garbler else garbler.garble(av, text)
 
     def processText(self, text, av=None, garbler=None):
         if (not self.words) or text.startswith('~'):
