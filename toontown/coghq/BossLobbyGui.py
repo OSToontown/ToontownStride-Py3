@@ -192,6 +192,7 @@ class BossLobbyGui(DirectFrame):
             self.friendsOnly = False
             self.laffLimit = False
             self.lobbyName = None
+            self.isCreating = False
             self.load()
 
         def destroy(self):
@@ -210,6 +211,24 @@ class BossLobbyGui(DirectFrame):
             if hasattr(self, 'nextButton') and self.nextButton:
                 self.nextButton.destroy()
                 del self.nextButton
+            if hasattr(self, 'nameLabel') and self.nameLabel:
+                self.nameLabel.destroy()
+                del self.nameLabel
+            if hasattr(self, 'nameEntry') and self.nameEntry:
+                self.nameEntry.destroy()
+                del self.nameEntry
+            if hasattr(self, 'friendLabel') and self.friendLabel:
+                self.friendLabel.destroy()
+                del self.friendLabel
+            if hasattr(self, 'friendCheckbox') and self.friendCheckbox:
+                self.friendCheckbox.destroy()
+                del self.friendCheckbox
+            if hasattr(self, 'laffLabel') and self.laffLabel:
+                self.laffLabel.destroy()
+                del self.laffLabel
+            if hasattr(self, 'laffCheckbox') and self.laffCheckbox:
+                self.laffCheckbox.destroy()
+                del self.laffCheckbox
             DirectFrame.destroy(self)
 
         def load(self):
