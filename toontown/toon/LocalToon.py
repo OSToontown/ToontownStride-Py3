@@ -427,11 +427,13 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.d_updateGMNameTag()
 
     def displayTalkWhisper(self, avId, chat):
-        # SKRUB PLZ
         sender = base.cr.identifyAvatar(avId)
 
         if not sender:
             return
+
+        if base.whiteList:
+            chat = base.whiteList.processThroughAll(chat, sender, self.chatGarbler)
 
         name = sender.getName()
         chatString = '%s: %s' % (name, chat)

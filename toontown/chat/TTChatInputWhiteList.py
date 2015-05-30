@@ -1,5 +1,4 @@
 from otp.chat.ChatInputWhiteListFrame import ChatInputWhiteListFrame
-from toontown.chat.TTWhiteList import TTWhiteList
 from direct.showbase import DirectObject
 from otp.otpbase import OTPGlobals
 import sys
@@ -32,8 +31,6 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
          'text': '',
          'sortOrder': DGG.FOREGROUND_SORT_INDEX}
         ChatInputWhiteListFrame.__init__(self, entryOptions, parent, **kw)
-        self.whiteList = TTWhiteList()
-        base.whiteList = self.whiteList
         base.ttwl = self
         self.autoOff = 1
         self.sendBy = 'Data'
@@ -92,7 +89,6 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
         ChatInputWhiteListFrame.destroy(self)
 
     def delete(self):
-        base.whiteList = None
         ChatInputWhiteListFrame.delete(self)
         return
 
@@ -155,34 +151,3 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
             self.whisperLabel.show()
         else:
             self.whisperLabel.hide()
-
-    def applyFilter(self, keyArgs, strict = False):
-        text = self.chatEntry.get(plain=True)
-
-        if not text.startswith('~'):
-            words = text.split(' ')
-            newwords = []
-            flag = 0
-            for friendId, flags in base.localAvatar.friendsList:
-                if flags & ToontownGlobals.FriendChat:
-                    flag = 1
-
-            for word in words:
-                if word == '' or self.whiteList.isWord(word) or not settings['speedchatPlus']:
-                    newwords.append(word)
-                else:
-                    if flag:
-                        newwords.append('\x01WLDisplay\x01' + word + '\x02')
-                    else:
-                        newwords.append('\x01WLEnter\x01' + word + '\x02')
-
-            if not strict:
-                lastword = words[-1]
-                if lastword == '' or self.whiteList.isPrefix(lastword) or not settings['speedchatPlus']:
-                    newwords[-1] = lastword
-                elif flag:
-                    newwords[-1] = '\x01WLDisplay\x01' + lastword + '\x02'
-                else:
-                    newwords[-1] = '\x01WLEnter\x01' + lastword + '\x02'
-            newtext = ' '.join(newwords)
-            self.chatEntry.set(newtext)

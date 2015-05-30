@@ -12,7 +12,6 @@ from otp.otpbase import OTPGlobals
 from otp.otpbase import OTPLocalizer
 from otp.speedchat import SCDecoders
 from toontown.chat.ChatGlobals import *
-from toontown.chat.TTWhiteList import TTWhiteList
 
 
 ThoughtPrefix = '.'
@@ -23,16 +22,13 @@ class TalkAssistant(DirectObject.DirectObject):
 
     def __init__(self):
         self.logWhispers = 1
-        self.whiteList = None
         self.clearHistory()
         self.zeroTimeDay = time.time()
         self.zeroTimeGame = globalClock.getRealTime()
         self.floodThreshold = 10.0
-        self.useWhiteListFilter = base.config.GetBool('white-list-filter-openchat', 0)
         self.lastWhisperDoId = None
         self.lastWhisper = None
         self.SCDecoder = SCDecoders
-        self.whiteList = TTWhiteList()
         return
 
     def clearHistory(self):
@@ -45,7 +41,6 @@ class TalkAssistant(DirectObject.DirectObject):
         self.spamDictByDoId = {}
         self.handleDict = {}
         self.messageCount = 0
-        self.shownWhiteListWarning = 0
 
     def delete(self):
         self.ignoreAll()
@@ -91,42 +86,6 @@ class TalkAssistant(DirectObject.DirectObject):
     def getHandle(self, doId):
         return self.handleDict.get(doId)
 
-    def doWhiteListWarning(self):
-        pass
-
-    def addToHistoryDoId(self, message, doId, scrubbed = 0):
-        if message.getTalkType() == TALK_WHISPER and doId != localAvatar.doId:
-            self.lastWhisperDoId = doId
-            self.lastWhisper = self.lastWhisperDoId
-        if doId not in self.historyByDoId:
-            self.historyByDoId[doId] = []
-        self.historyByDoId[doId].append(message)
-        if not self.shownWhiteListWarning and scrubbed and doId == localAvatar.doId:
-            self.doWhiteListWarning()
-            self.shownWhiteListWarning = 1
-        if doId not in self.floodDataByDoId:
-            self.floodDataByDoId[doId] = [0.0, self.stampTime(), message]
-        else:
-            oldTime = self.floodDataByDoId[doId][1]
-            newTime = self.stampTime()
-            timeDiff = newTime - oldTime
-            oldRating = self.floodDataByDoId[doId][0]
-            contentMult = 1.0
-            if len(message.getBody()) < 6:
-                contentMult += 0.2 * float(6 - len(message.getBody()))
-            if self.floodDataByDoId[doId][2].getBody() == message.getBody():
-                contentMult += 1.0
-            floodRating = max(0, 3.0 * contentMult + oldRating - timeDiff)
-            self.floodDataByDoId[doId] = [floodRating, self.stampTime(), message]
-            if floodRating > self.floodThreshold:
-                if oldRating < self.floodThreshold:
-                    self.floodDataByDoId[doId] = [floodRating + 3.0, self.stampTime(), message]
-                    return 1
-                else:
-                    self.floodDataByDoId[doId] = [oldRating - timeDiff, self.stampTime(), message]
-                    return 2
-        return 0
-
     def addToHistoryDISLId(self, message, dISLId, scrubbed = 0):
         if dISLId not in self.historyByDISLId:
             self.historyByDISLId[dISLId] = []
@@ -149,36 +108,6 @@ class TalkAssistant(DirectObject.DirectObject):
         info = base.cr.identifyAvatar(id)
         
         return info.getName() if info else ''
-
-    def whiteListFilterMessage(self, text):
-        if not self.useWhiteListFilter:
-            return text
-        elif not base.whiteList:
-            return 'no list'
-        words = text.split(' ')
-        newwords = []
-        for word in words:
-            if word == '' or base.whiteList.isWord(word):
-                newwords.append(word)
-            else:
-                newwords.append(base.whiteList.defaultWord)
-
-        newText = ' '.join(newwords)
-        return newText
-
-    def colorMessageByWhiteListFilter(self, text):
-        if not base.whiteList:
-            return text
-        words = text.split(' ')
-        newwords = []
-        for word in words:
-            if word == '' or base.whiteList.isWord(word):
-                newwords.append(word)
-            else:
-                newwords.append('\x01WLRed\x01' + word + '\x02')
-
-        newText = ' '.join(newwords)
-        return newText
 
     def isThought(self, message):
         if not message:
@@ -260,6 +189,5 @@ class TalkAssistant(DirectObject.DirectObject):
                 avatarName = avatar.getName()
             newMessage = TalkMessage(self.countMessage(), self.stampTime(), message, localAvatar.doId, localAvatar.getName(), localAvatar.DISLid, localAvatar.DISLname, receiverId, avatarName, None, None, TALK_WHISPER, None)
             self.historyComplete.append(newMessage)
-            self.addToHistoryDoId(newMessage, localAvatar.doId)
             messenger.send('NewOpenMessage', [newMessage])
         return error

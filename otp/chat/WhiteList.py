@@ -1,13 +1,13 @@
 from bisect import bisect_left
 
 class WhiteList:
-    def __init__(self, words):
+
+    def setWords(self, words):
         self.words = words
         self.numWords = len(self.words)
 
     def cleanText(self, text):
-        text = text.strip('.,?!')
-        return text.lower()
+        return text.strip('.,?!').lower()
 
     def isWord(self, text):
         return self.cleanText(text) in self.words
@@ -16,25 +16,32 @@ class WhiteList:
         text = self.cleanText(text)
         i = bisect_left(self.words, text)
 
-        if i == self.numWords:
-            return False
+        return i != self.numWords and self.words[i].startswith(text)
+    
+    def getReplacement(self, text, av=None, garbler=None):
+        return '\x01%s\x01%s\x02' % ('WLDisplay' if garbler else 'WLRed', text if not garbler else garbler.garble(av, text, 2))
 
-        return self.words[i].startswith(text)
+    def processText(self, text, av=None, garbler=None):
+        if (not self.words) or text.startswith('~'):
+            return text
 
-    def prefixCount(self, text):
-        text = self.cleanText(text)
-        i = bisect_left(self.words, text)
-        j = i
-        while j < self.numWords and self.words[j].startswith(text):
-            j += 1
+        words = text.split(' ')
+        newWords = []
 
-        return j - i
+        for word in words:
+            if (not word) or self.isWord(word):
+                newWords.append(word)
+            else:
+                newWords.append(self.getReplacement(word, av, garbler))
 
-    def prefixList(self, text):
-        text = self.cleanText(text)
-        i = bisect_left(self.words, text)
-        j = i
-        while j < self.numWords and self.words[j].startswith(text):
-            j += 1
+        lastWord = words[-1]
 
-        return self.words[i:j]        
+        if (not lastWord) or self.isPrefix(lastWord):
+            newWords[-1] = lastWord
+        else:
+            newWords[-1] = self.getReplacement(lastWord, av, garbler)
+
+        return ' '.join(newWords)
+    
+    def processThroughAll(self, text, av=None, garbler=None):
+        return self.processText(text, av, garbler)

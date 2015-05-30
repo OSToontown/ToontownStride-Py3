@@ -457,13 +457,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def isAvFriend(self, avId):
         return base.cr.isFriend(avId)
-
-    def setTalk(self, chat):
-        if not base.cr.chatAgent.verifyMessage(chat):
-            return
-        if base.localAvatar.isIgnored(self.doId):
-            return
-        self.displayTalk(chat)
     
     def setTalkWhisper(self, avId, chat):
         if not base.cr.chatAgent.verifyMessage(chat):
@@ -2372,56 +2365,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
                     if reply.inviteeId == inviteeId:
                         reply.status = newStatus
                         break
-
-    def scrubTalk(self, message, mods):
-        scrubbed = 0
-        text = copy.copy(message)
-        for mod in mods:
-            index = mod[0]
-            length = mod[1] - mod[0] + 1
-            newText = text[0:index] + length * '\x07' + text[index + length:]
-            text = newText
-
-        words = text.split(' ')
-        newwords = []
-        for word in words:
-            if word == '':
-                newwords.append(word)
-            elif word[0] == '\x07' or len(word) > 1 and word[0] == '.' and word[1] == '\x07':
-                newwords.append('\x01WLDisplay\x01' + self.chatGarbler.garble(self, word) + '\x02')
-                scrubbed = 1
-            elif not base.whiteList.isWord(word):
-                newwords.append(word)
-            else:
-                flag = 0
-                for friendId, flags in self.friendsList:
-                    if not flags & ToontownGlobals.FriendChat:
-                        flag = 1
-
-                if flag:
-                    scrubbed = 1
-                    newwords.append('\x01WLDisplay\x01' + word + '\x02')
-                else:
-                    newwords.append(word)
-
-        newText = ' '.join(newwords)
-        return (newText, scrubbed)
-
-    def replaceBadWords(self, text):
-        words = text.split(' ')
-        newwords = []
-        for word in words:
-            if word == '':
-                newwords.append(word)
-            elif word[0] == '\x07':
-                newwords.append('\x01WLRed\x01' + self.chatGarbler.garble(self, word) + '\x02')
-            elif not base.whiteList.isWord(word):
-                newwords.append(word)
-            else:
-                newwords.append('\x01WLRed\x01' + word + '\x02')
-
-        newText = ' '.join(newwords)
-        return newText
 
     def toonUp(self, hpGained, hasInteractivePropBonus = False):
         if self.hp == None or hpGained < 0:

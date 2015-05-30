@@ -182,29 +182,26 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
             pass
 
     def setTalk(self, chat):
-        if not base.cr.verifyMessage(chat):
+        if not base.cr.chatAgent.verifyMessage(chat):
             return
         if base.localAvatar.isIgnored(self.doId):
             return
-        #newText, scrubbed = self.scrubTalk(chat, mods)
+        if base.whiteList:
+            chat = base.whiteList.processThroughAll(chat, self, self.chatGarbler)
         self.displayTalk(chat)
 
     def setTalkWhisper(self, avId, chat):
-        if not base.cr.verifyMessage(chat):
+        if not base.cr.chatAgent.verifyMessage(chat):
             return
         if base.localAvatar.isIgnored(avId):
             return
         self.displayTalkWhisper(avId, chat)
 
     def displayTalk(self, chat):
-        print 'displaytalk AV'
         print 'Talk: %s' % chat
     
     def displayTalkWhisper(self, avId, chat):
         print 'TalkWhisper from %s: %s' % (avId, chat)
-
-    def scrubTalk(self, chat, mods):
-        return chat
 
     def b_setSC(self, msgIndex):
         self.setSC(msgIndex)

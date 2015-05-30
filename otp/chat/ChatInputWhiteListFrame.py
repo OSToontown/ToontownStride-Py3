@@ -47,12 +47,9 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
         self.history = ['']
         self.historySize = base.config.GetInt('chat-history-size', 10)
         self.historyIndex = 0
-        self.promoteWhiteList = 0
-        self.whiteList = None
         self.active = 0
         self.autoOff = 0
         self.sendBy = 'Mode'
-        self.prefilter = 1
         from direct.gui import DirectGuiGlobals
         self.chatEntry.bind(DirectGuiGlobals.TYPE, self.applyFilter)
         self.chatEntry.bind(DirectGuiGlobals.ERASE, self.applyFilter)
@@ -129,30 +126,15 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
 
     def sendChat(self, text, overflow = False):
         if not (len(text) > 0 and text[0] in ['~', '>']):
-            if self.prefilter:
-                words = text.split(' ')
-                newwords = []
-                for word in words:
-                    if word == '' or self.whiteList.isWord(word) or self.promoteWhiteList:
-                        newwords.append(word)
-                    else:
-                        newwords.append(base.whiteList.defaultWord)
-
-                text = ' '.join(newwords)
-            else:
-                text = self.chatEntry.get(plain=True)
+            text = self.chatEntry.get(plain=True)
 
         if text:
             self.chatEntry.set('')
             
-            try:
-                text.decode('ascii')
-                self.sendChatBySwitch(text)
-                
-                if self.wantHistory:
-                    self.addToHistory(text)
-            except UnicodeEncodeError:
-                base.localAvatar.setSystemMessage(0, OTPLocalizer.AsciiNotSupported)
+            if not base.cr.chatAgent.verifyMessage(text):
+                return
+            
+            self.sendChatBySwitch(text)
 
         if not overflow:
             self.hide()
@@ -203,24 +185,6 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
         self.historyIndex -= 1
         self.historyIndex %= len(self.history)
 
-    def applyFilter(self, keyArgs, strict = False):
-        text = self.chatEntry.get(plain=True)
-
-        if not text.startswith('~'):
-            words = text.split(' ')
-            newwords = []
-            self.notify.debug('%s' % words)
-            for word in words:
-                if word == '' or self.whiteList.isWord(word):
-                    newwords.append(word)
-                else:
-                    newwords.append('\x01WLEnter\x01' + word + '\x02')
-
-            if not strict:
-                lastword = words[-1]
-                if lastword == '' or self.whiteList.isPrefix(lastword):
-                    newwords[-1] = lastword
-                else:
-                    newwords[-1] = '\x01WLEnter\x01' + lastword + '\x02'
-            newtext = ' '.join(newwords)
-            self.chatEntry.set(newtext)
+    def applyFilter(self, keyArgs):
+        if base.whiteList:
+            self.chatEntry.set(base.whiteList.processThroughAll(self.chatEntry.get(plain=True)))
