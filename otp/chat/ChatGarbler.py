@@ -1,28 +1,23 @@
-import string
 import random
-from otp.otpbase import OTPLocalizer
 
 class ChatGarbler:
+    
+    def __init__(self, messages):
+        self.messages = messages
 
-    def garble(self, avatar, message):
+    def garble(self, avatar, message, isRandom=False):
         newMessage = ''
-        numWords = random.randint(1, 7)
-        wordlist = OTPLocalizer.ChatGarblerDefault
-        for i in xrange(1, numWords + 1):
-            wordIndex = random.randint(0, len(wordlist) - 1)
-            newMessage = newMessage + wordlist[wordIndex]
-            if i < numWords:
-                newMessage = newMessage + ' '
 
-        return newMessage
+        if avatar.style:
+            avatarType = avatar.style.getType()
+            wordList = self.messages[avatarType if avatarType in self.messages else 'default']
 
-    def garbleSingle(self, avatar, message):
-        newMessage = ''
-        numWords = 1
-        wordlist = OTPLocalizer.ChatGarblerDefault
+        numWords = random.randint(1, 7) if isRandom else 1
+
         for i in xrange(1, numWords + 1):
-            wordIndex = random.randint(0, len(wordlist) - 1)
-            newMessage = newMessage + wordlist[wordIndex]
+            wordIndex = random.randint(0, len(wordList) - 1)
+            newMessage = newMessage + wordList[wordIndex]
+
             if i < numWords:
                 newMessage = newMessage + ' '
 

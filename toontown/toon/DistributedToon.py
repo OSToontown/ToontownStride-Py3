@@ -2402,7 +2402,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             if word == '':
                 newwords.append(word)
             elif word[0] == '\x07' or len(word) > 1 and word[0] == '.' and word[1] == '\x07':
-                newwords.append('\x01WLDisplay\x01' + self.chatGarbler.garbleSingle(self, word) + '\x02')
+                newwords.append('\x01WLDisplay\x01' + self.chatGarbler.garble(self, word) + '\x02')
                 scrubbed = 1
             elif not self.whiteListEnabled or base.whiteList.isWord(word):
                 newwords.append(word)
@@ -2428,7 +2428,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             if word == '':
                 newwords.append(word)
             elif word[0] == '\x07':
-                newwords.append('\x01WLRed\x01' + self.chatGarbler.garbleSingle(self, word) + '\x02')
+                newwords.append('\x01WLRed\x01' + self.chatGarbler.garble(self, word) + '\x02')
             elif not self.whiteListEnabled or base.whiteList.isWord(word):
                 newwords.append(word)
             else:

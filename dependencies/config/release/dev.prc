@@ -31,7 +31,7 @@ want-checkers #t
 want-house-types #t
 
 # Chat:
-want-whitelist #f
+want-whitelist #t
 
 # Optional:
 want-jor-el-cam #f

@@ -5,21 +5,18 @@ import string
 import time
 
 from otp.ai.MagicWordGlobal import *
-from otp.avatar import Avatar, PlayerBase
-from otp.avatar import DistributedAvatar
+from otp.avatar import Avatar, PlayerBase, DistributedAvatar
 from otp.avatar.Avatar import teleportNotify
-from otp.chat import ChatGarbler
-from otp.chat import TalkAssistant
+from otp.chat import ChatGarbler, TalkAssistant
 from otp.distributed.TelemetryLimited import TelemetryLimited
-from otp.otpbase import OTPGlobals
-from otp.otpbase import OTPLocalizer
+from otp.otpbase import OTPGlobals, OTPLocalizer
 from otp.speedchat import SCDecoders
 from toontown.chat.ChatGlobals import *
 from toontown.chat.WhisperPopup import WhisperPopup
 
 class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBase, TelemetryLimited):
     TeleportFailureTimeout = 60.0
-    chatGarbler = ChatGarbler.ChatGarbler()
+    chatGarbler = ChatGarbler.ChatGarbler({'default': OTPLocalizer.ChatGarblerDefault})
 
     def __init__(self, cr):
         try:

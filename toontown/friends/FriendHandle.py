@@ -81,7 +81,7 @@ class FriendHandle:
             if word == '':
                 newwords.append(word)
             elif word[0] == '\x07':
-                newwords.append('\x01WLDisplay\x01' + self.chatGarbler.garbleSingle(self, word) + '\x02')
+                newwords.append('\x01WLDisplay\x01' + self.chatGarbler.garble(self, word) + '\x02')
                 scrubbed = 1
             elif base.whiteList.isWord(word):
                 newwords.append(word)
@@ -99,7 +99,7 @@ class FriendHandle:
             if word == '':
                 newwords.append(word)
             elif word[0] == '\x07':
-                newwords.append('\x01WLRed\x01' + self.chatGarbler.garbleSingle(self, word) + '\x02')
+                newwords.append('\x01WLRed\x01' + self.chatGarbler.garble(self, word) + '\x02')
             elif base.whiteList.isWord(word):
                 newwords.append(word)
             else:

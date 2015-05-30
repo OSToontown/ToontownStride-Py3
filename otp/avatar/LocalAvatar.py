@@ -54,7 +54,6 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         self.customMessages = []
         self.chatMgr = chatMgr
         base.talkAssistant = talkAssistant
-        self.garbleChat = 1
         self.teleportAllowed = 1
         self.lockedDown = 0
         self.isPageUp = 0
