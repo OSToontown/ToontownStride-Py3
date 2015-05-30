@@ -12,7 +12,6 @@ from otp.friends import FriendManager/AI
 from otp.distributed import DistributedDistrict/AI/UD
 from otp.distributed import DistributedDirectory/AI
 from otp.chat import ChatAgent/UD
-from otp.avatar import AvatarHandle
 
 typedef uint8 bool;
 
@@ -128,30 +127,14 @@ dclass DistributedCamera : DistributedNode {
   setFixtures(Fixture []) required broadcast ram ownsend airecv;
 };
 
-struct TalkModification {
-  uint16 offset;
-  uint16 size;
-};
-
-dclass TalkPath_whisper {
-  setTalkWhisper(uint32 avId, string(0-400) chat) ownrecv clsend;
-};
-
-dclass TalkPath_group {
-  setTalkGroup(DoId fromAv, DoId fromAcc, string(0-256) avName,
-               string(0-400) chat, TalkModification [], uint8 flags) clsend airecv;
-};
-
-dclass AvatarHandle : TalkPath_whisper {
-};
-
-dclass DistributedAvatar : DistributedSmoothNode, TalkPath_whisper {
+dclass DistributedAvatar : DistributedSmoothNode {
   string DcObjectType db;
   setName(string = "[Name not set]") required broadcast db airecv;
   friendsNotify(DoId avId, int8 status) ownrecv airecv;
   checkAvOnShard(DoId) clsend airecv;
   confirmAvOnShard(DoId avId, int8 isOnShard);
   setTalk(string(0-400) chat) broadcast;
+  setTalkWhisper(uint32 avId, string(0-400) chat) ownrecv clsend;
 };
 
 struct FriendEntry {

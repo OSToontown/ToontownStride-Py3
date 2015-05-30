@@ -21,7 +21,7 @@ import Toon
 from otp.ai.MagicWordGlobal import *
 from otp.avatar import Avatar, DistributedAvatar
 from otp.avatar import DistributedPlayer
-from otp.chat import TalkAssistant
+from otp.chat import TalkAssistant, ChatUtil
 from otp.otpbase import OTPGlobals
 from otp.otpbase import OTPLocalizer
 from otp.speedchat import SCDecoders
@@ -2159,10 +2159,10 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def displayTalk(self, chatString):
         flags = CFSpeech | CFTimeout
         self.nametag.setChatType(NametagGlobals.CHAT)
-        if base.talkAssistant.isThought(chatString):
+        if ChatUtil.isThought(chatString):
             flags = CFThought
             self.nametag.setChatBalloonType(NametagGlobals.THOUGHT_BALLOON)
-            chatString = base.talkAssistant.removeThoughtPrefix(chatString)
+            chatString = ChatUtil.removeThoughtPrefix(chatString)
         else:
             self.nametag.setChatBalloonType(NametagGlobals.CHAT_BALLOON)
         self.nametag.setChatText(chatString, timeout=(flags & CFTimeout))

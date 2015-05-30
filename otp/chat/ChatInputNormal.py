@@ -3,6 +3,7 @@ from direct.showbase import DirectObject
 from pandac.PandaModules import *
 import sys
 
+from otp.chat import ChatUtil
 from otp.otpbase import OTPGlobals
 from otp.otpbase import OTPLocalizer
 from toontown.chat.ChatGlobals import *
@@ -38,7 +39,7 @@ class ChatInputNormal(DirectObject.DirectObject):
     def activateByData(self, whisperAvatarId = None):
         self.whisperAvatarId = whisperAvatarId
         if self.whisperAvatarId:
-            self.whisperAvatarName = base.talkAssistant.findAvatarName(self.whisperAvatarId)
+            self.whisperAvatarName = ChatUtil.findAvatarName(self.whisperAvatarId)
             self.chatFrame.setPos(self.whisperPos)
             self.whisperLabel['text'] = OTPLocalizer.ChatInputWhisperLabel % self.whisperAvatarName
             self.whisperLabel.show()

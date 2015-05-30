@@ -17,14 +17,22 @@ class DistributedSmartNPC(DistributedNPCToonBase):
 
     def __init__(self, cr):
         DistributedNPCToonBase.__init__(self, cr)
+        self.accept('chatUpdate', self.chatUpdate)
+    
+    def disable(self):
+        self.ignoreAll()
+        DistributedNPCToonBase.disable(self)
 
     def delayDelete(self):
         DistributedNPCToonBase.delayDelete(self)
-        DistributedNPCToonBase.disable(self)
+        self.disable()
 
     def handleCollisionSphereEnter(self, collEntry):
         self.sendUpdate('avatarEnter', [])
 
+    def chatUpdate(self, message):
+        self.sendUpdate('talkMessage', [base.localAvatar.doId, message])
+    
     def greet(self, npcId, avId):
         if avId in base.cr.doId2do:
             avName = base.cr.doId2do.get(avId).getName()

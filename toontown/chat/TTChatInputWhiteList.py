@@ -4,6 +4,7 @@ from otp.otpbase import OTPGlobals
 import sys
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
+from otp.chat import ChatUtil
 from otp.otpbase import OTPLocalizer
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
@@ -146,7 +147,7 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
 
     def labelWhisper(self):
         if self.receiverId:
-            self.whisperName = base.talkAssistant.findAvatarName(self.receiverId)
+            self.whisperName = ChatUtil.findAvatarName(self.receiverId)
             self.whisperLabel['text'] = OTPLocalizer.ChatInputWhisperLabel % self.whisperName
             self.whisperLabel.show()
         else:

@@ -8,6 +8,7 @@ import random
 from otp.ai import MagicWordManager
 from otp.ai.MagicWordGlobal import *
 from otp.avatar.ShadowCaster import ShadowCaster
+from otp.chat import ChatUtil
 from otp.otpbase import OTPGlobals
 from otp.otpbase import OTPLocalizer
 from otp.otpbase import OTPRender
@@ -362,8 +363,8 @@ class Avatar(Actor, ShadowCaster):
             self.clearChat()
             self.nametag.setChatType(NametagGlobals.CHAT)
             self.nametag.setChatButton(NametagGlobals.noButton)
-            if base.talkAssistant.isThought(chatString):
-                chatString = base.talkAssistant.removeThoughtPrefix(chatString)
+            if ChatUtil.isThought(chatString):
+                chatString = ChatUtil.removeThoughtPrefix(chatString)
                 self.nametag.setChatBalloonType(NametagGlobals.THOUGHT_BALLOON)
                 self.nametag.setChatText(chatString)
             else:

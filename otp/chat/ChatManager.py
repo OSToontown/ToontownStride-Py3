@@ -6,7 +6,7 @@ from direct.showbase import DirectObject
 from pandac.PandaModules import *
 from otp.otpbase import OTPLocalizer
 from toontown.chat.ChatGlobals import *
-
+import ChatUtil
 
 ChatEvent = 'ChatEvent'
 NormalChatEvent = 'NormalChatEvent'
@@ -16,23 +16,6 @@ SCEmoteChatEvent = 'SCEmoteChatEvent'
 OnScreen = 0
 OffScreen = 1
 Thought = 2
-ThoughtPrefix = '.'
-
-def isThought(message):
-    if len(message) == 0:
-        return 0
-    elif message.find(ThoughtPrefix, 0, len(ThoughtPrefix)) >= 0:
-        return 1
-    else:
-        return 0
-
-
-def removeThoughtPrefix(message):
-    if isThought(message):
-        return message[len(ThoughtPrefix):]
-    else:
-        return message
-
 
 class ChatManager(DirectObject.DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('ChatManager')
@@ -106,8 +89,8 @@ class ChatManager(DirectObject.DirectObject):
 
     def sendChatString(self, message):
         chatFlags = CFSpeech | CFTimeout
-        if isThought(message):
-            message = removeThoughtPrefix(message)
+        if ChatUtil.isThought(message):
+            message = ChatUtil.removeThoughtPrefix(message)
             chatFlags = CFThought
         messenger.send(NormalChatEvent)
         self.announceChat()
