@@ -401,6 +401,9 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.defaultShard = shard
 
     def setDefaultZone(self, zoneId):
+        if not ZoneUtil.getCanonicalHoodId(zoneId) in ToontownGlobals.hoodNameMap:
+            self.defaultZone = ToontownGlobals.ToontownCentral
+            return
         if ZoneUtil.getCanonicalHoodId(zoneId) == ToontownGlobals.FunnyFarm:
             self.defaultZone = ToontownGlobals.ToontownCentral
             return
