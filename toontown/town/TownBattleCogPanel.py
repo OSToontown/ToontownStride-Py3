@@ -72,22 +72,22 @@ class TownBattleCogPanel(DirectFrame):
         self.accept(self.hpChangeEvent, self.updateHealthBar)
         self.updateHealthBar()
         self.healthBar.show()
-        if self.suit.isSkelecog == 1:
-            self.type = 'Skel'
-            self.setTypeText(self.type)
-        self.suitRevives = self.suit.getSkeleRevives()
-        if self.suitRevives == 1:
-            self.type = 'v2.0'
-            self.setTypeText(self.type)
-        if self.suitRevives < 1 and self.suit.isSkelecog == 0:
-            self.type = ''
-            self.setTypeText(self.type)
+        if self.suit.virtual:
+            self.setTypeText(TTLocalizer.CogPanelVirtual)
+        elif self.suit.isWaiter:
+            self.setTypeText(TTLocalizer.CogPanelWaiter)
+        elif self.suit.skeleRevives:
+            self.setTypeText(TTLocalizer.CogPanelRevives % (self.suit.skeleRevives + 1))
+        elif self.suit.isSkelecog:
+            self.setTypeText(TTLocalizer.CogPanelSkeleton)
+        else:
+            self.setTypeText('')
 
     def getSuit(self, suit):
         return self.suit
 
     def setLevelText(self, level):
-        self.levelText['text'] = 'Level '+ str(level)
+        self.levelText['text'] = TTLocalizer.CogPanelLevel % level
 
     def setTypeText(self, suitType):
         self.suitType['text'] = suitType
