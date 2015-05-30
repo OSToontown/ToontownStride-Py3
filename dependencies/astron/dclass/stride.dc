@@ -500,6 +500,7 @@ from toontown.safezone import DistributedChineseCheckers/AI
 from toontown.safezone import DistributedCheckers/AI
 from toontown.safezone import DistributedFindFour/AI
 from toontown.uberdog.DistributedPartyManager/AI/UD import DistributedPartyManager/AI/UD
+from toontown.uberdog.DistributedLobbyManager/AI/UD import DistributedLobbyManager/AI/UD
 from toontown.coderedemption.TTCodeRedemptionMgr/AI import TTCodeRedemptionMgr/AI
 from toontown.cogdominium import DistributedCogdoInterior/AI
 from toontown.cogdominium import DistributedCogdoBattleBldg/AI
@@ -516,6 +517,7 @@ from toontown.cogdominium import DistCogdoCrane/AI
 from toontown.cogdominium import DistCogdoCraneMoneyBag/AI
 from toontown.cogdominium import DistCogdoCraneCog/AI
 from toontown.parties.GlobalPartyManager/AI/UD import GlobalPartyManager/AI/UD
+from toontown.uberdog.GlobalLobbyManager/AI/UD import GlobalLobbyManager/AI/UD
 from toontown.uberdog.ARGManager/AI/UD import ARGManager/AI/UD
 
 struct GiftItem {
@@ -555,6 +557,11 @@ struct activity {
   uint8 x;
   uint8 y;
   uint8 h;
+};
+
+struct lobby {
+  uint64 lobbyId;
+  uint32 hostId;
 };
 
 struct party {
@@ -3204,6 +3211,36 @@ dclass DistributedFindFour : DistributedNode {
   tie() broadcast;
 };
 
+
+dclass DistributedLobbyManager : DistributedObject {
+  addLobby(uint32, uint32, string, string, int8, int8, activity [], decoration [], uint32[], uint16);
+  addLobbyRequest(uint32) airecv clsend;
+  addLobbyResponse(uint32, int8);
+  addLobbyResponseUdToAi(uint64, int8, lobby) airecv;
+  
+  getLobbyZone(uint32, uint32, uint8) clsend airecv;
+  receiveLobbyZone(uint32, uint64, uint32);
+  freeZoneIdFromCreatedLobby(uint32, uint32) clsend airecv;
+  
+  sendAvToPlayground(uint32, uint8);
+  exitParty(uint32) clsend airecv;
+  
+  toonHasEnteredPartyAiToUd(uint32);
+  toonHasExitedPartyAiToUd(uint32);
+  
+  lobbyManagerAIStartingUp(uint32, uint32);
+  lobbyManagerAIGoingDown(uint32, uint32);
+  lobbyHasFinishedUdToAllAi(uint64 lobbyId) airecv;
+  
+  requestShardIdZoneIdForHostId(uint32) clsend airecv;
+  sendShardIdZoneIdToAvatar(uint32, uint32);
+  
+  lobbyManagerUdStartingUp() airecv;
+  lobbyManagerUdLost() airecv;
+  
+  receiveId(uint64 ids[]) airecv;
+};
+
 dclass DistributedPartyManager : DistributedObject {
   addParty(uint32, uint32, string, string, int8, int8, activity [], decoration [], uint32[], uint16);
   addPartyRequest(uint32, char [0-256], char [0-256], int8, int8, activity [], decoration [], uint32[]) airecv clsend;
@@ -3256,6 +3293,17 @@ dclass DistributedPartyManager : DistributedObject {
 };
 
 dclass DistributedObjectGlobal : DistributedObject {
+};
+
+dclass GlobalLobbyManager : DistributedObjectGlobal {
+    lobbyManagerAIHello(uint32 channel);
+    queryLobby(uint32 hostId);
+    addLobby(DoId avId, uint64 lobbyId);
+    toonJoinedLobby(uint64 lobbyId, uint32 avId);
+    toonLeftLobby(uint64 lobbyId, uint32 avId);
+    requestLobbySlot(uint64 lobbyId, uint32 avId);
+    lobbyDone(uint64 lobbyId);
+    allocIds(uint16 count);
 };
 
 dclass GlobalPartyManager : DistributedObjectGlobal {

@@ -51,7 +51,7 @@ class DistributedLobbyManager(DistributedObject):
     def receiveLobbyZone(self, hostId, lobbyId, zoneId):
         if lobbyId != 0 and zoneId != 0:
             if base.localAvatar.doId == hostId:
-                lobbyInfo = base.localAvatar.hostedLobby:
+                lobbyInfo = base.localAvatar.hostedLobby
                 if lobbyInfo.lobbyId == lobbyId:
                     lobbyInfo.status == LobbyGlobals.LobbyStatus.Open
         messenger.send('requestLobbyZoneComplete', [hostId, lobbyId, zoneId])
@@ -66,5 +66,4 @@ class DistributedLobbyManager(DistributedObject):
 
     def sendShardIdZoneIdToAvatar(self, shardId, zoneId):
         # Avatar goes through door.
-
-    
+        pass

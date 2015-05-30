@@ -71,6 +71,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.newsManager = None
         self.distributedDistrict = None
         self.partyManager = None
+        self.lobbyManager = None
 
         self.toontownTimeManager = ToontownTimeManager.ToontownTimeManager()
 
