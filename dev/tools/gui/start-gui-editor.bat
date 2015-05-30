@@ -1,5 +1,16 @@
 @echo off
+
 cd ../../../
+
 title GUI Editor
-"dependencies/panda/python/ppython.exe" "dev/tools/gui/EditorStart.py"
-pause
+set GUI=
+
+:main
+
+set /P GUI="File: %gui%"
+"dependencies/panda/python/ppython.exe" "dev/tools/gui/EditorStart.py" %GUI%
+
+echo.
+echo.
+
+goto main

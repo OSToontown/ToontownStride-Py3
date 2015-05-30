@@ -120,18 +120,9 @@ class BossLobbyGui(DirectFrame):
             elif lobby == 1:
                 self.callback(self.avatar, True)
 
-# Use the following to run with the Gui Editor.
-"""
-from pandac.PandaModules import *
-from direct.gui import DirectGuiGlobals
-from direct.gui.DirectGui import *
+# The following is made for use with the GUI editor.
+GUI_EDITOR = """
 from toontown.coghq.BossLobbyGui import BossLobbyGui
-from toontown.toonbase import ToontownGlobals
-
-DirectGuiGlobals.setDefaultFontFunc(ToontownGlobals.getInterfaceFont)
-DirectGuiGlobals.setDefaultRolloverSound(base.loadSfx('phase_3/audio/sfx/GUI_rollover.ogg'))
-DirectGuiGlobals.setDefaultClickSound(base.loadSfx('phase_3/audio/sfx/GUI_create_toon_fwd.ogg'))
-DirectGuiGlobals.setDefaultDialogGeom(loader.loadModel('phase_3/models/gui/dialog_box_gui'))
 
 test = BossLobbyGui(None, None)
 """
