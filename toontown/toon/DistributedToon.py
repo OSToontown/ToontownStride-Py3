@@ -455,44 +455,30 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         else:
             return Task.cont
 
-    def setTalk(self, fromAV, fromAC, avatarName, chat, mods, flags):
-        if not base.cr.chatAgent.verifyMessage(chat):
-            return
-        if base.localAvatar.isIgnored(self.doId if fromAV == 0 else fromAV):
-            return
-        timestamp = time.strftime('%m-%d-%Y %H:%M:%S', time.localtime())
-        if fromAV == 0:
-            print ':%s: setTalk: %r, %r, %r' % (timestamp, self.doId, self.name, chat)
-        else:
-            print ':%s: setTalk: %r, %r, %r' % (timestamp, fromAV, avatarName, chat)
-        if base.config.GetBool('want-sleep-reply-on-regular-chat', 0):
-            if base.localAvatar.sleepFlag == 1:
-                base.cr.ttsFriendsManager.d_sleepAutoReply(fromAV)
-        newText, scrubbed = self.scrubTalk(chat, mods)
-        self.displayTalk(newText)
-        base.talkAssistant.receiveOpenTalk(fromAV, avatarName, fromAC, None, newText)
-
     def isAvFriend(self, avId):
         return base.cr.isFriend(avId)
 
-    def setTalkWhisper(self, fromAV, fromAC, avatarName, chat, mods, flags):
+    def setTalk(self, chat):
+        if not base.cr.chatAgent.verifyMessage(chat):
+            return
+        if base.localAvatar.isIgnored(self.doId):
+            return
+        self.displayTalk(chat)
+    
+    def setTalkWhisper(self, avId, chat):
         if not base.cr.chatAgent.verifyMessage(chat):
             return
         if not localAvatar.acceptingNonFriendWhispers:
-            if not self.isAvFriend(fromAV):
+            if not self.isAvFriend(avId):
                 return
-        if base.localAvatar.isIgnored(fromAV):
-            return
-        if base.config.GetBool('ignore-whispers', 0):
+        if base.localAvatar.isIgnored(avId):
             return
         if base.localAvatar.sleepFlag == 1:
-            if not base.cr.identifyAvatar(fromAV) == base.localAvatar:
-                base.cr.ttsFriendsManager.d_sleepAutoReply(fromAV)
-        newText, scrubbed = self.scrubTalk(chat, mods)
-        self.displayTalkWhisper(fromAV, avatarName, chat, mods)
-        timestamp = time.strftime('%m-%d-%Y %H:%M:%S', time.localtime())
-        print ':%s: receiveWhisperTalk: %r, %r, %r, %r, %r, %r, %r' % (timestamp, fromAV, avatarName, fromAC, None, self.doId, self.getName(), newText)
-        base.talkAssistant.receiveWhisperTalk(fromAV, avatarName, fromAC, None, self.doId, self.getName(), newText)
+            if not base.cr.identifyAvatar(avId) == base.localAvatar:
+                base.cr.ttsFriendsManager.d_sleepAutoReply(avId)
+        if base.whiteList:
+            chat = base.whiteList.processThroughAll(chat, self.chatGarbler)
+        self.displayTalkWhisper(avId, chat)
 
     def setSleepAutoReply(self, fromId):
         pass
@@ -2177,7 +2163,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.nametag.setChatText(chatString, timeout=bool(chatFlags & CFTimeout))
         self.playCurrentDialogue(dialogue, chatFlags - CFSpeech, interrupt)
 
-    def displayTalk(self, chatString, mods=None):
+    def displayTalk(self, chatString):
         flags = CFSpeech | CFTimeout
         self.nametag.setChatType(NametagGlobals.CHAT)
         if base.talkAssistant.isThought(chatString):
@@ -2404,7 +2390,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             elif word[0] == '\x07' or len(word) > 1 and word[0] == '.' and word[1] == '\x07':
                 newwords.append('\x01WLDisplay\x01' + self.chatGarbler.garble(self, word) + '\x02')
                 scrubbed = 1
-            elif not self.whiteListEnabled or base.whiteList.isWord(word):
+            elif not base.whiteList.isWord(word):
                 newwords.append(word)
             else:
                 flag = 0
@@ -2429,7 +2415,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
                 newwords.append(word)
             elif word[0] == '\x07':
                 newwords.append('\x01WLRed\x01' + self.chatGarbler.garble(self, word) + '\x02')
-            elif not self.whiteListEnabled or base.whiteList.isWord(word):
+            elif not base.whiteList.isWord(word):
                 newwords.append(word)
             else:
                 newwords.append('\x01WLRed\x01' + word + '\x02')

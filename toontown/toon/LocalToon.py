@@ -426,19 +426,19 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
                 self.gmNameTagEnabled = 1
             self.d_updateGMNameTag()
 
-    def displayTalkWhisper(self, fromId, avatarName, rawString, mods):
-        sender = base.cr.identifyAvatar(fromId)
-        if sender:
-            chatString, scrubbed = sender.scrubTalk(rawString, mods)
-        else:
-            chatString, scrubbed = self.scrubTalk(rawString, mods)
-        sender = self
-        sfx = self.soundWhisper
-        chatString = avatarName + ': ' + chatString
+    def displayTalkWhisper(self, avId, chat):
+        # SKRUB PLZ
+        sender = base.cr.identifyAvatar(avId)
+
+        if not sender:
+            return
+
+        name = sender.getName()
+        chatString = '%s: %s' % (name, chat)
         whisper = WhisperPopup(chatString, OTPGlobals.getInterfaceFont(), WTNormal)
-        whisper.setClickable(avatarName, fromId)
+        whisper.setClickable(name, avId)
         whisper.manage(base.marginManager)
-        base.playSfx(sfx)
+        base.playSfx(self.soundWhisper)
 
     def isLocal(self):
         return 1

@@ -127,9 +127,7 @@ class TTSFriendsManager(DistributedObjectGlobal):
         base.localAvatar.setWhisperSCEmoteFrom(fromId, emoteId)
 
     def receiveTalkWhisper(self, fromId, message):
-        toon = base.cr.identifyAvatar(fromId)
-        if toon:
-            base.localAvatar.setTalkWhisper(fromId, 0, toon.getName(), message, [], 0)
+        base.localAvatar.setTalkWhisper(fromId, message)
 
     def d_battleSOS(self, toId):
         self.sendUpdate('battleSOS', [toId])

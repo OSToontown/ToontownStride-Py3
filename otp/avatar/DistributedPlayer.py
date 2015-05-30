@@ -38,7 +38,6 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
             self.DISLid = 0
             self.adminAccess = 0
             self.autoRun = 0
-            self.whiteListEnabled = base.config.GetBool('whitelist-chat-enabled', 1)
             self.lastTeleportQuery = time.time()
 
     @staticmethod
@@ -141,7 +140,6 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
         chatString = SCDecoders.decodeSCStaticTextMsg(msgIndex)
         if chatString:
             self.displayWhisper(fromId, chatString, WTQuickTalker)
-            base.talkAssistant.receiveAvatarWhisperSpeedChat(TalkAssistant.SPEEDCHAT_NORMAL, msgIndex, fromId)
         return
 
     def whisperSCCustomTo(self, msgIndex, sendToId):
@@ -163,7 +161,6 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
         chatString = SCDecoders.decodeSCCustomMsg(msgIndex)
         if chatString:
             self.displayWhisper(fromId, chatString, WTQuickTalker)
-            base.talkAssistant.receiveAvatarWhisperSpeedChat(TalkAssistant.SPEEDCHAT_CUSTOM, msgIndex, fromId)
         return
 
     def whisperSCEmoteTo(self, emoteId, sendToId):
@@ -177,7 +174,6 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
         chatString = SCDecoders.decodeSCEmoteWhisperMsg(emoteId, handle.getName())
         if chatString:
             self.displayWhisper(fromId, chatString, WTEmote)
-            base.talkAssistant.receiveAvatarWhisperSpeedChat(TalkAssistant.SPEEDCHAT_EMOTE, emoteId, fromId)
         return
 
     def setChatAbsolute(self, chatString, chatFlags, dialogue = None, interrupt = 1, quiet = 0):
@@ -185,32 +181,27 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
         if not quiet:
             pass
 
-    def setTalk(self, fromAV, fromAC, avatarName, chat, mods, flags):
+    def setTalk(self, chat):
         if not base.cr.verifyMessage(chat):
             return
-        if base.localAvatar.isIgnored(fromAV):
+        if base.localAvatar.isIgnored(self.doId):
             return
-        newText, scrubbed = self.scrubTalk(chat, mods)
-        self.displayTalk(newText)
-        if base.talkAssistant.isThought(newText):
-            newText = base.talkAssistant.removeThoughtPrefix(newText)
-            base.talkAssistant.receiveThought(fromAV, avatarName, fromAC, None, newText, scrubbed)
-        else:
-            base.talkAssistant.receiveOpenTalk(fromAV, avatarName, fromAC, None, newText, scrubbed)
-        return
+        #newText, scrubbed = self.scrubTalk(chat, mods)
+        self.displayTalk(chat)
 
-    def setTalkWhisper(self, fromAV, fromAC, avatarName, chat, mods, flags):
+    def setTalkWhisper(self, avId, chat):
         if not base.cr.verifyMessage(chat):
             return
-        if base.localAvatar.isIgnored(fromAV):
+        if base.localAvatar.isIgnored(avId):
             return
-        newText, scrubbed = self.scrubTalk(chat, mods)
-        self.displayTalkWhisper(fromAV, avatarName, chat, mods)
-        base.talkAssistant.receiveWhisperTalk(fromAV, avatarName, fromAC, None, self.doId, self.getName(), newText, scrubbed)
-        return
+        self.displayTalkWhisper(avId, chat)
 
-    def displayTalkWhisper(self, fromId, avatarName, chatString, mods):
-        print 'TalkWhisper from %s: %s' % (fromId, chatString)
+    def displayTalk(self, chat):
+        print 'displaytalk AV'
+        print 'Talk: %s' % chat
+    
+    def displayTalkWhisper(self, avId, chat):
+        print 'TalkWhisper from %s: %s' % (avId, chat)
 
     def scrubTalk(self, chat, mods):
         return chat
@@ -229,7 +220,6 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
         chatString = SCDecoders.decodeSCStaticTextMsg(msgIndex)
         if chatString:
             self.setChatAbsolute(chatString, CFSpeech | CFQuicktalker | CFTimeout, quiet=1)
-        base.talkAssistant.receiveOpenSpeedChat(TalkAssistant.SPEEDCHAT_NORMAL, msgIndex, self.doId)
 
     def b_setSCCustom(self, msgIndex):
         self.setSCCustom(msgIndex)
@@ -245,7 +235,6 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
         chatString = SCDecoders.decodeSCCustomMsg(msgIndex)
         if chatString:
             self.setChatAbsolute(chatString, CFSpeech | CFQuicktalker | CFTimeout)
-        base.talkAssistant.receiveOpenSpeedChat(TalkAssistant.SPEEDCHAT_CUSTOM, msgIndex, self.doId)
 
     def b_setSCEmote(self, emoteId):
         self.b_setEmoteState(emoteId, animMultiplier=self.animMultiplier)
