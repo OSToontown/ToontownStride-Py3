@@ -192,13 +192,12 @@ class AvatarPanelBase(AvatarPanel.AvatarPanel):
         self.cleanupDialog()
         self.requestWalk()
 
-    def cleanupDialog(self):
+    def cleanupDialog(self, state=None):
         if self.dialog:
             base.cr.openAvatarPanels.discard(self)
             self.dialog.ignore('exitingStoppedState')
             self.dialog.cleanup()
             self.dialog = None
-        return
 
     def requestStopped(self):
         base.cr.openAvatarPanels.add(self)

@@ -2526,6 +2526,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.d_setTrueFriends(trueFriends)
     
     def setTrueFriends(self, trueFriends):
+        Avatar.reconsiderAllUnderstandable()
         self.trueFriends = trueFriends
     
     def d_setTrueFriends(self, trueFriends):
@@ -2533,6 +2534,16 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     
     def isTrueFriends(self, doId):
         return doId in self.trueFriends
+    
+    def addTrueFriends(self, doId):
+        if not self.isTrueFriends(doId):
+            self.trueFriends.append(doId)
+            self.b_setTrueFriends(self.trueFriends)
+    
+    def removeTrueFriends(self, doId):
+        if self.isTrueFriends(doId):
+            self.trueFriends.remove(doId)
+            self.b_setTrueFriends(self.trueFriends)
 
     def applyBuffs(self):
         for id, timestamp in enumerate(self.buffs):
