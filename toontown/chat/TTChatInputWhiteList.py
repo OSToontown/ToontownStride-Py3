@@ -101,8 +101,8 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
 
     def sendChatByData(self, text):
         if self.trueFriendChat:
-            for friendId, flags in base.localAvatar.friendsList:
-                if flags & ToontownGlobals.FriendChat:
+            for friendId in base.localAvatar.friendsList:
+                if base.localAvatar.isTrueFriends(friendId):
                     self.sendWhisperByFriend(friendId, text)
         elif self.receiverId:
             base.talkAssistant.sendWhisperTalk(text, self.receiverId)

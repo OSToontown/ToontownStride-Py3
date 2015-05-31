@@ -105,15 +105,11 @@ class ToonStatueSelectionGUI(DirectFrame):
                 newFF = (familyMember.id, familyMember.name, NametagGlobals.CCNonPlayer)
                 self.ffList.append(newFF)
 
-        for friendPair in base.localAvatar.friendsList:
-            friendId, flags = friendPair
+        for friendId in base.localAvatar.friendsList:
             handle = base.cr.identifyFriend(friendId)
             if handle and not self.checkFamily(friendId):
                 if hasattr(handle, 'getName'):
-                    colorCode = NametagGlobals.CCSpeedChat
-                    if flags & ToontownGlobals.FriendChat:
-                        colorCode = NametagGlobals.CCNormal
-                    newFF = (friendPair[0], handle.getName(), colorCode)
+                    newFF = (friendId, handle.getName(), NametagGlobals.getFriendColor(friendId))
                     self.ffList.append(newFF)
                 else:
                     self.notify.warning('Bad Handle for getName in makeFFlist')

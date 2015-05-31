@@ -23,8 +23,7 @@ class AvatarPanelBase(AvatarPanel.AvatarPanel):
             return (TTLocalizer.AvatarPanelIgnore, self.handleIgnore, IGNORE_SCALE)
 
     def handleIgnore(self):
-        isAvatarFriend = base.cr.isFriend(self.avatar.doId)
-        if isAvatarFriend:
+        if base.cr.isFriend(self.avatar.doId):
             self.dialog = TTDialog.TTGlobalDialog(
                 style=TTDialog.CancelOnly,
                 text=TTLocalizer.IgnorePanelAddFriendAvatar % self.avName,

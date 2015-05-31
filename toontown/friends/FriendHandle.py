@@ -62,6 +62,6 @@ class FriendHandle:
     def isUnderstandable(self):
         if settings['speedchatPlus']:
             return 1
-        elif settings['trueFriends'] and base.cr.getFriendFlags(self.doId) & ToontownGlobals.FriendChat:
+        elif settings['trueFriends'] and base.localAvatar.isTrueFriends(self.doId):
             return 1
         return 0

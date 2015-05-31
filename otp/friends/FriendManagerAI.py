@@ -95,8 +95,8 @@ class FriendManagerAI(DistributedObjectAI):
                 del self.requests[context]
                 return
 
-            requested.extendFriendsList(requester.getDoId(), 0)
-            requester.extendFriendsList(requested.getDoId(), 0)
+            requested.extendFriendsList(requester.getDoId())
+            requester.extendFriendsList(requested.getDoId())
 
             requested.d_setFriendsList(requested.getFriendsList())
             requester.d_setFriendsList(requester.getFriendsList())

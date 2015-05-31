@@ -160,6 +160,8 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.redeemedCodes = []
         self.ignored = []
         self.reported = []
+        self.trueFriends = []
+        self.fishBingoTutorialDone = False
 
     def generate(self):
         DistributedPlayerAI.DistributedPlayerAI.generate(self)
@@ -507,14 +509,11 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def getFriendsList(self):
         return self.friendsList
 
-    def extendFriendsList(self, friendId, friendCode):
-        for i in xrange(len(self.friendsList)):
-            friendPair = self.friendsList[i]
-            if friendPair[0] == friendId:
-                self.friendsList[i] = (friendId, friendCode)
-                return
+    def extendFriendsList(self, friendId):
+        if friendId in self.friendsList:
+            return
 
-        self.friendsList.append((friendId, friendCode))
+        self.friendsList.append(friendId)
         self.air.questManager.toonMadeFriend(self)
 
     def d_setMaxNPCFriends(self, max):
@@ -4075,6 +4074,19 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         if self.isCodeRedeemed(code):
             self.redeemedCodes.remove(code)
             self.b_setRedeemedCodes(self.redeemedCodes)
+    
+    def setTrueFriends(self, trueFriends):
+        self.trueFriends = trueFriends
+
+    def d_setTrueFriends(self, trueFriends):
+        self.sendUpdate('setTrueFriends', [trueFriends])
+
+    def b_setTrueFriends(self, trueFriends):
+        self.setTrueFriends(trueFriends)
+        self.d_setTrueFriends(trueFriends)
+
+    def getTrueFriends(self, trueFriends):
+        return self.trueFriends
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[str, int, int])
 def cheesyEffect(value, hood=0, expire=0):

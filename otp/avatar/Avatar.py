@@ -144,7 +144,7 @@ class Avatar(Actor, ShadowCaster):
         elif self.playerType not in (NametagGlobals.CCNormal, NametagGlobals.CCSpeedChat):
             self.understandable = 1
             self.setPlayerType(NametagGlobals.CCNonPlayer)
-        elif settings['trueFriends'] and base.cr.getFriendFlags(self.doId) & OTPGlobals.FriendChat:
+        elif settings['trueFriends'] and base.localAvatar.isTrueFriends(self.doId):
             self.understandable = 2
             self.setPlayerType(NametagGlobals.CCNormal)
         elif settings['speedchatPlus']:

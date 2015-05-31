@@ -12,7 +12,6 @@ from pandac.PandaModules import Vec3, Vec4, Point3, TextNode, VBase4
 
 from otp.otpbase import OTPGlobals
 from otp.otpbase import OTPLocalizer
-from toontown.friends.FriendsListPanel import determineFriendName
 from toontown.nametag.Nametag import Nametag
 from toontown.nametag.NametagFloat2d import *
 from toontown.nametag import NametagGlobals
@@ -462,8 +461,8 @@ class PartyPlanner(DirectFrame, FSM):
             self.noFriends = True
         else:
             self.noFriends = False
-            for friendPair in base.localAvatar.friendsList:
-                self.friendList.addFriend(determineFriendName(friendPair), friendPair[0])
+            for friendId in base.localAvatar.friendsList:
+                self.friendList.addFriend(friendId)
 
             self.friendList.scrollTo(0)
         pos = self.gui.find('**/step_04_partyWillBe_locator').getPos()

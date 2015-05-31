@@ -134,7 +134,7 @@ def getModelWidthHeight(model):
     return (width, height)
 
 def getFriendColor(id):
-    return CCNormal if settings['trueFriends'] and base.cr.getFriendFlags(id) & OTPGlobals.FriendChat else CCNormal
+    return CCNormal if settings['trueFriends'] and base.localAvatar.isTrueFriends(id) else CCNormal
 
 # Foreground, background:
 NametagColors = {

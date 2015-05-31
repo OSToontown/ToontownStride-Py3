@@ -150,7 +150,7 @@ dclass DistributedPlayer : DistributedAvatar {
   setSystemMessage(DoId aboutId, string(0-256) chatString) ownrecv;
   setSC(uint16 msgIndex) broadcast ownsend airecv;
   setSCCustom(uint16 msgIndex) broadcast ownsend airecv;
-  setFriendsList(FriendEntry[] = []) ownrecv required db airecv;
+  setFriendsList(uint32[] = []) ownrecv required db airecv;
   setDISLid(uint32 = 0) broadcast ownrecv ram db airecv required;
   WishName(string = "") db ram;
   WishNameState(string = "OPEN") db ram;
@@ -630,8 +630,8 @@ dclass DistributedToon : DistributedPlayer {
   takeDamage(uint16) broadcast ownrecv;
   setBattleId(uint32 = 0) required broadcast ram;
   setExperience(blob = [0*14]) required broadcast db;
-  setIgnored(uint32[]) required clsend airecv ownrecv db;
-  setReported(uint32[]) required ownrecv db;
+  setIgnored(uint32[] = []) required clsend airecv ownrecv db;
+  setReported(uint32[] = []) required ownrecv db;
   setMaxCarry(uint8 = 20) required ownrecv db;
   setTrackAccess(uint16[] = [0,0,0,0,1,1,0]) required broadcast ownrecv db;
   setTrackProgress(int8 = -1, uint32 = 0) required ownrecv db;
@@ -798,6 +798,7 @@ dclass DistributedToon : DistributedPlayer {
   setBuffs(uint32[] = []) required ownrecv db;
   setRedeemedCodes(string [] = []) required ownrecv db;
   setEmblems(uint32[] = [0, 0]) required ownrecv db;
+  setTrueFriends(uint32[] = []) required clsend ownrecv db;
 };
 
 dclass DistributedPartyGate : DistributedObject {

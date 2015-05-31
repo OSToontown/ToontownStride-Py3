@@ -628,25 +628,9 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         return 0
 
     def isFriend(self, doId):
-        for friendId, flags in base.localAvatar.friendsList:
-            if friendId == doId:
-                self.identifyFriend(doId)
-                return 1
-
-        return 0
-
-    def isAvatarFriend(self, doId):
-        for friendId, flags in base.localAvatar.friendsList:
-            if friendId == doId:
-                self.identifyFriend(doId)
-                return 1
-
-        return 0
-
-    def getFriendFlags(self, doId):
-        for friendId, flags in base.localAvatar.friendsList:
-            if friendId == doId:
-                return flags
+        if doId in base.localAvatar.friendsList:
+            self.identifyFriend(doId)
+            return 1
 
         return 0
 
@@ -694,7 +678,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             return self.identifyFriend(doId)
 
     def isFriendsMapComplete(self):
-        for friendId, flags in base.localAvatar.friendsList:
+        for friendId in base.localAvatar.friendsList:
             if self.identifyFriend(friendId) == None:
                 return 0
 
@@ -749,7 +733,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         PetDetail.PetDetail(doId, petDetailsCallback)
 
     def handleGetFriendsList(self, resp):
-        print len(resp)
         for toon in resp:
             doId = toon[0]
             name = toon[1]
@@ -979,15 +962,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         for doId, obj in self.doId2do.items():
             if obj.parentId == localAvatar.defaultShard and obj is not localAvatar:
                 self.deleteObject(doId)
-
-    def askAvatarKnown(self, avId):
-        if not hasattr(base, 'localAvatar'):
-            return 0
-        for friendPair in base.localAvatar.friendsList:
-            if friendPair[0] == avId:
-                return 1
-
-        return 0
 
     def requestAvatarInfo(self, avId):
         if avId == 0:

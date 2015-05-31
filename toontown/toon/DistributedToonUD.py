@@ -525,3 +525,6 @@ class DistributedToonUD(DistributedObjectUD):
 
     def setRedeemedCodes(self, redeemedCodes):
         pass
+    
+    def setTrueFriends(self, trueFriends):
+        pass

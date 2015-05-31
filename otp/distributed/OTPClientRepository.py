@@ -1252,9 +1252,6 @@ class OTPClientRepository(ClientRepositoryBase):
 
     @exceptionLogged(append=False)
     def handleDatagram(self, di):
-        if self.notify.getDebug():
-            print 'ClientRepository received datagram:'
-            di.getDatagram().dumpHex(ostream)
         msgType = self.getMsgType()
         if msgType == 65535:
             self.lostConnection()
@@ -1266,9 +1263,6 @@ class OTPClientRepository(ClientRepositoryBase):
         self.considerHeartbeat()
         return
 
-    def askAvatarKnown(self, avId):
-        return 0
-
     def queueRequestAvatarInfo(self, avId):
         pass
 
@@ -1277,11 +1271,8 @@ class OTPClientRepository(ClientRepositoryBase):
 
     def identifyAvatar(self, doId):
         info = self.doId2do.get(doId)
-        if info:
-            return info
-        else:
-            info = self.identifyFriend(doId)
-        return info
+        
+        return info if info else self.identifyFriend(doId)
 
     def sendDisconnect(self):
         if self.isConnected():
