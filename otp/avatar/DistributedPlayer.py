@@ -15,7 +15,6 @@ from toontown.chat.ChatGlobals import *
 from toontown.chat.WhisperPopup import WhisperPopup
 
 class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBase, TelemetryLimited):
-    TeleportFailureTimeout = 60.0
     chatGarbler = ChatGarbler.ChatGarbler({'default': OTPLocalizer.ChatGarblerDefault})
 
     def __init__(self, cr):
@@ -30,9 +29,6 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
             self.inventory = None
             self.experience = None
             self.friendsList = []
-            self.oldFriendsList = None
-            self.timeFriendsListChanged = None
-            self.lastFailedTeleportMessage = {}
             self._districtWeAreGeneratedOn = None
             self.DISLid = 0
             self.adminAccess = 0
@@ -271,20 +267,8 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
             self.setSystemMessage(requesterId, OTPLocalizer.WhisperComingToVisit % avatar.getName())
             messenger.send('teleportQuery', [avatar, self])
         else:
-            if self.failedTeleportMessageOk(requesterId):
-                self.setSystemMessage(requesterId, OTPLocalizer.WhisperFailedVisit % avatar.getName())
-            
+            self.setSystemMessage(requesterId, OTPLocalizer.WhisperFailedVisit % avatar.getName())
             self.d_teleportResponse(self.doId, 0, 0, 0, 0, sendToId=requesterId)
-
-    def failedTeleportMessageOk(self, fromId):
-        now = globalClock.getFrameTime()
-        lastTime = self.lastFailedTeleportMessage.get(fromId, None)
-        if lastTime != None:
-            elapsed = now - lastTime
-            if elapsed < self.TeleportFailureTimeout:
-                return 0
-        self.lastFailedTeleportMessage[fromId] = now
-        return 1
 
     def d_teleportResponse(self, avId, available, shardId, hoodId, zoneId, sendToId):
         teleportNotify.debug('sending teleportResponse%s' % ((avId, available,
@@ -347,9 +331,7 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
         return self.friendsList
 
     def setFriendsList(self, friendsList):
-        self.oldFriendsList = self.friendsList
         self.friendsList = friendsList
-        self.timeFriendsListChanged = globalClock.getFrameTime()
         messenger.send('friendsListChanged')
         Avatar.reconsiderAllUnderstandable()
 

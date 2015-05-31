@@ -1128,21 +1128,13 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
 
     def __friendOnline(self, doId):
         friend = base.cr.identifyFriend(doId)
-        if self.oldFriendsList != None:
-            now = globalClock.getFrameTime()
-            elapsed = now - self.timeFriendsListChanged
-            if elapsed < 10.0 and self.oldFriendsList.count(doId) == 0:
-                self.oldFriendsList.append(doId)
-                return
         if friend != None:
             self.setSystemMessage(doId, OTPLocalizer.WhisperFriendComingOnline % friend.getName())
-        return
 
     def __friendOffline(self, doId):
         friend = base.cr.identifyFriend(doId)
         if friend != None:
             self.setSystemMessage(0, OTPLocalizer.WhisperFriendLoggedOut % friend.getName())
-        return
 
     def clickedWhisper(self, doId):
         friend = base.cr.identifyFriend(doId)
