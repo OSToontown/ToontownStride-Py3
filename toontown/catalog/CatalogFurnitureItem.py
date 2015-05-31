@@ -3,6 +3,7 @@ import CatalogItem
 import random
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
+from pandac.PandaModules import *
 FTModelName = 0
 FTColor = 1
 FTColorOptions = 2
@@ -1028,7 +1029,7 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
         return 1
 
     def getPicture(self, avatar):
-        model = self.loadModel()
+        model = self.loadModel(animate=0)
         spin = 1
         flags = self.getFlags()
         if flags & FLRug:
@@ -1064,7 +1065,7 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
     def getBasePrice(self):
         return FurnitureTypes[self.furnitureType][FTBasePrice]
 
-    def loadModel(self):
+    def loadModel(self, animate=1):
         type = FurnitureTypes[self.furnitureType]
         model = loader.loadModel(type[FTModelName])
         self.applyColor(model, type[FTColor])
@@ -1079,14 +1080,20 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
             if not scale == None:
                 model.setScale(scale)
                 model.flattenLight()
-        if self.furnitureType == 1530:
-            print 'TV'
-            movie = loader.loadTexture('phase_5.5/movies/cheekyscrublords.mpg')
-            sound = loader.loadSfx('phase_5.5/movies/cheekyscrublords.mpg')
-            movie.synchronizeTo(sound)
-            model.find('**/toonTownBugTV_screen').setTexture(movie)
-            sound.setLoop(True)
-            sound.play()
+        if self.furnitureType == 1530 and animate:
+            movie = loader.loadTexture('phase_5.5/movies/cheekyscrublords.avi')
+            self.sound = loader.loadSfx('phase_5.5/movies/cheekyscrublords.mp3')
+            movie.synchronizeTo(self.sound)
+            screen = NodePath(CardMaker('tv-screen').generate())
+            screen.reparentTo(model)
+            
+            screen.setScale(2.5, 1.7, 1.4)
+            screen.setPos(-1.15, -0.5, 1.1)
+            screen.setTexture(movie)
+            screen.setTexScale(TextureStage.getDefault(), movie.getTexScale())
+            model.find('**/toonTownBugTV_screen').hide()
+            self.sound.setLoop(True)
+            self.sound.play()
         return model
 
     def decodeDatagram(self, di, versionNumber, store):
