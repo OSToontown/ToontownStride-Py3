@@ -1079,6 +1079,14 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
             if not scale == None:
                 model.setScale(scale)
                 model.flattenLight()
+        if self.furnitureType == 1530:
+            print 'TV'
+            movie = loader.loadTexture('phase_5.5/movies/cheekyscrublords.mpg')
+            sound = loader.loadSfx('phase_5.5/movies/cheekyscrublords.mpg')
+            movie.synchronizeTo(sound)
+            model.find('**/toonTownBugTV_screen').setTexture(movie)
+            sound.setLoop(True)
+            sound.play()
         return model
 
     def decodeDatagram(self, di, versionNumber, store):
