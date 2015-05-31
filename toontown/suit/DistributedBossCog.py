@@ -1038,7 +1038,7 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
             return
         if not self.allowClickedNameTag:
             return
-        FriendsListManager.FriendsListManager._FriendsListManager__handleClickedNametag(avatar)
+        FriendsListManager.FriendsListManager._FriendsListManager__handleClickedNametag(FriendsListManager.FriendsListManager, avatar)
 
     def __handleFriendAvatar(self, avId, avName, avDisableName):
         self.notify.debug('__handleFriendAvatar')
@@ -1049,7 +1049,7 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
         if self.cr:
             place = self.cr.playGame.getPlace()
             if place and hasattr(place, 'fsm'):
-                FriendsListManager.FriendsListManager._FriendsListManager__handleFriendAvatar(place, avId, avName, avDisableName)
+                FriendsListManager.FriendsListManager._FriendsListManager__handleFriendAvatar(FriendsListManager.FriendsListManager, place, avId, avName, avDisableName)
 
     def __handleAvatarDetails(self, avId, avName):
         self.notify.debug('__handleAvatarDetails')
@@ -1060,7 +1060,7 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
         if self.cr:
             place = self.cr.playGame.getPlace()
             if place and hasattr(place, 'fsm'):
-                FriendsListManager.FriendsListManager._FriendsListManager__handleAvatarDetails(place, avId, avName)
+                FriendsListManager.FriendsListManager._FriendsListManager__handleAvatarDetails(FriendsListManager.FriendsListManager, place, avId, avName)
 
     def enterBattleFour(self):
         self.cleanupIntervals()
