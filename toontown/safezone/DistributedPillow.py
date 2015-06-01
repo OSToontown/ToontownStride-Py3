@@ -56,7 +56,8 @@ class DistributedPillow(DistributedObject):
             polyNode.setFromCollideMask(OTPGlobals.FloorBitmask)
             polyNodePath = self.np.attachNewNode(polyNode)
             self.npaths.append(polyNodePath)
-            self.accept("enterFloorPoly-%d" % n, self.gravityLow)
+            self.accept("enterFloorPoly-%d" % n, self.gravityHigh)
+            self.accept("enterdonalds_dreamland", self.gravityLow)
         for wall in DistributedPillow.walls:
             ab = DistributedPillow.points[wall[0]]
             bb = DistributedPillow.points[wall[1]]

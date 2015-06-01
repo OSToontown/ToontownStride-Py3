@@ -4387,6 +4387,14 @@ def name(name=''):
     else:
         return "%s's name is now empty!" % _name
 
+@magicWord(category=CATEGORY_SYSTEM_ADMINISTRATOR, types=[int])
+def squish(laff):
+    """
+    Squish a toon.
+    """
+    target = spellbook.getTarget()
+    target.squish(laff)
+
 @magicWord(category=CATEGORY_CREATIVE, types=[int, int])
 def hat(hatIndex, hatTex=0):
     """
@@ -4397,6 +4405,10 @@ def hat(hatIndex, hatTex=0):
     if not 0 <= hatTex < len(ToonDNA.HatTextures):
         return 'Invalid hat texture.'
     invoker = spellbook.getInvoker()
+    target = spellbook.getTarget()
+    if target != invoker:
+        target.b_setHat(hatIndex, hatTex, 0)
+        return "Set %s's hat to %d, %d!" % (target.getName(), hatIndex, hatTex)
     invoker.b_setHat(hatIndex, hatTex, 0)
     return "Set %s's hat to %d, %d!" % (invoker.getName(), hatIndex, hatTex)
 
@@ -4410,6 +4422,10 @@ def glasses(glassesIndex, glassesTex=0):
     if not 0 <= glassesTex < len(ToonDNA.GlassesTextures):
         return 'Invalid glasses texture.'
     invoker = spellbook.getInvoker()
+    target = spellbook.getTarget()
+    if target != invoker:
+        target.b_setGlasses(glassesIndex, glassesTex, 0)
+        return "Set %s's glasses to %d, %d!" % (target.getName(), glassesIndex, glassesTex)
     invoker.b_setGlasses(glassesIndex, glassesTex, 0)
     return "Set %s's glasses to %d, %d!" % (invoker.getName(), glassesIndex, glassesTex)
 
@@ -4436,6 +4452,10 @@ def shoes(shoesIndex, shoesTex=0):
     if not 0 <= shoesTex < len(ToonDNA.ShoesTextures):
         return 'Invalid shoes texture.'
     invoker = spellbook.getInvoker()
+    target = spellbook.getTarget()
+    if target != invoker:
+        target.b_setShoes(shoesIndex, shoesTex, 0)
+        return "Set %s's shoes to %d, %d!" % (target.getName(), shoesIndex, shoesTex)
     invoker.b_setShoes(shoesIndex, shoesTex, 0)
     return "Set %s's shoes to %d, %d!" % (invoker.getName(), shoesIndex, shoesTex)
 
