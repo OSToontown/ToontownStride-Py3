@@ -11,7 +11,7 @@ class NPCFriendPage(ShtikerPage.ShtikerPage):
 
     def load(self):
         self.title = DirectLabel(parent=self, relief=None, text=TTLocalizer.NPCFriendPageTitle, text_scale=0.12, textMayChange=0, pos=(0, 0, 0.6))
-        self.friendPanel = NPCFriendPanel.NPCFriendPanel(parent=self)
+        self.friendPanel = NPCFriendPanel.NPCFriendPanel(parent=self, callable=False)
         self.friendPanel.setScale(0.1225)
         self.friendPanel.setZ(-0.03)
         return
@@ -22,7 +22,8 @@ class NPCFriendPage(ShtikerPage.ShtikerPage):
         del self.friendPanel
 
     def updatePage(self):
-        self.friendPanel.update(base.localAvatar.NPCFriendsDict, fCallable=0)
+        self.friendPanel.setFriends(base.localAvatar.NPCFriendsDict)
+        self.friendPanel.update()
 
     def enter(self):
         self.updatePage()

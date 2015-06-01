@@ -149,7 +149,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.maxMoney = 0
         self.maxBankMoney = 0
         self.emblems = [0, 0]
-        self.maxNPCFriends = 16
         self.petId = 0
         self.petTutorialDone = False
         self.fishBingoTutorialDone = False
@@ -551,17 +550,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         chatString = TTSCDecoders.decodeTTSCToontaskMsg(taskId, toNpcId, toonProgress, msgIndex)
         if chatString:
             self.displayWhisper(fromId, chatString, WTQuickTalker)
-
-    def setMaxNPCFriends(self, max):
-        max &= 32767
-        if max != self.maxNPCFriends:
-            self.maxNPCFriends = max
-            messenger.send(self.uniqueName('maxNPCFriendsChange'))
-        else:
-            self.maxNPCFriends = max
-
-    def getMaxNPCFriends(self):
-        return self.maxNPCFriends
 
     def getNPCFriendsDict(self):
         return self.NPCFriendsDict

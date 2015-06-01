@@ -55,9 +55,6 @@ class DistributedToonUD(DistributedObjectUD):
     def setInventory(self, todo0):
         pass
 
-    def setMaxNPCFriends(self, todo0):
-        pass
-
     def setNPCFriendsDict(self, todo0):
         pass
 

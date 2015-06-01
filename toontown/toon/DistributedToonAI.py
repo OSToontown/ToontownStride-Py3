@@ -516,31 +516,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.friendsList.append(friendId)
         self.air.questManager.toonMadeFriend(self)
 
-    def d_setMaxNPCFriends(self, max):
-        self.sendUpdate('setMaxNPCFriends', [max])
-
-    def setMaxNPCFriends(self, max):
-        if max & 32768:
-            self.b_setSosPageFlag(1)
-            max &= 32767
-        configMax = simbase.config.GetInt('max-sos-cards', 16)
-        if configMax != max:
-            if self.sosPageFlag == 0:
-                self.b_setMaxNPCFriends(configMax)
-            else:
-                self.b_setMaxNPCFriends(configMax | 32768)
-        else:
-            self.maxNPCFriends = max
-        if self.maxNPCFriends != 8 and self.maxNPCFriends != 16:
-            self.notify.warning('Wrong max SOS cards %s, %d' % (self.maxNPCFriends, self.doId))
-
-    def b_setMaxNPCFriends(self, max):
-        self.setMaxNPCFriends(max)
-        self.d_setMaxNPCFriends(max)
-
-    def getMaxNPCFriends(self):
-        return self.maxNPCFriends
-
     def getBattleId(self):
         if self.battleId >= 0:
             return self.battleId
@@ -591,8 +566,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         if npcFriend in self.NPCFriendsDict:
             self.NPCFriendsDict[npcFriend] += numCalls
         elif npcFriend in npcFriends:
-            if len(self.NPCFriendsDict.keys()) >= self.maxNPCFriends:
-                return 0
             self.NPCFriendsDict[npcFriend] = numCalls
         else:
             self.notify.warning('invalid NPC: %d' % npcFriend)
@@ -600,8 +573,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         if self.NPCFriendsDict[npcFriend] > self.maxCallsPerNPC:
             self.NPCFriendsDict[npcFriend] = self.maxCallsPerNPC
         self.d_setNPCFriendsDict(self.NPCFriendsDict)
-        if self.sosPageFlag == 0:
-            self.b_setMaxNPCFriends(self.maxNPCFriends | 32768)
         self.air.questManager.toonMadeNPCFriend(self, numCalls, method)
         return 1
 

@@ -40,7 +40,7 @@ class TownBattleSOSPanel(DirectFrame, StateData.StateData):
         self['image_pos'] = (0.0, 0.1, -0.08)
         self.setScale(0.3)
         self.title = DirectLabel(parent=self, relief=None, text=TTLocalizer.TownBattleSOSNoFriends, text_scale=0.4, text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), pos=(0.0, 0.0, 1.5))
-        self.NPCFriendPanel = NPCFriendPanel.NPCFriendPanel(parent=self, doneEvent=self.doneEvent)
+        self.NPCFriendPanel = NPCFriendPanel.NPCFriendPanel(parent=self, callable=True, doneEvent=self.doneEvent)
         self.NPCFriendPanel.setPos(-0.75, 0, -0.15)
         self.NPCFriendPanel.setScale(0.325)
         self.NPCFriendsLabel = DirectLabel(parent=self, relief=None, text=TTLocalizer.TownBattleSOSNPCFriends, text_scale=0.3, text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), pos=(-0.75, 0.0, -2.0))
@@ -195,7 +195,8 @@ class TownBattleSOSPanel(DirectFrame, StateData.StateData):
             else:
                 self.NPCFriends[friend] = count
 
-        self.NPCFriendPanel.update(self.NPCFriends, fCallable=1)
+        self.NPCFriendPanel.setFriends(self.NPCFriends)
+        self.NPCFriendPanel.update()
 
     def __updateTitleText(self):
         isEmpty = (len(self.friends) == 0 and len(self.NPCFriends) == 0)
