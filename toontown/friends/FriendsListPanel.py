@@ -271,8 +271,8 @@ class FriendsListPanel(DirectFrame, StateData.StateData):
             friendButton.destroy()
             del self.friends[friendId]
 
-        self.createButtons(admins, NametagColors[CCAdmin][0][0])
         self.createButtons(petFriends, NametagColors[CCNonPlayer][0][0])
+        self.createButtons(admins, NametagColors[CCAdmin][0][0])
         self.createButtons(trueFriends, NametagColors[CCNormal][0][0])
         self.createButtons(friends, NametagColors[CCSpeedChat][0][0])
 

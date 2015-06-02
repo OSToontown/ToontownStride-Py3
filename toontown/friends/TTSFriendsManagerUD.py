@@ -117,46 +117,6 @@ class RemoveFriendOperation(OperationFSM):
             {'setFriendsList' : [friendsList]})
         self.demand('Off')
 
-
-# -- Avatar Details --
-class FriendDetailsOperation(OperationFSM):
-
-    def __init__(self, mgr, air, senderAvId, targetAvId=None, callback=None, friendIds=None):
-        OperationFSM.__init__(self, mgr, air, senderAvId, targetAvId, callback)
-        self.friendIds = friendIds
-
-    def enterStart(self):
-        self.air.dbInterface.queryObject(self.air.dbId, self.sender,
-            self.handleRetrieve)
-
-    def handleRetrieve(self, dclass, fields):
-        if dclass != self.air.dclassesByName['DistributedToonUD']:
-            self.demand('Error', 'Distributed Class was not a Toon.')
-            return
-
-        self.demand('Retrieved', fields['setFriendsList'][0])
-
-    def enterRetrieved(self, friendsList):
-        self.currId = 0
-        for id in self.friendIds:
-            if id in friendsList:
-                self.currId = id
-                self.air.dbInterface.queryObject(self.air.dbId, id,
-                    self.handleFriend)
-        self.demand('Off')
-
-    def handleFriend(self, dclass, fields):
-        if dclass != self.air.dclassesByName['DistributedToonUD']:
-            self.demand('Error', 'Distributed Class was not a Toon.')
-            return
-        name = fields['setName'][0]
-        dna = fields['setDNAString'][0]
-        petId = fields['setPetId'][0]
-
-        self.mgr.sendUpdateToAvatarId(self.sender, 'friendInfo',
-            [self.currId, name, dna, petId])
-
-
 # -- Clear List --
 class ClearListOperation(OperationFSM):
 
@@ -221,13 +181,6 @@ class TTSFriendsManagerUD(DistributedObjectGlobalUD):
         newOperation.demand('Start')
 
     # -- Avatar Info --
-    def requestAvatarInfo(self, friendIdList):
-        avId = self.air.getAvatarIdFromSender()
-        newOperation = FriendDetailsOperation(self, self.air, avId,
-            friendIds = friendIdList)
-        self.operations.append(newOperation)
-        newOperation.demand('Start')
-
     def getAvatarDetails(self, avId):
         senderId = self.air.getAvatarIdFromSender()
         def handleToon(dclass, fields):

@@ -1263,9 +1263,6 @@ class OTPClientRepository(ClientRepositoryBase):
         self.considerHeartbeat()
         return
 
-    def queueRequestAvatarInfo(self, avId):
-        pass
-
     def identifyFriend(self, doId):
         pass
 

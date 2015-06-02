@@ -740,28 +740,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.friendsMapPending = 0
         messenger.send('friendsMapComplete')
 
-    def handleGetFriendsListExtended(self, resp):
-        for toon in resp:
-            abort = 0
-            doId = toon[0]
-            name = toon[1]
-            if name == '':
-                abort = 1
-            dnaString = toon[2]
-            if dnaString == '':
-                abort = 1
-            else:
-                dna = ToonDNA.ToonDNA()
-                dna.makeFromNetString(dnaString)
-            adminAccess = toon[3]
-            petId = toon[4]
-            if not abort:
-                handle = FriendHandle.FriendHandle(doId, name, dna, adminAccess, petId)
-                avatarHandleList.append(handle)
-
-        if avatarHandleList:
-            messenger.send('gotExtraFriendHandles', [avatarHandleList])
-
     def handleFriendOnline(self, doId):
         self.notify.debug('Friend %d now online.' % doId)
         if doId not in self.friendsOnline:
@@ -946,26 +924,5 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
     def _abandonShard(self):
         for doId, obj in self.doId2do.items():
             if obj.parentId == localAvatar.defaultShard and obj is not localAvatar:
+
                 self.deleteObject(doId)
-
-    def requestAvatarInfo(self, avId):
-        if avId == 0:
-            return
-        self.ttsFriendsManager.d_requestAvatarInfo([avId])
-
-    def queueRequestAvatarInfo(self, avId):
-        removeTask = 0
-        if not hasattr(self, 'avatarInfoRequests'):
-            self.avatarInfoRequests = []
-        if self.avatarInfoRequests:
-            taskMgr.remove('avatarRequestQueueTask')
-        if avId not in self.avatarInfoRequests:
-            self.avatarInfoRequests.append(avId)
-        taskMgr.doMethodLater(0.1, self.sendAvatarInfoRequests, 'avatarRequestQueueTask')
-
-    def sendAvatarInfoRequests(self, task = None):
-        if not hasattr(self, 'avatarInfoRequests'):
-            return
-        if len(self.avatarInfoRequests) == 0:
-            return
-        self.ttsFriendsManager.d_requestAvatarInfo(self.avatarInfoRequests)

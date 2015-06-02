@@ -3325,11 +3325,9 @@ uint32 petId;
 
 dclass TTSFriendsManager : DistributedObjectGlobal {
   removeFriend(uint32) clsend;
-  requestAvatarInfo(uint32[]) clsend;
 
   requestFriendsList() clsend;
 
-  friendInfo(Friend);
   friendList(Friend []);
 
   friendOnline(uint32);
