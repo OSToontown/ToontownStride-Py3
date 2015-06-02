@@ -103,28 +103,6 @@ loadPrcFileData('Settings: musicVol', 'audio-master-music-volume %s' % settings[
 loadPrcFileData('Settings: sfxVol', 'audio-master-sfx-volume %s' % settings['sfxVol'])
 loadPrcFileData('Settings: loadDisplay', 'load-display %s' % settings['loadDisplay'])
 
-import os
-
-from toontown.toonbase.ContentPacksManager import ContentPackError
-from toontown.toonbase.ContentPacksManager import ContentPacksManager
-
-
-contentPacksFilepath = ConfigVariableString(
-    'content-packs-filepath', 'user/contentpacks/').getValue()
-contentPacksSortFilename = ConfigVariableString(
-    'content-packs-sort-filename', 'sort.yaml').getValue()
-if not os.path.exists(contentPacksFilepath):
-    os.makedirs(contentPacksFilepath)
-__builtin__.ContentPackError = ContentPackError
-__builtin__.contentPacksMgr = ContentPacksManager(
-    filepath=contentPacksFilepath, sortFilename=contentPacksSortFilename)
-contentPacksMgr.applyAll()
-
-languagePack = settings['language'].lower() + '.mf'
-
-if contentPacksMgr.isApplicable(languagePack):
-    contentPacksMgr.applyMultifile(languagePack)
-
 import time
 import sys
 import random
