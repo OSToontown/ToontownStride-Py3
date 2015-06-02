@@ -134,8 +134,12 @@ def getModelWidthHeight(model):
     height = maxPoint.getZ() - minPoint.getZ()
     return (width, height)
 
-def getFriendColor(id):
-    return CCNormal if settings['trueFriends'] and base.localAvatar.isTrueFriends(id) else CCNormal
+def getFriendColor(handle):
+    if handle.isAdmin():
+        return CCAdmin
+    elif settings['trueFriends'] and base.localAvatar.isTrueFriends(handle.doId):
+        return CCNormal
+    return CCSpeedChat
 
 # Foreground, background:
 NametagColors = {

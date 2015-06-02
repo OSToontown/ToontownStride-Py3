@@ -109,7 +109,7 @@ class ToonStatueSelectionGUI(DirectFrame):
             handle = base.cr.identifyFriend(friendId)
             if handle and not self.checkFamily(friendId):
                 if hasattr(handle, 'getName'):
-                    newFF = (friendId, handle.getName(), NametagGlobals.getFriendColor(friendId))
+                    newFF = (friendId, handle.getName(), NametagGlobals.getFriendColor(handle))
                     self.ffList.append(newFF)
                 else:
                     self.notify.warning('Bad Handle for getName in makeFFlist')

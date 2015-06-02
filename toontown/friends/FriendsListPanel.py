@@ -237,6 +237,7 @@ class FriendsListPanel(DirectFrame, StateData.StateData):
 
     def __updateScrollList(self):
         petFriends = []
+        admins = []
         trueFriends = []
         friends = []
 
@@ -246,7 +247,15 @@ class FriendsListPanel(DirectFrame, StateData.StateData):
 
             for friendId in base.localAvatar.friendsList:
                 if self.panelType != FLPOnline or base.cr.isFriendOnline(friendId):
-                    if base.localAvatar.isTrueFriends(friendId):
+                    handle = base.cr.identifyFriend(friendId)
+
+                    if not handle:
+                        base.cr.fillUpFriendsMap()
+                        return
+
+                    if handle.isAdmin():
+                        admins.insert(0, friendId)
+                    elif base.localAvatar.isTrueFriends(friendId):
                         trueFriends.insert(0, friendId)
                     else:
                         friends.insert(0, friendId)
@@ -262,6 +271,7 @@ class FriendsListPanel(DirectFrame, StateData.StateData):
             friendButton.destroy()
             del self.friends[friendId]
 
+        self.createButtons(admins, NametagColors[CCAdmin][0][0])
         self.createButtons(petFriends, NametagColors[CCNonPlayer][0][0])
         self.createButtons(trueFriends, NametagColors[CCNormal][0][0])
         self.createButtons(friends, NametagColors[CCSpeedChat][0][0])

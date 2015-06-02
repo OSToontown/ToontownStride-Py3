@@ -651,25 +651,8 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         elif self.cache.contains(doId):
             teleportNotify.debug('found friend %s in cache' % doId)
             avatar = self.cache.dict[doId]
-        else:
-            self.notify.warning("Don't know who friend %s is." % doId)
-            return
-        if not ((isinstance(avatar, DistributedToon.DistributedToon) and avatar.__class__ is DistributedToon.DistributedToon) or isinstance(avatar, DistributedPet.DistributedPet)):
-            self.notify.warning('friendsNotify%s: invalid friend object %s' % (choice(source, '(%s)' % source, ''), doId))
-            return
-        if base.wantPets:
-            if avatar.isPet():
-                if avatar.bFake:
-                    handle = PetHandle.PetHandle(avatar)
-                else:
-                    handle = avatar
-            else:
-                handle = FriendHandle.FriendHandle(doId, avatar.getName(), avatar.style, avatar.adminAccess, avatar.getPetId())
-        else:
-            handle = FriendHandle.FriendHandle(doId, avatar.getName(), avatar.style, avatar.adminAccess, '')
-        teleportNotify.debug('adding %s to friendsMap' % doId)
-        self.friendsMap[doId] = handle
-        return handle
+        self.notify.warning("Don't know who friend %s is." % doId)
+        return
 
     def identifyAvatar(self, doId):
         if doId in self.doId2do:
