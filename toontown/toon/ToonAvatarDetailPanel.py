@@ -157,12 +157,14 @@ class ToonAvatarDetailPanel(DirectFrame):
         online = 1
         if base.cr.isFriend(self.avId):
             online = base.cr.isFriendOnline(self.avId)
+        identifier = int(str(self.avId)[1:])
+
         if online:
             shardName = base.cr.getShardName(av.defaultShard)
             hoodName = base.cr.hoodMgr.getFullnameFromId(av.lastHood)
-            text = TTLocalizer.AvatarDetailPanelOnline % {'district': shardName, 'location': hoodName}
+            text = TTLocalizer.AvatarDetailPanelOnline % {'district': shardName, 'location': hoodName, 'identifier': identifier}
         else:
-            text = TTLocalizer.AvatarDetailPanelOffline
+            text = TTLocalizer.AvatarDetailPanelOffline % {'identifier': identifier}
         self.dataText['text'] = text
         self.__updateTrackInfo()
         self.__updateTrophyInfo()
