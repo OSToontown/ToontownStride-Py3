@@ -8,7 +8,6 @@ class NPCFriendPanel(DirectFrame):
         optiondefs = (('relief', None, None), ('doneEvent', None, None))
         self.defineoptions(kw, optiondefs)
         DirectFrame.__init__(self, parent=parent)
-        base.cr.lol = self
         self.callable = callable
         self.cardList = []
         self.friendDict = {}
