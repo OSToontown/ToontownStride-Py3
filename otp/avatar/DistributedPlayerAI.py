@@ -8,7 +8,6 @@ from otp.avatar import PlayerBase
 from otp.distributed import OtpDoGlobals
 from otp.otpbase import OTPLocalizer
 
-
 class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.PlayerBase):
     def __init__(self, air):
         DistributedAvatarAI.DistributedAvatarAI.__init__(self, air)
@@ -100,6 +99,9 @@ class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.Pl
 
     def getAdminAccess(self):
         return self.adminAccess
+    
+    def isAdmin(self):
+        return self.adminAccess >= MINIMUM_MAGICWORD_ACCESS
 
     def extendFriendsList(self, friendId):
         if friendId in self.friendsList:

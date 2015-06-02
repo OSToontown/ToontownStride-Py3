@@ -67,7 +67,7 @@ class FriendsListOperation(OperationFSM):
         friendId = self.friendsList[self.friendIndex]
 
         self.realFriendsList.append([friendId, fields['setName'][0],
-            fields['setDNAString'][0], fields['setPetId'][0]])
+            fields['setDNAString'][0], fields['setAdminAccess'][0], fields['setPetId'][0]])
 
         if len(self.realFriendsList) >= len(self.friendsList):
             self.result = self.realFriendsList

@@ -10,7 +10,6 @@ from otp.avatar import Avatar, AvatarPanel
 from toontown.toon import ToonHead
 from toontown.toon import LaffMeter
 from toontown.toon import ToonAvatarDetailPanel
-from toontown.friends import FriendHandle
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 from toontown.pets import Pet, PetConstants, PetDetailPanel

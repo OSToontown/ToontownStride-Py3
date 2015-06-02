@@ -664,9 +664,9 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
                 else:
                     handle = avatar
             else:
-                handle = FriendHandle.FriendHandle(doId, avatar.getName(), avatar.style, avatar.getPetId())
+                handle = FriendHandle.FriendHandle(doId, avatar.getName(), avatar.style, avatar.adminAccess, avatar.getPetId())
         else:
-            handle = FriendHandle.FriendHandle(doId, avatar.getName(), avatar.style, '')
+            handle = FriendHandle.FriendHandle(doId, avatar.getName(), avatar.style, avatar.adminAccess, '')
         teleportNotify.debug('adding %s to friendsMap' % doId)
         self.friendsMap[doId] = handle
         return handle
@@ -739,8 +739,9 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             dnaString = toon[2]
             dna = ToonDNA.ToonDNA()
             dna.makeFromNetString(dnaString)
-            petId = toon[3]
-            handle = FriendHandle.FriendHandle(doId, name, dna, petId)
+            adminAccess = toon[3]
+            petId = toon[4]
+            handle = FriendHandle.FriendHandle(doId, name, dna, adminAccess, petId)
             self.friendsMap[doId] = handle
             if doId in self.friendsOnline:
                 self.friendsOnline[doId] = handle
@@ -769,9 +770,10 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             else:
                 dna = ToonDNA.ToonDNA()
                 dna.makeFromNetString(dnaString)
-            petId = toon[3]
+            adminAccess = toon[3]
+            petId = toon[4]
             if not abort:
-                handle = FriendHandle.FriendHandle(doId, name, dna, petId)
+                handle = FriendHandle.FriendHandle(doId, name, dna, adminAccess, petId)
                 avatarHandleList.append(handle)
 
         if avatarHandleList:

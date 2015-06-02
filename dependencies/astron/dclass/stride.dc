@@ -154,7 +154,7 @@ dclass DistributedPlayer : DistributedAvatar {
   setDISLid(uint32 = 0) broadcast ownrecv ram db airecv required;
   WishName(string = "") db ram;
   WishNameState(string = "OPEN") db ram;
-  setAdminAccess(uint16 = 0) broadcast ownrecv required airecv;
+  setAdminAccess(uint16 = 0) broadcast ownrecv required airecv db;
   setAsGM(bool = 0) required ram broadcast ownrecv airecv;
 };
 
@@ -3319,6 +3319,7 @@ struct Friend
 uint32 doId;
 string name;
 blob dna;
+uint16 adminAccess;
 uint32 petId;
 };
 

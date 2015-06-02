@@ -8,6 +8,7 @@ CCToonBuilding = 3
 CCSuitBuilding = 4
 CCHouseBuilding = 5
 CCSpeedChat = 6
+CCAdmin = 7
 
 CHAT = 0
 SPEEDCHAT = 1
@@ -180,6 +181,12 @@ NametagColors = {
         (VBase4(0.0, 0.5, 0.0, 1.0), VBase4(0.5, 0.5, 0.5, 0.1875)),  # Down
         (VBase4(0.0, 0.7, 0.2, 1.0), VBase4(1.0, 1.0, 1.0, 0.5625)),  # Rollover
         (VBase4(0.0, 0.6, 0.2, 1.0), VBase4(0.8, 0.8, 0.8, 0.375))    # Disabled
+    ),
+    CCAdmin: ( # Purple
+        (VBase4(0.7, 0.3, 0.7, 1.0), VBase4(0.8, 0.8, 0.8, 0.375)),   # Normal
+        (VBase4(0.7, 0.3, 0.7, 1.0), VBase4(0.2, 0.2, 0.2, 0.1875)),  # Down
+        (VBase4(1.0, 0.5, 0.9, 1.0), VBase4(1.0, 1.0, 1.0, 0.5625)),  # Rollover
+        (VBase4(0.7, 0.3, 0.7, 1.0), VBase4(1.0, 1.0, 1.0, 0.375))    # Disabled
     )
 }
 
@@ -222,6 +229,12 @@ ChatColors = {
         (VBase4(0.0, 0.0, 0.0, 1.0), VBase4(1.0, 1.0, 1.0, 1.0))   # Disabled
     ),
     CCSpeedChat: (
+        (VBase4(0.0, 0.0, 0.0, 1.0), VBase4(1.0, 1.0, 1.0, 1.0)),  # Normal
+        (VBase4(1.0, 0.5, 0.5, 1.0), VBase4(1.0, 1.0, 1.0, 1.0)),  # Down
+        (VBase4(0.0, 0.6, 0.6, 1.0), VBase4(1.0, 1.0, 1.0, 1.0)),  # Rollover
+        (VBase4(0.0, 0.0, 0.0, 1.0), VBase4(1.0, 1.0, 1.0, 1.0))   # Disabled
+    ),
+    CCAdmin: (
         (VBase4(0.0, 0.0, 0.0, 1.0), VBase4(1.0, 1.0, 1.0, 1.0)),  # Normal
         (VBase4(1.0, 0.5, 0.5, 1.0), VBase4(1.0, 1.0, 1.0, 1.0)),  # Down
         (VBase4(0.0, 0.6, 0.6, 1.0), VBase4(1.0, 1.0, 1.0, 1.0)),  # Rollover

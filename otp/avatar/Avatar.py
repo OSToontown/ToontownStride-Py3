@@ -138,6 +138,9 @@ class Avatar(Actor, ShadowCaster):
         if hasattr(base, 'localAvatar') and (self == base.localAvatar):
             self.understandable = 1
             self.setPlayerType(NametagGlobals.CCNormal)
+        elif hasattr(self, 'adminAccess') and self.isAdmin():
+            self.understandable = 2
+            self.setPlayerType(NametagGlobals.CCAdmin)
         elif self.playerType == NametagGlobals.CCSuit:
             self.understandable = 1
             self.setPlayerType(NametagGlobals.CCSuit)

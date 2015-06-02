@@ -1,20 +1,26 @@
+from otp.ai.MagicWordGlobal import *
 from otp.avatar.Avatar import teleportNotify
-from toontown.toonbase import ToontownGlobals
-import copy
 from toontown.chat import ToonChatGarbler
-
+from toontown.toonbase import ToontownGlobals
 
 class FriendHandle:
-    def __init__(self, doId, name, style, petId, isAPet = False):
+    def __init__(self, doId, name, style, adminAccess, petId, isAPet = False):
         self.doId = doId
         self.style = style
         self.petId = petId
+        self.adminAccess = adminAccess
         self.isAPet = isAPet
         self.chatGarbler = ToonChatGarbler.ToonChatGarbler()
         self.name = name
 
     def getDoId(self):
         return self.doId
+
+    def getAdminAccess(self):
+        return self.adminAccess
+    
+    def isAdmin(self):
+        return self.adminAccess >= MINIMUM_MAGICWORD_ACCESS
 
     def getPetId(self):
         return self.petId

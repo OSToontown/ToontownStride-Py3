@@ -340,11 +340,15 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
 
     def setAdminAccess(self, access):
         self.adminAccess = access
+        self.considerUnderstandable()
         if self.isLocal():
-            self.cr.wantMagicWords = self.adminAccess >= MINIMUM_MAGICWORD_ACCESS
+            self.cr.wantMagicWords = self.isAdmin()
 
     def getAdminAccess(self):
         return self.adminAccess
+
+    def isAdmin(self):
+        return self.adminAccess >= MINIMUM_MAGICWORD_ACCESS
 
     def setAutoRun(self, value):
         self.autoRun = value

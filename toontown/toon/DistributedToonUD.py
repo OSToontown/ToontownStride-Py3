@@ -4,6 +4,9 @@ from direct.distributed.DistributedObjectUD import DistributedObjectUD
 class DistributedToonUD(DistributedObjectUD):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedToonUD")
 
+    def setAdminAccess(self, todo0):
+        pass
+
     def setDNAString(self, todo0):
         pass
 
