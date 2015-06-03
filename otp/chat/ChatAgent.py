@@ -1,19 +1,17 @@
 from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
-from pandac.PandaModules import *
-from otp.otpbase import OTPGlobals
 from otp.ai.MagicWordGlobal import *
 
 class ChatAgent(DistributedObjectGlobal):
+
     def __init__(self, cr):
         DistributedObjectGlobal.__init__(self, cr)
+        self.cr.chatAgent = self
         self.chatMode = 0
 
     def delete(self):
         self.ignoreAll()
-        self.cr.chatManager = None
         self.cr.chatAgent = None
         DistributedObjectGlobal.delete(self)
-        return
 
     def verifyMessage(self, message):
         try:
@@ -21,12 +19,6 @@ class ChatAgent(DistributedObjectGlobal):
             return True
         except:
             return False
-    
-    def adminChat(self, aboutId, message):
-        if not self.verifyMessage(message):
-            return
-        self.notify.warning('Admin Chat(%s): %s' % (aboutId, message))
-        messenger.send('adminChat', [aboutId, message])
 
     def sendChatMessage(self, message):
         if not self.verifyMessage(message):
