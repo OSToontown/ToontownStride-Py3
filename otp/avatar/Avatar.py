@@ -130,6 +130,7 @@ class Avatar(Actor, ShadowCaster):
             self.nametag.setNametagColor(nametagColor)
             chatColor = NametagGlobals.ChatColors[NametagGlobals.CCNonPlayer]
             self.nametag.setChatColor(chatColor)
+        self.setNametagName()
         self.nametag.updateAll()
 
     def considerUnderstandable(self):
@@ -221,13 +222,25 @@ class Avatar(Actor, ShadowCaster):
                 return
         self.name = name
         if hasattr(self, 'nametag'):
-            self.nametag.setText(name)
+            self.setNametagName()
 
     def setDisplayName(self, str):
         if hasattr(self, 'isDisguised'):
             if self.isDisguised:
                 return
-        self.nametag.setText(str)
+        self.setNametagName(str)
+    
+    def setNametagName(self, name=None):
+        if not name:
+            name = self.name
+
+        if hasattr(self, 'adminAccess') and self.isAdmin():
+            access = self.getAdminAccess()
+
+            if access in OTPLocalizer.AccessToString:
+                name += '\n\x01shadow\x01%s\x02' % OTPLocalizer.AccessToString[access]
+
+        self.nametag.setText(name)
 
     def getFont(self):
         return self.__font

@@ -89,6 +89,38 @@ TextPropertiesManager.getGlobalPtr().setProperties('black', black)
 grey = TextProperties()
 grey.setTextColor(0.5, 0.5, 0.5, 1)
 TextPropertiesManager.getGlobalPtr().setProperties('grey', grey)
+
+# New colors:
+# Orange
+amber = TextProperties()
+amber.setTextColor(1, 0.75, 0, 1)
+TextPropertiesManager.getGlobalPtr().setProperties('amber', amber)
+
+# Pink
+amaranth = TextProperties()
+amaranth.setTextColor(0.9, 0.17, 0.31, 1)
+TextPropertiesManager.getGlobalPtr().setProperties('amaranth', amaranth)
+
+# Green
+androidGreen = TextProperties()
+androidGreen.setTextColor(0.64, 0.78, 0.22, 1)
+TextPropertiesManager.getGlobalPtr().setProperties('androidGreen', androidGreen)
+
+# Turquoise-green
+caribbeanGreen = TextProperties()
+caribbeanGreen.setTextColor(0, 0.8, 0.6, 1)
+TextPropertiesManager.getGlobalPtr().setProperties('caribbeanGreen', caribbeanGreen)
+
+# Blue
+azure = TextProperties()
+azure.setTextColor(0, 0.5, 1, 1)
+TextPropertiesManager.getGlobalPtr().setProperties('azure', azure)
+
+# Cobalt-blue
+cobalt = TextProperties()
+cobalt.setTextColor(0, 0.28, 0.67, 1)
+TextPropertiesManager.getGlobalPtr().setProperties('cobalt', cobalt)
+
 CRConnecting = 'Connecting...'
 CRNoConnectTryAgain = 'Could not connect to %s:%s. Try again?'
 CRNoConnectProxyNoPort = 'Could not connect to %s:%s.\n\nYou are communicating to the internet via a proxy, but your proxy does not permit connections on port %s.\n\nYou must open up this port, or disable your proxy, in order to play.  If your proxy has been provided by your ISP, you must contact your ISP to request them to open up this port.'
@@ -2320,4 +2352,12 @@ def timeElapsedString(timeDelta):
     else:
         return '%s minutes ago' % (timeDelta.seconds / 60)
 
-AsciiNotSupported = 'Sorry, but Toontown United does not support non-ASCII characters.'
+AsciiNotSupported = 'Sorry, but Toontown Stride does not support non-ASCII characters.'
+AccessToString = {
+ 200: '\x01amaranth\x01Community Manager\x02',
+ 300: '\x01caribbeanGreen\x01Moderator\x02',
+ 400: '\x01amber\x01Artist\x02',
+ 500: '\x01androidGreen\x01Developer\x02',
+ 600: '\x01cobalt\x01Admin\x02',
+ 700: '\x01azure\x01System Admin\x02'
+}
