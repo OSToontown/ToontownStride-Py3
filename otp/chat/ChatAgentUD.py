@@ -48,6 +48,7 @@ class ChatAgentUD(DistributedObjectGlobalUD):
             return
 
         self.air.writeServerEvent('whisper-said', avId=sender, reciever=receiverAvId, msg=message)
+
         DistributedAvatar = self.air.dclassesByName['DistributedAvatarUD']
         dg = DistributedAvatar.aiFormatUpdate('setTalkWhisper', receiverAvId, receiverAvId, self.air.ourChannel, [sender, message])
         self.air.send(dg)

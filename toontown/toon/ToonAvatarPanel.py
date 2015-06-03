@@ -555,6 +555,10 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
         return
 
     def __handleTrueFriends(self):
+        if not settings['trueFriends']:
+            base.localAvatar.chatMgr.fsm.request('noTrueFriends')
+            return
+
         self.cleanupDialog()
         base.cr.playGame.getPlace().fsm.request('stopped')
 

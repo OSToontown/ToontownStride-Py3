@@ -22,7 +22,7 @@ class WhiteList:
         return '\x01WLRed\x01%s\x02' % text if not garbler else garbler.garble(av, text)
 
     def processText(self, text, av=None, garbler=None):
-        if (not self.words) or text.startswith('~'):
+        if (not self.words) or (text.startswith('~') and not garbler):
             return text
 
         words = text.split(' ')
