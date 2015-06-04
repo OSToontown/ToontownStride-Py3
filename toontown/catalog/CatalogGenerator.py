@@ -407,34 +407,22 @@ MonthlySchedule = ((7,
   1,
   9,
   30,
-  (
-      CatalogGardenItem(135, 1)
-    )
-  ),
+  (CatalogGardenItem(135, 1),)),
  (1,
   1,
   1,
   31,
-  (
-      CatalogGardenItem(135, 1)
-    )
-  ),
+  (CatalogGardenItem(135, 1),)),
  (4,
   1,
   4,
   30,
-  (
-      CatalogGardenItem(135, 1)
-    )
-  ),
+  (CatalogGardenItem(135, 1),)),
  (6,
   1,
   6,
   30,
-  (
-      CatalogGardenItem(135, 1)
-    )
-  ),
+  (CatalogGardenItem(135, 1),)),
  (6,
   26,
   7,
