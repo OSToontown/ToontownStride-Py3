@@ -1,5 +1,6 @@
 # Python artifacts
 *.pyc
+*.pyo
 
 # Batch
 *.bat
@@ -15,3 +16,6 @@
 
 # Git
 *.rej
+
+# Local config
+dependencies/config/local.prc
