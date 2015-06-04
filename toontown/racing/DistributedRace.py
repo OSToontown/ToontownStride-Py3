@@ -808,9 +808,9 @@ class DistributedRace(DistributedObject.DistributedObject):
             self.fog = Fog('TrackFog')
             self.fog.setColor(Vec4(0.6, 0.7, 0.8, 1.0))
             if self.isUrbanTrack:
-                self.fog.setLinearRange(200.0, 650.0)
+                self.fog.setLinearRange(1000.0, 1450.0)
             else:
-                self.fog.setLinearRange(200.0, 800.0)
+                self.fog.setLinearRange(1000.0, 1800.0)
             render.setFog(self.fog)
         self.sky.setScale(1.725)
         self.sky.reparentTo(self.dummyNode)
