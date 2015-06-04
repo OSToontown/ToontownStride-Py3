@@ -25,11 +25,6 @@ class ChatAgent(DistributedObjectGlobal):
             return
         self.sendUpdate('chatMessage', [message, self.chatMode])
 
-    def sendWhisperMessage(self, receiverAvId, message):
-        if not self.verifyMessage(message):
-            return
-        self.sendUpdate('whisperMessage', [receiverAvId, message])
-
 @magicWord(category=CATEGORY_MODERATOR, types=[int])
 def chatmode(mode=-1):
     """ Set the chat mode of the current avatar. """

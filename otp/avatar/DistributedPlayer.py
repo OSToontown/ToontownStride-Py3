@@ -189,6 +189,8 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
             return
         if base.localAvatar.isIgnored(avId):
             return
+        if base.whiteList:
+            chat = base.whiteList.processThroughAll(chat, self.chatGarbler)
         self.displayTalkWhisper(avId, chat)
 
     def displayTalk(self, chat):

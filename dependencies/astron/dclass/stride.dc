@@ -165,7 +165,6 @@ dclass MagicWordManager : DistributedObject {
 
 dclass ChatAgent : DistributedObject {
   chatMessage(string(0-256) message, uint8 chatMode) clsend;
-  whisperMessage(uint32 receiverAvId, string(0-256) message) clsend;
 };
 
 dclass FriendManager : DistributedObject {

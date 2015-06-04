@@ -38,17 +38,3 @@ class ChatAgentUD(DistributedObjectGlobalUD):
         DistributedAvatar = self.air.dclassesByName['DistributedAvatarUD']
         dg = DistributedAvatar.aiFormatUpdate('setTalk', sender, self.chatMode2channel.get(chatMode, sender), self.air.ourChannel, [message])
         self.air.send(dg)
-
-    def whisperMessage(self, receiverAvId, message):
-        sender = self.air.getAvatarIdFromSender()
-
-        if sender == 0:
-            self.air.writeServerEvent('suspicious', accId=self.air.getAccountIdFromSender(),
-                                      issue='Account sent chat without an avatar', message=message)
-            return
-
-        self.air.writeServerEvent('whisper-said', avId=sender, reciever=receiverAvId, msg=message)
-
-        DistributedAvatar = self.air.dclassesByName['DistributedAvatarUD']
-        dg = DistributedAvatar.aiFormatUpdate('setTalkWhisper', receiverAvId, receiverAvId, self.air.ourChannel, [sender, message])
-        self.air.send(dg)
