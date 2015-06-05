@@ -1,21 +1,23 @@
 from pandac.PandaModules import *
 
 def makeCard(book=False):
-    cardMaker = CardMaker('laughing-man-cm')
+    cardMaker = CardMaker('king-jake-cm')
     cardMaker.setHasUvs(1)
     cardMaker.setFrame(-0.5, 0.5, -0.5, 0.5)
 
-    nodePath = NodePath('laughing-man')
+    nodePath = NodePath('king-jake')
     nodePath.setBillboardPointEye()
 
     lmBase = nodePath.attachNewNode(cardMaker.generate())
-    lmBase.setTexture(loader.loadTexture('phase_3/maps/lm_base.rgba'))
+    lmBase.setTexture(loader.loadTexture('phase_3/maps/kj_base.png'))
     lmBase.setY(-0.3)
+    lmBase.setScale(0.845)
     lmBase.setTransparency(True)
 
     lmText = nodePath.attachNewNode(cardMaker.generate())
-    lmText.setTexture(loader.loadTexture('phase_3/maps/lm_text.rgba'))
+    lmText.setTexture(loader.loadTexture('phase_3/maps/kj_text.png'))
     lmText.setY(-0.301)
+    lmText.setScale(0.845)
     lmText.setTransparency(True)
     lmText.hprInterval(10, (0, 0, -360)).loop()
 
@@ -39,3 +41,8 @@ def addHeadEffect(head, book=False):
 def addToonEffect(toon):
     for lod in toon.getLODNames():
         addHeadEffect(toon.getPart('head', lod))
+
+"""
+from toontown.toon import LaughingManGlobals
+LaughingManGlobals.addToonEffect(base.localAvatar)
+"""

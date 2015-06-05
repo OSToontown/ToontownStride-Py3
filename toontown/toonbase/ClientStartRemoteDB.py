@@ -24,6 +24,6 @@ else:
         print response['reason']
     else:
         os.environ['TTS_PLAYCOOKIE'] = response['token']
-
+        
         # Start the game:
         import toontown.toonbase.ClientStart
