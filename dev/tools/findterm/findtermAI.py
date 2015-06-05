@@ -11,7 +11,7 @@ def processFile(f,t):
     return lines_found
 
 term = raw_input('> ')
-for x in glob.glob('../../../toontown/*/*.py'):
+for x in glob.glob('../../../toontown/*/*AI.py'):
     r = processFile(x,term)
     if r:
         print x,r

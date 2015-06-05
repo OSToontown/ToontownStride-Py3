@@ -7,13 +7,13 @@ def processFile(f,t):
     for i,x in enumerate(lines):
         if t in x:
             lines_found.append(i+1)
-            
+
     return lines_found
 
-term = raw_input('>')
+term = raw_input('> ')
 for x in glob.glob('../../../otp/*/*.py'):
     r = processFile(x,term)
     if r:
         print x,r
-        
+
 raw_input('*****')
