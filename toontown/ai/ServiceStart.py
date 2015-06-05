@@ -34,7 +34,7 @@ args = parser.parse_args()
 
 for prc in args.config:
     loadPrcFile(prc)
-    
+
 if os.path.isfile('dependencies/config/local.prc'):
     loadPrcFile('dependencies/config/local.prc')
 

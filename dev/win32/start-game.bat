@@ -23,7 +23,7 @@ if %INPUT%==1 (
     set TTS_GAMESERVER=127.0.0.1
 ) else if %INPUT%==3 (
     echo.
-    set /P TTS_GAMESERVER=Gameserver:  
+    set /P TTS_GAMESERVER=Gameserver: 
 ) else (
 	goto selection
 )
@@ -47,6 +47,8 @@ echo Starting Toontown Stride...
 echo ppython: "dependencies/panda/python/ppython.exe"
 
 if %INPUT%==2 (
+    echo Username: %ttsUsername%
+) else if %INPUT%==4 (
     echo Username: %ttsUsername%
 ) else (
     echo Username: %TTS_PLAYCOOKIE%
