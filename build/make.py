@@ -178,7 +178,7 @@ class StridePackager(NiraiPackager):
 if args.make_nri:
     if not os.path.exists('built'):
         os.mkdir('built')
-        
+
     pkg = StridePackager('built/stride.dist')
 
     pkg.add_source_dir('otp')
@@ -193,7 +193,7 @@ if args.make_nri:
 if args.compile_cxx:
     if not os.path.exists('built'):
         os.mkdir('built')
-        
+
     sys.path.append('../../../N2')
     from niraitools import NiraiCompiler
 
