@@ -29,7 +29,7 @@ def rejectConfig(issue, securityIssue=True, retarded=True):
         print '"Either down\'s or autism"\n  - JohnnyDaPirate, 2015'
     print 'Go fix that!'
     exit()
-    
+
 def entropy(string):
     prob = [float(string.count(c)) / len(string) for c in dict.fromkeys(list(string))]
     entropy = -sum([p * math.log(p) / math.log(2.0) for p in prob])
@@ -45,10 +45,10 @@ accountServerHashAlgo = config.GetString('account-server-hash-algo', 'sha512')
 if accountDBType == 'remote':
     if accountServerSecret == 'dev':
         rejectConfig('you have not changed the secret in config/local.prc')
-        
+
     if len(accountServerSecret) < 16:
         rejectConfig('the secret is too small! Make it 16+ bytes', retarded=False)
-        
+
     secretLength = len(accountServerSecret)
     ideal = entropyIdeal(secretLength) / 2
     entropy = entropy(accountServerSecret)
@@ -56,11 +56,11 @@ if accountDBType == 'remote':
         rejectConfig('the secret entropy is too low! For %d bytes,'
                      ' it should be %d. Currently it is %d' % (secretLength, ideal, entropy),
                      retarded=False)
-                     
+
     hashAlgo = getattr(hashlib, accountServerHashAlgo, None)
     if not hashAlgo:
         rejectConfig('%s is not a valid hash algo' % accountServerHashAlgo, securityIssue=False)
-        
+
     hashSize = len(hashAlgo('').digest())
 
 minAccessLevel = config.GetInt('min-access-level', 100)
@@ -147,16 +147,16 @@ class AccountDB:
 
     def lookup(self, data, callback):
         userId = data['userId']
-        
+
         data['success'] = True
         data['accessLevel'] = max(data['accessLevel'], minAccessLevel)
-        
+
         if str(userId) not in self.dbm:
             data['accountId'] = 0
-            
+
         else:
             data['accountId'] = int(self.dbm[str(userId)])
-            
+
         callback(data)
         return data
 
@@ -171,7 +171,7 @@ class AccountDB:
 
 class DeveloperAccountDB(AccountDB):
     notify = directNotify.newCategory('DeveloperAccountDB')
-    
+
     def lookup(self, userId, callback):
         return AccountDB.lookup(self, {'userId': userId,
                                        'accessLevel': 700,
@@ -200,33 +200,33 @@ class RemoteAccountDB(AccountDB):
         Token format:
         The token is obfuscated a bit, but nothing too hard to read.
         Most of the security is based on the hash.
-        
+
         I. Data contained in a token:
             A json-encoded dict, which contains timestamp, userid and extra info
-            
+
         II. Token format
             X = BASE64(ROT13(DATA)[::-1])
             H = HASH(X)[::-1]
             Token = BASE64(H + X)
         '''
-        
+
         try:
             token = token.decode('base64')
             hash, token = token[:hashSize], token[hashSize:]
-            
+
             correctHash = hashAlgo(token + accountServerSecret).digest()
             if len(hash) != len(correctHash):
-                raise ValueError('invalid hash')
-            
+                raise ValueError('Invalid hash.')
+
             value = 0
             for x, y in zip(hash[::-1], correctHash):
                 value |= ord(x) ^ ord(y)
-                
+
             if value:
-                raise ValueError('invalid hash')
-                
+                raise ValueError('Invalid hash.')
+
             token = json.loads(token.decode('base64')[::-1].decode('rot13'))
-            
+
         except:
             resp = {'success': False}
             callback(resp)
@@ -293,12 +293,12 @@ class LoginAccountFSM(OperationFSM):
             return
 
         self.account = fields
-        
+
         if self.notAfter:
             if self.account.get('LAST_LOGIN_TS', 0) > self.notAfter:
                 self.notify.debug('Rejecting old token: %d, notAfter=%d' % (self.account.get('LAST_LOGIN_TS', 0), self.notAfter))
                 return self.__handleLookup({'success': False})
-        
+
         self.demand('SetAccount')
 
     def enterCreateAccount(self):
@@ -1001,7 +1001,7 @@ class ClientServicesManagerUD(DistributedObjectGlobalUD):
             self.accountDB = RemoteAccountDB(self)
         else:
             self.notify.error('Invalid accountdb-type: ' + accountDBType)
-                
+
     def killConnection(self, connId, reason):
         datagram = PyDatagram()
         datagram.addServerHeader(

@@ -14,9 +14,9 @@ for line in prc.split('\n'):
     line = line.strip()
     if line:
         loadPrcFileData('nirai config', line)
-    
+
 del prc
-    
+
 # DC
 __builtin__.dcStream = StringStream()
 
@@ -39,18 +39,18 @@ abort = False
 for mf in mfs:
     filename = 'resources/default/phase_%s.mf' % mf
     if not os.path.isfile(filename):
-        print 'Phase %s not found' % filename 
+        print 'Phase %s not found' % filename
         abort = True
         break
-        
+
     mf = Multifile()
     mf.openRead(filename)
-        
+
     if not vfs.mount(mf, '../resources', 0):
         print 'Unable to mount %s' % filename
         abort = True
         break
-            
+
 # Packs
 pack = os.environ.get('TT_STRIDE_CONTENT_PACK')
 if pack and pack != 'default':
@@ -63,14 +63,14 @@ if pack and pack != 'default':
             ext = os.path.splitext(name)[1]
             if ext not in ('.jpg', '.jpeg', '.ogg', '.rgb'):
                 mf.removeSubfile(name)
-                
+
         mf.flush()
-            
+
         if not vfs.mount(mf, '../resources', 0):
             print 'Unable to mount %s' % filename
             abort = True
             break
-  
+
 if not abort:
     # Run
     import toontown.toonbase.ClientStart

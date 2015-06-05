@@ -31,7 +31,7 @@ if __debug__:
     
     loadPrcFile('dependencies/config/general.prc')
     loadPrcFile('dependencies/config/release/dev.prc')
-    
+
     if os.path.isfile('dependencies/config/local.prc'):
         loadPrcFile('dependencies/config/local.prc')
 
@@ -105,28 +105,6 @@ loadPrcFileData('Settings: sfx', 'audio-sfx-active %s' % settings['sfx'])
 loadPrcFileData('Settings: musicVol', 'audio-master-music-volume %s' % settings['musicVol'])
 loadPrcFileData('Settings: sfxVol', 'audio-master-sfx-volume %s' % settings['sfxVol'])
 loadPrcFileData('Settings: loadDisplay', 'load-display %s' % settings['loadDisplay'])
-
-import os
-
-from toontown.toonbase.ContentPacksManager import ContentPackError
-from toontown.toonbase.ContentPacksManager import ContentPacksManager
-
-
-contentPacksFilepath = ConfigVariableString(
-    'content-packs-filepath', 'user/contentpacks/').getValue()
-contentPacksSortFilename = ConfigVariableString(
-    'content-packs-sort-filename', 'sort.yaml').getValue()
-if not os.path.exists(contentPacksFilepath):
-    os.makedirs(contentPacksFilepath)
-__builtin__.ContentPackError = ContentPackError
-__builtin__.contentPacksMgr = ContentPacksManager(
-    filepath=contentPacksFilepath, sortFilename=contentPacksSortFilename)
-contentPacksMgr.applyAll()
-
-languagePack = settings['language'].lower() + '.mf'
-
-if contentPacksMgr.isApplicable(languagePack):
-    contentPacksMgr.applyMultifile(languagePack)
 
 import time
 import sys

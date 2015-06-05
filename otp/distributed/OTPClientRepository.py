@@ -211,14 +211,14 @@ class OTPClientRepository(ClientRepositoryBase):
 
     def hasPlayToken():
         return self.playToken != None
-    
+
     def readDCFile(self, dcFileNames=None):
         dcFile = self.getDcFile()
         dcFile.clear()
         self.dclassesByName = {}
         self.dclassesByNumber = {}
         self.hashVal = 0
-        
+
         if isinstance(dcFileNames, types.StringTypes):
             # If we were given a single string, make it a list.
             dcFileNames = [dcFileNames]
@@ -229,13 +229,13 @@ class OTPClientRepository(ClientRepositoryBase):
                 # For Nirai
                 readResult = dcFile.read(dcStream, '__dc__')
                 del __builtin__.dcStream
-                
+
             except NameError:
                 readResult = dcFile.readAll()
-            
+
             if not readResult:
                 self.notify.error("Could not read dc file.")
-                
+
         else:
             searchPath = getModelPath().getValue()
             for dcFileName in dcFileNames:
