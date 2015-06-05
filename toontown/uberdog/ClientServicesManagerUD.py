@@ -40,7 +40,7 @@ def entropyIdeal(length):
     return -length * prob * math.log(prob) / math.log(2.0)
 
 accountDBType = config.GetString('accountdb-type', 'developer')
-accountServerSecret = config.GetString('account-server-secret', 'dev') # Changed in server distribution.
+accountServerSecret = config.GetString('account-server-secret', 'dev')
 accountServerHashAlgo = config.GetString('account-server-hash-algo', 'sha512')
 if accountDBType == 'remote':
     if accountServerSecret == 'dev':
