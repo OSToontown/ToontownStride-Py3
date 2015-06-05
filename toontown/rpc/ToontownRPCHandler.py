@@ -10,7 +10,7 @@ from toontown.rpc.ToontownRPCHandlerBase import *
 from toontown.suit.SuitInvasionGlobals import INVASION_TYPE_NORMAL
 from toontown.toon import ToonDNA
 from toontown.toonbase import TTLocalizer
-from toontown.uberdog.ClientServicesManagerUD import executeHttpRequestAndLog
+from toontown.uberdog.ClientServicesManagerUD import executeHttpRequest
 
 
 class ToontownRPCHandler(ToontownRPCHandlerBase):
@@ -362,9 +362,16 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
             On success: True
             On failure: False
         """
+        if reason not in ('hacking', 'language', 'other'):
+            return False
         self.air.writeServerEvent('ban', userId, duration, reason)
-        release = 0 if duration < 0 else datetime.date.now() + (duration * 3600000)
-        executeHttpRequestAndLog('ban', username=userId, enddate=release, comment=reason)
+        if duration > 0:
+            now = datetime.date.today()
+            release = str(now + datetime.timedelta(hours=duration))
+        else:
+            release = '0000-00-00'  # Permanent ban.
+        executeHttpRequest('accounts/ban/', Id=userId, Release=release,
+                           Reason=reason)
         self.rpc_kickUser(userId, 152, reason)
         return True
 
