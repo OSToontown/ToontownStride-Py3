@@ -52,21 +52,21 @@ Gameplay.TimeRunningOutSeconds = 45.0
 Gameplay.IntroDurationSeconds = 24.0
 Gameplay.FinishDurationSeconds = 10.0
 Gameplay.GatherableFlashTime = 1.0
-Gameplay.ToonAcceleration = {'forward': 40.0,
- 'backward': 40.0,
- 'turning': 40.0,
- 'boostUp': 15.0,
- 'fall': 10.0,
+Gameplay.ToonAcceleration = {'forward': 60.0,
+ 'backward': 60.0,
+ 'turning': 60.0,
+ 'boostUp': 20.0,
+ 'fall': 15.0,
  'activeDropDown': 20.0,
  'activeDropBack': 40.0,
  'fan': 80.0}
-Gameplay.ToonDeceleration = {'forward': 5.0,
- 'backward': 3.0,
+Gameplay.ToonDeceleration = {'forward': 10.0,
+ 'backward': 10.0,
  'turning': 10.0,
  'fan': 25.0}
-Gameplay.ToonVelMax = {'forward': 15.0,
- 'backward': 6.0,
- 'turning': 10.0,
+Gameplay.ToonVelMax = {'forward': 20.0,
+ 'backward': 12.0,
+ 'turning': 15.0,
  'boost': 5.5,
  'fall': 10.0,
  'fallNoFuel': 70.0,
