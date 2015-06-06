@@ -8467,3 +8467,9 @@ TrueFriendsNotFriends = 'You cannot be True Friends with %s until you are regula
 TrueFriendsAddNotice = 'If you are playing Toontown with someone you trust, you can become True Friends.\n\nYou can chat using the keyboard with your True Friends.\n\nOther Toons won\'t understand what you\'re saying.\n\n\x01WLRed\x01However, this chat is completely unfiltered.\x02\n\nAre you sure you want to be True Friends with %s?'
 TrueFriendsAdded = 'You are now True Friends with %s!\n\nYou can now understand everything %s says.\n\nHowever, chances are %s hasn\'t added you as a True Friend yet.\n\nIf this is the case, he cannot understand you yet. Please ask %s to add you as a True Friend aswell!'
 TrueFriendsRemoved = 'You are no longer True Friends with %s.'
+
+def convertSecondsToDate(seconds):
+    m, s = divmod(seconds, 60)
+    h, m = divmod(m, 60)
+
+    print '%d:%02d:%02d' % (h, m, s)

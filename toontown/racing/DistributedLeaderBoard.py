@@ -5,7 +5,6 @@ from toontown.racing import KartShopGlobals
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase.ToonBaseGlobal import *
 from toontown.toonbase.ToontownGlobals import *
-import cPickle
 
 class DistributedLeaderBoard(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DisributedLeaderBoard')
@@ -35,10 +34,13 @@ class DistributedLeaderBoard(DistributedObject.DistributedObject):
     def setPosHpr(self, x, y, z, h, p, r):
         self.surface.setPosHpr(x, y, z, h, p, r)
 
-    def setDisplay(self, pData):
-        self.notify.debug('setDisplay: changing leaderboard text on local side')
-        trackName, recordTitle, scores = cPickle.loads(pData)
-        self.display(trackName, recordTitle, scores)
+    def setDisplay(self, track, type, results):
+        if not track in TTLocalizer.KartRace_TrackNames or len(TTLocalizer.RecordPeriodStrings) <= type:
+            return
+        
+        trackName = TTLocalizer.KartRace_TrackNames[track]
+        recordTitle = TTLocalizer.RecordPeriodStrings[type]
+        self.display(trackName, recordTitle, results)
 
     def buildListParts(self):
         self.surface = self.board.attachNewNode('surface')
@@ -78,7 +80,7 @@ class DistributedLeaderBoard(DistributedObject.DistributedObject):
         self.trackNameNode.setText(pTrackTitle)
         self.updateCount += 1
         for i in xrange(10):
-            if i > len(pLeaderList):
+            if i >= len(pLeaderList):
                 self.nameTextNodes[i].setText('-')
                 self.timeTextNodes[i].setText('-')
             else:

@@ -133,10 +133,11 @@ class GSHoodAI(HoodAI.HoodAI):
                     hpr = childDnaGroup.getHpr()
                     nameInfo = childDnaGroup.getName().split('_')
                     
-                    leaderBoard = DistributedLeaderBoardAI(simbase.air, nameInfo[1])
-                    leaderBoard.setPosHpr(pos[0], pos[1], pos[2], hpr[0], hpr[1], hpr[2])
-                    leaderBoard.generateWithRequired(zoneId)
-                    leaderBoards.append(leaderBoard)
+                    if nameInfo[1] in RaceGlobals.LBSubscription:
+                        leaderBoard = DistributedLeaderBoardAI(simbase.air, RaceGlobals.LBSubscription[nameInfo[1]])
+                        leaderBoard.setPosHpr(pos[0], pos[1], pos[2], hpr[0], hpr[1], hpr[2])
+                        leaderBoard.generateWithRequired(zoneId)
+                        leaderBoards.append(leaderBoard)
         elif isinstance(dnaGroup, DNAVisGroup):
             zoneId = int(dnaGroup.getName().split(':')[0])
 
@@ -151,12 +152,6 @@ class GSHoodAI(HoodAI.HoodAI):
         dnaData = self.air.dnaDataMap[self.zoneId]
         if dnaData.getName() == 'root':
             self.leaderBoards = self.findLeaderBoards(dnaData, self.zoneId)
-        for leaderBoard in self.leaderBoards:
-            if not leaderBoard:
-                continue
-            leaderBoardType = leaderBoard.getName()
-            for subscription in RaceGlobals.LBSubscription[leaderBoardType]:
-                leaderBoard.subscribeTo(subscription)
 
     def __cycleLeaderBoards(self, task = None):
         messenger.send('GS_LeaderBoardSwap' + str(self.zoneId))

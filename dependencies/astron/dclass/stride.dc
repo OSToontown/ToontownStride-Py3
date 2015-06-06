@@ -2623,9 +2623,14 @@ dclass DistributedStartingBlock : DistributedObject {
 dclass DistributedViewingBlock : DistributedStartingBlock {
 };
 
+struct LeaderboardResult {
+  string name;
+  uint32 time;
+};
+
 dclass DistributedLeaderBoard : DistributedObject {
   setPosHpr(int16/10, int16/10, int16/10, int16/10, int16/10, int16/10) required broadcast ram;
-  setDisplay(blob) broadcast ram;
+  setDisplay(uint8, uint8, LeaderboardResult[]) required broadcast ram;
 };
 
 dclass DistributedLawbotBoss : DistributedBossCog {
