@@ -36,10 +36,10 @@ class LeaderboardMgrAI:
 
                 if originalRace != sortedRace:
                     self.database[race][1] = sortedRace
+                    self.saveDatabase()
             else:
                 self.database[race] = (time.time(), [(name, timestamp)])
-
-        self.saveDatabase()
+                self.saveDatabase()
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[str, int, int, str, int])
 def leaderboard(command, raceId=0, type=0, name='', time=0):
