@@ -672,6 +672,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
 
     def removeFriend(self, avatarId):
         self.ttsFriendsManager.d_removeFriend(avatarId)
+        base.localAvatar.removeTrueFriends(avatarId)
 
     def clearFriendState(self):
         self.friendsMap = {}

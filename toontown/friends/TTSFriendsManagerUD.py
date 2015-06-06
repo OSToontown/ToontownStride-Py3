@@ -222,7 +222,7 @@ class TTSFriendsManagerUD(DistributedObjectGlobalUD):
 
     # -- Toon Online/Offline --
     def toonOnline(self, doId, friendsList):
-        if not doId in self.onlineToons:
+        if doId not in self.onlineToons:
             self.onlineToons.append(doId)
 
         channel = self.GetPuppetConnectionChannel(doId)
