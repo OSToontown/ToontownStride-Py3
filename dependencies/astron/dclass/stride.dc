@@ -2625,7 +2625,7 @@ dclass DistributedViewingBlock : DistributedStartingBlock {
 
 struct LeaderboardResult {
   string name;
-  uint32 time;
+  uint16 time;
 };
 
 dclass DistributedLeaderBoard : DistributedObject {

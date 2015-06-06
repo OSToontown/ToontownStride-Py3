@@ -553,3 +553,8 @@ Exit_UserReq = 0
 Exit_Barrier = 1
 Exit_Slow = 2
 Exit_BarrierNoRefund = 3
+
+MaxTimeDifference = {
+  0: 86400,
+  1: 604800
+}

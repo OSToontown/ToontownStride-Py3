@@ -44,6 +44,7 @@ from toontown.hood import OZHoodAI
 from toontown.hood import SellbotHQAI
 from toontown.hood import TTHoodAI
 from toontown.hood import ZoneUtil
+from toontown.racing.LeaderboardMgrAI import LeaderboardMgrAI
 from toontown.pets.PetManagerAI import PetManagerAI
 from toontown.safezone.SafeZoneManagerAI import SafeZoneManagerAI
 from toontown.suit.SuitInvasionManagerAI import SuitInvasionManagerAI
@@ -81,6 +82,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.wantFishing = self.config.GetBool('want-fishing', True)
         self.wantHousing = self.config.GetBool('want-housing', True)
         self.wantPets = self.config.GetBool('want-pets', True)
+        self.wantKarts = self.config.GetBool('want-karts', True)
         self.wantParties = self.config.GetBool('want-parties', True)
         self.wantEmblems = self.config.GetBool('want-emblems', True)
         self.wantCogbuildings = self.config.GetBool('want-cogbuildings', True)
@@ -126,6 +128,8 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.buildingQueryMgr = DistributedBuildingQueryMgrAI(self)
         self.buildingQueryMgr.generateWithRequired(2)
         self.groupManager.generateWithRequired(2)
+        if self.wantKarts:
+            self.leaderboardMgr = LeaderboardMgrAI(self)
         if self.wantFishing:
             self.fishManager = FishManagerAI(self)
         if self.wantHousing:

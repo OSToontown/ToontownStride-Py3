@@ -122,6 +122,9 @@ class GSHoodAI(HoodAI.HoodAI):
                 viewPad.addStartingBlock(viewingBlock)
 
     def findLeaderBoards(self, dnaGroup, zoneId):
+        if not self.air.wantKarts:
+            return
+
         leaderBoards = []
 
         if isinstance(dnaGroup, DNAGroup) and ('leader_board' in dnaGroup.getName()):

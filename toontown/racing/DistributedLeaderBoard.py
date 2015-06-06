@@ -84,12 +84,8 @@ class DistributedLeaderBoard(DistributedObject.DistributedObject):
                 self.nameTextNodes[i].setText('-')
                 self.timeTextNodes[i].setText('-')
             else:
-                name = pLeaderList[i][1]
-                time = pLeaderList[i][0]
-                secs, hundredths = divmod(time, 1)
-                min, sec = divmod(secs, 60)
-                self.nameTextNodes[i].setText(name[:22])
-                self.timeTextNodes[i].setText('%02d:%02d:%02d' % (min, sec, hundredths * 100))
+                self.nameTextNodes[i].setText(pLeaderList[i][0][:22])
+                self.timeTextNodes[i].setText(TTLocalizer.convertSecondsToDate(pLeaderList[i][1]))
 
     def buildTitleRow(self):
         row = hidden.attachNewNode('TitleRow')

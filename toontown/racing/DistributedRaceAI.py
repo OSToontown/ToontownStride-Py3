@@ -303,6 +303,7 @@ class DistributedRaceAI(DistributedObjectAI, FSM):
         qualify = False
         if totalTime < RaceGlobals.getQualifyingTime(self.trackId):
             qualify = True
+            self.air.leaderboardMgr.submitRace(self.trackId, av.getName(), totalTime)
         if self.raceType == RaceGlobals.Practice:
             winnings = RaceGlobals.PracticeWinnings
             trophies = []
