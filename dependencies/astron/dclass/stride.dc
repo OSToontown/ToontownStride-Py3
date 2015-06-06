@@ -179,38 +179,6 @@ dclass FriendManager : DistributedObject {
   inviteeCancelFriendQuery(int32);
 };
 
-struct leaderBoardRecordResponces {
-  char found;
-  uint32 id;
-  string text;
-  int32 value;
-};
-
-struct leaderBoardRecord {
-  uint32 id;
-  string text;
-  int32 value;
-};
-
-dclass LeaderBoardReceiver {
-  getTopTenResponce(string, leaderBoardRecord []);
-  getValuesResponce(string, leaderBoardRecordResponces []);
-};
-
-dclass LeaderBoard : LeaderBoardReceiver {
-  setValue(string [], uint32, string, int32);
-  alterValue(string [], uint32, string, int32);
-  setHighScore(string [], uint32, string, int32);
-  getValues(string, uint32 []);
-  getTopTen(string);
-  getValuesRespondTo(string, uint32 [], uint32);
-  getTopTenRespondTo(string, uint32);
-};
-
-dclass CallbackObject {
-  callback(uint32, bool, uint8);
-};
-
 from direct.distributed import DistributedObjectGlobal
 from toontown.building import DistributedAnimatedProp/AI
 from toontown.toon import DistributedToon/AI/UD
