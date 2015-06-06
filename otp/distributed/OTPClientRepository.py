@@ -1264,7 +1264,7 @@ class OTPClientRepository(ClientRepositoryBase):
         return
 
     def identifyFriend(self, doId):
-        pass
+        return self.identifyAvatar(doId)
 
     def identifyAvatar(self, doId):
         info = self.doId2do.get(doId)
