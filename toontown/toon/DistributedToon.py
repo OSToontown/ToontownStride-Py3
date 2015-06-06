@@ -478,7 +478,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         return isinstance(source, (DistributedToon, FriendHandle.FriendHandle))
 
     def setWhisperSCEmoteFrom(self, fromId, emoteId):
-        handle = base.cr.identifyFriend(fromId)
+        handle = base.cr.identifyAvatar(fromId)
         if handle == None:
             return
         if not self._isValidWhisperSource(handle):
@@ -490,7 +490,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         if base.localAvatar.isIgnored(fromId):
             return
         if base.localAvatar.sleepFlag == 1:
-            if not base.cr.identifyAvatar(fromId) == base.localAvatar:
+            if not handle == base.localAvatar:
                 base.cr.ttsFriendsManager.d_sleepAutoReply(fromId)
         chatString = SCDecoders.decodeSCEmoteWhisperMsg(emoteId, handle.getName())
         if chatString:
@@ -499,7 +499,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         return
 
     def setWhisperSCFrom(self, fromId, msgIndex):
-        handle = base.cr.identifyFriend(fromId)
+        handle = base.cr.identifyAvatar(fromId)
         if handle == None:
             return
         if not self._isValidWhisperSource(handle):
@@ -511,7 +511,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         if base.localAvatar.isIgnored(fromId):
             return
         if base.localAvatar.sleepFlag == 1:
-            if not base.cr.identifyAvatar(fromId) == base.localAvatar:
+            if not handle == base.localAvatar:
                 base.cr.ttsFriendsManager.d_sleepAutoReply(fromId)
         chatString = SCDecoders.decodeSCStaticTextMsg(msgIndex)
         if chatString:
@@ -536,7 +536,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         )
 
     def setWhisperSCToontaskFrom(self, fromId, taskId, toNpcId, toonProgress, msgIndex):
-        sender = base.cr.identifyFriend(fromId)
+        sender = base.cr.identifyAvatar(fromId)
         if sender is None:
             return
 

@@ -65,15 +65,18 @@ class TTSFriendsManager(DistributedObjectGlobal):
         if not hasattr(base.localAvatar, 'getTeleportAvailable') or not hasattr(base.localAvatar, 'ghostMode'):
             self.sendUpdate('teleportResponse', [ fromId, 0, 0, 0, 0 ])
             return
+
+        friend = base.cr.identifyFriend(fromId)
+
         if not base.localAvatar.getTeleportAvailable() or base.localAvatar.ghostMode:
-            if hasattr(base.cr.identifyFriend(fromId), 'getName'):
-                base.localAvatar.setSystemMessage(fromId, OTPLocalizer.WhisperFailedVisit % base.cr.identifyFriend(fromId).getName())
+            if hasattr(friend, 'getName'):
+                base.localAvatar.setSystemMessage(fromId, OTPLocalizer.WhisperFailedVisit % friend.getName())
             self.sendUpdate('teleportResponse', [ fromId, 0, 0, 0, 0 ])
             return
 
         hoodId = base.cr.playGame.getPlaceId()
-        if hasattr(base.cr.identifyFriend(fromId), 'getName'):
-            base.localAvatar.setSystemMessage(fromId, OTPLocalizer.WhisperComingToVisit % base.cr.identifyFriend(fromId).getName())
+        if hasattr(friend, 'getName'):
+            base.localAvatar.setSystemMessage(fromId, OTPLocalizer.WhisperComingToVisit % friend.getName())
         self.sendUpdate('teleportResponse', [
             fromId,
             base.localAvatar.getTeleportAvailable(),
