@@ -888,7 +888,7 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
     def displayWhisper(self, fromId, chatString, whisperType):
         sender = None
         sfx = self.soundWhisper
-        if whisperType == WTNormal or whisperType == WTQuickTalker:
+        if whisperType == WTNormal:
             if sender == None:
                 return
             chatString = sender.getName() + ': ' + chatString

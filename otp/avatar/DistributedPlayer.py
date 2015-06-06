@@ -131,7 +131,7 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
             return
         chatString = SCDecoders.decodeSCStaticTextMsg(msgIndex)
         if chatString:
-            self.displayWhisper(fromId, chatString, WTQuickTalker)
+            self.displayWhisper(fromId, chatString, WTNormal)
         return
 
     def whisperSCCustomTo(self, msgIndex, sendToId):
@@ -152,8 +152,7 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
             return
         chatString = SCDecoders.decodeSCCustomMsg(msgIndex)
         if chatString:
-            self.displayWhisper(fromId, chatString, WTQuickTalker)
-        return
+            self.displayWhisper(fromId, chatString, WTNormal)
 
     def whisperSCEmoteTo(self, emoteId, sendToId):
         messenger.send('wakeup')

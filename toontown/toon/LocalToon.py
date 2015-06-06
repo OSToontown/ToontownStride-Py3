@@ -805,7 +805,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             sfx = self.soundPhoneRing
         elif fromId != 0:
             sender = base.cr.identifyAvatar(fromId)
-        if whisperType == WTNormal or whisperType == WTQuickTalker:
+        if whisperType == WTNormal:
             if sender == None:
                 return
             chatString = sender.getName() + ': ' + chatString
@@ -826,7 +826,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             sfx = self.soundPhoneRing
         elif fromId != 0:
             sender = base.cr.identifyAvatar(fromId)
-        if whisperType == WTNormal or whisperType == WTQuickTalker:
+        if whisperType == WTNormal:
             if sender == None:
                 return
             chatString = sender.getName() + ': ' + chatString

@@ -515,12 +515,12 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
                 base.cr.ttsFriendsManager.d_sleepAutoReply(fromId)
         chatString = SCDecoders.decodeSCStaticTextMsg(msgIndex)
         if chatString:
-            self.displayWhisper(fromId, chatString, WTQuickTalker)
+            self.displayWhisper(fromId, chatString, WTNormal)
             base.talkAssistant.receiveAvatarWhisperSpeedChat(TalkAssistant.SPEEDCHAT_NORMAL, msgIndex, fromId)
         return
 
     def setWhisperSCCustomFrom(self, fromId, msgIndex):
-        handle = base.cr.identifyFriend(fromId)
+        handle = base.cr.identifyAvatar(fromId)
         if handle == None:
             return
         if not localAvatar.acceptingNonFriendWhispers:
@@ -549,7 +549,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
         chatString = TTSCDecoders.decodeTTSCToontaskMsg(taskId, toNpcId, toonProgress, msgIndex)
         if chatString:
-            self.displayWhisper(fromId, chatString, WTQuickTalker)
+            self.displayWhisper(fromId, chatString, WTNormal)
 
     def getNPCFriendsDict(self):
         return self.NPCFriendsDict
