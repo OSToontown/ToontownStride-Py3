@@ -446,7 +446,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
         elif self.showPop:
             handler = self.choseShard
         else:
-            if localAvatar.adminAccess >= 200:
+            if localAvatar.isAdmin():
                 handler = self.choseShard
             else:
                 handler = self.shardChoiceReject

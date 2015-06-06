@@ -4047,7 +4047,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.b_setRedeemedCodes(self.redeemedCodes)
     
     def setTrueFriends(self, trueFriends):
-        self.trueFriends = trueFriends
+        self.trueFriends = trueFriends[:OTPGlobals.MaxFriends]
 
     def d_setTrueFriends(self, trueFriends):
         self.sendUpdate('setTrueFriends', [trueFriends])
