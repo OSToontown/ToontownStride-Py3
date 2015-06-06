@@ -1768,13 +1768,11 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
     
     def getPetDNA(self):
         if self.hasPet():
-            pet = base.cr.doId2do(self.petId)
-            return pet.petDNA
+            pet = base.cr.identifyFriend(self.petId)
+            return pet.style if pet else None
         return None
     
     def setPetId(self, petId):
         self.petId = petId
-        if petId == 0:
-            self.petDNA = None
-        elif self.isLocal():
+        if self.isLocal():
             base.cr.addPetToFriendsMap()

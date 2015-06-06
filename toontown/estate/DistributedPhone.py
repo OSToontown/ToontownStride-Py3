@@ -175,8 +175,6 @@ class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):
             return
         if self.hasLocalAvatar:
             self.freeAvatar()
-        if config.GetBool('want-pets', 1):
-            base.localAvatar.lookupPetDNA()
         self.notify.debug('Entering Phone Sphere....')
         taskMgr.remove(self.uniqueName('ringDoLater'))
         self.ignore(self.phoneSphereEnterEvent)

@@ -4,6 +4,7 @@ from pandac.PandaModules import *
 from direct.gui.DirectScrolledList import *
 from toontown.toonbase import ToontownGlobals
 from toontown.toontowngui import TTDialog
+from toontown.friends import FriendHandle
 import CatalogItem
 import CatalogInvalidItem
 import CatalogFurnitureItem
@@ -1024,7 +1025,8 @@ class CatalogScreen(DirectFrame):
 
     def __makeFFlist(self):
         for id, handle in base.cr.friendsMap.items():
-            self.ffList.append((id, handle.getName(), NametagGlobals.getFriendColor(handle)))
+            if isinstance(handle, FriendHandle.FriendHandle):
+                self.ffList.append((id, handle.getName(), NametagGlobals.getFriendColor(handle)))
 
     def __makeScrollList(self):
         for ff in self.ffList:

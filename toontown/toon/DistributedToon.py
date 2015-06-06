@@ -108,7 +108,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.savedCheesyExpireTime = 0
         if hasattr(base, 'wantPets') and base.wantPets:
             self.petTrickPhrases = []
-            self.petDNA = None
         self.customMessages = []
         self.resistanceMessages = []
         self.cogSummonsEarned = []
@@ -1662,11 +1661,8 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
         def setPetId(self, petId):
             self.petId = petId
-            if petId == 0:
-                self.petDNA = None
-            elif self.isLocal():
+            if self.isLocal():
                 base.cr.addPetToFriendsMap()
-            return
 
         def getPetId(self):
             return self.petId
@@ -1721,6 +1717,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
         def __petDetailsLoaded(self, pet):
             self.petDNA = pet.style
+
 
     def trickOrTreatTargetMet(self, beanAmount):
         if self.effect:
