@@ -544,6 +544,11 @@ class Toon(Avatar.Avatar, ToonHead):
             self.soundTeleport = None
             self.motion.delete()
             self.motion = None
+
+            if self.headMeter:
+                self.headMeter.destroy()
+                self.headMeter = None
+
             Avatar.Avatar.delete(self)
             ToonHead.delete(self)
 
