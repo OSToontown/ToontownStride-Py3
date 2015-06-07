@@ -2140,6 +2140,8 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def displayTalk(self, chatString):
         flags = CFSpeech | CFTimeout
         self.nametag.setChatType(NametagGlobals.CHAT)
+        self.hideHeadMeter()
+        self.accept(self.nametag.chatTimeoutTaskName, self.showHeadMeter)
         if ChatUtil.isThought(chatString):
             flags = CFThought
             self.nametag.setChatBalloonType(NametagGlobals.THOUGHT_BALLOON)

@@ -11,6 +11,7 @@ import AccessoryGlobals
 import Motion
 import TTEmote
 import ToonDNA
+import LaffMeter
 from ToonHead import *
 from otp.avatar import Avatar
 from otp.avatar import Emote
@@ -442,6 +443,7 @@ class Toon(Avatar.Avatar, ToonHead):
         self.isDisguised = 0
         self.defaultColorScale = None
         self.jar = None
+        self.headMeter = None
         self.setTag('pieCode', str(ToontownGlobals.PieCodeToon))
         self.setFont(ToontownGlobals.getToonFont())
         self.soundChatBubble = base.loadSfx('phase_3/audio/sfx/GUI_balloon_popup.ogg')
@@ -3007,6 +3009,40 @@ class Toon(Avatar.Avatar, ToonHead):
             sequence.append(Func(self.laffMeter.adjustFace, self.hp, self.maxHp))
 
         return sequence
+
+    def createHeadMeter(self):
+        if self.headMeter:
+            return
+
+        self.headMeter = LaffMeter.LaffMeter(self.style, self.getHp(), self.getMaxHp(), True)
+        self.headMeter.av = self
+        self.headMeter.reparentTo(self)
+        self.headMeter.setPos(0, 0, self.getHeight() + 1.3)
+        self.headMeter.setScale(0.3)
+        self.headMeter.setBin("fixed", 40)
+        self.headMeter.setDepthTest(False)
+        self.headMeter.setDepthWrite(False)
+        self.headMeter.setBillboardPointWorld()
+        self.headMeter.start()
+
+    def removeHeadMeter(self):
+        if not self.headMeter:
+            return
+
+        self.headMeter.destroy()
+        self.headMeter = None
+
+    def hideHeadMeter(self):
+        if not self.headMeter:
+            return
+
+        self.headMeter.hide()
+
+    def showHeadMeter(self):
+        if not self.headMeter:
+            return
+
+        self.headMeter.show()
 
 loadModels()
 compileGlobalAnimList()

@@ -120,6 +120,7 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
 
     def disable(self):
         DistributedAvatar.DistributedAvatar.disable(self)
+        self.removeHeadMeters()
         self.battleAId = None
         self.battleBId = None
         self.battleA = None
@@ -399,6 +400,7 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
             place = self.cr.playGame.getPlace()
             if place and hasattr(place, 'fsm'):
                 place.setState('finalBattle')
+        self.createHeadMeters()
 
     def releaseToons(self, finalBattle = 0):
         for toonId in self.involvedToons:
@@ -417,6 +419,20 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
                             self.toFinalBattleMode()
                         else:
                             self.toWalkMode()
+
+    def createHeadMeters(self):
+        for toonId in self.involvedToons:
+            toon = self.cr.doId2do.get(toonId)
+
+            if toon:
+                toon.createHeadMeter()
+
+    def removeHeadMeters(self):
+        for toonId in self.involvedToons:
+            toon = self.cr.doId2do.get(toonId)
+
+            if toon:
+                toon.removeHeadMeter()
 
     def stickToonsToFloor(self):
         self.unstickToons()
