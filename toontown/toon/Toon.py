@@ -3019,7 +3019,7 @@ class Toon(Avatar.Avatar, ToonHead):
         if self.headMeter:
             return
 
-        self.headMeter = LaffMeter.LaffMeter(self.style, self.getHp(), self.getMaxHp(), True)
+        self.headMeter = LaffMeter.LaffMeter(self.style, self.getHp(), self.getMaxHp())
         self.headMeter.av = self
         self.headMeter.reparentTo(self)
         self.headMeter.setPos(0, 0, self.getHeight() + 1.3)

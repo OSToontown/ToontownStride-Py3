@@ -6,7 +6,7 @@ from toontown.toonbase import ToontownIntervals
 class LaffMeter(DirectFrame):
     deathColor = Vec4(0.58039216, 0.80392157, 0.34117647, 1.0)
 
-    def __init__(self, avdna, hp, maxHp, hideFull=False):
+    def __init__(self, avdna, hp, maxHp):
         DirectFrame.__init__(self, relief=None, sortOrder=50)
         self.initialiseoptions(LaffMeter)
         self.container = DirectFrame(parent=self, relief=None)
@@ -14,7 +14,6 @@ class LaffMeter(DirectFrame):
         self.av = None
         self.hp = hp
         self.maxHp = maxHp
-        self.hideFull = hideFull
         self.__obscured = 0
         if self.style.type == 't':
             self.isToon = 1
@@ -166,14 +165,6 @@ class LaffMeter(DirectFrame):
             self.adjustText()
             if not quietly:
                 self.animatedEffect(delta)
-            self.checkVisibility()
-
-    def checkVisibility(self):
-        if self.hideFull:
-            if self.hp >= self.maxHp:
-                self.hide()
-            else:
-                self.show()
 
     def start(self):
         if self.av:
