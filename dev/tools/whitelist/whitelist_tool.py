@@ -1,8 +1,7 @@
 import os
 os.chdir('../../../')
 
-from toontown.chat import WhiteListData
-
+from otp.chat import WhiteListData
 
 def acceptWord():
     word = raw_input('> ').rstrip().lower()
@@ -18,6 +17,19 @@ def acceptWord():
         else:
             LOCAL_LIST.remove(word)
             print 'Removed "%s" from the whitelist.' % word
+    elif word.startswith('m '):
+        merge = word.replace('m ', '')
+
+        if os.path.isfile(merge):
+            print 'Opening %s...' % merge
+
+            with open(merge) as file:
+                for line in file.readlines():
+                    line = line.replace('\r', '').replace('\n', '').lower()
+                    print 'Adding %s...' % line
+                    LOCAL_LIST.append(line)
+        else:
+            print 'No file named %s!' % merge
     elif word in LOCAL_LIST:
         print 'The word "%s" is already whitelisted.' % word
     else:
@@ -26,14 +38,15 @@ def acceptWord():
 
     acceptWord()
 
-
 def saveChanges():
+    global LOCAL_LIST
     print 'Saving the whitelist...'
 
-    with open('toontown/chat/WhiteListData.py', 'w') as f:
+    with open('otp/chat/WhiteListData.py', 'w') as f:
         f.write('WHITELIST = [\n')
 
         LOCAL_LIST.sort()
+        LOCAL_LIST = list(set(LOCAL_LIST)) # Remove duplicates
         addedWords = []
 
         for word in LOCAL_LIST:
@@ -57,6 +70,7 @@ LOCAL_LIST = WhiteListData.WHITELIST
 print 'Welcome to the Toontown Stride Whitelist Tool!'
 print 'Type any word you want to add to the whitelist.'
 print 'If you wish to remove a word, type "r <word>".'
+print 'If you wish to merge a file, type "m <file>".'
 print 'When you are done and want to save your changes, type "exit()".'
 
 
