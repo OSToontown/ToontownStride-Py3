@@ -1,4 +1,4 @@
-import time
+import time, random
 
 from toontown.battle import SuitBattleGlobals
 from toontown.suit import SuitDNA
@@ -74,7 +74,7 @@ class SuitInvasionManagerAI:
 
         # How many suits do we want?
         if type == INVASION_TYPE_NORMAL:
-            self.total = 1000
+            self.total = random.randint(1000, 3000)
         elif type == INVASION_TYPE_MEGA:
             self.total = 5000
         elif type == INVASION_TYPE_BRUTAL:
