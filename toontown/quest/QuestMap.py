@@ -101,7 +101,7 @@ class QuestMap(DirectFrame):
         del self.mapCloseButton
         DirectFrame.destroy(self)
 
-    def putBuildingMarker(self, pos, hpr = (0, 0, 0), mapIndex = None):
+    def putBuildingMarker(self, pos, hpr = (0, 0, 0), mapIndex = None, zoneId=None):
         marker = DirectLabel(parent=self.container, text='', text_pos=(-0.05, -0.15), text_fg=(1, 1, 1, 1), relief=None)
         gui = loader.loadModel('phase_4/models/parties/schtickerbookHostingGUI')
         icon = gui.find('**/startPartyButton_inactive')
@@ -120,7 +120,13 @@ class QuestMap(DirectFrame):
         self.buildingMarkers.append(marker)
         iconNP.removeNode()
         gui.removeNode()
-        return
+
+        if zoneId:
+            base.cr.buildingQueryMgr.d_isSuit(zoneId, lambda isSuit: self.updateMarkerColor(marker, isSuit))
+    
+    def updateMarkerColor(self, marker, isSuit):
+        if isSuit:
+            marker['image_color'] = (0.4, 0.4, 0.4, 1.0)
 
     def updateQuestInfo(self):
         for marker in self.buildingMarkers:
@@ -163,7 +169,7 @@ class QuestMap(DirectFrame):
                     self.putBuildingMarker(
                         base.cr.playGame.dnaStore.getDoorPosHprFromBlockNumber(blockNumber).getPos(render),
                         base.cr.playGame.dnaStore.getDoorPosHprFromBlockNumber(blockNumber).getHpr(render),
-                        mapIndex=mapIndex)
+                        mapIndex=mapIndex, zoneId=zoneId)
 
     def transformAvPos(self, pos):
         if self.cornerPosInfo is None:

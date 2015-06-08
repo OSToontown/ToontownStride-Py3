@@ -128,13 +128,16 @@ class QuestManagerAI:
             return
 
         # Get the npcIds
-        fromNpcId = npc.npcId
+        fromNpcId = npc.npcId if npc else 0
         if toNpcId == 0:
             toNpcId = Quests.getQuestToNpcId(questId)
 
         # Add the quest to the avatars list.
         transformedRewardId = Quests.transformReward(rewardId, av)
         av.addQuest([questId, fromNpcId, toNpcId, rewardId, 0], transformedRewardId)
+
+        if not npc:
+            return
 
         # Remove the tasks for timeout.
         taskMgr.remove(npc.uniqueName('clearMovie'))
@@ -540,6 +543,9 @@ def quests(command, arg0=0, arg1=0):
         if arg0:
             if canCarry:
                 if arg0 in Quests.QuestDict.keys():
+                    quest = Quests.QuestDict[arg0]
+                    
+                    simbase.air.questManager.avatarChoseQuest(invoker.doId, None, arg0, quest[5], quest[4])
                     return 'Added QuestID %s'%(arg0)
                 else:
                     return 'Invalid QuestID %s'%(arg0)
