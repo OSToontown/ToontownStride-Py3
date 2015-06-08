@@ -1,18 +1,20 @@
-import ShtikerPage
+import ShtikerPage, DisguisePage
 from toontown.toonbase import ToontownBattleGlobals
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
+from toontown.coghq import CogDisguiseGlobals
+from toontown.suit import SuitDNA
 
 class InventoryPage(ShtikerPage.ShtikerPage):
 
     def __init__(self):
         ShtikerPage.ShtikerPage.__init__(self)
+        self.meritBars = []
         self.currentTrackInfo = None
         self.onscreen = 0
         self.lastInventoryTime = globalClock.getRealTime()
-        return
 
     def load(self):
         ShtikerPage.ShtikerPage.load(self)
@@ -26,12 +28,69 @@ class InventoryPage(ShtikerPage.ShtikerPage):
         self.trackProgress.hide()
         jarGui = loader.loadModel('phase_3.5/models/gui/jar_gui')
         self.moneyDisplay = DirectLabel(parent=self, relief=None, pos=(0.55, 0, -0.5), scale=0.8, text=str(base.localAvatar.getMoney()), text_scale=0.18, text_fg=(0.95, 0.95, 0, 1), text_shadow=(0, 0, 0, 1), text_pos=(0, -0.1, 0), image=jarGui.find('**/Jar'), text_font=ToontownGlobals.getSignFont())
+        self.createMeritBars()
         jarGui.removeNode()
-        return
 
     def unload(self):
         del self.title
+        self.destroyMeritBars()
         ShtikerPage.ShtikerPage.unload(self)
+
+    def createMeritBars(self):
+        if self.meritBars:
+            return
+
+        for i in xrange(len(SuitDNA.suitDepts)):
+            self.meritBars.append(DirectWaitBar(parent=self, relief=DGG.SUNKEN, frameSize=(-1, 1, -0.15, 0.15),
+             borderWidth=(0.02, 0.02), scale=0.22, text='', text_scale=0.18, text_fg=(0, 0, 0, 1), text_align=TextNode.ALeft,
+             text_pos=(-0.96, -0.05), pos=(-0.4, 0, -0.35 - 0.08 * i), frameColor=(DisguisePage.DeptColors[i][0] * 0.7,
+             DisguisePage.DeptColors[i][1] * 0.7, DisguisePage.DeptColors[i][2] * 0.7, 1), barColor=(DisguisePage.DeptColors[i][0] * 0.8,
+             DisguisePage.DeptColors[i][1] * 0.8, DisguisePage.DeptColors[i][2] * 0.8, 1)))
+
+        self.updateMeritBars()
+
+    def destroyMeritBars(self):
+        if not self.meritBars:
+            return
+
+        for meritBar in self.meritBars:
+            meritBar.destroy()
+
+        self.meritBars = []
+
+    def changeMeritBars(self, hide):
+        if not self.meritBars:
+            return
+
+        for meritBar in self.meritBars:
+            meritBar.hide() if hide else meritBar.show()
+
+    def updateMeritBars(self):
+        if not self.meritBars:
+            return
+
+        for i in xrange(len(self.meritBars)):
+            meritBar = self.meritBars[i]
+
+            if CogDisguiseGlobals.isSuitComplete(base.localAvatar.cogParts, i):
+                meritBar.show()
+                totalMerits = CogDisguiseGlobals.getTotalMerits(base.localAvatar, i)
+                merits = base.localAvatar.cogMerits[i]
+
+                if totalMerits:
+                    meritBar['range'] = totalMerits
+                    meritBar['value'] = merits
+
+                    if merits == totalMerits:
+                        meritBar['text'] = TTLocalizer.RewardPanelMeritAlert
+                    else:
+                        meritBar['text'] = '%s/%s %s' % (merits, totalMerits, TTLocalizer.RewardPanelMeritBarLabels[i])
+                else:
+                    meritBar['range'] = 1
+                    meritBar['value'] = 1
+                    meritBar['text'] = TTLocalizer.RewardPanelMeritsMaxed
+            else:
+                meritBar.hide()
 
     def __moneyChange(self, money):
         self.moneyDisplay['text'] = str(money)
@@ -46,6 +105,7 @@ class InventoryPage(ShtikerPage.ShtikerPage):
         self.accept('exitBookDelete', self.exitDeleteMode)
         self.accept('enterTrackFrame', self.updateTrackInfo)
         self.accept('exitTrackFrame', self.clearTrackInfo)
+        self.accept(localAvatar.uniqueName('cogMeritsChange'), self.updateMeritBars)
         self.accept(localAvatar.uniqueName('moneyChange'), self.__moneyChange)
 
     def exit(self):
@@ -55,12 +115,12 @@ class InventoryPage(ShtikerPage.ShtikerPage):
         self.ignore('exitBookDelete')
         self.ignore('enterTrackFrame')
         self.ignore('exitTrackFrame')
+        self.ignore(localAvatar.uniqueName('cogMeritsChange'))
         self.ignore(localAvatar.uniqueName('moneyChange'))
         self.makePageWhite(None)
         base.localAvatar.inventory.hide()
         base.localAvatar.inventory.reparentTo(hidden)
         self.exitDeleteMode()
-        return
 
     def enterDeleteMode(self):
         self.title['text'] = TTLocalizer.InventoryPageDeleteTitle
@@ -75,6 +135,8 @@ class InventoryPage(ShtikerPage.ShtikerPage):
     def updateTrackInfo(self, trackIndex):
         self.currentTrackInfo = trackIndex
         trackName = TextEncoder.upper(ToontownBattleGlobals.Tracks[trackIndex])
+        self.changeMeritBars(True)
+        self.trackInfo.show()
         if base.localAvatar.hasTrackAccess(trackIndex):
             curExp, nextExp = base.localAvatar.inventory.getCurAndNextExpValues(trackIndex)
             trackText = '%s / %s' % (curExp, nextExp)
@@ -115,7 +177,7 @@ class InventoryPage(ShtikerPage.ShtikerPage):
             self.trackInfo['text'] = ''
             self.trackProgress.hide()
             self.currentTrackInfo = None
-        return
+            self.changeMeritBars(False)
 
     def acceptOnscreenHooks(self):
         self.accept(ToontownGlobals.InventoryHotkeyOn, self.showInventoryOnscreen)

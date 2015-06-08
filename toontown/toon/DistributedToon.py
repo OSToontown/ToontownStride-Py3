@@ -855,6 +855,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def setCogParts(self, parts):
         self.cogParts = parts
+        messenger.send(self.uniqueName('cogMeritsChange'))
         if self.disguisePage:
             self.disguisePage.updatePage()
 
@@ -863,8 +864,12 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def setCogMerits(self, merits):
         self.cogMerits = merits
+        messenger.send(self.uniqueName('cogMeritsChange'))
         if self.disguisePage:
             self.disguisePage.updatePage()
+
+    def getCogMerits(self):
+        return self.cogMerits
 
     def readyForPromotion(self, dept):
         merits = base.localAvatar.cogMerits[dept]

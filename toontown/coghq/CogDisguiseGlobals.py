@@ -457,18 +457,6 @@ def isSuitComplete(parts, dept):
 
     return 1
 
-
-def isPaidSuitComplete(av, parts, dept):
-    isPaid = 0
-    base = getBase()
-    if av and av.getGameAccess() == OTPGlobals.AccessFull:
-        isPaid = 1
-    if isPaid:
-        if isSuitComplete(parts, dept):
-            return 1
-    return 0
-
-
 def getTotalMerits(toon, index):
     from toontown.battle import SuitBattleGlobals
     cogIndex = toon.cogTypes[index] + SuitDNA.suitsPerDept * index
