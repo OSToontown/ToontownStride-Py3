@@ -33,9 +33,6 @@ want-house-types #t
 # Chat:
 want-whitelist #t
 
-# Optional:
-want-jor-el-cam #f
-
 # Developer options:
 show-population #t
 want-instant-parties #t

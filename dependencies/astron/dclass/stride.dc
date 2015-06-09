@@ -341,7 +341,6 @@ from toontown.ai import DistributedResistanceEmoteMgr/AI
 from toontown.ai import DistributedScavengerHuntTarget/AI
 from toontown.ai import DistributedTrickOrTreatTarget/AI
 from toontown.ai import DistributedWinterCarolingTarget/AI
-from toontown.ai import DistributedJorElCam/AI
 from toontown.coghq import DistributedMint/AI
 from toontown.coghq import DistributedMintRoom/AI
 from toontown.coghq import DistributedMintBattle/AI
@@ -2487,9 +2486,6 @@ dclass DistributedTrickOrTreatTarget : DistributedObject {
 dclass DistributedWinterCarolingTarget : DistributedObject {
   doScavengerHunt(int8) broadcast;
   requestScavengerHunt() airecv clsend;
-};
-
-dclass DistributedJorElCam : DistributedObject {
 };
 
 dclass DistributedVehicle : DistributedSmoothNode {
