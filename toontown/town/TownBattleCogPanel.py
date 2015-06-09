@@ -39,7 +39,7 @@ class TownBattleCogPanel(DirectFrame):
         self.setScale(0.8)
         self.initialiseoptions(TownBattleCogPanel)
         self.levelText = DirectLabel(parent=self, text='', pos=(-0.06, 0, -0.075), text_scale=0.055)
-        self.suitType = DirectLabel(parent=self, text='', pos=(0.12, 0, -0.075), text_scale=0.055)
+        self.suitType = DirectLabel(parent=self, text='', pos=(0.12, 0, -0.075), text_scale=0.045)
         self.healthBar = None
         self.healthBarGlow = None
         self.hpChangeEvent = None
