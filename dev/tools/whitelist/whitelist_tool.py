@@ -52,17 +52,17 @@ def saveChanges():
 
         LOCAL_LIST.sort()
         LOCAL_LIST = removeDuplicates(LOCAL_LIST)
-        addedWords = []
 
         for word in LOCAL_LIST:
 
-            if word in addedWords or '\\' in word:
+            if '\\' in word:
+                print 'Word contains illegal characters: %s' % word
                 continue
             try:
                 word.decode('ascii')
             except:
+                print 'Word cannot be decoded in ASCII mode: %s' % word
                 continue
-            addedWords.append(word)
 
             if "'" in word:
                 f.write('    "%s",\n' % word)
@@ -73,9 +73,7 @@ def saveChanges():
 
     print 'Your changes have been saved! Make sure to push your changes!'
 
-
 LOCAL_LIST = WhiteListData.WHITELIST
-
 
 print 'Welcome to the Toontown Stride Whitelist Tool!'
 print 'Type any word you want to add to the whitelist.'

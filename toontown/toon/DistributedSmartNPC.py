@@ -30,7 +30,7 @@ class DistributedSmartNPC(DistributedNPCToonBase):
     def handleCollisionSphereEnter(self, collEntry):
         self.sendUpdate('avatarEnter', [])
 
-    def chatUpdate(self, message):
+    def chatUpdate(self, message, chatFlags):
         self.sendUpdate('talkMessage', [base.localAvatar.doId, message])
     
     def greet(self, npcId, avId):
