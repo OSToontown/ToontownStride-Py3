@@ -62,8 +62,13 @@ class InventoryPage(ShtikerPage.ShtikerPage):
         if not self.meritBars:
             return
 
-        for meritBar in self.meritBars:
-            meritBar.hide() if hide else meritBar.show()
+        for i in xrange(len(self.meritBars)):
+            meritBar = self.meritBars[i]
+            
+            if CogDisguiseGlobals.isSuitComplete(base.localAvatar.cogParts, i):
+                meritBar.hide() if hide else meritBar.show()
+            else:
+                meritBar.hide()
 
     def updateMeritBars(self):
         if not self.meritBars:
