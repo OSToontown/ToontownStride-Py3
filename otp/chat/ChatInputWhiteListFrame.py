@@ -1,15 +1,8 @@
-from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import FSM
-from direct.gui.DirectGui import *
-from direct.task import Task
 from pandac.PandaModules import *
-import sys
-
-from otp.chat.ChatInputTyped import ChatInputTyped
+from direct.directnotify import DirectNotifyGlobal
+from direct.gui.DirectGui import *
+from direct.fsm import FSM
 from otp.otpbase import OTPGlobals
-from otp.otpbase import OTPLocalizer
-from toontown.chat.ChatGlobals import *
-
 
 class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('ChatInputWhiteList')
@@ -21,10 +14,7 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
         optiondefs = {'parent': self,
          'relief': DGG.SUNKEN,
          'scale': 0.05,
-         'frameSize': (-0.2,
-                       25.3,
-                       -0.5,
-                       1.2),
+         'frameSize': (-0.2, 25.3, -0.5, 1.2),
          'borderWidth': (0.1, 0.1),
          'frameColor': (0.9, 0.9, 0.85, 0.8),
          'pos': (-0.2, 0, 0.11),
@@ -43,23 +33,12 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
         self.chatEntry = DirectEntry(**entryOptions)
         self.whisperId = None
         self.chatEntry.bind(DGG.OVERFLOW, self.chatOverflow)
-        self.wantHistory = base.config.GetBool('want-chat-history', 0)
-        self.history = ['']
-        self.historySize = base.config.GetInt('chat-history-size', 10)
-        self.historyIndex = 0
         self.active = 0
         self.autoOff = 0
         self.sendBy = 'Mode'
         from direct.gui import DirectGuiGlobals
         self.chatEntry.bind(DirectGuiGlobals.TYPE, self.applyFilter)
         self.chatEntry.bind(DirectGuiGlobals.ERASE, self.applyFilter)
-        tpMgr = TextPropertiesManager.getGlobalPtr()
-        Red = tpMgr.getProperties('red')
-        Red.setTextColor(1.0, 0.0, 0.0, 1)
-        tpMgr.setProperties('WLRed', Red)
-        del tpMgr
-        self.origFrameColor = self.chatEntry['frameColor']
-        return
 
     def destroy(self):
         from direct.gui import DirectGuiGlobals
@@ -97,7 +76,6 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
     def exitAvatarWhisper(self):
         self.chatEntry.set(self.tempText)
         self.whisperId = None
-        return
 
     def activateByData(self, receiverId = None):
         self.receiverId = receiverId
@@ -170,20 +148,6 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
     def chatOverflow(self, overflowText):
         self.notify.debug('chatOverflow')
         self.sendChat(self.chatEntry.get(plain=True), overflow=True)
-
-    def addToHistory(self, text):
-        self.history = [text] + self.history[:self.historySize - 1]
-        self.historyIndex = 0
-
-    def getPrevHistory(self):
-        self.chatEntry.set(self.history[self.historyIndex])
-        self.historyIndex += 1
-        self.historyIndex %= len(self.history)
-
-    def getNextHistory(self):
-        self.chatEntry.set(self.history[self.historyIndex])
-        self.historyIndex -= 1
-        self.historyIndex %= len(self.history)
 
     def applyFilter(self, keyArgs):
         if base.whiteList:

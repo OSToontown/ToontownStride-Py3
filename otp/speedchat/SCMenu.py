@@ -8,7 +8,6 @@ from direct.showbase.PythonUtil import makeTuple
 import types
 
 class SCMenu(SCObject, NodePath):
-    config = getConfigShowbase()
     SpeedChatRolloverTolerance = config.GetFloat('speedchat-rollover-tolerance', 0.08)
     WantFade = config.GetBool('want-speedchat-fade', 1)
     FadeDuration = config.GetFloat('speedchat-fade-duration', 0.4)

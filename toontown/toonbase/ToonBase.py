@@ -130,6 +130,9 @@ class ToonBase(OTPBase.OTPBase):
         WLDisplay = TextProperties()
         WLDisplay.setSlant(0.3)
         tpMgr.setProperties('WLDisplay', WLDisplay)
+        WLRed = tpMgr.getProperties('red')
+        WLRed.setTextColor(1.0, 0.0, 0.0, 1)
+        tpMgr.setProperties('WLRed', WLRed)
         del tpMgr
         self.lastScreenShotTime = globalClock.getRealTime()
         self.accept('InputState-forward', self.__walking)

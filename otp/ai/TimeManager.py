@@ -7,7 +7,6 @@ from direct.showbase.DirectObject import *
 from direct.task import Task
 from pandac.PandaModules import *
 from otp.otpbase import OTPGlobals
-from toontown.chat.ChatGlobals import *
 import time
 
 class TimeManager(DistributedObject.DistributedObject):

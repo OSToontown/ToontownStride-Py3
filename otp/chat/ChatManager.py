@@ -13,9 +13,6 @@ NormalChatEvent = 'NormalChatEvent'
 SCChatEvent = 'SCChatEvent'
 SCCustomChatEvent = 'SCCustomChatEvent'
 SCEmoteChatEvent = 'SCEmoteChatEvent'
-OnScreen = 0
-OffScreen = 1
-Thought = 2
 
 class ChatManager(DirectObject.DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('ChatManager')
