@@ -69,53 +69,12 @@ class AIBase:
             self.petMovePeriod = self.config.GetFloat('pet-move-period', PetConstants.MovePeriod)
             self.petPosBroadcastPeriod = self.config.GetFloat('pet-pos-broadcast-period', PetConstants.PosBroadcastPeriod)
         self.wantBingo = self.config.GetBool('want-fish-bingo', 1)
-        self.wantKarts = self.config.GetBool('wantKarts', 1)
-        self.newDBRequestGen = self.config.GetBool('new-database-request-generate', 1)
-        self.waitShardDelete = self.config.GetBool('wait-shard-delete', 1)
-        self.blinkTrolley = self.config.GetBool('blink-trolley', 0)
-        self.fakeDistrictPopulations = self.config.GetBool('fake-district-populations', 0)
-        self.GEMdemoWhisperRecipientDoid = self.config.GetBool('gem-demo-whisper-recipient-doid', 0)
-        self.sqlAvailable = self.config.GetBool('sql-available', 1)
+        self.wantKarts = self.config.GetBool('want-karts', 1)
         self.backups = BackupManager.BackupManager(
             filepath=self.config.GetString('backups-filepath', 'dependencies/backups/'),
             extension=self.config.GetString('backups-extension', '.json'))
         self.createStats()
         self.restart()
-
-    def setupCpuAffinities(self, minChannel):
-        if process == 'uberdog':
-            affinityMask = self.config.GetInt('uberdog-cpu-affinity-mask', -1)
-        else:
-            affinityMask = self.config.GetInt('ai-cpu-affinity-mask', -1)
-        if affinityMask != -1:
-            TrueClock.getGlobalPtr().setCpuAffinity(affinityMask)
-        else:
-            autoAffinity = self.config.GetBool('auto-single-cpu-affinity', 0)
-            if process == 'uberdog':
-                affinity = self.config.GetInt('uberdog-cpu-affinity', -1)
-                if autoAffinity and affinity == -1:
-                    affinity = 2
-            else:
-                affinity = self.config.GetInt('ai-cpu-affinity', -1)
-                if autoAffinity and affinity == -1:
-                    affinity = 1
-            if affinity != -1:
-                TrueClock.getGlobalPtr().setCpuAffinity(1 << affinity)
-            elif autoAffinity:
-                if process == 'uberdog':
-                    channelSet = int(minChannel / 1000000)
-                    channelSet -= 240
-                    affinity = channelSet + 3
-                    TrueClock.getGlobalPtr().setCpuAffinity(1 << affinity % 4)
-
-    def taskManagerDoYield(self, frameStartTime, nextScheuledTaksTime):
-        minFinTime = frameStartTime + self.MaxEpockSpeed
-        if nextScheuledTaksTime > 0 and nextScheuledTaksTime < minFinTime:
-            minFinTime = nextScheuledTaksTime
-        delta = minFinTime - globalClock.getRealTime()
-        while delta > 0.002:
-            time.sleep(delta)
-            delta = minFinTime - globalClock.getRealTime()
 
     def createStats(self, hostname = None, port = None):
         if not self.wantStats:
