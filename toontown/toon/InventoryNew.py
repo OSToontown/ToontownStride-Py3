@@ -312,9 +312,6 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
 
     def setDetailCredit(self, track, credit):
         if credit != None:
-            if self.toon.earnedExperience:
-                maxCredit = ExperienceCap - self.toon.earnedExperience[track]
-                credit = min(credit, maxCredit)
             credit = int(credit * 10 + 0.5)
             if credit % 10 == 0:
                 credit /= 10
@@ -963,14 +960,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
             return 1
 
     def itemIsCredit(self, track, level):
-        if self.toon.earnedExperience:
-            if self.toon.earnedExperience[track] >= ExperienceCap:
-                return 0
-        if self.battleCreditLevel == None:
-            return 1
-        else:
-            return level < self.battleCreditLevel
-        return
+        return self.battleCreditLevel == None or level < self.battleCreditLevel
 
     def getMax(self, track, level):
         if self.gagTutMode and (track not in (4, 5) or level > 0):
