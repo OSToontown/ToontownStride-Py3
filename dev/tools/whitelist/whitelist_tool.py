@@ -38,6 +38,11 @@ def acceptWord():
 
     acceptWord()
 
+def removeDuplicates(list):
+    seen = set()
+    seen_add = seen.add
+    return [x for x in list if not (x in seen or seen_add(x))]
+
 def saveChanges():
     global LOCAL_LIST
     print 'Saving the whitelist...'
@@ -46,11 +51,16 @@ def saveChanges():
         f.write('WHITELIST = [\n')
 
         LOCAL_LIST.sort()
-        LOCAL_LIST = list(set(LOCAL_LIST)) # Remove duplicates
+        LOCAL_LIST = removeDuplicates(LOCAL_LIST)
         addedWords = []
 
         for word in LOCAL_LIST:
-            if word in addedWords:
+
+            if word in addedWords or word.contains('\\'):
+                continue
+            try:
+                word.decode('ascii')
+            except:
                 continue
             addedWords.append(word)
 
