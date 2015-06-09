@@ -8334,18 +8334,18 @@ CogdoExecutiveSuiteIntroMessage = "Oh no, they've got the shop keeper!\nDefeat t
 CogdoExecutiveSuiteToonThankYou = 'Thanks for the rescue!\nIf you need help in a fight, use this SOS card to call my friend %s.'
 CogdoExecutiveSuiteToonThankYouLawbot = 'Thanks for the rescue!\nThe Lawbots have left behind some sprocket awards that you can use to buy new things in your cattlelog!'
 CogdoExecutiveSuiteToonBye = 'Bye!'
-SillySurgeTerms = {1: 'Amusing Ascent!',
- 2: 'Silly Surge!',
- 3: 'Ridiculous Rise!',
- 4: 'Giggle Growth!',
- 5: 'Funny Fueling!',
- 6: 'Batty Boost!',
- 7: 'Crazy Climb!',
- 8: 'Jolly Jump!',
- 9: 'Loony Lift!',
- 10: 'Hilarity Hike!',
- 11: 'Insanity Increase!',
- 12: 'Cracked-Uptick!'}
+SillySurgeTerms = ['Amusing Ascent!',
+ 'Silly Surge!',
+ 'Ridiculous Rise!',
+ 'Giggle Growth!',
+ 'Funny Fueling!',
+ 'Batty Boost!',
+ 'Crazy Climb!',
+ 'Jolly Jump!',
+ 'Loony Lift!',
+ 'Hilarity Hike!',
+ 'Insanity Increase!',
+ 'Cracked-Uptick!']
 InteractivePropTrackBonusTerms = {0: 'Super Toon-Up!',
  1: '',
  2: '',
