@@ -56,7 +56,7 @@ def saveChanges():
 
         for word in LOCAL_LIST:
 
-            if word in addedWords or word.contains('\\'):
+            if word in addedWords or '\\' in word:
                 continue
             try:
                 word.decode('ascii')
