@@ -144,53 +144,53 @@ def getFriendColor(handle):
 # Foreground, background:
 NametagColors = {
     CCNormal: ( # Blue
-        (VBase4(0.3, 0.3, 0.7, 1.0), VBase4(0.8, 0.8, 0.8, 0.375)),   # Normal
-        (VBase4(0.3, 0.3, 0.7, 1.0), VBase4(0.2, 0.2, 0.2, 0.1875)),  # Down
-        (VBase4(0.5, 0.5, 1.0, 1.0), VBase4(1.0, 1.0, 1.0, 0.5625)),  # Rollover
-        (VBase4(0.3, 0.3, 0.7, 1.0), VBase4(1.0, 1.0, 1.0, 0.375))    # Disabled
+        (VBase4(0.3, 0.3, 0.7, 1.0), VBase4(0.8, 0.8, 0.8, 0.375)),     # Normal
+        (VBase4(0.3, 0.3, 0.7, 1.0), VBase4(0.2, 0.2, 0.2, 0.1875)),    # Down
+        (VBase4(0.5, 0.5, 1.0, 1.0), VBase4(1.0, 1.0, 1.0, 0.5625)),    # Rollover
+        (VBase4(0.3, 0.3, 0.7, 1.0), VBase4(1.0, 1.0, 1.0, 0.375))      # Disabled
     ),
     CCNonPlayer: ( # Orange
-        (VBase4(0.8, 0.4, 0.0, 1.0), VBase4(0.8, 0.8, 0.8, 0.375)),   # Normal
-        (VBase4(0.8, 0.4, 0.0, 1.0), VBase4(0.8, 0.8, 0.8, 0.1875)),  # Down
-        (VBase4(0.8, 0.4, 0.0, 1.0), VBase4(0.8, 0.8, 0.8, 0.5625)),  # Rollover
-        (VBase4(0.8, 0.4, 0.0, 1.0), VBase4(0.8, 0.8, 0.8, 0.375))    # Disabled
+        (VBase4(0.8, 0.4, 0.0, 1.0), VBase4(0.8, 0.8, 0.8, 0.375)),     # Normal
+        (VBase4(0.8, 0.4, 0.0, 1.0), VBase4(0.8, 0.8, 0.8, 0.1875)),    # Down
+        (VBase4(0.8, 0.4, 0.0, 1.0), VBase4(0.8, 0.8, 0.8, 0.5625)),    # Rollover
+        (VBase4(0.8, 0.4, 0.0, 1.0), VBase4(0.8, 0.8, 0.8, 0.375))      # Disabled
     ),
     CCSuit: (
-        (VBase4(0.2, 0.2, 0.2, 1.0), VBase4(0.8, 0.8, 0.8, 0.375)),    # Normal
-        (VBase4(0.2, 0.2, 0.2, 1.0), VBase4(0.2, 0.2, 0.2, 0.1875)),   # Down
-        (VBase4(0.4, 0.4, 0.4, 1.0), VBase4(1.0, 1.0, 1.0, 0.5625)),   # Rollover
-        (VBase4(0.2, 0.2, 0.2, 1.0), VBase4(0.8, 0.8, 0.8, 0.375)),    # Disabled
-        VBase4(0.8, 0.4, 0.0, 1.0)                                     # Arrow color
+        (VBase4(0.2, 0.2, 0.2, 1.0), VBase4(0.8, 0.8, 0.8, 0.375)),     # Normal
+        (VBase4(0.2, 0.2, 0.2, 1.0), VBase4(0.2, 0.2, 0.2, 0.1875)),    # Down
+        (VBase4(0.4, 0.4, 0.4, 1.0), VBase4(1.0, 1.0, 1.0, 0.5625)),    # Rollover
+        (VBase4(0.2, 0.2, 0.2, 1.0), VBase4(0.8, 0.8, 0.8, 0.375)),     # Disabled
+        VBase4(0.8, 0.4, 0.0, 1.0)                                      # Custom arrow color
     ),
     CCSuitBuilding: (
-        (VBase4(0.5, 0.5, 0.5, 1.0), VBase4(0.8, 0.8, 0.8, 0.375)),   # Normal
-        (VBase4(0.5, 0.5, 0.5, 1.0), VBase4(0.8, 0.8, 0.8, 0.1875)),  # Down
-        (VBase4(0.5, 0.5, 0.5, 1.0), VBase4(0.8, 0.8, 0.8, 0.5625)),  # Rollover
-        (VBase4(0.5, 0.5, 0.5, 1.0), VBase4(0.8, 0.8, 0.8, 0.375))    # Disabled
+        (VBase4(0.5, 0.5, 0.5, 1.0), VBase4(0.8, 0.8, 0.8, 0.375)),    # Normal
+        (VBase4(0.5, 0.5, 0.5, 1.0), VBase4(0.8, 0.8, 0.8, 0.1875)),   # Down
+        (VBase4(0.5, 0.5, 0.5, 1.0), VBase4(0.8, 0.8, 0.8, 0.5625)),   # Rollover
+        (VBase4(0.5, 0.5, 0.5, 1.0), VBase4(0.8, 0.8, 0.8, 0.375))     # Disabled
     ),
     CCToonBuilding: (
-        (VBase4(0.2, 0.6, 0.9, 1.0), VBase4(0.8, 0.8, 0.8, 0.375)),   # Normal
-        (VBase4(0.2, 0.6, 0.9, 1.0), VBase4(0.8, 0.8, 0.8, 0.1875)),  # Down
-        (VBase4(0.2, 0.6, 0.9, 1.0), VBase4(0.8, 0.8, 0.8, 0.5625)),  # Rollover
-        (VBase4(0.2, 0.6, 0.9, 1.0), VBase4(0.8, 0.8, 0.8, 0.375))    # Disabled
+        (VBase4(0.2, 0.6, 0.9, 1.0), VBase4(0.8, 0.8, 0.8, 0.375)),    # Normal
+        (VBase4(0.2, 0.6, 0.9, 1.0), VBase4(0.8, 0.8, 0.8, 0.1875)),   # Down
+        (VBase4(0.2, 0.6, 0.9, 1.0), VBase4(0.8, 0.8, 0.8, 0.5625)),   # Rollover
+        (VBase4(0.2, 0.6, 0.9, 1.0), VBase4(0.8, 0.8, 0.8, 0.375))     # Disabled
     ),
     CCHouseBuilding: (
-        (VBase4(0.2, 0.6, 0.9, 1.0), VBase4(0.8, 0.8, 0.8, 0.375)),   # Normal
-        (VBase4(0.2, 0.2, 0.5, 1.0), VBase4(0.2, 0.2, 0.2, 0.1875)),  # Down
-        (VBase4(0.5, 0.5, 1.0, 1.0), VBase4(1.0, 1.0, 1.0, 0.5625)),  # Rollover
-        (VBase4(0.0, 0.6, 0.2, 1.0), VBase4(0.8, 0.8, 0.8, 0.375))    # Disabled
+        (VBase4(0.2, 0.6, 0.9, 1.0), VBase4(0.8, 0.8, 0.8, 0.375)),    # Normal
+        (VBase4(0.2, 0.2, 0.5, 1.0), VBase4(0.2, 0.2, 0.2, 0.1875)),   # Down
+        (VBase4(0.5, 0.5, 1.0, 1.0), VBase4(1.0, 1.0, 1.0, 0.5625)),   # Rollover
+        (VBase4(0.0, 0.6, 0.2, 1.0), VBase4(0.8, 0.8, 0.8, 0.375))     # Disabled
     ),
     CCSpeedChat: ( # Green
-        (VBase4(0.0, 0.6, 0.2, 1.0), VBase4(0.8, 0.8, 0.8, 0.375)),   # Normal
-        (VBase4(0.0, 0.5, 0.0, 1.0), VBase4(0.5, 0.5, 0.5, 0.1875)),  # Down
-        (VBase4(0.0, 0.7, 0.2, 1.0), VBase4(1.0, 1.0, 1.0, 0.5625)),  # Rollover
-        (VBase4(0.0, 0.6, 0.2, 1.0), VBase4(0.8, 0.8, 0.8, 0.375))    # Disabled
+        (VBase4(0.0, 0.6, 0.2, 1.0), VBase4(0.8, 0.8, 0.8, 0.375)),    # Normal
+        (VBase4(0.0, 0.5, 0.0, 1.0), VBase4(0.5, 0.5, 0.5, 0.1875)),   # Down
+        (VBase4(0.0, 0.7, 0.2, 1.0), VBase4(1.0, 1.0, 1.0, 0.5625)),   # Rollover
+        (VBase4(0.0, 0.6, 0.2, 1.0), VBase4(0.8, 0.8, 0.8, 0.375))     # Disabled
     ),
-    CCAdmin: ( # Purple
-        (VBase4(0.7, 0.3, 0.7, 1.0), VBase4(0.8, 0.8, 0.8, 0.375)),   # Normal
-        (VBase4(0.7, 0.3, 0.7, 1.0), VBase4(0.2, 0.2, 0.2, 0.1875)),  # Down
-        (VBase4(1.0, 0.5, 0.9, 1.0), VBase4(1.0, 1.0, 1.0, 0.5625)),  # Rollover
-        (VBase4(0.7, 0.3, 0.7, 1.0), VBase4(1.0, 1.0, 1.0, 0.375))    # Disabled
+    CCAdmin: ( # Red
+        (VBase4(1.0, 0.35, 0.25, 1.0), VBase4(0.8, 0.8, 0.8, 0.375)),  # Normal
+        (VBase4(1.0, 0.35, 0.25, 1.0), VBase4(0.2, 0.2, 0.2, 0.1875)), # Down
+        (VBase4(1.0, 0.5, 0.56, 1.0), VBase4(1.0, 1.0, 1.0, 0.5625)),  # Rollover
+        (VBase4(1.0, 0.35, 0.25, 1.0), VBase4(1.0, 1.0, 1.0, 0.375))   # Disabled
     )
 }
 

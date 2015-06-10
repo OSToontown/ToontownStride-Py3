@@ -488,52 +488,6 @@ def chooseSuitShot(attack, attackDuration):
     pbpTrack = pbpText.getShowInterval(displayName, 3.5)
     return Parallel(camTrack, pbpTrack)
 
-
-def chooseSuitCloseShot(attack, openDuration, openName, attackDuration):
-    av = None
-    duration = attackDuration - openDuration
-    if duration < 0:
-        duration = 1e-06
-    groupStatus = attack['group']
-    diedTrack = None
-    if groupStatus == ATK_TGT_SINGLE:
-        av = attack['target']['toon']
-        shotChoices = [avatarCloseUpThreeQuarterRightShot, suitGroupThreeQuarterLeftBehindShot]
-        died = attack['target']['died']
-        if died != 0:
-            pbpText = attack['playByPlayText']
-            diedText = av.getName() + ' was defeated!'
-            diedTextList = [diedText]
-            diedTrack = pbpText.getToonsDiedInterval(diedTextList, duration)
-    elif groupStatus == ATK_TGT_GROUP:
-        av = None
-        shotChoices = [allGroupLowShot, suitGroupThreeQuarterLeftBehindShot]
-        deadToons = []
-        targetDicts = attack['target']
-        for targetDict in targetDicts:
-            died = targetDict['died']
-            if died != 0:
-                deadToons.append(targetDict['toon'])
-
-        if len(deadToons) > 0:
-            pbpText = attack['playByPlayText']
-            diedTextList = []
-            for toon in deadToons:
-                pbpText = attack['playByPlayText']
-                diedTextList.append(toon.getName() + ' was defeated!')
-
-            diedTrack = pbpText.getToonsDiedInterval(diedTextList, duration)
-    else:
-        notify.error('Bad groupStatus: %s' % groupStatus)
-    track = apply(random.choice(shotChoices), [av, duration])
-    if diedTrack == None:
-        return track
-    else:
-        mtrack = Parallel(track, diedTrack)
-        return mtrack
-    return
-
-
 def makeShot(x, y, z, h, p, r, duration, other = None, name = 'makeShot'):
     if other:
         return heldRelativeShot(other, x, y, z, h, p, r, duration, name)
@@ -886,20 +840,6 @@ def randomOverShoulderShot(suit, toon, battle, duration, focus):
     if MovieUtil.shotDirection == 'left':
         x = -x
     return focusShot(x, y, z, duration, toonCentralPoint, splitFocusPoint=suitCentralPoint)
-
-
-def randomCameraSelection(suit, attack, attackDuration, openShotDuration):
-    shotChoices = [avatarCloseUpThrowShot,
-     avatarCloseUpThreeQuarterLeftShot,
-     allGroupLowShot,
-     suitGroupLowLeftShot,
-     avatarBehindHighShot]
-    if openShotDuration > attackDuration:
-        openShotDuration = attackDuration
-    closeShotDuration = attackDuration - openShotDuration
-    openShot = apply(random.choice(shotChoices), [suit, openShotDuration])
-    closeShot = chooseSuitCloseShot(attack, closeShotDuration, openShot.getName(), attackDuration)
-    return Sequence(openShot, closeShot)
 
 
 def randomToonGroupShot(toons, suit, duration, battle):
