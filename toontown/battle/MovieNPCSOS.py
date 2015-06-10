@@ -5,7 +5,6 @@ import random
 import BattleParticles
 from BattleProps import *
 from BattleSounds import *
-import HealJokes
 import MovieCamera
 import MovieUtil
 from toontown.chat.ChatGlobals import *

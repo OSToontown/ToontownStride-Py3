@@ -3,7 +3,6 @@ from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.task import Task
 from otp.ai.AIBase import *
-from toontown.building import DistributedElevatorAI
 from toontown.building import DistributedElevatorFloorAI
 from toontown.building.ElevatorConstants import *
 from toontown.toonbase import ToontownGlobals

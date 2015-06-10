@@ -510,7 +510,6 @@ PieCodeBossInsides = 4
 PieCodeDefensePan = 5
 PieCodeProsecutionPan = 6
 PieCodeLawyer = 7
-PieCodeInvasionSuit = 8
 PieCodeColors = {PieCodeBossCog: None,
  PieCodeNotBossCog: (0.8,
                      0.8,
@@ -1402,30 +1401,6 @@ GlitchKillerZones = [13300,
  13400,
  13500,
  13600]
-ColorPlayer = (0.3,
- 0.7,
- 0.3,
- 1)
-ColorAvatar = (0.3,
- 0.3,
- 0.7,
- 1)
-ColorPet = (0.6,
- 0.4,
- 0.2,
- 1)
-ColorFreeChat = (0.3,
- 0.3,
- 0.8,
- 1)
-ColorSpeedChat = (0.2,
- 0.6,
- 0.4,
- 1)
-ColorNoChat = (0.8,
- 0.5,
- 0.1,
- 1)
 FactoryLaffMinimums = [(0, 31, 0),
  (0, 66, 71),
  (0,
@@ -1628,3 +1603,4 @@ CostPerLaffRestock = 3
 FISHSALE_NONE = 0
 FISHSALE_COMPLETE = 1
 FISHSALE_TROPHY = 2
+NPCCollisionDelay = 2.5
