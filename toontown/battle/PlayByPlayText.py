@@ -19,7 +19,7 @@ class PlayByPlayText(OnscreenText.OnscreenText):
         return Sequence(Func(self.hide), Wait(duration * 0.3), Func(self.setText, text), Func(self.show), Wait(duration * 0.7), Func(self.hide))
 
     def getToonsDiedInterval(self, textList, duration):
-        track = Sequence(Func(self.hide), Wait(duration * 0.3))
+        track = Sequence(Func(self.hide), Wait(duration * 0.1))
         waitGap = 0.6 / len(textList) * duration
         for text in textList:
             newList = [Func(self.setText, text),

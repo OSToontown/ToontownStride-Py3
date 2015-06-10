@@ -6967,7 +6967,7 @@ TipDict = {TIP_NONE: ('',),
               'Each street in Toontown has different Cog levels and types.',
               'Sidewalks are safe from Cogs.',
               'On the streets, side doors tell knock-knock jokes when approached.',
-              'Some ToonTasks train you for new Gag Tracks. You only get to choose six of the seven Gag Tracks, so choose carefully!',
+              'Some ToonTasks train you for new Gag Tracks.',
               'Traps are only useful if you or your friends coordinate using Lure in battle.',
               'Higher level Lures are less likely to miss.',
               'Lower level gags have a lower accuracy against high level Cogs.',
@@ -8470,3 +8470,5 @@ def convertSecondsToDate(seconds):
 
     print '%d:%02d:%02d' % (h, m, s)
     return '%d:%02d:%02d' % (h, m, s)
+
+ToonDefeatedMessage = '%s was defeated!'
