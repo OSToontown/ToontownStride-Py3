@@ -290,8 +290,6 @@ def __throwPie(throw, delay, hitCount):
     pies = [pie, pie2]
     hands = toon.getRightHands()
     splatName = 'splat-' + pieName
-    if pieName == 'wedding-cake':
-        splatName = 'splat-birthday-cake'
     splat = globalPropPool.getProp(splatName)
     splatType = globalPropPool.getPropType(splatName)
     toonTrack = Sequence()
@@ -399,8 +397,6 @@ def __createWeddingCakeFlight(throw, groupHitDict, pie, pies):
     numTargets = len(throw['target'])
     pieName = pieNames[level]
     splatName = 'splat-' + pieName
-    if pieName == 'wedding-cake':
-        splatName = 'splat-birthday-cake'
     splat = globalPropPool.getProp(splatName)
     splats = [splat]
     for i in xrange(numTargets - 1):

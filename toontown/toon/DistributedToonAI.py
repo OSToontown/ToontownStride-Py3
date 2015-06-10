@@ -4788,8 +4788,6 @@ def givePies(pieType, numPies=0):
     if pieType == -1:
         target.b_setNumPies(0)
         return "Removed %s's pies." % target.getName()
-    if pieType == 6:
-        return 'Invalid pie type!'
     if not 0 <= pieType <= 7:
         return 'Pie type must be in range (0-7).'
     if not -1 <= numPies <= 99:
