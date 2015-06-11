@@ -855,10 +855,17 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
         pos = self.battlePosDict[canonicalZoneId]
 
         interactivePropTrackBonus = -1
-
-        if simbase.config.GetBool('props-buff-battles', True) and canonicalZoneId in self.cellToGagBonusDict:
-            interactivePropTrackBonus = self.cellToGagBonusDict[canonicalZoneId]
-
+        if simbase.config.GetBool('props-buff-battles', True) and self.cellToGagBonusDict.has_key(canonicalZoneId):
+            tentativeBonusTrack = self.cellToGagBonusDict[canonicalZoneId]
+            trackToHolidayDict = {
+                ToontownBattleGlobals.SQUIRT_TRACK: ToontownGlobals.HYDRANTS_BUFF_BATTLES,
+                ToontownBattleGlobals.THROW_TRACK: ToontownGlobals.MAILBOXES_BUFF_BATTLES,
+                ToontownBattleGlobals.HEAL_TRACK: ToontownGlobals.TRASHCANS_BUFF_BATTLES }
+            if tentativeBonusTrack in trackToHolidayDict:
+                holidayId = trackToHolidayDict[tentativeBonusTrack]
+                if simbase.air.holidayManager.isHolidayRunning(holidayId):#and simbase.air.holidayManager.getCurPhase(holidayId) >= 1:
+                    interactivePropTrackBonus = tentativeBonusTrack
+                    
         self.battleMgr.newBattle(
             zoneId, zoneId, pos, suit, toonId, self.__battleFinished,
             self.SuitHoodInfo[self.hoodInfoIdx][self.SUIT_HOOD_INFO_SMAX],

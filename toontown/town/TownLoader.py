@@ -290,7 +290,7 @@ class TownLoader(StateData.StateData):
         for i in nodeList:
             animPropNodes = i.findAllMatches('**/animated_prop_*')
             numAnimPropNodes = animPropNodes.getNumPaths()
-            for j in xrange(numAnimPropNodes):
+            for j in range(numAnimPropNodes):
                 animPropNode = animPropNodes.getPath(j)
                 if animPropNode.getName().startswith('animated_prop_generic'):
                     className = 'GenericAnimatedProp'
@@ -309,7 +309,7 @@ class TownLoader(StateData.StateData):
 
             interactivePropNodes = i.findAllMatches('**/interactive_prop_*')
             numInteractivePropNodes = interactivePropNodes.getNumPaths()
-            for j in xrange(numInteractivePropNodes):
+            for j in range(numInteractivePropNodes):
                 interactivePropNode = interactivePropNodes.getPath(j)
                 className = 'InteractiveAnimatedProp'
                 if 'hydrant' in interactivePropNode.getName():
