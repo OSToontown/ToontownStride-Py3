@@ -19,7 +19,7 @@ class FishAnimatedProp:
         self.splash = Splash(self.geom, wantParticles=0)
         self.splash.setPosHprScale(-1, 0.0, 1.23, 0.0, 0.0, 0.0, 0.7, 0.7, 0.7)
         randomSplash = random.choice(self.splashSfxList)
-        self.track = Sequence(Parallel(Func(self.fish.show), self.fish.actorInterval('jump'), Sequence(Wait(0.25), Func(self.exitRipples.play, 0.75)), Sequence(Wait(1.13), Func(self.splash.play), SoundInterval(randomSplash, volume = 0.8, node = self.fish), Func(self.fish.hide))), Wait(5 + 10 * random.random()))
+        self.track = Sequence(Wait(5 + 10 * random.random()), Parallel(Func(self.fish.show), self.fish.actorInterval('jump'), Sequence(Wait(0.25), Func(self.exitRipples.play, 0.75)), Sequence(Wait(1.13), Func(self.splash.play), SoundInterval(randomSplash, volume = 0.3, node = self.fish), Func(self.fish.hide))))
 
     def delete(self):
         self.exitRipples.destroy()
