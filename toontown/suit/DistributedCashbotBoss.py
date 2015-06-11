@@ -897,6 +897,8 @@ class DistributedCashbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
                 instructions = TTLocalizer.ResistanceToonMeritsAllInstructions
             else:
                 instructions = TTLocalizer.ResistanceToonMeritsInstructions % TTLocalizer.RewardPanelMeritBarLabels[value]
+        elif menuIndex == ResistanceChat.RESISTANCE_TICKETS:
+            instructions = TTLocalizer.ResistanceToonTicketsInstructions % value
         speech = TTLocalizer.ResistanceToonCongratulations % (text, instructions)
         speech = self.__talkAboutPromotion(speech)
         self.resistanceToon.setLocalPageChat(speech, 0)

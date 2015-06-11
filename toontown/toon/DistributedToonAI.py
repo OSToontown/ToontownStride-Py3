@@ -2512,23 +2512,19 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
                 self.toonUp(self.maxHp)
             else:
                 self.toonUp(msgValue)
-            self.notify.debug('Toon-up for ' + self.name)
         elif msgType == ResistanceChat.RESISTANCE_RESTOCK:
             self.inventory.NPCMaxOutInv(msgValue)
             self.d_setInventory(self.inventory.makeNetString())
-            self.notify.debug('Restock for ' + self.name)
         elif msgType == ResistanceChat.RESISTANCE_MONEY:
-            if msgValue == -1:
-                self.addMoney(999999)
-            else:
-                self.addMoney(msgValue)
-            self.notify.debug('Money for ' + self.name)
+            self.addMoney(msgValue)
         elif msgType == ResistanceChat.RESISTANCE_MERITS:
             if msgValue == -1:
                 for i in xrange(len(SuitDNA.suitDepts)):
                     self.doResistanceMerits(i)
             else:
                 self.doResistanceMerits(msgValue)
+        elif msgType == ResistanceChat.RESISTANCE_TICKETS:
+            self.b_setTickets(self.getTickets() + msgValue)
 
     def doResistanceMerits(self, dept):
         if not CogDisguiseGlobals.isSuitComplete(self.cogParts, dept):
