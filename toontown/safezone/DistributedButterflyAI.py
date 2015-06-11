@@ -1,13 +1,9 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
-from otp.ai.AIBase import *
-from toontown.toonbase.ToontownGlobals import *
 from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
-from direct.fsm import State
 from direct.task import Task
-import ButterflyGlobals
-import random
+import ButterflyGlobals, random
 
 class DistributedButterflyAI(DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedButterflyAI")
@@ -23,15 +19,11 @@ class DistributedButterflyAI(DistributedObjectAI):
         return None
 
     def delete(self):
-        try:
-            self.butterfly_deleted
-        except:
-            self.butterfly_deleted = 1
-            ButterflyGlobals.recycleIndex(self.curIndex, self.playground, self.area, self.ownerId)
-            ButterflyGlobals.recycleIndex(self.destIndex, self.playground, self.area, self.ownerId)
-            self.fsm.request('off')
-            del self.fsm
-            DistributedObjectAI.delete(self)
+        ButterflyGlobals.recycleIndex(self.curIndex, self.playground, self.area, self.ownerId)
+        ButterflyGlobals.recycleIndex(self.destIndex, self.playground, self.area, self.ownerId)
+        self.fsm.request('off')
+        del self.fsm
+        DistributedObjectAI.delete(self)
 
     def d_setState(self, stateIndex, curIndex, destIndex, time):
         self.sendUpdate('setState', [stateIndex,
