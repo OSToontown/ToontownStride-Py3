@@ -2536,7 +2536,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         if totalMerits == 0 or merits >= totalMerits:
             return
 
-        self.cogMerits[dept] = min(totalMerits, merits + (totalMerits / 6))
+        self.cogMerits[dept] = min(totalMerits, merits + (totalMerits / 3))
         self.b_setCogMerits(self.cogMerits)
 
     def squish(self, damage):
