@@ -67,7 +67,7 @@ want-golf-zone #t
 # Safe zone settings:
 want-treasure-planners #t
 want-suit-planners #t
-want-butterflies #f
+want-butterflies #t
 
 # Trolley minigames:
 want-minigames #t

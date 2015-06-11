@@ -22,7 +22,7 @@ class BRHoodAI(HoodAI.HoodAI):
 
         self.PolarPlaceEffectManager = DistributedPolarPlaceEffectMgrAI.DistributedPolarPlaceEffectMgrAI(self.air)
         self.PolarPlaceEffectManager.generateWithRequired(3821)
-        
+
         if simbase.air.wantHalloween:
             self.TrickOrTreatTargetManager = DistributedTrickOrTreatTargetAI.DistributedTrickOrTreatTargetAI(self.air)
             self.TrickOrTreatTargetManager.generateWithRequired(3707)

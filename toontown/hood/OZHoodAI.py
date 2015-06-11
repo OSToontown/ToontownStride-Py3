@@ -36,7 +36,6 @@ class OZHoodAI(HoodAI.HoodAI):
         self.timer = DistributedTimerAI(self.air)
         self.timer.generateWithRequired(self.zoneId)
 
-
     def findPicnicTables(self, dnaGroup, zoneId, area, overrideDNAZone=False):
         picnicTables = []
         if isinstance(dnaGroup, DNAGroup) and ('picnic_table' in dnaGroup.getName()):

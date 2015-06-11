@@ -27,7 +27,7 @@ class TTHoodAI(HoodAI.HoodAI):
             self.createTrolley()
         if simbase.config.GetBool('want-butterflies', True):
             self.createButterflies()
-        
+
         NPCToons.createNPC(
             simbase.air, 2021,
             (ToontownGlobals.ToontownCentral, TTLocalizer.NPCToonNames[2021], ('dss', 'ls', 's', 'm', 13, 41, 13, 13, 1, 6, 1, 6, 0, 18, 0), 'm', 1, NPCToons.NPC_GLOVE),
@@ -36,7 +36,7 @@ class TTHoodAI(HoodAI.HoodAI):
         if simbase.air.wantHalloween:
             self.TrickOrTreatTargetManager = DistributedTrickOrTreatTargetAI.DistributedTrickOrTreatTargetAI(self.air)
             self.TrickOrTreatTargetManager.generateWithRequired(2649)
-        
+
         if simbase.air.wantChristmas:
             self.WinterCarolingTargetManager = DistributedWinterCarolingTargetAI.DistributedWinterCarolingTargetAI(self.air)
             self.WinterCarolingTargetManager.generateWithRequired(2649)
@@ -55,9 +55,10 @@ class TTHoodAI(HoodAI.HoodAI):
         self.trolley.start()
 
     def createButterflies(self):
+        playground = ButterflyGlobals.TTC
         ButterflyGlobals.generateIndexes(self.zoneId, ButterflyGlobals.TTC)
         for i in xrange(0, ButterflyGlobals.NUM_BUTTERFLY_AREAS[ButterflyGlobals.TTC]):
             for _ in xrange(0, ButterflyGlobals.NUM_BUTTERFLIES[ButterflyGlobals.TTC]):
-                butterfly = DistributedButterflyAI(self.air, playground, i, self.zoneId)
+                butterfly = DistributedButterflyAI.DistributedButterflyAI(self.air, playground, i, self.zoneId)
                 butterfly.generateWithRequired(self.zoneId)
                 butterfly.start()

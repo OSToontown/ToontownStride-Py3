@@ -22,7 +22,7 @@ class DDHoodAI(HoodAI.HoodAI):
         if simbase.config.GetBool('want-minigames', True):
             self.createTrolley()
         self.createBoat()
-                
+
         if simbase.air.wantHalloween:
             self.TrickOrTreatTargetManager = DistributedTrickOrTreatTargetAI.DistributedTrickOrTreatTargetAI(self.air)
             self.TrickOrTreatTargetManager.generateWithRequired(1834)

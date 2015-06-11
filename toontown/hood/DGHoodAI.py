@@ -27,10 +27,10 @@ class DGHoodAI(HoodAI.HoodAI):
         self.createFlower()
         if simbase.config.GetBool('want-butterflies', True):
             self.createButterflies()
-            
+
         #self.GreenToonEffectManager = DistributedGreenToonEffectMgrAI.DistributedGreenToonEffectMgrAI(self.air)
         #self.GreenToonEffectManager.generateWithRequired(5819)
-        
+
         if simbase.air.wantHalloween:
             self.TrickOrTreatTargetManager = DistributedTrickOrTreatTargetAI.DistributedTrickOrTreatTargetAI(self.air)
             self.TrickOrTreatTargetManager.generateWithRequired(5620)
@@ -50,10 +50,11 @@ class DGHoodAI(HoodAI.HoodAI):
         self.flower.generateWithRequired(self.zoneId)
         self.flower.start()
 
-    def createButterflies(self, playground):
+    def createButterflies(self):
+        playground = ButterflyGlobals.DG
         ButterflyGlobals.generateIndexes(self.zoneId, ButterflyGlobals.DG)
         for i in xrange(0, ButterflyGlobals.NUM_BUTTERFLY_AREAS[ButterflyGlobals.DG]):
             for _ in xrange(0, ButterflyGlobals.NUM_BUTTERFLIES[ButterflyGlobals.DG]):
-                butterfly = DistributedButterflyAI(self.air, playground, i, self.zoneId)
+                butterfly = DistributedButterflyAI.DistributedButterflyAI(self.air, playground, i, self.zoneId)
                 butterfly.generateWithRequired(self.zoneId)
                 butterfly.start()

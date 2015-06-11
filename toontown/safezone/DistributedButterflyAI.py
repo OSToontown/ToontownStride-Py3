@@ -1,70 +1,99 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
+from otp.ai.AIBase import *
+from toontown.toonbase.ToontownGlobals import *
 from direct.distributed.ClockDelta import *
+from direct.fsm import ClassicFSM, State
+from direct.fsm import State
+from direct.task import Task
 import ButterflyGlobals
 import random
 
 class DistributedButterflyAI(DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedButterflyAI")
 
-    def __init__(self, air):
+    def __init__(self, air, playground, area, ownerId):
         DistributedObjectAI.__init__(self, air)
-        self.area = 0
-        self.playground = 0
-        self.stateIndex = 0
-        self.curIndex = 0
-        self.destIndex = 0
-        self.time = 0
-        self.timestamp = 0
-    
-    def generate(self):
-        ButterflyGlobals.generateIndexes(self.doId, self.playground)
-        fr = ButterflyGlobals.getFirstRoute(self.playground, self.area, self.doId)
-        self.b_setState(ButterflyGlobals.FLYING, fr[1], fr[3], fr[4], globalClockDelta.getRealNetworkTime())
-        taskMgr.doMethodLater(fr[4], self.__land, 'landButterfly%i' % self.doId, [])
-    
-    def __land(self):
-        ttl = random.uniform(0, ButterflyGlobals.MAX_LANDED_TIME)
-        self.b_setState(ButterflyGlobals.LANDED, self.curIndex, self.destIndex, ttl, globalClockDelta.getRealNetworkTime())
-        taskMgr.doMethodLater(ttl, self.__fly, 'flyButterfly%i' % self.doId, [])
-        
-    def __fly(self):
-        next = ButterflyGlobals.getNextPos(ButterflyGlobals.ButterflyPoints[self.playground][self.area][self.destIndex], self.playground, self.area, self.doId)
-        
-        self.b_setState(ButterflyGlobals.FLYING, self.destIndex, next[1], next[2], globalClockDelta.getRealNetworkTime())
-        taskMgr.doMethodLater(next[2], self.__land, 'landButterfly%i' % self.doId, [])
-    
-    def setArea(self, playground, area):
-        self.area = area
         self.playground = playground
-        
-    def d_setArea(self, playground, area):
-        self.sendUpdate('setArea', [playground, area])
-        
-    def b_setArea(self, playground, area):
-        self.setArea(playground, area)
-        self.d_setArea(playground, area)
-        
+        self.area = area
+        self.ownerId = ownerId
+        self.fsm = ClassicFSM.ClassicFSM('DistributedButterfliesAI', [State.State('off', self.enterOff, self.exitOff, ['Flying', 'Landed']), State.State('Flying', self.enterFlying, self.exitFlying, ['Landed']), State.State('Landed', self.enterLanded, self.exitLanded, ['Flying'])], 'off', 'off')
+        self.fsm.enterInitialState()
+        self.curPos, self.curIndex, self.destPos, self.destIndex, self.time = ButterflyGlobals.getFirstRoute(self.playground, self.area, self.ownerId)
+        return None
+
+    def delete(self):
+        try:
+            self.butterfly_deleted
+        except:
+            self.butterfly_deleted = 1
+            ButterflyGlobals.recycleIndex(self.curIndex, self.playground, self.area, self.ownerId)
+            ButterflyGlobals.recycleIndex(self.destIndex, self.playground, self.area, self.ownerId)
+            self.fsm.request('off')
+            del self.fsm
+            DistributedObjectAI.delete(self)
+
+    def d_setState(self, stateIndex, curIndex, destIndex, time):
+        self.sendUpdate('setState', [stateIndex,
+         curIndex,
+         destIndex,
+         time,
+         globalClockDelta.getRealNetworkTime()])
+
     def getArea(self):
         return [self.playground, self.area]
 
-    def setState(self, stateIndex, curIndex, destIndex, time, timestamp):
-        self.stateIndex = stateIndex
-        self.curIndex = curIndex
-        self.destIndex = destIndex
-        self.time = time
-        self.timestamp = timestamp
-        
-    def d_setState(self, stateIndex, curIndex, destIndex, time, timestamp):
-        self.sendUpdate('setState', [stateIndex, curIndex, destIndex, time, timestamp])
-        
-    def b_setState(self, stateIndex, curIndex, destIndex, time, timestamp):
-        self.setState(stateIndex, curIndex, destIndex, time, timestamp)
-        self.d_setState(stateIndex, curIndex, destIndex, time, timestamp)
-        
     def getState(self):
-        return [self.stateIndex, self.curIndex, self.destIndex, self.time, self.timestamp]
+        return [self.stateIndex,
+         self.curIndex,
+         self.destIndex,
+         self.time,
+         globalClockDelta.getRealNetworkTime()]
+
+    def start(self):
+        self.fsm.request('Flying')
 
     def avatarEnter(self):
-        pass
+        if self.fsm.getCurrentState().getName() == 'Landed':
+            self.__ready()
+        return None
 
+    def enterOff(self):
+        self.stateIndex = ButterflyGlobals.OFF
+        return None
+
+    def exitOff(self):
+        return None
+
+    def enterFlying(self):
+        self.stateIndex = ButterflyGlobals.FLYING
+        ButterflyGlobals.recycleIndex(self.curIndex, self.playground, self.area, self.ownerId)
+        self.d_setState(ButterflyGlobals.FLYING, self.curIndex, self.destIndex, self.time)
+        taskMgr.doMethodLater(self.time, self.__handleArrival, self.uniqueName('butter-flying'))
+        return None
+
+    def exitFlying(self):
+        taskMgr.remove(self.uniqueName('butter-flying'))
+        return None
+
+    def __handleArrival(self, task):
+        self.curPos = self.destPos
+        self.curIndex = self.destIndex
+        self.fsm.request('Landed')
+        return Task.done
+
+    def enterLanded(self):
+        self.stateIndex = ButterflyGlobals.LANDED
+        self.time = random.random() * ButterflyGlobals.MAX_LANDED_TIME
+        self.d_setState(ButterflyGlobals.LANDED, self.curIndex, self.destIndex, self.time)
+        taskMgr.doMethodLater(self.time, self.__ready, self.uniqueName('butter-ready'))
+        return None
+
+    def exitLanded(self):
+        taskMgr.remove(self.uniqueName('butter-ready'))
+        return None
+
+    def __ready(self, task = None):
+        self.destPos, self.destIndex, self.time = ButterflyGlobals.getNextPos(self.curPos, self.playground, self.area, self.ownerId)
+        self.fsm.request('Flying')
+        return Task.done
