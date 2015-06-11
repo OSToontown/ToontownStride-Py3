@@ -613,8 +613,9 @@ class DistributedEstateAI(DistributedObjectAI):
 
     def gameTableOver(self):
         pass
-
+    
     def placeStarterGarden(self, avatar):
+        # TODO: Place garden if a toon already owns one.
         avId = avatar.doId
         slot = self.toons.index(avId)
         plotPos = GardenGlobals.estatePlots[slot]
@@ -643,6 +644,7 @@ class DistributedEstateAI(DistributedObjectAI):
                 newPlot.generateWithRequired(self.zoneId)
                 self.plots[slot].append(newPlot)
             elif i == GardenGlobals.FLOWER_TYPE:
+                # TODO: Place flower plots more accurately.
                 x, y, h = n[:3]
                 newPlot = DistributedGardenPlotAI(self.air)
                 newPlot.setEstate(self.doId)

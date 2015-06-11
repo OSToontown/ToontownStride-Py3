@@ -51,6 +51,8 @@ class DistributedPlantBaseAI(DistributedLawnDecorAI):
         return self.growthLevel
 
     def waterPlant(self, avId):
+        # TODO: Proper water threshold for watering can type.
+        # Not supposed to be 16 for all watering cans.
         self.lastWateredBy = avId
         newLevel = self.waterLevel + 1
         if newLevel > self.maxWaterLevel:
@@ -69,6 +71,7 @@ class DistributedPlantBaseAI(DistributedLawnDecorAI):
             del self.lastWateredBy
         estate = simbase.air.doId2do.get(self.getEstate())
         dataIndex = -1
+        # TODO: Possibly store this in mongodb/cPickle instead.
         for n, item in enumerate(estate.items[self.getOwnerIndex()]):
             if item[0] == self.getPlot():
                 dataIndex = n

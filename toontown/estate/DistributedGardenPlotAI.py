@@ -49,7 +49,7 @@ class DistributedGardenPlotAI(DistributedLawnDecorAI):
 
     def addData(self):
         estate = simbase.air.doId2do.get(self.getEstate())
-        plantedAt = int(datetime.datetime.now().strftime('%Y%m%d%H%M'))
+        plantedAt = int(datetime.datetime.now().strftime('%Y%m%d%H%M')) # TODO: Possibly store this in mongodb/cPickle instead.
         if isinstance(self.planted, DistributedFlowerAI):
             data = [
                 self.getPlot(),
@@ -181,6 +181,7 @@ class DistributedGardenPlotAI(DistributedLawnDecorAI):
         self.sendUpdate('setMovie', [GardenGlobals.MOVIE_PLANT, toon])
 
     def plantNothing(self, burntBeans, toon):
+        # TODO: Fix exploit.
         av = simbase.air.doId2do.get(toon)
         av.takeMoney(burntBeans)
         self.planted = None

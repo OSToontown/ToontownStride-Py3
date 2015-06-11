@@ -26,6 +26,7 @@ class DistributedGagTreeAI(DistributedPlantBaseAI):
         return self.wilted
 
     def requestHarvest(self, doId):
+        # TODO: Actually harvest the gags and add them to toon inventory.
         av = simbase.air.doId2do.get(doId)
         harvested = 0
         track, level = GardenGlobals.getTreeTrackAndLevel(self.typeIndex)

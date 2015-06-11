@@ -1,6 +1,9 @@
 from direct.directnotify import DirectNotifyGlobal
 from toontown.estate.DistributedPlantBaseAI import DistributedPlantBaseAI
 
+# TODO: Add flower to basket when picking, give shovel skill only if the
+#       flower is player's tier.
+
 class DistributedFlowerAI(DistributedPlantBaseAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedFlowerAI")
 
