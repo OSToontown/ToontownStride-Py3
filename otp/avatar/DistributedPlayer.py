@@ -178,7 +178,7 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
         if base.localAvatar.isIgnored(self.doId):
             return
         if not self.understandable:
-            chat = self.chatGarbler.garble(self, chat)
+            chat = self.chatGarbler.garble(self, len(chat.split(' ')))
         elif base.whiteList and self.understandable < 2:
             chat = base.whiteList.processThroughAll(chat, self, self.chatGarbler)
         self.displayTalk(chat)
@@ -188,7 +188,9 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
             return
         if base.localAvatar.isIgnored(avId):
             return
-        if base.whiteList:
+        if not self.understandable:
+            chat = self.chatGarbler.garble(self, len(chat.split(' ')))
+        elif base.whiteList and self.understandable < 2:
             chat = base.whiteList.processThroughAll(chat, self.chatGarbler)
         self.displayTalkWhisper(avId, chat)
 

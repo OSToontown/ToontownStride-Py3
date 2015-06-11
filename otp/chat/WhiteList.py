@@ -1,10 +1,20 @@
 from bisect import bisect_left
+import re
 
 class WhiteList:
+
+    def __init__(self):
+        self.sequenceList = []
 
     def setWords(self, words):
         self.words = words
         self.numWords = len(self.words)
+
+    def setSequenceList(self, sequences):
+        self.sequenceList = sequences
+    
+    def getSequenceList(self, word):
+        return self.sequenceList[word] if word in self.sequenceList else None
 
     def cleanText(self, text):
         return text.strip('.,?!').lower()
@@ -19,10 +29,10 @@ class WhiteList:
         return i != self.numWords and self.words[i].startswith(text)
     
     def getReplacement(self, text, av=None, garbler=None):
-        return '\x01WLRed\x01%s\x02' % text if not garbler else garbler.garble(av, text)
+        return '\x01WLRed\x01%s\x02' % text if not garbler else garbler.garble(av, len(text.split(' ')))
 
     def processText(self, text, av=None, garbler=None):
-        if (not self.words) or (text.startswith('~') and not garbler):
+        if not self.words:
             return text
 
         words = text.split(' ')
@@ -43,5 +53,30 @@ class WhiteList:
 
         return ' '.join(newWords)
     
+    def processSequences(self, text, av=None, garbler=None):
+        if not self.sequenceList:
+            return text
+
+        words = text.split(' ')
+
+        for wordNum in xrange(len(words)):
+            word = words[wordNum].lower()
+            sequences = self.getSequenceList(word)
+
+            if not sequences:
+                continue
+
+            for sequenceNum in xrange(len(sequences)):
+                sequence = sequences[sequenceNum].split()
+                total = wordNum + len(sequence) + 1
+
+                if total <= len(words) and sequence == words[wordNum + 1:total]:
+                    words[wordNum:total] = self.getReplacement(' '.join(words[wordNum:total]), av, garbler).split()
+
+        return ' '.join(words)
+
     def processThroughAll(self, text, av=None, garbler=None):
-        return self.processText(text, av, garbler)
+        if (text.startswith('~') and not garbler):
+            return text
+
+        return self.processSequences(self.processText(re.sub(' +', ' ', text), av, garbler), av, garbler)
