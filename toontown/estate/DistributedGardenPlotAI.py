@@ -182,11 +182,8 @@ class DistributedGardenPlotAI(DistributedLawnDecorAI):
 
     def plantNothing(self, burntBeans, toon):
         # TODO: Fix exploit.
-        estate = simbase.air.doId2do.get(self.getEstate())
         sendAvId = self.air.getAvatarIdFromSender()
-        if sendAvId != toon or burntBeans > 8 or sendAvId not in estate.toons:
-            self.air.writeServerEvent('suspicious', sendAvId, 'DistributedGardenPlotAI.plantNothing attempted exploit') 
-        else:
-            av = simbase.air.doId2do.get(toon)
+        av = self.air.doId2do.get(sendAvId)
+        if av:
             av.takeMoney(burntBeans)
             self.planted = None
