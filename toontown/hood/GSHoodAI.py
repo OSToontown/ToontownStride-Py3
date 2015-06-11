@@ -27,15 +27,17 @@ class GSHoodAI(HoodAI.HoodAI):
         HoodAI.HoodAI.startup(self)
 
         self.createStartingBlocks()
+        self.cycleDuration = 10
         self.createLeaderBoards()
-        self.cycleLeaderBoards()
+        self.__cycleLeaderBoards()
 
     def shutdown(self):
         HoodAI.HoodAI.shutdown(self)
 
-        taskMgr.removeTasksMatching('leaderBoardSwitch')
+        taskMgr.removeTasksMatching(str(self) + '_leaderBoardSwitch')
         for board in self.leaderBoards:
             board.delete()
+
         del self.leaderBoards
 
     def findRacingPads(self, dnaGroup, zoneId, area, padType='racing_pad'):
@@ -140,6 +142,6 @@ class GSHoodAI(HoodAI.HoodAI):
             for subscription in RaceGlobals.LBSubscription[leaderBoardType]:
                 leaderBoard.subscribeTo(subscription)
 
-    def cycleLeaderBoards(self, task=None):
-        messenger.send('leaderBoardSwap-' + str(self.zoneId))
-        taskMgr.doMethodLater(10, self.cycleLeaderBoards, 'leaderBoardSwitch')
+    def __cycleLeaderBoards(self, task = None):
+        messenger.send('GS_LeaderBoardSwap' + str(self.zoneId))
+        taskMgr.doMethodLater(self.cycleDuration, self.__cycleLeaderBoards, str(self) + '_leaderBoardSwitch')
