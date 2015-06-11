@@ -87,6 +87,14 @@ suitDeptFullnamesP = {'c': TTLocalizer.BossbotP,
  'l': TTLocalizer.LawbotP,
  'm': TTLocalizer.CashbotP,
  's': TTLocalizer.SellbotP}
+suitDeptModelPaths = {'c': '**/CorpIcon',
+ 0: '**/CorpIcon',
+ 'l': '**/LegalIcon',
+ 1: '**/LegalIcon',
+ 'm': '**/MoneyIcon',
+ 2: '**/MoneyIcon',
+ 's': '**/SalesIcon',
+ 3: '**/SalesIcon'}
 corpPolyColor = VBase4(0.95, 0.75, 0.75, 1.0)
 legalPolyColor = VBase4(0.75, 0.75, 0.95, 1.0)
 moneyPolyColor = VBase4(0.65, 0.95, 0.85, 1.0)

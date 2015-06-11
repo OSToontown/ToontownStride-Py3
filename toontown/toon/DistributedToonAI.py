@@ -2523,6 +2523,25 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             else:
                 self.addMoney(msgValue)
             self.notify.debug('Money for ' + self.name)
+        elif msgType == ResistanceChat.RESISTANCE_MERITS:
+            if msgValue == -1:
+                for i in xrange(len(SuitDNA.suitDepts)):
+                    self.doResistanceMerits(i)
+            else:
+                self.doResistanceMerits(msgValue)
+
+    def doResistanceMerits(self, dept):
+        if not CogDisguiseGlobals.isSuitComplete(self.cogParts, dept):
+            return
+
+        totalMerits = CogDisguiseGlobals.getTotalMerits(self, dept)
+        merits = self.cogMerits[dept]
+
+        if totalMerits == 0 or merits >= totalMerits:
+            return
+
+        self.cogMerits[dept] = min(totalMerits, merits + (totalMerits / 6))
+        self.b_setCogMerits(self.cogMerits)
 
     def squish(self, damage):
         self.takeDamage(damage)

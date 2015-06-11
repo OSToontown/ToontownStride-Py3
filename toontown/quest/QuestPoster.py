@@ -407,14 +407,8 @@ class QuestPoster(DirectFrame):
                 else:
                     if holderType == 'track':
                         cogIcons = loader.loadModel('phase_3/models/gui/cog_icons')
-                        if holder == 'c':
-                            icon = cogIcons.find('**/CorpIcon')
-                        elif holder == 's':
-                            icon = cogIcons.find('**/SalesIcon')
-                        elif holder == 'l':
-                            icon = cogIcons.find('**/LegalIcon')
-                        elif holder == 'm':
-                            icon = cogIcons.find('**/MoneyIcon')
+                        if holder in SuitDNA.suitDeptModelPaths:
+                            icon = cogIcons.find(SuitDNA.suitDeptModelPaths[holder])
                         rIconGeom = icon.copyTo(hidden)
                         rIconGeom.setColor(Suit.Suit.medallionColors[holder])
                         rIconGeomScale = 0.12
@@ -743,14 +737,8 @@ class QuestPoster(DirectFrame):
                 dept = quest.getCogTrack()
                 cogIcons = loader.loadModel('phase_3/models/gui/cog_icons')
                 lIconGeomScale = 0.13
-                if dept == 'c':
-                    icon = cogIcons.find('**/CorpIcon')
-                elif dept == 's':
-                    icon = cogIcons.find('**/SalesIcon')
-                elif dept == 'l':
-                    icon = cogIcons.find('**/LegalIcon')
-                elif dept == 'm':
-                    icon = cogIcons.find('**/MoneyIcon')
+                if dept in SuitDNA.suitDeptModelPaths:
+                    icon = cogIcons.find(SuitDNA.suitDeptModelPaths[dept])
                 lIconGeom = icon.copyTo(hidden)
                 lIconGeom.setColor(Suit.Suit.medallionColors[dept])
                 cogIcons.removeNode()
@@ -795,14 +783,8 @@ class QuestPoster(DirectFrame):
                 dept = quest.getCogTrack()
                 cogIcons = loader.loadModel('phase_3/models/gui/cog_icons')
                 lIconGeomScale = 0.13
-                if dept == 'c':
-                    icon = cogIcons.find('**/CorpIcon')
-                elif dept == 's':
-                    icon = cogIcons.find('**/SalesIcon')
-                elif dept == 'l':
-                    icon = cogIcons.find('**/LegalIcon')
-                elif dept == 'm':
-                    icon = cogIcons.find('**/MoneyIcon')
+                if dept in SuitDNA.suitDeptModelPaths:
+                    icon = cogIcons.find(SuitDNA.suitDeptModelPaths[dept])
                 lIconGeom = icon.copyTo(hidden)
                 lIconGeom.setColor(Suit.Suit.medallionColors[dept])
                 cogIcons.removeNode()

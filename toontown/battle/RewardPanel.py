@@ -515,14 +515,8 @@ class RewardPanel(DirectFrame):
         name = SuitDNA.suitDepts[dept]
         self.promotionFrame['text'] = TTLocalizer.RewardPanelPromotion % SuitDNA.suitDeptFullnames[name]
         icons = loader.loadModel('phase_3/models/gui/cog_icons')
-        if dept == 0:
-            self.deptIcon = icons.find('**/CorpIcon').copyTo(self.promotionFrame)
-        elif dept == 1:
-            self.deptIcon = icons.find('**/LegalIcon').copyTo(self.promotionFrame)
-        elif dept == 2:
-            self.deptIcon = icons.find('**/MoneyIcon').copyTo(self.promotionFrame)
-        elif dept == 3:
-            self.deptIcon = icons.find('**/SalesIcon').copyTo(self.promotionFrame)
+        if dept in SuitDNA.suitDeptModelPaths:
+            self.deptIcon = icons.find(SuitDNA.suitDeptModelPaths[dept]).copyTo(self.promotionFrame)
         icons.removeNode()
         self.deptIcon.setPos(0, 0, -0.225)
         self.deptIcon.setScale(0.33)

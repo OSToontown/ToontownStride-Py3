@@ -206,21 +206,6 @@ def loadSuitModelsAndAnims(level, flag = 0):
             filepath = 'phase_' + str(phase) + model + 'heads'
             Preloaded[filepath] = loader.loadModel(filepath)
 
-def cogExists(filePrefix):
-    searchPath = DSearchPath()
-    if AppRunnerGlobal.appRunner:
-        searchPath.appendDirectory(Filename.expandFrom('$TT_3_5_ROOT/phase_3.5'))
-    else:
-        basePath = os.path.expandvars('$TTMODELS') or './ttmodels'
-        searchPath.appendDirectory(Filename.fromOsSpecific(basePath + '/built/phase_3.5'))
-    filePrefix = filePrefix.strip('/')
-    pfile = Filename(filePrefix)
-    found = vfs.resolveFilename(pfile, searchPath)
-    if not found:
-        return False
-    return True
-
-
 def loadSuitAnims(suit, flag = 1):
     if suit in SuitDNA.suitHeadTypes:
         try:
@@ -594,14 +579,8 @@ class Suit(Avatar.Avatar):
         icons = loader.loadModel('phase_3/models/gui/cog_icons')
         dept = self.style.dept
         chestNull = self.find('**/joint_attachMeter')
-        if dept == 'c':
-            self.corpMedallion = icons.find('**/CorpIcon').copyTo(chestNull)
-        elif dept == 's':
-            self.corpMedallion = icons.find('**/SalesIcon').copyTo(chestNull)
-        elif dept == 'l':
-            self.corpMedallion = icons.find('**/LegalIcon').copyTo(chestNull)
-        elif dept == 'm':
-            self.corpMedallion = icons.find('**/MoneyIcon').copyTo(chestNull)
+        if dept in SuitDNA.suitDeptModelPaths:
+            self.corpMedallion = icons.find(SuitDNA.suitDeptModelPaths[dept]).copyTo(chestNull)
         self.corpMedallion.setPosHprScale(0.02, 0.05, 0.04, 180.0, 0.0, 0.0, 0.51, 0.51, 0.51)
         self.corpMedallion.setColor(self.medallionColors[dept])
         icons.removeNode()

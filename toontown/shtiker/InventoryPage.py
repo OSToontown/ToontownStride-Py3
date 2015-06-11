@@ -32,6 +32,7 @@ class InventoryPage(ShtikerPage.ShtikerPage):
         jarGui.removeNode()
 
     def unload(self):
+        self.ignoreAll()
         del self.title
         self.destroyMeritBars()
         ShtikerPage.ShtikerPage.unload(self)
@@ -47,6 +48,7 @@ class InventoryPage(ShtikerPage.ShtikerPage):
              DisguisePage.DeptColors[i][1] * 0.7, DisguisePage.DeptColors[i][2] * 0.7, 1), barColor=(DisguisePage.DeptColors[i][0] * 0.8,
              DisguisePage.DeptColors[i][1] * 0.8, DisguisePage.DeptColors[i][2] * 0.8, 1)))
 
+        self.accept(localAvatar.uniqueName('cogMeritsChange'), self.updateMeritBars)
         self.updateMeritBars()
 
     def destroyMeritBars(self):
@@ -110,7 +112,6 @@ class InventoryPage(ShtikerPage.ShtikerPage):
         self.accept('exitBookDelete', self.exitDeleteMode)
         self.accept('enterTrackFrame', self.updateTrackInfo)
         self.accept('exitTrackFrame', self.clearTrackInfo)
-        self.accept(localAvatar.uniqueName('cogMeritsChange'), self.updateMeritBars)
         self.accept(localAvatar.uniqueName('moneyChange'), self.__moneyChange)
 
     def exit(self):
@@ -120,7 +121,6 @@ class InventoryPage(ShtikerPage.ShtikerPage):
         self.ignore('exitBookDelete')
         self.ignore('enterTrackFrame')
         self.ignore('exitTrackFrame')
-        self.ignore(localAvatar.uniqueName('cogMeritsChange'))
         self.ignore(localAvatar.uniqueName('moneyChange'))
         self.makePageWhite(None)
         base.localAvatar.inventory.hide()

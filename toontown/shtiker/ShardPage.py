@@ -41,19 +41,14 @@ def setupInvasionMarker(node, invasionStatus):
         return
 
     icons = loader.loadModel('phase_3/models/gui/cog_icons')
-
-    if invasionStatus == 1:
-        icon = icons.find('**/CorpIcon').copyTo(markerNode)
-    elif invasionStatus == 2:
-        icon = icons.find('**/LegalIcon').copyTo(markerNode)
-    elif invasionStatus == 3:
-        icon = icons.find('**/MoneyIcon').copyTo(markerNode)
-    else:
-        icon = icons.find('**/SalesIcon').copyTo(markerNode)
+    iconStatus = invasionStatus - 1
+    
+    if iconStatus in SuitDNA.suitDeptModelPaths:
+        icon = icons.find(SuitDNA.suitDeptModelPaths[iconStatus]).copyTo(markerNode)
 
     icons.removeNode()
 
-    icon.setColor(ICON_COLORS[invasionStatus - 1])
+    icon.setColor(ICON_COLORS[iconStatus])
     icon.setPos(0.50, 0, 0.0125)
     icon.setScale(0.0535)
 
