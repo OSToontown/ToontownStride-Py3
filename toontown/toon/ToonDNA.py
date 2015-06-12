@@ -3,7 +3,6 @@ from pandac.PandaModules import *
 from direct.directnotify.DirectNotifyGlobal import *
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
-from otp.avatar import AvatarDNA
 notify = directNotify.newCategory('ToonDNA')
 mergeMATTailor = config.GetBool('want-mat-all-tailors', 0)
 toonSpeciesTypes = ['d',
@@ -2436,7 +2435,7 @@ def isValidAccessory(itemIdx, textureIdx, colorIdx, which):
         return False
 
 
-class ToonDNA(AvatarDNA.AvatarDNA):
+class ToonDNA:
 
     def __init__(self, str = None, type = None, dna = None, r = None, b = None, g = None):
         if str != None:

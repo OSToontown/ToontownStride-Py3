@@ -13,13 +13,11 @@ class OTPBase(ShowBase):
         if not self.idTags:
             del self.idTags
         self.wantNametags = self.config.GetBool('want-nametags', 1)
-        self.fillShardsToIdealPop = self.config.GetBool('fill-shards-to-ideal-pop', 1)
         self.wantDynamicShadows = 1
         self.stereoEnabled = False
         self.enviroDR = None
         self.enviroCam = None
         self.pixelZoomSetup = False
-        self.gameOptionsCode = ''
         self.whiteList = None
         
         if config.GetBool('want-whitelist', True):
@@ -35,7 +33,6 @@ class OTPBase(ShowBase):
             else:
                 base.cam.node().setCameraMask(OTPRender.MainCameraBitmask | OTPRender.EnviroCameraBitmask)
         taskMgr.setupTaskChain('net')
-        return
 
     def setTaskChainNetThreaded(self):
         if base.config.GetBool('want-threaded-network', 0):

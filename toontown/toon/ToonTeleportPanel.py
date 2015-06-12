@@ -212,7 +212,6 @@ class ToonTeleportPanel(DirectFrame):
         self.shardId = shardId
         self.hoodId = hoodId
         self.zoneId = zoneId
-        return
 
     def exitOtherShard(self):
         self.bYes.hide()

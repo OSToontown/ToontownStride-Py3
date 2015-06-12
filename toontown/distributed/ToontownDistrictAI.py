@@ -1,14 +1,10 @@
 from direct.directnotify.DirectNotifyGlobal import directNotify
-import time
-
 from otp.distributed.DistributedDistrictAI import DistributedDistrictAI
-
+import time
 
 class ToontownDistrictAI(DistributedDistrictAI):
     notify = directNotify.newCategory('ToontownDistrictAI')
-
     created = 0
-    ahnnLog = 0
 
     def announceGenerate(self):
         DistributedDistrictAI.announceGenerate(self)
@@ -41,19 +37,6 @@ class ToontownDistrictAI(DistributedDistrictAI):
             'created': int(time.time())
         }
         self.air.netMessenger.send('shardStatus', [self.air.ourChannel, status])
-
-    def allowAHNNLog(self, ahnnLog):
-        self.ahnnLog = ahnnLog
-
-    def d_allowAHNNLog(self, ahnnLog):
-        self.sendUpdate('allowAHNNLog', [ahnnLog])
-
-    def b_allowAHNNLog(self, ahnnLog):
-        self.allowAHNNLog(ahnnLog)
-        self.d_allowAHNNLog(ahnnLog)
-
-    def getAllowAHNNLog(self):
-        return self.ahnnLog
 
     def setName(self, name):
         DistributedDistrictAI.setName(self, name)

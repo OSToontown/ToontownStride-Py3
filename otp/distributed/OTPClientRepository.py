@@ -1077,10 +1077,10 @@ class OTPClientRepository(ClientRepositoryBase):
 
     def listActiveShards(self):
         list = []
+
         for s in self.activeDistrictMap.values():
             if s.available:
-                list.append((s.doId, s.name, s.avatarCount, s.newAvatarCount,
-                             s.invasionStatus))
+                list.append((s.doId, s.name, s.avatarCount, s.invasionStatus))
 
         return list
 

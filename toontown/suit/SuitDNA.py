@@ -5,7 +5,6 @@ from toontown.toonbase import TTLocalizer, ToontownGlobals
 import random
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
-from otp.avatar import AvatarDNA
 notify = directNotify.newCategory('SuitDNA')
 suitHeadTypes = ['f',
  'p',
@@ -171,7 +170,7 @@ def getSuitsInDept(dept):
     end = start + suitsPerDept
     return suitHeadTypes[start:end]
 
-class SuitDNA(AvatarDNA.AvatarDNA):
+class SuitDNA:
 
     def __init__(self, str = None, type = None, dna = None, r = None, b = None, g = None):
         if str != None:

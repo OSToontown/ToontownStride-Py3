@@ -117,7 +117,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
         curShardTuples.sort(compareShardTuples)
         actualShardId = base.localAvatar.defaultShard
         for i in xrange(len(curShardTuples)):
-            shardId, name, pop, WVPop, invasionStatus = curShardTuples[i]
+            shardId, name, pop, invasionStatus = curShardTuples[i]
             if shardId == actualShardId:
                 self.currentBTP = buttonTuple[0]
                 self.currentBTL = buttonTuple[1]
@@ -478,19 +478,17 @@ class ShardPage(ShtikerPage.ShtikerPage):
         actualShardName = None
         anyChanges = 0
         totalPop = 0
-        totalWVPop = 0
         currentMap = {}
         self.shardButtons = []
 
         for i in xrange(len(curShardTuples)):
 
-            shardId, name, pop, WVPop, invasionStatus = curShardTuples[i]
+            shardId, name, pop, invasionStatus = curShardTuples[i]
 
             if shardId == actualShardId:
                 actualShardName = name
 
             totalPop += pop
-            totalWVPop += WVPop
             currentMap[shardId] = 1
             buttonTuple = self.shardButtonMap.get(shardId)
 
