@@ -14,7 +14,7 @@ class WhiteList:
         self.sequenceList = sequences
     
     def getSequenceList(self, word):
-        return self.sequenceList[word] if word in self.sequenceList else None
+        return self.sequenceList[word] if word and word in self.sequenceList else None
 
     def cleanText(self, text):
         return text.strip('.,?!').lower()
@@ -70,7 +70,7 @@ class WhiteList:
                 sequence = sequences[sequenceNum].split()
                 total = wordNum + len(sequence) + 1
 
-                if total <= len(words) and sequence == words[wordNum + 1:total]:
+                if total <= len(words) and sequence == [word.lower() for word in words[wordNum + 1:total]]:
                     words[wordNum:total] = self.getReplacement(' '.join(words[wordNum:total]), av, garbler).split()
 
         return ' '.join(words)
