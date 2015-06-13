@@ -4753,9 +4753,18 @@ CashbotCraneLeaving = 'Leaving crane'
 MintElevatorRejectMessage = 'You cannot enter the Mints until you have completed your %s Cog Suit.'
 BossElevatorRejectMessage = 'You cannot board this elevator until you have earned a promotion.'
 NotYetAvailable = 'This elevator is not yet available.'
-SellbotRentalSuitMessage = "Wear this Rental Suit so you can get close enough to the VP to attack.\n\nYou won't earn merits or promotions, but you can rescue a Toon for an SOS reward!"
-SellbotCogSuitNoMeritsMessage = "Your Sellbot Disguise will get you in, but since you don't have enough merits, you won't earn a promotion.\n\nIf you rescue the trapped Toon, you will earn an SOS Toon reward!"
+SellbotRentalSuitMessage = "Wear this Rental Suit so you can get close enough to the VP to attack.\n\nYou won't earn Merits or promotions, but you can rescue a Toon for an SOS reward!"
+SellbotCogSuitNoMeritsMessage = "Your Sellbot Disguise will get you in, but since you don't have enough Merits, you won't earn a promotion.\n\nIf you rescue the trapped Toon, you will earn an SOS Toon reward!"
 SellbotCogSuitHasMeritsMessage = "It's Operation: Storm Sellbot!\n\nBring 5 or more Rental Suit Toons with you to defeat the VP and earn credit towards a reward!"
+LawbotRentalSuitMessage = "Wear this Rental Suit so you can get close enough to the CJ to attack.\n\nYou won't earn Jury Notices or promotions, but you can pass the bar exam for a Cog Summon!"
+LawbotCogSuitNoNoticesMessage = "Your Lawbot Disguise will get you in, but since you don't have enough Jury Notices, you won't earn a promotion.\n\nIf you pass the bar exam, you will earn a Cog Summon!"
+LawbotCogSuitHasNoticesMessage = "It's Operation: Lawbots Lose!\n\nBring 7 or more Rental Suit Toons with you to defeat the CJ and earn credit towards a summon!"
+CashbotRentalSuitMessage = "Wear this Rental Suit so you can get close enough to the CFO to attack.\n\nYou wont earn Cogbucks or promotions, but you can delay the CFO for a Toon Unite!"
+CashbotCogSuitNoCogbucksMessage = "Your Cashbot Disguise will get you in, but since you don't have enough Cogbucks, you won't earn a promotion.\n\n If you delay the CFO, you will earn a Toon Unite!"
+CashbotCogSuitHasCogbucksMessage = "It's Operation: Cashbot Chaos!\n\n Bring 6 or more Rental Suit Toons with you to defeat the CFO and earn credit towards a unite!"
+BossbotRentalSuitMessage = "Wear this Rental Suit so you can get close enough to the CEO to attack.\n\bYou wont earn Stock Options or promotions, but you can soak the CEO for a Fire!"
+BossbotCogSuitNoOptionsMessage = "Your Bossbot Disguise will get you in, but since you don't have enough Stock Options you won't warn a promotion.\n\n If you soak the CEO, you will earn a Fire!"
+BossbotCogSuitHasOptionsMessage = "It's Operation: Besiege Bossbot!\n\n Bring in 8 Rental Suit Toons with you to defeat the CEO and earn credit towards a Fire!"
 FurnitureTypeName = 'Furniture'
 PaintingTypeName = 'Painting'
 ClothingTypeName = 'Clothing'
@@ -5011,7 +5020,11 @@ SpecialEventMailboxStrings = {1: 'A special item from the Toon Council just for 
  14: 'Here is your Most V.P.s Defeated Tournament prize! Congratulations!',
  15: 'Here is your Operation: Storm Sellbot prize! Congratulations!',
  16: 'Here is your Most C.J.s Defeated Tournament prize! Congratulations!',
- 17: 'Here is your Operation: Lawbots Lose prize! Congratulations!'}
+ 17: 'Here is your Operation: Lawbots Lose prize! Congratulations!',
+ 18: 'Here is your Most C.F.O.s Defeated Tournament prize! Congratulations!',
+ 19: 'Here is your Operation: Cashbot Chaos prize! Congratulations!',
+ 20: 'Here is your Most C.E.O.s Defeated Tournament prize! Congratulations!',
+ 21: 'Here is your Operation: Besiege Bossbot prize! Congratulations!'}
 RentalHours = 'Hours'
 RentalOf = 'Of'
 RentalCannon = 'Cannons!'
@@ -5394,7 +5407,11 @@ SpecialEventNames = {1: 'Generic Award',
  14: 'Most V.P.s Defeated',
  15: 'Operation Storm Sellbot Event',
  16: 'Most C.J.s Defeated',
- 17: 'Operation Lawbots Lose Event'}
+ 17: 'Operation Lawbots Lose Event',
+ 18: 'Most C.F.O.s Defeated',
+ 19: 'Operation Cashbot Chaos Event',
+ 20: 'Most C.E.O.s Defeated',
+ 21: 'Operation Besiege Bossbot Event'}	 	 	 
 NewCatalogNotify = 'There are new items available to order at your phone!'
 NewDeliveryNotify = 'A new delivery has just arrived at your mailbox!'
 CatalogNotifyFirstCatalog = 'Your first cattlelog has arrived!  You may use this to order new items for yourself or for your house.'
@@ -7941,6 +7958,12 @@ GrandPrixWeekendHolidayEnd = "That's all for Grand Prix Weekend. See you next ye
 KartRace_DoubleTickets = 'Double Tickets'
 SellbotNerfHolidayStart = 'Operation: Storm Sellbot is happening now! Battle the VP today!'
 SellbotNerfHolidayEnd = 'Operation: Storm Sellbot has ended. Great work, Toons!'
+LawbotNerfHolidayStart = 'Operation: Lawbots Lose is happening now! Battle the CJ today!'
+LawbotNerfHolidayEnd = 'Operation: Lawbots Lose has ended. Great work, Toons!'
+CashbotNerfHolidayStart = 'Operation: Cashbot Chaos is happening now! Battle the CFO today!'
+CashbotNerfHolidayEnd = 'Opeation: Cashbot Chaos has ended. Great work, Toons!'
+BossbotNerfHolidayStart = 'Operation: Besiege Bossbot is happening now! Battle the CEO today!'
+BossbotNerfHolidayEnd = 'Operation: Besiege Bossbot has ended. Great work, Toons!'
 JellybeanTrolleyHolidayStart = 'Double Bean Days for Trolley Games have begun!'
 JellybeanTrolleyHolidayEnd = 'Double Bean Days for Trolley Games have ended!'
 JellybeanFishingHolidayStart = 'Double Bean Days for Fishing have begun!'
@@ -8261,10 +8284,13 @@ HolidayNamesInCalendar = {1: ('Summer Fireworks', 'Celebrate Summer with a firew
  93: ('Number Cruncher Invasion', 'Stop the Number Cruncher Cogs from invading Toontown!'),
  95: ('Victory Parties', 'Celebrate our historic triumph against the Cogs!'),
  96: ('Operation: Storm Sellbot', "Sellbot HQ is open to everyone. Let's go fight the VP!"),
- 97: ('Double Bean Days - Trolley Games', ''),
- 98: ('Double Bean Days - Fishing', ''),
- 99: ('Jellybean Week', 'Celebrate Jellybean Week with double Jellybean rewards!'),
- 101: ("Top Toons New Year's Day Marathon", "Chances to win every hour! See the What's New Blog for details!"),
+ 97: ('Operation: Lawbots Lose', "Lawbot HQ is open to everyone. Let's go fight the CJ!"),
+ 98: ('Operation: Cashbot Chaos', "Cashbot HQ is open to everyone. Let's go fight the CFO!"),
+ 99: ('Operation: Besiege Bossbot', "Bossbot HQ is open to everyone. Let's go fight the CEO!"),
+ 100: ('Double Bean Days - Trolley Games', ''),
+ 101: ('Double Bean Days - Fishing', ''),
+ 102: ('Jellybean Week', 'Celebrate Jellybean Week with double Jellybean rewards!'),
+ 103: ("Top Toons New Year's Day Marathon", "Chances to win every hour! See the What's New Blog for details!"),
  105: ('Toons go GREEN!', 'Toons make a green scene at Green Bean Jeans on Oak Street in Daisy Gardens!')}
 UnknownHoliday = 'Unknown Holiday %d'
 HolidayFormat = '%b %d '
@@ -8273,9 +8299,9 @@ CogdoMemoGuiTitle = 'Memos:'
 CogdoMemoNames = 'Barrel-Destruction Memos'
 CogdoStomperName = 'Stomp-O-Matic'
 BoardroomGameTitle = 'Boardroom Hijinks'
-BoardroomGameInstructions = 'The COGS are having a meeting to decide what to do with stolen gags. Slide on through and grab as many gag-destruction memos as you can!'
+BoardroomGameInstructions = 'The Bossbots are having a meeting to decide what to do with stolen gags. Slide on through and grab as many gag-destruction memos as you can!'
 CogdoCraneGameTitle = 'Vend-A-Stomper'
-CogdoCraneGameInstructions = 'The COGS are using a coin-operated machine to destroy laff barrels. Use the cranes to pick up and throw money bags, in order to prevent barrel destruction!'
+CogdoCraneGameInstructions = 'The Cashbots are using a coin-operated machine to destroy laff barrels. Use the cranes to pick up and throw money bags, in order to prevent barrel destruction!'
 CogdoMazeGameTitle = 'Mover & Shaker\nField Office'
 CogdoMazeGameInstructions = 'The big Mover & Shaker Cogs have the code to open the door. Defeat them with your water balloons in order to get it!'
 CogdoMazeIntroMovieDialogue = (("This is the Toon Resistance! The Movers & Shakers\nhave our Jokes, and they've locked the exit!",), ('Grab water balloons at coolers, and throw them at Cogs!\nSmall Cogs drop Jokes, BIG COGS open the exit.',), ('The more Jokes you rescue, the bigger your Toon-Up\nat the end. Good luck!',))
