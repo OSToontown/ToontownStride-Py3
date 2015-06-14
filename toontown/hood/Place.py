@@ -427,8 +427,8 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
     def doRequestLeave(self, requestStatus):
         if requestStatus.get('tutorial', 0):
             out = {'teleportIn': 'tunnelOut'}
-            requestStatus['zoneId'] = 22000
-            requestStatus['hoodId'] = 22000
+            requestStatus['zoneId'] = 2000
+            requestStatus['hoodId'] = 2000
         else:
             out = {'teleportIn': 'teleportOut',
              'tunnelIn': 'tunnelOut',
