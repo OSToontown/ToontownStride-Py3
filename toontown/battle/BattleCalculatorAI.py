@@ -98,7 +98,7 @@ class BattleCalculatorAI:
         debug = self.notify.getDebug()
         attack = self.battle.toonAttacks[attackIndex]
         atkTrack, atkLevel = self.__getActualTrackLevel(attack)
-        
+
         hasAccuracyBuff = False
         toon = simbase.air.doId2do.get(attack[TOON_ID_COL])
         if toon:
@@ -106,7 +106,7 @@ class BattleCalculatorAI:
                 if not ZoneUtil.isDynamicZone(toon.zoneId):
                     if ZoneUtil.getWhereName(toon.zoneId, True) in ('street', 'factoryExterior', 'cogHQExterior'):
                         hasAccuracyBuff = True
-            
+
         if atkTrack == NPCSOS:
             return (1, 95)
         if atkTrack == FIRE:
@@ -519,7 +519,7 @@ class BattleCalculatorAI:
                     suit = self.battle.findSuit(targetId)
                     if suit:
                         slips = toon.getPinkSlips()
-                        
+
                         if slips < 1:
                             simbase.air.writeServerEvent('suspicious', toonId, 'Toon attempting to fire a cog without any pinkslips')
                         else:

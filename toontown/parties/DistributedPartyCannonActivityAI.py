@@ -5,7 +5,7 @@ import PartyGlobals
 
 class DistributedPartyCannonActivityAI(DistributedPartyActivityAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedPartyCannonActivityAI")
-    
+
     def __init__(self, air, parent, activityTuple):
         DistributedPartyActivityAI.__init__(self, air, parent, activityTuple)
         self.cloudColors = {}
@@ -67,4 +67,3 @@ class DistributedPartyCannonActivityAI(DistributedPartyActivityAI):
 
     def updateToonTrajectoryStartVel(self, todo0, todo1, todo2, todo3):
         pass
-

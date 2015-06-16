@@ -96,7 +96,7 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
     #     to merge groups.
     # mergeDict - This is a link that points back to the original
     #     invitee before we mapped it to the leader of the other group.
-           
+
     def requestInvite(self, inviteeId):
         self.notify.debug('requestInvite %s' % inviteeId)
         inviterId = self.air.getAvatarIdFromSender()
@@ -167,7 +167,7 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
                         reason = BoardingPartyBase.BOARDCODE_PROMOTION
                     self.sendUpdateToAvatarId(inviterId, 'postInviteNotQualify', [inviterId, reason, self.elevatorIdList[0]])
                     return
-        # Is the inviter already in the avIdDict?  It follows they either must be in a group or have a pending invite... 
+        # Is the inviter already in the avIdDict?  It follows they either must be in a group or have a pending invite...
         if inviterId in self.avIdDict:
             self.notify.debug('old group')
             # Everything is indexed by the leaders
@@ -184,7 +184,7 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
                 if len(self.getGroupMemberList(leaderId)) >= self.maxSize:
                     self.sendUpdate('postSizeReject', [leaderId, inviterId, inviteeId])
                 elif merger:
-                    # We cannot muck with the avIdDict because they are pointing to their original groups. 
+                    # We cannot muck with the avIdDict because they are pointing to their original groups.
                     # We shall stash away the info into a different
                     # dictionary.. This way, if something goes wrong,
                     # the original groups  with their original data
@@ -195,12 +195,12 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
                     self.mergeDict[inviteeId] = originalInviteeId
                     self.sendUpdateToAvatarId(inviteeId, 'postInvite', [leaderId, inviterId, True])
                     # notify everybody in the inviters group of the
-                    # invitation.. 
+                    # invitation..
                     for memberId in groupList[0]:
                         if not memberId == inviterId:
                             self.sendUpdateToAvatarId(memberId, 'postMessageInvited', [inviteeId, inviterId])
                 elif inviterId not in groupList[1] and inviterId not in groupList[2]:
-                    # If the invitee isn't already in the group, add them.. 
+                    # If the invitee isn't already in the group, add them..
                     if inviteeId not in groupList[1]:
                         groupList[1].append(inviteeId)
                     self.groupListDict[leaderId] = groupList
@@ -213,7 +213,7 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
                     for memberId in groupList[0]:
                         if not memberId == inviterId:
                             self.sendUpdateToAvatarId(memberId, 'postMessageInvited', [inviteeId, inviterId])
-                # The inviter was kicked.. so, we cannot let them back in since they are not the leader...           
+                # The inviter was kicked.. so, we cannot let them back in since they are not the leader...
                 elif inviterId in groupList[2]:
                     self.sendUpdate('postKickReject', [leaderId, inviterId, inviteeId])
         else:

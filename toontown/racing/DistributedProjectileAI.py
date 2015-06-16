@@ -21,4 +21,3 @@ class DistributedProjectileAI(DistributedObjectAI):
 
     def hitSomebody(self, todo0, todo1):
         pass
-

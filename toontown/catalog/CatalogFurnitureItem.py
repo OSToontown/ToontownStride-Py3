@@ -1131,12 +1131,12 @@ def nextAvailableCloset(avatar, duplicateItems):
 def nextAvailableBank(avatar, duplicateItems):
     if not avatar.getMaxBankMoney() in MoneyToBank:
         return CatalogFurnitureItem(1300)
-    
+
     currentBank = MoneyToBank[avatar.getMaxBankMoney()]
-    
+
     if currentBank == MaxBankId:
         return
-    
+
     return CatalogFurnitureItem(currentBank + 10)
 
 def get50ItemCloset(avatar, duplicateItems):
@@ -1168,10 +1168,10 @@ def getAllClosets():
 
 def getAllBanks():
     list = []
-    
+
     for bankId in BankToMoney.keys():
         list.append(CatalogFurnitureItem(bankId))
-    
+
     return list
 
 def get50ItemTrunk(avatar, duplicateItems):

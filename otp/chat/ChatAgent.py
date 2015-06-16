@@ -52,4 +52,3 @@ def chatmode(mode=-1):
         return "Chat mode 1 is reserved for moderators."
     base.cr.chatAgent.chatMode = mode
     return "You are now talking in the %s chat mode." % mode2name.get(mode, "N/A")
-

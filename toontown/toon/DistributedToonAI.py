@@ -408,26 +408,26 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def getExperience(self):
         return self.experience.makeNetString()
-    
+
     def b_setIgnored(self, ignored):
         self.d_setIgnored(ignored)
         self.setIgnored(ignored)
-    
+
     def d_setIgnored(self, ignored):
         self.sendUpdate('setIgnored', [ignored])
-    
+
     def setIgnored(self, ignored):
         self.ignored = ignored
-    
+
     def getIgnored(self):
         return self.ignored
-    
+
     def setReported(self, reported):
         self.reported = reported
-    
+
     def getReported(self):
         return self.reported
-    
+
     def isReported(self, doId):
         return doId in self.reported
 
@@ -591,7 +591,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def attemptAddNPCFriend(self, npcFriend):
         numCalls = simbase.air.config.GetInt('sos-card-reward', 1)
-        
+
         if numCalls <= 0:
             self.notify.warning('invalid numCalls: %d' % numCalls)
             return 0
@@ -1168,7 +1168,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
                 if types[i] == SuitDNA.suitsPerDept - 1:
                     zoneId = SuitDNA.suitDeptZones[i]
                     tpAccess = self.getTeleportAccess()
-                    
+
                     if zoneId not in tpAccess:
                         tpAccess.append(zoneId)
                         self.b_setTeleportAccess(tpAccess)
@@ -2298,33 +2298,33 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def b_setMaxMoney(self, maxMoney):
         self.d_setMaxMoney(maxMoney)
         self.setMaxMoney(maxMoney)
-        
+
         if self.getMoney() > maxMoney:
             self.b_setBankMoney(self.bankMoney + (self.getMoney() - maxMoney))
             self.b_setMoney(maxMoney)
-    
+
     def d_setMaxMoney(self, maxMoney):
         self.sendUpdate('setMaxMoney', [maxMoney])
-    
+
     def setMaxMoney(self, maxMoney):
         self.maxMoney = maxMoney
-    
+
     def getMaxMoney(self):
         return self.maxMoney
-    
+
     def b_setMaxBankMoney(self, maxBankMoney):
         self.d_setMaxBankMoney(maxBankMoney)
         self.setMaxBankMoney(maxBankMoney)
-        
+
         if self.getBankMoney() > maxBankMoney:
             self.b_setBankMoney(maxBankMoney)
-    
+
     def d_setMaxBankMoney(self, maxBankMoney):
         self.sendUpdate('setMaxBankMoney', [maxBankMoney])
-    
+
     def setMaxBankMoney(self, maxBankMoney):
         self.maxBankMoney = maxBankMoney
-    
+
     def getMaxBankMoney(self):
         return self.maxBankMoney
 
@@ -2390,7 +2390,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def getBankMoney(self):
         return self.bankMoney
-    
+
     def b_setEmblems(self, emblems):
         self.setEmblems(emblems)
         self.d_setEmblems(emblems)
@@ -4346,7 +4346,7 @@ def bank(money):
     """
     target = spellbook.getTarget()
     maxMoney = target.getMaxBankMoney()
-    
+
     if not 0 <= money <= maxMoney:
         return 'Bank money must be in xrange (0-%d.)' % maxMoney
     target.b_setBankMoney(money)
@@ -4936,14 +4936,14 @@ def unlimitedGags():
     av.setUnlimitedGags(not av.unlimitedGags)
     return 'Toggled unlimited gags %s for %s' % ('ON' if av.unlimitedGags else 'OFF', av.getName())
 
-@magicWord(category=CATEGORY_PROGRAMMER)    
+@magicWord(category=CATEGORY_PROGRAMMER)
 def immortal():
     """ Make target (if 500+) or self (if 499-) immortal. """
     av = spellbook.getTarget() if spellbook.getInvokerAccess() >= 500 else spellbook.getInvoker()
     av.setImmortalMode(not av.immortalMode)
     return 'Toggled immortal mode %s for %s' % ('ON' if av.immortalMode else 'OFF', av.getName())
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[str, int]) 
+@magicWord(category=CATEGORY_PROGRAMMER, types=[str, int])
 def summoncogdo(track="s", difficulty=5):
     tracks = ['s']
     if config.GetBool('want-lawbot-cogdo', True):
@@ -4959,7 +4959,7 @@ def summoncogdo(track="s", difficulty=5):
     building.cogdoTakeOver(difficulty, 2, track)
     return 'Successfully spawned cogdo with track %s and difficulty %d' % (track, difficulty)
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int, int]) 
+@magicWord(category=CATEGORY_PROGRAMMER, types=[int, int])
 def emblems(silver=10, gold=10):
     spellbook.getTarget().addEmblems((gold, silver))
     return 'Restocked with Gold: %s Silver: %d' % (gold, silver)

@@ -163,12 +163,12 @@ class AvatarPanelBase(AvatarPanel.AvatarPanel):
     def handleReportCategoryConfirm(self, value):
         self.cleanupDialog()
         removed = 0
-        
+
         if value > 0:
             if base.cr.isFriend(self.avId):
                 base.cr.removeFriend(self.avId)
                 removed = 1
-            
+
             base.cr.reportMgr.sendReport(self.avId, self.category)
             self.reportComplete(removed)
         else:

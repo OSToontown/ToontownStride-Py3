@@ -3,4 +3,3 @@ from toontown.parties.DistributedPartyDanceActivityBaseAI import DistributedPart
 
 class DistributedPartyValentineDanceActivityAI(DistributedPartyDanceActivityBaseAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedPartyValentineDanceActivityAI")
-

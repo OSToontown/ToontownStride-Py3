@@ -1581,4 +1581,3 @@ class DistributedCannon(DistributedObject.DistributedObject):
     def turnOnBumperCollision(self, whatever = 0):
         if self.bumperCol:
             self.bumperCol.setCollideMask(ToontownGlobals.WallBitmask)
-            

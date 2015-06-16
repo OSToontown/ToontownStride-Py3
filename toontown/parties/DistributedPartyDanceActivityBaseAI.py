@@ -5,12 +5,12 @@ import PartyGlobals
 
 class DistributedPartyDanceActivityBaseAI(DistributedPartyActivityAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedPartyDanceActivityBaseAI")
-    
+
     def __init__(self, air, parent, activityTuple):
         DistributedPartyActivityAI.__init__(self, air, parent, activityTuple)
         self.toons = []
         self.headings = []
-        
+
     def generate(self):
         DistributedPartyActivityAI.generate(self)
         self.sendUpdate('setState', ['Active', globalClockDelta.getRealNetworkTime()])
@@ -22,7 +22,7 @@ class DistributedPartyDanceActivityBaseAI(DistributedPartyActivityAI):
             return
         self.sendUpdate('setDancingToonState', [avId, state, anim])
 
-        
+
     def toonJoinRequest(self):
         avId = self.air.getAvatarIdFromSender()
         if avId in self.toons:
@@ -35,7 +35,7 @@ class DistributedPartyDanceActivityBaseAI(DistributedPartyActivityAI):
         self.toons.append(avId)
         self.headings.append(av.getH())
         self.sendUpdate('setToonsPlaying', [self.toons, self.headings])
-        
+
     def toonExitRequest(self):
         avId = self.air.getAvatarIdFromSender()
         if not avId in self.toons:

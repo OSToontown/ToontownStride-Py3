@@ -6,4 +6,3 @@ class DeleteManagerAI(DistributedObjectAI):
 
     def setInventory(self, todo0):
         pass
-

@@ -14,7 +14,7 @@ globalFriendsList = None
 def determineFriendName(friendTuple):
     if len(friendTuple) < 0:
         return None
-    
+
     handle = base.cr.identifyFriend(friendTuple[0])
     return handle.getName() if handle else None
 

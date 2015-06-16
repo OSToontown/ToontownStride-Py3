@@ -245,7 +245,7 @@ class Quest:
 
     def checkBuildingFloors(self, floors):
         self.check(floors >= 1 and floors <= 5, 'invalid num floors: %s' % floors)
-    
+
     def checkBuildingType(self, cogdo):
         self.check(cogdo != 0 and cogdo != 1, 'invalid cogdo value: %s' % cogdo)
 
@@ -1028,7 +1028,7 @@ class BuildingQuest(CogQuest):
 
     def getBuildingTrack(self):
         return self.quest[2]
-    
+
     def isCogdo(self):
         return self.quest[4]
 
@@ -1068,7 +1068,7 @@ class BuildingQuest(CogQuest):
                 text = TTLocalizer.QuestsCogdoQuestDesc if count == 1 else TTLocalizer.QuestsCogdoQuestDescM
         else:
             floors = TTLocalizer.QuestsBuildingQuestFloorNumbers[self.getNumFloors() - 1]
-            
+
             if count == 1:
                 text = TTLocalizer.QuestsBuildingQuestDesc if floors == '' else TTLocalizer.QuestsBuildingQuestDescF
             else:
@@ -1087,12 +1087,12 @@ class BuildingQuest(CogQuest):
         count = self.getNumBuildings()
         buildingTrack = self.getBuildingTrack()
         floors = ''
-        
+
         if buildingTrack == Any:
             type = TTLocalizer.Cog
         else:
             type = self.trackNames[self.trackCodes.index(buildingTrack)]
-        
+
         if self.isCogdo():
             if buildingTrack == Any:
                 text = TTLocalizer.QuestsCogdoQuestDescU if count == 1 else TTLocalizer.QuestsCogdoQuestDescMUI
@@ -1100,7 +1100,7 @@ class BuildingQuest(CogQuest):
                 text = TTLocalizer.QuestsCogdoQuestDesc if count == 1 else TTLocalizer.QuestsCogdoQuestDescMI
         else:
             floors = TTLocalizer.QuestsBuildingQuestFloorNumbers[self.getNumFloors() - 1]
-        
+
             if count == 1:
                 text = TTLocalizer.QuestsBuildingQuestDesc if floors == '' else TTLocalizer.QuestsBuildingQuestDescF
             else:
@@ -1744,7 +1744,7 @@ class TrackChoiceQuest(Quest):
         trackAccess = av.getTrackAccess()
         first = None
         second = None
-        
+
         for i in xrange(len(trackAccess)):
             if trackAccess[i] == 0:
                 if first is None:
@@ -1752,10 +1752,10 @@ class TrackChoiceQuest(Quest):
                 elif second is None:
                     second = i
                     break
-        
+
         if first is None or second is None:
             return (0, 1)
-        
+
         return (first, second)
 
     def getCompletionStatus(self, av, questDesc, npc = None):
@@ -4225,7 +4225,7 @@ class TrackTrainingReward(Reward):
         if track == None:
             track = 0
             trackAccess = av.getTrackAccess()
-            
+
             for i in xrange(len(trackAccess)):
                 if trackAccess[i] == 0:
                     return i

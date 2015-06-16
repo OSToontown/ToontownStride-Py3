@@ -242,7 +242,7 @@ class OptionsPage(ShtikerPage.ShtikerPage):
             self.optionsTab['state'] = DGG.NORMAL
             self.optionsTabPage.exit()
             self.extraOptionsTab['state'] = DGG.NORMAL
-            self.extraOptionsTabPage.exit()            
+            self.extraOptionsTabPage.exit()
             self.codesTab['state'] = DGG.DISABLED
             self.codesTabPage.enter()
         elif mode == PageMode.Extra:
@@ -252,7 +252,7 @@ class OptionsPage(ShtikerPage.ShtikerPage):
             self.codesTab['state'] = DGG.NORMAL
             self.codesTabPage.exit()
             self.extraOptionsTab['state'] = DGG.DISABLED
-            self.extraOptionsTabPage.enter()            
+            self.extraOptionsTabPage.enter()
 
 class OptionsTabPage(DirectFrame):
     notify = directNotify.newCategory('OptionsTabPage')
@@ -680,7 +680,7 @@ class CodesTabPage(DirectFrame):
             self.resultPanel['text'] = TTLocalizer.CdrResultNotReady
         elif result == 6:
             self.resultPanel['image'] = self.resultPanelErrorGui
-            self.resultPanel['text'] = TTLocalizer.CdrResultNotEligible          
+            self.resultPanel['text'] = TTLocalizer.CdrResultNotEligible
         if result == 0:
             self.successSfx.play()
         else:
@@ -713,10 +713,10 @@ class ExtraOptionsTabPage(DirectFrame):
 
     def destroy(self):
         self.parent = None
-        
+
         if self.dialog:
             self.dialog.destroy()
-        
+
         del self.dialog
         DirectFrame.destroy(self)
 
@@ -733,10 +733,10 @@ class ExtraOptionsTabPage(DirectFrame):
         button_textpos = (0, -0.02)
         options_text_scale = 0.052
         disabled_arrow_color = Vec4(0.6, 0.6, 0.6, 1.0)
-        self.speed_chat_scale = 0.055    
+        self.speed_chat_scale = 0.055
         self.cogLevel_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord), command=self.__doToggleCogLevelGui)
         self.cogLevel_label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight))
-        self.bugReportButton = DirectButton(parent=self, relief=None, text=TTLocalizer.BugReportButton, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text_pos=(0, -0.01), text_fg=(0, 0, 0, 1), 
+        self.bugReportButton = DirectButton(parent=self, relief=None, text=TTLocalizer.BugReportButton, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text_pos=(0, -0.01), text_fg=(0, 0, 0, 1),
         command=self.showReportNotice, pos=(0.0, 0.0, -0.6), text_scale=(0.045))
         gui.removeNode()
         guiButton.removeNode()

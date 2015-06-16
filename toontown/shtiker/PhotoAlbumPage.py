@@ -70,7 +70,7 @@ class PhotoAlbumPage(ShtikerPage.ShtikerPage):
         self.dCancel = DirectButton(parent=self.deletePanel, image=(buttons.find('**/CloseBtn_UP'), buttons.find('**/CloseBtn_DN'), buttons.find('**/CloseBtn_Rllvr')), relief=None, text=TTLocalizer.PhotoPageCancel, text_scale=0.05, text_pos=(0.0, -0.1), pos=(0.1, 0.0, -0.1), command=self.deleteCancel)
         self.deletePanel.hide()
         self.errorPanel = DirectFrame(parent=self, relief=None, pos=(0.45, 0, -0.45), image=DGG.getDefaultDialogGeom(), image_color=ToontownGlobals.GlobalDialogColor, image_scale=(1.0, 1.0, 0.6), text='', text_wordwrap=16, text_scale=0.06, text_pos=(0.0, 0.13), sortOrder=NO_FADE_SORT_INDEX)
-        self.bClose = DirectButton(parent=self.errorPanel, image=(buttons.find('**/CloseBtn_UP'), buttons.find('**/CloseBtn_DN'), buttons.find('**/CloseBtn_Rllvr')), relief=None, text=TTLocalizer.PhotoPageClose, text_scale=0.05, text_pos=(0.0, -0.1), pos=(0.0, 0.0, -0.1), command=self.errorConfirm)       
+        self.bClose = DirectButton(parent=self.errorPanel, image=(buttons.find('**/CloseBtn_UP'), buttons.find('**/CloseBtn_DN'), buttons.find('**/CloseBtn_Rllvr')), relief=None, text=TTLocalizer.PhotoPageClose, text_scale=0.05, text_pos=(0.0, -0.1), pos=(0.0, 0.0, -0.1), command=self.errorConfirm)
         self.errorPanel.hide()
         self.scroll = loader.loadModel('phase_3/models/gui/toon_council').find('**/scroll')
         self.scroll.reparentTo(self)
@@ -162,7 +162,7 @@ class PhotoAlbumPage(ShtikerPage.ShtikerPage):
         self.notify.debug(self.selectedFileName)
 
     def deleteConfirm(self):
-        if os.path.isfile(self.photoPath + self.selectedFileName):        
+        if os.path.isfile(self.photoPath + self.selectedFileName):
             os.remove(self.photoPath + self.selectedFileName)
             self.selectedFileName = None
             self.deleteCleanup()
@@ -232,7 +232,7 @@ class PhotoAlbumPage(ShtikerPage.ShtikerPage):
         photos = []
         for fileName in files:
             if fileName[0:17] == 'stride-screenshot' and fileName[-4:] == '.jpg':
-                photos.append(fileName)          
+                photos.append(fileName)
 
         return photos
 
@@ -250,7 +250,7 @@ class PhotoAlbumPage(ShtikerPage.ShtikerPage):
         self.updateScrollList()
 
     def updateScrollList(self):
-        newPhotos = self.getPhotos()        
+        newPhotos = self.getPhotos()
         for photo in self.photos.keys():
             if photo not in newPhotos:
                 photoButton = self.photos[photo]

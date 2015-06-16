@@ -25,14 +25,14 @@ class TownBattleCogPanel(DirectFrame):
     healthGlowColors = (Vec4(0.25, 1, 0.25, 0.5),#Green
      Vec4(0.5, 1, 0.25, .5),#1 Green-Yellow
      Vec4(0.75, 1, 0.25, .5),#2 Yellow-Green
-     Vec4(1, 1, 0.25, 0.5),#Yellow 
+     Vec4(1, 1, 0.25, 0.5),#Yellow
      Vec4(1, 0.866, 0.25, .5),#4 Yellow-Orange
      Vec4(1, 0.6, 0.25, .5),#5 Orange-Yellow
      Vec4(1, 0.5, 0.25, 0.5),#6 Orange
-     Vec4(1, 0.25, 0.25, 0.5),#7 Red-Orange    
-     Vec4(1, 0.25, 0.25, 0.5),#8 Red     
+     Vec4(1, 0.25, 0.25, 0.5),#7 Red-Orange
+     Vec4(1, 0.25, 0.25, 0.5),#8 Red
      Vec4(0.3, 0.3, 0.3, 0))#9 Grey
-    
+
     def __init__(self, id):
         gui = loader.loadModel('phase_3.5/models/gui/battle_gui')
         DirectFrame.__init__(self, relief=None, image=gui.find('**/ToonBtl_Status_BG'), image_color=Vec4(0.86, 0.86, 0.86, 0.7))
@@ -53,7 +53,7 @@ class TownBattleCogPanel(DirectFrame):
         self.hide()
         gui.removeNode()
         return
-        
+
     def setSuit(self, suit):
         if self.suit == suit:
             messenger.send(self.suit.uniqueName('hpChange'))
@@ -117,7 +117,7 @@ class TownBattleCogPanel(DirectFrame):
         button.flattenLight()
         self.healthBarGlow = glow
         self.healthBar.hide()
-        self.healthCondition = 0 
+        self.healthCondition = 0
 
     def updateHealthBar(self):
         if not self.suit:
@@ -133,27 +133,27 @@ class TownBattleCogPanel(DirectFrame):
         elif health > 0.7:
             condition = 3#Yellow
         elif health > 0.6:
-            condition = 4            
+            condition = 4
         elif health > 0.5:
-            condition = 5           
+            condition = 5
         elif health > 0.3:
             condition = 6#Orange
         elif health > 0.15:
             condition = 7
         elif health > 0.05:
-            condition = 8#Red           
+            condition = 8#Red
         elif health > 0.0:
             condition = 9#Blinking Red
         else:
             condition = 10
         if self.healthCondition != condition:
             if condition == 9:
-                self.blinkTask = self.uniqueName('blink-task')                
+                self.blinkTask = self.uniqueName('blink-task')
                 blinkTask = Task.loop(Task(self.__blinkRed), Task.pause(0.75), Task(self.__blinkGray), Task.pause(0.1))
                 taskMgr.add(blinkTask, self.blinkTask)
             elif condition == 10:
                 if self.healthCondition == 9:
-                    self.blinkTask = self.uniqueName('blink-task')    
+                    self.blinkTask = self.uniqueName('blink-task')
                     taskMgr.remove(self.blinkTask)
                     self.blinkTask = None
                 blinkTask = Task.loop(Task(self.__blinkRed), Task.pause(0.25), Task(self.__blinkGray), Task.pause(0.1))
@@ -168,7 +168,7 @@ class TownBattleCogPanel(DirectFrame):
 
     def __blinkRed(self, task):
         if not self.blinkTask or not self.healthBar:
-            return Task.done  
+            return Task.done
         self.healthBar.setColor(self.healthColors[8], 1)
         self.healthBarGlow.setColor(self.healthGlowColors[8], 1)
         if self.healthCondition == 7:
@@ -188,18 +188,18 @@ class TownBattleCogPanel(DirectFrame):
         if self.healthCondition == 9 or self.healthCondition == 10:
             if self.blinkTask:
                 taskMgr.remove(self.blinkTask)
-                self.blinkTask = None    
+                self.blinkTask = None
         if self.healthBar:
             self.healthBar.removeNode()
             self.healthBar = None
         self.healthCondition = 0
         return
-        
+
     def getDisplayedCurrHp(self):
         return self.currHP
-        
+
     def getDisplayedMaxHp(self):
-        return self.maxHP   
+        return self.maxHP
 
     def setMaxHp(self, hp):
         self.maxHP = hp
@@ -209,7 +209,7 @@ class TownBattleCogPanel(DirectFrame):
 
     def show(self):
         DirectFrame.show(self)
-        
+
     def cleanup(self):
         self.ignoreAll()
         self.removeHealthBar()

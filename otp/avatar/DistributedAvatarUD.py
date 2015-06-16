@@ -15,4 +15,3 @@ class DistributedAvatarUD(DistributedObjectUD):
 
     def confirmAvOnShard(self, todo0, todo1):
         pass
-

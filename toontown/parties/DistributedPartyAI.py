@@ -63,7 +63,7 @@ class DistributedPartyAI(DistributedObjectAI):
             ActivityIds.PartyTrampoline: DistributedPartyTrampolineActivityAI,
             ActivityIds.PartyVictoryTrampoline: DistributedPartyVictoryTrampolineActivityAI,
             ActivityIds.PartyCatch: DistributedPartyCatchActivityAI,
-            ActivityIds.PartyDance: DistributedPartyDanceActivityAI, 
+            ActivityIds.PartyDance: DistributedPartyDanceActivityAI,
             ActivityIds.PartyTugOfWar: DistributedPartyTugOfWarActivityAI,
             ActivityIds.PartyFireworks: DistributedPartyFireworksActivityAI,
             ActivityIds.PartyJukebox40: DistributedPartyJukebox40ActivityAI,
@@ -146,10 +146,9 @@ class DistributedPartyAI(DistributedObjectAI):
         if not avId in self.avIdsAtParty:
             self.air.globalPartyMgr.d_toonJoinedParty(self.info.get('partyId', 0), avId)
             self.avIdsAtParty.append(avId)
-        
+
     def _removeAvatar(self, avId):
         if avId in self.avIdsAtParty:
             print 'REMOVE FROM PARTTY!'
             self.air.globalPartyMgr.d_toonLeftParty(self.info.get('partyId', 0), avId)
             self.avIdsAtParty.remove(avId)
-

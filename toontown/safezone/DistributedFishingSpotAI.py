@@ -137,11 +137,11 @@ class DistributedFishingSpotAI(DistributedObjectAI):
             self.air.writeServerEvent('suspicious', self.avId, 'Toon tried to fish without casting!')
             return
         av = self.air.doId2do[self.avId]
-        
+
         catch = self.air.fishManager.generateCatch(av, self.air.doId2do[self.pondDoId].getArea())
-        
+
         self.lastFish = catch
-        
+
         self.d_setMovie(FishGlobals.PullInMovie, catch[0], catch[1], catch[2], catch[3], 0, 0)
         self.cast = False
 

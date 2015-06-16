@@ -256,14 +256,14 @@ class DistributedEstateAI(DistributedObjectAI):
                 self.plots[slot][item[0]].planted = newItem
                 self.plots[slot][item[0]].sendUpdate('plantedItem', [newItem.doId])
                 self.plots[slot][item[0]].sendUpdate('setMovie', [GardenGlobals.MOVIE_PLANT, 999999999])
-                        
+
 
     def destroy(self):
         for house in self.houses:
             if house:
                 house.requestDelete()
         del self.houses[:]
-        
+
         if self.pond:
             self.pond.requestDelete()
             for spot in self.spots:
@@ -613,7 +613,7 @@ class DistributedEstateAI(DistributedObjectAI):
 
     def gameTableOver(self):
         pass
-    
+
     def placeStarterGarden(self, avatar):
         # TODO: Place garden if a toon already owns one.
         avId = avatar.doId

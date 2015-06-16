@@ -306,7 +306,7 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
 
     def teleportQuery(self, requesterId):
         avatar = base.cr.identifyFriend(requesterId)
-        
+
         if avatar is None:
             self.d_teleportResponse(self.doId, 0, 0, 0, 0, sendToId=requesterId)
         elif base.localAvatar.isIgnored(requesterId):
@@ -319,7 +319,7 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
         else:
             if self.failedTeleportMessageOk(requesterId):
                 self.setSystemMessage(requesterId, OTPLocalizer.WhisperFailedVisit % avatar.getName())
-            
+
             self.d_teleportResponse(self.doId, 0, 0, 0, 0, sendToId=requesterId)
 
     def failedTeleportMessageOk(self, fromId):

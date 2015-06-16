@@ -543,7 +543,7 @@ class SuitPlannerBase:
         for i in xrange(self.dnaStore.getNumDNAVisGroupsAI()):
             vg = self.dnaStore.getDNAVisGroupAI(i)
             zoneId = int(self.extractGroupName(vg.getName()))
-            
+
             if vg.getNumBattleCells() == 1:
                 battleCell = vg.getBattleCell(0)
                 self.battlePosDict[zoneId] = vg.getBattleCell(0).getPos()
@@ -551,10 +551,10 @@ class SuitPlannerBase:
                 self.notify.warning('multiple battle cells for zone: %d' % zoneId)
                 self.battlePosDict[zoneId] = vg.getBattleCell(0).getPos()
 
-            if True:            
+            if True:
                 for i in xrange(vg.getNumChildren()):
                     childDnaGroup = vg.at(i)
-                
+
                     if isinstance(childDnaGroup, DNAInteractiveProp):
                         self.notify.debug('got interactive prop %s' % childDnaGroup)
                         battleCellId = childDnaGroup.getCellId()

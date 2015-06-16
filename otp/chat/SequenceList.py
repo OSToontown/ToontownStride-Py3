@@ -275,7 +275,7 @@ pose:eh
 pound:ed,ing,me,myself,her,herself,him,himself,of,off,ourselves,they,themselves,us,you,yourself
 pounds:ed,ing,me,myself,her,herself,him,himself,of,off,ourselves,they,themselves,us,you,yourself
 pour:on,no
-pro:st i tut,stick tut 
+pro:st i tut,stick tut
 purr:cee,say,says,sea,seas,see,sees,she,shes,she's,si
 push:y,ye,cee,say,says,sea,seas,see,sees,she,shes,she's,si
 put:cee,say,says,sea,seas,see,sees,she,shes,she's,si

@@ -54,11 +54,11 @@ class DistributedHouseDoor(DistributedDoor.DistributedDoor):
         self.doPostAnnounceGenerate()
         self.bHasFlat = not self.findDoorNode('door*flat', True).isEmpty()
         self.hideDoorParts()
-        
+
         building = self.getBuilding()
         doorTrigger = building.find('**/door_trigger*')
         doorTrigger.setName(self.getTriggerName())
-                
+
         self.accept(self.getEnterTriggerEvent(), self.doorTrigger)
         self.acceptOnce('clearOutToonInterior', self.doorTrigger)
         self.zoneDoneLoading = 0

@@ -387,7 +387,7 @@ class Playground(Place.Place):
 
     def exitHFAReject(self):
         pass
-    
+
     def enterNPCFA(self, requestStatus):
         self.acceptOnce(self.npcfaDoneEvent, self.enterNPCFACallback, [requestStatus])
         self.npcfa = NPCForceAcknowledge.NPCForceAcknowledge(self.npcfaDoneEvent)

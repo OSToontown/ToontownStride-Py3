@@ -18,4 +18,3 @@ class DistributedPartyTugOfWarActivityAI(DistributedPartyTeamActivityAI):
 
     def updateToonPositions(self, todo0):
         pass
-

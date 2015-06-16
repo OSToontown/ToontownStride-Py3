@@ -40,13 +40,13 @@ def clear():
 def readFile():
     global curId
     script = StringIO.StringIO(QuestScripts.script)
-    
+
     def readLine():
         return script.readline().replace('\r', '')
-    
+
     gen = tokenize.generate_tokens(readLine)
     line = getLineOfTokens(gen)
-    
+
     while line is not None:
         if line == []:
             line = getLineOfTokens(gen)
@@ -58,7 +58,7 @@ def readFile():
         else:
             lineDict[curId].append(line)
         line = getLineOfTokens(gen)
-    
+
     script.close()
 
 def getLineOfTokens(gen):
@@ -889,10 +889,10 @@ class NPCMoviePlayer(DirectObject.DirectObject):
                 return
             curGagLevel = newGagLevel
             access = [0, 0, 0, 0, 0, 0, 0]
-            
+
             for i in xrange(len(self.oldTrackAccess)):
                 access[i] = curGagLevel if self.oldTrackAccess[i] > 0 else 0
-            
+
             base.localAvatar.setTrackAccess(access)
 
         return Sequence(Func(grabCurTrackAccess), LerpFunctionInterval(updateGagLevel, fromData=1, toData=7, duration=0.3), WaitInterval(3.5), LerpFunctionInterval(updateGagLevel, fromData=7, toData=1, duration=0.3), Func(restoreTrackAccess), Func(messenger.send, 'donePreview'))

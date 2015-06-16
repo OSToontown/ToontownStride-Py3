@@ -41,5 +41,3 @@ class LawOfficeLayout:
 
     def getFloorIds(self):
         return self.floorIds
-
-

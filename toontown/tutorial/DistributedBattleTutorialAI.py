@@ -17,6 +17,6 @@ class DistributedBattleTutorialAI(DistributedBattleAI):
 
     def exitReward(self):
         av = simbase.air.doId2do.get(self.air.getAvatarIdFromSender())
-        
+
         if av:
             av.b_setQuests([[101, 1, 1000, 100, 1]])

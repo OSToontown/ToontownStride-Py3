@@ -115,7 +115,7 @@ class DistributedStartingBlock(DistributedObject.DistributedObject, FSM):
             self.setPad(self.cr.doId2do[padDoId])
         else:
             self.acceptOnce('generate-%d' % padDoId, self.setPad)
-        
+
     def setPad(self, pad):
         self.kartPad = pad
         self.kartPad.addStartingBlock(self)

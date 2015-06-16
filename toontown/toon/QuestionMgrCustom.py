@@ -2,13 +2,13 @@ import random
 
 
 class QuestionMgr:
-    
+
     def __init__(self):
         self.greetings = ['hi', 'hello', 'hey', 'sup', 'howdy', 'yo']
         self.greetingResp = ['Hello there, ', 'Howdy there, ', 'Hows it hanging, ', 'How do you do, ', 'Whats up, ', 'Woah! You scared me there ']
         self.response = ''
         self.confused = 1
-        
+
     def ask(self, message, sender):
         msg = message.lower()
         vbls = msg.split()
