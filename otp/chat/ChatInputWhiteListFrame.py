@@ -16,7 +16,6 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
 
     def __init__(self, entryOptions, parent = None, **kw):
         FSM.FSM.__init__(self, 'ChatInputWhiteListFrame')
-        self.okayToSubmit = True
         self.receiverId = None
         DirectFrame.__init__(self, parent=aspect2dp, pos=(0, 0, 0.3), relief=None, image=DGG.getDefaultDialogGeom(), image_scale=(1.6, 1, 1.4), image_pos=(0, 0, -0.05), image_color=OTPGlobals.GlobalDialogColor, borderWidth=(0.01, 0.01))
         optiondefs = {'parent': self,
@@ -37,7 +36,6 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
          'suppressKeys': 1,
          'suppressMouse': 1,
          'command': self.sendChat,
-         'failedCommand': self.sendFailed,
          'focus': 0,
          'text': '',
          'sortOrder': DGG.FOREGROUND_SORT_INDEX}
@@ -50,7 +48,6 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
         self.historySize = base.config.GetInt('chat-history-size', 10)
         self.historyIndex = 0
         self.promoteWhiteList = 0
-        self.checkBeforeSend = base.config.GetBool('white-list-check-before-send', 0)
         self.whiteList = None
         self.active = 0
         self.autoOff = 0
@@ -132,7 +129,7 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
         self.chatEntry['focus'] = 1
         self.show()
         self.active = 1
-        self.chatEntry.guiItem.setAcceptEnabled(False)
+        self.chatEntry.guiItem.setAcceptEnabled(True)
 
     def deactivate(self):
         self.chatEntry.set('')
@@ -160,9 +157,15 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
 
         if text:
             self.chatEntry.set('')
-            self.sendChatBySwitch(text)
-            if self.wantHistory:
-                self.addToHistory(text)
+            
+            try:
+                text.decode('ascii')
+                self.sendChatBySwitch(text)
+                
+                if self.wantHistory:
+                    self.addToHistory(text)
+            except UnicodeEncodeError:
+                base.localAvatar.setSystemMessage(0, OTPLocalizer.AsciiNotSupported)
 
         if not overflow:
             self.hide()
@@ -195,22 +198,6 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
         else:
             base.talkAssistant.sendOpenTalk(text)
 
-    def sendFailed(self, text):
-        if not self.checkBeforeSend:
-            self.sendChat(text)
-            return
-        self.chatEntry['frameColor'] = (0.9, 0.0, 0.0, 0.8)
-
-        def resetFrameColor(task = None):
-            self.chatEntry['frameColor'] = self.origFrameColor
-            return Task.done
-
-        taskMgr.doMethodLater(0.1, resetFrameColor, 'resetFrameColor')
-        self.applyFilter(keyArgs=None, strict=True)
-        self.okayToSubmit = True
-        self.chatEntry.guiItem.setAcceptEnabled(True)
-        return
-
     def chatOverflow(self, overflowText):
         self.notify.debug('chatOverflow')
         self.sendChat(self.chatEntry.get(plain=True), overflow=True)
@@ -231,21 +218,15 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
 
     def applyFilter(self, keyArgs, strict = False):
         text = self.chatEntry.get(plain=True)
-        if text.startswith('~'):
-            self.okayToSubmit = True
-        else:
+
+        if not text.startswith('~'):
             words = text.split(' ')
             newwords = []
             self.notify.debug('%s' % words)
-            self.okayToSubmit = True
             for word in words:
                 if word == '' or self.whiteList.isWord(word):
                     newwords.append(word)
                 else:
-                    if self.checkBeforeSend:
-                        self.okayToSubmit = False
-                    else:
-                        self.okayToSubmit = True
                     newwords.append('\x01WLEnter\x01' + word + '\x02')
 
             if not strict:
@@ -256,4 +237,3 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
                     newwords[-1] = '\x01WLEnter\x01' + lastword + '\x02'
             newtext = ' '.join(newwords)
             self.chatEntry.set(newtext)
-        self.chatEntry.guiItem.setAcceptEnabled(self.okayToSubmit)

@@ -15,17 +15,32 @@ class ChatAgent(DistributedObjectGlobal):
         DistributedObjectGlobal.delete(self)
         return
 
+    def verifyMessage(self, message):
+        try:
+            message.decode('ascii')
+            return True
+        except:
+            return False
+    
     def adminChat(self, aboutId, message):
+        if not self.verifyMessage(message):
+            return
         self.notify.warning('Admin Chat(%s): %s' % (aboutId, message))
         messenger.send('adminChat', [aboutId, message])
 
     def sendChatMessage(self, message):
+        if not self.verifyMessage(message):
+            return
         self.sendUpdate('chatMessage', [message, self.chatMode])
 
     def sendWhisperMessage(self, receiverAvId, message):
+        if not self.verifyMessage(message):
+            return
         self.sendUpdate('whisperMessage', [receiverAvId, message])
 
     def sendSFWhisperMessage(self, receiverAvId, message):
+        if not self.verifyMessage(message):
+            return
         self.sendUpdate('sfWhisperMessage', [receiverAvId, message])
 
 @magicWord(category=CATEGORY_MODERATOR, types=[int])
@@ -52,4 +67,3 @@ def chatmode(mode=-1):
         return "Chat mode 1 is reserved for moderators."
     base.cr.chatAgent.chatMode = mode
     return "You are now talking in the %s chat mode." % mode2name.get(mode, "N/A")
-

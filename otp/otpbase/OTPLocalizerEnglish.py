@@ -2319,3 +2319,5 @@ def timeElapsedString(timeDelta):
         return '1 minute ago'
     else:
         return '%s minutes ago' % (timeDelta.seconds / 60)
+
+AsciiNotSupported = 'Sorry, but Toontown United does not support non-ASCII characters.'

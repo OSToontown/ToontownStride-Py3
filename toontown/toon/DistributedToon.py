@@ -462,6 +462,8 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             return Task.cont
 
     def setTalk(self, fromAV, fromAC, avatarName, chat, mods, flags):
+        if not base.cr.chatAgent.verifyMessage(chat):
+            return
         if base.localAvatar.isIgnored(self.doId if fromAV == 0 else fromAV):
             return
         timestamp = time.strftime('%m-%d-%Y %H:%M:%S', time.localtime())
@@ -480,6 +482,8 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         return base.cr.isFriend(avId)
 
     def setTalkWhisper(self, fromAV, fromAC, avatarName, chat, mods, flags):
+        if not base.cr.chatAgent.verifyMessage(chat):
+            return
         if not localAvatar.acceptingNonFriendWhispers:
             if not self.isAvFriend(fromAV):
                 return
