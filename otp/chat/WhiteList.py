@@ -37,4 +37,4 @@ class WhiteList:
         while j < self.numWords and self.words[j].startswith(text):
             j += 1
 
-        return self.words[i:j]
+        return self.words[i:j]        

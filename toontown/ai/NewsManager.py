@@ -515,11 +515,11 @@ class NewsManager(DistributedObject.DistributedObject):
         base.localAvatar.setSystemMessage(0, TTLocalizer.LaughingManHolidayStart)
         for currToon in base.cr.toons.values():
             currToon.generateLaughingMan()
-
+    
     def setLaughingManHolidayEnd(self):
         for currToon in base.cr.toons.values():
             currToon.swapToonHead(laughingMan=currToon.getWantLaughingMan())
-
+    
     def setTopToonsMarathonStart(self):
         base.localAvatar.setSystemMessage(0, TTLocalizer.TopToonsMarathonStart)
 
@@ -714,7 +714,7 @@ def getHoliday(id):
         return int(id)
     elif hasattr(ToontownGlobals, id):
         return getattr(ToontownGlobals, id)
-
+    
     return -1
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[str])

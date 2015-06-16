@@ -201,7 +201,7 @@ buildingMinMax = {
     ToontownGlobals.PajamaPlace: [config.GetInt('pajama-place-building-min', 6),
                                   config.GetInt('pajama-place-building-max', 12)],
     ToontownGlobals.RockAByeRoad: [config.GetInt('rock-a-bye-road-building-min', 6),
-                                  config.GetInt('rock-a-bye-road-building-max', 12)],
+                                  config.GetInt('rock-a-bye-road-building-max', 12)],                                  
     ToontownGlobals.SellbotHQ: [0, 0],
     ToontownGlobals.SellbotFactoryExt: [0, 0],
     ToontownGlobals.CashbotHQ: [0, 0],

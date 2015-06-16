@@ -16,7 +16,7 @@ class DistributedNPCScientist(DistributedNPCToonBase):
 
     def setModelHand(self, path):
         model = loader.loadModel(path)
-
+        
         for hand in self.getRightHands():
             placeholder = hand.attachNewNode('RightHandObj')
             placeholder.setH(180)
@@ -33,7 +33,7 @@ class DistributedNPCScientist(DistributedNPCToonBase):
 
     def startLookAround(self):
         pass
-
+    
     def startSequence(self, phase):
         if not self.style.getAnimal() == 'horse':
             return

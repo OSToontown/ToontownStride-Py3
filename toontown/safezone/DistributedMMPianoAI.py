@@ -10,7 +10,7 @@ PianoSlowDownInterval = 6.0
 PianoSlowDownMinimum = 0.1
 
 class DistributedMMPianoAI(DistributedObjectAI.DistributedObjectAI):
-
+    
     def __init__(self, air):
         DistributedObjectAI.DistributedObjectAI.__init__(self, air)
         self.spinStartTime = 0.0
@@ -24,9 +24,9 @@ class DistributedMMPianoAI(DistributedObjectAI.DistributedObjectAI):
             for speed in PianoSpeeds:
                 if speed > self.rpm:
                     break
-
+            
             self.updateSpeed(speed, self.direction)
-
+        
         self.d_playSpeedUp(self.air.getAvatarIdFromSender())
         self.__slowDownLater()
 
@@ -34,20 +34,20 @@ class DistributedMMPianoAI(DistributedObjectAI.DistributedObjectAI):
         rpm = self.rpm
         if rpm == 0.0:
             rpm = PianoSpeeds[0]
-
+        
         self.updateSpeed(rpm, -(self.direction))
         self.__slowDownLater()
         self.d_playChangeDirection(self.air.getAvatarIdFromSender())
-
+   
     def d_setSpeed(self, rpm, offset, startTime):
         self.sendUpdate('setSpeed', [rpm, offset, globalClockDelta.localToNetworkTime(startTime)])
 
     def d_playSpeedUp(self, avId):
         self.sendUpdate('playSpeedUp', [avId])
-
+    
     def d_playChangeDirection(self, avId):
         self.sendUpdate('playChangeDirection', [avId])
-
+    
     def updateSpeed(self, rpm, direction):
         now = globalClock.getFrameTime()
         heading = self.degreesPerSecond * (now - self.spinStartTime) + self.offset
@@ -57,7 +57,7 @@ class DistributedMMPianoAI(DistributedObjectAI.DistributedObjectAI):
         self.offset = heading % 360.0
         self.spinStartTime = now
         self.d_setSpeed(self.rpm * self.direction, self.offset, self.spinStartTime)
-
+    
     def __slowDownLater(self):
         taskName = self.uniqueName('slowDown')
         taskMgr.remove(taskName)

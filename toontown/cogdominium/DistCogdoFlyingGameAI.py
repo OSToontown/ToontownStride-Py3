@@ -59,7 +59,7 @@ class DistCogdoFlyingGameAI(DistCogdoGameAI):
             damage = int(20 * self.getDifficulty())
             self.__damage(av, damage)
         else:
-            self.notify.warning('Client requested unknown action \'%s\'' %action)
+            self.notify.warning('Client requested unknown action \'%s\'' %action)      
 
     def requestPickUp(self, pickupNum, pickupType):
         avId = self.air.getAvatarIdFromSender()
@@ -74,7 +74,7 @@ class DistCogdoFlyingGameAI(DistCogdoGameAI):
             if pickupType == Globals.Level.GatherableTypes.Memo:
                 self.totalMemos += 1
         else:
-            self.notify.warning('Client requested unknown pickup \'%s\'' % pickupType)
+            self.notify.warning('Client requested unknown pickup \'%s\'' % pickupType)     
 
     def handleStart(self):
         for toon in self.toons:

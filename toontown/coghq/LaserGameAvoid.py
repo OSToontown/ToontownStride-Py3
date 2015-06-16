@@ -79,3 +79,5 @@ class LaserGameAvoid(LaserGameBase.LaserGameBase):
             self.funcSendGrid()
 
         return Task.done
+
+

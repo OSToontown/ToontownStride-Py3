@@ -188,15 +188,15 @@ class BossCog(Avatar.Avatar):
         elif health > 0.7:
             condition = 3#Yellow
         elif health > 0.6:
-            condition = 4
+            condition = 4            
         elif health > 0.5:
-            condition = 5
+            condition = 5           
         elif health > 0.3:
             condition = 6#Orange
         elif health > 0.15:
             condition = 7
         elif health > 0.05:
-            condition = 8#Red
+            condition = 8#Red           
         elif health > 0.0:
             condition = 9#Blinking Red
         else:
@@ -214,10 +214,10 @@ class BossCog(Avatar.Avatar):
                 self.healthBar.setColor(self.healthColors[condition], 1)
                 self.healthBarGlow.setColor(self.healthGlowColors[condition], 1)
             self.healthCondition = condition
-
+            
     def __blinkRed(self, task):
         if not self.healthBar:
-            return
+            return    
         self.healthBar.setColor(self.healthColors[8], 1)
         self.healthBarGlow.setColor(self.healthGlowColors[8], 1)
         if self.healthCondition == 10:

@@ -20,7 +20,7 @@ class DistributedSmartNPCAI(DistributedNPCToonBaseAI):
         self.brain = self.engine.create_session()
         self.myTask = taskMgr.doMethodLater(0.5, self.tylerTask, 'tylerTask')
         self.index = 0
-
+        
     def tylerTask(self, task):
         if task.time >= 5:
             self.index  = 0
@@ -31,7 +31,7 @@ class DistributedSmartNPCAI(DistributedNPCToonBaseAI):
         self.personOfInterest = 0
         self.nameOfInterest = ''
         return task.done
-
+        
     def restartTask(self):
         taskMgr.remove(self.myTask)
         taskMgr.add(self.myTask)
@@ -51,7 +51,7 @@ class DistributedSmartNPCAI(DistributedNPCToonBaseAI):
         else:
             #Tyler is busy!
             pass
-
+        
     def talkMessage(self, sender, message):
         if sender == self.personOfInterest:
             self.index += 1
@@ -65,7 +65,7 @@ class DistributedSmartNPCAI(DistributedNPCToonBaseAI):
                 return
             self.restartTask()
             self.generateAnswer(message, sender)
-
+            
     def generateAnswer(self, message, sender):
         name = self.air.doId2do.get(sender).getName()
         answer = self.brain.think(message)
@@ -74,3 +74,4 @@ class DistributedSmartNPCAI(DistributedNPCToonBaseAI):
     def response(self, response, sendTo):
         self.sendUpdate('respond', [self.npcId, response, sendTo])
         self.restartTask()
+        

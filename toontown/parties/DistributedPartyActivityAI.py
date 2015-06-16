@@ -78,3 +78,4 @@ class DistributedPartyActivityAI(DistributedObjectAI):
 
     def showJellybeanReward(self, todo0, todo1, todo2):
         pass
+

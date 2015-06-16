@@ -155,7 +155,7 @@ class DistributedHouseInterior(DistributedObject.DistributedObject):
                 model.reparentTo(viewBase)
                 if self.exteriorWindowsHidden:
                     model.findAllMatches('**/outside').stash()
-
+                    
     def hideExteriorWindows(self):
         self.exteriorWindowsHidden = 1
         for item in self.windows:

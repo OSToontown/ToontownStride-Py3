@@ -5,7 +5,7 @@ from toontown.racing import RaceGlobals
 
 class DistributedStartingBlockAI(DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedStartingBlockAI")
-
+    
     def __init__(self, air):
         DistributedObjectAI.__init__(self, air)
         self.air = air
@@ -16,19 +16,19 @@ class DistributedStartingBlockAI(DistributedObjectAI):
 
     def setPadDoId(self, padDoId):
         self.pad = self.air.doId2do[padDoId]
-
+        
     def getPadDoId(self):
         return self.pad.getDoId()
 
     def setPosHpr(self, x, y, z, h, p, r):
         self.posHpr = [x, y, z, h, p, r]
-
+    
     def getPosHpr(self):
         return self.posHpr
-
+    
     def setPadLocationId(self, padLocationId):
         self.padLocationId = padLocationId
-
+        
     def getPadLocationId(self):
         return self.padLocationId
 
@@ -42,7 +42,7 @@ class DistributedStartingBlockAI(DistributedObjectAI):
             return
         if av.getTickets() < RaceGlobals.getEntryFee(self.pad.trackId, self.pad.trackType):
             self.sendUpdateToAvatarId(avId, 'rejectEnter', [KartGlobals.ERROR_CODE.eTickets])
-            return
+            return        
         if self.pad.state == 'AllAboard' or self.pad.state == 'WaitBoarding' :
             self.sendUpdateToAvatarId(avId, 'rejectEnter', [KartGlobals.ERROR_CODE.eBoardOver])
             return
@@ -53,7 +53,7 @@ class DistributedStartingBlockAI(DistributedObjectAI):
             return
         self.b_setOccupied(avId)
         self.b_setMovie(KartGlobals.ENTER_MOVIE)
-
+        
     def rejectEnter(self, errCode):
         pass
 
@@ -66,21 +66,21 @@ class DistributedStartingBlockAI(DistributedObjectAI):
     def setOccupied(self, avId):
         self.avId = avId
         self.pad.updateTimer()
-
+        
     def d_setOccupied(self, avId):
         self.sendUpdate('setOccupied', [avId])
-
+        
     def b_setOccupied(self, avId):
         self.setOccupied(avId)
         self.d_setOccupied(avId)
-
+        
     def setMovie(self, movie):
         self.currentMovie = movie
         self.pad.updateMovieState()
-
+    
     def d_setMovie(self, movie):
         self.sendUpdate('setMovie', [movie])
-
+    
     def b_setMovie(self, movie):
         self.setMovie(movie)
         self.d_setMovie(movie)
@@ -99,11 +99,11 @@ class DistributedStartingBlockAI(DistributedObjectAI):
 
 class DistributedViewingBlockAI(DistributedStartingBlockAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedViewingBlockAI")
-
+    
     def __init__(self, air):
         DistributedStartingBlockAI.__init__(self, air)
         self.air = air
-
+        
     def requestEnter(self):
         avId = self.air.getAvatarIdFromSender()
         av = self.air.doId2do[avId]
@@ -118,7 +118,7 @@ class DistributedViewingBlockAI(DistributedStartingBlockAI):
         self.b_setOccupied(avId)
         self.b_setMovie(KartGlobals.ENTER_MOVIE)
         taskMgr.doMethodLater(30, DistributedViewingBlockAI.b_setMovie, 'removePlayer%i' % self.doId, [self, KartGlobals.EXIT_MOVIE])
-
+        
     def requestExit(self):
         DistributedStartingBlockAI.requestExit(self)
         taskMgr.remove('removePlayer%i' % self.doId)

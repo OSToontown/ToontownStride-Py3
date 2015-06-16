@@ -193,9 +193,9 @@ FUNCTION npc "stopLookAround"
 POS camera 0.0 6.0 4.0
 HPR camera 180.0 0.0 0.0
 LOCAL_CHAT_CONFIRM npc QuestScriptTutorialBlocker_1
-WAIT 0.8
+WAIT 0.8 
 LOCAL_CHAT_CONFIRM npc QuestScriptTutorialBlocker_2
-WAIT 0.8
+WAIT 0.8 
 POS camera -5.0 -9.0 6.0
 HPR camera -25.0 -10.0 0.0
 POS localToon 203.8 18.64 -0.475
@@ -204,8 +204,8 @@ SHOW localToon
 LOCAL_CHAT_CONFIRM npc QuestScriptTutorialBlocker_3
 OBSCURE_CHAT 1 0
 SHOW chatScButton
-WAIT 0.6
-ARROWS_ON -1.3644 0.91 180 -1.5644 0.74 -90
+WAIT 0.6 
+ARROWS_ON -1.3644 0.91 180 -1.5644 0.74 -90 
 LOCAL_CHAT_PERSIST npc QuestScriptTutorialBlocker_4
 WAIT_EVENT "enterSpeedChat"
 ARROWS_OFF
@@ -217,17 +217,17 @@ CLEAR_CHAT localToon
 REPARENTTO camera localToon
 LOCAL_CHAT_CONFIRM npc QuestScriptTutorialBlocker_5 "CFReversed"
 LOCAL_CHAT_CONFIRM npc QuestScriptTutorialBlocker_6 "CFReversed"
-OBSCURE_CHAT 0 0
+OBSCURE_CHAT 0 0 
 SHOW chatNormalButton
-WAIT 0.6
+WAIT 0.6 
 LOCAL_CHAT_CONFIRM npc QuestScriptTutorialBlocker_7 "CFReversed"
 LOCAL_CHAT_CONFIRM npc QuestScriptTutorialBlocker_8 1 "CFReversed"
 LOOP_ANIM npc "walk"
 LERP_HPR npc 270 0 0 0.5
 WAIT 0.5
 LOOP_ANIM npc "run"
-LERP_POS npc 217.4 18.81 -0.475 0.75
-LERP_HPR npc 240 0 0 0.75
+LERP_POS npc 217.4 18.81 -0.475 0.75 
+LERP_HPR npc 240 0 0 0.75 
 WAIT 0.75
 LERP_POS npc 222.4 15.0 -0.475 0.35
 LERP_HPR npc 180 0 0 0.35
@@ -237,7 +237,7 @@ WAIT 0.75
 REPARENTTO npc hidden
 FREE_LOCALTOON
 UPON_TIMEOUT ARROWS_OFF
-UPON_TIMEOUT OBSCURE_CHAT 0 0
+UPON_TIMEOUT OBSCURE_CHAT 0 0 
 UPON_TIMEOUT REPARENTTO camera localToon
 FINISH_QUEST_MOVIE
 

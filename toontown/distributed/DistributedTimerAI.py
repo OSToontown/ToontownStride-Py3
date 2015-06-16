@@ -15,3 +15,4 @@ class DistributedTimerAI(DistributedObjectAI):
 
     def getStartTime(self):
         return self.startTime
+

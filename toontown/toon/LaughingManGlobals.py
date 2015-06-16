@@ -32,10 +32,10 @@ def addHeadEffect(head, book=False):
     card = makeCard(book=book)
     card.setScale(1.45 if book else 2.5)
     card.setZ(0.05 if book else 0.5)
-
+    
     for nodePath in head.getChildren():
         nodePath.hide()
-
+    
     card.instanceTo(head)
 
 def addToonEffect(toon):

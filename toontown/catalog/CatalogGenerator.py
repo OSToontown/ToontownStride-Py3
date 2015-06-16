@@ -1540,10 +1540,10 @@ class CatalogGenerator:
 
             if nextAvailableCloset not in schedule:
                 weeklyCatalog += self.__selectItem(avatar, nextAvailableCloset, monthlyCatalog, saleItem=0)
-
+            
             if nextAvailableBank not in schedule:
                 weeklyCatalog += self.__selectItem(avatar, nextAvailableBank, monthlyCatalog, saleItem=0)
-
+            
             weeklyCatalog += self.__selectItem(avatar, get50ItemTrunk, monthlyCatalog, saleItem=0)
         if time.time() < 1096617600.0:
 

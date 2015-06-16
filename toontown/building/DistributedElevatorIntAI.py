@@ -11,7 +11,7 @@ from direct.directnotify import DirectNotifyGlobal
 from toontown.battle import BattleBase
 
 class DistributedElevatorIntAI(DistributedElevatorAI.DistributedElevatorAI):
-
+    
     def __init__(self, air, bldg, avIds):
         DistributedElevatorAI.DistributedElevatorAI.__init__(self, air, bldg)
         self.countdownTime = simbase.config.GetFloat('int-elevator-timeout', INTERIOR_ELEVATOR_COUNTDOWN_TIME)
@@ -35,7 +35,7 @@ class DistributedElevatorIntAI(DistributedElevatorAI.DistributedElevatorAI):
         numFullSeats = self.countFullSeats()
         if not numFullSeats <= len(self.avIds):
             self.notify.warning('we are about to crash. self.seats=%s self.avIds=%s' % (self.seats, self.avIds))
-
+        
         if numFullSeats == len(self.avIds):
             self.fsm.request('allAboard')
 

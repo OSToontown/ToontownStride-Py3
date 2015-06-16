@@ -3,3 +3,4 @@ from toontown.parties.DistributedPartyJukeboxActivityBaseAI import DistributedPa
 
 class DistributedPartyJukebox40ActivityAI(DistributedPartyJukeboxActivityBaseAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedPartyJukebox40ActivityAI")
+

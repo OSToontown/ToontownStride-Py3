@@ -239,7 +239,7 @@ class Nametag2d(Nametag, Clickable2d, MarginVisible):
         self.panelWidth = self.textNode.getWidth() + self.PANEL_X_PADDING
         self.panelHeight = self.textNode.getHeight() + self.PANEL_Z_PADDING
         self.panel.setScale(self.panelWidth, 1, self.panelHeight)
-
+        
         # Add an arrow:
         self.arrow = NametagGlobals.arrowModel.copyTo(self.contents)
         self.arrow.setZ(self.ARROW_OFFSET + self.textNode.getBottom())

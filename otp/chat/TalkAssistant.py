@@ -147,7 +147,7 @@ class TalkAssistant(DirectObject.DirectObject):
 
     def findAvatarName(self, id):
         info = base.cr.identifyAvatar(id)
-
+        
         return info.getName() if info else ''
 
     def whiteListFilterMessage(self, text):

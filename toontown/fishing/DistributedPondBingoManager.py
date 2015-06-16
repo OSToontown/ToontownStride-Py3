@@ -154,7 +154,7 @@ class DistributedPondBingoManager(DistributedObject.DistributedObject, FSM.FSM):
             self.setPond(self.cr.doId2do[pondId])
         else:
             self.acceptOnce('generate-%d' % pondId, self.setPond)
-
+            
     def setPond(self, pond):
         self.pond = pond
         self.pond.setPondBingoManager(self)

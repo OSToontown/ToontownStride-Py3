@@ -6,3 +6,4 @@ class DistributedSellbotHQDoorAI(DistributedCogHQDoorAI):
 
     def informPlayer(self, todo0):
         pass
+

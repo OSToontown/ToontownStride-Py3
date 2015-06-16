@@ -9,7 +9,7 @@ from toontown.safezone import DistributedFindFourAI
 from toontown.safezone import GameGlobals
 
 class DistributedPicnicTableAI(DistributedNodeAI):
-
+    
     def __init__(self, air, zone, name, x, y, z, h, p, r):
         DistributedNodeAI.__init__(self, air)
         self.name = name
@@ -103,7 +103,7 @@ class DistributedPicnicTableAI(DistributedNodeAI):
         self.notify.debug('acceptBoarder %d' % avId)
         if self.findAvatar(avId) != None:
             return None
-
+        
         isEmpty = True
         for xx in self.seats:
             if xx != None:
@@ -153,7 +153,7 @@ class DistributedPicnicTableAI(DistributedNodeAI):
     def pickGame(self, gameNum):
         if self.game:
             return
-
+            
         x = 0
         for x in self.seats:
             if x != None:
@@ -183,7 +183,7 @@ class DistributedPicnicTableAI(DistributedNodeAI):
     def requestZone(self):
         if not self.game:
             return
-
+            
         avId = self.air.getAvatarIdFromSender()
         self.sendUpdateToAvatarId(avId, 'setZone', [
             self.game.zoneId])
@@ -335,9 +335,10 @@ class DistributedPicnicTableAI(DistributedNodeAI):
 
     def setCheckersZoneId(self, zoneId):
         self.checkersZoneId = zoneId
-
+        
     def setTableIndex(self, index):
         self._tableIndex = index
-
+        
     def getTableIndex(self):
         return self._tableIndex
+        

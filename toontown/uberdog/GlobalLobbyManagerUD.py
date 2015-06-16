@@ -8,7 +8,7 @@ from pandac.PandaModules import *
 
 class GlobalLobbyManagerUD(DistributedObjectGlobalUD):
     notify = directNotify.newCategory('GlobalLobbyManagerUD')
-
+    
     def announceGenerate(self):
         DistributedObjectGlobalUD.announceGenerate(self)
         self.notify.debug("GLMUD generated")
@@ -74,14 +74,14 @@ class GlobalLobbyManagerUD(DistributedObjectGlobalUD):
         self.senders2Mgrs[simbase.air.getAvatarIdFromSender()] = channel
         self.sendToAI('lobbyManagerUdStartingUp', [])
         self.air.addPostRemove(self._makeAIMsg('lobbyManagerUdLost', [], channel))
-
+        
     def addLobby(self, avId, lobbyId):
         if avId in self.host2LobbyId:
             self.sendToAI('addLobbyResponseUdToAi', [lobbyId, AddLobbyErrorCode.TooManyHostedLobbies, self._formatLobby(self.id2Lobby[lobbyId])])
         self.id2Lobby[lobbyId] = {'lobbyId': lobbyId, 'hostId': avId}
         self.host2LobbyId[avId] = lobbyId
         self.sendToAI('addLobbyResponseUdToAi', [lobbyId, AddLobbyErrorCode.AllOk, self._formatLobby(self.id2Lobby[lobbyId])])
-
+        
     def queryLobby(self, hostId):
         if hostId in self.host2LobbyId:
             lobby = self.id2Lobby[self.host2LobbyId[hostId]]
@@ -100,7 +100,7 @@ class GlobalLobbyManagerUD(DistributedObjectGlobalUD):
         lobby['numGuests'] += 1
         self.__updateLobbyCount(lobbyId)
         self.tempSlots[avId] = lobbyId
-
+        
         taskMgr.doMethodLater(60, self._removeTempSlot, 'lobbyManagerTempSlot%d' % avId, extraArgs=[avId])
 
         info = [lobby['shardId'], lobby['zoneId'], lobby['numGuests'], lobby['hostName']]
@@ -109,7 +109,7 @@ class GlobalLobbyManagerUD(DistributedObjectGlobalUD):
         sender = simbase.air.getAvatarIdFromSender()
         #dg = self.air.dclassesByName['DistributedPartyGateAI'].getFieldByName('setParty').aiFormatUpdate(gateId, recipient, sender, [info, hostId])
         #self.air.send(dg)
-
+        
     def _removeTempSlot(self, avId):
         lobbyId = self.tempSlots.get(avId)
         if lobbyId:

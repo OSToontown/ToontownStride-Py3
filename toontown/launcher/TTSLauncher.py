@@ -53,10 +53,10 @@ class TTSLauncher:
 
     def setPandaErrorCode(self):
         pass
-
+    
     def setDisconnectDetails(self, disconnectCode, disconnectMsg):
         self.disconnectCode = disconnectCode
         self.disconnectMsg = disconnectMsg
-
+    
     def setDisconnectDetailsNormal(self):
         self.setDisconnectDetails(0, 'normal')

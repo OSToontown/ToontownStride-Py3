@@ -8,18 +8,18 @@ import random
 
 class DistributedPartyFireworksActivityAI(DistributedPartyActivityAI, FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedPartyFireworksActivityAI")
-
+    
     def __init__(self, air, parent, activityTuple):
         DistributedPartyActivityAI.__init__(self, air, parent, activityTuple)
         FSM.__init__(self, 'DistributedPartyActivityAI')
         self.state = 'Idle'
-
+        
     def getEventId(self):
         return PartyGlobals.FireworkShows.Summer
-
+        
     def getShowStyle(self):
         return random.randint(0, len(FireworkShows.shows[PartyGlobals.FireworkShows.Summer]) - 1)
-
+        
     def getSongId(self):
         return random.randint(0, 1)
 
@@ -33,6 +33,6 @@ class DistributedPartyFireworksActivityAI(DistributedPartyActivityAI, FSM):
 
     def enterActive(self):
         self.sendUpdate('setState', ['Active', globalClockDelta.getRealNetworkTime()])
-
+        
     def enterIdle(self):
         self.sendUpdate('setState', ['Idle', globalClockDelta.getRealNetworkTime()])

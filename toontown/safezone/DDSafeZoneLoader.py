@@ -37,7 +37,7 @@ class DDSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):
             self.donald.setPos(0, -1, 3.95)
             self.donald.reparentTo(self.boat)
             self.donald.setHat(48, 0, 0)
-
+            
             random.shuffle(TTLocalizer.DonaldChatter)
             self.donaldSpeech = self.donald.createTalkSequence(TTLocalizer.DonaldChatter, 15)
             self.donaldSpeech.loop(0)

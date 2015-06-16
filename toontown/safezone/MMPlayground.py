@@ -20,3 +20,5 @@ class MMPlayground(Playground.Playground):
 
     def exitOnPiano(self):
         base.localAvatar.b_setParent(ToontownGlobals.SPRender)
+    
+

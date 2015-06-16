@@ -133,7 +133,7 @@ class TownBattle(StateData.StateData):
         self.cogPanels = (TownBattleCogPanel.TownBattleCogPanel(0),
          TownBattleCogPanel.TownBattleCogPanel(1),
          TownBattleCogPanel.TownBattleCogPanel(2),
-         TownBattleCogPanel.TownBattleCogPanel(3))
+         TownBattleCogPanel.TownBattleCogPanel(3))         
         self.timer = ToontownTimer.ToontownTimer()
         self.timer.posInTopRightCorner()
         self.timer.setScale(0.4)
@@ -296,7 +296,7 @@ class TownBattle(StateData.StateData):
             self.cogPanels[3].show()
         else:
             self.notify.error('Bad number of toons: %s' % num)
-        return None
+        return None        
 
     def updateChosenAttacks(self, battleIndices, tracks, levels, targets):
         self.notify.debug('updateChosenAttacks bi=%s tracks=%s levels=%s targets=%s' % (battleIndices,

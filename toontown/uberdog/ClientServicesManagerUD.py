@@ -117,7 +117,7 @@ def judgeName(name):
                 return False
             for banned in blacklist:
                 if banned in namePart:
-                    return False
+                    return False             
     return True
 
 # --- ACCOUNT DATABASES ---

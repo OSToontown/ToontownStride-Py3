@@ -35,7 +35,7 @@ class DistributedStomperAI(DistributedCrusherEntityAI.DistributedCrusherEntityAI
                 for id in self.crushCell.occupantIds:
                     if id in self.crushCell.crushables:
                         crushedList.append(id)
-
+            
                 self.sendCrushMsg()
             self.sendUpdate('setMovie', [StomperGlobals.STOMPER_STOMP, ClockDelta.globalClockDelta.getRealNetworkTime(), crushedList])
         else:

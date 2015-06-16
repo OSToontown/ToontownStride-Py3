@@ -22,3 +22,4 @@ class TTSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):
     def unload(self):
         SafeZoneLoader.SafeZoneLoader.unload(self)
         del self.birdSound
+

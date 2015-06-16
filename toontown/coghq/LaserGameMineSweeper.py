@@ -167,3 +167,5 @@ class LaserGameMineSweeper(LaserGameBase.LaserGameBase):
 
 
         return sum
+
+

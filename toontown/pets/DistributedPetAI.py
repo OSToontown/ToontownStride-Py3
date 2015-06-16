@@ -637,7 +637,7 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
             self.air.writeServerEvent('Late Pet Move Call', self.doId, ' ')
             taskMgr.remove(task.name)
             return Task.done
-
+            
         numNearby = len(self.brain.nearbyAvs) - 1
         minNearby = 5
         if numNearby > minNearby:
@@ -942,7 +942,7 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
     def enableLockMover(self):
         if not hasattr(self, 'brain'):
             return
-
+            
         if self.lockMoverEnabled == 0:
             self.brain._startMovie()
         self.lockMoverEnabled += 1
@@ -953,7 +953,7 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
     def disableLockMover(self):
         if not hasattr(self, 'brain'):
             return
-
+            
         if self.lockMoverEnabled > 0:
             self.lockMoverEnabled -= 1
             if self.lockMoverEnabled == 0:

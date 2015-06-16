@@ -78,7 +78,7 @@ class QuestRewardCounter:
                         suitHp += 1
                     else:
                         break
-
+                    
         self.notify.debug('Adding %s hp for cog suits' % suitHp)
         self.maxHp += suitHp
         kartingHp = int(av.kartingTrophies.count(1) / RaceGlobals.TrophiesPerCup)

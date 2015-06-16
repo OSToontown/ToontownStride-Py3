@@ -614,7 +614,7 @@ class CatalogScreen(DirectFrame):
             if item in allBankItems and item.furnitureType == CatalogFurnitureItem.MaxBankId:
                 isMaxBankOffered = True
                 break
-
+                
         for item in itemList:
             if isinstance(item, CatalogInvalidItem.CatalogInvalidItem):
                 self.notify.warning('skipping catalog invalid item %s' % item)
@@ -972,13 +972,13 @@ class CatalogScreen(DirectFrame):
 
         if not self.clarabelleChatBalloon:
             self.clarabelleChatBalloon = loader.loadModel('phase_3/models/props/chatbox')
-
+        
         self.clarabelleChat = CatalogChatBalloon.CatalogChatBalloon(self.clarabelleChatBalloon)
         chatNode = self.clarabelleChat.generate(str, ToontownGlobals.getInterfaceFont())[0]
         self.clarabelleChatNP = self.attachNewNode(chatNode.node(), 1000)
         self.clarabelleChatNP.setScale(0.08)
         self.clarabelleChatNP.setPos(0.7, 0, 0.6)
-
+        
         if timeout:
             taskMgr.doMethodLater(timeout, self.clearClarabelleChat, 'clearClarabelleChat')
 

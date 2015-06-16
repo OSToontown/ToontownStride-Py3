@@ -15,7 +15,7 @@ class DistributedToonUD(DistributedObjectUD):
 
     def setBankMoney(self, todo0):
         pass
-
+    
     def setMaxMoney(self, todo0):
         pass
 
@@ -207,7 +207,7 @@ class DistributedToonUD(DistributedObjectUD):
 
     def checkTeleportAccess(self, todo0):
         pass
-
+        
     def setScavengerHunt(self, todo0):
         pass
 

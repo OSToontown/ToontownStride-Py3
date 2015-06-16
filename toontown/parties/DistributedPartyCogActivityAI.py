@@ -18,3 +18,4 @@ class DistributedPartyCogActivityAI(DistributedPartyTeamActivityAI):
 
     def setHighScore(self, todo0, todo1):
         pass
+

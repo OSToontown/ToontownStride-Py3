@@ -42,11 +42,11 @@ class LanguageSelector:
         self.french = DirectButton(aspect2d, relief=None, text='French',
                       text_fg=(1, 0.549, 0, 1), text_scale=0.09, text_font=ToontownGlobals.getSuitFont(),
                       pos=(0, 0, -0.25), text_shadow=(1, 0.27, 0, 1), command=self.switchLanguage, extraArgs=['French'])
-
+    
         self.portuguese = DirectButton(aspect2d, relief=None, text='Portuguese',
                       text_fg=(1, 0.549, 0, 1), text_scale=0.09, text_font=ToontownGlobals.getSuitFont(),
                       pos=(0, 0, -0.35), text_shadow=(1, 0.27, 0, 1), command=self.switchLanguage, extraArgs=['Portuguese'])
-
+     
         self.german = DirectButton(aspect2d, relief=None, text='German',
                       text_fg=(1, 0.549, 0, 1), text_scale=0.09, text_font=ToontownGlobals.getSuitFont(),
                       pos=(0, 0, -0.45), text_shadow=(1, 0.27, 0, 1), command=self.switchLanguage, extraArgs=['German'])

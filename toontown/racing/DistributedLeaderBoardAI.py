@@ -9,3 +9,4 @@ class DistributedLeaderBoardAI(DistributedObjectAI):
 
     def setDisplay(self, todo0):
         pass
+

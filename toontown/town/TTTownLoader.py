@@ -20,3 +20,4 @@ class TTTownLoader(TownLoader.TownLoader):
     def unload(self):
         TownLoader.TownLoader.unload(self)
         Suit.unloadSuits(1)
+

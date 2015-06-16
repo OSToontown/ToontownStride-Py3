@@ -11,7 +11,7 @@ ChangeDirectionTime = 1.0
 
 class DistributedMMPiano(DistributedObject.DistributedObject):
     whitePartNodeName = 'midkey_floor_1'
-
+    
     def __init__(self, cr):
         DistributedObject.DistributedObject.__init__(self, cr)
         self.spinStartTime = 0.0
@@ -25,9 +25,9 @@ class DistributedMMPiano(DistributedObject.DistributedObject):
     def generate(self):
         DistributedObject.DistributedObject.generate(self)
         taskMgr.doMethodLater(4, self.setupGeom, self.uniqueName('setup-geom'))
-
+        
     def setupGeom(self, task):
-        geom = self.cr.playGame.getPlace().loader.geom
+        geom = self.cr.playGame.getPlace().loader.geom            
         self.piano = geom.find('**/center_icon')
         if self.piano.isEmpty():
             loader.notify.error('Piano not found')
@@ -58,7 +58,7 @@ class DistributedMMPiano(DistributedObject.DistributedObject):
     def __updateSpin(self, task):
         if self.degreesPerSecond == 0:
             return Task.cont
-
+            
         elapsed = globalClock.getRealTime() - self.spinStartTime
         offset = self.offset
         heading = ((self.degreesPerSecond * elapsed) + offset) % 360

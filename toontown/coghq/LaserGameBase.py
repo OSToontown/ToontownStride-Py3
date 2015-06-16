@@ -65,3 +65,5 @@ class LaserGameBase:
 
     def checkForWin(self):
         return 0
+
+

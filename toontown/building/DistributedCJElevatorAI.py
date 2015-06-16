@@ -7,3 +7,4 @@ class DistributedCJElevatorAI(DistributedBossElevatorAI.DistributedBossElevatorA
         DistributedBossElevatorAI.DistributedBossElevatorAI.__init__(self, air, bldg, zone, antiShuffle=antiShuffle, minLaff=minLaff)
         self.type = ELEVATOR_CJ
         self.countdownTime = ElevatorData[self.type]['countdown']
+

@@ -35,7 +35,7 @@ class DistributedPartyFireworksActivity(DistributedPartyActivity, FireworkShowMi
     def setShowStyle(self, showStyle):
         DistributedPartyFireworksActivity.notify.debug('setShowStyle( %d )' % showStyle)
         self.showStyle = showStyle
-
+    
     def setSongId(self, songId):
         self.songId = songId
 

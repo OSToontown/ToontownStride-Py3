@@ -128,3 +128,4 @@ class DistributedPartyManagerUD(DistributedObjectUD):
 
     def mwResponseUdToAllAi(self, todo0, todo1, todo2, todo3):
         pass
+

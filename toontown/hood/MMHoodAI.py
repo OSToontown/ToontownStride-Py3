@@ -22,7 +22,7 @@ class MMHoodAI(HoodAI.HoodAI):
             self.createTrolley()
 
         self.piano = DistributedMMPianoAI.DistributedMMPianoAI(self.air)
-        self.piano.generateWithRequired(self.zoneId)
+        self.piano.generateWithRequired(self.zoneId)    
 
         if simbase.air.wantHalloween:
             self.TrickOrTreatTargetManager = DistributedTrickOrTreatTargetAI.DistributedTrickOrTreatTargetAI(self.air)

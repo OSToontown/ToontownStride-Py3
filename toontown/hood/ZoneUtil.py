@@ -109,7 +109,7 @@ def getWhereName(zoneId, isToon):
                 if getHoodId(zoneId) == SellbotHQ:
                     if suffix == 600:
                         where = 'megaCorpInterior'
-                    else:
+                    else:    
                         where = 'factoryInterior'
                 elif getHoodId(zoneId) == CashbotHQ:
                     where = 'mintInterior'
@@ -245,5 +245,5 @@ def getWakeInfo(hoodId = None, zoneId = None):
 
 def canWearSuit(zoneId):
     zoneId = getCanonicalHoodId(zoneId)
-
+        
     return zoneId >= DynamicZonesBegin or zoneId in [LawbotHQ, CashbotHQ, SellbotHQ, BossbotHQ]

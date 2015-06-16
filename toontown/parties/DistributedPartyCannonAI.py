@@ -5,27 +5,27 @@ import PartyGlobals
 
 class DistributedPartyCannonAI(DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedPartyCannonAI")
-
+    
     def __init__(self, air):
         DistributedObjectAI.__init__(self, air)
         self.actId = 0
         self.posHpr = [0, 0, 0, 0, 0, 0]
         self.avId = 0
 
-
+        
     def delete(self):
         taskMgr.remove('removeToon%d' % self.doId)
         DistributedObjectAI.delete(self)
-
+        
     def setActivityDoId(self, actId):
         self.actId = actId
-
+        
     def getActivityDoId(self):
         return self.actId
 
     def setPosHpr(self, x, y, z, h, p, r):
         self.posHpr = [x, y, z, h, p, r]
-
+        
     def getPosHpr(self):
         return self.posHpr
 
@@ -72,8 +72,8 @@ class DistributedPartyCannonAI(DistributedObjectAI):
         if avId != self.avId:
             self.air.writeServerEvent('suspicious',avId,'Toon tried to start timer for someone else!')
         taskMgr.doMethodLater(PartyGlobals.CANNON_TIMEOUT, self.__removeToon, 'removeToon%d' % self.doId, extraArgs=[avId])
-
-
+        
+        
     def __removeToon(self, avId):
         if avId != self.avId:
             return
