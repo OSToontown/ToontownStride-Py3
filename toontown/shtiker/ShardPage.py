@@ -274,7 +274,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
         self.currentBTL['state'] = DGG.DISABLED
         self.currentBTR['state'] = DGG.DISABLED
 
-        if shardId == self.getCurrentShardId():
+        if shardId == base.localAvatar.defaultShard:
             self.shardTeleportButton['state'] = DGG.DISABLED
 
         if self.shardGroups is not None:
@@ -459,14 +459,6 @@ class ShardPage(ShtikerPage.ShtikerPage):
             zoneId = None
         return zoneId
 
-    def getCurrentShardId(self):
-        zoneId = self.getCurrentZoneId()
-
-        if zoneId != None and ZoneUtil.isWelcomeValley(zoneId):
-            return ToontownGlobals.WelcomeValleyToken
-        else:
-            return base.localAvatar.defaultShard
-
     def createSuitHead(self, suitName):
         suitDNA = SuitDNA.SuitDNA()
         suitDNA.newSuit(suitName)
@@ -487,7 +479,6 @@ class ShardPage(ShtikerPage.ShtikerPage):
         curShardTuples = base.cr.listActiveShards()
         curShardTuples.sort(compareShardTuples)
 
-        currentShardId = self.getCurrentShardId()
         actualShardId = base.localAvatar.defaultShard
         actualShardName = None
         anyChanges = 0
@@ -550,7 +541,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
     def enter(self):
         self.askForShardInfoUpdate()
         self.updateScrollList()
-        currentShardId = self.getCurrentShardId()
+        currentShardId = base.localAvatar.defaultShard
         buttonTuple = self.shardButtonMap.get(currentShardId)
         if buttonTuple:
             i = self.shardButtons.index(buttonTuple[0])
@@ -581,16 +572,13 @@ class ShardPage(ShtikerPage.ShtikerPage):
     def choseShard(self, shardId):
         zoneId = self.getCurrentZoneId()
         canonicalHoodId = ZoneUtil.getCanonicalHoodId(base.localAvatar.lastHood)
-        currentShardId = self.getCurrentShardId()
+        currentShardId = base.localAvatar.defaultShard
 
         if self.currentGroupJoined:
             self.rejectGroup(5)
             return
         if shardId == currentShardId:
             return
-        elif shardId == base.localAvatar.defaultShard:
-            self.doneStatus = {'mode': 'teleport', 'hood': canonicalHoodId}
-            messenger.send(self.doneEvent)
         else:
             try:
                 place = base.cr.playGame.getPlace()

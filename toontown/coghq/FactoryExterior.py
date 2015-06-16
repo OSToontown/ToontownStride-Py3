@@ -75,7 +75,6 @@ class FactoryExterior(BattlePlace.BattlePlace):
                 groupFullName = dnaStore.getDNAVisGroupName(i)
                 visGroup = dnaStore.getDNAVisGroupAI(i)
                 visZoneId = int(base.cr.hoodMgr.extractGroupName(groupFullName))
-                visZoneId = ZoneUtil.getTrueZoneId(visZoneId, self.zoneId)
                 visibles = []
                 for i in xrange(visGroup.getNumVisibles()):
                     visibles.append(int(visGroup.getVisible(i)))
@@ -95,7 +94,7 @@ class FactoryExterior(BattlePlace.BattlePlace):
         self.accept('doorDoneEvent', self.handleDoorDoneEvent)
         self.accept('DistributedDoor_doorTrigger', self.handleDoorTrigger)
         NametagGlobals.setWant2dNametags(True)
-        self.tunnelOriginList = base.cr.hoodMgr.addLinkTunnelHooks(self, self.nodeList, self.zoneId)
+        self.tunnelOriginList = base.cr.hoodMgr.addLinkTunnelHooks(self, self.nodeList)
         how = requestStatus['how']
         self.fsm.request(how, [requestStatus])
 

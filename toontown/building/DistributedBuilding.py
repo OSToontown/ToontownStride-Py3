@@ -17,7 +17,6 @@ from toontown.toonbase import TTLocalizer
 from toontown.distributed import DelayDelete
 from toontown.toon import TTEmote
 from otp.avatar import Emote
-from toontown.hood import ZoneUtil
 import sys
 FO_DICT = {'s': 'tt_m_ara_cbe_fieldOfficeMoverShaker',
  'l': 'tt_m_ara_cbe_fieldOfficeLegalEagle',
@@ -236,8 +235,11 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         pass
 
     def enterToon(self, ts):
-        if self.getInteractiveProp():
-            self.getInteractiveProp().buildingLiberated(self.doId)
+        prop = self.getInteractiveProp()
+
+        if prop:
+            prop.buildingLiberated(self.doId)
+
         self.setToToon()
 
     def exitToon(self):
@@ -256,7 +258,11 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         pass
 
     def enterSuit(self, ts):
-        self.makePropSad()
+        prop = self.getInteractiveProp()
+        
+        if prop and not prop.state == 'Sad':
+            prop.gotoSad(self.doId)
+        
         self.setToSuit()
 
     def exitSuit(self):
@@ -438,7 +444,6 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         level = int(self.difficulty / 2) + 1
         suitNP = dnaStore.findNode('suit_landmark_' + chr(self.track) + str(level))
         zoneId = dnaStore.getZoneFromBlockNumber(self.block)
-        zoneId = ZoneUtil.getTrueZoneId(zoneId, self.interiorZoneId)
         newParentNP = base.cr.playGame.hood.loader.zoneDict[zoneId]
         suitBuildingNP = suitNP.copyTo(newParentNP)
         buildingTitle = dnaStore.getTitleFromBlockNumber(self.block)
@@ -541,7 +546,6 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         if not suitNP:
             suitNP = loader.loadModel('phase_5/models/cogdominium/%s' % FO_DICT[chr(self.track)])
         zoneId = dnaStore.getZoneFromBlockNumber(self.block)
-        zoneId = ZoneUtil.getTrueZoneId(zoneId, self.interiorZoneId)
         newParentNP = base.cr.playGame.hood.loader.zoneDict[zoneId]
         suitBuildingNP = suitNP.copyTo(newParentNP)
         buildingTitle = dnaStore.getTitleFromBlockNumber(self.block)
@@ -921,38 +925,22 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         self.elevatorNodePath.setPosHpr(0, 0, 0, 0, 0, 0)
 
     def getSbSearchString(self):
-        result = 'landmarkBlocks/sb' + str(self.block) + ':*_landmark_*_DNARoot'
-        return result
+        return 'landmarkBlocks/sb' + str(self.block) + ':*_landmark_*_DNARoot'
 
     def adjustSbNodepathScale(self, nodePath):
         pass
 
     def getVisZoneId(self):
-        exteriorZoneId = base.cr.playGame.hood.dnaStore.getZoneFromBlockNumber(self.block)
-        visZoneId = ZoneUtil.getTrueZoneId(exteriorZoneId, self.zoneId)
-        return visZoneId
+        return base.cr.playGame.hood.dnaStore.getZoneFromBlockNumber(self.block)
 
     def getInteractiveProp(self):
-        result = None
         if self.interactiveProp:
-            result = self.interactiveProp
-        else:
-            visZoneId = self.getVisZoneId()
-            if base.cr.playGame.hood:
-                loader = base.cr.playGame.hood.loader
-                if hasattr(loader, 'getInteractiveProp'):
-                    self.interactiveProp = loader.getInteractiveProp(visZoneId)
-                    result = self.interactiveProp
-                    self.notify.debug('self.interactiveProp = %s' % self.interactiveProp)
-                else:
-                    self.notify.warning('no loader.getInteractiveProp self.interactiveProp is None')
-            else:
-                self.notify.warning('no hood self.interactiveProp is None')
-        return result
+            return self.interactiveProp
+        elif base.cr.playGame.hood:
+            loader = base.cr.playGame.hood.loader
 
-    def makePropSad(self):
-        self.notify.debug('makePropSad')
-        if self.getInteractiveProp():
-            if self.getInteractiveProp().state == 'Sad':
-                pass
-            self.getInteractiveProp().gotoSad(self.doId)
+            if hasattr(loader, 'getInteractiveProp'):
+                self.interactiveProp = base.cr.playGame.hood.loader.getInteractiveProp(self.getVisZoneId())
+
+                return self.interactiveProp
+        return None
