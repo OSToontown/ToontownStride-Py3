@@ -1,3 +1,3 @@
 @echo off
-"../../../dependencies/panda/python/ppython.exe" -m whitelist_tool
+"C:\Panda3D-1.10.0\python\ppython.exe" -m whitelist_tool
 pause

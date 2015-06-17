@@ -2,6 +2,7 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
 from direct.distributed.ClockDelta import *
 from direct.showbase import PythonUtil
+from toontown.toonbase import PythonUtil as TTPythonUtil
 from direct.showbase.DirectObject import *
 from direct.task import Task
 from pandac.PandaModules import *
@@ -122,7 +123,7 @@ class TimeManager(DistributedObject.DistributedObject):
         self.sendUpdate('setDisconnectReason', [disconnectCode])
 
     def setExceptionInfo(self):
-        info = PythonUtil.describeException()
+        info = TTPythonUtil.describeException()
         self.notify.info('Client exception: %s' % info)
         self.sendUpdate('setExceptionInfo', [info])
         self.cr.flush()

@@ -18,7 +18,7 @@ sys.path.append(
     )
 )
 
-from direct.showbase import PythonUtil
+from toontown.toonbase import PythonUtil
 
 import argparse
 

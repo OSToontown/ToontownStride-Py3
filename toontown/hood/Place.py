@@ -2,7 +2,7 @@ from pandac.PandaModules import *
 from toontown.toonbase.ToonBaseGlobal import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
-from direct.showbase.PythonUtil import PriorityCallbacks
+from toontown.toonbase.PythonUtil import PriorityCallbacks
 from toontown.safezone import PublicWalk
 import ZoneUtil
 from toontown.friends import FriendsListManager

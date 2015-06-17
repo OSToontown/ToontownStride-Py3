@@ -44,7 +44,7 @@ echo.
 
 echo ===============================
 echo Starting Toontown Stride...
-echo ppython: "dependencies/panda/python/ppython.exe"
+echo ppython: "C:\Panda3D-1.10.0\python\ppython.exe"
 
 if %INPUT%==2 (
     echo Username: %ttsUsername%
@@ -60,11 +60,11 @@ echo ===============================
 cd ../../
 
 if %INPUT%==2 (
-    "dependencies/panda/python/ppython.exe" -m toontown.toonbase.ClientStartRemoteDB
+    "C:\Panda3D-1.10.0\python\ppython.exe" -m toontown.toonbase.ClientStartRemoteDB
 ) else if %INPUT%==4 (
-    "dependencies/panda/python/ppython.exe" -m toontown.toonbase.ClientStartRemoteDB
+    "C:\Panda3D-1.10.0\python\ppython.exe" -m toontown.toonbase.ClientStartRemoteDB
 ) else (
-    "dependencies/panda/python/ppython.exe" -m toontown.toonbase.ClientStart
+    "C:\Panda3D-1.10.0\python\ppython.exe" -m toontown.toonbase.ClientStart
 )
 
 pause

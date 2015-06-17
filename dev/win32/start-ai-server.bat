@@ -14,7 +14,7 @@ set BASE_CHANNEL=401000000
 
 echo ===============================
 echo Starting Toontown Stride AI server...
-echo ppython: "dependencies/panda/python/ppython.exe"
+echo ppython: "C:\Panda3D-1.10.0\python\ppython.exe"
 echo District name: %DISTRICT_NAME%
 echo Base channel: %BASE_CHANNEL%
 echo Max channels: %MAX_CHANNELS%
@@ -26,7 +26,7 @@ echo ===============================
 cd ../../
 
 :main
-"dependencies/panda/python/ppython.exe" ^
+"C:\Panda3D-1.10.0\python\ppython.exe" ^
 	-m toontown.ai.ServiceStart ^
 	--base-channel %BASE_CHANNEL% ^
 	--max-channels %MAX_CHANNELS% ^

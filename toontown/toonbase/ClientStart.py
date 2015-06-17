@@ -28,7 +28,7 @@ from panda3d.core import loadPrcFile
 if __debug__:
     import wx, sys
     from direct.stdpy import threading
-    
+
     loadPrcFile('dependencies/config/general.prc')
     loadPrcFile('dependencies/config/release/dev.prc')
 
@@ -75,7 +75,7 @@ notify.info('Reading %s...' % preferencesFilename)
 
 __builtin__.settings = Settings(preferencesFilename)
 if 'res' not in settings:
-    settings['res'] = (800, 600)
+    settings['res'] = (1280, 720)
 if 'fullscreen' not in settings:
     settings['fullscreen'] = False
 if 'music' not in settings:
@@ -191,10 +191,10 @@ __builtin__.loader = base.loader
 autoRun = ConfigVariableBool('toontown-auto-run', 1)
 if autoRun:
     try:
-        run()
+        base.run()
     except SystemExit:
         raise
     except:
-        from direct.showbase import PythonUtil
+        from toontown.toonbase import PythonUtil
         print PythonUtil.describeException()
         raise
