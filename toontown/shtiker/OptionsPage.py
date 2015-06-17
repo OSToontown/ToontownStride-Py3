@@ -706,7 +706,6 @@ class ExtraOptionsTabPage(DirectFrame):
     def __init__(self, parent = aspect2d):
         self.parent = parent
         self.currentSizeIndex = None
-        self.dialog = None
 
         DirectFrame.__init__(self, parent=self.parent, relief=None, pos=(0.0, 0.0, 0.0), scale=(1.0, 1.0, 1.0))
 
@@ -714,16 +713,10 @@ class ExtraOptionsTabPage(DirectFrame):
 
     def destroy(self):
         self.parent = None
-        
-        if self.dialog:
-            self.dialog.destroy()
-        
-        del self.dialog
         DirectFrame.destroy(self)
 
     def load(self):
         guiButton = loader.loadModel('phase_3/models/gui/quit_button')
-        gui = loader.loadModel('phase_3.5/models/gui/friendslist_gui')
         titleHeight = 0.61
         textStartHeight = 0.45
         textRowHeight = 0.145
@@ -734,45 +727,56 @@ class ExtraOptionsTabPage(DirectFrame):
         button_textpos = (0, -0.02)
         options_text_scale = 0.052
         disabled_arrow_color = Vec4(0.6, 0.6, 0.6, 1.0)
-        self.speed_chat_scale = 0.055    
-        self.cogLevel_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord), command=self.__doToggleCogLevelGui)
-        self.cogLevel_label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight))
-        self.bugReportButton = DirectButton(parent=self, relief=None, text=TTLocalizer.BugReportButton, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text_pos=(0, -0.01), text_fg=(0, 0, 0, 1), 
+        button_image = (guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR'))
+        self.speed_chat_scale = 0.055
+        self.speedchatPlus_label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight))
+        self.trueFriends_label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - textRowHeight))
+        self.cogInterface_label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - 2 * textRowHeight))
+        self.speedchatPlus_toggleButton = DirectButton(parent=self, relief=None, image=button_image, image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord), command=self.__doToggleSpeedchatPlus)
+        self.trueFriends_toggleButton = DirectButton(parent=self, relief=None, image=button_image, image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight), command=self.__doToggleTrueFriends)
+        self.cogInterface_toggleButton = DirectButton(parent=self, relief=None, image=button_image, image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - 2 * textRowHeight), command=self.__doToggleCogInterface)
+        self.bugReportButton = DirectButton(parent=self, relief=None, text=TTLocalizer.BugReportButton, image=button_image, image_scale=button_image_scale, text_pos=(0, -0.01), text_fg=(0, 0, 0, 1), 
         command=self.showReportNotice, pos=(0.0, 0.0, -0.6), text_scale=(0.045))
-        gui.removeNode()
         guiButton.removeNode()
 
     def enter(self):
         self.show()
         self.settingsChanged = 0
-        self.__setCogLevelGuiButton()
+        self.__setSpeedchatPlusButton()
+        self.__setTrueFriendsButton()
+        self.__setCogInterfaceButton()
 
     def exit(self):
         self.ignore('confirmDone')
+        self.destroyReportNotice()
         self.hide()
 
     def unload(self):
-        self.cogLevel_label.destroy()
-        del self.cogLevel_label
-        self.cogLevel_toggleButton.destroy()
-        del self.cogLevel_toggleButton
+        self.speedchatPlus_label.destroy()
+        del self.speedchatPlus_label
+        self.trueFriends_label.destroy()
+        del self.trueFriends_label
+        self.cogInterface_label.destroy()
+        del self.cogInterface_label
+        self.cogInterface_toggleButton.destroy()
+        del self.cogInterface_toggleButton
 
-    def __doToggleCogLevelGui(self):
+    def __doToggleCogInterface(self):
         messenger.send('wakeup')
-        settings['cogLevel'] = not settings['cogLevel']
+        settings['cogInterface'] = not settings['cogInterface']
         self.settingsChanged = 1
-        self.__setCogLevelGuiButton()
+        self.__setCogInterfaceButton()
 
+    def __setCogInterfaceButton(self):
+        self.cogInterface_label['text'] = TTLocalizer.CogInterfaceLabelOn if settings['cogInterface'] else TTLocalizer.CogInterfaceLabelOff
+        self.cogInterface_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff if settings['cogInterface'] else TTLocalizer.OptionsPageToggleOn
+    
     def __doToggleSpeedchatPlus(self):
         messenger.send('wakeup')
         settings['speedchatPlus'] = not settings['speedchatPlus']
         Avatar.reconsiderAllUnderstandable()
         self.settingsChanged = 1
         self.__setSpeedchatPlusButton()
-        
-    def __setCogLevelGuiButton(self):
-        self.cogLevel_label['text'] = TTLocalizer.CogLevelLabelOn if settings['cogLevel'] else TTLocalizer.CogLevelLabelOff
-        self.cogLevel_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff if settings['cogLevel'] else TTLocalizer.OptionsPageToggleOn
 
     def __setSpeedchatPlusButton(self):
         self.speedchatPlus_label['text'] = TTLocalizer.SpeedchatPlusLabelOn if settings['speedchatPlus'] else TTLocalizer.SpeedchatPlusLabelOff
@@ -789,12 +793,18 @@ class ExtraOptionsTabPage(DirectFrame):
         self.trueFriends_label['text'] = TTLocalizer.TrueFriendsLabelOn if settings['trueFriends'] else TTLocalizer.TrueFriendsLabelOff
         self.trueFriends_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff if settings['trueFriends'] else TTLocalizer.OptionsPageToggleOn
 
+    def destroyReportNotice(self):
+        if hasattr(self, 'dialog'):
+            self.dialog.destroy()
+            del self.dialog
+    
     def showReportNotice(self):
+        self.destroyReportNotice()
         self.dialog = TTDialog.TTDialog(style=TTDialog.YesNo, text=TTLocalizer.BugReportNotice, command=self.confirmBugReport)
         self.dialog.show()
 
     def confirmBugReport(self, value):
+        self.destroyReportNotice()
+
         if value > 0:
             webbrowser.open(ToontownGlobals.BugReportSite, new=2, autoraise=True)
-
-        self.dialog.destroy()

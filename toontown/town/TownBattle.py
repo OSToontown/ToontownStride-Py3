@@ -368,7 +368,7 @@ class TownBattle(StateData.StateData):
     def exitOff(self):
         if self.isLoaded:
             self.__enterPanels(self.numToons, self.localNum)
-            if settings['cogLevel']:
+            if settings['cogInterface']:
                 self.__enterCogPanels(self.numCogs)
         self.timer.show()
         self.track = -1
@@ -516,7 +516,7 @@ class TownBattle(StateData.StateData):
             for i in xrange(len(toons)):
                 self.toonPanels[i].setLaffMeter(toons[i])
 
-            if settings['cogLevel']:
+            if settings['cogInterface']:
                 self.__enterCogPanels(self.numCogs)
             for i in xrange(len(cogs)):
                 self.cogPanels[i].setSuit(cogs[i])

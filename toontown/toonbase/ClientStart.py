@@ -92,8 +92,8 @@ if 'toonChatSounds' not in settings:
     settings['toonChatSounds'] = True
 if 'language' not in settings:
     settings['language'] = 'English'
-if 'cogLevel' not in settings:
-    settings['cogLevel'] = True
+if 'cogInterface' not in settings:
+    settings['cogInterface'] = True
 if 'speedchatPlus' not in settings:
     settings['speedchatPlus'] = True
 if 'trueFriends' not in settings:

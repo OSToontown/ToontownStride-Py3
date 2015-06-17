@@ -145,6 +145,7 @@ class ToonBase(OTPBase.OTPBase):
         self.localAvatarStyle = None
 
         self.filters = CommonFilters(self.win, self.cam)
+        self.wantCogInterface = settings.get('cogInterface', True)
 
     def openMainWindow(self, *args, **kw):
         result = OTPBase.OTPBase.openMainWindow(self, *args, **kw)

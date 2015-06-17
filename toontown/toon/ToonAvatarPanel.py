@@ -219,7 +219,6 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
             command=self.handleReport)
 
         if avatar.isAdmin():
-            self.trueFriendsButton['state'] = DGG.DISABLED
             self.ignoreButton['state'] = DGG.DISABLED
             self.reportButton['state'] = DGG.DISABLED
         elif base.localAvatar.isIgnored(self.avId):

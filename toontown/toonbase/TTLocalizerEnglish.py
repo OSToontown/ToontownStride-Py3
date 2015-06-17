@@ -8481,3 +8481,13 @@ def convertSecondsToDate(seconds):
     return '%d:%02d:%02d' % (h, m, s)
 
 ToonDefeatedMessage = '%s was defeated!'
+BugReportButton = 'Report a Bug'
+BugReportNotice = 'Attention!\n\nThis button will open a browser which will send you to a third party bug tracker website. This site requires an Ubuntu One account to login. It may ask you to create an account.\n\nAre you sure you want to continue?'
+CodeRedemptionWarning = 'NOTICE: All codes can only be entered once!'
+CogInterfaceLabelOn = 'The cog battle interface is on.'
+CogInterfaceLabelOff = 'The cog battle interface is off.'
+SpeedchatPlusLabelOn = 'Speedchat Plus is on.'
+SpeedchatPlusLabelOff = 'Speedchat Plus is off.'
+TrueFriendsLabelOn = 'True Friends is on.'
+TrueFriendsLabelOff = 'True Friends is off.'
+
