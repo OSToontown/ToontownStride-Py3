@@ -179,7 +179,6 @@ HoodHierarchy = {ToontownCentral: (SillyStreet, LoopyLane, PunchlinePlace),
  DaisyGardens: (ElmStreet, MapleStreet, OakStreet),
  DonaldsDreamland: (LullabyLane, PajamaPlace),
  GoofySpeedway: ()}
-WelcomeValleyToken = 0
 BossbotHQ = 10000
 BossbotLobby = 10100
 BossbotCountryClubIntA = 10500
@@ -208,7 +207,7 @@ MyEstate = 16000
 GolfZone = 17000
 PartyHood = 18000
 HoodsAlwaysVisited = [17000, 18000]
-DynamicZonesBegin = 22001
+DynamicZonesBegin = 22000
 DynamicZonesEnd = 1 << 20
 cogDept2index = {'c': 0,
  'l': 1,
@@ -510,6 +509,7 @@ PieCodeBossInsides = 4
 PieCodeDefensePan = 5
 PieCodeProsecutionPan = 6
 PieCodeLawyer = 7
+PieCodeInvasionSuit = 8
 PieCodeColors = {PieCodeBossCog: None,
  PieCodeNotBossCog: (0.8,
                      0.8,
@@ -1373,6 +1373,15 @@ LawbotBossBonusDuration = 20
 LawbotBossBonusToonup = 10
 LawbotBossBonusWeightMultiplier = 2
 LawbotBossChanceToDoAreaAttack = 11
+LOW_POP_JP = 0
+MID_POP_JP = 100
+HIGH_POP_JP = 200
+LOW_POP_INTL = 399
+MID_POP_INTL = 499
+HIGH_POP_INTL = -1
+LOW_POP = 100
+MID_POP = 200
+HIGH_POP = -1
 PinballCannonBumper = 0
 PinballCloudBumperLow = 1
 PinballCloudBumperMed = 2
@@ -1401,6 +1410,30 @@ GlitchKillerZones = [13300,
  13400,
  13500,
  13600]
+ColorPlayer = (0.3,
+ 0.7,
+ 0.3,
+ 1)
+ColorAvatar = (0.3,
+ 0.3,
+ 0.7,
+ 1)
+ColorPet = (0.6,
+ 0.4,
+ 0.2,
+ 1)
+ColorFreeChat = (0.3,
+ 0.3,
+ 0.8,
+ 1)
+ColorSpeedChat = (0.2,
+ 0.6,
+ 0.4,
+ 1)
+ColorNoChat = (0.8,
+ 0.5,
+ 0.1,
+ 1)
 FactoryLaffMinimums = [(0, 31, 0),
  (0, 66, 71),
  (0,
