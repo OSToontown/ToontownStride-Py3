@@ -65,7 +65,6 @@ from toontown.battle import BattleParticles
 if base.wantKarts:
     from toontown.racing.KartDNA import *
 
-
 class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, DistributedSmoothNode.DistributedSmoothNode, DelayDeletable):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedToon')
     partyNotify = DirectNotifyGlobal.directNotify.newCategory('DistributedToon_Party')
@@ -2519,7 +2518,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.d_setTrueFriends(trueFriends)
     
     def setTrueFriends(self, trueFriends):
-        Avatar.reconsiderAllUnderstandable()
+        Toon.reconsiderAllToonsUnderstandable()
         self.trueFriends = trueFriends
     
     def d_setTrueFriends(self, trueFriends):

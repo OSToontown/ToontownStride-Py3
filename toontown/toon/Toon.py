@@ -395,6 +395,11 @@ def unloadDialog():
     BearDialogueArray = []
     PigDialogueArray = []
 
+def reconsiderAllToonsUnderstandable():
+    for av in Avatar.Avatar.ActiveAvatars:
+        if isinstance(av, Toon):
+            av.considerUnderstandable()
+
 class Toon(Avatar.Avatar, ToonHead):
     notify = DirectNotifyGlobal.directNotify.newCategory('Toon')
     afkTimeout = base.config.GetInt('afk-timeout', 600)

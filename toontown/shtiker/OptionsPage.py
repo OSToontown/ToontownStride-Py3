@@ -6,11 +6,11 @@ from pandac.PandaModules import *
 
 import DisplaySettingsDialog
 import ShtikerPage
-from otp.avatar import Avatar
 from otp.speedchat import SCColorScheme
 from otp.speedchat import SCStaticTextTerminal
 from otp.speedchat import SpeedChat
 from toontown.toonbase import TTLocalizer, ToontownGlobals
+from toontown.toon import Toon
 from toontown.toontowngui import TTDialog
 import webbrowser
 
@@ -790,7 +790,7 @@ class ExtraOptionsTabPage(DirectFrame):
     def __doToggleSpeedchatPlus(self):
         messenger.send('wakeup')
         settings['speedchatPlus'] = not settings['speedchatPlus']
-        Avatar.reconsiderAllUnderstandable()
+        Toon.reconsiderAllToonsUnderstandable()
         self.settingsChanged = 1
         self.__setSpeedchatPlusButton()
 
@@ -801,7 +801,7 @@ class ExtraOptionsTabPage(DirectFrame):
     def __doToggleTrueFriends(self):
         messenger.send('wakeup')
         settings['trueFriends'] = not settings['trueFriends']
-        Avatar.reconsiderAllUnderstandable()
+        Toon.reconsiderAllToonsUnderstandable()
         self.settingsChanged = 1
         self.__setTrueFriendsButton()
 
