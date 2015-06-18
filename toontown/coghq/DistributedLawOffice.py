@@ -63,5 +63,5 @@ class DistributedLawOffice(DistributedObject, LawOfficeBase.LawOfficeBase):
 
     def startSignal(self):
         base.camera.setScale(base.localAvatar.getScale())
-        localAvatar.setCameraFov(DefaultCameraFov)
+        localAvatar.setCameraFov(settings['fov'])
         base.camera.clearMat()

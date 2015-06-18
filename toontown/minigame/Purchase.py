@@ -510,7 +510,7 @@ class Purchase(PurchaseBase):
         self.door.reparentTo(hidden)
         self.title.reparentTo(self.frame)
         self.rewardDoubledJellybeanLabel.hide()
-        base.camLens.setMinFov(ToontownGlobals.DefaultCameraFov/(4./3.))
+        base.camLens.setMinFov(settings['fov']/(4./3.))
         NametagGlobals.setForceOnscreenChat(False)
 
     def _handleClientCleanup(self):

@@ -3797,8 +3797,8 @@ OptionsPageTitle = 'Options'
 ExtraOptionsPageTitle = 'Extra'
 OptionsTabTitle = 'Options\n& Codes'
 OptionsPageExitToontown = 'Exit Toontown'
-OptionsPageMusicOnLabel = 'Music is on.'
-OptionsPageMusicOffLabel = 'Music is off.'
+OptionsPageMusic = 'Music Volume:'
+OptionsPageSFX = 'SFX Volume:'
 OptionsPageSFXOnLabel = 'Sound Effects are on.'
 OptionsPageSFXOffLabel = 'Sound Effects are off.'
 OptionsPageToonChatSoundsOnLabel = '   Type Chat Sounds are on.'
@@ -8477,7 +8477,6 @@ def convertSecondsToDate(seconds):
     m, s = divmod(seconds, 60)
     h, m = divmod(m, 60)
 
-    print '%d:%02d:%02d' % (h, m, s)
     return '%d:%02d:%02d' % (h, m, s)
 
 ToonDefeatedMessage = '%s was defeated!'
@@ -8490,4 +8489,4 @@ SpeedchatPlusLabelOn = 'Speedchat Plus is on.'
 SpeedchatPlusLabelOff = 'Speedchat Plus is off.'
 TrueFriendsLabelOn = 'True Friends is on.'
 TrueFriendsLabelOff = 'True Friends is off.'
-
+FieldOfViewLabel = 'Field of View:'

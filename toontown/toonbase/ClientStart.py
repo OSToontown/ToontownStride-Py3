@@ -58,13 +58,11 @@ if __debug__:
 
 from direct.directnotify.DirectNotifyGlobal import directNotify
 
-
 notify = directNotify.newCategory('ClientStart')
 notify.setInfo(True)
 
-
 from otp.settings.Settings import Settings
-
+from otp.otpbase import OTPGlobals
 
 preferencesFilename = ConfigVariableString(
     'preferences-filename',
@@ -98,6 +96,9 @@ if 'speedchatPlus' not in settings:
     settings['speedchatPlus'] = True
 if 'trueFriends' not in settings:
     settings['trueFriends'] = True
+if 'fov' not in settings:
+    settings['fov'] = OTPGlobals.DefaultCameraFov
+
 loadPrcFileData('Settings: res', 'win-size %d %d' % tuple(settings['res']))
 loadPrcFileData('Settings: fullscreen', 'fullscreen %s' % settings['fullscreen'])
 loadPrcFileData('Settings: music', 'audio-music-active %s' % settings['music'])
@@ -146,7 +147,6 @@ DirectGuiGlobals.setDefaultRolloverSound(base.loadSfx('phase_3/audio/sfx/GUI_rol
 DirectGuiGlobals.setDefaultClickSound(base.loadSfx('phase_3/audio/sfx/GUI_create_toon_fwd.ogg'))
 DirectGuiGlobals.setDefaultDialogGeom(loader.loadModel('phase_3/models/gui/dialog_box_gui'))
 import TTLocalizer
-from otp.otpbase import OTPGlobals
 if base.musicManagerIsValid:
     music = base.loadMusic('phase_3/audio/bgm/tt_theme.ogg')
     if music:

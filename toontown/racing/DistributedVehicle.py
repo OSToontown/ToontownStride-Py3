@@ -539,8 +539,7 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
             self.toon.loop('neutral')
             self.toon.startSmooth()
         NametagGlobals.setForceOnscreenChat(False)
-        base.camLens.setMinFov(ToontownGlobals.DefaultCameraFov/(4./3.))
-        return
+        base.camLens.setMinFov(settings['fov']/(4./3.))
 
     def doHeadScale(self, model, scale):
         if scale == None:
@@ -685,7 +684,7 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
         newCameraPos = Point3(0, -25, 16)
         newCameraFov = 70
         turboDuration = 3
-        startFov = ToontownGlobals.DefaultCameraFov/(4./3.)
+        startFov = settings['fov']/(4./3.)
         if self.cameraTrack:
             self.cameraTrack.pause()
         cameraZoomIn = Parallel(LerpPosInterval(camera, 2, newCameraPos), LerpFunc(base.camLens.setMinFov, fromData=startFov, toData=newCameraFov, duration=2))

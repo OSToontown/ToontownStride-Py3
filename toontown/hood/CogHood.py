@@ -92,7 +92,7 @@ class CogHood(Hood):
             messenger.send(self.doneEvent)
 
     def exit(self):
-        base.localAvatar.setCameraFov(ToontownGlobals.DefaultCameraFov)
+        base.localAvatar.setCameraFov(settings['fov'])
         base.camLens.setNearFar(ToontownGlobals.DefaultCameraNear, ToontownGlobals.DefaultCameraFar)
 
         Hood.exit(self)

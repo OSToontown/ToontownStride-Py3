@@ -85,7 +85,7 @@ class CogdoBarrelRoom:
         base.localAvatar.b_setAnimState('neutral')
         self.defaultFar = base.camLens.getFar()
         base.camLens.setFar(CogdoBarrelRoomConsts.BarrelRoomCameraFar)
-        base.camLens.setMinFov(ToontownGlobals.DefaultCameraFov/(4./3.))
+        base.camLens.setMinFov(settings['fov']/(4./3.))
         self.showBattleAreaLight(True)
         render.setFog(self.fog)
         self.model.unstash()
