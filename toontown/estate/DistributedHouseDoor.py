@@ -31,7 +31,11 @@ class DistributedHouseDoor(DistributedDoor.DistributedDoor):
         return 'door_trigger_' + str(self.houseId)
 
     def hideDoorParts(self):
-        pass
+        try:
+            self.findDoorNode('doorFrameHoleRight').hide()
+            self.findDoorNode('doorFrameHoleLeft').hide()
+        except:
+            pass
 
     def announceGenerate(self):
         DistributedObject.DistributedObject.announceGenerate(self)
