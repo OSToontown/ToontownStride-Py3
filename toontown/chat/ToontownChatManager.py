@@ -134,20 +134,24 @@ class ToontownChatManager(ChatManager.ChatManager):
         return
 
     def enterNormalChat(self):
+        if not settings['trueFriends'] and not settings['speedchatPlus']:
+            self.fsm.request('mainMenu')
+            return
         result = ChatManager.ChatManager.enterNormalChat(self)
         if result == None:
             self.notify.warning('something went wrong in enterNormalChat, falling back to main menu')
             self.fsm.request('mainMenu')
-        return
 
     def enterWhisperChat(self, avatarName, avatarId):
+        if not settings['trueFriends'] and not settings['speedchatPlus']:
+            self.fsm.request('mainMenu')
+            return
         result = ChatManager.ChatManager.enterWhisperChat(self, avatarName, avatarId)
         self.chatInputNormal.reparentTo(base.a2dTopCenter)
         self.chatInputNormal.setPos(self.whisperPos)
         if result == None:
             self.notify.warning('something went wrong in enterWhisperChat, falling back to main menu')
             self.fsm.request('mainMenu')
-        return
 
     def enterNoSpeedchatPlus(self):
         if self.noSpeedchatPlus == None:
