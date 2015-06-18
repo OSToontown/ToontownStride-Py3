@@ -82,7 +82,6 @@ class Party(Place.Place):
             self.ignore(self.partyPlannerDoneEvent)
             self.partyPlanner.close()
             del self.partyPlanner
-        self.__removePartyHat()
         self.fog = None
         self.ignoreAll()
         self.parentFSMState.removeChild(self.fsm)
@@ -197,20 +196,9 @@ class Party(Place.Place):
         if hasattr(base, 'distributedParty'):
             if base.distributedParty.partyInfo.hostId in base.cr.doId2do:
                 host = base.cr.doId2do[base.distributedParty.partyInfo.hostId]
-                if hasattr(host, 'gmIcon') and host.gmIcon:
-                    host.removeGMIcon()
-                    host.setGMPartyIcon()
-                else:
+                if not (hasattr(host, 'gmIcon') and host.gmIcon):
                     np = NodePath(host.nametag.getIcon())
                     base.distributedParty.partyHat.reparentTo(np)
-
-    def __removePartyHat(self):
-        if hasattr(base, 'distributedParty'):
-            if base.distributedParty.partyInfo.hostId in base.cr.doId2do:
-                host = base.cr.doId2do[base.distributedParty.partyInfo.hostId]
-                if hasattr(host, 'gmIcon') and host.gmIcon:
-                    host.removeGMIcon()
-                    host.setGMIcon()
 
     def enterTeleportOut(self, requestStatus):
         Place.Place.enterTeleportOut(self, requestStatus, self.__teleportOutDone)

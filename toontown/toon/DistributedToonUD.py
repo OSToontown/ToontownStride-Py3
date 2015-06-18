@@ -10,9 +10,6 @@ class DistributedToonUD(DistributedObjectUD):
     def setDNAString(self, todo0):
         pass
 
-    def setGM(self, todo0):
-        pass
-
     def setMaxBankMoney(self, todo0):
         pass
 

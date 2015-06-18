@@ -412,19 +412,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.gardenPage = GardenPage.GardenPage()
         self.gardenPage.load()
         self.book.addPage(self.gardenPage, pageName=TTLocalizer.GardenPageTitle)
-        return
-
-    def setAsGM(self, state):
-        self.notify.debug('Setting GM State: %s in LocalToon' % state)
-        DistributedToon.DistributedToon.setAsGM(self, state)
-        if self.gmState:
-            if base.config.GetString('gm-nametag-string', '') != '':
-                self.gmNameTagString = base.config.GetString('gm-nametag-string')
-            if base.config.GetString('gm-nametag-color', '') != '':
-                self.gmNameTagColor = base.config.GetString('gm-nametag-color')
-            if base.config.GetInt('gm-nametag-enabled', 0):
-                self.gmNameTagEnabled = 1
-            self.d_updateGMNameTag()
 
     def displayTalkWhisper(self, avId, chat):
         sender = base.cr.identifyAvatar(avId)

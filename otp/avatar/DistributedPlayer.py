@@ -23,7 +23,6 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
         except:
             self.DistributedPlayer_initialized = 1
             DistributedAvatar.DistributedAvatar.__init__(self, cr)
-            PlayerBase.PlayerBase.__init__(self)
             TelemetryLimited.__init__(self)
             self.__teleportAvailable = 0
             self.inventory = None

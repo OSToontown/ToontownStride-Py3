@@ -9,9 +9,9 @@ from otp.distributed import OtpDoGlobals
 from otp.otpbase import OTPLocalizer
 
 class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.PlayerBase):
+
     def __init__(self, air):
         DistributedAvatarAI.DistributedAvatarAI.__init__(self, air)
-        PlayerBase.PlayerBase.__init__(self)
         self.friendsList = []
         self.DISLid = 0
         self.adminAccess = 0
@@ -157,8 +157,8 @@ def maintenance(minutes):
 
     countdown(minutes)
 
-@magicWord(category=CATEGORY_SYSTEM_ADMINISTRATOR, types=[str, str, int])
-def accessLevel(accessLevel, storage='PERSISTENT', showGM=1):
+@magicWord(category=CATEGORY_SYSTEM_ADMINISTRATOR, types=[str, str])
+def accessLevel(accessLevel, storage='PERSISTENT'):
     """
     Modify the target's access level.
     """
@@ -205,8 +205,6 @@ def accessLevel(accessLevel, storage='PERSISTENT', showGM=1):
     if target.getAdminAccess() == accessLevel:
         return "%s's access level is already %d!" % (target.getName(), accessLevel)
     target.b_setAdminAccess(accessLevel)
-    if showGM:
-        target.b_setGM(accessLevel)
     temporary = storage.upper() in ('SESSION', 'TEMP', 'TEMPORARY')
     if not temporary:
         target.air.dbInterface.updateObject(
