@@ -46,10 +46,11 @@ class WhiteList:
 
         lastWord = words[-1]
 
-        if (not lastWord) or self.isPrefix(lastWord):
-            newWords[-1] = lastWord
-        else:
-            newWords[-1] = self.getReplacement(lastWord, av, garbler)
+        if not garbler:
+            if (not lastWord) or self.isPrefix(lastWord):
+                newWords[-1] = lastWord
+            else:
+                newWords[-1] = self.getReplacement(lastWord, av, garbler)
 
         return ' '.join(newWords)
     
