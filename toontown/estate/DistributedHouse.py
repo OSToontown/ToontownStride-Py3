@@ -115,7 +115,7 @@ class DistributedHouse(DistributedObject.DistributedObject):
         self.randomGenerator.seed(self.doId)
         houseColor = HouseGlobals.stairWood
         color = Vec4(houseColor[0], houseColor[1], houseColor[2], 1)
-        setupDoor(doorNP, door_origin, door_origin, self.dnaStore, str(self.doId), color)
+        setupDoor(doorNP, door_origin, door_origin, self.dnaStore, str(self.colorIndex), color)
         self.__setupNamePlate()
         self.__setupFloorMat()
         self.__setupNametag()
