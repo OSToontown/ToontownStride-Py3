@@ -39,7 +39,7 @@ class CatalogTankItem(CatalogItem.CatalogItem):
         return 0
 
     def getDeliveryTime(self):
-        return 1
+        return 0
 
     def getPicture(self, avatar):
         gui = loader.loadModel('phase_4/models/gui/fishingGui')
