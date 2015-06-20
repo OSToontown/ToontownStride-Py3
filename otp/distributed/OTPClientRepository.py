@@ -22,10 +22,6 @@ import sys, time, types, random
 class OTPClientRepository(ClientRepositoryBase):
     notify = directNotify.newCategory('OTPClientRepository')
     avatarLimit = 6
-    WishNameResult = Enum(['Failure',
-     'PendingApproval',
-     'Approved',
-     'Rejected'])
 
     def __init__(self, serverVersion, playGame = None):
         ClientRepositoryBase.__init__(self)
@@ -1197,48 +1193,6 @@ class OTPClientRepository(ClientRepositoryBase):
                 self.handleObjectLocation(di)
         else:
             self.handleObjectLocation(di)
-
-    def sendWishName(self, avId, name):
-        datagram = PyDatagram()
-        datagram.addUint16(CLIENT_SET_WISHNAME)
-        datagram.addUint32(avId)
-        datagram.addString(name)
-        self.send(datagram)
-
-    def sendWishNameAnonymous(self, name):
-        self.sendWishName(0, name)
-
-    def getWishNameResultMsg(self):
-        return 'OTPCR.wishNameResult'
-
-    def gotWishnameResponse(self, di):
-        avId = di.getUint32()
-        returnCode = di.getUint16()
-        pendingName = ''
-        approvedName = ''
-        rejectedName = ''
-        if returnCode == 0:
-            pendingName = di.getString()
-            approvedName = di.getString()
-            rejectedName = di.getString()
-        if approvedName:
-            name = approvedName
-        elif pendingName:
-            name = pendingName
-        elif rejectedName:
-            name = rejectedName
-        else:
-            name = ''
-        WNR = self.WishNameResult
-        if returnCode:
-            result = WNR.Failure
-        elif rejectedName:
-            result = WNR.Rejected
-        elif pendingName:
-            result = WNR.PendingApproval
-        elif approvedName:
-            result = WNR.Approved
-        messenger.send(self.getWishNameResultMsg(), [result, avId, name])
 
     def replayDeferredGenerate(self, msgType, extra):
         if msgType == CLIENT_DONE_INTEREST_RESP:

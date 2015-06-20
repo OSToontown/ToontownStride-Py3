@@ -1,4 +1,5 @@
 from direct.distributed import DistributedObject/AI/UD
+from direct.distributed import DistributedObjectGlobal
 from direct.distributed import DistributedNode/AI/UD
 from direct.distributed import DistributedSmoothNode/AI
 from direct.distributed import DistributedCartesianGrid/AI
@@ -14,18 +15,15 @@ from otp.distributed import DistributedDirectory/AI
 from otp.chat import ChatAgent/UD
 
 typedef uint8 bool;
-
 typedef uint32 DoId;
-
 typedef DoId DoIdList[];
 
 struct AvatarPendingDel {
-  uint32 Avatar;
+  uint32 avId;
   uint32 date;
 };
 
 dclass Account {
-  string DcObjectType db;
   uint32 ACCOUNT_AV_SET[] required db;
   uint32 ESTATE_ID db;
   AvatarPendingDel ACCOUNT_AV_SET_DEL[] db;
@@ -45,14 +43,16 @@ struct BarrierData {
 dclass DistributedObject {
   setBarrierData(BarrierData []) broadcast ram;
   setBarrierReady(uint16 barrierContext) airecv clsend;
-  execCommand(string command, DoId magicWordMgr,
-              DoId avatar, uint32 zoneId);
+  execCommand(string command, DoId magicWordMgr, DoId avatar, uint32 zoneId);
   broadcastMessage() broadcast;
+};
+
+dclass DistributedObjectGlobal : DistributedObject {
 };
 
 dclass TimeManager : DistributedObject {
   requestServerTime(uint8 context) airecv clsend;
-  serverTime(uint8 context, int32 timestap, uint32 timeOfDay);
+  serverTime(uint8 context, int32 timestamp, uint32 timeOfDay);
   setDisconnectReason(uint8) airecv clsend;
   setExceptionInfo(string(0-1024)) airecv clsend;
 };
@@ -128,7 +128,6 @@ dclass DistributedCamera : DistributedNode {
 };
 
 dclass DistributedAvatar : DistributedSmoothNode {
-  string DcObjectType db;
   setName(string = "[Name not set]") required broadcast db airecv;
   friendsNotify(DoId avId, int8 status) ownrecv airecv;
   checkAvOnShard(DoId) clsend airecv;
@@ -152,8 +151,8 @@ dclass DistributedPlayer : DistributedAvatar {
   setSCCustom(uint16 msgIndex) broadcast ownsend airecv;
   setFriendsList(uint32[] = []) ownrecv required db airecv;
   setDISLid(uint32 = 0) broadcast ownrecv ram db airecv required;
-  WishName(string = "") db ram;
-  WishNameState(string = "OPEN") db ram;
+  setWishName(string = "") db ram;
+  setWishNameState(string = "OPEN") db ram;
   setAdminAccess(uint16 = 0) required broadcast ownrecv db;
 };
 
@@ -178,7 +177,6 @@ dclass FriendManager : DistributedObject {
   inviteeCancelFriendQuery(int32);
 };
 
-from direct.distributed import DistributedObjectGlobal
 from toontown.building import DistributedAnimatedProp/AI
 from toontown.toon import DistributedToon/AI/UD
 from toontown.safezone import DistributedTrolley/AI
@@ -1239,7 +1237,6 @@ struct lawnItem {
 };
 
 dclass DistributedEstate : DistributedObject {
-  string DcObjectType db;
   setEstateReady() broadcast;
   setClientReady() airecv clsend;
   setClosestHouse(uint8) airecv clsend;
@@ -1275,7 +1272,6 @@ dclass DistributedEstate : DistributedObject {
 };
 
 dclass DistributedHouse : DistributedObject {
-  string DcObjectType db;
   setHousePos(uint8) required broadcast;
   setHouseType(uint8 type = 0) required broadcast db;
   setGardenPos(uint8 index = 0) required broadcast db;
@@ -2388,7 +2384,6 @@ dclass DistributedMover : DistributedEntity {
 typedef uint16/10000 PetTrait;
 
 dclass DistributedPet : DistributedSmoothNode {
-  string DcObjectType db;
   setOwnerId(uint32) required broadcast db;
   setPetName(string) required broadcast db;
   setTraitSeed(uint32) required broadcast db;
@@ -3130,7 +3125,6 @@ dclass DistributedFindFour : DistributedNode {
   tie() broadcast;
 };
 
-
 dclass DistributedLobbyManager : DistributedObject {
   addLobby(uint32, uint32, string, string, int8, int8, activity [], decoration [], uint32[], uint16);
   addLobbyRequest(uint32) airecv clsend;
@@ -3209,9 +3203,6 @@ dclass DistributedPartyManager : DistributedObject {
   requestMw(uint32, string, uint32, uint32);
   mwResponseUdToAllAi(uint32, string, uint32, uint32) airecv;
   receiveId(uint64 ids[]) airecv;
-};
-
-dclass DistributedObjectGlobal : DistributedObject {
 };
 
 dclass GlobalLobbyManager : DistributedObjectGlobal {

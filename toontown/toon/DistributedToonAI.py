@@ -4432,7 +4432,7 @@ def badName():
     colorString = TTLocalizer.NumToColor[target.dna.headColor]
     animalType = TTLocalizer.AnimalToSpecies[target.dna.getAnimal()]
     target.b_setName(colorString + ' ' + animalType)
-    target.sendUpdate('WishNameState', ['REJECTED'])
+    target.sendUpdate('setWishNameState', ['REJECTED'])
     return "Revoked %s's name!" % _name
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[int])

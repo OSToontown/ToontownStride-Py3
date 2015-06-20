@@ -749,8 +749,8 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
             On success: True
             On failure: False
         """
-        newFields = {'WishNameState': 'APPROVED'}
-        oldFields = {'WishNameState': 'PENDING'}
+        newFields = {'setWishNameState': 'APPROVED'}
+        oldFields = {'setWishNameState': 'PENDING'}
         return self.rpc_updateObject(
             avId, 'DistributedToonUD', newFields, oldFields=oldFields)
 
@@ -769,7 +769,7 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
             On success: True
             On failure: False
         """
-        newFields = {'WishNameState': 'REJECTED'}
-        oldFields = {'WishNameState': 'PENDING'}
+        newFields = {'setWishNameState': 'REJECTED'}
+        oldFields = {'setWishNameState': 'PENDING'}
         return self.rpc_updateObject(
             avId, 'DistributedToonUD', newFields, oldFields=oldFields)

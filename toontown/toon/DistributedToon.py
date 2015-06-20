@@ -249,7 +249,8 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def setAdminAccess(self, access):
         DistributedPlayer.DistributedPlayer.setAdminAccess(self, access)
         self.removeGMIcon()
-        self.setGMIcon()
+        if self.isAdmin():
+            self.setGMIcon()
 
     def setDNA(self, dna):
         if base.cr.newsManager:
@@ -2364,10 +2365,9 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         if hasattr(self, 'gmIcon') and self.gmIcon:
             return
         icons = loader.loadModel('phase_3/models/props/gm_icons')
-        searchString = '**/access_level_' + str(self.adminAccess)
-        self.gmIcon = icons.find(searchString)
+        self.gmIcon = icons.find('**/access_level_' + str(self.adminAccess))
         np = NodePath(self.nametag.getIcon())
-        if np.isEmpty():
+        if np.isEmpty() or not self.gmIcon:
             return
         self.gmIcon.flattenStrong()
         self.gmIcon.reparentTo(np)

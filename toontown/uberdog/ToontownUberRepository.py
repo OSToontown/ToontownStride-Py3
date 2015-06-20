@@ -1,11 +1,9 @@
 from direct.distributed.PyDatagram import *
 import urlparse
-
-from otp.distributed.DistributedDirectoryAI import DistributedDirectoryAI
 from otp.distributed.OtpDoGlobals import *
+from otp.distributed.DistributedDirectoryAI import DistributedDirectoryAI
 from toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
 import toontown.minigame.MinigameCreatorAI
-
 
 if config.GetBool('want-rpc-server', False):
     from toontown.rpc.ToontownRPCServer import ToontownRPCServer
@@ -13,7 +11,6 @@ if config.GetBool('want-rpc-server', False):
 
 if config.GetBool('want-mongo-client', False):
     import pymongo
-
 
 class ToontownUberRepository(ToontownInternalRepository):
     def __init__(self, baseChannel, serverId):

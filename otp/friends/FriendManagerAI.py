@@ -1,6 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
-from otp.ai.MagicWordGlobal import *
 
 class FriendManagerAI(DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("FriendManagerAI")
@@ -119,15 +118,3 @@ class FriendManagerAI(DistributedObjectAI):
             return
 
         del self.requests[context]
-
-    def friendConsidering(self, todo0, todo1):
-        pass
-
-    def friendResponse(self, todo0, todo1):
-        pass
-
-    def inviteeFriendQuery(self, todo0, todo1, todo2, todo3):
-        pass
-
-    def inviteeCancelFriendQuery(self, todo0):
-        pass

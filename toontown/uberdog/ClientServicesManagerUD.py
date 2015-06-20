@@ -478,8 +478,8 @@ class CreateAvatarFSM(OperationFSM):
         name = ' '.join((colorString, animalType))
         toonFields = {
             'setName': (name,),
-            'WishNameState': ('OPEN',),
-            'WishName': ('',),
+            'setWishNameState': ('OPEN',),
+            'setWishName': ('',),
             'setDNAString': (self.dna,),
             'setDISLid': (self.target,),
         }
@@ -578,7 +578,7 @@ class GetAvatarsFSM(AvatarOperationFSM):
 
         for avId, fields in self.avatarFields.items():
             index = self.avList.index(avId)
-            wishNameState = fields.get('WishNameState', [''])[0]
+            wishNameState = fields.get('setWishNameState', [''])[0]
             name = fields['setName'][0]
             nameState = 0
 
@@ -590,13 +590,13 @@ class GetAvatarsFSM(AvatarOperationFSM):
                     self.csm.air.dbId,
                     avId,
                     self.csm.air.dclassesByName['DistributedToonUD'],
-                    {'WishNameState': [actualNameState]}
+                    {'setWishNameState': [actualNameState]}
                 )
                 if actualNameState == 'PENDING':
                     nameState = 2
                 if actualNameState == 'APPROVED':
                     nameState = 3
-                    name = fields['WishName'][0]
+                    name = fields['setWishName'][0]
                 elif actualNameState == 'REJECTED':
                     nameState = 4
             elif wishNameState == 'APPROVED':
@@ -692,7 +692,7 @@ class SetNameTypedFSM(AvatarOperationFSM):
             self.demand('Kill', "One of the account's avatars is invalid!")
             return
 
-        if fields['WishNameState'][0] != 'OPEN':
+        if fields['setWishNameState'][0] != 'OPEN':
             self.demand('Kill', 'Avatar is not in a namable state!')
             return
 
@@ -708,8 +708,8 @@ class SetNameTypedFSM(AvatarOperationFSM):
                     self.csm.air.dbId,
                     self.avId,
                     self.csm.air.dclassesByName['DistributedToonUD'],
-                    {'WishNameState': ('PENDING',),
-                     'WishName': (self.name,)})
+                    {'setWishNameState': ('PENDING',),
+                     'setWishName': (self.name,)})
             else:
                 status = False
 
@@ -742,7 +742,7 @@ class SetNamePatternFSM(AvatarOperationFSM):
             self.demand('Kill', "One of the account's avatars is invalid!")
             return
 
-        if fields['WishNameState'][0] != 'OPEN':
+        if fields['setWishNameState'][0] != 'OPEN':
             self.demand('Kill', 'Avatar is not in a namable state!')
             return
 
@@ -768,8 +768,8 @@ class SetNamePatternFSM(AvatarOperationFSM):
             self.csm.air.dbId,
             self.avId,
             self.csm.air.dclassesByName['DistributedToonUD'],
-            {'WishNameState': ('',),
-             'WishName': ('',),
+            {'setWishNameState': ('',),
+             'setWishName': ('',),
              'setName': (name,)})
 
         self.csm.air.writeServerEvent('avatarNamed', self.avId, name)
@@ -799,8 +799,8 @@ class AcknowledgeNameFSM(AvatarOperationFSM):
             return
 
         # Process the WishNameState change.
-        wishNameState = fields['WishNameState'][0]
-        wishName = fields['WishName'][0]
+        wishNameState = fields['setWishNameState'][0]
+        wishName = fields['setWishName'][0]
         name = fields['setName'][0]
 
         if wishNameState == 'APPROVED':
@@ -821,11 +821,11 @@ class AcknowledgeNameFSM(AvatarOperationFSM):
             self.csm.air.dbId,
             self.avId,
             self.csm.air.dclassesByName['DistributedToonUD'],
-            {'WishNameState': (wishNameState,),
-             'WishName': (wishName,),
+            {'setWishNameState': (wishNameState,),
+             'setWishName': (wishName,),
              'setName': (name,)},
-            {'WishNameState': fields['WishNameState'],
-             'WishName': fields['WishName'],
+            {'setWishNameState': fields['setWishNameState'],
+             'setWishName': fields['setWishName'],
              'setName': fields['setName']})
 
         self.csm.sendUpdateToAccountId(self.target, 'acknowledgeAvatarNameResp', [])

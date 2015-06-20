@@ -1,5 +1,3 @@
-
-
 class PotentialAvatar:
 
     def __init__(self, id, names, dna, position, allowedName, creator = 1, shared = 1, online = 0, wishState = 'CLOSED', wishName = '', defaultShard = 0, lastLogout = 0):
@@ -19,4 +17,3 @@ class PotentialAvatar:
         self.online = online
         self.defaultShard = defaultShard
         self.lastLogout = lastLogout
-        return
