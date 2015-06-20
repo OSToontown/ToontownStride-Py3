@@ -354,14 +354,6 @@ class DistributedParty(DistributedObject.DistributedObject):
         Toon.loadMinigameAnims()
         self.defaultSignModel = loader.loadModel('phase_13/models/parties/eventSign')
         self.activityIconsModel = loader.loadModel('phase_4/models/parties/eventSignIcons')
-        model = loader.loadModel('phase_4/models/parties/partyStickerbook')
-        self.partyHat = model.find('**/Stickerbook_PartyIcon')
-        self.partyHat.setPos(0.0, 0.1, 2.5)
-        self.partyHat.setHpr(0.0, 0.0, -50.0)
-        self.partyHat.setScale(4.0)
-        self.partyHat.setBillboardAxis()
-        self.partyHat.reparentTo(hidden)
-        model.removeNode()
         self.defaultLeverModel = loader.loadModel('phase_13/models/parties/partyLeverBase')
         self.defaultStickModel = loader.loadModel('phase_13/models/parties/partyLeverStick')
 
@@ -395,8 +387,7 @@ class DistributedParty(DistributedObject.DistributedObject):
             del self.testGrid
         self.ignoreAll()
         Toon.unloadMinigameAnims()
-        self.partyHat.removeNode()
-        del self.partyHat
+        self.removePartyHats()
         if hasattr(base, 'partyHasJukebox'):
             del base.partyHasJukebox
 
@@ -424,6 +415,11 @@ class DistributedParty(DistributedObject.DistributedObject):
                         np.setColorScale(0.0, 1.0, 0.0, 1.0)
                     else:
                         np.setColorScale(1.0, 0.0, 0.0, 1.0)
+
+    def removePartyHats(self):
+        for av in base.cr.doId2do.values():
+            if isinstance(av, Toon.Toon):
+                av.removePartyHat()
 
     def getClearSquarePos(self):
         clearPositions = self.getClearSquarePositions()

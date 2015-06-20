@@ -70,7 +70,7 @@ class NametagGroup:
             taskMgr.remove(self.tickTask)
             self.tickTask = None
 
-        self.clearChatText(timeout=False)
+        self.clearChatText()
 
         for nametag in list(self.nametags):
             self.remove(nametag)
@@ -280,14 +280,14 @@ class NametagGroup:
         # other words, we need to clear the current chat text, pause for a
         # brief moment, and then display the new chat text:
         if self.getChatText():
-            self.clearChatText(timeout=False)
+            self.clearChatText()
             self.stompChatText = chatText
             self.stompTask = taskMgr.doMethodLater(
                 self.CHAT_STOMP_DELAY, self.__chatStomp, self.stompTaskName,
                 extraArgs=[timeout])
             return
 
-        self.clearChatText(timeout=False)
+        self.clearChatText()
 
         self.chatPages = chatText.split('\x07')
         self.setChatPageIndex(0)
@@ -306,7 +306,7 @@ class NametagGroup:
             return ''
         return self.chatPages[self.chatPageIndex]
 
-    def clearChatText(self, task=None, timeout=True):
+    def clearChatText(self, task=None):
         if self.stompTask is not None:
             taskMgr.remove(self.stompTask)
             self.stompTask = None
@@ -323,9 +323,6 @@ class NametagGroup:
         for nametag in self.nametags:
             nametag.setChatText('')
             nametag.update()
-
-        if timeout:
-            messenger.send(self.chatTimeoutTaskName)
 
         if task is not None:
             return Task.done

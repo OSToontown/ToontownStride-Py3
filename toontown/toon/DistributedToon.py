@@ -209,7 +209,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             self.tunnelTrack.finish()
             self.tunnelTrack = None
         self.setTrophyScore(0)
-        self.removeGMIcon()
         if self.doId in self.cr.toons:
             del self.cr.toons[self.doId]
         DistributedPlayer.DistributedPlayer.disable(self)
@@ -232,7 +231,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.startBlink()
         self.startSmooth()
         self.accept('clientCleanup', self._handleClientCleanup)
-        return
 
     def announceGenerate(self):
         DistributedPlayer.DistributedPlayer.announceGenerate(self)
@@ -250,7 +248,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         DistributedPlayer.DistributedPlayer.setAdminAccess(self, access)
         self.removeGMIcon()
         if self.isAdmin():
-            self.setGMIcon()
+            self.setGMIcon(access)
 
     def setDNA(self, dna):
         if base.cr.newsManager:
@@ -1409,14 +1407,11 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         if self.trophyStarSpeed != 0:
             taskMgr.remove(self.uniqueName('starSpin'))
             self.trophyStarSpeed = 0
-        if hasattr(self, 'gmIcon') and self.gmIcon:
-            return
         if self.trophyScore >= ToontownGlobals.TrophyStarLevels[4]:
             self.trophyStar = loader.loadModel('phase_3.5/models/gui/name_star')
             np = NodePath(self.nametag.getIcon())
             self.trophyStar.reparentTo(np)
             self.trophyStar.setScale(2)
-            self.trophyStar.setZ(2)
             self.trophyStar.setColor(ToontownGlobals.TrophyStarColors[4])
             self.trophyStarSpeed = 15
             if self.trophyScore >= ToontownGlobals.TrophyStarLevels[5]:
@@ -1426,7 +1421,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             np = NodePath(self.nametag.getIcon())
             self.trophyStar.reparentTo(np)
             self.trophyStar.setScale(1.5)
-            self.trophyStar.setZ(1.6)
             self.trophyStar.setColor(ToontownGlobals.TrophyStarColors[2])
             self.trophyStarSpeed = 10
             if self.trophyScore >= ToontownGlobals.TrophyStarLevels[3]:
@@ -1436,11 +1430,11 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             np = NodePath(self.nametag.getIcon())
             self.trophyStar.reparentTo(np)
             self.trophyStar.setScale(1.5)
-            self.trophyStar.setZ(1.6)
             self.trophyStar.setColor(ToontownGlobals.TrophyStarColors[0])
             self.trophyStarSpeed = 8
             if self.trophyScore >= ToontownGlobals.TrophyStarLevels[1]:
                 taskMgr.add(self.__starSpin, self.uniqueName('starSpin'))
+        self.setHeadPositions()
 
     def __starSpin(self, task):
         now = globalClock.getFrameTime()
@@ -2093,8 +2087,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def displayTalk(self, chatString):
         flags = CFSpeech | CFTimeout
         self.nametag.setChatType(NametagGlobals.CHAT)
-        self.hideHeadMeter()
-        self.accept(self.nametag.chatTimeoutTaskName, self.showHeadMeter)
         if ChatUtil.isThought(chatString):
             flags = CFThought
             self.nametag.setChatBalloonType(NametagGlobals.THOUGHT_BALLOON)
@@ -2360,30 +2352,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
                 self.hpText.setPos(0, 0, self.height / 2)
                 seq = Sequence(self.hpText.posInterval(1.0, Point3(0, 0, self.height + 1.5), blendType='easeOut'), Wait(0.85), self.hpText.colorInterval(0.1, Vec4(r, g, b, 0)), Func(self.hideHpText))
                 seq.start()
-
-    def setGMIcon(self):
-        if hasattr(self, 'gmIcon') and self.gmIcon:
-            return
-        icons = loader.loadModel('phase_3/models/props/gm_icons')
-        self.gmIcon = icons.find('**/access_level_' + str(self.adminAccess))
-        np = NodePath(self.nametag.getIcon())
-        if np.isEmpty() or not self.gmIcon:
-            return
-        self.gmIcon.flattenStrong()
-        self.gmIcon.reparentTo(np)
-        self.gmIcon.setScale(1.6)
-        self.gmIcon.setZ(2.05)
-        self.setTrophyScore(self.trophyScore)
-        self.gmIconInterval = LerpHprInterval(self.gmIcon, 3.0, Point3(0, 0, 0), Point3(-360, 0, 0))
-        self.gmIconInterval.loop()
-
-    def removeGMIcon(self):
-        if hasattr(self, 'gmIconInterval') and self.gmIconInterval:
-            self.gmIconInterval.finish()
-            del self.gmIconInterval
-        if hasattr(self, 'gmIcon') and self.gmIcon:
-            self.gmIcon.detachNode()
-            del self.gmIcon
 
     def setAnimalSound(self, index):
         self.animalSound = index
