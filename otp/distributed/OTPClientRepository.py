@@ -30,7 +30,6 @@ class OTPClientRepository(ClientRepositoryBase):
         self.createAvatarClass = None
         self.systemMessageSfx = None
         self.playToken = launcher.getPlayToken()
-        self.wantMagicWords = False
 
         self.parentMgr.registerParent(OTPGlobals.SPRender, base.render)
         self.parentMgr.registerParent(OTPGlobals.SPHidden, NodePath())

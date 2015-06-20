@@ -17,7 +17,7 @@ class TalkAssistant(DirectObject.DirectObject):
         pass
 
     def sendOpenTalk(self, message):
-        if base.cr.wantMagicWords and len(message) > 0 and message[0] == '~':
+        if len(message) > 0 and message[0] == '~':
             messenger.send('magicWord', [message])
         else:
             chatFlags = CFSpeech | CFTimeout

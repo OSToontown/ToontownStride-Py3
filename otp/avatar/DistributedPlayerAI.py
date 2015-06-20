@@ -218,3 +218,34 @@ def accessLevel(accessLevel, storage='PERSISTENT'):
     else:
         target.d_setSystemMessage(0, '%s set your access level to %d temporarily!' % (invoker.getName(), accessLevel))
         return "%s's access level has been set to %d temporarily." % (target.getName(), accessLevel)
+
+@magicWord(category=CATEGORY_COMMUNITY_MANAGER)
+def disableGM():
+    """
+    Temporarily disable GM features.
+    """
+    target = spellbook.getTarget()
+
+    if hasattr(target, 'oldAccess'):
+        return 'GM features are already disabled!\nTo enable, use ~enableGM.'
+
+    if not target.isAdmin():
+        return 'Target is not an admin!'
+
+    target.oldAccess = target.adminAccess
+    target.d_setAdminAccess(100)
+    return 'GM features are disabled!'
+
+@magicWord(category=CATEGORY_COMMUNITY_MANAGER)
+def enableGM():
+    """
+    Enable GM features.
+    """
+    target = spellbook.getTarget()
+
+    if not hasattr(target, 'oldAccess'):
+        return 'GM features are not disabled!'
+
+    target.d_setAdminAccess(target.oldAccess)
+    del target.oldAccess
+    return 'GM features are enabled!'

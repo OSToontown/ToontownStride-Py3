@@ -343,8 +343,6 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
     def setAdminAccess(self, access):
         self.adminAccess = access
         self.considerUnderstandable()
-        if self.isLocal():
-            self.cr.wantMagicWords = self.isAdmin()
 
     def getAdminAccess(self):
         return self.adminAccess

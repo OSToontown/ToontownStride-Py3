@@ -123,7 +123,7 @@ class ChatManager(DirectObject.DirectObject):
 
     def enterMainMenu(self):
         self.checkObscurred()
-        if self.localAvatar.canChat() or self.cr.wantMagicWords:
+        if self.localAvatar.canChat():
             if self.wantBackgroundFocus:
                 self.chatInputNormal.chatEntry['backgroundFocus'] = 1
             self.acceptOnce('enterNormalChat', self.fsm.request, ['normalChat'])
