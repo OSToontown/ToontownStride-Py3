@@ -11,7 +11,7 @@ from toontown.nametag.NametagGlobals import *
 from toontown.nametag.NametagGroup import NametagGroup
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
-
+import random
 
 class DistributedKnockKnockDoor(DistributedAnimatedProp.DistributedAnimatedProp):
     def __init__(self, cr):
@@ -64,7 +64,7 @@ class DistributedKnockKnockDoor(DistributedAnimatedProp.DistributedAnimatedProp)
         if avatar is None:
             return
         self.rimshot = base.loadSfx('phase_5/audio/sfx/AA_heal_telljoke.ogg')
-        self.knockSfx = base.loadSfx('phase_5/audio/sfx/GUI_knock_3.ogg')
+        self.knockSfx = base.loadSfx('phase_5/audio/sfx/GUI_knock_%s.ogg' % random.randint(1, 4))
         joke = KnockKnockJokes[self.propId % len(KnockKnockJokes)]
         place = base.cr.playGame.getPlace()
         doorName = TTLocalizer.DoorNametag
