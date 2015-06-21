@@ -718,7 +718,7 @@ def getValue(genus, species, weight):
             holidayIds = base.cr.newsManager.getHolidayIdList()
             if ToontownGlobals.JELLYBEAN_FISHING_HOLIDAY in holidayIds or ToontownGlobals.JELLYBEAN_FISHING_HOLIDAY_MONTH in holidayIds:
                 finalValue *= JellybeanFishingHolidayScoreMultiplier
-    elif ToontownGlobals.JELLYBEAN_FISHING_HOLIDAY in simbase.air.holidayManager.currentHolidays or ToontownGlobals.JELLYBEAN_FISHING_HOLIDAY_MONTH in simbase.air.holidayManager.currentHolidays:
+    elif simbase.air.newsManager.isHolidayRunning(ToontownGlobals.JELLYBEAN_FISHING_HOLIDAY) or simbase.air.newsManager.isHolidayRunning(ToontownGlobals.JELLYBEAN_FISHING_HOLIDAY_MONTH):
         finalValue *= JellybeanFishingHolidayScoreMultiplier
     return finalValue
 

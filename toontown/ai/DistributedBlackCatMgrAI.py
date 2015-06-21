@@ -7,7 +7,7 @@ class DistributedBlackCatMgrAI(DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedBlackCatMgrAI")
 
     def requestBlackCatTransformation(self):
-        if not self.air.holidayManager.isHolidayRunning(ToontownGlobals.BLACK_CAT_DAY):
+        if not self.air.newsManager.isHolidayRunning(ToontownGlobals.BLACK_CAT_DAY):
             return
 
         avId = self.air.getAvatarIdFromSender()

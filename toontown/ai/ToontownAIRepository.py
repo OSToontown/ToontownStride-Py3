@@ -10,8 +10,7 @@ from otp.friends.FriendManagerAI import FriendManagerAI
 from toontown.ai import CogPageManagerAI
 from toontown.ai import CogSuitManagerAI
 from toontown.ai import PromotionManagerAI
-from toontown.ai.FishManagerAI import  FishManagerAI
-from toontown.ai.HolidayManagerAI import HolidayManagerAI
+from toontown.ai.FishManagerAI import FishManagerAI
 from toontown.ai.NewsManagerAI import NewsManagerAI
 from toontown.ai.QuestManagerAI import QuestManagerAI
 from toontown.ai.DistributedBlackCatMgrAI import DistributedBlackCatMgrAI
@@ -119,7 +118,6 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.cogSuitMgr = CogSuitManagerAI.CogSuitManagerAI()
         self.promotionMgr = PromotionManagerAI.PromotionManagerAI(self)
         self.cogPageManager = CogPageManagerAI.CogPageManagerAI()
-        self.holidayManager = HolidayManagerAI(self)
         self.codeRedemptionMgr = TTCodeRedemptionMgrAI(self)
         self.codeRedemptionMgr.generateWithRequired(2)
         self.accountDateMgr = AccountDateAI(self)

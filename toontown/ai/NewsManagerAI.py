@@ -13,6 +13,9 @@ class NewsManagerAI(DistributedObjectAI):
         if self.air.suitInvasionManager.getInvading():
             self.air.suitInvasionManager.notifyInvasionBulletin(avatar.getDoId())
 
+    def isHolidayRunning(self, holidayId):
+        return False
+
     def setPopulation(self, todo0):
         pass
 
