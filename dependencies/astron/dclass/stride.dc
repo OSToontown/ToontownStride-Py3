@@ -1536,12 +1536,6 @@ dclass NewsManager : DistributedObject {
   setBingoEnd() broadcast;
   setCircuitRaceStart() broadcast;
   setCircuitRaceEnd() broadcast;
-  setTrolleyHolidayStart() broadcast;
-  setTrolleyHolidayEnd() broadcast;
-  setTrolleyWeekendStart() broadcast;
-  setTrolleyWeekendEnd() broadcast;
-  setRoamingTrialerWeekendStart() broadcast;
-  setRoamingTrialerWeekendEnd() broadcast;
   setInvasionStatus(uint8, string, uint32, uint8) broadcast;
   setHolidayIdList(uint32[]) broadcast ram;
   holidayNotify() broadcast;

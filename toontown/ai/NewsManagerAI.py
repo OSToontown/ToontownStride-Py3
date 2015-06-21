@@ -1,7 +1,6 @@
 from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 
-
 class NewsManagerAI(DistributedObjectAI):
     notify = directNotify.newCategory('NewsManagerAI')
 
@@ -30,18 +29,6 @@ class NewsManagerAI(DistributedObjectAI):
         pass
 
     def setCircuitRaceEnd(self):
-        pass
-
-    def setTrolleyHolidayStart(self):
-        pass
-
-    def setTrolleyHolidayEnd(self):
-        pass
-
-    def setTrolleyWeekendStart(self):
-        pass
-
-    def setTrolleyWeekendEnd(self):
         pass
 
     def setInvasionStatus(self, msgType, cogType, numRemaining, skeleton):

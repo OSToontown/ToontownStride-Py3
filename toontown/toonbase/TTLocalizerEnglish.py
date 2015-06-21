@@ -7793,11 +7793,6 @@ def getResultPlantedSomethingSentence(flowerName):
         retval = ResultPlantedSomething % flowerName
     return retval
 
-TrolleyHolidayStart = 'Trolley Tracks is about to begin!  Board any trolley with 2 or more toons to play.'
-TrolleyHolidayOngoing = 'Welcome! Trolley Tracks is currently in progress.'
-TrolleyHolidayEnd = "That's all for today's Trolley Tracks.  See you next week!"
-TrolleyWeekendStart = 'Trolley Tracks Weekend is about to begin!  Board any trolley with 2 or more toons to play.'
-TrolleyWeekendEnd = "That's all for Trolley Tracks Weekend."
 VineGameTitle = 'Jungle Vines'
 VineGameInstructions = 'Get to the rightmost vine in time. Press Up or Down to climb the vine.  Press Left or Right to change facing and jump.  The lower you are on the vine, the faster you jump off.  Collect the bananas if you can, but avoid the bats and spiders.'
 ValentinesDayStart = "Happy ValenToon's Day!"
@@ -8228,7 +8223,6 @@ HolidayNamesInCalendar = {1: ('Summer Fireworks', 'Celebrate Summer with a firew
  13: ('Trick or Treat', 'Happy Halloween! Trick or treat throughout Toontown to get a nifty Halloween pumpkin head reward!'),
  14: ('Grand Prix', 'Grand Prix Monday at Goofy Speedway! To win, collect the most points in three consecutive races!'),
  16: ('Grand Prix Weekend', 'Toons compete in circuit races at Goofy Speedway!'),
- 17: ('Trolley Tracks', 'Trolley Tracks Thursday! Board any Trolley with two or more Toons to play.'),
  19: ('Silly Saturdays', 'Saturdays are silly with Fish Bingo and Grand Prix throughout the day!'),
  24: ('Ides of March', 'Beware the Ides of March! Stop the Backstabber Cogs from invading Toontown!'),
  26: ('Halloween Decor', 'Celebrate Halloween as spooky trees and streetlights transform Toontown!'),

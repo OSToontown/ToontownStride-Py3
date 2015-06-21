@@ -414,21 +414,6 @@ class NewsManager(DistributedObject.DistributedObject):
     def setCircuitRaceEnd(self):
         base.localAvatar.setSystemMessage(0, TTLocalizer.CircuitRaceEnd)
 
-    def setTrolleyHolidayStart(self):
-        base.localAvatar.setSystemMessage(0, TTLocalizer.TrolleyHolidayStart)
-
-    def setTrolleyHolidayOngoing(self):
-        base.localAvatar.setSystemMessage(0, TTLocalizer.TrolleyHolidayOngoing)
-
-    def setTrolleyHolidayEnd(self):
-        base.localAvatar.setSystemMessage(0, TTLocalizer.TrolleyHolidayEnd)
-
-    def setTrolleyWeekendStart(self):
-        base.localAvatar.setSystemMessage(0, TTLocalizer.TrolleyWeekendStart)
-
-    def setTrolleyWeekendEnd(self):
-        base.localAvatar.setSystemMessage(0, TTLocalizer.TrolleyWeekendEnd)
-
     def setMoreXpHolidayStart(self):
         base.localAvatar.setSystemMessage(0, TTLocalizer.MoreXpHolidayStart)
 
@@ -544,8 +529,6 @@ class NewsManager(DistributedObject.DistributedObject):
         for id in self.holidayIdList:
             if id == 20:
                 self.setCircuitRaceOngoing()
-            elif id == 21:
-                self.setTrolleyHolidayOngoing()
 
     def setWeeklyCalendarHolidays(self, weeklyCalendarHolidays):
         self.weeklyCalendarHolidays = weeklyCalendarHolidays
