@@ -116,7 +116,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.reportMgr.generateWithRequired(2)
         self.trophyMgr = DistributedTrophyMgrAI(self)
         self.trophyMgr.generateWithRequired(2)
-        self.cogSuitMgr = CogSuitManagerAI.CogSuitManagerAI(self)
+        self.cogSuitMgr = CogSuitManagerAI.CogSuitManagerAI()
         self.promotionMgr = PromotionManagerAI.PromotionManagerAI(self)
         self.cogPageManager = CogPageManagerAI.CogPageManagerAI()
         self.holidayManager = HolidayManagerAI(self)
