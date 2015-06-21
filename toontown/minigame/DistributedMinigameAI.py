@@ -8,7 +8,6 @@ from toontown.shtiker import PurchaseManagerAI
 from toontown.shtiker import NewbiePurchaseManagerAI
 import MinigameCreatorAI
 from direct.task import Task
-import random
 import MinigameGlobals
 from direct.showbase import PythonUtil
 from toontown.toonbase import ToontownGlobals
@@ -44,8 +43,8 @@ class DistributedMinigameAI(DistributedObjectAI.DistributedObjectAI):
             self.scoreDict = {}
             self.difficultyOverride = None
             self.trolleyZoneOverride = None
-
-        return
+            self.skippable = True
+            self.skipAvIds = []
 
     def addChildGameFSM(self, gameFSM):
         self.frameworkFSM.getStateNamed('frameworkGame').addChild(gameFSM)
@@ -236,6 +235,7 @@ class DistributedMinigameAI(DistributedObjectAI.DistributedObjectAI):
         self.notify.debug('BASE: setAvatarReady: new avId states: ' + str(self.stateDict))
         if self.frameworkFSM.getCurrentState().getName() == 'frameworkWaitClientsReady':
             self.__barrier.clear(avId)
+        self.skippable = False
 
     def exitFrameworkWaitClientsReady(self):
         self.__barrier.cleanup()
@@ -275,6 +275,7 @@ class DistributedMinigameAI(DistributedObjectAI.DistributedObjectAI):
         self.stateDict[avId] = EXITED
         self.notify.debug('BASE: setAvatarExited: new avId states: ' + str(self.stateDict))
         self.__barrier.clear(avId)
+        self.checkForSkip()
 
     def exitFrameworkWaitClientsExit(self):
         self.__barrier.cleanup()
@@ -293,13 +294,11 @@ class DistributedMinigameAI(DistributedObjectAI.DistributedObjectAI):
             self.scoreDict[avId] *= scoreMult
 
         scoreList = []
-        if not self.normalExit:
-            randReward = random.randrange(DEFAULT_POINTS, MAX_POINTS + 1)
         for avId in self.avIdList:
             if self.normalExit:
                 score = int(self.scoreDict[avId] + 0.5)
             else:
-                score = randReward
+                score = 0
             if ToontownGlobals.JELLYBEAN_TROLLEY_HOLIDAY in simbase.air.holidayManager.currentHolidays or ToontownGlobals.JELLYBEAN_TROLLEY_HOLIDAY_MONTH in simbase.air.holidayManager.currentHolidays:
                 score *= MinigameGlobals.JellybeanTrolleyHolidayScoreMultiplier
             logEvent = False
@@ -363,3 +362,19 @@ class DistributedMinigameAI(DistributedObjectAI.DistributedObjectAI):
     def logAllPerfect(self):
         for avId in self.avIdList:
             self.logPerfectGame(avId)
+
+    def requestSkip(self):
+        avId = self.air.getAvatarIdFromSender()
+
+        if (not self.skippable) or (avId not in self.avIdList) or (avId in self.skipAvIds):
+            return
+
+        self.skipAvIds.append(avId)
+        self.checkForSkip()
+
+    def checkForSkip(self):
+        if len(self.skipAvIds) >= len(self.avIdList):
+            self.skippable = False
+            self.setGameAbort()
+        else:
+            self.sendUpdate('setSkipCount', [len(self.skipAvIds)])

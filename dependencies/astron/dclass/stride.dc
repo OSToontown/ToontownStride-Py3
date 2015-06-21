@@ -1100,9 +1100,11 @@ dclass DistributedMinigame : DistributedObject {
   setTrolleyZone(uint32) broadcast ram required;
   setDifficultyOverrides(int32, int32) broadcast ram required;
   setAvatarJoined() airecv clsend;
-  setAvatarReady() airecv clsend;
+  setAvatarReady() broadcast airecv clsend;
   setAvatarExited() airecv clsend;
   requestExit() airecv clsend;
+  requestSkip() airecv clsend;
+  setSkipCount(uint8) broadcast;
   setGameReady() broadcast;
   setGameStart(int16) broadcast;
   setGameExit() broadcast;

@@ -4418,6 +4418,7 @@ CogThiefBarrelSaved = '%(num)d Barrel\nSaved!'
 CogThiefNoBarrelsSaved = 'No Barrels\nSaved'
 CogThiefPerfect = 'PERFECT!'
 MinigameRulesPanelPlay = 'PLAY'
+MinigameRulesPanelSkip = 'SKIP\n%s/%s'
 GagShopName = "Goofy's Gag Shop"
 GagShopPlayAgain = 'PLAY\nAGAIN'
 GagShopBackToPlayground = 'EXIT BACK TO\nPLAYGROUND'
