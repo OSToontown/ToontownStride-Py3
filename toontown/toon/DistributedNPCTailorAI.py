@@ -3,7 +3,6 @@ from pandac.PandaModules import *
 from DistributedNPCToonBaseAI import *
 import ToonDNA
 from direct.task.Task import Task
-from toontown.ai import DatabaseObject
 from toontown.estate import ClosetGlobals
 
 #Going to code this later. For now lets just have it return false.
@@ -25,8 +24,6 @@ class DistributedNPCTailorAI(DistributedNPCToonBaseAI):
 
         if self.freeClothes:
             self.useJellybeans = False
-
-        return
 
     def getTailor(self):
         return 1
@@ -194,18 +191,11 @@ class DistributedNPCTailorAI(DistributedNPCToonBaseAI):
     def __handleUnexpectedExit(self, avId):
         self.notify.warning('avatar:' + str(avId) + ' has exited unexpectedly')
         if self.customerId == avId:
-            toon = self.air.doId2do.get(avId)
-            if toon == None:
-                toon = DistributedToonAI.DistributedToonAI(self.air)
-                toon.doId = avId
-            if self.customerDNA:
-                toon.b_setDNAString(self.customerDNA.makeNetString())
-                db = DatabaseObject.DatabaseObject(self.air, avId)
-                db.storeObject(toon, ['setDNAString'])
+            dna = self.customerDNA.makeNetString()
+            self.air.dbInterface.updateObject(self.air.dbId, avId, self.air.dclassesByName['DistributedToonAI'], {'setDNAString': [dna]})
         else:
             self.notify.warning('invalid customer avId: %s, customerId: %s ' % (avId, self.customerId))
         if self.busy == avId:
             self.sendClearMovie(None)
         else:
             self.notify.warning('not busy with avId: %s, busy: %s ' % (avId, self.busy))
-        return

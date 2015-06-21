@@ -8,13 +8,11 @@ from pandac.PandaModules import *
 import BattleExperienceAI
 from direct.distributed import DistributedObjectAI
 from direct.fsm import ClassicFSM, State
-from direct.fsm import State
 from direct.task import Task
 from direct.directnotify import DirectNotifyGlobal
-from toontown.ai import DatabaseObject
-from toontown.toon import DistributedToonAI
 from toontown.toon import InventoryBase
 from toontown.toonbase import ToontownGlobals
+from toontown.pets import DistributedPetProxyAI
 import random
 from toontown.toon import NPCToons
 from otp.ai.MagicWordGlobal import *
@@ -699,23 +697,13 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                 toon.d_setInventory(toon.inventory.makeNetString())
                 self.air.cogPageManager.toonEncounteredCogs(toon, self.suitsEncountered, self.getTaskZoneId())
         elif len(self.suits) > 0 and not self.streetBattle:
-            self.notify.info('toon %d aborted non-street battle; clearing inventory and hp.' % toonId)
-            toon = DistributedToonAI.DistributedToonAI(self.air)
-            toon.doId = toonId
-            empty = InventoryBase.InventoryBase(toon)
-            toon.b_setInventory(empty.makeNetString())
-            toon.b_setHp(0)
-            db = DatabaseObject.DatabaseObject(self.air, toonId)
-            db.storeObject(toon, ['setInventory', 'setHp'])
-            self.notify.info('killing mem leak from temporary DistributedToonAI %d' % toonId)
-            toon.deleteDummy()
-        return
+            empty = InventoryBase.InventoryBase(None).makeNetString()
+            self.air.dbInterface.updateObject(self.air.dbId, toonId, self.air.dclassesByName['DistributedToonAI'], {'setHp': [0], 'setInventory': [empty]})
 
     def getToon(self, toonId):
         if toonId in self.air.doId2do:
             return self.air.doId2do[toonId]
-        else:
-            self.notify.warning('getToon() - toon: %d not in repository!' % toonId)
+        self.notify.warning('getToon() - toon: %d not in repository!' % toonId)
         return None
 
     def toonRequestRun(self):
