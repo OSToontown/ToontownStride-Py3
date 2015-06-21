@@ -103,7 +103,6 @@ want-talkative-tyler #f
 estate-day-night #t
 want-garden-game #f
 want-language-selection #t
-active-holidays 64, 65, 66
 
 # Developer options:
 want-dev #f

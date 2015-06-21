@@ -44,7 +44,6 @@ from toontown.toon import Toon, DistributedToon
 from ToontownMsgTypes import *
 import HoodMgr
 import PlayGame
-from toontown.hood import StreetSign
 import random
 
 
@@ -74,7 +73,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.catalogManager = None
         self.tutorialManager = None
         self.newsManager = None
-        self.streetSign = None
         self.distributedDistrict = None
         self.partyManager = None
         self.lobbyManager = None
@@ -84,7 +82,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.csm = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_CLIENT_SERVICES_MANAGER, 'ClientServicesManager')
         self.ttsFriendsManager = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_TTS_FRIENDS_MANAGER, 'TTSFriendsManager')
 
-        self.streetSign = None
         self.furnitureManager = None
         self.objectManager = None
         self.openAvatarPanels = set()
@@ -406,9 +403,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
          base.localAvatar.defaultZone,
          -1])
         self._userLoggingOut = False
-        if not self.streetSign:
-            self.streetSign = StreetSign.StreetSign()
-        return
 
     def exitPlayingGame(self):
         ivalMgr.interrupt()
