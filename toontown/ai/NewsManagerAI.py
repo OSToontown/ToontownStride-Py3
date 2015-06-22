@@ -1,77 +1,68 @@
-from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
+from direct.task import Task
+from datetime import datetime
+from toontown.toonbase import ToontownGlobals
+import HolidayGlobals
 
 class NewsManagerAI(DistributedObjectAI):
-    notify = directNotify.newCategory('NewsManagerAI')
 
+    def __init__(self, air):
+        DistributedObjectAI.__init__(self, air)
+        self.activeHolidays = []
+    
     def announceGenerate(self):
         DistributedObjectAI.announceGenerate(self)
-
+        self.__checkHolidays()
+        self.checkTask = taskMgr.doMethodLater(15, self.__checkHolidays, 'holidayCheckTask')
         self.accept('avatarEntered', self.__handleAvatarEntered)
+    
+    def delete(self):
+        DistributedObjectAI.delete(self)
+        taskMgr.remove(self.checkTask)
 
-    def __handleAvatarEntered(self, avatar):
-        if self.air.suitInvasionManager.getInvading():
-            self.air.suitInvasionManager.notifyInvasionBulletin(avatar.getDoId())
+    def __handleAvatarEntered(self, av):
+        avId = av.getDoId()
+        
+        self.sendUpdateToAvatarId(avId, 'startHolidays', [self.activeHolidays])
+    
+    def __checkHolidays(self, task=None):
+        date = datetime.now()
 
-    def isHolidayRunning(self, holidayId):
-        return False
+        for id in HolidayGlobals.Holidays:
+            holiday = HolidayGlobals.Holidays[id]
+            running = self.isHolidayRunning(id)
+            
+            if ('weekDay' not in holiday or date.weekday() == holiday['weekDay']) and ('startMonth' not in holiday or holiday['startMonth'] <= date.month <= holiday['endMonth']) and ('startDay' not in holiday or holiday['startDay'] <= date.day <= holiday['endDay']):
+                if not running:
+                    self.startHoliday(id)
+            elif running:
+                self.endHoliday(id)
 
-    def setPopulation(self, todo0):
-        pass
+        return Task.again
 
-    def setBingoWin(self, todo0):
-        pass
+    def isHolidayRunning(self, id):
+        return id in self.activeHolidays
 
-    def setBingoStart(self):
-        pass
+    def startHoliday(self, id):
+        if id in self.activeHolidays or id not in HolidayGlobals.Holidays:
+            return
 
-    def setBingoEnd(self):
-        pass
+        self.activeHolidays.append(id)
+        self.startSpecialHoliday(id)
+        self.sendUpdate('startHoliday', [id])
+    
+    def endHoliday(self, id):
+        if id not in self.activeHolidays or id not in HolidayGlobals.Holidays:
+            return
 
-    def setCircuitRaceStart(self):
-        pass
+        self.activeHolidays.remove(id)
+        self.endSpecialHoliday(id)
+        self.sendUpdate('endHoliday', [id])
+    
+    def startSpecialHoliday(self, id):
+        if id == ToontownGlobals.FISH_BINGO or id == ToontownGlobals.SILLY_SATURDAY:
+            messenger.send('checkBingoState')
 
-    def setCircuitRaceEnd(self):
-        pass
-
-    def setInvasionStatus(self, msgType, cogType, numRemaining, skeleton):
-        self.sendUpdate('setInvasionStatus', args=[msgType, cogType, numRemaining, skeleton])
-
-    def setHolidayIdList(self, holidays):
-        self.sendUpdate('setHolidayIdList', holidays)
-
-    def holidayNotify(self):
-        pass
-
-    def setWeeklyCalendarHolidays(self, todo0):
-        pass
-
-    def getWeeklyCalendarHolidays(self):
-        return []
-
-    def setYearlyCalendarHolidays(self, todo0):
-        pass
-
-    def getYearlyCalendarHolidays(self):
-        return []
-
-    def setOncelyCalendarHolidays(self, todo0):
-        pass
-
-    def getOncelyCalendarHolidays(self):
-        return []
-
-    def setRelativelyCalendarHolidays(self, todo0):
-        pass
-
-    def getRelativelyCalendarHolidays(self):
-        return []
-
-    def setMultipleStartHolidays(self, todo0):
-        pass
-
-    def getMultipleStartHolidays(self):
-        return []
-
-    def sendSystemMessage(self, todo0, todo1):
-        pass
+    def endSpecialHoliday(self, id):
+        if id == ToontownGlobals.FISH_BINGO or id == ToontownGlobals.SILLY_SATURDAY:
+            messenger.send('checkBingoState')

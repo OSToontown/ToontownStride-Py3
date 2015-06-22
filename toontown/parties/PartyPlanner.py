@@ -159,7 +159,7 @@ class PartyPlanner(DirectFrame, FSM):
         if hasattr(base.cr, 'newsManager') and base.cr.newsManager:
             if ToontownGlobals.VICTORY_PARTY_HOLIDAY in base.cr.newsManager.getHolidayIdList():
                 defaultInviteTheme = PartyGlobals.InviteTheme.VictoryParty
-            elif ToontownGlobals.KARTING_TICKETS_HOLIDAY in base.cr.newsManager.getHolidayIdList() or ToontownGlobals.CIRCUIT_RACING_EVENT in base.cr.newsManager.getHolidayIdList():
+            elif ToontownGlobals.KARTING_TICKETS_HOLIDAY in base.cr.newsManager.getHolidayIdList() or ToontownGlobals.GRAND_PRIX in base.cr.newsManager.getHolidayIdList():
                 defaultInviteTheme = PartyGlobals.InviteTheme.Racing
             elif ToontownGlobals.VALENTINES_DAY in base.cr.newsManager.getHolidayIdList():
                 defaultInviteTheme = PartyGlobals.InviteTheme.Valentoons

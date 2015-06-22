@@ -41,8 +41,3 @@ def addHeadEffect(head, book=False):
 def addToonEffect(toon):
     for lod in toon.getLODNames():
         addHeadEffect(toon.getPart('head', lod))
-
-"""
-from toontown.toon import LaughingManGlobals
-LaughingManGlobals.addToonEffect(base.localAvatar)
-"""

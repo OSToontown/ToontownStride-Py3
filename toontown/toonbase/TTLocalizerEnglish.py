@@ -7214,6 +7214,9 @@ FishBingoTypeCorners = 'Four Corners'
 FishBingoTypeDiagonal = 'Diagonals'
 FishBingoTypeThreeway = 'Three Way'
 FishBingoTypeBlockout = 'BLOCKOUT!'
+SillySaturdayStart = "It's time for Silly Saturday! Saturdays are silly with Fish Bingo and Grand Prix throughout the day!"
+SillySaturdayOngoing = 'Welcome! Silly Saturday is currently in progress.'
+SillySaturdayEnd = 'Silly Saturday is over. Hope you had fun. See you next week!'
 FishBingoStart = "It's time for Fish Bingo!  Go to any available pier to play!"
 FishBingoOngoing = 'Welcome! Fish Bingo is currently in progress.'
 FishBingoEnd = 'Hope you had fun playing Fish Bingo.'
@@ -7972,6 +7975,8 @@ BlackCatHolidayStart = 'Create a Black Cat - Today only!'
 BlackCatHolidayEnd = 'Black Cat day has ended!'
 SpookyBlackCatHolidayStart = 'Friday 13th means a Black Cat blast!'
 LaughingManHolidayStart = 'Today is the day of the Laughing Man!'
+LaughingManHolidayOngoing = 'Welcome! The day of the Laughing Man is currently in progress.'
+LaughingManHolidayEnd = 'The day of the Laughing Man has ended. Hope you had fun!'
 TopToonsMarathonStart = "The Top Toons New Year's Day Marathon has begun!"
 TopToonsMarathonEnd = "The Top Toons New Year's Day Marathon has ended."
 WinterDecorationsStart = "It's Winter Holiday time in Toontown!"
@@ -8218,13 +8223,12 @@ HolidayNamesInCalendar = {1: ('Summer Fireworks', 'Celebrate Summer with a firew
  4: ('Winter Holiday', 'Celebrate the Winter Holiday with Toontastic decorations, party and Cattlelog items, and more!'),
  5: ('Skelecog Invasion', 'Stop the Skelecogs from invading Toontown!'),
  6: ('Mr. Hollywood Invasion', 'Stop the Mr. Hollywood Cogs from invading Toontown!'),
- 7: ('Fish Bingo', 'Fish Bingo Wednesday! Everyone at the pond works together to complete the card before time runs out.'),
  8: ('Toon Species Election', 'Vote on the new Toon species! Will it be Goat? Will it be Pig?'),
  9: ('Black Cat Day', 'Happy Halloween! Create a Toontastic Black Cat Toon - Today Only!'),
  13: ('Trick or Treat', 'Happy Halloween! Trick or treat throughout Toontown to get a nifty Halloween pumpkin head reward!'),
- 14: ('Grand Prix', 'Grand Prix Monday at Goofy Speedway! To win, collect the most points in three consecutive races!'),
- 16: ('Grand Prix Weekend', 'Toons compete in circuit races at Goofy Speedway!'),
- 19: ('Silly Saturdays', 'Saturdays are silly with Fish Bingo and Grand Prix throughout the day!'),
+ 16: ('Grand Prix', 'Grand Prix Monday at Goofy Speedway! To win, collect the most points in three consecutive races!'),
+ 17: ('Fish Bingo', 'Fish Bingo Wednesday! Everyone at the pond works together to complete the card before time runs out.'),
+ 18: ('Silly Saturdays', 'Saturdays are silly with Fish Bingo and Grand Prix throughout the day!'),
  24: ('Ides of March', 'Beware the Ides of March! Stop the Backstabber Cogs from invading Toontown!'),
  26: ('Halloween Decor', 'Celebrate Halloween as spooky trees and streetlights transform Toontown!'),
  28: ('Winter Invasion', 'The sellbots are on the loose spreading their cold sales tactics!'),

@@ -839,8 +839,7 @@ class Toon(Avatar.Avatar, ToonHead):
             del self._Actor__commonBundleHandles['head']
         if headStyle > -1:
             self.style.head = headStyle
-        if laughingMan > -1:
-            self.style.laughingMan = True if laughingMan else self.getWantLaughingManHoliday()
+        laughingMan = laughingMan or self.style.laughingMan or self.getWantLaughingManHoliday()
         self.generateToonHead(copy)
         self.generateToonColor()
         self.parentToonParts()
@@ -848,7 +847,7 @@ class Toon(Avatar.Avatar, ToonHead):
         self.resetHeight()
         self.eyelids.request('open')
         self.startLookAround()
-        if self.style.laughingMan:
+        if laughingMan:
             LaughingManGlobals.addToonEffect(self)
 
     def generateToonColor(self):
