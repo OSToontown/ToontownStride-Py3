@@ -404,7 +404,6 @@ class PetBrain(DirectObject.DirectObject):
             if avatar:
                 if looked:
                     if not self.pet._willDoTrick(trickId):
-                        self.pet.trickFailLogger.addEvent(trickId)
                         trickId = PetTricks.Tricks.BALK
                     self._doTrick(trickId, avatar)
 
