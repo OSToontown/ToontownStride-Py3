@@ -60,6 +60,8 @@ class NewsManager(DistributedObject):
                 base.localAvatar.startAprilToonsControls()
 
             base.localAvatar.chatMgr.chatInputSpeedChat.addAprilToonsMenu()
+        elif id == ToontownGlobals.IDES_OF_MARCH:
+            base.localAvatar.chatMgr.chatInputSpeedChat.addIdesOfMarchMenu()
 
     def endSpecialHoliday(self, id):
         if id == ToontownGlobals.LAUGHING_MAN:
@@ -70,3 +72,5 @@ class NewsManager(DistributedObject):
                 base.localAvatar.stopAprilToonsControls()
 
             base.localAvatar.chatMgr.chatInputSpeedChat.removeAprilToonsMenu()
+        elif id == ToontownGlobals.IDES_OF_MARCH:
+            base.localAvatar.chatMgr.chatInputSpeedChat.removeIdesOfMarchMenu()

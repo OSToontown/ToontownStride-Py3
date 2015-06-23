@@ -332,7 +332,7 @@ from toontown.coghq import BattleBlocker/AI
 from toontown.ai import DistributedBlackCatMgr/AI
 from toontown.ai import DistributedReportMgr/AI
 from toontown.ai import DistributedPolarPlaceEffectMgr/AI
-from toontown.ai import DistributedGreenToonEffectMgr/AI
+from toontown.ai import DistributedEffectMgr/AI
 from toontown.ai import DistributedResistanceEmoteMgr/AI
 from toontown.ai import DistributedScavengerHuntTarget/AI
 from toontown.ai import DistributedTrickOrTreatTarget/AI
@@ -2431,8 +2431,9 @@ dclass DistributedPolarPlaceEffectMgr : DistributedObject {
   addPolarPlaceEffect() airecv clsend;
 };
 
-dclass DistributedGreenToonEffectMgr : DistributedObject {
-  addGreenToonEffect() airecv clsend;
+dclass DistributedEffectMgr : DistributedObject {
+  setHoliday(uint8) required broadcast;
+  addEffect() airecv clsend;
 };
 
 dclass DistributedResistanceEmoteMgr : DistributedObject {

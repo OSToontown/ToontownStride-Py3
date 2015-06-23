@@ -1,4 +1,5 @@
 from toontown.toonbase import ToontownGlobals, TTLocalizer
+import calendar, datetime
 
 Holidays = {
     ToontownGlobals.LAUGHING_MAN: {
@@ -43,8 +44,35 @@ Holidays = {
         'startMessage': TTLocalizer.AprilToonsWeekStart,
         'ongoingMessage': TTLocalizer.AprilToonsWeekStart,
         'endMessage': TTLocalizer.AprilToonsWeekEnd
+    },
+    ToontownGlobals.IDES_OF_MARCH: {
+        'startMonth': 3,
+        'startDay': 14,
+        'endMonth': 3,
+        'endDay': 20,
+        'startMessage': TTLocalizer.IdesOfMarchStart,
+        'ongoingMessage': TTLocalizer.IdesOfMarchStart,
+        'endMessage': TTLocalizer.IdesOfMarchEnd,
+        'speedchatIndex': 30450, # It's easy to be green!
+        'effectMessage': TTLocalizer.GreenToonEffectMsg
     }
 }
 
 def getHoliday(id):
     return Holidays.get(id, {})
+
+def getUnixTime(date):
+    epoch = datetime.datetime.fromtimestamp(0)
+    delta = date - epoch
+
+    return delta.total_seconds()
+
+def getEndDate(holiday):
+    rightNow = datetime.datetime.now()
+    endMonth = holiday['endMonth'] if 'endMonth' in holiday else rightNow.month
+    endDay = holiday['endDay'] if 'endDay' in holiday else (rightNow.day if 'weekDay' in holiday else calendar.monthrange(rightNow.year, endMonth)[1])
+
+    date = datetime.datetime(rightNow.year, endMonth, endDay)
+    date += datetime.timedelta(days=1)
+
+    return date

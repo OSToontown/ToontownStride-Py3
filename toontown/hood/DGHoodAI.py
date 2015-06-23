@@ -4,11 +4,10 @@ from toontown.safezone import DistributedButterflyAI
 from toontown.safezone import DistributedDGFlowerAI
 from toontown.safezone import DistributedTrolleyAI
 from toontown.toonbase import ToontownGlobals
-#from toontown.ai import DistributedGreenToonEffectMgrAI
-from toontown.ai import DistributedTrickOrTreatTargetAI
-
+from toontown.ai import DistributedEffectMgrAI, DistributedTrickOrTreatTargetAI
 
 class DGHoodAI(HoodAI.HoodAI):
+
     def __init__(self, air):
         HoodAI.HoodAI.__init__(self, air,
                                ToontownGlobals.DaisyGardens,
@@ -28,8 +27,8 @@ class DGHoodAI(HoodAI.HoodAI):
         if simbase.config.GetBool('want-butterflies', True):
             self.createButterflies()
 
-        #self.GreenToonEffectManager = DistributedGreenToonEffectMgrAI.DistributedGreenToonEffectMgrAI(self.air)
-        #self.GreenToonEffectManager.generateWithRequired(5819)
+        self.greenToonMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.IDES_OF_MARCH, 15)
+        self.greenToonMgr.generateWithRequired(5819)
 
         if simbase.air.wantHalloween:
             self.TrickOrTreatTargetManager = DistributedTrickOrTreatTargetAI.DistributedTrickOrTreatTargetAI(self.air)
