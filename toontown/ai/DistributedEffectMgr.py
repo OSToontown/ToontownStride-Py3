@@ -10,7 +10,6 @@ class DistributedEffectMgr(DistributedObject):
 
     def setHoliday(self, holiday):
         self.holiday = holiday
-        print 'holiday is %s' % self.holiday
         self.accept(SpeedChatGlobals.SCStaticTextMsgEvent, self.__saidPhrase)
 
     def __saidPhrase(self, phraseId):
@@ -19,7 +18,7 @@ class DistributedEffectMgr(DistributedObject):
 
         holidayInfo = HolidayGlobals.getHoliday(self.holiday)
 
-        if 'speedchatIndex' not in holidayInfo or phraseId != holidayInfo['speedchatIndex']:
+        if 'speedchatIndexes' not in holidayInfo or phraseId not in holidayInfo['speedchatIndexes']:
             return
 
         self.sendUpdate('addEffect')

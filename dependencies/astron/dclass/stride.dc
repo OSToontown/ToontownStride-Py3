@@ -334,7 +334,6 @@ from toontown.ai import DistributedReportMgr/AI
 from toontown.ai import DistributedPolarPlaceEffectMgr/AI
 from toontown.ai import DistributedEffectMgr/AI
 from toontown.ai import DistributedResistanceEmoteMgr/AI
-from toontown.ai import DistributedScavengerHuntTarget/AI
 from toontown.ai import DistributedTrickOrTreatTarget/AI
 from toontown.ai import DistributedWinterCarolingTarget/AI
 from toontown.coghq import DistributedMint/AI
@@ -2438,10 +2437,6 @@ dclass DistributedEffectMgr : DistributedObject {
 
 dclass DistributedResistanceEmoteMgr : DistributedObject {
   addResistanceEmote() clsend airecv;
-};
-
-dclass DistributedScavengerHuntTarget : DistributedObject {
-  attemptScavengerHunt() airecv clsend;
 };
 
 dclass DistributedTrickOrTreatTarget : DistributedObject {
