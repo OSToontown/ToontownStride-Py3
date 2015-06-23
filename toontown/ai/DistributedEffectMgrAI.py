@@ -33,11 +33,10 @@ class DistributedEffectMgrAI(DistributedObjectAI):
                 scavengerHunt.append(self.zoneId)
                 av.b_setScavengerHunt(scavengerHunt)
                 av.addMoney(HolidayGlobals.CAROLING_REWARD)
-
-                if len(scavengerHunt) == HolidayGlobals.SCAVENGER_HUNT_LOCATIONS:
-                    av.b_setCheesyEffect(self.effectId, 0, expireTime)
-
                 self.sendUpdateToAvatarId(avId, 'effectDone', [HolidayGlobals.CAROLING_REWARD])
+
+            if len(scavengerHunt) == HolidayGlobals.SCAVENGER_HUNT_LOCATIONS:
+                av.b_setCheesyEffect(self.effectId, 0, expireTime)
         else:
             av.b_setCheesyEffect(self.effectId, 0, expireTime)
             self.sendUpdateToAvatarId(avId, 'effectDone', [0])
