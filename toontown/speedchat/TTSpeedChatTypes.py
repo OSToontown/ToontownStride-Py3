@@ -83,7 +83,7 @@ VictoryPartiesMenu = [
 ]
 
 WinterMenu = [
- (OTPLocalizer.WinterMenuSections[0], [30200, 30201, 30202, 30203, 30204, 30205]),
+ (OTPLocalizer.WinterMenuSections[0], range(30200, 30206)),
  (OTPLocalizer.WinterMenuSections[1], [30275, 30276, 30277])
 ]
 

@@ -1590,7 +1590,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.b_setCheesyEffect(ToontownGlobals.CENormal, hoodId, expireTime)
             self.b_setScavengerHunt([])
             return
-        elif (not simbase.air.newsManager.isHolidayRunning(ToontownGlobals.HALLOWEEN_PROPS)) and (not simbase.air.newsManager.isHolidayRunning(ToontownGlobals.HALLOWEEN_COSTUMES)) and (not simbase.air.wantHalloween) and effect == ToontownGlobals.CEPumpkin:
+        elif (not simbase.air.newsManager.isHolidayRunning(ToontownGlobals.HALLOWEEN_PROPS)) and (not simbase.air.newsManager.isHolidayRunning(ToontownGlobals.HALLOWEEN_COSTUMES)) and (not simbase.air.newsManager.isHolidayRunning(ToontownGlobals.TRICK_OR_TREAT)) and effect == ToontownGlobals.CEPumpkin:
             self.b_setCheesyEffect(ToontownGlobals.CENormal, hoodId, expireTime)
             self.b_setScavengerHunt([])
             return

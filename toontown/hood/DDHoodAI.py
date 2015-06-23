@@ -2,8 +2,7 @@ from toontown.hood import HoodAI
 from toontown.safezone import DistributedBoatAI
 from toontown.safezone import DistributedTrolleyAI
 from toontown.toonbase import ToontownGlobals
-from toontown.ai import DistributedTrickOrTreatTargetAI
-
+from toontown.ai import DistributedEffectMgrAI
 
 class DDHoodAI(HoodAI.HoodAI):
     def __init__(self, air):
@@ -23,9 +22,11 @@ class DDHoodAI(HoodAI.HoodAI):
             self.createTrolley()
         self.createBoat()
 
-        if simbase.air.wantHalloween:
-            self.TrickOrTreatTargetManager = DistributedTrickOrTreatTargetAI.DistributedTrickOrTreatTargetAI(self.air)
-            self.TrickOrTreatTargetManager.generateWithRequired(1834)
+        self.trickOrTreatMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.TRICK_OR_TREAT, 12)
+        self.trickOrTreatMgr.generateWithRequired(1834) # Rudderly Ridiculous, Lighthouse Lane
+        
+        self.winterCarolingMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.WINTER_CAROLING, 14)
+        self.winterCarolingMgr.generateWithRequired(1707) # Gifts with a Porpoise, Seaweed Street
 
     def createTrolley(self):
         self.trolley = DistributedTrolleyAI.DistributedTrolleyAI(self.air)

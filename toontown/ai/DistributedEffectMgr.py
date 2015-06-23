@@ -35,5 +35,15 @@ class DistributedEffectMgr(DistributedObject):
 
         self.sendUpdate('requestEffect')
 
-    def effectDone(self):
+    def effectDone(self, amount):
+        holidayInfo = HolidayGlobals.getHoliday(self.holiday)
+
         self.cr.newsManager.broadcastHoliday(holidayInfo, 'effectMessage')
+
+        if 'scavengerHunt' in holidayInfo:
+            type = holidayInfo['scavengerHunt']
+
+            if type == HolidayGlobals.TRICK_OR_TREAT:
+                base.localAvatar.trickOrTreatTargetMet(amount)
+            elif type == HolidayGlobals.WINTER_CAROLING:
+                base.localAvatar.winterCarolingTargetMet(amount)

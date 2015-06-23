@@ -1672,12 +1672,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.effect = TrickOrTreatTargetEffect(beanAmount)
         self.effect.play()
 
-    def trickOrTreatMilestoneMet(self):
-        if self.effect:
-            self.effect.stop()
-        self.effect = TrickOrTreatMilestoneEffect()
-        self.effect.play()
-
     def winterCarolingTargetMet(self, beanAmount):
         if self.effect:
             self.effect.stop()

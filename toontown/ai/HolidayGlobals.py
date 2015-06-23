@@ -1,6 +1,11 @@
 from toontown.toonbase import ToontownGlobals, TTLocalizer
 import calendar, datetime
 
+TRICK_OR_TREAT = 0
+WINTER_CAROLING = 1
+CAROLING_REWARD = 100
+SCAVENGER_HUNT_LOCATIONS = 6
+
 Holidays = {
     ToontownGlobals.LAUGHING_MAN: {
         'startMonth': 6,
@@ -56,6 +61,30 @@ Holidays = {
         'speedchatIndexes': [30450], # It's easy to be green!
         'effectMessage': TTLocalizer.GreenToonEffectMsg,
         'effectDelay': 10
+    },
+    ToontownGlobals.WINTER_CAROLING: {
+        'startMonth': 12,
+        'startDay': 14,
+        'endMonth': 1,
+        'endDay': 4,
+        'startMessage': TTLocalizer.WinterCarolingStart,
+        'ongoingMessage': TTLocalizer.WinterCarolingStart,
+        'endMessage': TTLocalizer.WinterCarolingEnd,
+        'speedchatIndexes': range(30200, 30206),
+        'effectDelay': 15,
+        'scavengerHunt': WINTER_CAROLING
+    },
+    ToontownGlobals.TRICK_OR_TREAT: {
+        'startMonth': 10,
+        'startDay': 13,
+        'endMonth': 10,
+        'endDay': 31,
+        'startMessage': TTLocalizer.TrickOrTreatStart,
+        'ongoingMessage': TTLocalizer.TrickOrTreatStart,
+        'endMessage': TTLocalizer.TrickOrTreatEnd,
+        'speedchatIndexes': [10003],
+        'effectDelay': 15,
+        'scavengerHunt': TRICK_OR_TREAT
     }
 }
 

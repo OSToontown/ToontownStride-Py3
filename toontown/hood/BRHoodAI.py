@@ -2,7 +2,7 @@ from toontown.hood import HoodAI
 from toontown.safezone import DistributedTrolleyAI
 from toontown.toonbase import ToontownGlobals
 from toontown.ai import DistributedPolarPlaceEffectMgrAI
-from toontown.ai import DistributedTrickOrTreatTargetAI
+from toontown.ai import DistributedEffectMgrAI
 
 class BRHoodAI(HoodAI.HoodAI):
     def __init__(self, air):
@@ -22,10 +22,12 @@ class BRHoodAI(HoodAI.HoodAI):
 
         self.PolarPlaceEffectManager = DistributedPolarPlaceEffectMgrAI.DistributedPolarPlaceEffectMgrAI(self.air)
         self.PolarPlaceEffectManager.generateWithRequired(3821)
-
-        if simbase.air.wantHalloween:
-            self.TrickOrTreatTargetManager = DistributedTrickOrTreatTargetAI.DistributedTrickOrTreatTargetAI(self.air)
-            self.TrickOrTreatTargetManager.generateWithRequired(3707)
+        
+        self.trickOrTreatMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.TRICK_OR_TREAT, 12)
+        self.trickOrTreatMgr.generateWithRequired(3707) # Snowplace Like Home, Sleet Street
+        
+        self.winterCarolingMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.WINTER_CAROLING, 14)
+        self.winterCarolingMgr.generateWithRequired(3828) # Snowman's Land, Polar Place
 
     def createTrolley(self):
         self.trolley = DistributedTrolleyAI.DistributedTrolleyAI(self.air)

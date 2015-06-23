@@ -62,6 +62,10 @@ class NewsManager(DistributedObject):
             base.localAvatar.chatMgr.chatInputSpeedChat.addAprilToonsMenu()
         elif id == ToontownGlobals.IDES_OF_MARCH:
             base.localAvatar.chatMgr.chatInputSpeedChat.addIdesOfMarchMenu()
+        elif id == ToontownGlobals.TRICK_OR_TREAT:
+            base.localAvatar.chatMgr.chatInputSpeedChat.addHalloweenMenu()
+        elif id == ToontownGlobals.WINTER_CAROLING:
+            base.localAvatar.chatMgr.chatInputSpeedChat.addWinterMenu()
 
     def endSpecialHoliday(self, id):
         if id == ToontownGlobals.LAUGHING_MAN:
@@ -74,3 +78,7 @@ class NewsManager(DistributedObject):
             base.localAvatar.chatMgr.chatInputSpeedChat.removeAprilToonsMenu()
         elif id == ToontownGlobals.IDES_OF_MARCH:
             base.localAvatar.chatMgr.chatInputSpeedChat.removeIdesOfMarchMenu()
+        elif id == ToontownGlobals.TRICK_OR_TREAT:
+            base.localAvatar.chatMgr.chatInputSpeedChat.removeHalloweenMenu()
+        elif id == ToontownGlobals.WINTER_CAROLING:
+            base.localAvatar.chatMgr.chatInputSpeedChat.removeWinterMenu()

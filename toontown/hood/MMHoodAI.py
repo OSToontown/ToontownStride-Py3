@@ -2,7 +2,7 @@ from toontown.hood import HoodAI
 from toontown.safezone import DistributedTrolleyAI
 from toontown.safezone import DistributedMMPianoAI
 from toontown.toonbase import ToontownGlobals
-from toontown.ai import DistributedTrickOrTreatTargetAI
+from toontown.ai import DistributedEffectMgrAI
 
 class MMHoodAI(HoodAI.HoodAI):
     def __init__(self, air):
@@ -24,9 +24,11 @@ class MMHoodAI(HoodAI.HoodAI):
         self.piano = DistributedMMPianoAI.DistributedMMPianoAI(self.air)
         self.piano.generateWithRequired(self.zoneId)    
 
-        if simbase.air.wantHalloween:
-            self.TrickOrTreatTargetManager = DistributedTrickOrTreatTargetAI.DistributedTrickOrTreatTargetAI(self.air)
-            self.TrickOrTreatTargetManager.generateWithRequired(4835)
+        self.trickOrTreatMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.TRICK_OR_TREAT, 12)
+        self.trickOrTreatMgr.generateWithRequired(4835) # Ursatz for Really Kool Katz, Tenor Terrace
+        
+        self.winterCarolingMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.WINTER_CAROLING, 14)
+        self.winterCarolingMgr.generateWithRequired(4614) # Shave and a Haircut for a Song, Alto Avenue
 
     def createTrolley(self):
         self.trolley = DistributedTrolleyAI.DistributedTrolleyAI(self.air)

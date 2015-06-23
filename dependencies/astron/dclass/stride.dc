@@ -334,8 +334,6 @@ from toontown.ai import DistributedReportMgr/AI
 from toontown.ai import DistributedPolarPlaceEffectMgr/AI
 from toontown.ai import DistributedEffectMgr/AI
 from toontown.ai import DistributedResistanceEmoteMgr/AI
-from toontown.ai import DistributedTrickOrTreatTarget/AI
-from toontown.ai import DistributedWinterCarolingTarget/AI
 from toontown.coghq import DistributedMint/AI
 from toontown.coghq import DistributedMintRoom/AI
 from toontown.coghq import DistributedMintBattle/AI
@@ -639,7 +637,7 @@ dclass DistributedToon : DistributedPlayer {
   setSpeedChatStyleIndex(uint8 = 1) required ownsend broadcast db;
   setTrophyScore(uint16) broadcast ownrecv ram;
   setTeleportAccess(uint32[] = []) required ownrecv db;
-  setScavengerHunt(uint32[] = []) required ownrecv db;
+  setScavengerHunt(uint16[] = []) required ownrecv db;
   checkTeleportAccess(uint16) airecv ownsend;
   setTeleportOverride(uint8) clsend airecv;
   battleSOS(uint32) ownrecv clsend;
@@ -716,9 +714,6 @@ dclass DistributedToon : DistributedPlayer {
   setCurrentKart(uint32) broadcast ownrecv ram;
   squish(uint8) ownsend airecv;
   announceBingo() broadcast ownrecv;
-  trickOrTreatTargetMet(uint32) ownrecv;
-  trickOrTreatMilestoneMet() ownrecv;
-  winterCarolingTargetMet(uint32) ownrecv;
   setCogSummonsEarned(uint8[] = [0*32]) required ownrecv db;
   reqCogSummons(char [0-256], uint32) ownsend airecv;
   cogSummonsResponse(string, uint32, uint32) ownrecv;
@@ -2433,21 +2428,11 @@ dclass DistributedPolarPlaceEffectMgr : DistributedObject {
 dclass DistributedEffectMgr : DistributedObject {
   setHoliday(uint8) required broadcast;
   requestEffect() airecv clsend;
-  effectDone();
+  effectDone(uint8);
 };
 
 dclass DistributedResistanceEmoteMgr : DistributedObject {
   addResistanceEmote() clsend airecv;
-};
-
-dclass DistributedTrickOrTreatTarget : DistributedObject {
-  doScavengerHunt(int8);
-  requestScavengerHunt() airecv clsend;
-};
-
-dclass DistributedWinterCarolingTarget : DistributedObject {
-  doScavengerHunt(int8) broadcast;
-  requestScavengerHunt() airecv clsend;
 };
 
 dclass DistributedVehicle : DistributedSmoothNode {

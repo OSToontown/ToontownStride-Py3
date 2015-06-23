@@ -21,11 +21,23 @@ class DistributedEffectMgrAI(DistributedObjectAI):
         if not av:
             return
 
-        holiday = HolidayGlobals.getHoliday(self.holiday)
-        expireTime = int(HolidayGlobals.getUnixTime(HolidayGlobals.getEndDate(holiday)) / 60)
+        holidayInfo = HolidayGlobals.getHoliday(self.holiday)
+        expireTime = int(HolidayGlobals.getUnixTime(HolidayGlobals.getEndDate(holidayInfo)) / 60)
 
-        self.sendUpdateToAvatarId(avId, 'effectDone')
-        self.doEffect(expireTime)
-    
-    def doEffect(self, expireTime):
-        av.b_setCheesyEffect(self.effectId, 0, expireTime)
+        if 'scavengerHunt' in holidayInfo:
+            scavengerHunt = av.getScavengerHunt()
+
+            if self.zoneId in scavengerHunt:
+                self.sendUpdateToAvatarId(avId, 'effectDone', [0])
+            else:
+                scavengerHunt.append(self.zoneId)
+                av.b_setScavengerHunt(scavengerHunt)
+                av.addMoney(HolidayGlobals.CAROLING_REWARD)
+
+                if len(scavengerHunt) == HolidayGlobals.SCAVENGER_HUNT_LOCATIONS:
+                    av.b_setCheesyEffect(self.effectId, 0, expireTime)
+
+                self.sendUpdateToAvatarId(avId, 'effectDone', [HolidayGlobals.CAROLING_REWARD])
+        else:
+            av.b_setCheesyEffect(self.effectId, 0, expireTime)
+            self.sendUpdateToAvatarId(avId, 'effectDone', [0])
