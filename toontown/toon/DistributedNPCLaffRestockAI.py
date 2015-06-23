@@ -1,7 +1,7 @@
 from direct.distributed import ClockDelta
 from toontown.toonbase import ToontownGlobals
 from DistributedNPCToonBaseAI import DistributedNPCToonBaseAI
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.toonbase import TTLocalizer
 from direct.task import Task
 import LaffRestockGlobals

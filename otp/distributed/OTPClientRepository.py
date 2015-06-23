@@ -8,7 +8,7 @@ from direct.fsm.ClassicFSM import ClassicFSM
 from direct.fsm.State import State
 from direct.gui.DirectGui import *
 from direct.task import Task
-from pandac.PandaModules import *
+from panda3d.core import *
 from otp.avatar import Avatar, DistributedAvatar
 from otp.avatar.DistributedPlayer import DistributedPlayer
 from otp.distributed import OtpDoGlobals

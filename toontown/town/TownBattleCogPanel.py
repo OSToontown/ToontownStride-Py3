@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.battle import BattleProps
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase.ToontownBattleGlobals import *
@@ -6,7 +6,6 @@ from direct.directnotify import DirectNotifyGlobal
 import string
 from toontown.suit import Suit
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
 from toontown.toonbase import TTLocalizer
 from direct.task.Task import Task
 

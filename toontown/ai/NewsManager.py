@@ -1,5 +1,5 @@
 from otp.ai.MagicWordGlobal import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *

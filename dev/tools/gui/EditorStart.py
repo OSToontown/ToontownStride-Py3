@@ -17,7 +17,7 @@ __builtin__.__dict__.update(__import__('pandac.PandaModules', fromlist=['*']).__
 loadPrcFile('dependencies/config/guieditor.prc')
 loadPrcFile('dependencies/config/general.prc')
 
-defaultText = """from pandac.PandaModules import *
+defaultText = """from panda3d.core import *
 from direct.gui import DirectGuiGlobals
 from direct.gui.DirectGui import *
 from toontown.toonbase import ToontownGlobals

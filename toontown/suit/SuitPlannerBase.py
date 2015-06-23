@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.directnotify.DirectNotifyGlobal import *
 from toontown.hood import ZoneUtil, HoodUtil
 from toontown.toonbase import ToontownGlobals, ToontownBattleGlobals

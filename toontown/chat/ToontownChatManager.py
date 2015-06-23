@@ -4,7 +4,7 @@ from otp.otpbase import OTPLocalizer
 from toontown.toonbase import TTLocalizer
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from otp.chat import ChatManager
 from TTChatInputSpeedChat import TTChatInputSpeedChat
 from TTChatInputWhiteList import TTChatInputWhiteList

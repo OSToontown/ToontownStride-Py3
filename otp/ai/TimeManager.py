@@ -5,7 +5,7 @@ from direct.showbase import PythonUtil
 from toontown.toonbase import PythonUtil as TTPythonUtil
 from direct.showbase.DirectObject import *
 from direct.task import Task
-from pandac.PandaModules import *
+from panda3d.core import *
 from otp.otpbase import OTPGlobals
 import time
 

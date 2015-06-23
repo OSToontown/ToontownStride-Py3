@@ -3,7 +3,7 @@ from direct.showbase import DirectObject
 from otp.otpbase import OTPGlobals
 import sys
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from otp.chat import ChatUtil
 from otp.otpbase import OTPLocalizer
 from direct.directnotify import DirectNotifyGlobal

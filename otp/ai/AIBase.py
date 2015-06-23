@@ -15,7 +15,7 @@ from direct.showbase.PythonUtil import *
 from direct.task import Task
 from direct.task.TaskManagerGlobal import *
 from otp.otpbase import BackupManager
-from pandac.PandaModules import *
+from panda3d.core import *
 
 
 class AIBase:

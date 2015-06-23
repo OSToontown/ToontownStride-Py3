@@ -11,7 +11,7 @@ from toontown.toon.ToonDNA import ToonDNA
 from toontown.toonbase import TTLocalizer
 from toontown.uberdog import NameJudgeBlacklist
 
-from pandac.PandaModules import *
+from panda3d.core import *
 
 import hashlib, hmac, json
 import anydbm, math, os

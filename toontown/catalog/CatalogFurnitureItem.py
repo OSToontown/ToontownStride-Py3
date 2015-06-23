@@ -3,7 +3,7 @@ import CatalogItem
 import random
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
-from pandac.PandaModules import *
+from panda3d.core import *
 FTModelName = 0
 FTColor = 1
 FTColorOptions = 2

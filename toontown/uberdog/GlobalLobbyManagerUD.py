@@ -4,7 +4,7 @@ from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.task import Task
 from LobbyGlobals import *
 from datetime import datetime, timedelta
-from pandac.PandaModules import *
+from panda3d.core import *
 
 class GlobalLobbyManagerUD(DistributedObjectGlobalUD):
     notify = directNotify.newCategory('GlobalLobbyManagerUD')
