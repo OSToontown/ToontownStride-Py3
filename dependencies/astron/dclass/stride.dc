@@ -2432,7 +2432,8 @@ dclass DistributedPolarPlaceEffectMgr : DistributedObject {
 
 dclass DistributedEffectMgr : DistributedObject {
   setHoliday(uint8) required broadcast;
-  addEffect() airecv clsend;
+  requestEffect() airecv clsend;
+  effectDone();
 };
 
 dclass DistributedResistanceEmoteMgr : DistributedObject {

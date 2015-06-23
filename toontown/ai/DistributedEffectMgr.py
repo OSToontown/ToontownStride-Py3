@@ -1,9 +1,13 @@
 from direct.distributed.DistributedObject import DistributedObject
 from otp.speedchat import SpeedChatGlobals
-import HolidayGlobals
+import HolidayGlobals, time
 
 class DistributedEffectMgr(DistributedObject):
 
+    def __init__(self, cr):
+        DistributedObject.__init__(self, cr)
+        self.nextTime = 0
+    
     def delete(self):
         self.ignoreAll()
         DistributedObject.delete(self)
@@ -16,10 +20,20 @@ class DistributedEffectMgr(DistributedObject):
         if not self.cr.newsManager.isHolidayRunning(self.holiday):
             return
 
+        currentTime = time.time()
+
+        if self.nextTime > currentTime:
+            return
+
         holidayInfo = HolidayGlobals.getHoliday(self.holiday)
 
         if 'speedchatIndexes' not in holidayInfo or phraseId not in holidayInfo['speedchatIndexes']:
             return
 
-        self.sendUpdate('addEffect')
+        if 'effectDelay' in holidayInfo:
+            self.nextTime = currentTime + holidayInfo['effectDelay']
+
+        self.sendUpdate('requestEffect')
+
+    def effectDone(self):
         self.cr.newsManager.broadcastHoliday(holidayInfo, 'effectMessage')

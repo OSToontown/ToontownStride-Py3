@@ -54,7 +54,8 @@ Holidays = {
         'ongoingMessage': TTLocalizer.IdesOfMarchStart,
         'endMessage': TTLocalizer.IdesOfMarchEnd,
         'speedchatIndexes': [30450], # It's easy to be green!
-        'effectMessage': TTLocalizer.GreenToonEffectMsg
+        'effectMessage': TTLocalizer.GreenToonEffectMsg,
+        'effectDelay': 10
     }
 }
 

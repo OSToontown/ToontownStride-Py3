@@ -11,11 +11,12 @@ class DistributedEffectMgrAI(DistributedObjectAI):
     def getHoliday(self):
         return self.holiday
 
-    def addEffect(self):
+    def requestEffect(self):
         if not self.air.newsManager.isHolidayRunning(self.holiday):
             return
 
-        av = self.air.doId2do.get(self.air.getAvatarIdFromSender())
+        avId = self.air.getAvatarIdFromSender()
+        av = self.air.doId2do.get(avId)
 
         if not av:
             return
@@ -23,4 +24,8 @@ class DistributedEffectMgrAI(DistributedObjectAI):
         holiday = HolidayGlobals.getHoliday(self.holiday)
         expireTime = int(HolidayGlobals.getUnixTime(HolidayGlobals.getEndDate(holiday)) / 60)
 
+        self.sendUpdateToAvatarId(avId, 'effectDone')
+        self.doEffect(expireTime)
+    
+    def doEffect(self, expireTime):
         av.b_setCheesyEffect(self.effectId, 0, expireTime)
