@@ -3,7 +3,6 @@ from toontown.town.DGTownLoader import DGTownLoader
 from toontown.toonbase import ToontownGlobals
 from toontown.hood.ToonHood import ToonHood
 
-
 class DGHood(ToonHood):
     notify = directNotify.newCategory('DGHood')
 
@@ -16,7 +15,5 @@ class DGHood(ToonHood):
     TITLE_COLOR = (0.8, 0.6, 1.0, 1.0)
 
     HOLIDAY_DNA = {
-      ToontownGlobals.WINTER_DECORATIONS: ['phase_8/dna/winter_storage_DG.pdna'],
-      ToontownGlobals.WACKY_WINTER_DECORATIONS: ['phase_8/dna/winter_storage_DG.pdna'],
-      ToontownGlobals.HALLOWEEN_PROPS: ['phase_8/dna/halloween_props_storage_DG.pdna'],
-      ToontownGlobals.SPOOKY_PROPS: ['phase_8/dna/halloween_props_storage_DG.pdna']}
+      ToontownGlobals.CHRISTMAS: ['phase_8/dna/winter_storage_DG.pdna'],
+      ToontownGlobals.HALLOWEEN: ['phase_8/dna/halloween_props_storage_DG.pdna']}

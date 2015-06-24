@@ -1525,7 +1525,7 @@ struct multipleStartHoliday {
 dclass NewsManager : DistributedObject {
   startHoliday(uint8) broadcast;
   endHoliday(uint8) broadcast;
-  startHolidays(uint8[]);
+  setActiveHolidays(uint8[]);
 };
 
 dclass PurchaseManager : DistributedObject {

@@ -30,10 +30,8 @@ class EstateHood(Hood):
         self.storageDNAFile = 'phase_5.5/dna/storage_estate.pdna'
 
         self.holidayStorageDNADict = {
-          WINTER_DECORATIONS: ['phase_5.5/dna/winter_storage_estate.pdna'],
-          WACKY_WINTER_DECORATIONS: ['phase_5.5/dna/winter_storage_estate.pdna'],
-          HALLOWEEN_PROPS: ['phase_5.5/dna/halloween_props_storage_estate.pdna'],
-          SPOOKY_PROPS: ['phase_5.5/dna/halloween_props_storage_estate.pdna']}
+          CHRISTMAS: ['phase_5.5/dna/winter_storage_estate.pdna'],
+          HALLOWEEN: ['phase_5.5/dna/halloween_props_storage_estate.pdna']}
 
         self.skyFile = 'phase_3.5/models/props/TT_sky'
         self.spookySkyFile = 'phase_3.5/models/props/BR_sky'

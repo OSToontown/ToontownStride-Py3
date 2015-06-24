@@ -62,11 +62,11 @@ Holidays = {
         'effectMessage': TTLocalizer.GreenToonEffectMsg,
         'effectDelay': 10
     },
-    ToontownGlobals.WINTER_CAROLING: {
-        'startMonth': 12,
+    ToontownGlobals.CHRISTMAS: {
+        """'startMonth': 12,
         'startDay': 14,
         'endMonth': 1,
-        'endDay': 4,
+        'endDay': 4,"""
         'startMessage': TTLocalizer.WinterCarolingStart,
         'ongoingMessage': TTLocalizer.WinterCarolingStart,
         'endMessage': TTLocalizer.WinterCarolingEnd,
@@ -74,7 +74,7 @@ Holidays = {
         'effectDelay': 15,
         'scavengerHunt': WINTER_CAROLING
     },
-    ToontownGlobals.TRICK_OR_TREAT: {
+    ToontownGlobals.HALLOWEEN: {
         'startMonth': 10,
         'startDay': 13,
         'endMonth': 10,

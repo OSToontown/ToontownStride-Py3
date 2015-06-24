@@ -19,11 +19,12 @@ class NewsManagerAI(DistributedObjectAI):
     def delete(self):
         DistributedObjectAI.delete(self)
         taskMgr.remove(self.checkTask)
-
+    
     def __handleAvatarEntered(self, av):
-        avId = av.getDoId()
-        
-        self.sendUpdateToAvatarId(avId, 'startHolidays', [self.activeHolidays])
+        self.sendUpdateToAvatarId(av.getDoId(), 'setActiveHolidays', [self.activeHolidays])
+    
+    def getActiveHolidays(self):
+        return self.activeHolidays
     
     def __checkHolidays(self, task=None):
         date = datetime.now()

@@ -24,10 +24,10 @@ class MMHoodAI(HoodAI.HoodAI):
         self.piano = DistributedMMPianoAI.DistributedMMPianoAI(self.air)
         self.piano.generateWithRequired(self.zoneId)    
 
-        self.trickOrTreatMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.TRICK_OR_TREAT, 12)
+        self.trickOrTreatMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.HALLOWEEN, 12)
         self.trickOrTreatMgr.generateWithRequired(4835) # Ursatz for Really Kool Katz, Tenor Terrace
         
-        self.winterCarolingMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.WINTER_CAROLING, 14)
+        self.winterCarolingMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.CHRISTMAS, 14)
         self.winterCarolingMgr.generateWithRequired(4614) # Shave and a Haircut for a Song, Alto Avenue
 
     def createTrolley(self):

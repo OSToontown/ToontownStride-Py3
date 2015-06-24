@@ -1586,14 +1586,15 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.sendUpdate('setCheesyEffect', [effect, hoodId, expireTime])
 
     def setCheesyEffect(self, effect, hoodId, expireTime):
-        if (not simbase.air.newsManager.isHolidayRunning(ToontownGlobals.WINTER_CAROLING)) and (not simbase.air.newsManager.isHolidayRunning(ToontownGlobals.WACKY_WINTER_CAROLING)) and effect == ToontownGlobals.CESnowMan:
+        if (not simbase.air.newsManager.isHolidayRunning(ToontownGlobals.CHRISTMAS)) and effect == ToontownGlobals.CESnowMan:
             self.b_setCheesyEffect(ToontownGlobals.CENormal, hoodId, expireTime)
             self.b_setScavengerHunt([])
             return
-        elif (not simbase.air.newsManager.isHolidayRunning(ToontownGlobals.HALLOWEEN_PROPS)) and (not simbase.air.newsManager.isHolidayRunning(ToontownGlobals.HALLOWEEN_COSTUMES)) and (not simbase.air.newsManager.isHolidayRunning(ToontownGlobals.TRICK_OR_TREAT)) and effect == ToontownGlobals.CEPumpkin:
+        elif (not simbase.air.newsManager.isHolidayRunning(ToontownGlobals.HALLOWEEN)) and effect == ToontownGlobals.CEPumpkin:
             self.b_setCheesyEffect(ToontownGlobals.CENormal, hoodId, expireTime)
             self.b_setScavengerHunt([])
             return
+
         self.savedCheesyEffect = effect
         self.savedCheesyHoodId = hoodId
         self.savedCheesyExpireTime = expireTime
@@ -1605,7 +1606,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
                 taskMgr.doMethodLater(duration, self.__undoCheesyEffect, taskName)
             else:
                 self.__undoCheesyEffect(None)
-        return
 
     def getCheesyEffect(self):
         return (self.savedCheesyEffect, self.savedCheesyHoodId, self.savedCheesyExpireTime)

@@ -56,9 +56,7 @@ class SellbotHQAI(CogHQAI.CogHQAI):
             self.factoryElevators.append(factoryElevator)
 
     def createFactoryBoardingParty(self):
-        factoryIdList = []
-        for factoryElevator in self.factoryElevators:
-            factoryIdList.append(factoryElevator.doId)
+        factoryIdList = [elevator.doId for elevator in self.factoryElevators]
         self.factoryBoardingParty = DistributedBoardingPartyAI(self.air, factoryIdList, 4)
         self.factoryBoardingParty.generateWithRequired(ToontownGlobals.SellbotFactoryExt)
 

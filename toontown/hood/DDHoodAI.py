@@ -22,10 +22,10 @@ class DDHoodAI(HoodAI.HoodAI):
             self.createTrolley()
         self.createBoat()
 
-        self.trickOrTreatMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.TRICK_OR_TREAT, 12)
+        self.trickOrTreatMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.HALLOWEEN, 12)
         self.trickOrTreatMgr.generateWithRequired(1834) # Rudderly Ridiculous, Lighthouse Lane
         
-        self.winterCarolingMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.WINTER_CAROLING, 14)
+        self.winterCarolingMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.CHRISTMAS, 14)
         self.winterCarolingMgr.generateWithRequired(1707) # Gifts with a Porpoise, Seaweed Street
 
     def createTrolley(self):

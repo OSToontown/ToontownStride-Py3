@@ -23,10 +23,10 @@ class BRHoodAI(HoodAI.HoodAI):
         self.PolarPlaceEffectManager = DistributedPolarPlaceEffectMgrAI.DistributedPolarPlaceEffectMgrAI(self.air)
         self.PolarPlaceEffectManager.generateWithRequired(3821)
         
-        self.trickOrTreatMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.TRICK_OR_TREAT, 12)
+        self.trickOrTreatMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.HALLOWEEN, 12)
         self.trickOrTreatMgr.generateWithRequired(3707) # Snowplace Like Home, Sleet Street
         
-        self.winterCarolingMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.WINTER_CAROLING, 14)
+        self.winterCarolingMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.CHRISTMAS, 14)
         self.winterCarolingMgr.generateWithRequired(3828) # Snowman's Land, Polar Place
 
     def createTrolley(self):

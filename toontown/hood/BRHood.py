@@ -3,7 +3,6 @@ from toontown.town.BRTownLoader import BRTownLoader
 from toontown.toonbase import ToontownGlobals
 from toontown.hood.ToonHood import ToonHood
 
-
 class BRHood(ToonHood):
     notify = directNotify.newCategory('BRHood')
 
@@ -16,7 +15,5 @@ class BRHood(ToonHood):
     TITLE_COLOR = (0.3, 0.6, 1.0, 1.0)
 
     HOLIDAY_DNA = {
-      ToontownGlobals.WINTER_DECORATIONS: ['phase_8/dna/winter_storage_BR.pdna'],
-      ToontownGlobals.WACKY_WINTER_DECORATIONS: ['phase_8/dna/winter_storage_BR.pdna'],
-      ToontownGlobals.HALLOWEEN_PROPS: ['phase_8/dna/halloween_props_storage_BR.pdna'],
-      ToontownGlobals.SPOOKY_PROPS: ['phase_8/dna/halloween_props_storage_BR.pdna']}
+      ToontownGlobals.CHRISTMAS: ['phase_8/dna/winter_storage_BR.pdna'],
+      ToontownGlobals.HALLOWEEN: ['phase_8/dna/halloween_props_storage_BR.pdna']}

@@ -30,10 +30,10 @@ class DGHoodAI(HoodAI.HoodAI):
         self.greenToonMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.IDES_OF_MARCH, 15)
         self.greenToonMgr.generateWithRequired(5819)
 
-        self.trickOrTreatMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.TRICK_OR_TREAT, 12)
+        self.trickOrTreatMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.HALLOWEEN, 12)
         self.trickOrTreatMgr.generateWithRequired(5620) # Rake It Inn, Elm Street
         
-        self.winterCarolingMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.WINTER_CAROLING, 14)
+        self.winterCarolingMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.CHRISTMAS, 14)
         self.winterCarolingMgr.generateWithRequired(5626) # Pine Needle Crafts, Elm Street
 
     def shutdown(self):

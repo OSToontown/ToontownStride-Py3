@@ -8,6 +8,7 @@ class NewsManager(DistributedObject):
 
     def __init__(self, cr):
         DistributedObject.__init__(self, cr)
+        print 'NewsMgr - GEN!'
         self.invading = False
         self.activeHolidays = []
         base.localAvatar.inventory.setInvasionCreditMultiplier(1)
@@ -20,12 +21,10 @@ class NewsManager(DistributedObject):
     def isHolidayRunning(self, id):
         return id in self.activeHolidays
     
-    def startHolidays(self, ids):
+    def setActiveHolidays(self, ids):
+        print 'set active holidays %s' % ids
         for id in ids:
             self.startHoliday(id, True)
-    
-    def getDecorationHolidayId(self):
-        return []
 
     def broadcastHoliday(self, holiday, type):
         if type in holiday:
@@ -62,9 +61,9 @@ class NewsManager(DistributedObject):
             base.localAvatar.chatMgr.chatInputSpeedChat.addAprilToonsMenu()
         elif id == ToontownGlobals.IDES_OF_MARCH:
             base.localAvatar.chatMgr.chatInputSpeedChat.addIdesOfMarchMenu()
-        elif id == ToontownGlobals.TRICK_OR_TREAT:
+        elif id == ToontownGlobals.HALLOWEEN:
             base.localAvatar.chatMgr.chatInputSpeedChat.addHalloweenMenu()
-        elif id == ToontownGlobals.WINTER_CAROLING:
+        elif id == ToontownGlobals.CHRISTMAS:
             base.localAvatar.chatMgr.chatInputSpeedChat.addWinterMenu()
 
     def endSpecialHoliday(self, id):
@@ -78,7 +77,7 @@ class NewsManager(DistributedObject):
             base.localAvatar.chatMgr.chatInputSpeedChat.removeAprilToonsMenu()
         elif id == ToontownGlobals.IDES_OF_MARCH:
             base.localAvatar.chatMgr.chatInputSpeedChat.removeIdesOfMarchMenu()
-        elif id == ToontownGlobals.TRICK_OR_TREAT:
+        elif id == ToontownGlobals.HALLOWEEN:
             base.localAvatar.chatMgr.chatInputSpeedChat.removeHalloweenMenu()
-        elif id == ToontownGlobals.WINTER_CAROLING:
+        elif id == ToontownGlobals.CHRISTMAS:
             base.localAvatar.chatMgr.chatInputSpeedChat.removeWinterMenu()
