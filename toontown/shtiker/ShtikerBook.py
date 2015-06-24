@@ -5,7 +5,7 @@ from direct.showbase import DirectObject
 from panda3d.core import *
 
 from toontown.effects import DistributedFireworkShow
-from toontown.nametag import NametagGlobals
+from otp.nametag import NametagGlobals
 from toontown.parties import DistributedPartyFireworksActivity
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
@@ -63,9 +63,11 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         base.disableMouse()
         base.render.hide()
         base.setBackgroundColor(0.05, 0.15, 0.4)
-        base.setCellsActive([base.rightCells[0]], 0)
-        NametagGlobals.setForce2dNametags(True)
-        NametagGlobals.setForceOnscreenChat(True)
+        base.setCellsAvailable([base.rightCells[0]], 0)
+        self.oldMin2dAlpha = NametagGlobals.getMin2dAlpha()
+        self.oldMax2dAlpha = NametagGlobals.getMax2dAlpha()
+        NametagGlobals.setMin2dAlpha(0.8)
+        NametagGlobals.setMax2dAlpha(1.0)
         self.__isOpen = 1
         self.__setButtonVisibility()
         self.show()
@@ -97,9 +99,9 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         gsg = base.win.getGsg()
         if gsg:
             base.render.prepareScene(gsg)
-        base.setCellsActive([base.rightCells[0]], 1)
-        NametagGlobals.setForce2dNametags(False)
-        NametagGlobals.setForceOnscreenChat(False)
+        NametagGlobals.setMin2dAlpha(self.oldMin2dAlpha)
+        NametagGlobals.setMax2dAlpha(self.oldMax2dAlpha)
+        base.setCellsAvailable([base.rightCells[0]], 1)
         self.__isOpen = 0
         self.hide()
         self.hideButton()

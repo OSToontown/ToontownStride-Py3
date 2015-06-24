@@ -3,7 +3,7 @@ from direct.actor import Actor
 from direct.task.Task import Task
 from otp.avatar import Avatar
 from toontown.battle import BattleProps, SuitBattleGlobals
-from toontown.nametag import NametagGlobals
+from otp.nametag.NametagGroup import NametagGroup
 from toontown.toonbase import TTLocalizer, ToontownGlobals
 from toontown.suit import SuitGlobals
 import SuitDNA, string
@@ -333,7 +333,8 @@ class Suit(Avatar.Avatar):
 
         Avatar.Avatar.__init__(self)
         self.setFont(ToontownGlobals.getSuitFont())
-        self.setPlayerType(NametagGlobals.CCSuit)
+        self.setSpeechFont(ToontownGlobals.getSuitFont())
+        self.setPlayerType(NametagGroup.CCSuit)
         self.setPickable(1)
         self.leftHand = None
         self.rightHand = None
@@ -416,8 +417,6 @@ class Suit(Avatar.Avatar):
                 self.generateHead(head)
 
             self.setHeight(properties[SuitGlobals.HEIGHT_INDEX])
-            if len(properties) > SuitGlobals.NAMETAG_WRAP_INDEX:
-                self.nametag.setWordWrap(properties[SuitGlobals.NAMETAG_WRAP_INDEX])
 
         self.setName(SuitBattleGlobals.SuitAttributes[dna.name]['name'])
         self.getGeomNode().setScale(self.scale)

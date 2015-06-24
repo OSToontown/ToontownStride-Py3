@@ -8,8 +8,8 @@ import types
 import Toon, ToonDNA
 from otp.avatar import Emote
 from otp.otpbase import OTPLocalizer
-from toontown.chat.ChatGlobals import *
-from toontown.nametag.NametagGlobals import *
+from otp.nametag.NametagConstants import *
+from otp.nametag.NametagGroup import *
 from toontown.toonbase import TTLocalizer
 
 

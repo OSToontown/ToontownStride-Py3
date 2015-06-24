@@ -11,8 +11,8 @@ from otp.chat import ChatGarbler, TalkAssistant
 from otp.distributed.TelemetryLimited import TelemetryLimited
 from otp.otpbase import OTPGlobals, OTPLocalizer
 from otp.speedchat import SCDecoders
-from toontown.chat.ChatGlobals import *
-from toontown.chat.WhisperPopup import WhisperPopup
+from otp.nametag.NametagConstants import *
+from otp.margins.WhisperPopup import WhisperPopup
 
 class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBase, TelemetryLimited):
     chatGarbler = ChatGarbler.ChatGarbler({'default': OTPLocalizer.ChatGarblerDefault})
@@ -114,7 +114,7 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
         if self is localAvatar:
             return True
 
-    def setSystemMessage(self, aboutId, chatString, whisperType = WTSystem):
+    def setSystemMessage(self, aboutId, chatString, whisperType = WhisperPopup.WTSystem):
         self.displayWhisper(aboutId, chatString, whisperType)
 
     def displayWhisper(self, fromId, chatString, whisperType):
@@ -130,7 +130,7 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
             return
         chatString = SCDecoders.decodeSCStaticTextMsg(msgIndex)
         if chatString:
-            self.displayWhisper(fromId, chatString, WTNormal)
+            self.displayWhisper(fromId, chatString, WhisperPopup.WTNormal)
         return
 
     def whisperSCCustomTo(self, msgIndex, sendToId):
@@ -151,7 +151,7 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
             return
         chatString = SCDecoders.decodeSCCustomMsg(msgIndex)
         if chatString:
-            self.displayWhisper(fromId, chatString, WTNormal)
+            self.displayWhisper(fromId, chatString, WhisperPopup.WTNormal)
 
     def whisperSCEmoteTo(self, emoteId, sendToId):
         messenger.send('wakeup')
@@ -163,7 +163,7 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
             return
         chatString = SCDecoders.decodeSCEmoteWhisperMsg(emoteId, handle.getName())
         if chatString:
-            self.displayWhisper(fromId, chatString, WTEmote)
+            self.displayWhisper(fromId, chatString, WhisperPopup.WTEmote)
         return
 
     def setChatAbsolute(self, chatString, chatFlags, dialogue = None, interrupt = 1, quiet = 0):
