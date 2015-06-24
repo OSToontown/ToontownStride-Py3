@@ -16,7 +16,7 @@ from MakeAToonGlobals import *
 import MakeClothesGUI
 import NameShop
 from otp.avatar import Avatar
-from toontown.chat.ChatGlobals import *
+from otp.nametag.NametagConstants import *
 from toontown.distributed.ToontownMsgTypes import *
 from toontown.toon import LocalToon
 from toontown.toon import Toon

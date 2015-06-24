@@ -25,10 +25,9 @@ from toontown.battle.BattleSounds import *
 from toontown.catalog import CatalogNotifyDialog
 from toontown.chat import TTTalkAssistant
 from toontown.chat import ToontownChatManager
-from toontown.chat.ChatGlobals import *
-from toontown.chat.WhisperPopup import *
+from otp.nametag.NametagConstants import *
+from otp.margins.WhisperPopup import *
 from toontown.estate import GardenGlobals
-from toontown.nametag.NametagGlobals import *
 from toontown.parties import PartyGlobals
 from toontown.quest import QuestMap
 from toontown.quest import QuestParser
@@ -1211,12 +1210,12 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
     def showGardeningGui(self):
         self.loadGardeningGui()
         self.__gardeningGui.show()
-        base.setCellsActive([base.leftCells[2]], 0)
+        base.setCellsAvailable([base.leftCells[2]], 0)
 
     def hideGardeningGui(self):
         if self.__gardeningGui:
             self.__gardeningGui.hide()
-            base.setCellsActive([base.leftCells[2]], 1)
+            base.setCellsAvailable([base.leftCells[2]], 1)
 
     def showShovelButton(self, add = 0):
         if add:

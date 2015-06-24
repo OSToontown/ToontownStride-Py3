@@ -19,7 +19,7 @@ import DistributedAvatar
 from otp.ai.MagicWordGlobal import *
 from otp.otpbase import OTPGlobals
 from otp.otpbase import OTPLocalizer
-from toontown.chat.ChatGlobals import *
+from otp.nametag.NametagConstants import *
 from toontown.toonbase import ToontownGlobals
 
 

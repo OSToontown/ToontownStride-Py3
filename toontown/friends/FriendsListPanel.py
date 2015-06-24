@@ -4,7 +4,7 @@ from direct.fsm import StateData
 from toontown.toon import ToonAvatarPanel
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
-from toontown.nametag.NametagGlobals import *
+from otp.nametag.NametagGroup import *
 from otp.otpbase import OTPGlobals
 FLPPets = 1
 FLPOnline = 2

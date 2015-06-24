@@ -27,8 +27,9 @@ Component2IconDict = {'boredom': 'Bored',
  'surprise': 'Surprised',
  'affection': 'Love'}
 
-from toontown.nametag import *
-from toontown.nametag.NametagGlobals import *
+from otp.nametag import *
+from otp.nametag.NametagConstants import *
+from otp.nametag.NametagGroup import *
 
 class Pet(Avatar.Avatar):
     notify = DirectNotifyGlobal.directNotify.newCategory('Pet')
@@ -45,7 +46,7 @@ class Pet(Avatar.Avatar):
         Pet.SerialNum += 1
         self.lockedDown = 0
         self.setPickable(1)
-        self.setPlayerType(NametagGlobals.CCNonPlayer)
+        self.setPlayerType(NametagGroup.CCNonPlayer)
         self.animFSM = ClassicFSM('petAnimFSM', [State('off', self.enterOff, self.exitOff),
          State('neutral', self.enterNeutral, self.exitNeutral),
          State('neutralHappy', self.enterNeutralHappy, self.exitNeutralHappy),
