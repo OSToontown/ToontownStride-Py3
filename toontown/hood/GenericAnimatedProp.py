@@ -43,7 +43,7 @@ class GenericAnimatedProp(AnimatedProp.AnimatedProp):
         AnimatedProp.AnimatedProp.delete(self)
 
         if hasattr(self, 'soundNode'):
-            self.soundNode.cleanup()
+            self.soundNode.removeNode()
             del self.soundNode
 
         self.node.cleanup()
