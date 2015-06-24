@@ -141,12 +141,10 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
         self.fsm.request('clearOutToonInterior')
 
     def cogdoTakeOver(self, difficulty, buildingHeight, track = 's'):
-        print 'Building %s (%s): cogdoTakeOver' % (self.doId, self.zoneId)
         if not self.isToonBlock():
             return None
-        
+
         self.updateSavedBy(None)
-        
         self.track = track
         self.realTrack = track
         self.difficulty = difficulty
@@ -318,21 +316,21 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
             toon = None
             if t:
                 toon = self.getToon(t)
-            
+
             if toon != None:
                 activeToons.append(toon)
                 continue
-        
+
         for t in victorList:
             toon = None
             if t:
                 toon = self.getToon(t)
                 self.air.writeServerEvent('buildingDefeated', t, '%s|%s|%s|%s' % (self.track, self.numFloors, self.zoneId, victorList))
-            
+
             if toon != None:
                 self.air.questManager.toonKilledBuilding(toon, self.track, self.difficulty, 5, self.zoneId, activeToons, 1)
                 continue
-        
+
         victorList.extend([None, None, None, None])
         for i in range(0, 4):
             victor = victorList[i]
@@ -342,7 +340,7 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
             event = self.air.getAvatarExitEvent(victor)
             self.accept(event, self.setVictorExited, extraArgs = [
                 victor])
-        
+
         self.b_setVictorList(victorList[:4])
         self.updateSavedBy(savedBy)
         self.victorResponses = [
