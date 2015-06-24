@@ -66,7 +66,7 @@ class MakeAToon(StateData.StateData):
         self.bs = BodyShop.BodyShop('BodyShop-done')
         self.cos = ColorShop.ColorShop('ColorShop-done')
         self.cls = MakeClothesGUI.MakeClothesGUI('ClothesShop-done')
-        self.ns = NameShop.NameShop(self, 'NameShop-done', avList, index, True)
+        self.ns = NameShop.NameShop(self, 'NameShop-done', avList, index)
         self.shop = GENDERSHOP
         self.shopsVisited = []
         if self.warp:
