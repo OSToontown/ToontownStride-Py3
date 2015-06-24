@@ -8,14 +8,12 @@ from direct.gui.DirectGui import DirectFrame, DirectButton, DirectLabel, DirectS
 from direct.showbase import DirectObject
 from direct.showbase import PythonUtil
 from panda3d.core import *
-from pandac.PandaModules import Vec3, Vec4, Point3, TextNode, VBase4
 
 from otp.otpbase import OTPGlobals
 from otp.otpbase import OTPLocalizer
-from toontown.nametag.Nametag import Nametag
-from toontown.nametag.NametagFloat2d import *
-from toontown.nametag import NametagGlobals
-from toontown.nametag.NametagGroup import NametagGroup
+from otp.nametag.NametagGroup import NametagGroup
+from otp.nametag.Nametag import Nametag
+from otp.nametag.NametagFloat2d import *
 from toontown.parties import PartyGlobals
 from toontown.parties import PartyUtils
 from toontown.parties.CalendarGuiMonth import CalendarGuiMonth
@@ -278,41 +276,33 @@ class PartyPlanner(DirectFrame, FSM):
     def __createNametag(self, parent):
         if self.nametagGroup == None:
             self.nametagGroup = NametagGroup()
-            interfaceFont = OTPGlobals.getInterfaceFont()
-            self.nametagGroup.setFont(interfaceFont)
-            self.nametagGroup.setChatFont(interfaceFont)
-            self.nametagGroup.setActive(False)
+            self.nametagGroup.setFont(ToontownGlobals.getToonFont())
+            self.nametagGroup.setSpeechFont(ToontownGlobals.getToonFont())
+            self.nametagGroup.setActive(0)
             self.nametagGroup.setAvatar(self.partyPlannerHead)
             self.nametagGroup.manage(base.marginManager)
-            nametagColor = NametagGlobals.NametagColors[NametagGlobals.CCNonPlayer]
-            self.nametagGroup.setNametagColor(nametagColor)
-            chatColor = NametagGlobals.ChatColors[NametagGlobals.CCNonPlayer]
-            self.nametagGroup.setChatColor(chatColor)
-            nametag2d = self.nametagGroup.getNametag2d()
-            nametag2d.hideNametag()
-            nametag2d.hideChat()
+            self.nametagGroup.setColorCode(self.nametagGroup.CCNonPlayer)
+            self.nametagGroup.getNametag2d().setContents(0)
             self.nametagNode = NametagFloat2d()
-            self.nametagNode.hideChat()
-            self.nametagGroup.add(self.nametagNode)
-            self.nametagGroup.setText(base.cr.partyManager.getPartyPlannerName())
+            self.nametagNode.setContents(Nametag.CName)
+            self.nametagGroup.addNametag(self.nametagNode)
+            self.nametagGroup.setName(base.cr.partyManager.getPartyPlannerName())
             self.nametagNP = parent.attachNewNode(self.nametagNode)
             nametagPos = self.gui.find('**/step_01_partymanPeteNametag_locator').getPos()
             self.nametagNP.setPosHprScale(nametagPos[0], 0, nametagPos[2], 0, 0, 0, 0.1, 1, 0.1)
             self.chatNode = NametagFloat2d()
-            self.chatNode.hideNametag()
-            self.chatNode.showThought()
-            self.nametagGroup.add(self.chatNode)
-            self.nametagGroup.setChatText(TTLocalizer.PartyPlannerInstructions)
+            self.chatNode.setContents(Nametag.CSpeech | Nametag.CThought)
+            self.nametagGroup.addNametag(self.chatNode)
+            self.nametagGroup.setChat(TTLocalizer.PartyPlannerInstructions, CFSpeech)
             self.chatNP = parent.attachNewNode(self.chatNode)
             chatPos = self.gui.find('**/step_01_partymanPeteText_locator').getPos()
             self.chatNP.setPosHprScale(chatPos[0], 0, chatPos[2], 0, 0, 0, 0.08, 1, 0.08)
-            self.nametagGroup.updateAll()
 
     def clearNametag(self):
         if self.nametagGroup != None:
             self.nametagGroup.unmanage(base.marginManager)
-            self.nametagGroup.remove(self.nametagNode)
-            self.nametagGroup.remove(self.chatNode)
+            self.nametagGroup.removeNametag(self.nametagNode)
+            self.nametagGroup.removeNametag(self.chatNode)
             self.nametagNP.removeNode()
             self.chatNP.removeNode()
             del self.nametagNP
@@ -690,7 +680,7 @@ class PartyPlanner(DirectFrame, FSM):
             goingBackAllowed = False
             self.confirmTitleLabel['text'] = TTLocalizer.PartyPlannerConfirmationErrorTitle
             confirmRecapText = TTLocalizer.PartyPlannerConfirmationTooManyText
-        self.nametagGroup.setChatText(confirmRecapText)
+        self.nametagGroup.setChat(confirmRecapText, CFSpeech)
         self.request('Farewell', goingBackAllowed)
 
     def __acceptExit(self):
