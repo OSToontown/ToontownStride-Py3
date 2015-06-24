@@ -24,7 +24,6 @@ import MovieUtil
 import PlayByPlayText
 import RewardPanel
 from SuitBattleGlobals import *
-from toontown.chat.ChatGlobals import *
 from toontown.distributed import DelayDelete
 from toontown.toon import NPCToons
 from toontown.toon import Toon
@@ -32,7 +31,8 @@ from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase.ToontownBattleGlobals import *
 from toontown.toontowngui import TTDialog
-from toontown.nametag import NametagGlobals
+from otp.nametag.NametagConstants import *
+from otp.nametag.NametagGroup import *
 
 
 camPos = Point3(14, 0, 10)
@@ -342,7 +342,7 @@ class Movie(DirectObject.DirectObject):
         self.tutorialTom.setDNA(dna)
         self.tutorialTom.setName(TTLocalizer.NPCToonNames[20000])
         self.tutorialTom.setPickable(0)
-        self.tutorialTom.setPlayerType(NametagGlobals.CCNonPlayer)
+        self.tutorialTom.setPlayerType(NametagGroup.CCNonPlayer)
         self.tutorialTom.uniqueName = uniqueName
         self.musicVolume = 0.9
         music = base.cr.playGame.place.loader.battleMusic

@@ -10,9 +10,8 @@ from BattleSounds import *
 import MovieCamera
 import MovieUtil
 from SuitBattleGlobals import *
-from toontown.chat.ChatGlobals import *
-from toontown.nametag import NametagGlobals
-from toontown.nametag.NametagGlobals import *
+from otp.nametag.NametagConstants import *
+from otp.nametag import NametagGlobals
 from toontown.suit.SuitDNA import *
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
