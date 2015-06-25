@@ -65,10 +65,10 @@ Holidays = {
         'effectDelay': 10
     },
     ToontownGlobals.CHRISTMAS: {
-        """'startMonth': 12,
+        'startMonth': 12,
         'startDay': 14,
         'endMonth': 1,
-        'endDay': 4,"""
+        'endDay': 4,
         'startMessage': TTLocalizer.WinterCarolingStart,
         'ongoingMessage': TTLocalizer.WinterCarolingStart,
         'endMessage': TTLocalizer.WinterCarolingEnd,
@@ -87,6 +87,24 @@ Holidays = {
         'speedchatIndexes': [10003],
         'effectDelay': 15,
         'scavengerHunt': TRICK_OR_TREAT
+    },
+    ToontownGlobals.SUMMER_FIREWORKS: {
+        'startMonth': 6,
+        'startDay': 30,
+        'endMonth': 7,
+        'endDay': 15,
+        'startMessage': TTLocalizer.SummerFireworksStart,
+        'ongoingMessage': TTLocalizer.SummerFireworksStart,
+        'endMessage': TTLocalizer.SummerFireworksEnd
+    },
+    ToontownGlobals.NEW_YEAR_FIREWORKS: {
+        'startMonth': 12,
+        'startDay': 31,
+        'endMonth': 1,
+        'endDay': 7,
+        'startMessage': TTLocalizer.NewYearFireworksStart,
+        'ongoingMessage': TTLocalizer.NewYearFireworksStart,
+        'endMessage': TTLocalizer.NewYearFireworksEnd
     }
 }
 

@@ -43,9 +43,9 @@ def fireworks(showName='july4'):
     """
     showName = showName.lower()
     if showName == 'july4':
-        showType = ToontownGlobals.JULY4_FIREWORKS
+        showType = ToontownGlobals.SUMMER_FIREWORKS
     elif showName == 'newyears':
-        showType = ToontownGlobals.NEWYEARS_FIREWORKS
+        showType = ToontownGlobals.NEW_YEAR_FIREWORKS
     elif showName == 'summer':
         showType = PartyGlobals.FireworkShows.Summer
     else:

@@ -6879,7 +6879,6 @@ PetTrait2descriptions = {'hungerThreshold': ('Always Hungry',
                         'Often Affectionate',
                         'Always Affectionate')}
 FireworksInstructions = lToonHQ + ': Hit the "Page Up" key to see the show!'
-startFireworksResponse = "Usage: startFireworksShow ['num']\n                                         'num' = %s - New Years\n                                         %s - Party Summer \n                                         %s - 4th of July"
 FireworksJuly4Beginning = lToonHQ + ': Welcome to summer fireworks! Enjoy the show!'
 FireworksJuly4Ending = lToonHQ + ': Hope you enjoyed the show! Have a great summer!'
 FireworksNewYearsEveBeginning = lToonHQ + ': Happy New Year! Enjoy the fireworks show, sponsored by Flippy!'
@@ -8222,6 +8221,10 @@ DayNamesAbbrev = ('MON',
  'FRI',
  'SAT',
  'SUN')
+SummerFireworksStart = 'Celebrate Summer with a fireworks show every hour in each playground!'
+SummerFireworksEnd = 'Summer Fireworks are over. Hope you had fun.'
+NewYearFireworksStart = 'Happy New Year! Enjoy a fireworks show every hour in each playground!'
+NewYearFireworksEnd = 'New Year Fireworks are over. See you next year!'
 HolidayNamesInCalendar = {1: ('Summer Fireworks', 'Celebrate Summer with a fireworks show every hour in each playground!'),
  2: ('New Year Fireworks', 'Happy New Year! Enjoy a fireworks show every hour in each playground!'),
  3: ('Halloween', 'Happy Halloween! Trick or treat throughout Toontown to get a nifty Halloween pumpkin head reward!'),

@@ -19,7 +19,7 @@ class FireworkShowMixin:
         self.startDelay = startDelay
         self.timestamp = None
         self.fireworkShow = None
-        self.eventId = JULY4_FIREWORKS
+        self.eventId = SUMMER_FIREWORKS
         self.accept('MusicEnabled', self.startMusic)
         return
 
@@ -77,13 +77,13 @@ class FireworkShowMixin:
         return
 
     def preShow(self, eventId, songId, startT):
-        if eventId == JULY4_FIREWORKS:
+        if eventId == SUMMER_FIREWORKS:
             instructionMessage = TTLocalizer.FireworksInstructions
             startMessage = TTLocalizer.FireworksJuly4Beginning
             endMessage = TTLocalizer.FireworksJuly4Ending
             songs = ['tt_summer', 'firework_music']
             musicFile = 'phase_4/audio/bgm/%s.ogg' % songs[songId]
-        elif eventId == NEWYEARS_FIREWORKS:
+        elif eventId == NEW_YEAR_FIREWORKS:
             instructionMessage = TTLocalizer.FireworksInstructions
             startMessage = TTLocalizer.FireworksNewYearsEveBeginning
             endMessage = TTLocalizer.FireworksNewYearsEveEnding
@@ -146,9 +146,9 @@ class FireworkShowMixin:
                 base.camLens.setFar(DefaultCameraFar)
 
     def postShow(self, eventId):
-        if eventId == JULY4_FIREWORKS:
+        if eventId == SUMMER_FIREWORKS:
             endMessage = TTLocalizer.FireworksJuly4Ending
-        elif eventId == NEWYEARS_FIREWORKS:
+        elif eventId == NEW_YEAR_FIREWORKS:
             endMessage = TTLocalizer.FireworksNewYearsEveEnding
         elif eventId == PartyGlobals.FireworkShows.Summer:
             endMessage = TTLocalizer.FireworksActivityEnding

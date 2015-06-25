@@ -1,7 +1,7 @@
 from FireworkGlobals import *
 from toontown.toonbase import ToontownGlobals
 from toontown.parties import PartyGlobals
-shows = {ToontownGlobals.JULY4_FIREWORKS: [((2,
+shows = {ToontownGlobals.SUMMER_FIREWORKS: [((2,
                                      ROCKET,
                                      RED,
                                      RED,
@@ -5065,7 +5065,7 @@ shows = {ToontownGlobals.JULY4_FIREWORKS: [((2,
                                      -23,
                                      3,
                                      100))],
- ToontownGlobals.NEWYEARS_FIREWORKS: [((0.5,
+ ToontownGlobals.NEW_YEAR_FIREWORKS: [((0.5,
                                         ROCKET,
                                         WHITE,
                                         WHITE,
