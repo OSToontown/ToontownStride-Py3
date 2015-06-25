@@ -105,6 +105,15 @@ Holidays = {
         'startMessage': TTLocalizer.NewYearFireworksStart,
         'ongoingMessage': TTLocalizer.NewYearFireworksStart,
         'endMessage': TTLocalizer.NewYearFireworksEnd
+    },
+    ToontownGlobals.VALENTOONS_DAY: {
+        'startMonth': 2,
+        'startDay': 9,
+        'endMonth': 2,
+        'endDay': 16,
+        'startMessage': TTLocalizer.ValentinesDayStart,
+        'ongoingMessage': TTLocalizer.ValentinesDayStart,
+        'endMessage': TTLocalizer.ValentinesDayEnd
     }
 }
 

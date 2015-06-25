@@ -1,5 +1,6 @@
 from RegenTreasurePlannerAI import RegenTreasurePlannerAI
 from direct.directnotify import DirectNotifyGlobal
+from toontown.toonbase import ToontownGlobals
 
 class SZTreasurePlannerAI(RegenTreasurePlannerAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('SZTreasurePlannerAI')
@@ -16,7 +17,7 @@ class SZTreasurePlannerAI(RegenTreasurePlannerAI):
     def validAvatar(self, treasure, av):
         # Avatars can only heal if they are missing some health, but aren't sad.
         if av.getHp() < av.getMaxHp() and av.getHp() > 0:
-            av.toonUp(self.healAmount)
+            av.toonUp(self.healAmount * 2 if simbase.air.newsManager.isHolidayRunning(ToontownGlobals.VALENTOONS_DAY) else self.healAmount)
             return True
         else:
             return False

@@ -160,7 +160,7 @@ class PartyPlanner(DirectFrame, FSM):
             defaultInviteTheme = PartyGlobals.InviteTheme.VictoryParty
         elif base.cr.newsManager.isHolidayRunning(ToontownGlobals.KARTING_TICKETS_HOLIDAY) or base.cr.newsManager.isHolidayRunning(ToontownGlobals.GRAND_PRIX):
             defaultInviteTheme = PartyGlobals.InviteTheme.Racing
-        elif base.cr.newsManager.isHolidayRunning(ToontownGlobals.VALENTINES_DAY):
+        elif base.cr.newsManager.isHolidayRunning(ToontownGlobals.VALENTOONS_DAY):
             defaultInviteTheme = PartyGlobals.InviteTheme.Valentoons
         if self.partyInfo is not None:
             del self.partyInfo
@@ -592,7 +592,7 @@ class PartyPlanner(DirectFrame, FSM):
 
     def __handleHolidays(self):
         self.inviteThemes = range(len(PartyGlobals.InviteTheme))
-        if not base.cr.newsManager.isHolidayRunning(ToontownGlobals.VALENTINES_DAY):
+        if not base.cr.newsManager.isHolidayRunning(ToontownGlobals.VALENTOONS_DAY):
             self.inviteThemes.remove(PartyGlobals.InviteTheme.Valentoons)
         if not base.cr.newsManager.isHolidayRunning(ToontownGlobals.VICTORY_PARTY_HOLIDAY):
             self.inviteThemes.remove(PartyGlobals.InviteTheme.VictoryParty)
