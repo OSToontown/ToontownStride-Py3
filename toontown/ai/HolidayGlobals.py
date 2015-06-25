@@ -1,6 +1,8 @@
 from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.parties import ToontownTimeZone
 import calendar, datetime
 
+TIME_ZONE = ToontownTimeZone.ToontownTimeZone()
 TRICK_OR_TREAT = 0
 WINTER_CAROLING = 1
 CAROLING_REWARD = 100
@@ -92,36 +94,32 @@ def getHoliday(id):
     return Holidays.get(id, {})
 
 def getServerTime(date):
-    epoch = datetime.datetime.fromtimestamp(0, base.cr.toontownTimeManager.serverTimeZone)
+    epoch = datetime.datetime.fromtimestamp(0, TIME_ZONE)
     delta = date - epoch
 
     return delta.total_seconds()
 
-def getStartDate(holiday, year=None):
-    if 'startDate' in holiday:
-        return holiday['startDate']
+def getStartDate(holiday, rightNow=None):
+    if not rightNow:
+        rightNow = datetime.datetime.now()
 
-    rightNow = datetime.datetime.now()
-    startMonth = holiday['startMonth'] if 'startMonth' in holiday else (rightNow.month if 'weekDay' in holiday else 1)
+    startMonth = holiday['startMonth'] if 'startMonth' in holiday else rightNow.month
     startDay = holiday['startDay'] if 'startDay' in holiday else (rightNow.day if 'weekDay' in holiday else calendar.monthrange(rightNow.year, startMonth)[0])
-    startDate = datetime.datetime(year if year else rightNow.year, startMonth, startDay, tzinfo=base.cr.toontownTimeManager.serverTimeZone)
-    holiday['startDate'] = startDate
+    startDate = datetime.datetime(rightNow.year, startMonth, startDay, tzinfo=TIME_ZONE)
     
     return startDate
 
-def getEndDate(holiday, year=None):
-    if 'endDate' in holiday:
-        return holiday['endDate']
+def getEndDate(holiday, rightNow=None):
+    if not rightNow:
+        rightNow = datetime.datetime.now()
 
-    rightNow = datetime.datetime.now()
-    endMonth = holiday['endMonth'] if 'endMonth' in holiday else (rightNow.month if 'weekDay' in holiday else 12)
+    endMonth = holiday['endMonth'] if 'endMonth' in holiday else rightNow.month
     endDay = holiday['endDay'] if 'endDay' in holiday else (rightNow.day if 'weekDay' in holiday else calendar.monthrange(rightNow.year, endMonth)[1])
-    endYear = year if year else rightNow.year
+    endYear = rightNow.year
 
     if 'startMonth' in holiday and holiday['startMonth'] > endMonth:
         endYear += 1
 
-    endDate = datetime.datetime(endYear, endMonth, endDay, tzinfo=base.cr.toontownTimeManager.serverTimeZone)
-    holiday['endDate'] = endDate
+    endDate = datetime.datetime(endYear, endMonth, endDay, tzinfo=TIME_ZONE)
 
     return endDate

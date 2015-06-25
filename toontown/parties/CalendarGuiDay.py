@@ -161,22 +161,25 @@ class CalendarGuiDay(DirectFrame):
                     if self.myDate.weekday() == holiday['weekDay']:
                         self.addTitleAndDescToScrollList(title, description)
                 elif 'startMonth' in holiday or 'startDay' in holiday:
-                    startDate = HolidayGlobals.getStartDate(holiday, self.myDate.year)
-                    endDate = HolidayGlobals.getEndDate(holiday, self.myDate.year)
+                    startDate = HolidayGlobals.getStartDate(holiday, self.myDate)
+                    endDate = HolidayGlobals.getEndDate(holiday, self.myDate)
                     
-                    if self.myDate.date() == startDate.date():
-                        if startDate.date() == endDate.date():
+                    if self.isDateMatch(self.myDate, startDate):
+                        if self.isDateMatch(startDate, endDate):
                             description = '%s. %s' % (title, description)
                         else:
                             description = '%s. %s %s %s' % (title, description, TTLocalizer.CalendarEndsAt, endDate.strftime('%b %d'))
 
                         self.addTitleAndDescToScrollList(title, description)
-                    elif self.myDate.date() == endDate.date():
+                    elif self.isDateMatch(self.myDate, endDate):
                         title = '%s %s' % (TTLocalizer.CalendarEndOf, title)
                         description = '%s. %s %s' % (title, TTLocalizer.CalendarStartedOn, startDate.strftime('%b %d'))
 
                         self.addTitleAndDescToScrollList(title, description)
 
+    def isDateMatch(self, date1, date2):
+        return date1.day == date2.day and date1.month == date2.month
+    
     def addTitleAndDescToScrollList(self, title, desc):
         textSize = self.ScrollListTextSize
         descTextSize = 0.05
