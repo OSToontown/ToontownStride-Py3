@@ -91,18 +91,37 @@ Holidays = {
 def getHoliday(id):
     return Holidays.get(id, {})
 
-def getUnixTime(date):
-    epoch = datetime.datetime.fromtimestamp(0)
+def getServerTime(date):
+    epoch = datetime.datetime.fromtimestamp(0, base.cr.toontownTimeManager.serverTimeZone)
     delta = date - epoch
 
     return delta.total_seconds()
 
-def getEndDate(holiday):
+def getStartDate(holiday, year=None):
+    if 'startDate' in holiday:
+        return holiday['startDate']
+
     rightNow = datetime.datetime.now()
-    endMonth = holiday['endMonth'] if 'endMonth' in holiday else rightNow.month
+    startMonth = holiday['startMonth'] if 'startMonth' in holiday else (rightNow.month if 'weekDay' in holiday else 1)
+    startDay = holiday['startDay'] if 'startDay' in holiday else (rightNow.day if 'weekDay' in holiday else calendar.monthrange(rightNow.year, startMonth)[0])
+    startDate = datetime.datetime(year if year else rightNow.year, startMonth, startDay, tzinfo=base.cr.toontownTimeManager.serverTimeZone)
+    holiday['startDate'] = startDate
+    
+    return startDate
+
+def getEndDate(holiday, year=None):
+    if 'endDate' in holiday:
+        return holiday['endDate']
+
+    rightNow = datetime.datetime.now()
+    endMonth = holiday['endMonth'] if 'endMonth' in holiday else (rightNow.month if 'weekDay' in holiday else 12)
     endDay = holiday['endDay'] if 'endDay' in holiday else (rightNow.day if 'weekDay' in holiday else calendar.monthrange(rightNow.year, endMonth)[1])
+    endYear = year if year else rightNow.year
 
-    date = datetime.datetime(rightNow.year, endMonth, endDay)
-    date += datetime.timedelta(days=1)
+    if 'startMonth' in holiday and holiday['startMonth'] > endMonth:
+        endYear += 1
 
-    return date
+    endDate = datetime.datetime(endYear, endMonth, endDay, tzinfo=base.cr.toontownTimeManager.serverTimeZone)
+    holiday['endDate'] = endDate
+
+    return endDate

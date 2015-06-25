@@ -720,12 +720,3 @@ class PhysicsWorldBase:
             someNodePathGeom = None
             self.bodyList.append((None, body))
         return (someNodePathGeom, body)
-
-    def attachMarker(self, body):
-        if self.canRender:
-            testMarker = render.attachNewNode('Joint Marker')
-            ballmodel = loader.loadModel('models/misc/sphere')
-            ballmodel.reparentTo(testMarker)
-            ballmodel.setScale(0.25)
-            testMarker.setPos(0.0, 0.0, -100.0)
-            self.odePandaRelationList.append((testMarker, body))

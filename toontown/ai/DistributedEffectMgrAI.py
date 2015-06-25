@@ -1,5 +1,6 @@
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 import HolidayGlobals
+import datetime
 
 class DistributedEffectMgrAI(DistributedObjectAI):
 
@@ -22,7 +23,7 @@ class DistributedEffectMgrAI(DistributedObjectAI):
             return
 
         holidayInfo = HolidayGlobals.getHoliday(self.holiday)
-        expireTime = int(HolidayGlobals.getUnixTime(HolidayGlobals.getEndDate(holidayInfo)) / 60)
+        expireTime = int(HolidayGlobals.getServerTime(HolidayGlobals.getEndDate(holidayInfo) + datetime.timedelta(days=1)) / 60)
 
         if 'scavengerHunt' in holidayInfo:
             scavengerHunt = av.getScavengerHunt()
