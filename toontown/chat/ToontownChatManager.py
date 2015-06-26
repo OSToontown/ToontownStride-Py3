@@ -35,7 +35,7 @@ class ToontownChatManager(ChatManager.ChatManager):
         ChatManager.ChatManager.__init__(self, cr, localAvatar)
         self.chatInputSpeedChat = TTChatInputSpeedChat(self)
         self.normalPos = Vec3(0.25, 0, -0.196)
-        self.whisperPos = Vec3(0, 0, -0.296)
+        self.whisperPos = Vec3(0.25, 0, -0.28)
         self.speedChatPlusPos = Vec3(-0.35, 0, 0.71)
         self.SCWhisperPos = Vec3(0, 0, 0)
         self.chatInputWhiteList = TTChatInputWhiteList()

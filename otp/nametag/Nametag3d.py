@@ -6,9 +6,10 @@ import math
 
 class Nametag3d(Nametag):
     WANT_DYNAMIC_SCALING = True
+    MAX_SCALE = 2.5
     SCALING_FACTOR = 0.055
     SCALING_MINDIST = 1
-    SCALING_MAXDIST = 50
+    SCALING_MAXDIST = math.pow(MAX_SCALE / SCALING_FACTOR, 2)
 
     BILLBOARD_OFFSET = 3.0
     SHOULD_BILLBOARD = True
