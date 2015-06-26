@@ -219,7 +219,7 @@ class Playground(Place.Place):
             self.loader.hood.startSky()
             lightsOn = LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, 0.1, Vec4(1, 1, 1, 1))
             lightsOn.start()
-        NametagGlobals.setWant2dNametags(True)
+        NametagGlobals.setMasterArrowsOn(1)
         self.zoneId = requestStatus['zoneId']
         self.tunnelOriginList = base.cr.hoodMgr.addLinkTunnelHooks(self, self.loader.nodeList)
         how = requestStatus['how']
@@ -243,7 +243,7 @@ class Playground(Place.Place):
                 light.reparentTo(hidden)
 
         newsManager = base.cr.newsManager
-        NametagGlobals.setWant2dNametags(False)
+        NametagGlobals.setMasterArrowsOn(0)
         for i in self.loader.nodeList:
             self.loader.exitAnimatedProps(i)
 

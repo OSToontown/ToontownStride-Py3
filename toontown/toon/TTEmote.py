@@ -77,7 +77,7 @@ def doSleep(toon, volume = 1):
         toon.openEyes()
         toon.startBlink()
         toon.setPlayRate(1, 'neutral')
-        if toon.nametag.getChatText() == TTLocalizer.ToonSleepString:
+        if toon.nametag.getChat() == TTLocalizer.ToonSleepString:
             toon.clearChat()
         toon.lerpLookAt(Point3(0, 1, 0), time=0.25)
 

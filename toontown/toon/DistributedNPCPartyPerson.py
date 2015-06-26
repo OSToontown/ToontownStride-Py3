@@ -5,7 +5,7 @@ from panda3d.core import *
 
 from DistributedNPCToonBase import DistributedNPCToonBase
 from otp.otpbase import OTPLocalizer
-from toontown.chat.ChatGlobals import *
+from otp.nametag.NametagConstants import *
 from toontown.parties import PartyGlobals
 from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer

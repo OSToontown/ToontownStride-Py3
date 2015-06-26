@@ -2023,9 +2023,9 @@ class Toon(Avatar.Avatar, ToonHead):
         self.openEyes()
         self.startBlink()
         if config.GetBool('stuck-sleep-fix', 1):
-            doClear = SLEEP_STRING in (self.nametag.getChatText(), self.nametag.getStompChatText())
+            doClear = SLEEP_STRING in (self.nametag.getChat(), self.nametag.getStompText())
         else:
-            doClear = self.nametag.getChatText() == SLEEP_STRING
+            doClear = self.nametag.getChat() == SLEEP_STRING
         if doClear:
             self.clearChat()
         self.lerpLookAt(Point3(0, 1, 0), time=0.25)
@@ -2741,10 +2741,10 @@ class Toon(Avatar.Avatar, ToonHead):
                 name = self.getName()
             suitDept = SuitDNA.suitDepts.index(SuitDNA.getSuitDept(suitType))
             suitName = SuitBattleGlobals.SuitAttributes[suitType]['name']
-            self.nametag.setText(TTLocalizer.SuitBaseNameWithLevel % {'name': name,
+            self.nametag.setDisplayName(TTLocalizer.SuitBaseNameWithLevel % {'name': name,
              'dept': suitName,
              'level': self.cogLevels[suitDept] + 1})
-            self.nametag.setWordWrap(9.0)
+            self.nametag.setWordwrap(9.0)
 
     def takeOffSuit(self):
         if not self.isDisguised:
@@ -3027,7 +3027,7 @@ class Toon(Avatar.Avatar, ToonHead):
         if self.headMeter:
             return
 
-        nodePath = NodePath(self.nametag.getIcon())
+        nodePath = NodePath(self.nametag.getNameIcon())
 
         if nodePath.isEmpty():
             return
@@ -3055,7 +3055,7 @@ class Toon(Avatar.Avatar, ToonHead):
 
         icons = loader.loadModel('phase_3/models/props/gm_icons')
         self.gmIcon = icons.find('**/access_level_%s' % access)
-        np = NodePath(self.nametag.getIcon())
+        np = NodePath(self.nametag.getNameIcon())
 
         if np.isEmpty() or not self.gmIcon:
             return
@@ -3081,7 +3081,7 @@ class Toon(Avatar.Avatar, ToonHead):
         if self.partyHat:
             return
 
-        nodePath = NodePath(self.nametag.getIcon())
+        nodePath = NodePath(self.nametag.getNameIcon())
 
         if nodePath.isEmpty():
             return

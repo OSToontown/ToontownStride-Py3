@@ -87,13 +87,13 @@ class CogdoBarrelRoomIntro(CogdoGameMovie):
 
         def start():
             self.frame.show()
-            base.setCellsActive(base.bottomCells + base.leftCells + base.rightCells, 0)
+            base.setCellsAvailable(base.bottomCells + base.leftCells + base.rightCells, 0)
 
         def end():
             self._dialogueLabel.reparentTo(hidden)
             self.toonHead.reparentTo(hidden)
             self.frame.hide()
-            base.setCellsActive(base.bottomCells + base.leftCells + base.rightCells, 1)
+            base.setCellsAvailable(base.bottomCells + base.leftCells + base.rightCells, 1)
             self._stopUpdateTask()
 
         self._ival = Sequence(Func(start), Func(self.displayLine, dialogue), Wait(CogdoBarrelRoomConsts.BarrelRoomIntroTimeout), Func(end))

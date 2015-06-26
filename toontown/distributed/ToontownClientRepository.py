@@ -293,13 +293,13 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
     def handleAvatarResponseMsg(self, avatarId, di):
         self.cleanupWaitingForDatabase()
         dclass = self.dclassesByName['DistributedToon']
-        NametagGlobals.setWant2dNametags(False)
+        NametagGlobals.setMasterArrowsOn(0)
         loader.beginBulkLoad('localAvatarPlayGame', OTPLocalizer.CREnteringToontown, 400, 1, TTLocalizer.TIP_GENERAL, 0)
         localAvatar = LocalToon.LocalToon(self)
         localAvatar.dclass = dclass
         base.localAvatar = localAvatar
         __builtins__['localAvatar'] = base.localAvatar
-        NametagGlobals.setMe(base.localAvatar)
+        NametagGlobals.setToon(base.localAvatar)
         localAvatar.doId = avatarId
         self.localAvatarDoId = avatarId
         parentId = None
@@ -423,7 +423,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
                 self.notify.error('could not delete localAvatar, delayDeletes=%s' % (base.localAvatar.getDelayDeleteNames(),))
             base.localAvatar.deleteOrDelay()
             base.localAvatar.detectLeaks()
-            NametagGlobals.setMe(base.cam)
+            NametagGlobals.setToon(base.cam)
             del base.localAvatar
             del __builtins__['localAvatar']
         base.localAvatarStyle = None

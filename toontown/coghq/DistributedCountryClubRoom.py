@@ -9,6 +9,7 @@ import CountryClubRoomBase, CountryClubRoom
 import FactoryEntityCreator
 import CountryClubRoomSpecs
 from otp.level import LevelSpec, LevelConstants
+from otp.nametag.NametagConstants import *
 from toontown.toonbase import TTLocalizer
 
 def getCountryClubRoomReadyPostName(doId):

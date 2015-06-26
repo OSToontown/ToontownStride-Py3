@@ -1,6 +1,6 @@
 from panda3d.core import *
 from direct.distributed import ClockDelta
-from toontown.chat.ChatGlobals import CFSpeech, CFTimeout
+from otp.nametag.NametagConstants import CFSpeech, CFTimeout
 from toontown.toonbase import TTLocalizer, ToontownGlobals
 from toontown.toontowngui import TTDialog
 from toontown.toon import NPCToons

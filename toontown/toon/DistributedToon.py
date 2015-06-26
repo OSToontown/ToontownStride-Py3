@@ -1211,10 +1211,11 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         realIndexToUse = 0
         if type(index) == type(0) and 0 <= index and index < len(speedChatStyles):
             realIndexToUse = index
+        else:
+            base.cr.centralLogger.writeClientEvent('Hacker victim setSpeedChatStyleIndex invalid attacking toon = %d' % self.doId)
         self.speedChatStyleIndex = realIndexToUse
         nameKey, arrowColor, rolloverColor, frameColor = speedChatStyles[realIndexToUse]
-        self.nametag.setSpeedChatColor(VBase4(frameColor[0], frameColor[1], frameColor[2], 1))
-        self.nametag.updateAll()
+        self.nametag.setQtColor(VBase4(frameColor[0], frameColor[1], frameColor[2], 1))
         if self.isLocal():
             messenger.send('SpeedChatStyleChange', [])
 
@@ -1990,11 +1991,11 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             base.playSfx(dialogue, node=self)
         elif chatFlags & CFSpeech != 0:
             if self.nametag.getNumChatPages() > 0:
-                self.playDialogueForString(self.nametag.getChatText())
+                self.playDialogueForString(self.nametag.getChat())
                 if self.soundChatBubble != None:
                     base.playSfx(self.soundChatBubble, node=self)
-            elif self.nametag.getStompChatText():
-                self.playDialogueForString(self.nametag.getStompChatText(), self.nametag.CHAT_STOMP_DELAY)
+            elif self.nametag.getChatStomp():
+                self.playDialogueForString(self.nametag.getStompText(), self.nametag.getStompDelay())
 
     def playDialogueForString(self, chatString, delay = 0.0):
         if len(chatString) == 0:

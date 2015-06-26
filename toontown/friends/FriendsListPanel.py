@@ -270,10 +270,10 @@ class FriendsListPanel(DirectFrame, StateData.StateData):
             friendButton.destroy()
             del self.friends[friendId]
 
-        self.createButtons(petFriends, NametagColors[CCNonPlayer][0][0])
-        self.createButtons(admins, NametagColors[CCAdmin][0][0])
-        self.createButtons(trueFriends, NametagColors[CCNormal][0][0])
-        self.createButtons(friends, NametagColors[CCSpeedChat][0][0])
+        self.createButtons(petFriends, NAMETAG_COLORS[CCNonPlayer][0][0])
+        self.createButtons(admins, NAMETAG_COLORS[CCAdmin][0][0])
+        self.createButtons(trueFriends, NAMETAG_COLORS[CCNormal][0][0])
+        self.createButtons(friends, NAMETAG_COLORS[CCSpeedChat][0][0])
 
         self.scrollList.index = self.listScrollIndex[self.panelType]
         self.scrollList.refresh()
