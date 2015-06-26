@@ -21,7 +21,7 @@ from toontown.effects import Ripples
 from toontown.toonbase import TTLocalizer
 import MinigamePowerMeter
 from direct.task.Task import Task
-from toontown.nametag import NametagGlobals
+from otp.nametag import NametagGlobals
 
 class DistributedTugOfWarGame(DistributedMinigame):
     bgm = 'phase_4/audio/bgm/MG_tug_o_war.ogg'
@@ -251,6 +251,7 @@ class DistributedTugOfWarGame(DistributedMinigame):
         self.notify.debug('onstage')
         DistributedMinigame.onstage(self)
         self.lt = base.localAvatar
+        NametagGlobals.setGlobalNametagScale(1)
         self.arrowKeys = ArrowKeys.ArrowKeys()
         self.room.reparentTo(render)
         self.room.setPosHpr(0.0, 18.39, -ToontownGlobals.FloorOffset, 0.0, 0.0, 0.0)
@@ -294,6 +295,7 @@ class DistributedTugOfWarGame(DistributedMinigame):
             self.setupTrack = None
         base.camLens.setMinFov(settings['fov']/(4./3.))
         base.camLens.setNearFar(ToontownGlobals.DefaultCameraNear, ToontownGlobals.DefaultCameraFar)
+        NametagGlobals.setGlobalNametagScale(1.0)
         if self.arrowKeys:
             self.arrowKeys.setPressHandlers(self.arrowKeys.NULL_HANDLERS)
             self.arrowKeys.setReleaseHandlers(self.arrowKeys.NULL_HANDLERS)
@@ -1020,8 +1022,8 @@ class DistributedTugOfWarGame(DistributedMinigame):
             d = SuitDNA.SuitDNA()
             d.newSuit(self.suitType)
             self.suit.setDNA(d)
-            self.suit.nametag.setNametag2d(None)
-            self.suit.nametag.setNametag3d(None)
+            self.suit.nametag3d.stash()
+            self.suit.nametag.destroy()
             self.suit.reparentTo(render)
             self.suit.setPos(self.origSuitPosHpr[0])
             self.suit.setHpr(self.origSuitPosHpr[1])
