@@ -15,7 +15,7 @@ from toontown.suit import Suit
 from toontown.quest import QuestParser
 from toontown.toon import DistributedNPCSpecialQuestGiver
 from toontown.toonbase import TTLocalizer
-from toontown.chat.ChatGlobals import CFSpeech
+from otp.nametag.NametagConstants import CFSpeech
 
 
 class DistributedTutorialInterior(DistributedObject.DistributedObject):

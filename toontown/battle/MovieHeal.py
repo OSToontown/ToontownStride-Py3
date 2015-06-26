@@ -10,7 +10,7 @@ from BattleSounds import *
 import MovieCamera
 import MovieNPCSOS
 import MovieUtil
-from toontown.chat.ChatGlobals import *
+from otp.nametag.NametagConstants import *
 from toontown.effects import Splash
 from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer
