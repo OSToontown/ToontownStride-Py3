@@ -12,11 +12,9 @@ from toontown.battle import MovieToonVictory
 from toontown.battle import RewardPanel
 from toontown.battle import SuitBattleGlobals
 from toontown.building import ElevatorConstants
-from toontown.chat.ChatGlobals import *
 from toontown.coghq import CogDisguiseGlobals
 from toontown.distributed import DelayDelete
 from toontown.effects import DustCloud
-from toontown.nametag import NametagGlobals
 from toontown.suit import DistributedBossCog
 from toontown.suit import Suit
 from toontown.suit import SuitDNA
@@ -25,6 +23,9 @@ from toontown.toon import ToonDNA
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import ToontownTimer
+from otp.nametag import NametagGroup
+from otp.nametag.NametagConstants import *
+from otp.nametag import NametagGlobals
 
 
 OneBossCog = None
@@ -195,7 +196,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         npc = Toon.Toon()
         npc.setName(TTLocalizer.BossbotResistanceToonName)
         npc.setPickable(0)
-        npc.setPlayerType(NametagGlobals.CCNonPlayer)
+        npc.setPlayerType(NametagGroup.CCNonPlayer)
         dna = ToonDNA.ToonDNA()
         dna.newToonRandom(11237, 'm', 1)
         dna.head = 'sls'

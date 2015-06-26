@@ -8,8 +8,6 @@ from panda3d.core import *
 import random
 
 from otp.avatar import Avatar
-from toontown.chat.ChatGlobals import *
-from toontown.nametag.NametagGroup import *
 from otp.otpbase import OTPGlobals
 from toontown.distributed import DelayDelete
 from toontown.effects import Bubbles
