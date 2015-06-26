@@ -14,8 +14,6 @@ from toontown.toonbase import TTLocalizer
 from toontown.coghq import FactoryCameraViews
 from direct.controls.ControlManager import CollisionHandlerRayStart
 from otp.ai.MagicWordGlobal import *
-from toontown.nametag.NametagGlobals import *
-from toontown.chat.ChatGlobals import CFThought, CFTimeout
 
 class DistributedFactory(DistributedLevel.DistributedLevel, FactoryBase.FactoryBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedFactory')

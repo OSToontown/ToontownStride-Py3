@@ -9,7 +9,6 @@ import MintRoomBase, MintRoom
 import MintRoomSpecs
 from otp.level import DistributedLevel
 from otp.level import LevelSpec, LevelConstants
-from toontown.nametag.NametagGlobals import *
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase.ToontownGlobals import *
 
