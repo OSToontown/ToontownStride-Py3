@@ -28,7 +28,6 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
     wantDevCameraPositions = base.config.GetBool('want-dev-camera-positions', 0)
     wantMouse = base.config.GetBool('want-mouse', 0)
     sleepTimeout = base.config.GetInt('sleep-timeout', 120)
-    swimTimeout = base.config.GetInt('afk-timeout', 600)
     __enableMarkerPlacement = base.config.GetBool('place-markers', 0)
 
     def __init__(self, cr, chatMgr, talkAssistant = None, passMessagesThrough = False):
@@ -63,7 +62,6 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         self.sleepFlag = 0
         self.isDisguised = 0
         self.movingFlag = 0
-        self.swimmingFlag = 0
         self.lastNeedH = None
         self.accept('friendOnline', self.__friendOnline)
         self.accept('friendOffline', self.__friendOffline)
@@ -976,42 +974,6 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         taskMgr.remove(self.uniqueName('sleepwatch'))
         self.sleepCallback = None
         return
-
-    def startSleepSwimTest(self):
-        taskName = self.taskName('sleepSwimTest')
-        taskMgr.remove(taskName)
-        task = Task.Task(self.sleepSwimTest)
-        self.lastMoved = globalClock.getFrameTime()
-        self.lastState = None
-        self.lastAction = None
-        self.sleepSwimTest(task)
-        taskMgr.add(self.sleepSwimTest, taskName, 35)
-        return
-
-    def stopSleepSwimTest(self):
-        taskName = self.taskName('sleepSwimTest')
-        taskMgr.remove(taskName)
-        self.stopSound()
-
-    def sleepSwimTest(self, task):
-        now = globalClock.getFrameTime()
-        speed, rotSpeed, slideSpeed = self.controlManager.getSpeeds()
-        if speed != 0.0 or rotSpeed != 0.0 or inputState.isSet('jump'):
-            if not self.swimmingFlag:
-                self.swimmingFlag = 1
-        elif self.swimmingFlag:
-            self.swimmingFlag = 0
-        if self.swimmingFlag or self.hp <= 0:
-            self.wakeUp()
-        elif not self.sleepFlag:
-            now = globalClock.getFrameTime()
-            if now - self.lastMoved > self.swimTimeout:
-                self.swimTimeoutAction()
-                return Task.done
-        return Task.cont
-
-    def swimTimeoutAction(self):
-        pass
 
     def trackAnimToSpeed(self, task):
         speed, rotSpeed, slideSpeed = self.controlManager.getSpeeds()

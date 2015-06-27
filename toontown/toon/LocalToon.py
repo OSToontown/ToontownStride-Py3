@@ -1628,13 +1628,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             print 'Local Toon Anim State %s' % animName
         DistributedToon.DistributedToon.b_setAnimState(self, animName, animMultiplier, callback, extraArgs)
 
-    def swimTimeoutAction(self):
-        self.ignore('wakeup')
-        self.takeOffSuit()
-        base.cr.playGame.getPlace().fsm.request('final')
-        self.b_setAnimState('TeleportOut', 1, self.__handleSwimExitTeleport, [0])
-        return Task.done
-
     def __handleSwimExitTeleport(self, requestStatus):
         self.notify.info('closing shard...')
         base.cr.gameFSM.request('closeShard', ['afkTimeout'])

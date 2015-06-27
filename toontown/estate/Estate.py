@@ -316,7 +316,6 @@ class Estate(Place.Place):
         self.__setUnderwaterFog()
         base.playSfx(self.loader.underwaterSound, looping=1, volume=0.8)
         self.cameraSubmerged = 1
-        self.walkStateData.setSwimSoundAudible(1)
 
     def __emergeCamera(self):
         if self.cameraSubmerged == 0:
@@ -325,7 +324,6 @@ class Estate(Place.Place):
         self.loader.hood.sky.setFogOff()
         self.__setFaintFog()
         self.cameraSubmerged = 0
-        self.walkStateData.setSwimSoundAudible(0)
 
     def forceUnderWater(self):
         self.toonSubmerged = 0

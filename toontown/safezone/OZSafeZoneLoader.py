@@ -47,7 +47,6 @@ class OZSafeZoneLoader(SafeZoneLoader):
         waterfallPlacer = self.geom.find('**/waterfall*')
         binMgr = CullBinManager.getGlobalPtr()
         binMgr.addBin('water', CullBinManager.BTFixed, 29)
-        binMgr = CullBinManager.getGlobalPtr()
         pool = self.geom.find('**/pPlane5*')
         pool.setTransparency(1)
         pool.setColorScale(1.0, 1.0, 1.0, 1.0)

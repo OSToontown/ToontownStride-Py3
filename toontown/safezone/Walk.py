@@ -15,7 +15,6 @@ class Walk(StateData.StateData):
          State.State('swimming', self.enterSwimming, self.exitSwimming, ['walking', 'slowWalking']),
          State.State('slowWalking', self.enterSlowWalking, self.exitSlowWalking, ['walking', 'swimming'])], 'off', 'off')
         self.fsm.enterInitialState()
-        self.IsSwimSoundAudible = 0
         self.swimSoundPlaying = 0
 
     def load(self):
@@ -66,36 +65,31 @@ class Walk(StateData.StateData):
     def exitWalking(self):
         base.localAvatar.stopTrackAnimToSpeed()
 
-    def setSwimSoundAudible(self, IsSwimSoundAudible):
-        self.IsSwimSoundAudible = IsSwimSoundAudible
-        if IsSwimSoundAudible == 0 and self.swimSoundPlaying:
-            self.swimSound.stop()
-            self.swimSoundPlaying = 0
-
     def enterSwimming(self, swimSound):
         base.localAvatar.setWalkSpeedNormal()
         base.localAvatar.applyBuffs()
         self.swimSound = swimSound
         self.swimSoundPlaying = 0
         base.localAvatar.b_setAnimState('swim', base.localAvatar.animMultiplier)
-        base.localAvatar.startSleepSwimTest()
-        taskMgr.add(self.__swim, 'localToonSwimming')
+        taskMgr.add(self.__swimSoundTest, 'localToonSwimming')
 
     def exitSwimming(self):
         taskMgr.remove('localToonSwimming')
         self.swimSound.stop()
         del self.swimSound
         self.swimSoundPlaying = 0
-        base.localAvatar.stopSleepSwimTest()
+    
+    def __swimSoundTest(self, task):
+        speed, rotSpeed, slideSpeed = base.localAvatar.controlManager.getSpeeds()
 
-    def __swim(self, task):
-        speed = base.mouseInterfaceNode.getSpeed()
-        if speed == 0 and self.swimSoundPlaying:
+        if (speed or rotSpeed):
+            if not self.swimSoundPlaying:
+                self.swimSoundPlaying = 1
+                base.playSfx(self.swimSound, looping=1)
+        elif self.swimSoundPlaying:
             self.swimSoundPlaying = 0
             self.swimSound.stop()
-        elif speed > 0 and self.swimSoundPlaying == 0 and self.IsSwimSoundAudible:
-            self.swimSoundPlaying = 1
-            base.playSfx(self.swimSound, looping=1)
+
         return Task.cont
 
     def enterSlowWalking(self):
