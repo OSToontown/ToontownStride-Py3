@@ -749,6 +749,7 @@ dclass DistributedToon : DistributedPlayer {
   setRedeemedCodes(string [] = []) required ownrecv db;
   setEmblems(uint32[] = [0, 0]) required ownrecv db;
   setTrueFriends(uint32[] = []) required clsend ownrecv db;
+  setNextKnockHeal(uint32) ram airecv;
 };
 
 dclass DistributedPartyGate : DistributedObject {
@@ -1872,6 +1873,7 @@ dclass DistributedNPCGlove : DistributedNPCToonBase {
 };
 
 dclass DistributedKnockKnockDoor : DistributedAnimatedProp {
+  requestToonup() airecv clsend;
 };
 
 dclass DistributedElevator : DistributedObject {

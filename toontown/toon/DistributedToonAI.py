@@ -159,6 +159,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.reported = []
         self.trueFriends = []
         self.fishBingoTutorialDone = False
+        self.nextKnockHeal = 0
 
     def generate(self):
         DistributedPlayerAI.DistributedPlayerAI.generate(self)
@@ -4019,6 +4020,19 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def getTrueFriends(self, trueFriends):
         return self.trueFriends
+
+    def setNextKnockHeal(self, nextKnockHeal):
+        self.nextKnockHeal = nextKnockHeal
+
+    def d_setNextKnockHeal(self, nextKnockHeal):
+        self.sendUpdate('setNextKnockHeal', [nextKnockHeal])
+
+    def b_setNextKnockHeal(self, nextKnockHeal):
+        self.setNextKnockHeal(nextKnockHeal)
+        self.d_setNextKnockHeal(nextKnockHeal)
+
+    def getNextKnockHeal(self):
+        return self.nextKnockHeal
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[str, int, int])
 def cheesyEffect(value, hood=0, expire=0):

@@ -1619,3 +1619,5 @@ FISHSALE_NONE = 0
 FISHSALE_COMPLETE = 1
 FISHSALE_TROPHY = 2
 NPCCollisionDelay = 2.5
+KnockKnockHeal = 12
+KnockKnockCooldown = 600
