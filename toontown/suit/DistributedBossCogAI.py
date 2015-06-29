@@ -223,8 +223,7 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
         self.resetBattles()
         self.arenaSide = None
         self.makeBattleOneBattles()
-        self.barrier = self.beginBarrier('Introduction', self.involvedToons, 45, self.doneIntroduction)
-        return
+        self.barrier = self.beginBarrier('Introduction', self.involvedToons, 50, self.doneIntroduction)
 
     def doneIntroduction(self, avIds):
         self.b_setState('BattleOne')

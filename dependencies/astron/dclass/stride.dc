@@ -1771,7 +1771,7 @@ dclass DistributedCogHQDoor : DistributedDoor {
 };
 
 dclass DistributedCogHQExteriorDoor : DistributedCogHQDoor {
-  selectLobby(uint32) broadcast ram;
+  selectLobby(uint32) broadcast;
   confirmEntrance(uint32, bool) airecv clsend;
 };
 

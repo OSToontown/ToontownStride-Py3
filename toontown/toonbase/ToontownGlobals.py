@@ -943,12 +943,6 @@ LawbotBossBattleTwoPosHpr = (-2.798,
  0,
  0,
  0)
-LawbotBossTopRampPosA = (-80, -35, 18)
-LawbotBossTopRampTurnPosA = (-80, 10, 18)
-LawbotBossP3PosA = (55, -9, 0)
-LawbotBossTopRampPosB = (80, -35, 18)
-LawbotBossTopRampTurnPosB = (80, 10, 18)
-LawbotBossP3PosB = (55, -9, 0)
 LawbotBossBattleThreePosHpr = LawbotBossBattleTwoPosHpr
 LawbotBossBottomPos = (50, 39, 0)
 LawbotBossDeathPos = (50, 40, 0)

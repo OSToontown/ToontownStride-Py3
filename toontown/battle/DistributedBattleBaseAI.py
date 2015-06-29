@@ -1361,7 +1361,7 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                         pass
                     elif track != SOS:
                         toon = self.getToon(toonId)
-                        if toon != None:
+                        if toon != None and not toon.unlimitedGags:
                             check = toon.inventory.useItem(track, level)
                             if check == -1:
                                 self.air.writeServerEvent('suspicious', toonId, 'Toon generating movie for non-existant gag track %s level %s' % (track, level))
@@ -1634,8 +1634,6 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                     toon.inventory.zeroInv(1)
                     deadToons.append(activeToon)
                 self.notify.debug('AFTER ROUND: toon: %d setHp: %d' % (toon.doId, toon.hp))
-                if toon.unlimitedGags:
-                    toon.doRestock(noUber=0)
 
         for deadToon in deadToons:
             self.__removeToon(deadToon)
