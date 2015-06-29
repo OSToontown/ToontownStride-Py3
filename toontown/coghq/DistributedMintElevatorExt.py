@@ -86,7 +86,7 @@ class DistributedMintElevatorExt(DistributedElevatorExt.DistributedElevatorExt):
     def setMintInteriorZoneForce(self, zoneId):
         place = self.cr.playGame.getPlace()
         if place:
-            place.fsm.request('elevator', [self, 1])
+            place.fsm.request('elevator', [self])
             hoodId = self.cr.playGame.hood.hoodId
             mintId = self.mintId
             if bboard.has('mintIdOverride'):
