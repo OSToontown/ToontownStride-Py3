@@ -2041,9 +2041,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         for soundSequence in removeList:
             self.soundSequenceList.remove(soundSequence)
 
-    def sendLogMessage(self, message):
-        self.sendUpdate('logMessage', [message])
-
     def setChatAbsolute(self, chatString, chatFlags, dialogue = None, interrupt = 1, quiet = 0):
         DistributedAvatar.DistributedAvatar.setChatAbsolute(self, chatString, chatFlags, dialogue, interrupt)
 

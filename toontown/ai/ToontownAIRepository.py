@@ -191,7 +191,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.claimOwnership(self.districtId)
 
         self.districtStats = ToontownDistrictStatsAI(self)
-        self.districtStats.settoontownDistrictId(self.districtId)
+        self.districtStats.setDistrictId(self.districtId)
         self.districtStats.generateWithRequiredAndId(
             self.allocateChannel(), self.getGameDoId(), 3)
         self.notify.info('Created ToontownDistrictStats(%d)' % self.districtStats.doId)

@@ -3655,13 +3655,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def getNametagStyle(self):
         return self.nametagStyle
 
-    def logMessage(self, message):
-        avId = self.air.getAvatarIdFromSender()
-        try:
-            self.air.writeServerEvent('clientLog', avId, message)
-        except:
-            self.air.writeServerEvent('suspicious', avId, 'client sent us a clientLog that caused an exception')
-
     def b_setMail(self, mail):
         self.d_setMail(mail)
         self.setMail(mail)

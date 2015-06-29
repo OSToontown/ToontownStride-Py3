@@ -457,9 +457,6 @@ class DistributedToonUD(DistributedObjectUD):
     def logSuspiciousEvent(self, todo0):
         pass
 
-    def logMessage(self, todo0):
-        pass
-
     def forceLogoutWithNotify(self):
         pass
 

@@ -150,7 +150,7 @@ dclass DistributedPlayer : DistributedAvatar {
   setSC(uint16 msgIndex) broadcast ownsend airecv;
   setSCCustom(uint16 msgIndex) broadcast ownsend airecv;
   setFriendsList(uint32[] = []) ownrecv required db airecv;
-  setDISLid(uint32 = 0) broadcast ownrecv ram db airecv required;
+  setDISLid(uint32 = 0) airecv ram db;
   setWishName(string = "") db ram;
   setWishNameState(string = "OPEN") db ram;
   setAdminAccess(uint16 = 0) required broadcast ownrecv db;
@@ -555,7 +555,7 @@ dclass ToontownDistrict : DistributedDistrict {
 };
 
 dclass ToontownDistrictStats : DistributedObject {
-  settoontownDistrictId(uint32) broadcast required ram;
+  setDistrictId(uint32) broadcast required ram;
   setAvatarCount(uint32) broadcast required ram;
   setInvasionStatus(uint8) broadcast required ram;
 };
@@ -726,7 +726,6 @@ dclass DistributedToon : DistributedPlayer {
   setGolfCourseBest(uint8 [3] = [0*3]) required ownrecv db;
   setUnlimitedSwing(uint8) broadcast ownrecv ram;
   logSuspiciousEvent(char [0-1024]) ownsend airecv;
-  logMessage(char [0-1024]) ownsend airecv;
   forceLogoutWithNotify() ownrecv;
   setPinkSlips(uint8 = 0) required ownrecv db;
   setNametagStyle(uint8 = 0) required broadcast ownrecv db;
@@ -743,7 +742,6 @@ dclass DistributedToon : DistributedPlayer {
   setPartyStatus(uint64, uint8) ownrecv airecv;
   announcePartyStarted(uint64) ownrecv;
   setNeverStartedPartyRefunded(uint64, int8, uint16) ownrecv;
-  setDISLid(uint32) ram db airecv;
   setAnimalSound(uint8 index) ram broadcast ownrecv;
   setBuffs(uint32[] = []) required ownrecv db;
   setRedeemedCodes(string [] = []) required ownrecv db;
@@ -3165,27 +3163,27 @@ dclass DistributedPartyManager : DistributedObject {
 };
 
 dclass GlobalLobbyManager : DistributedObjectGlobal {
-    lobbyManagerAIHello(uint32 channel);
-    queryLobby(uint32 hostId);
-    addLobby(DoId avId, uint64 lobbyId);
-    toonJoinedLobby(uint64 lobbyId, uint32 avId);
-    toonLeftLobby(uint64 lobbyId, uint32 avId);
-    requestLobbySlot(uint64 lobbyId, uint32 avId);
-    lobbyDone(uint64 lobbyId);
-    allocIds(uint16 count);
+  lobbyManagerAIHello(uint32 channel);
+  queryLobby(uint32 hostId);
+  addLobby(DoId avId, uint64 lobbyId);
+  toonJoinedLobby(uint64 lobbyId, uint32 avId);
+  toonLeftLobby(uint64 lobbyId, uint32 avId);
+  requestLobbySlot(uint64 lobbyId, uint32 avId);
+  lobbyDone(uint64 lobbyId);
+  allocIds(uint16 count);
 };
 
 dclass GlobalPartyManager : DistributedObjectGlobal {
-    partyManagerAIHello(uint32 channel);
-    queryParty(uint32 hostId);
-    addParty(DoId avId, uint64 partyId, string start, string end, int8 isPrivate,
-             int8 inviteTheme, activity [], decoration [], DoIdList inviteeIds);
-    partyHasStarted(uint64 partyId, uint32 shardId, uint32 zoneId, string hostName);
-    toonJoinedParty(uint64 partyId, uint32 avId);
-    toonLeftParty(uint64 partyId, uint32 avId);
-    requestPartySlot(uint64 partyId, uint32 avId, uint32 gateId);
-    partyDone(uint64 partyId);
-    allocIds(uint16 count);
+  partyManagerAIHello(uint32 channel);
+  queryParty(uint32 hostId);
+  addParty(DoId avId, uint64 partyId, string start, string end, int8 isPrivate,
+           int8 inviteTheme, activity [], decoration [], DoIdList inviteeIds);
+  partyHasStarted(uint64 partyId, uint32 shardId, uint32 zoneId, string hostName);
+  toonJoinedParty(uint64 partyId, uint32 avId);
+  toonLeftParty(uint64 partyId, uint32 avId);
+  requestPartySlot(uint64 partyId, uint32 avId, uint32 gateId);
+  partyDone(uint64 partyId);
+  allocIds(uint16 count);
 };
 
 struct PotentialToon {
