@@ -8,6 +8,7 @@ from toontown.battle import BattleBase
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
 from toontown.toonbase import TTLocalizer
+from toontown.toon.NPCFriendPanel import createNPCToonHead
 
 class TownBattleToonPanel(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('TownBattleToonPanel')
@@ -22,6 +23,7 @@ class TownBattleToonPanel(DirectFrame):
         self.sosText.hide()
         self.fireText = DirectLabel(parent=self, relief=None, pos=(0.1, 0, 0.015), text=TTLocalizer.TownBattleToonFire, text_scale=0.06)
         self.fireText.hide()
+        self.sosHead = None
         self.undecidedText = DirectLabel(parent=self, relief=None, pos=(0.1, 0, 0.015), text=TTLocalizer.TownBattleUndecided, text_scale=0.1)
         self.healthText = DirectLabel(parent=self, text='', pos=(-0.06, 0, -0.075), text_scale=0.055)
         self.hpChangeEvent = None
@@ -93,6 +95,7 @@ class TownBattleToonPanel(DirectFrame):
         self.gagNode.hide()
         self.whichText.hide()
         self.passNode.hide()
+        self.cleanupSosHead()
         if self.hasGag:
             self.gag.removeNode()
             self.hasGag = 0
@@ -104,7 +107,12 @@ class TownBattleToonPanel(DirectFrame):
             self.fireText.show()
             self.whichText.show()
             self.whichText['text'] = self.determineWhichText(numTargets, targetIndex, localNum, index)
-        elif track == BattleBase.SOS or track == BattleBase.NPCSOS or track == BattleBase.PETSOS:
+        elif track == BattleBase.NPCSOS:
+            self.sosHead = createNPCToonHead(targetIndex)
+            self.sosHead.reparentTo(self)
+            self.sosHead.setPos(0.1, 0, 0.045)
+            self.sosHead.setScale(0.24)
+        elif track == BattleBase.SOS or track == BattleBase.PETSOS:
             self.sosText.show()
         elif track >= MIN_TRACK_INDEX and track <= MAX_TRACK_INDEX:
             self.undecidedText.hide()
@@ -120,7 +128,6 @@ class TownBattleToonPanel(DirectFrame):
                 self.whichText['text'] = self.determineWhichText(numTargets, targetIndex, localNum, index)
         else:
             self.notify.error('Bad track value: %s' % track)
-        return
 
     def determineWhichText(self, numTargets, targetIndex, localNum, index):
         returnStr = ''
@@ -152,7 +159,13 @@ class TownBattleToonPanel(DirectFrame):
             del self.gag
         self.gagNode.removeNode()
         del self.gagNode
+        self.cleanupSosHead()
         DirectFrame.destroy(self)
+
+    def cleanupSosHead(self):
+        if self.sosHead:
+            self.sosHead.removeNode()
+            self.sosHead = None
 
     def cleanupLaffMeter(self):
         self.notify.debug('Cleaning up laffmeter!')

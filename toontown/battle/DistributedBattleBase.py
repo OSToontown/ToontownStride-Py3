@@ -599,7 +599,7 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
             if track == SOS:
                 targetIndex = -1
             elif track == NPCSOS:
-                targetIndex = -1
+                targetIndex = targets[i]
             elif track == PETSOS:
                 targetIndex = -1
             elif track == PASS:
