@@ -16,7 +16,5 @@ class MMHood(ToonHood):
     TITLE_COLOR = (1.0, 0.5, 0.5, 1.0)
 
     HOLIDAY_DNA = {
-      ToontownGlobals.WINTER_DECORATIONS: ['phase_6/dna/winter_storage_MM.pdna'],
-      ToontownGlobals.WACKY_WINTER_DECORATIONS: ['phase_6/dna/winter_storage_MM.pdna'],
-      ToontownGlobals.HALLOWEEN_PROPS: ['phase_6/dna/halloween_props_storage_MM.pdna'],
-      ToontownGlobals.SPOOKY_PROPS: ['phase_6/dna/halloween_props_storage_MM.pdna']}
+      ToontownGlobals.CHRISTMAS: ['phase_6/dna/winter_storage_MM.pdna'],
+      ToontownGlobals.HALLOWEEN: ['phase_6/dna/halloween_props_storage_MM.pdna']}

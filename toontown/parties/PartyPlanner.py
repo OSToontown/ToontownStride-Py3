@@ -156,13 +156,12 @@ class PartyPlanner(DirectFrame, FSM):
         self.prevButton['state'] = DirectGuiGlobals.NORMAL
         self.nextButton.hide()
         defaultInviteTheme = PartyGlobals.InviteTheme.GenericMale
-        if hasattr(base.cr, 'newsManager') and base.cr.newsManager:
-            if ToontownGlobals.VICTORY_PARTY_HOLIDAY in base.cr.newsManager.getHolidayIdList():
-                defaultInviteTheme = PartyGlobals.InviteTheme.VictoryParty
-            elif ToontownGlobals.KARTING_TICKETS_HOLIDAY in base.cr.newsManager.getHolidayIdList() or ToontownGlobals.CIRCUIT_RACING_EVENT in base.cr.newsManager.getHolidayIdList():
-                defaultInviteTheme = PartyGlobals.InviteTheme.Racing
-            elif ToontownGlobals.VALENTINES_DAY in base.cr.newsManager.getHolidayIdList():
-                defaultInviteTheme = PartyGlobals.InviteTheme.Valentoons
+        if base.cr.newsManager.isHolidayRunning(ToontownGlobals.VICTORY_PARTY_HOLIDAY):
+            defaultInviteTheme = PartyGlobals.InviteTheme.VictoryParty
+        elif base.cr.newsManager.isHolidayRunning(ToontownGlobals.KARTING_TICKETS_HOLIDAY) or base.cr.newsManager.isHolidayRunning(ToontownGlobals.GRAND_PRIX):
+            defaultInviteTheme = PartyGlobals.InviteTheme.Racing
+        elif base.cr.newsManager.isHolidayRunning(ToontownGlobals.VALENTOONS_DAY):
+            defaultInviteTheme = PartyGlobals.InviteTheme.Valentoons
         if self.partyInfo is not None:
             del self.partyInfo
         activityList = self.partyEditor.partyEditorGrid.getActivitiesOnGrid()
@@ -593,14 +592,12 @@ class PartyPlanner(DirectFrame, FSM):
 
     def __handleHolidays(self):
         self.inviteThemes = range(len(PartyGlobals.InviteTheme))
-        if hasattr(base.cr, 'newsManager') and base.cr.newsManager:
-            holidayIds = base.cr.newsManager.getHolidayIdList()
-            if ToontownGlobals.VALENTINES_DAY not in holidayIds:
-                self.inviteThemes.remove(PartyGlobals.InviteTheme.Valentoons)
-            if ToontownGlobals.VICTORY_PARTY_HOLIDAY not in holidayIds:
-                self.inviteThemes.remove(PartyGlobals.InviteTheme.VictoryParty)
-            if ToontownGlobals.WINTER_DECORATIONS not in holidayIds and ToontownGlobals.WACKY_WINTER_DECORATIONS not in holidayIds:
-                self.inviteThemes.remove(PartyGlobals.InviteTheme.Winter)
+        if not base.cr.newsManager.isHolidayRunning(ToontownGlobals.VALENTOONS_DAY):
+            self.inviteThemes.remove(PartyGlobals.InviteTheme.Valentoons)
+        if not base.cr.newsManager.isHolidayRunning(ToontownGlobals.VICTORY_PARTY_HOLIDAY):
+            self.inviteThemes.remove(PartyGlobals.InviteTheme.VictoryParty)
+        if not base.cr.newsManager.isHolidayRunning(ToontownGlobals.CHRISTMAS):
+            self.inviteThemes.remove(PartyGlobals.InviteTheme.Winter)
 
     def _createFarewellPage(self):
         page = DirectFrame(self.frame)

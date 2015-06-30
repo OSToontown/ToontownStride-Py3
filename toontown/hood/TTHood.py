@@ -1,10 +1,8 @@
+from otp.ai.MagicWordGlobal import *
 from toontown.safezone.TTSafeZoneLoader import TTSafeZoneLoader
 from toontown.town.TTTownLoader import TTTownLoader
 from toontown.toonbase import ToontownGlobals
 from toontown.hood.ToonHood import ToonHood
-
-from otp.ai.MagicWordGlobal import *
-
 
 class TTHood(ToonHood):
     notify = directNotify.newCategory('TTHood')
@@ -18,11 +16,8 @@ class TTHood(ToonHood):
     TITLE_COLOR = (1.0, 0.5, 0.4, 1.0)
 
     HOLIDAY_DNA = {
-      ToontownGlobals.WINTER_DECORATIONS: ['phase_4/dna/winter_storage_TT.pdna', 'phase_4/dna/winter_storage_TT_sz.pdna'],
-      ToontownGlobals.WACKY_WINTER_DECORATIONS: ['phase_4/dna/winter_storage_TT.pdna', 'phase_4/dna/winter_storage_TT_sz.pdna'],
-      ToontownGlobals.HALLOWEEN_PROPS: ['phase_4/dna/halloween_props_storage_TT.pdna', 'phase_4/dna/halloween_props_storage_TT_sz.pdna'],
-      ToontownGlobals.SPOOKY_PROPS: ['phase_4/dna/halloween_props_storage_TT.pdna', 'phase_4/dna/halloween_props_storage_TT_sz.pdna']}
-
+      ToontownGlobals.CHRISTMAS: ['phase_4/dna/winter_storage_TT.pdna', 'phase_4/dna/winter_storage_TT_sz.pdna'],
+      ToontownGlobals.HALLOWEEN: ['phase_4/dna/halloween_props_storage_TT.pdna', 'phase_4/dna/halloween_props_storage_TT_sz.pdna']}
 
 @magicWord(category=CATEGORY_CREATIVE)
 def spooky():

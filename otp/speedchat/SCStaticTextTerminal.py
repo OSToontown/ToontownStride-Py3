@@ -3,8 +3,10 @@ from otp.otpbase.OTPLocalizer import SpeedChatStaticText
 SCStaticTextMsgEvent = 'SCStaticTextMsg'
 
 def decodeSCStaticTextMsg(textId):
-    return SpeedChatStaticText.get(textId, None)
+    if 30200 <= textId <= 30205:
+        textId += 20
 
+    return SpeedChatStaticText.get(textId, None)
 
 class SCStaticTextTerminal(SCTerminal):
 

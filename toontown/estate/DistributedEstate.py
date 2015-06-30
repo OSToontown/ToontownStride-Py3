@@ -68,13 +68,10 @@ class DistributedEstate(DistributedObject.DistributedObject):
         self.defaultSignModel = loader.loadModel('phase_13/models/parties/eventSign')
         self.activityIconsModel = loader.loadModel('phase_4/models/parties/eventSignIcons')
         self.lt = base.localAvatar
-        newsManager = base.cr.newsManager
-        if newsManager:
-            holidayIds = base.cr.newsManager.getDecorationHolidayId()
-            if ToontownGlobals.HALLOWEEN_COSTUMES in holidayIds or ToontownGlobals.SPOOKY_COSTUMES in holidayIds:
-                self.loadWitch()
-            else:
-                self.loadAirplane()
+        if base.cr.newsManager.isHolidayRunning(ToontownGlobals.HALLOWEEN):
+            self.loadWitch()
+        else:
+            self.loadAirplane()
         self.loadFlowerSellBox()
         self.loadFishSellBox()
         self.oldClear = base.win.getClearColor()

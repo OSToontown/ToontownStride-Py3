@@ -13,10 +13,8 @@ from otp.otpbase import OTPLocalizer
 from SCSpecialMenu import SCSpecialMenu
 
 AprilToonsMenu = [
- (OTPLocalizer.AprilToonsMenuSections[1], [30100, 30102]),
- (OTPLocalizer.AprilToonsMenuSections[2], [30110, 30111, 30112, 30113, 30114, 30115]),
- (OTPLocalizer.AprilToonsMenuSections[3], [30120, 30121, 30122, 30123, 30124, 30125, 30126]),
- (OTPLocalizer.AprilToonsMenuSections[4], [30130, 30131, 30132, 30133]),
+ (OTPLocalizer.AprilToonsMenuSections[1], [30100]),
+ (OTPLocalizer.AprilToonsMenuSections[2], [30130, 30131, 30132, 30133]),
  (OTPLocalizer.AprilToonsMenuSections[0], [30140, 30141])
 ]
 
@@ -85,7 +83,7 @@ VictoryPartiesMenu = [
 ]
 
 WinterMenu = [
- (OTPLocalizer.WinterMenuSections[0], [30200, 30201, 30202, 30203, 30204, 30205]),
+ (OTPLocalizer.WinterMenuSections[0], range(30200, 30206)),
  (OTPLocalizer.WinterMenuSections[1], [30275, 30276, 30277])
 ]
 

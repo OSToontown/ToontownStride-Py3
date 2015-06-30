@@ -29,6 +29,7 @@ Component2IconDict = {'boredom': 'Bored',
 
 from toontown.nametag import *
 from toontown.nametag.NametagGlobals import *
+from toontown.chat.ChatGlobals import *
 
 class Pet(Avatar.Avatar):
     notify = DirectNotifyGlobal.directNotify.newCategory('Pet')
@@ -280,7 +281,7 @@ class Pet(Avatar.Avatar):
         moodIcons = loader.loadModel('phase_4/models/char/petEmotes')
         self.moodIcons = self.attachNewNode('moodIcons')
         self.moodIcons.setScale(2.0)
-        self.moodIcons.setZ(3.65)
+        self.moodIcons.setZ(4.65)
         moods = moodIcons.findAllMatches('**/+GeomNode')
         for moodNum in range(0, moods.getNumPaths()):
             mood = moods.getPath(moodNum)
@@ -295,13 +296,8 @@ class Pet(Avatar.Avatar):
         return
 
     def showMood(self, mood):
-        if hasattr(base.cr, 'newsManager') and base.cr.newsManager:
-            holidayIds = base.cr.newsManager.getHolidayIdList()
-            if (ToontownGlobals.APRIL_FOOLS_COSTUMES in holidayIds or ToontownGlobals.SILLYMETER_EXT_HOLIDAY in holidayIds) and not mood == 'confusion':
-                self.speakMood(mood)
-                return
-            else:
-                self.clearChat()
+        if base.cr.newsManager.isHolidayRunning(ToontownGlobals.APRIL_TOONS_WEEK) and mood != 'confusion':
+            self.speakMood(mood)
         else:
             self.clearChat()
         mood = Component2IconDict[mood]
@@ -322,12 +318,7 @@ class Pet(Avatar.Avatar):
         return
 
     def speakMood(self, mood):
-        if self.moodModel:
-            self.moodModel.hide()
-        if base.config.GetBool('want-speech-bubble', 1):
-            self.nametag.setChat(random.choice(TTLocalizer.SpokenMoods[mood]), CFSpeech)
-        else:
-            self.nametag.setChat(random.choice(TTLocalizer.SpokenMoods[mood]), CFThought)
+        self.setChatAbsolute(random.choice(TTLocalizer.SpokenMoods[mood]), CFSpeech)
 
     def getGenderString(self):
         if self.style:

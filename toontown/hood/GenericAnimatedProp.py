@@ -8,12 +8,12 @@ from toontown.hood import HoodUtil
 
 class GenericAnimatedProp(AnimatedProp.AnimatedProp):
     notify = DirectNotifyGlobal.directNotify.newCategory('GenericAnimatedProp')
-    AnimsUsingWav = []
 
     def __init__(self, node):
         AnimatedProp.AnimatedProp.__init__(self, node)
         self.origAnimNameToSound = {}
         code = node.getTag('DNACode')
+
         if code.startswith('interactive_prop_'):
             pathStr = code[len('interactive_prop_'):].split('__')[0]
         elif code.startswith('animated_prop_generic_'):
@@ -23,10 +23,12 @@ class GenericAnimatedProp(AnimatedProp.AnimatedProp):
             nextUnderscore = tempStr.find('_')
             finalStr = tempStr[nextUnderscore + 1:]
             pathStr = finalStr.split('__')[0]
+
         phaseDelimeter = len('phase_') + pathStr[len('phase_'):].find('_')
         phaseStr = pathStr[:phaseDelimeter]
         pathTokens = pathStr[phaseDelimeter + 1:].split('_')
         self.path = phaseStr
+
         for path in pathTokens:
             self.path += '/'
             self.path += path
@@ -39,6 +41,11 @@ class GenericAnimatedProp(AnimatedProp.AnimatedProp):
 
     def delete(self):
         AnimatedProp.AnimatedProp.delete(self)
+
+        if hasattr(self, 'soundNode'):
+            self.soundNode.removeNode()
+            del self.soundNode
+
         self.node.cleanup()
         del self.node
         del self.trashcan
@@ -67,6 +74,7 @@ class GenericAnimatedProp(AnimatedProp.AnimatedProp):
         self.hoodId = ToontownGlobals.ToontownCentral
         fullString = str(node)
         splits = fullString.split('/')
+
         if len(splits) >= 5:
             visId = int(splits[4])
             self.visId = visId
@@ -80,28 +88,22 @@ class GenericAnimatedProp(AnimatedProp.AnimatedProp):
     def createSoundInterval(self, origAnimNameWithPath, maximumDuration):
         if not hasattr(base, 'localAvatar'):
             return Sequence()
-        sfxVolume = 1.0
-        cutoff = 45
+
         if not hasattr(self, 'soundPath'):
             self.soundPath = self.path.replace('/models/char', '/audio/sfx')
+
         origAnimName = origAnimNameWithPath.split('/')[-1]
-        theSound = self.origAnimNameToSound.get(origAnimName)
-        if not theSound:
-            soundfile = origAnimName.replace('tt_a_ara', 'tt_s_ara')
-            fullPath = self.soundPath + '/' + soundfile
-            if origAnimName in self.AnimsUsingWav:
-                theSound = loader.loadSfx(fullPath + '.ogg')
-            else:
-                theSound = loader.loadSfx(fullPath + '.ogg')
-            self.origAnimNameToSound[origAnimName] = theSound
-        if theSound:
-            soundDur = theSound.length()
-            if maximumDuration < soundDur:
-                if base.config.GetBool('interactive-prop-info', False):
-                    if self.visId == localAvatar.zoneId and origAnimName != 'tt_a_ara_dga_hydrant_idleIntoFight':
-                        self.notify.warning('anim %s had duration of %s while sound  has duration of %s' % (origAnimName, maximumDuration, soundDur))
-                soundDur = maximumDuration
-            result = SoundInterval(theSound, node=self.node, listenerNode=base.localAvatar, volume=sfxVolume, cutOff=cutoff, startTime=0, duration=soundDur)
-        else:
-            result = Sequence()
-        return result
+        sound = self.origAnimNameToSound.get(origAnimName)
+
+        if not sound:
+            sound = loader.loadSfx('%s/%s.ogg' % (self.soundPath, origAnimName.replace('tt_a_ara', 'tt_s_ara')))
+            self.origAnimNameToSound[origAnimName] = sound
+
+        if sound:
+            if not hasattr(self, 'soundNode'):
+                self.soundNode = render.attachNewNode('Sound Node')
+                self.soundNode.setPos(self.trashcan.getBounds().getCenter())
+
+            return SoundInterval(sound, node=self.soundNode, listenerNode=base.localAvatar, volume=1.0, cutOff=45, startTime=0, duration=min(sound.length(), maximumDuration))
+
+        return Sequence()

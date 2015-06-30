@@ -474,10 +474,8 @@ class DistributedTwoDGame(DistributedMinigame):
                     self.updateScore(avId, ToonBlitzGlobals.ScoreGainPerTreasure * treasure.value)
                 else:
                     self.notify.error('WHOA!! treasureIndex %s is out of range; numTreasures = %s' % (treasureIndex, numTreasures))
-                    base.localAvatar.sendLogMessage('treasureIndex %s is out of range; numTreasures = %s' % (treasureIndex, numTreasures))
             else:
                 self.notify.error('WHOA!! sectionIndex %s is out of range; numSections = %s' % (sectionIndex, numSections))
-                base.localAvatar.sendLogMessage('sectionIndex %s is out of range; numSections = %s' % (sectionIndex, numSections))
 
     def __enemyShot(self, sectionIndex, enemyIndex):
         self.sectionMgr.sections[sectionIndex].enemyMgr.enemies[enemyIndex].doShotTrack()

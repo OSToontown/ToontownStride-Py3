@@ -59,6 +59,9 @@ class DistributedTreasure(DistributedObject.DistributedObject):
     def loadModel(self):
         modelPath, grabSoundPath = TreasureGlobals.TreasureModels[self.treasureType]
 
+        if base.cr.newsManager.isHolidayRunning(VALENTOONS_DAY):
+            modelPath = TreasureGlobals.ValentineTreasureModel
+        
         self.grabSound = base.loadSfx(grabSoundPath)
         self.rejectSound = base.loadSfx(self.rejectSoundPath)
         if self.nodePath == None:

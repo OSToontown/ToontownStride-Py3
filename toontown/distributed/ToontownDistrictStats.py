@@ -67,15 +67,15 @@ class ToontownDistrictStats(DistributedObject.DistributedObject):
 
     def __init__(self, cr):
         DistributedObject.DistributedObject.__init__(self, cr)
-        self.toontownDistrictId = 0
+        self.districtId = 0
 
-    def settoontownDistrictId(self, value):
-        self.toontownDistrictId = value
+    def setDistrictId(self, value):
+        self.districtId = value
 
     def setAvatarCount(self, avatarCount):
-        if self.toontownDistrictId in self.cr.activeDistrictMap:
-            self.cr.activeDistrictMap[self.toontownDistrictId].avatarCount = avatarCount
+        if self.districtId in self.cr.activeDistrictMap:
+            self.cr.activeDistrictMap[self.districtId].avatarCount = avatarCount
 
     def setInvasionStatus(self, invasionStatus):
-        if self.toontownDistrictId in self.cr.activeDistrictMap:
-            self.cr.activeDistrictMap[self.toontownDistrictId].invasionStatus = invasionStatus
+        if self.districtId in self.cr.activeDistrictMap:
+            self.cr.activeDistrictMap[self.districtId].invasionStatus = invasionStatus

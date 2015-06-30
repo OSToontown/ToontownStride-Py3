@@ -122,8 +122,6 @@ def kick(reason='No reason specified'):
     Kick the target from the game server.
     """
     target = spellbook.getTarget()
-    if target == spellbook.getInvoker():
-        return "You can't kick yourself!"
     datagram = PyDatagram()
     datagram.addServerHeader(
         target.GetPuppetConnectionChannel(target.doId),

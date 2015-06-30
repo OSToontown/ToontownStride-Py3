@@ -1168,9 +1168,7 @@ class BattleCalculatorAI:
             toonId = targetList[currTarget]
             toon = self.battle.getToon(toonId)
             result = 0
-            if toon and toon.immortalMode:
-                result = 1
-            elif self.TOONS_TAKE_NO_DAMAGE:
+            if (toon and toon.immortalMode) or self.TOONS_TAKE_NO_DAMAGE:
                 result = 0
             elif self.__suitAtkHit(attackIndex):
                 atkType = attack[SUIT_ATK_COL]

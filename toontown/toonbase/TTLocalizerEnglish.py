@@ -3771,10 +3771,9 @@ PartyTugOfWarTitle = 'Party Tug-of-War'
 CalendarShowAll = 'Show All'
 CalendarShowOnlyHolidays = 'Show Only Holidays'
 CalendarShowOnlyParties = 'Show Only Parties'
-CalendarEndsAt = 'Ends at '
-CalendarStartedOn = 'Started on '
-CalendarEndDash = 'End-'
-CalendarEndOf = 'End of '
+CalendarEndsAt = 'Ends on'
+CalendarStartedOn = 'Started on'
+CalendarEndOf = 'End of'
 CalendarPartyGetReady = 'Get ready!'
 CalendarPartyGo = 'Go party!'
 CalendarPartyFinished = "It's over..."
@@ -4606,37 +4605,64 @@ STOREOWNER_CONFIRM_LOSS = 'Your closet is full.  You will lose the clothes you w
 STOREOWNER_OK = lOK
 STOREOWNER_CANCEL = lCancel
 STOREOWNER_TROPHY = 'Wow! You collected %s of %s fish. That deserves a trophy and a Laff boost!'
-SuitInvasionBegin1 = lToonHQ + ': A Cog invasion has begun!!!'
-SuitInvasionBegin2 = lToonHQ + ': %s have taken over Toontown!!!'
-SuitInvasionEnd1 = lToonHQ + ': The %s invasion has ended!!!'
-SuitInvasionEnd2 = lToonHQ + ': The Toons have saved the day once again!!!'
-SuitInvasionUpdate1 = lToonHQ + ': Keep it up, Toons!!!'
-SuitInvasionUpdate2 = lToonHQ + ': The Cogs appear to be decreasing in numbers!!!'
-SuitInvasionBulletin1 = lToonHQ + ': There is a Cog invasion in progress!!!'
-SuitInvasionBulletin2 = lToonHQ + ': %s have taken over Toontown!!!'
-SkelecogInvasionBegin1 = lToonHQ + ": Hmm... We're getting a strange reading over here..."
-SkelecogInvasionBegin2 = lToonHQ + ': The Cog factories are running out of parts to build new Cogs!'
-SkelecogInvasionBegin3 = lToonHQ + ': Skelecogs have taken over Toontown!!!'
-SkelecogInvasionEnd1 = lToonHQ + ': The Skelecog invasion has ended!!!'
-SkelecogInvasionEnd2 = lToonHQ + ': The Toons have saved the day once again!!!'
-SkelecogInvasionBulletin1 = lToonHQ + ': There is a Cog invasion in progress!!!'
-SkelecogInvasionBulletin2 = lToonHQ + ': The Cog factories are running out of parts to build new Cogs!'
-SkelecogInvasionBulletin3 = lToonHQ + ': Skelecogs have taken over Toontown!!!'
-WaiterInvasionBegin1 = lToonHQ + ': It appears that the C.E.O. has fired all his waiters...'
-WaiterInvasionBegin2 = lToonHQ + ': The unemployed waiters are invading Toontown!!!'
-WaiterInvasionEnd1 = lToonHQ + ': The unemployed waiters have been defeated!!!'
-WaiterInvasionEnd2 = lToonHQ + ': The Toons have saved the day once again!!!'
-WaiterInvasionBulletin1 = lToonHQ + ': There is a Cog invasion in progress!!!'
-WaiterInvasionBulletin2 = lToonHQ + ': The C.E.O. has fired all of his waiters!!!'
-WaiterInvasionBulletin3 = lToonHQ + ": The unemployed waiters are invading Toontown!!!"
-V2InvasionBegin1 = lToonHQ + ": Yikes!!! This isn't good, Toons!"
-V2InvasionBegin2 = lToonHQ + ': A major firmware update has been released to the Cogs!!!'
-V2InvasionBegin3 = lToonHQ + ': Version 2.0 %s have taken over Toontown!!!'
-V2InvasionEnd1 = lToonHQ + ': The version 2.0 Cog invasion has ended!!!'
-V2InvasionEnd2 = lToonHQ + ': The Toons have saved the day once again!!!'
-V2InvasionBulletin1 = lToonHQ + ': There is a Cog invasion in progress!!!'
-V2InvasionBulletin2 = lToonHQ + ': A major firmware update has been released to the Cogs!!!'
-V2InvasionBulletin3 = lToonHQ + ': Version 2.0 %s have taken over Toontown!!!'
+SuitInvasionPrefix = '%s: ' % lToonHQ
+SuitInvasionBegin = [
+ 'A Cog invasion has begun!!!',
+ '%(plural)s have taken over Toontown!!!'
+]
+SuitInvasionEnd = [
+ 'The %(singular)s invasion has ended!!!',
+ 'The Toons have saved the day once again!!!'
+]
+SuitInvasionUpdate = [
+ 'Keep it up, Toons!!!',
+ 'The Cogs appear to be decreasing in numbers!!!'
+]
+SuitInvasionBulletin = [
+ 'There is a Cog invasion in progress!!!',
+ '%(plural)s have taken over Toontown!!!'
+]
+SkelecogInvasionBegin = [
+ "Hmm... We're getting a strange reading over here...",
+ 'The Cog factories are running out of parts to build new Cogs!',
+ 'Skelecogs have taken over Toontown!!!'
+]
+SkelecogInvasionEnd = [
+ 'The Skelecog invasion has ended!!!',
+ 'The Toons have saved the day once again!!!'
+]
+SkelecogInvasionBulletin = [
+ 'There is a Cog invasion in progress!!!',
+ 'The Cog factories are running out of parts to build new Cogs!',
+ 'Skelecogs have taken over Toontown!!!'
+]
+WaiterInvasionBegin = [
+ 'It appears that the C.E.O. has fired all his waiters...',
+ 'The unemployed waiters are invading Toontown!!!'
+]
+WaiterInvasionEnd = [
+ 'The unemployed waiters have been defeated!!!',
+ 'The Toons have saved the day once again!!!'
+]
+WaiterInvasionBulletin = [
+ 'There is a Cog invasion in progress!!!',
+ 'The C.E.O. has fired all of his waiters!!!',
+ 'The unemployed waiters are invading Toontown!!!'
+]
+V2InvasionBegin = [
+ "Yikes!!! This isn't good, Toons!",
+ 'A major firmware update has been released to the Cogs!!!',
+ 'Version 2.0 %(plural)s have taken over Toontown!!!'
+]
+V2InvasionEnd = [
+ 'The Version 2.0 %(singular)s invasion has ended!!!',
+ 'The Toons have saved the day once again!!!'
+]
+V2InvasionBulletin = [
+ 'There is a Cog invasion in progress!!!',
+ 'A major firmware update has been released to the Cogs!!!',
+ 'Version 2.0 %(plural)s have taken over Toontown!!!'
+]
 LeaderboardTitle = 'Toon Platoon'
 QuestScript101_0 = 'Come here! Use the arrow keys to move.'
 QuestScript101_1 = 'These are Cogs. They are robots that are trying to take over Toontown.'
@@ -6880,7 +6906,6 @@ PetTrait2descriptions = {'hungerThreshold': ('Always Hungry',
                         'Often Affectionate',
                         'Always Affectionate')}
 FireworksInstructions = lToonHQ + ': Hit the "Page Up" key to see the show!'
-startFireworksResponse = "Usage: startFireworksShow ['num']\n                                         'num' = %s - New Years\n                                         %s - Party Summer \n                                         %s - 4th of July"
 FireworksJuly4Beginning = lToonHQ + ': Welcome to summer fireworks! Enjoy the show!'
 FireworksJuly4Ending = lToonHQ + ': Hope you enjoyed the show! Have a great summer!'
 FireworksNewYearsEveBeginning = lToonHQ + ': Happy New Year! Enjoy the fireworks show, sponsored by Flippy!'
@@ -7214,6 +7239,11 @@ FishBingoTypeCorners = 'Four Corners'
 FishBingoTypeDiagonal = 'Diagonals'
 FishBingoTypeThreeway = 'Three Way'
 FishBingoTypeBlockout = 'BLOCKOUT!'
+SillySaturdayStart = "It's time for Silly Saturday! Saturdays are silly with Fish Bingo and Grand Prix throughout the day!"
+SillySaturdayOngoing = 'Welcome! Silly Saturday is currently in progress.'
+SillySaturdayEnd = 'Silly Saturday is over. Hope you had fun. See you next week!'
+AprilToonsWeekStart = "It's April Toons Week!"
+AprilToonsWeekEnd = 'April Toons Week is over. See you next year!'
 FishBingoStart = "It's time for Fish Bingo!  Go to any available pier to play!"
 FishBingoOngoing = 'Welcome! Fish Bingo is currently in progress.'
 FishBingoEnd = 'Hope you had fun playing Fish Bingo.'
@@ -7513,11 +7543,13 @@ CircuitRaceOngoing = 'Welcome! The Toontown Grand Prix is currently in progress.
 CircuitRaceEnd = "That's all for today's Toontown Grand Prix at Goofy Speedway.  See you next week!"
 TrickOrTreatMsg = 'You have already\nfound this treat!'
 WinterCarolingMsg = 'You have already been caroling here!'
-LawbotBossTempIntro0 = "Hmmm what's on the docket today?"
+LawbotBossTempIntro0 = "Hrmmm, what's on the docket for today?"
 LawbotBossTempIntro1 = 'Aha, we have a Toon on trial!'
-LawbotBossTempIntro2 = "The prosecution's case is strong."
-LawbotBossTempIntro3 = 'And here are the public defenders.'
-LawbotBossTempIntro4 = "Wait a minute... You're Toons!"
+LawbotBossTempIntro2 = "The prosecution's case is strong..."
+LawbotBossTempIntro3 = "Hey, your honorable blindness, you're looking the wrong way!"
+LawbotBossTempIntro4 = 'I may be blind...'
+LawbotBossTempIntro5 = 'But Justice is NOT!'
+LawbotBossTempIntro6 = 'I should have known you Toons would try to upset this trial.'
 LawbotBossTempJury1 = 'Jury selection will now commence.'
 LawbotBossHowToGetEvidence = 'Touch the witness stand to get evidence.'
 LawbotBossTrialChat1 = 'Court is now in session'
@@ -7526,7 +7558,7 @@ LawbotBossNeedMoreEvidence = 'You need to get more evidence!'
 LawbotBossDefenseWins1 = 'Impossible! The defense won?'
 LawbotBossDefenseWins2 = 'No. I declare a mistrial! A new one will be scheduled.'
 LawbotBossDefenseWins3 = "Hrrmpphh. I'll be in my chambers."
-LawbotBossProsecutionWins = 'I find in favor of the plaintiff'
+LawbotBossProsecutionWins = 'I find in favor of the plaintiff!'
 LawbotBossReward = 'I award a promotion and the ability to summon Cogs'
 LawbotBossLeaveCannon = 'Leave cannon'
 LawbotBossPassExam = 'Bah, so you passed the bar exam.'
@@ -7968,19 +8000,25 @@ BankUpgradeHolidayStart = 'Something Toontastic happened to your Jellybean Bank!
 HalloweenPropsHolidayStart = "It's Halloween in Toontown!"
 HalloweenPropsHolidayEnd = 'Halloween has ended. Boo!'
 SpookyPropsHolidayStart = 'Silly Meter spins Toontown into spooky mode!'
-BlackCatHolidayStart = 'Create a Black Cat - Today only!'
+BlackCatHolidayStart = 'Create a Black Cat - today only!'
 BlackCatHolidayEnd = 'Black Cat day has ended!'
 SpookyBlackCatHolidayStart = 'Friday 13th means a Black Cat blast!'
 LaughingManHolidayStart = 'Today is the day of the Laughing Man!'
+LaughingManHolidayOngoing = 'Welcome! The day of the Laughing Man is currently in progress.'
+LaughingManHolidayEnd = 'The day of the Laughing Man has ended. Hope you had fun!'
 TopToonsMarathonStart = "The Top Toons New Year's Day Marathon has begun!"
 TopToonsMarathonEnd = "The Top Toons New Year's Day Marathon has ended."
 WinterDecorationsStart = "It's Winter Holiday time in Toontown!"
 WinterDecorationsEnd = 'Winter Holiday is over - Happy New Year!'
 WackyWinterDecorationsStart = 'Brrr! Silly Meter goes from silly to chilly!'
 WinterCarolingStart = 'Caroling has come to Toontown. Sing for your Snowman Head - see the Blog for details!'
+WinterCarolingEnd = 'Caroling is over. See you next year.'
+TrickOrTreatStart = 'Happy Halloween! Trick or treat throughout Toontown to get a nifty Halloween pumpkin head reward!'
+TrickOrTreatEnd = 'Halloween is over. See you next year.'
 ExpandedClosetsStart = 'Attention Toons: For a limited time, Members can purchase the new 50 item Closet from the Cattlelog for the low price of 50 Jellybeans!'
 KartingTicketsHolidayStart = 'Get double tickets from Practice races at Goofy Speedway today!'
 IdesOfMarchStart = 'Toons go GREEN!'
+IdesOfMarchEnd = 'Hope you had fun being green.'
 LogoutForced = 'You have done something wrong\n and are being logged out automatically,\n additionally your account may be frozen.\n Try going on a walk outside, it is fun.'
 CountryClubToonEnterElevator = '%s \nhas jumped in the golf kart.'
 CountryClubBossConfrontedMsg = '%s is battling the Club President!'
@@ -8212,19 +8250,21 @@ DayNamesAbbrev = ('MON',
  'FRI',
  'SAT',
  'SUN')
+SummerFireworksStart = 'Celebrate Summer with a fireworks show every hour in each playground!'
+SummerFireworksEnd = 'Summer Fireworks are over. Hope you had fun.'
+NewYearFireworksStart = 'Happy New Year! Enjoy a fireworks show every hour in each playground!'
+NewYearFireworksEnd = 'New Year Fireworks are over. See you next year!'
 HolidayNamesInCalendar = {1: ('Summer Fireworks', 'Celebrate Summer with a fireworks show every hour in each playground!'),
  2: ('New Year Fireworks', 'Happy New Year! Enjoy a fireworks show every hour in each playground!'),
- 3: ('Bloodsucker Invasion', 'Help defend Toontown from the Bloodsucker invasion!'),
+ 3: ('Halloween', 'Happy Halloween! Trick or treat throughout Toontown to get a nifty Halloween pumpkin head reward!'),
  4: ('Winter Holiday', 'Celebrate the Winter Holiday with Toontastic decorations, party and Cattlelog items, and more!'),
  5: ('Skelecog Invasion', 'Stop the Skelecogs from invading Toontown!'),
  6: ('Mr. Hollywood Invasion', 'Stop the Mr. Hollywood Cogs from invading Toontown!'),
- 7: ('Fish Bingo', 'Fish Bingo Wednesday! Everyone at the pond works together to complete the card before time runs out.'),
  8: ('Toon Species Election', 'Vote on the new Toon species! Will it be Goat? Will it be Pig?'),
- 9: ('Black Cat Day', 'Happy Halloween! Create a Toontastic Black Cat Toon - Today Only!'),
- 13: ('Trick or Treat', 'Happy Halloween! Trick or treat throughout Toontown to get a nifty Halloween pumpkin head reward!'),
- 14: ('Grand Prix', 'Grand Prix Monday at Goofy Speedway! To win, collect the most points in three consecutive races!'),
- 16: ('Grand Prix Weekend', 'Toons compete in circuit races at Goofy Speedway!'),
- 19: ('Silly Saturdays', 'Saturdays are silly with Fish Bingo and Grand Prix throughout the day!'),
+ 9: ('Black Cat Day', 'Create a Toontastic Black Cat Toon - today only!'),
+ 16: ('Grand Prix', 'Grand Prix Monday at Goofy Speedway! To win, collect the most points in three consecutive races!'),
+ 17: ('Fish Bingo', 'Fish Bingo Wednesday! Everyone at the pond works together to complete the card before time runs out.'),
+ 18: ('Silly Saturdays', 'Saturdays are silly with Fish Bingo and Grand Prix throughout the day!'),
  24: ('Ides of March', 'Beware the Ides of March! Stop the Backstabber Cogs from invading Toontown!'),
  26: ('Halloween Decor', 'Celebrate Halloween as spooky trees and streetlights transform Toontown!'),
  28: ('Winter Invasion', 'The sellbots are on the loose spreading their cold sales tactics!'),
@@ -8250,7 +8290,6 @@ HolidayNamesInCalendar = {1: ('Summer Fireworks', 'Celebrate Summer with a firew
  54: ('Bean Counter Invasion', 'Stop the Bean Counter Cogs from invading Toontown!'),
  55: ('Double Talker Invasion', 'Stop the Double Talker Cogs from invading Toontown!'),
  56: ('Downsizer Invasion', 'Stop the Downsizer Cogs from invading Toontown!'),
- 57: ('Caroling', 'Sing for your Snowman Head! See the Blog for details!'),
  59: ("ValenToon's Day", "Celebrate ValenToon's Day from Feb 09 to Feb 16!"),
  72: ('Yes Men Invasion', 'Stop the Yes Men Cogs from invading Toontown!'),
  73: ('Tightwad Invasion', 'Stop the Tightwad Cogs from invading Toontown!'),
@@ -8283,7 +8322,8 @@ HolidayNamesInCalendar = {1: ('Summer Fireworks', 'Celebrate Summer with a firew
  101: ('Double Bean Days - Fishing', ''),
  102: ('Jellybean Week', 'Celebrate Jellybean Week with double Jellybean rewards!'),
  103: ("Top Toons New Year's Day Marathon", "Chances to win every hour! See the What's New Blog for details!"),
- 105: ('Toons go GREEN!', 'Toons make a green scene at Green Bean Jeans on Oak Street in Daisy Gardens!')}
+ 105: ('Toons go GREEN!', 'Toons make a green scene at Green Bean Jeans on Oak Street in Daisy Gardens!'),
+ 123: ('Day of the Magic Cat', 'Toons gather around to honor the Magic Cat, the creator of the universe!')}
 UnknownHoliday = 'Unknown Holiday %d'
 HolidayFormat = '%b %d '
 HourFormat = '12'

@@ -824,31 +824,42 @@ WaiterInvasionBulletin = 9
 V2InvasionBegin = 10
 V2InvasionEnd = 11
 V2InvasionBulletin = 12
-NO_HOLIDAY = 0
-JULY4_FIREWORKS = 1
-NEWYEARS_FIREWORKS = 2
+EndingInvasions = [SuitInvasionEnd, SkelecogInvasionEnd, WaiterInvasionEnd, V2InvasionEnd]
+SuitInvasions = {
+ SuitInvasionBegin: TTLocalizer.SuitInvasionBegin,
+ SuitInvasionEnd: TTLocalizer.SuitInvasionEnd,
+ SuitInvasionUpdate: TTLocalizer.SuitInvasionUpdate,
+ SuitInvasionBulletin: TTLocalizer.SuitInvasionBulletin,
+ SkelecogInvasionBegin: TTLocalizer.SkelecogInvasionBegin,
+ SkelecogInvasionEnd: TTLocalizer.SkelecogInvasionEnd,
+ SkelecogInvasionBulletin: TTLocalizer.SkelecogInvasionBulletin,
+ WaiterInvasionBegin: TTLocalizer.WaiterInvasionBegin,
+ WaiterInvasionEnd: TTLocalizer.WaiterInvasionEnd,
+ WaiterInvasionBulletin: TTLocalizer.WaiterInvasionBulletin,
+ V2InvasionBegin: TTLocalizer.V2InvasionBegin,
+ V2InvasionEnd: TTLocalizer.V2InvasionEnd,
+ V2InvasionBulletin: TTLocalizer.V2InvasionBulletin
+}
+SUMMER_FIREWORKS = 1
+NEW_YEAR_FIREWORKS = 2
 HALLOWEEN = 3
-WINTER_DECORATIONS = 4
+CHRISTMAS = 4
 SKELECOG_INVASION = 5
 MR_HOLLYWOOD_INVASION = 6
-FISH_BINGO_NIGHT = 7
 BLACK_CAT_DAY = 9
 RESISTANCE_EVENT = 10
 KART_RECORD_DAILY_RESET = 11
 KART_RECORD_WEEKLY_RESET = 12
-TRICK_OR_TREAT = 13
 CIRCUIT_RACING = 14
 POLAR_PLACE_EVENT = 15
-CIRCUIT_RACING_EVENT = 16
-SILLY_SATURDAY_BINGO = 19
-SILLY_SATURDAY_CIRCUIT = 20
+GRAND_PRIX = 16
+FISH_BINGO = 17
+SILLY_SATURDAY = 18
 BOSSCOG_INVASION = 23
 MARCH_INVASION = 24
 MORE_XP_HOLIDAY = 25
-HALLOWEEN_PROPS = 26
-HALLOWEEN_COSTUMES = 27
 DECEMBER_INVASION = 28
-APRIL_FOOLS_COSTUMES = 29
+APRIL_TOONS_WEEK = 29
 OCTOBER31_FIREWORKS = 31
 NOVEMBER19_FIREWORKS = 32
 SELLBOT_SURPRISE_1 = 33
@@ -876,9 +887,8 @@ COLD_CALLER_INVASION = 53
 BEAN_COUNTER_INVASION = 54
 DOUBLE_TALKER_INVASION = 55
 DOWNSIZER_INVASION = 56
-WINTER_CAROLING = 57
 HYDRANT_ZERO_HOLIDAY = 58
-VALENTINES_DAY = 59
+VALENTOONS_DAY = 59
 SILLYMETER_HOLIDAY = 60
 MAILBOX_ZERO_HOLIDAY = 61
 TRASHCAN_ZERO_HOLIDAY = 62
@@ -931,12 +941,6 @@ JELLYBEAN_TROLLEY_HOLIDAY_MONTH = 113
 JELLYBEAN_FISHING_HOLIDAY_MONTH = 114
 JELLYBEAN_PARTIES_HOLIDAY_MONTH = 115
 SILLYMETER_EXT_HOLIDAY = 116
-SPOOKY_BLACK_CAT = 117
-SPOOKY_TRICK_OR_TREAT = 118
-SPOOKY_PROPS = 119
-SPOOKY_COSTUMES = 120
-WACKY_WINTER_DECORATIONS = 121
-WACKY_WINTER_CAROLING = 122
 LAUGHING_MAN = 123
 TOT_REWARD_JELLYBEAN_AMOUNT = 100
 TOT_REWARD_END_OFFSET_AMOUNT = 0
@@ -955,12 +959,6 @@ LawbotBossBattleTwoPosHpr = (-2.798,
  0,
  0,
  0)
-LawbotBossTopRampPosA = (-80, -35, 18)
-LawbotBossTopRampTurnPosA = (-80, 10, 18)
-LawbotBossP3PosA = (55, -9, 0)
-LawbotBossTopRampPosB = (80, -35, 18)
-LawbotBossTopRampTurnPosB = (80, 10, 18)
-LawbotBossP3PosB = (55, -9, 0)
 LawbotBossBattleThreePosHpr = LawbotBossBattleTwoPosHpr
 LawbotBossBottomPos = (50, 39, 0)
 LawbotBossDeathPos = (50, 40, 0)
@@ -1631,3 +1629,5 @@ FISHSALE_NONE = 0
 FISHSALE_COMPLETE = 1
 FISHSALE_TROPHY = 2
 NPCCollisionDelay = 2.5
+KnockKnockHeal = 12
+KnockKnockCooldown = 600

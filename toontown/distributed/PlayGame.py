@@ -393,9 +393,6 @@ class PlayGame(StateData.StateData):
         base.localAvatar.chatMgr.obscure(1, 1)
         base.localAvatar.obscureFriendsListButton(1)
         requestStatus['how'] = 'tutorial'
-        if base.config.GetString('language', 'english') == 'japanese':
-            musicVolume = base.config.GetFloat('tutorial-music-volume', 0.5)
-            requestStatus['musicVolume'] = musicVolume
         self.hood.enter(requestStatus)
 
     def exitTutorialHood(self):
@@ -557,8 +554,4 @@ class PlayGame(StateData.StateData):
         return self.place
 
     def getPlaceId(self):
-        if self.hood:
-            return self.hood.hoodId
-        else:
-            return None
-        return None
+        return self.hood.hoodId if self.hood else None

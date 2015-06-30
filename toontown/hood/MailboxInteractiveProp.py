@@ -69,9 +69,6 @@ class MailboxInteractiveProp(InteractiveAnimatedProp.InteractiveAnimatedProp):
 
     IdlePauseTime = base.config.GetFloat('prop-idle-pause-time', 0.0)
 
-    def __init__(self, node):
-        InteractiveAnimatedProp.InteractiveAnimatedProp.__init__(self, node)
-
     def setupActor(self, node):
         self.pieActor = Actor.Actor('phase_5/models/char/tt_r_prp_ext_piePackage', {'fightBoost': 'phase_5/models/char/tt_a_prp_ext_piePackage_fightBoost'})
         self.pieActor.reparentTo(self.node)

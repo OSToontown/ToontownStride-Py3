@@ -65,7 +65,6 @@ class OZPlayground(Playground.Playground):
         self.loader.hood.setUnderwaterFog()
         base.playSfx(self.loader.underwaterSound, looping=1, volume=0.8)
         self.cameraSubmerged = 1
-        self.walkStateData.setSwimSoundAudible(1)
 
     def __emergeCamera(self):
         if self.cameraSubmerged == 0:
@@ -73,7 +72,6 @@ class OZPlayground(Playground.Playground):
         self.loader.hood.setNoFog()
         self.loader.underwaterSound.stop()
         self.cameraSubmerged = 0
-        self.walkStateData.setSwimSoundAudible(0)
 
     def __submergeToon(self):
         if self.toonSubmerged == 1:

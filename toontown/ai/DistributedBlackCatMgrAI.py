@@ -13,7 +13,7 @@ class DistributedBlackCatMgrAI(DistributedObjectAI):
         avId = self.air.getAvatarIdFromSender()
         av = self.air.doId2do.get(avId)
 
-        if not av or av.dna.getAnimal() != 'cat' or av.dna.headColor == 0x1a:
+        if not av or av.getTutorialAck() or av.dna.getAnimal() != 'cat' or av.dna.headColor == 0x1a:
             return
 
         newDNA = ToonDNA()

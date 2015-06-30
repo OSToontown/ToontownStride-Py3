@@ -88,8 +88,6 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.wantCogdominiums = self.config.GetBool('want-cogdominiums', True)
         self.wantTrackClsends = self.config.GetBool('want-track-clsends', False)
         self.baseXpMultiplier = self.config.GetFloat('base-xp-multiplier', 1.0)
-        self.wantHalloween = self.config.GetBool('want-halloween', False)
-        self.wantChristmas = self.config.GetBool('want-christmas', False)
 
         self.cogSuitMessageSent = False
 
@@ -193,7 +191,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.claimOwnership(self.districtId)
 
         self.districtStats = ToontownDistrictStatsAI(self)
-        self.districtStats.settoontownDistrictId(self.districtId)
+        self.districtStats.setDistrictId(self.districtId)
         self.districtStats.generateWithRequiredAndId(
             self.allocateChannel(), self.getGameDoId(), 3)
         self.notify.info('Created ToontownDistrictStats(%d)' % self.districtStats.doId)

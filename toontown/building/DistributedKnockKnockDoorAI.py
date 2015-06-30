@@ -1,11 +1,8 @@
-import DistributedAnimatedPropAI
-from direct.directnotify import DirectNotifyGlobal
-from direct.distributed.ClockDelta import *
-from direct.fsm import ClassicFSM
-from direct.fsm import State
 from direct.task.Task import Task
 from otp.ai.AIBaseGlobal import *
-
+from toontown.toonbase import ToontownGlobals
+import DistributedAnimatedPropAI
+import time
 
 class DistributedKnockKnockDoorAI(DistributedAnimatedPropAI.DistributedAnimatedPropAI):
     def __init__(self, air, propId):
@@ -38,3 +35,12 @@ class DistributedKnockKnockDoorAI(DistributedAnimatedPropAI.DistributedAnimatedP
         DistributedAnimatedPropAI.DistributedAnimatedPropAI.exitPlaying(self)
         taskMgr.remove(self.doLaterTask)
         self.doLaterTask = None
+    
+    def requestToonup(self):
+        av = self.air.doId2do.get(self.air.getAvatarIdFromSender())
+
+        if (not av) or av.getHp() == av.getMaxHp() or av.getNextKnockHeal() > time.time():
+            return
+
+        av.toonUp(ToontownGlobals.KnockKnockHeal)
+        av.b_setNextKnockHeal(int(time.time() + ToontownGlobals.KnockKnockCooldown))

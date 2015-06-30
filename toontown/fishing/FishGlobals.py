@@ -713,15 +713,12 @@ def getValue(genus, species, weight):
     value = OVERALL_VALUE_SCALE * (rarityValue + weightValue)
     finalValue = int(ceil(value))
     base = getBase()
-    if hasattr(base, 'cr') and base.cr:
-        if hasattr(base.cr, 'newsManager') and base.cr.newsManager:
-            holidayIds = base.cr.newsManager.getHolidayIdList()
-            if ToontownGlobals.JELLYBEAN_FISHING_HOLIDAY in holidayIds or ToontownGlobals.JELLYBEAN_FISHING_HOLIDAY_MONTH in holidayIds:
-                finalValue *= JellybeanFishingHolidayScoreMultiplier
-    elif simbase.air.newsManager.isHolidayRunning(ToontownGlobals.JELLYBEAN_FISHING_HOLIDAY) or simbase.air.newsManager.isHolidayRunning(ToontownGlobals.JELLYBEAN_FISHING_HOLIDAY_MONTH):
-        finalValue *= JellybeanFishingHolidayScoreMultiplier
-    return finalValue
+    newsManager = base.cr.newsManager if hasattr(base, 'cr') else simbase.air.newsManager
 
+    if newsManager.isHolidayRunning(ToontownGlobals.JELLYBEAN_FISHING_HOLIDAY) or newsManager.isHolidayRunning(ToontownGlobals.JELLYBEAN_FISHING_HOLIDAY_MONTH):
+        finalValue *= JellybeanFishingHolidayScoreMultiplier
+
+    return finalValue
 
 __totalNumFish = 0
 __emptyRodDict = {}

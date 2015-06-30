@@ -251,16 +251,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             self.setGMIcon(access)
 
     def setDNA(self, dna):
-        if base.cr.newsManager:
-            if base.cr.newsManager.isHolidayRunning(ToontownGlobals.SPOOKY_BLACK_CAT):
-                black = 26
-                heads = ['cls',
-                 'css',
-                 'csl',
-                 'cll']
-                dna.setTemporary(random.choice(heads), black, black, black)
-            else:
-                dna.restoreTemporary(self.style)
         oldHat = self.getHat()
         oldGlasses = self.getGlasses()
         oldBackpack = self.getBackpack()
@@ -1672,12 +1662,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.effect = TrickOrTreatTargetEffect(beanAmount)
         self.effect.play()
 
-    def trickOrTreatMilestoneMet(self):
-        if self.effect:
-            self.effect.stop()
-        self.effect = TrickOrTreatMilestoneEffect()
-        self.effect.play()
-
     def winterCarolingTargetMet(self, beanAmount):
         if self.effect:
             self.effect.stop()
@@ -2056,9 +2040,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
         for soundSequence in removeList:
             self.soundSequenceList.remove(soundSequence)
-
-    def sendLogMessage(self, message):
-        self.sendUpdate('logMessage', [message])
 
     def setChatAbsolute(self, chatString, chatFlags, dialogue = None, interrupt = 1, quiet = 0):
         DistributedAvatar.DistributedAvatar.setChatAbsolute(self, chatString, chatFlags, dialogue, interrupt)

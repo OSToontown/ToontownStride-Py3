@@ -66,7 +66,7 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.strafeInterval = None
         self.onscreenMessage = None
         self.toonMopathInterval = []
-        self.nerfed = ToontownGlobals.SELLBOT_NERF_HOLIDAY in base.cr.newsManager.getHolidayIdList()
+        self.nerfed = base.cr.newsManager.isHolidayRunning(ToontownGlobals.SELLBOT_NERF_HOLIDAY)
         self.localToonPromoted = True
         self.resetMaxDamage()
 

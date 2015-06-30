@@ -67,6 +67,3 @@ class TrashcanInteractiveProp(InteractiveAnimatedProp.InteractiveAnimatedProp):
         ToontownGlobals.DonaldsDreamland: ('tt_a_ara_ddl_trashcan_fightBoost', 'tt_a_ara_ddl_trashcan_fightCheer', 'tt_a_ara_ddl_trashcan_fightIdle')}
 
     IdlePauseTime = base.config.GetFloat('prop-idle-pause-time', 0.0)
-
-    def __init__(self, node):
-        InteractiveAnimatedProp.InteractiveAnimatedProp.__init__(self, node)

@@ -839,8 +839,7 @@ class Toon(Avatar.Avatar, ToonHead):
             del self._Actor__commonBundleHandles['head']
         if headStyle > -1:
             self.style.head = headStyle
-        if laughingMan > -1:
-            self.style.laughingMan = True if laughingMan else self.getWantLaughingManHoliday()
+        laughingMan = laughingMan or self.style.laughingMan or self.getWantLaughingManHoliday()
         self.generateToonHead(copy)
         self.generateToonColor()
         self.parentToonParts()
@@ -848,7 +847,7 @@ class Toon(Avatar.Avatar, ToonHead):
         self.resetHeight()
         self.eyelids.request('open')
         self.startLookAround()
-        if self.style.laughingMan:
+        if laughingMan:
             LaughingManGlobals.addToonEffect(self)
 
     def generateToonColor(self):
@@ -1188,7 +1187,10 @@ class Toon(Avatar.Avatar, ToonHead):
         return self.shoes
 
     def getDialogueArray(self):
-        animalType = self.style.getType()
+        if base.cr.newsManager.isHolidayRunning(ToontownGlobals.APRIL_TOONS_WEEK):
+            animalType = random.choice(TTLocalizer.AnimalToSpecies.keys())
+        else:
+            animalType = self.style.getType()
         if animalType == 'dog':
             dialogueArray = DogDialogueArray
         elif animalType == 'cat':

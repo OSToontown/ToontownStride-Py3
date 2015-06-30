@@ -72,7 +72,7 @@ class DistributedFactoryElevatorExt(DistributedElevatorExt.DistributedElevatorEx
     def setFactoryInteriorZoneForce(self, zoneId):
         place = self.cr.playGame.getPlace()
         if place:
-            place.fsm.request('elevator', [self, 1])
+            place.fsm.request('elevator', [self])
             hoodId = self.cr.playGame.hood.hoodId
             doneStatus = {'loader': 'cogHQLoader',
              'where': 'factoryInterior',

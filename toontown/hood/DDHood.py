@@ -15,14 +15,10 @@ class DDHood(ToonHood):
     SPOOKY_SKY_FILE = 'phase_3.5/models/props/BR_sky'
     TITLE_COLOR = (0.8, 0.6, 0.5, 1.0)
     underwaterColor = Vec4(0.0, 0.0, 0.6, 1.0)
-    HOLIDAY_DNA = {
-      ToontownGlobals.WINTER_DECORATIONS: ['phase_6/dna/winter_storage_DD.pdna'],
-      ToontownGlobals.WACKY_WINTER_DECORATIONS: ['phase_6/dna/winter_storage_DD.pdna'],
-      ToontownGlobals.HALLOWEEN_PROPS: ['phase_6/dna/halloween_props_storage_DD.pdna'],
-      ToontownGlobals.SPOOKY_PROPS: ['phase_6/dna/halloween_props_storage_DD.pdna']}
 
-    def __init__(self, parentFSM, doneEvent, dnaStore, hoodId):
-        ToonHood.__init__(self, parentFSM, doneEvent, dnaStore, hoodId)
+    HOLIDAY_DNA = {
+      ToontownGlobals.CHRISTMAS: ['phase_6/dna/winter_storage_DD.pdna'],
+      ToontownGlobals.HALLOWEEN: ['phase_6/dna/halloween_props_storage_DD.pdna']}
 
     def load(self):
         ToonHood.load(self)

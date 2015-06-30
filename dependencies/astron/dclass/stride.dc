@@ -150,7 +150,7 @@ dclass DistributedPlayer : DistributedAvatar {
   setSC(uint16 msgIndex) broadcast ownsend airecv;
   setSCCustom(uint16 msgIndex) broadcast ownsend airecv;
   setFriendsList(uint32[] = []) ownrecv required db airecv;
-  setDISLid(uint32 = 0) broadcast ownrecv ram db airecv required;
+  setDISLid(uint32 = 0) airecv ram db;
   setWishName(string = "") db ram;
   setWishNameState(string = "OPEN") db ram;
   setAdminAccess(uint16 = 0) required broadcast ownrecv db;
@@ -329,15 +329,11 @@ from toontown.coghq import DistributedSinkingPlatform/AI
 from toontown.suit import DistributedGoon/AI
 from toontown.suit import DistributedGridGoon/AI
 from toontown.coghq import BattleBlocker/AI
-from toontown.ai import DistributedAprilToonsMgr/AI
 from toontown.ai import DistributedBlackCatMgr/AI
 from toontown.ai import DistributedReportMgr/AI
 from toontown.ai import DistributedPolarPlaceEffectMgr/AI
-from toontown.ai import DistributedGreenToonEffectMgr/AI
+from toontown.ai import DistributedEffectMgr/AI
 from toontown.ai import DistributedResistanceEmoteMgr/AI
-from toontown.ai import DistributedScavengerHuntTarget/AI
-from toontown.ai import DistributedTrickOrTreatTarget/AI
-from toontown.ai import DistributedWinterCarolingTarget/AI
 from toontown.coghq import DistributedMint/AI
 from toontown.coghq import DistributedMintRoom/AI
 from toontown.coghq import DistributedMintBattle/AI
@@ -559,7 +555,7 @@ dclass ToontownDistrict : DistributedDistrict {
 };
 
 dclass ToontownDistrictStats : DistributedObject {
-  settoontownDistrictId(uint32) broadcast required ram;
+  setDistrictId(uint32) broadcast required ram;
   setAvatarCount(uint32) broadcast required ram;
   setInvasionStatus(uint8) broadcast required ram;
 };
@@ -641,7 +637,7 @@ dclass DistributedToon : DistributedPlayer {
   setSpeedChatStyleIndex(uint8 = 1) required ownsend broadcast db;
   setTrophyScore(uint16) broadcast ownrecv ram;
   setTeleportAccess(uint32[] = []) required ownrecv db;
-  setScavengerHunt(uint32[] = []) required ownrecv db;
+  setScavengerHunt(uint16[] = []) required ownrecv db;
   checkTeleportAccess(uint16) airecv ownsend;
   setTeleportOverride(uint8) clsend airecv;
   battleSOS(uint32) ownrecv clsend;
@@ -718,9 +714,6 @@ dclass DistributedToon : DistributedPlayer {
   setCurrentKart(uint32) broadcast ownrecv ram;
   squish(uint8) ownsend airecv;
   announceBingo() broadcast ownrecv;
-  trickOrTreatTargetMet(uint32) ownrecv;
-  trickOrTreatMilestoneMet() ownrecv;
-  winterCarolingTargetMet(uint32) ownrecv;
   setCogSummonsEarned(uint8[] = [0*32]) required ownrecv db;
   reqCogSummons(char [0-256], uint32) ownsend airecv;
   cogSummonsResponse(string, uint32, uint32) ownrecv;
@@ -733,7 +726,6 @@ dclass DistributedToon : DistributedPlayer {
   setGolfCourseBest(uint8 [3] = [0*3]) required ownrecv db;
   setUnlimitedSwing(uint8) broadcast ownrecv ram;
   logSuspiciousEvent(char [0-1024]) ownsend airecv;
-  logMessage(char [0-1024]) ownsend airecv;
   forceLogoutWithNotify() ownrecv;
   setPinkSlips(uint8 = 0) required ownrecv db;
   setNametagStyle(uint8 = 0) required broadcast ownrecv db;
@@ -750,12 +742,12 @@ dclass DistributedToon : DistributedPlayer {
   setPartyStatus(uint64, uint8) ownrecv airecv;
   announcePartyStarted(uint64) ownrecv;
   setNeverStartedPartyRefunded(uint64, int8, uint16) ownrecv;
-  setDISLid(uint32) ram db airecv;
   setAnimalSound(uint8 index) ram broadcast ownrecv;
   setBuffs(uint32[] = []) required ownrecv db;
   setRedeemedCodes(string [] = []) required ownrecv db;
   setEmblems(uint32[] = [0, 0]) required ownrecv db;
   setTrueFriends(uint32[] = []) required clsend ownrecv db;
+  setNextKnockHeal(uint32) ram airecv;
 };
 
 dclass DistributedPartyGate : DistributedObject {
@@ -1210,8 +1202,6 @@ dclass DistributedTargetGame : DistributedMinigame {
 };
 
 dclass EstateManager : DistributedObject {
-  startAprilFools() broadcast;
-  stopAprilFools() broadcast;
   getEstateZone(uint32 avId) airecv clsend;
   setEstateZone(uint32 ownerId, uint32 zoneId);
   setAvHouseId(uint32, uint32[]) broadcast;
@@ -1498,55 +1488,11 @@ dclass GroupManager : DistributedObject {
   removePlayerFromGroup(uint32, uint32) clsend airecv;
 };
 
-struct weeklyCalendarHoliday {
-  uint8 holidayId;
-  uint8 dayOfTheWeek;
-};
-
-struct yearlyCalendarHoliday {
-  uint8 holidayId;
-  uint8[] firstStartTime;
-  uint8[] lastEndTime;
-};
-
-struct oncelyCalendarHoliday {
-  uint8 holidayId;
-  uint16[] firstStartTime;
-  uint16[] lastEndTime;
-};
-
-struct relativelyCalendarHoliday {
-  uint8 holidayId;
-  uint16[] firstStartTime;
-  uint16[] lastEndTime;
-};
-
-struct startAndEndTime {
-  uint16[] startTime;
-  uint16[] endTime;
-};
-
-struct multipleStartHoliday {
-  uint8 holidayId;
-  startAndEndTime times[];
-};
-
 dclass NewsManager : DistributedObject {
-  setPopulation(uint32) broadcast ram;
-  setBingoWin(uint32) broadcast ram;
-  setBingoStart() broadcast;
-  setBingoEnd() broadcast;
-  setCircuitRaceStart() broadcast;
-  setCircuitRaceEnd() broadcast;
+  startHoliday(uint8) broadcast;
+  endHoliday(uint8) broadcast;
+  setActiveHolidays(uint8[]);
   setInvasionStatus(uint8, string, uint32, uint8) broadcast;
-  setHolidayIdList(uint32[]) broadcast ram;
-  holidayNotify() broadcast;
-  setWeeklyCalendarHolidays(weeklyCalendarHoliday []) required broadcast ram;
-  setYearlyCalendarHolidays(yearlyCalendarHoliday []) required broadcast ram;
-  setOncelyCalendarHolidays(oncelyCalendarHoliday []) required broadcast ram;
-  setRelativelyCalendarHolidays(relativelyCalendarHoliday []) required broadcast ram;
-  setMultipleStartHolidays(multipleStartHoliday []) required broadcast ram;
-  sendSystemMessage(string, uint8) broadcast ram;
 };
 
 dclass PurchaseManager : DistributedObject {
@@ -1791,7 +1737,7 @@ dclass DistributedCogHQDoor : DistributedDoor {
 };
 
 dclass DistributedCogHQExteriorDoor : DistributedCogHQDoor {
-  selectLobby(uint32) broadcast ram;
+  selectLobby(uint32) broadcast;
   confirmEntrance(uint32, bool) airecv clsend;
 };
 
@@ -1893,6 +1839,7 @@ dclass DistributedNPCGlove : DistributedNPCToonBase {
 };
 
 dclass DistributedKnockKnockDoor : DistributedAnimatedProp {
+  requestToonup() airecv clsend;
 };
 
 dclass DistributedElevator : DistributedObject {
@@ -2433,12 +2380,6 @@ dclass DistributedPetProxy : DistributedPet {
   setDominantMood(string) broadcast ram;
 };
 
-dclass DistributedAprilToonsMgr : DistributedObject {
-  setEventActive(uint8 eventId, bool) broadcast;
-  requestEventsList() clsend airecv;
-  requestEventsListResp(uint8 []);
-};
-
 dclass DistributedBlackCatMgr : DistributedObject {
   doBlackCatTransformation() broadcast;
   requestBlackCatTransformation() airecv clsend;
@@ -2452,26 +2393,14 @@ dclass DistributedPolarPlaceEffectMgr : DistributedObject {
   addPolarPlaceEffect() airecv clsend;
 };
 
-dclass DistributedGreenToonEffectMgr : DistributedObject {
-  addGreenToonEffect() airecv clsend;
+dclass DistributedEffectMgr : DistributedObject {
+  setHoliday(uint8) required broadcast;
+  requestEffect() airecv clsend;
+  effectDone(uint8);
 };
 
 dclass DistributedResistanceEmoteMgr : DistributedObject {
   addResistanceEmote() clsend airecv;
-};
-
-dclass DistributedScavengerHuntTarget : DistributedObject {
-  attemptScavengerHunt() airecv clsend;
-};
-
-dclass DistributedTrickOrTreatTarget : DistributedObject {
-  doScavengerHunt(int8);
-  requestScavengerHunt() airecv clsend;
-};
-
-dclass DistributedWinterCarolingTarget : DistributedObject {
-  doScavengerHunt(int8) broadcast;
-  requestScavengerHunt() airecv clsend;
 };
 
 dclass DistributedVehicle : DistributedSmoothNode {
@@ -3202,27 +3131,27 @@ dclass DistributedPartyManager : DistributedObject {
 };
 
 dclass GlobalLobbyManager : DistributedObjectGlobal {
-    lobbyManagerAIHello(uint32 channel);
-    queryLobby(uint32 hostId);
-    addLobby(DoId avId, uint64 lobbyId);
-    toonJoinedLobby(uint64 lobbyId, uint32 avId);
-    toonLeftLobby(uint64 lobbyId, uint32 avId);
-    requestLobbySlot(uint64 lobbyId, uint32 avId);
-    lobbyDone(uint64 lobbyId);
-    allocIds(uint16 count);
+  lobbyManagerAIHello(uint32 channel);
+  queryLobby(uint32 hostId);
+  addLobby(DoId avId, uint64 lobbyId);
+  toonJoinedLobby(uint64 lobbyId, uint32 avId);
+  toonLeftLobby(uint64 lobbyId, uint32 avId);
+  requestLobbySlot(uint64 lobbyId, uint32 avId);
+  lobbyDone(uint64 lobbyId);
+  allocIds(uint16 count);
 };
 
 dclass GlobalPartyManager : DistributedObjectGlobal {
-    partyManagerAIHello(uint32 channel);
-    queryParty(uint32 hostId);
-    addParty(DoId avId, uint64 partyId, string start, string end, int8 isPrivate,
-             int8 inviteTheme, activity [], decoration [], DoIdList inviteeIds);
-    partyHasStarted(uint64 partyId, uint32 shardId, uint32 zoneId, string hostName);
-    toonJoinedParty(uint64 partyId, uint32 avId);
-    toonLeftParty(uint64 partyId, uint32 avId);
-    requestPartySlot(uint64 partyId, uint32 avId, uint32 gateId);
-    partyDone(uint64 partyId);
-    allocIds(uint16 count);
+  partyManagerAIHello(uint32 channel);
+  queryParty(uint32 hostId);
+  addParty(DoId avId, uint64 partyId, string start, string end, int8 isPrivate,
+           int8 inviteTheme, activity [], decoration [], DoIdList inviteeIds);
+  partyHasStarted(uint64 partyId, uint32 shardId, uint32 zoneId, string hostName);
+  toonJoinedParty(uint64 partyId, uint32 avId);
+  toonLeftParty(uint64 partyId, uint32 avId);
+  requestPartySlot(uint64 partyId, uint32 avId, uint32 gateId);
+  partyDone(uint64 partyId);
+  allocIds(uint16 count);
 };
 
 struct PotentialToon {

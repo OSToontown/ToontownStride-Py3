@@ -68,11 +68,3 @@ class EstateManager(DistributedObject.DistributedObject):
     def removeFriend(self, ownerId, avId):
         self.notify.debug('removeFriend ownerId = %s, avId = %s' % (ownerId, avId))
         self.sendUpdate('removeFriend', [ownerId, avId])
-
-    def startAprilFools(self):
-        if isinstance(base.cr.playGame.getPlace(), Estate.Estate):
-            base.cr.playGame.getPlace().startAprilFoolsControls()
-
-    def stopAprilFools(self):
-        if isinstance(base.cr.playGame.getPlace(), Estate.Estate):
-            base.cr.playGame.getPlace().stopAprilFoolsControls()

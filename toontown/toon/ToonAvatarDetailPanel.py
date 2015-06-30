@@ -192,7 +192,7 @@ class ToonAvatarDetailPanel(DirectFrame):
                         if numItems == 0:
                             image_color = Vec4(0.5, 0.5, 0.5, 1)
                             geom_color = Vec4(0.2, 0.2, 0.2, 0.5)
-                        elif self.avatar.getTrackBonusLevel(track) > -1:
+                        elif self.avatar.getTrackBonusLevel(track) >= item:
                             image_color = Vec4(0, 0.8, 0.4, 1)
                             geom_color = None
                         else:

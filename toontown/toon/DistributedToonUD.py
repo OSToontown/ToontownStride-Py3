@@ -421,15 +421,6 @@ class DistributedToonUD(DistributedObjectUD):
     def announceBingo(self):
         pass
 
-    def trickOrTreatTargetMet(self, todo0):
-        pass
-
-    def trickOrTreatMilestoneMet(self):
-        pass
-
-    def winterCarolingTargetMet(self, todo0):
-        pass
-
     def setCogSummonsEarned(self, todo0):
         pass
 
@@ -464,9 +455,6 @@ class DistributedToonUD(DistributedObjectUD):
         pass
 
     def logSuspiciousEvent(self, todo0):
-        pass
-
-    def logMessage(self, todo0):
         pass
 
     def forceLogoutWithNotify(self):

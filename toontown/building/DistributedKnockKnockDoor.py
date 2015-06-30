@@ -90,7 +90,11 @@ class DistributedKnockKnockDoor(DistributedAnimatedProp.DistributedAnimatedProp)
         pos = doorNP.getBounds().getCenter()
         self.nametagNP.setPos(pos + Vec3(0, 0, avatar.getHeight() + 2))
         d = duration * 0.125
-        track = Sequence(Parallel(Sequence(Wait(d * 0.5), SoundInterval(self.knockSfx)), Func(self.nametag.setChatText, TTLocalizer.DoorKnockKnock), Wait(d)), Func(avatar.setChatAbsolute, TTLocalizer.DoorWhosThere, CFSpeech | CFTimeout, openEnded=0), Wait(d), Func(self.nametag.setChatText, joke[0]), Wait(d), Func(avatar.setChatAbsolute, joke[0] + TTLocalizer.DoorWhoAppendix, CFSpeech | CFTimeout, openEnded=0), Wait(d), Func(self.nametag.setChatText, joke[1]), Parallel(SoundInterval(self.rimshot, startTime=2.0), Wait(d * 4)), Func(self.cleanupTrack))
+        track = Sequence(Parallel(Sequence(Wait(d * 0.5), SoundInterval(self.knockSfx)), Func(self.nametag.setChatText, TTLocalizer.DoorKnockKnock), Wait(d)), Func(avatar.setChatAbsolute, TTLocalizer.DoorWhosThere, CFSpeech | CFTimeout, openEnded=0), Wait(d), Func(self.nametag.setChatText, joke[0]), Wait(d), Func(avatar.setChatAbsolute, joke[0] + TTLocalizer.DoorWhoAppendix, CFSpeech | CFTimeout, openEnded=0), Wait(d), Func(self.nametag.setChatText, joke[1]))
+        if avatar == base.localAvatar:
+            track.append(Func(self.sendUpdate, 'requestToonup'))
+        track.append(Parallel(SoundInterval(self.rimshot, startTime=2.0), Wait(d * 4)))
+        track.append(Func(self.cleanupTrack))
         track.delayDelete = DelayDelete.DelayDelete(avatar, 'knockKnockTrack')
         return track
 

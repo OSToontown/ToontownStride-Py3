@@ -154,8 +154,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.accept(self.systemMsgAckGuiDoneEvent, self.hideSystemMsgAckGui)
             self.systemMsgAckGui = None
             self.createSystemMsgAckGui()
-            if not hasattr(base.cr, 'lastLoggedIn'):
-                base.cr.lastLoggedIn = self.cr.toontownTimeManager.convertStrToToontownTime('')
             self.acceptingNewFriends = True
             self.acceptingNonFriendWhispers = True
             self.physControls.event.addAgainPattern('again%in')
@@ -1630,13 +1628,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             print 'Local Toon Anim State %s' % animName
         DistributedToon.DistributedToon.b_setAnimState(self, animName, animMultiplier, callback, extraArgs)
 
-    def swimTimeoutAction(self):
-        self.ignore('wakeup')
-        self.takeOffSuit()
-        base.cr.playGame.getPlace().fsm.request('final')
-        self.b_setAnimState('TeleportOut', 1, self.__handleSwimExitTeleport, [0])
-        return Task.done
-
     def __handleSwimExitTeleport(self, requestStatus):
         self.notify.info('closing shard...')
         base.cr.gameFSM.request('closeShard', ['afkTimeout'])
@@ -1763,3 +1754,9 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.petId = petId
         if self.isLocal():
             base.cr.addPetToFriendsMap()
+
+    def startAprilToonsControls(self):
+        self.controlManager.currentControls.setGravity(ToontownGlobals.GravityValue * 0.75)
+
+    def stopAprilToonsControls(self):
+        self.controlManager.currentControls.setGravity(ToontownGlobals.GravityValue * 2.0)

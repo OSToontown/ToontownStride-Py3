@@ -2,6 +2,38 @@ from direct.gui.DirectGui import *
 from toontown.toonbase import TTLocalizer, ToontownGlobals, ToontownBattleGlobals
 import NPCToons, ToonDNA, ToonHead
 
+def createNPCToonHead(NPCID, dimension = 0.5):
+    NPCInfo = NPCToons.NPCToonDict[NPCID]
+    dnaList = NPCInfo[2]
+    gender = NPCInfo[3]
+    if dnaList == 'r':
+        dnaList = NPCToons.getRandomDNA(NPCID, gender)
+    dna = ToonDNA.ToonDNA()
+    dna.newToonFromProperties(*dnaList)
+    head = ToonHead.ToonHead()
+    head.setupHead(dna, forGui=1)
+    fitGeometry(head, fFlip=1, dimension=dimension)
+    return head
+
+def fitGeometry(geom, fFlip = 0, dimension = 0.5):
+    p1 = Point3()
+    p2 = Point3()
+    geom.calcTightBounds(p1, p2)
+    if fFlip:
+        t = p1[0]
+        p1.setX(-p2[0])
+        p2.setX(-t)
+    d = p2 - p1
+    biggest = max(d[0], d[2])
+    s = dimension / biggest
+    mid = (p1 + d / 2.0) * s
+    geomXform = hidden.attachNewNode('geomXform')
+    for child in geom.getChildren():
+        child.reparentTo(geomXform)
+
+    geomXform.setPosHprScale(-mid[0], -mid[1] + 1, -mid[2], 180, 0, 0, s, s, s)
+    geomXform.reparentTo(geom)
+
 class NPCFriendPanel(DirectFrame):
 
     def __init__(self, parent = aspect2d, callable = False, **kw):
@@ -138,7 +170,7 @@ class NPCFriendCard(DirectFrame):
             self.front.show()
             self.back.hide()
             self.NPCName['text'] = TTLocalizer.NPCToonNames[NPCID]
-            self.NPCHead = self.createNPCToonHead(NPCID, dimension=1.2)
+            self.NPCHead = createNPCToonHead(NPCID, dimension=1.2)
             self.NPCHead.reparentTo(self.front)
             self.NPCHead.setZ(0.45)
             track, level, hp, rarity = NPCToons.getNPCTrackLevelHpRarity(NPCID)
@@ -184,35 +216,3 @@ class NPCFriendCard(DirectFrame):
     def showBack(self):
         self.front.hide()
         self.back.show()
-
-    def createNPCToonHead(self, NPCID, dimension = 0.5):
-        NPCInfo = NPCToons.NPCToonDict[NPCID]
-        dnaList = NPCInfo[2]
-        gender = NPCInfo[3]
-        if dnaList == 'r':
-            dnaList = NPCToons.getRandomDNA(NPCID, gender)
-        dna = ToonDNA.ToonDNA()
-        dna.newToonFromProperties(*dnaList)
-        head = ToonHead.ToonHead()
-        head.setupHead(dna, forGui=1)
-        self.fitGeometry(head, fFlip=1, dimension=dimension)
-        return head
-
-    def fitGeometry(self, geom, fFlip = 0, dimension = 0.5):
-        p1 = Point3()
-        p2 = Point3()
-        geom.calcTightBounds(p1, p2)
-        if fFlip:
-            t = p1[0]
-            p1.setX(-p2[0])
-            p2.setX(-t)
-        d = p2 - p1
-        biggest = max(d[0], d[2])
-        s = dimension / biggest
-        mid = (p1 + d / 2.0) * s
-        geomXform = hidden.attachNewNode('geomXform')
-        for child in geom.getChildren():
-            child.reparentTo(geomXform)
-
-        geomXform.setPosHprScale(-mid[0], -mid[1] + 1, -mid[2], 180, 0, 0, s, s, s)
-        geomXform.reparentTo(geom)

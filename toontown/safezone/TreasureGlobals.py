@@ -9,6 +9,8 @@ TreasureDL = 5
 TreasureOZ = 6
 TreasureE  = 7
 
+ValentineTreasureModel = 'phase_4/models/props/tt_m_ara_ext_heart'
+
 TreasureModels = {
     TreasureTT: (
         'phase_4/models/props/icecream',

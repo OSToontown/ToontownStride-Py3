@@ -99,21 +99,14 @@ class Estate(Place.Place):
     def enter(self, requestStatus):
         hoodId = requestStatus['hoodId']
         zoneId = requestStatus['zoneId']
-        newsManager = base.cr.newsManager
         if config.GetBool('want-estate-telemetry-limiter', 1):
             limiter = TLGatherAllAvs('Estate', RotationLimitToH)
         else:
             limiter = TLNull()
         self._telemLimiter = limiter
-        if newsManager:
-            holidayIds = base.cr.newsManager.getDecorationHolidayId()
-            if (ToontownGlobals.HALLOWEEN_COSTUMES in holidayIds or ToontownGlobals.SPOOKY_COSTUMES in holidayIds) and self.loader.hood.spookySkyFile:
-                lightsOff = Sequence(LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, 0.1, Vec4(0.55, 0.55, 0.65, 1)), Func(self.loader.hood.startSpookySky))
-                lightsOff.start()
-            else:
-                self.loader.hood.startSky()
-                lightsOn = LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, 0.1, Vec4(1, 1, 1, 1))
-                lightsOn.start()
+        if base.cr.newsManager.isHolidayRunning(ToontownGlobals.HALLOWEEN) and self.loader.hood.spookySkyFile:
+            lightsOff = Sequence(LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, 0.1, Vec4(0.55, 0.55, 0.65, 1)), Func(self.loader.hood.startSpookySky))
+            lightsOff.start()
         else:
             self.loader.hood.startSky()
             lightsOn = LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, 0.1, Vec4(1, 1, 1, 1))
@@ -124,11 +117,7 @@ class Estate(Place.Place):
             self.loader.enterAnimatedProps(i)
 
         self.loader.geom.reparentTo(render)
-        # The client April Toons Manager is currently broken, so we have to do this hacky thing instead. :(
-        #if hasattr(base.cr, 'aprilToonsMgr'):
-            #if self.isEventActive(AprilToonsGlobals.EventEstateGravity):
-                #base.localAvatar.startAprilToonsControls()
-        if base.config.GetBool('want-april-toons'):
+        if base.cr.newsManager.isHolidayRunning(ToontownGlobals.APRIL_TOONS_WEEK):
             base.localAvatar.startAprilToonsControls()
         self.accept('doorDoneEvent', self.handleDoorDoneEvent)
         self.accept('DistributedDoor_doorTrigger', self.handleDoorTrigger)
@@ -136,7 +125,7 @@ class Estate(Place.Place):
 
     def exit(self):
         base.localAvatar.stopChat()
-        if base.config.GetBool('want-april-toons'):
+        if base.cr.newsManager.isHolidayRunning(ToontownGlobals.APRIL_TOONS_WEEK):
             base.localAvatar.stopAprilToonsControls()
         self._telemLimiter.destroy()
         del self._telemLimiter
@@ -327,7 +316,6 @@ class Estate(Place.Place):
         self.__setUnderwaterFog()
         base.playSfx(self.loader.underwaterSound, looping=1, volume=0.8)
         self.cameraSubmerged = 1
-        self.walkStateData.setSwimSoundAudible(1)
 
     def __emergeCamera(self):
         if self.cameraSubmerged == 0:
@@ -336,7 +324,6 @@ class Estate(Place.Place):
         self.loader.hood.sky.setFogOff()
         self.__setFaintFog()
         self.cameraSubmerged = 0
-        self.walkStateData.setSwimSoundAudible(0)
 
     def forceUnderWater(self):
         self.toonSubmerged = 0
@@ -362,11 +349,7 @@ class Estate(Place.Place):
         if hasattr(self, 'walkStateData'):
             self.walkStateData.fsm.request('walking')
         self.toonSubmerged = 0
-        # The client April Toons Manager is currently broken, so we have to do this hacky thing instead. :(
-        #if hasattr(base.cr, 'aprilToonsMgr'):
-            #if self.isEventActive(AprilToonsGlobals.EventEstateGravity):
-                #base.localAvatar.startAprilToonsControls()
-        if base.config.GetBool('want-april-toons'):
+        if base.cr.newsManager.isHolidayRunning(ToontownGlobals.APRIL_TOONS_WEEK):
             base.localAvatar.startAprilToonsControls()
 
     def __setUnderwaterFog(self):

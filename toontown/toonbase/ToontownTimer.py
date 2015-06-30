@@ -80,15 +80,16 @@ class ToontownTimer(DirectFrame):
         if task.time >= task.duration:
             self.timerExpired()
             if task.callback:
-                task.callback()
+                task.callback(*task.extraArgs)
             return Task.done
         else:
             return Task.cont
 
-    def countdown(self, duration, callback = None):
+    def countdown(self, duration, callback = None, extraArgs = []):
         self.countdownTask = Task.Task(self._timerTask)
         self.countdownTask.duration = duration
         self.countdownTask.callback = callback
+        self.countdownTask.extraArgs = extraArgs
         taskMgr.remove('timerTask%s' % self.timerId)
         return taskMgr.add(self.countdownTask, 'timerTask%s' % self.timerId)
 

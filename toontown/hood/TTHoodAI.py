@@ -5,9 +5,7 @@ from toontown.safezone import DistributedTrolleyAI
 from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
-from toontown.ai import DistributedTrickOrTreatTargetAI
-from toontown.ai import DistributedWinterCarolingTargetAI
-
+from toontown.ai import DistributedEffectMgrAI
 
 class TTHoodAI(HoodAI.HoodAI):
     def __init__(self, air):
@@ -32,13 +30,11 @@ class TTHoodAI(HoodAI.HoodAI):
             (ToontownGlobals.ToontownCentral, TTLocalizer.NPCToonNames[2021], ('dss', 'ls', 's', 'm', 13, 41, 13, 13, 1, 6, 1, 6, 0, 18, 0), 'm', 1, NPCToons.NPC_GLOVE),
              ToontownGlobals.ToontownCentral, posIndex=0)
 
-        if simbase.air.wantHalloween:
-            self.TrickOrTreatTargetManager = DistributedTrickOrTreatTargetAI.DistributedTrickOrTreatTargetAI(self.air)
-            self.TrickOrTreatTargetManager.generateWithRequired(2649)
+        self.trickOrTreatMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.HALLOWEEN, 12)
+        self.trickOrTreatMgr.generateWithRequired(2649) # All Fun and Games Shop, Silly Street
 
-        if simbase.air.wantChristmas:
-            self.WinterCarolingTargetManager = DistributedWinterCarolingTargetAI.DistributedWinterCarolingTargetAI(self.air)
-            self.WinterCarolingTargetManager.generateWithRequired(2649)
+        self.winterCarolingMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.CHRISTMAS, 14)
+        self.winterCarolingMgr.generateWithRequired(2659) # Joy Buzzers to the World, Silly Street
 
     def shutdown(self):
         HoodAI.HoodAI.shutdown(self)
@@ -52,6 +48,7 @@ class TTHoodAI(HoodAI.HoodAI):
     def createButterflies(self):
         playground = ButterflyGlobals.TTC
         ButterflyGlobals.generateIndexes(self.zoneId, ButterflyGlobals.TTC)
+
         for i in xrange(0, ButterflyGlobals.NUM_BUTTERFLY_AREAS[ButterflyGlobals.TTC]):
             for _ in xrange(0, ButterflyGlobals.NUM_BUTTERFLIES[ButterflyGlobals.TTC]):
                 butterfly = DistributedButterflyAI.DistributedButterflyAI(self.air, playground, i, self.zoneId)

@@ -445,10 +445,6 @@ class OTPClientRepository(ClientRepositoryBase):
     def __handleLoginDone(self, doneStatus):
         mode = doneStatus['mode']
         if mode == 'success':
-            if hasattr(self, 'toontownTimeManager'):
-                timestamp = time.gmtime(doneStatus['timestamp'])
-                dateString = time.strftime(self.toontownTimeManager.formatStr, timestamp)
-                self.lastLoggedIn = self.toontownTimeManager.convertStrToToontownTime(dateString)
             self.loginFSM.request('waitForGameList')
         elif mode == 'reject':
             self.loginFSM.request('reject')

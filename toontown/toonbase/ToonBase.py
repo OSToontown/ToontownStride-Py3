@@ -112,11 +112,6 @@ class ToonBase(OTPBase.OTPBase):
         if cogdoGameSafezoneId != -1:
             self.cogdoGameSafezoneId = cogdoGameSafezoneId
         ToontownBattleGlobals.SkipMovie = self.config.GetBool('skip-battle-movies', 0)
-        self.creditCardUpFront = self.config.GetInt('credit-card-up-front', -1)
-        if self.creditCardUpFront == -1:
-            del self.creditCardUpFront
-        else:
-            self.creditCardUpFront = self.creditCardUpFront != 0
         self.housingEnabled = self.config.GetBool('want-housing', 1)
         self.cannonsEnabled = self.config.GetBool('estate-cannons', 0)
         self.fireworksEnabled = self.config.GetBool('estate-fireworks', 0)

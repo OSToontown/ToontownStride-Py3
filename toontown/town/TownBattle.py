@@ -313,7 +313,10 @@ class TownBattle(StateData.StateData):
                 elif tracks[i] == BattleBase.PASS_ATTACK:
                     numTargets = 0
                     target = -2
-                elif tracks[i] == BattleBase.SOS or tracks[i] == BattleBase.NPCSOS or tracks[i] == BattleBase.PETSOS:
+                elif tracks[i] == BattleBase.NPCSOS:
+                    numTargets = 0
+                    target = targets[i]
+                elif tracks[i] == BattleBase.SOS or tracks[i] == BattleBase.PETSOS:
                     numTargets = 0
                     target = -2
                 elif tracks[i] == HEAL_TRACK:
@@ -331,8 +334,6 @@ class TownBattle(StateData.StateData):
                         if target == -1:
                             numTargets = None
                 self.toonPanels[battleIndices[i]].setValues(battleIndices[i], tracks[i], levels[i], numTargets, target, self.localNum)
-
-        return
 
     def chooseDefaultTarget(self):
         if self.track > -1:

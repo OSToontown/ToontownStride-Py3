@@ -2,8 +2,7 @@ from toontown.hood import HoodAI
 from toontown.safezone import DistributedTrolleyAI, DistributedPillowAI
 from toontown.toonbase import ToontownGlobals
 from toontown.ai import DistributedResistanceEmoteMgrAI
-from toontown.ai import DistributedTrickOrTreatTargetAI
-
+from toontown.ai import DistributedEffectMgrAI
 
 class DLHoodAI(HoodAI.HoodAI):
     def __init__(self, air):
@@ -20,12 +19,15 @@ class DLHoodAI(HoodAI.HoodAI):
 
         if simbase.config.GetBool('want-minigames', True):
             self.createTrolley()
+
         self.resistanceEmoteManager = DistributedResistanceEmoteMgrAI.DistributedResistanceEmoteMgrAI(self.air)
         self.resistanceEmoteManager.generateWithRequired(9720)
 
-        if simbase.air.wantHalloween:
-            self.TrickOrTreatTargetManager = DistributedTrickOrTreatTargetAI.DistributedTrickOrTreatTargetAI(self.air)
-            self.TrickOrTreatTargetManager.generateWithRequired(9619)
+        self.trickOrTreatMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.HALLOWEEN, 12)
+        self.trickOrTreatMgr.generateWithRequired(9619) # Relax to the Max, Lullaby Lane
+        
+        self.winterCarolingMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.CHRISTMAS, 14)
+        self.winterCarolingMgr.generateWithRequired(9722) # Dream On Talent Agency, Pajama Place
 
         self.createPillow()
 
