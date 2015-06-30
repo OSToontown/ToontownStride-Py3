@@ -1,6 +1,9 @@
 from direct.distributed.DistributedObject import DistributedObject
+from direct.interval.IntervalGlobal import *
+from toontown.battle import SuitBattleGlobals
 from toontown.estate import Estate
-from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals, ToontownBattleGlobals, TTLocalizer
+from toontown.suit import SuitDNA
 import HolidayGlobals
 
 class NewsManager(DistributedObject):
@@ -8,7 +11,6 @@ class NewsManager(DistributedObject):
 
     def __init__(self, cr):
         DistributedObject.__init__(self, cr)
-        print 'NewsMgr - GEN!'
         self.invading = False
         self.activeHolidays = []
         base.localAvatar.inventory.setInvasionCreditMultiplier(1)
@@ -22,7 +24,6 @@ class NewsManager(DistributedObject):
         return id in self.activeHolidays
     
     def setActiveHolidays(self, ids):
-        print 'set active holidays %s' % ids
         for id in ids:
             self.startHoliday(id, True)
 
@@ -81,3 +82,24 @@ class NewsManager(DistributedObject):
             base.localAvatar.chatMgr.chatInputSpeedChat.removeHalloweenMenu()
         elif id == ToontownGlobals.CHRISTMAS:
             base.localAvatar.chatMgr.chatInputSpeedChat.removeWinterMenu()
+    
+    def setInvasionStatus(self, msgType, suitType, remaining, flags):
+        if msgType not in ToontownGlobals.SuitInvasions:
+            return
+
+        if suitType in SuitDNA.suitHeadTypes:
+            attributes = SuitBattleGlobals.SuitAttributes[suitType]
+            suitNames = {'singular': attributes['name'], 'plural': attributes['pluralname']}
+        elif suitType in SuitDNA.suitDepts:
+            suitNames = {'singular': SuitDNA.getDeptFullname(suitType), 'plural': SuitDNA.getDeptFullnameP(suitType)}
+        else:
+            return
+
+        track = Sequence()
+        base.localAvatar.inventory.setInvasionCreditMultiplier(1 if msgType in ToontownGlobals.EndingInvasions else ToontownBattleGlobals.getInvasionMultiplier())
+        
+        for i, message in enumerate(ToontownGlobals.SuitInvasions[msgType]):
+            track.append(Wait(5 if i else 1))
+            track.append(Func(base.localAvatar.setSystemMessage, 0, (TTLocalizer.SuitInvasionPrefix + message) % suitNames))
+
+        track.start()

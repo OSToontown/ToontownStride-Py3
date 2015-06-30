@@ -1488,43 +1488,11 @@ dclass GroupManager : DistributedObject {
   removePlayerFromGroup(uint32, uint32) clsend airecv;
 };
 
-struct weeklyCalendarHoliday {
-  uint8 holidayId;
-  uint8 dayOfTheWeek;
-};
-
-struct yearlyCalendarHoliday {
-  uint8 holidayId;
-  uint8[] firstStartTime;
-  uint8[] lastEndTime;
-};
-
-struct oncelyCalendarHoliday {
-  uint8 holidayId;
-  uint16[] firstStartTime;
-  uint16[] lastEndTime;
-};
-
-struct relativelyCalendarHoliday {
-  uint8 holidayId;
-  uint16[] firstStartTime;
-  uint16[] lastEndTime;
-};
-
-struct startAndEndTime {
-  uint16[] startTime;
-  uint16[] endTime;
-};
-
-struct multipleStartHoliday {
-  uint8 holidayId;
-  startAndEndTime times[];
-};
-
 dclass NewsManager : DistributedObject {
   startHoliday(uint8) broadcast;
   endHoliday(uint8) broadcast;
   setActiveHolidays(uint8[]);
+  setInvasionStatus(uint8, string, uint32, uint8) broadcast;
 };
 
 dclass PurchaseManager : DistributedObject {

@@ -32,7 +32,12 @@ class NewsManagerAI(DistributedObjectAI):
             self.fireworkTask = None
 
     def __handleAvatarEntered(self, av):
-        self.sendUpdateToAvatarId(av.getDoId(), 'setActiveHolidays', [self.activeHolidays])
+        avId = av.getDoId()
+
+        if self.air.suitInvasionManager.getInvading():
+            self.air.suitInvasionManager.notifyInvasionBulletin(avId)
+
+        self.sendUpdateToAvatarId(avId, 'setActiveHolidays', [self.activeHolidays])
 
     def getActiveHolidays(self):
         return self.activeHolidays

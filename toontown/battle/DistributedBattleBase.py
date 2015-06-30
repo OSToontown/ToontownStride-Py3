@@ -574,10 +574,10 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
     def setChosenToonAttacks(self, ids, tracks, levels, targets):
         if self.__battleCleanedUp:
             return
-        self.notify.debug('setChosenToonAttacks() - (%s), (%s), (%s), (%s)' % (ids,
+        print 'setChosenToonAttacks() - (%s), (%s), (%s), (%s)' % (ids,
          tracks,
          levels,
-         targets))
+         targets)
         toonIndices = []
         targetIndices = []
         unAttack = 0

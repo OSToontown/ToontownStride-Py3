@@ -4605,37 +4605,64 @@ STOREOWNER_CONFIRM_LOSS = 'Your closet is full.  You will lose the clothes you w
 STOREOWNER_OK = lOK
 STOREOWNER_CANCEL = lCancel
 STOREOWNER_TROPHY = 'Wow! You collected %s of %s fish. That deserves a trophy and a Laff boost!'
-SuitInvasionBegin1 = lToonHQ + ': A Cog invasion has begun!!!'
-SuitInvasionBegin2 = lToonHQ + ': %s have taken over Toontown!!!'
-SuitInvasionEnd1 = lToonHQ + ': The %s invasion has ended!!!'
-SuitInvasionEnd2 = lToonHQ + ': The Toons have saved the day once again!!!'
-SuitInvasionUpdate1 = lToonHQ + ': Keep it up, Toons!!!'
-SuitInvasionUpdate2 = lToonHQ + ': The Cogs appear to be decreasing in numbers!!!'
-SuitInvasionBulletin1 = lToonHQ + ': There is a Cog invasion in progress!!!'
-SuitInvasionBulletin2 = lToonHQ + ': %s have taken over Toontown!!!'
-SkelecogInvasionBegin1 = lToonHQ + ": Hmm... We're getting a strange reading over here..."
-SkelecogInvasionBegin2 = lToonHQ + ': The Cog factories are running out of parts to build new Cogs!'
-SkelecogInvasionBegin3 = lToonHQ + ': Skelecogs have taken over Toontown!!!'
-SkelecogInvasionEnd1 = lToonHQ + ': The Skelecog invasion has ended!!!'
-SkelecogInvasionEnd2 = lToonHQ + ': The Toons have saved the day once again!!!'
-SkelecogInvasionBulletin1 = lToonHQ + ': There is a Cog invasion in progress!!!'
-SkelecogInvasionBulletin2 = lToonHQ + ': The Cog factories are running out of parts to build new Cogs!'
-SkelecogInvasionBulletin3 = lToonHQ + ': Skelecogs have taken over Toontown!!!'
-WaiterInvasionBegin1 = lToonHQ + ': It appears that the C.E.O. has fired all his waiters...'
-WaiterInvasionBegin2 = lToonHQ + ': The unemployed waiters are invading Toontown!!!'
-WaiterInvasionEnd1 = lToonHQ + ': The unemployed waiters have been defeated!!!'
-WaiterInvasionEnd2 = lToonHQ + ': The Toons have saved the day once again!!!'
-WaiterInvasionBulletin1 = lToonHQ + ': There is a Cog invasion in progress!!!'
-WaiterInvasionBulletin2 = lToonHQ + ': The C.E.O. has fired all of his waiters!!!'
-WaiterInvasionBulletin3 = lToonHQ + ": The unemployed waiters are invading Toontown!!!"
-V2InvasionBegin1 = lToonHQ + ": Yikes!!! This isn't good, Toons!"
-V2InvasionBegin2 = lToonHQ + ': A major firmware update has been released to the Cogs!!!'
-V2InvasionBegin3 = lToonHQ + ': Version 2.0 %s have taken over Toontown!!!'
-V2InvasionEnd1 = lToonHQ + ': The version 2.0 Cog invasion has ended!!!'
-V2InvasionEnd2 = lToonHQ + ': The Toons have saved the day once again!!!'
-V2InvasionBulletin1 = lToonHQ + ': There is a Cog invasion in progress!!!'
-V2InvasionBulletin2 = lToonHQ + ': A major firmware update has been released to the Cogs!!!'
-V2InvasionBulletin3 = lToonHQ + ': Version 2.0 %s have taken over Toontown!!!'
+SuitInvasionPrefix = '%s: ' % lToonHQ
+SuitInvasionBegin = [
+ 'A Cog invasion has begun!!!',
+ '%(plural)s have taken over Toontown!!!'
+]
+SuitInvasionEnd = [
+ 'The %(singular)s invasion has ended!!!',
+ 'The Toons have saved the day once again!!!'
+]
+SuitInvasionUpdate = [
+ 'Keep it up, Toons!!!',
+ 'The Cogs appear to be decreasing in numbers!!!'
+]
+SuitInvasionBulletin = [
+ 'There is a Cog invasion in progress!!!',
+ '%(plural)s have taken over Toontown!!!'
+]
+SkelecogInvasionBegin = [
+ "Hmm... We're getting a strange reading over here...",
+ 'The Cog factories are running out of parts to build new Cogs!',
+ 'Skelecogs have taken over Toontown!!!'
+]
+SkelecogInvasionEnd = [
+ 'The Skelecog invasion has ended!!!',
+ 'The Toons have saved the day once again!!!'
+]
+SkelecogInvasionBulletin = [
+ 'There is a Cog invasion in progress!!!',
+ 'The Cog factories are running out of parts to build new Cogs!',
+ 'Skelecogs have taken over Toontown!!!'
+]
+WaiterInvasionBegin = [
+ 'It appears that the C.E.O. has fired all his waiters...',
+ 'The unemployed waiters are invading Toontown!!!'
+]
+WaiterInvasionEnd = [
+ 'The unemployed waiters have been defeated!!!',
+ 'The Toons have saved the day once again!!!'
+]
+WaiterInvasionBulletin = [
+ 'There is a Cog invasion in progress!!!',
+ 'The C.E.O. has fired all of his waiters!!!',
+ 'The unemployed waiters are invading Toontown!!!'
+]
+V2InvasionBegin = [
+ "Yikes!!! This isn't good, Toons!",
+ 'A major firmware update has been released to the Cogs!!!',
+ 'Version 2.0 %(plural)s have taken over Toontown!!!'
+]
+V2InvasionEnd = [
+ 'The Version 2.0 %(singular)s invasion has ended!!!',
+ 'The Toons have saved the day once again!!!'
+]
+V2InvasionBulletin = [
+ 'There is a Cog invasion in progress!!!',
+ 'A major firmware update has been released to the Cogs!!!',
+ 'Version 2.0 %(plural)s have taken over Toontown!!!'
+]
 LeaderboardTitle = 'Toon Platoon'
 QuestScript101_0 = 'Come here! Use the arrow keys to move.'
 QuestScript101_1 = 'These are Cogs. They are robots that are trying to take over Toontown.'

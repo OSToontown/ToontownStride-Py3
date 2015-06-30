@@ -824,6 +824,22 @@ WaiterInvasionBulletin = 9
 V2InvasionBegin = 10
 V2InvasionEnd = 11
 V2InvasionBulletin = 12
+EndingInvasions = [SuitInvasionEnd, SkelecogInvasionEnd, WaiterInvasionEnd, V2InvasionEnd]
+SuitInvasions = {
+ SuitInvasionBegin: TTLocalizer.SuitInvasionBegin,
+ SuitInvasionEnd: TTLocalizer.SuitInvasionEnd,
+ SuitInvasionUpdate: TTLocalizer.SuitInvasionUpdate,
+ SuitInvasionBulletin: TTLocalizer.SuitInvasionBulletin,
+ SkelecogInvasionBegin: TTLocalizer.SkelecogInvasionBegin,
+ SkelecogInvasionEnd: TTLocalizer.SkelecogInvasionEnd,
+ SkelecogInvasionBulletin: TTLocalizer.SkelecogInvasionBulletin,
+ WaiterInvasionBegin: TTLocalizer.WaiterInvasionBegin,
+ WaiterInvasionEnd: TTLocalizer.WaiterInvasionEnd,
+ WaiterInvasionBulletin: TTLocalizer.WaiterInvasionBulletin,
+ V2InvasionBegin: TTLocalizer.V2InvasionBegin,
+ V2InvasionEnd: TTLocalizer.V2InvasionEnd,
+ V2InvasionBulletin: TTLocalizer.V2InvasionBulletin
+}
 SUMMER_FIREWORKS = 1
 NEW_YEAR_FIREWORKS = 2
 HALLOWEEN = 3
