@@ -14,7 +14,6 @@ class DDHood(ToonHood):
     SKY_FILE = 'phase_3.5/models/props/BR_sky'
     SPOOKY_SKY_FILE = 'phase_3.5/models/props/BR_sky'
     TITLE_COLOR = (0.8, 0.6, 0.5, 1.0)
-    underwaterColor = Vec4(0.0, 0.0, 0.6, 1.0)
 
     HOLIDAY_DNA = {
       ToontownGlobals.CHRISTMAS: ['phase_6/dna/winter_storage_DD.pdna'],

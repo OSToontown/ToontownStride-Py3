@@ -237,7 +237,6 @@ class ToonHood(Hood):
 
     def setUnderwaterFog(self):
         if base.wantFog:
-            self.fog.setColor(self.underwaterColor)
             self.fog.setLinearRange(0.1, 100.0)
             render.setFog(self.fog)
             self.sky.setFog(self.fog)
