@@ -1592,6 +1592,7 @@ class Toon(Avatar.Avatar, ToonHead):
         self.getGeomNode().setP(-89.0)
         self.dropShadow.hide()
         if self.isLocal():
+            self.book.obscureButton(1)
             self.useSwimControls()
         self.nametag3d.setPos(0, -2, 1)
         self.startBobSwimTask()
@@ -1644,6 +1645,7 @@ class Toon(Avatar.Avatar, ToonHead):
         self.dropShadow.show()
         if self.isLocal():
             self.useWalkControls()
+            self.book.obscureButton(False)
         self.nametag3d.setPos(0, 0, self.height + 0.5)
         Emote.globalEmote.releaseAll(self, 'exitSwim')
 
