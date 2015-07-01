@@ -127,6 +127,7 @@ class Avatar(Actor, ShadowCaster):
             self.nametag.setColorCode(self.playerType)
         else:
             self.nametag.setColorCode(NametagGroup.CCNoChat)
+        self.setNametagName()
 
     def considerUnderstandable(self):
         speed = 0
@@ -223,18 +224,31 @@ class Avatar(Actor, ShadowCaster):
         return self.avatarType
 
     def setName(self, name):
-        if hasattr(self, 'isDisguised'):
-            if self.isDisguised:
-                return
+        if hasattr(self, 'isDisguised') and self.isDisguised:
+            return
+
         self.name = name
+
         if hasattr(self, 'nametag'):
-            self.nametag.setName(name)
+            self.setNametagName()
 
     def setDisplayName(self, str):
         if hasattr(self, 'isDisguised'):
             if self.isDisguised:
                 return
-        self.nametag.setDisplayName(str)
+        self.setNametagName(str)
+    
+    def setNametagName(self, name=None):
+        if not name:
+            name = self.name
+
+        if hasattr(self, 'adminAccess') and self.isAdmin():
+            access = self.getAdminAccess()
+
+            if access in OTPLocalizer.AccessToString:
+                name += '\n\x01shadow\x01%s\x02' % OTPLocalizer.AccessToString[access]
+
+        self.nametag.setDisplayName(name)
 
     def getFont(self):
         return self.__font
