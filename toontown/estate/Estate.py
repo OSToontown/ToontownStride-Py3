@@ -354,6 +354,7 @@ class Estate(Place.Place):
 
     def __setUnderwaterFog(self):
         if base.wantFog:
+            self.fog.setColor(0.245, 0.322, 0.5)
             self.fog.setLinearRange(0.1, 100.0)
             render.setFog(self.fog)
             self.loader.hood.sky.setFog(self.fog)

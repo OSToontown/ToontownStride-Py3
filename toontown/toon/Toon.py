@@ -455,6 +455,8 @@ class Toon(Avatar.Avatar, ToonHead):
         self.setTag('pieCode', str(ToontownGlobals.PieCodeToon))
         self.setFont(ToontownGlobals.getToonFont())
         self.soundChatBubble = base.loadSfx('phase_3/audio/sfx/GUI_balloon_popup.ogg')
+        self.swimRunSfx = base.loadSfx('phase_4/audio/sfx/AV_footstep_runloop_water.ogg')
+        self.swimRunLooping = False
         self.animFSM = ClassicFSM('Toon', [State('off', self.enterOff, self.exitOff),
          State('neutral', self.enterNeutral, self.exitNeutral),
          State('victory', self.enterVictory, self.exitVictory),
@@ -1377,8 +1379,18 @@ class Toon(Avatar.Avatar, ToonHead):
                 deltaT = currT - self.lastWakeTime
                 if action == OTPGlobals.RUN_INDEX and deltaT > ToontownGlobals.WakeRunDelta or deltaT > ToontownGlobals.WakeWalkDelta:
                     self.getWake().createRipple(wakeWaterHeight, rate=1, startFrame=4)
+                    if not self.swimRunLooping:
+                        base.playSfx(self.swimRunSfx, node=self, looping=1)
                     self.lastWakeTime = currT
+                    self.swimRunLooping = True
+            else:
+                self.stopSwimRunSfx()
         return action
+
+    def stopSwimRunSfx(self):
+        if self.swimRunLooping:
+            self.swimRunSfx.stop()
+            self.swimRunLooping = False
 
     def enterOff(self, animMultiplier = 1, ts = 0, callback = None, extraArgs = []):
         self.setActiveShadow(0)
@@ -1572,6 +1584,7 @@ class Toon(Avatar.Avatar, ToonHead):
         Emote.globalEmote.releaseBody(self, 'toon, exitRun')
 
     def enterSwim(self, animMultiplier = 1, ts = 0, callback = None, extraArgs = []):
+        self.stopSwimRunSfx()
         Emote.globalEmote.disableAll(self, 'enterSwim')
         self.playingAnim = 'swim'
         self.loop('swim')
