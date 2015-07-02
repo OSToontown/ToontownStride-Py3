@@ -430,7 +430,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
     def bookActivateButtons(self):
         self.setPos(0, 0, 0.52)
         self.setScale(1.0)
-        self.detailFrame.setPos(0.1, 0, -0.855)
+        self.detailFrame.setPos(-0.05, 0, -0.855)
         self.detailFrame.setScale(0.75)
         self.deleteEnterButton.hide()
         self.deleteEnterButton.setPos(1.029, 0, -0.639)

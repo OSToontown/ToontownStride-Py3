@@ -19,17 +19,20 @@ class InventoryPage(ShtikerPage.ShtikerPage):
     def load(self):
         ShtikerPage.ShtikerPage.load(self)
         self.title = DirectLabel(parent=self, relief=None, text=TTLocalizer.InventoryPageTitle, text_scale=0.12, textMayChange=1, pos=(0, 0, 0.62))
-        self.gagFrame = DirectFrame(parent=self, relief=None, pos=(0.1, 0, -0.47), scale=(0.35, 0.35, 0.35), geom=DGG.getDefaultDialogGeom(), geom_color=ToontownGlobals.GlobalDialogColor)
-        self.trackInfo = DirectFrame(parent=self, relief=None, pos=(-0.4, 0, -0.47), scale=(0.35, 0.35, 0.35), geom=DGG.getDefaultDialogGeom(), geom_scale=(1.4, 1, 1), geom_color=ToontownGlobals.GlobalDialogColor, text='', text_wordwrap=11, text_align=TextNode.ALeft, text_scale=0.12, text_pos=(-0.65, 0.3), text_fg=(0.05, 0.14, 0.4, 1))
+        self.gagFrame = DirectFrame(parent=self, relief=None, pos=(-0.05, 0, -0.47), scale=(0.35, 0.35, 0.35), geom=DGG.getDefaultDialogGeom(), geom_color=ToontownGlobals.GlobalDialogColor)
+        self.trackInfo = DirectFrame(parent=self, relief=None, pos=(-0.55, 0, -0.47), scale=(0.35, 0.35, 0.35), geom=DGG.getDefaultDialogGeom(), geom_scale=(1.4, 1, 1), geom_color=ToontownGlobals.GlobalDialogColor, text='', text_wordwrap=11, text_align=TextNode.ALeft, text_scale=0.12, text_pos=(-0.65, 0.3), text_fg=(0.05, 0.14, 0.4, 1))
         self.trackProgress = DirectWaitBar(parent=self.trackInfo, pos=(0, 0, -0.2), relief=DGG.SUNKEN, frameSize=(-0.6,
          0.6,
          -0.1,
          0.1), borderWidth=(0.025, 0.025), scale=1.1, frameColor=(0.4, 0.6, 0.4, 1), barColor=(0.9, 1, 0.7, 1), text='0/0', text_scale=0.15, text_fg=(0.05, 0.14, 0.4, 1), text_align=TextNode.ACenter, text_pos=(0, -0.22))
         self.trackProgress.hide()
         jarGui = loader.loadModel('phase_3.5/models/gui/jar_gui')
-        self.moneyDisplay = DirectLabel(parent=self, relief=None, pos=(0.55, 0, -0.5), scale=0.8, text=str(base.localAvatar.getMoney()), text_scale=0.18, text_fg=(0.95, 0.95, 0, 1), text_shadow=(0, 0, 0, 1), text_pos=(0, -0.1, 0), image=jarGui.find('**/Jar'), text_font=ToontownGlobals.getSignFont())
+        catalogGui = loader.loadModel('phase_5.5/models/gui/catalog_gui')
+        self.moneyDisplay = DirectLabel(parent=self, relief=None, pos=(0.35, 0, -0.5), scale=0.8, text=str(base.localAvatar.getMoney()), text_scale=0.18, text_fg=(0.95, 0.95, 0, 1), text_shadow=(0, 0, 0, 1), text_pos=(0, -0.1, 0), image=jarGui.find('**/Jar'), text_font=ToontownGlobals.getSignFont())
+        self.bankMoneyDisplay = DirectLabel(self, relief=None, pos=(0.35, 0, -0.1), scale=0.6, image=catalogGui.find('**/bean_bank'), text=str(base.localAvatar.getBankMoney()), text_align=TextNode.ARight, text_scale=0.11, text_fg=(0.95, 0.95, 0, 1), text_shadow=(0, 0, 0, 1), text_pos=(0.75, -0.81), text_font=ToontownGlobals.getSignFont())
         self.createMeritBars()
         jarGui.removeNode()
+        catalogGui.removeNode()
 
     def unload(self):
         self.ignoreAll()
@@ -42,9 +45,9 @@ class InventoryPage(ShtikerPage.ShtikerPage):
             return
 
         for i in xrange(len(SuitDNA.suitDepts)):
-            self.meritBars.append(DirectWaitBar(parent=self, relief=DGG.SUNKEN, frameSize=(-1, 1, -0.15, 0.15),
-             borderWidth=(0.02, 0.02), scale=0.22, text='', text_scale=0.18, text_fg=(0, 0, 0, 1), text_align=TextNode.ALeft,
-             text_pos=(-0.96, -0.05), pos=(-0.4, 0, -0.35 - 0.08 * i), frameColor=(DisguisePage.DeptColors[i][0] * 0.7,
+            self.meritBars.append(DirectWaitBar(parent=self.trackInfo, relief=DGG.SUNKEN, frameSize=(-1, 1, -0.15, 0.15),
+             borderWidth=(0.02, 0.02), scale=0.65, text='', text_scale=0.18, text_fg=(0, 0, 0, 1), text_align=TextNode.ALeft,
+             text_pos=(-0.96, -0.05), pos=(0, 0, 0.365 - 0.24 * i), frameColor=(DisguisePage.DeptColors[i][0] * 0.7,
              DisguisePage.DeptColors[i][1] * 0.7, DisguisePage.DeptColors[i][2] * 0.7, 1), barColor=(DisguisePage.DeptColors[i][0] * 0.8,
              DisguisePage.DeptColors[i][1] * 0.8, DisguisePage.DeptColors[i][2] * 0.8, 1)))
 
@@ -101,18 +104,23 @@ class InventoryPage(ShtikerPage.ShtikerPage):
 
     def __moneyChange(self, money):
         self.moneyDisplay['text'] = str(money)
+    
+    def __bankMoneyChange(self, bankMoney):
+        self.bankMoneyDisplay['text'] = str(bankMoney)
 
     def enter(self):
         ShtikerPage.ShtikerPage.enter(self)
         base.localAvatar.inventory.setActivateMode('book')
         base.localAvatar.inventory.show()
         base.localAvatar.inventory.reparentTo(self)
-        self.moneyDisplay['text'] = str(base.localAvatar.getMoney())
+        self.__moneyChange(base.localAvatar.getMoney())
+        self.__bankMoneyChange(base.localAvatar.getBankMoney())
         self.accept('enterBookDelete', self.enterDeleteMode)
         self.accept('exitBookDelete', self.exitDeleteMode)
         self.accept('enterTrackFrame', self.updateTrackInfo)
         self.accept('exitTrackFrame', self.clearTrackInfo)
         self.accept(localAvatar.uniqueName('moneyChange'), self.__moneyChange)
+        self.accept(localAvatar.uniqueName('bankMoneyChange'), self.__bankMoneyChange)
 
     def exit(self):
         ShtikerPage.ShtikerPage.exit(self)
@@ -122,6 +130,7 @@ class InventoryPage(ShtikerPage.ShtikerPage):
         self.ignore('enterTrackFrame')
         self.ignore('exitTrackFrame')
         self.ignore(localAvatar.uniqueName('moneyChange'))
+        self.ignore(localAvatar.uniqueName('bankMoneyChange'))
         self.makePageWhite(None)
         base.localAvatar.inventory.hide()
         base.localAvatar.inventory.reparentTo(hidden)
