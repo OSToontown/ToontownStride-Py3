@@ -32,7 +32,6 @@ NametagFonts = (
     'phase_3/models/fonts/OysterBar.bam',
     'phase_3/models/fonts/RedDogSaloon.bam',
     'phase_3/models/fonts/PBN.ttf',
-    'phase_3/models/fonts/Trench.ttf',
     'phase_3/models/fonts/SomethingStrange.ttf',
     'phase_3/models/fonts/DinosaursAreAlive.ttf'
 )
@@ -53,7 +52,6 @@ NametagFontNames = (
     'Boardwalk',
     'Western',
     'Pixelated',
-    'Techno',
     'Metal',
     'Dinosaurs'
 )
