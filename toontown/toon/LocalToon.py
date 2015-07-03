@@ -216,9 +216,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
 
     def announceGenerate(self):
         self.startLookAround()
-        if base.wantNametags:
-            self.nametag.manage(base.marginManager)
-
         DistributedToon.DistributedToon.announceGenerate(self)
 
         acceptingNewFriends = settings.get('acceptingNewFriends', {})
@@ -253,8 +250,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         if base.wantKarts:
             if hasattr(self, 'kartPage'):
                 del self.kartPage
-        if base.wantNametags:
-            self.nametag.unmanage(base.marginManager)
         self.ignoreAll()
         DistributedToon.DistributedToon.disable(self)
         return
