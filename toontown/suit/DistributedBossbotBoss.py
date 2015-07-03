@@ -67,6 +67,10 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
     def announceGenerate(self):
         global OneBossCog
         DistributedBossCog.DistributedBossCog.announceGenerate(self)
+        self.setName(TTLocalizer.BossbotBossName)
+        nameInfo = TTLocalizer.BossCogNameWithDept % {'name': self.name,
+         'dept': SuitDNA.getDeptFullname(self.style.dept)}
+        self.setDisplayName(nameInfo)
         self.loadEnvironment()
         self.__makeResistanceToon()
         base.localAvatar.chatMgr.chatInputSpeedChat.addCEOMenu()
