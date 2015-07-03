@@ -226,6 +226,8 @@ class Avatar(Actor, ShadowCaster):
     def setNametagName(self, name=None):
         if not name:
             name = self.name
+        
+        self.nametag.setName(name)
 
         if hasattr(self, 'adminAccess') and self.isAdmin():
             access = self.getAdminAccess()
@@ -233,7 +235,7 @@ class Avatar(Actor, ShadowCaster):
             if access in OTPLocalizer.AccessToString:
                 name += '\n\x01shadow\x01%s\x02' % OTPLocalizer.AccessToString[access]
 
-        self.nametag.setName(name)
+        self.nametag.setDisplayName(name)
 
     def getFont(self):
         return self.__font
