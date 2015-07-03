@@ -4,12 +4,11 @@ from panda3d.core import *
 
 from DistributedNPCToonBase import *
 import NPCToons
-from toontown.chat.ChatGlobals import *
 from toontown.hood import ZoneUtil
 from toontown.minigame import ClerkPurchase
-from toontown.nametag.NametagGlobals import *
 from toontown.shtiker.PurchaseManagerConstants import *
 from toontown.toonbase import TTLocalizer
+from otp.nametag.NametagConstants import *
 
 
 class DistributedNPCClerk(DistributedNPCToonBase):

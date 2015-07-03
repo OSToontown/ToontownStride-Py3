@@ -4,7 +4,7 @@ from direct.fsm import StateData
 from toontown.toon import ToonAvatarPanel
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
-from toontown.nametag.NametagGlobals import *
+from otp.nametag.NametagGroup import *
 from otp.otpbase import OTPGlobals
 FLPPets = 1
 FLPOnline = 2
@@ -270,10 +270,10 @@ class FriendsListPanel(DirectFrame, StateData.StateData):
             friendButton.destroy()
             del self.friends[friendId]
 
-        self.createButtons(petFriends, NametagColors[CCNonPlayer][0][0])
-        self.createButtons(admins, NametagColors[CCAdmin][0][0])
-        self.createButtons(trueFriends, NametagColors[CCNormal][0][0])
-        self.createButtons(friends, NametagColors[CCSpeedChat][0][0])
+        self.createButtons(petFriends, NAMETAG_COLORS[CCNonPlayer][0][0])
+        self.createButtons(admins, NAMETAG_COLORS[CCAdmin][0][0])
+        self.createButtons(trueFriends, NAMETAG_COLORS[CCNormal][0][0])
+        self.createButtons(friends, NAMETAG_COLORS[CCSpeedChat][0][0])
 
         self.scrollList.index = self.listScrollIndex[self.panelType]
         self.scrollList.refresh()

@@ -1,6 +1,6 @@
-from panda3d.core import *
+from pandac.PandaModules import *
 
-class CatalogChatBalloon:
+class ChatBalloon:
     TEXT_SHIFT = (0.1, -0.05, 1.1)
     TEXT_SHIFT_REVERSED = -0.05
     TEXT_SHIFT_PROP = 0.08

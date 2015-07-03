@@ -6,9 +6,9 @@ from direct.interval.IntervalGlobal import *
 from direct.task import Task
 from otp.avatar import DistributedAvatar
 from otp.otpbase import OTPGlobals
+from otp.nametag.NametagConstants import *
+from otp.nametag import NametagGlobals
 from toontown.battle import BattleProps
-from toontown.chat.ChatGlobals import *
-from toontown.nametag.NametagGlobals import *
 from toontown.toonbase import TTLocalizer, ToontownGlobals
 import Suit, SuitBase, SuitDialog, SuitTimings
 import random

@@ -13,8 +13,8 @@ from toontown.hood import ZoneUtil
 from toontown.suit import Suit
 from toontown.toonbase.ToonBaseGlobal import *
 from toontown.toontowngui import TTDialog
-from toontown.nametag.NametagGroup import NametagGroup
-from toontown.nametag.Nametag import Nametag
+from otp.nametag.NametagGroup import NametagGroup
+from otp.nametag.Nametag import Nametag
 
 
 class DistributedDoor(DistributedObject.DistributedObject, DelayDeletable):
@@ -105,25 +105,23 @@ class DistributedDoor(DistributedObject.DistributedObject, DelayDeletable):
             return
         if self.nametag == None:
             self.nametag = NametagGroup()
-            self.nametag.setNametag3d(None)
             self.nametag.setFont(ToontownGlobals.getBuildingNametagFont())
             if TTLocalizer.BuildingNametagShadow:
                 self.nametag.setShadow(*TTLocalizer.BuildingNametagShadow)
-            self.nametag.hideChat()
-            self.nametag.hideThought()
-            nametagColor = NametagGlobals.NametagColors[NametagGlobals.CCToonBuilding]
-            self.nametag.setNametagColor(nametagColor)
-            self.nametag.setActive(False)
+            self.nametag.setContents(Nametag.CName)
+            self.nametag.setColorCode(NametagGroup.CCToonBuilding)
+            self.nametag.setActive(0)
             self.nametag.setAvatar(self.getDoorNodePath())
+            self.nametag.setObjectCode(self.block)
             name = self.cr.playGame.dnaStore.getTitleFromBlockNumber(self.block)
-            self.nametag.setText(name)
+            self.nametag.setName(name)
             self.nametag.manage(base.marginManager)
-            self.nametag.updateAll()
 
     def clearNametag(self):
         if self.nametag is not None:
             self.nametag.unmanage(base.marginManager)
             self.nametag.setAvatar(NodePath())
+            self.nametag.destroy()
             self.nametag = None
 
     def getTriggerName(self):

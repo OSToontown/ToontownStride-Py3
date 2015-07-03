@@ -9,7 +9,8 @@ import DistributedToonInterior
 from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
 from toontown.hood import Place
 from toontown.hood import ZoneUtil
-from toontown.nametag import NametagGlobals
+from otp.nametag.NametagConstants import *
+from otp.nametag import NametagGlobals
 from toontown.toon import HealthForceAcknowledge
 from toontown.toon import NPCForceAcknowledge
 from toontown.toonbase import TTLocalizer
@@ -92,7 +93,7 @@ class ToonInterior(Place.Place):
         volume = requestStatus.get('musicVolume', 0.7)
         base.playMusic(self.loader.activityMusic, looping=1, volume=volume)
         self._telemLimiter = TLGatherAllAvs('ToonInterior', RotationLimitToH)
-        NametagGlobals.setWant2dNametags(True)
+        NametagGlobals.setMasterArrowsOn(1)
         self.fsm.request(requestStatus['how'], [requestStatus])
 
     def exit(self):
@@ -100,7 +101,7 @@ class ToonInterior(Place.Place):
         messenger.send('exitToonInterior')
         self._telemLimiter.destroy()
         del self._telemLimiter
-        NametagGlobals.setWant2dNametags(False)
+        NametagGlobals.setMasterArrowsOn(0)
         self.loader.activityMusic.stop()
 
     def setState(self, state):

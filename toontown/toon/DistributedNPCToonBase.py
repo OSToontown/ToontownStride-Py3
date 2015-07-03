@@ -9,7 +9,7 @@ import random
 
 import DistributedToon
 import NPCToons
-from toontown.nametag import NametagGlobals
+from otp.nametag.NametagGroup import NametagGroup
 from toontown.quest import QuestChoiceGui
 from toontown.quest import QuestParser
 from toontown.quest import Quests
@@ -26,7 +26,7 @@ class DistributedNPCToonBase(DistributedToon.DistributedToon):
             DistributedToon.DistributedToon.__init__(self, cr)
             self.__initCollisions()
             self.setPickable(0)
-            self.setPlayerType(NametagGlobals.CCNonPlayer)
+            self.setPlayerType(NametagGroup.CCNonPlayer)
 
     def disable(self):
         self.ignore('enter' + self.cSphereNode.getName())

@@ -1,4 +1,4 @@
-from toontown.chat.ChatGlobals import CFSpeech, CFTimeout
+from otp.nametag.NametagConstants import CFSpeech, CFTimeout
 from toontown.toonbase import TTLocalizer, ToontownGlobals
 from toontown.toon import NPCToons
 from DistributedNPCToonBase import DistributedNPCToonBase
@@ -45,14 +45,14 @@ class DistributedNPCGlove(DistributedNPCToonBase):
             return
         
         base.cr.playGame.getPlace().fsm.request('stopped')
-        base.setCellsActive(base.bottomCells, 0)
+        base.setCellsAvailable(base.bottomCells, 0)
         self.setChatAbsolute(TTLocalizer.GlovePickColorMessage, CFSpeech|CFTimeout)
         self.acceptOnce('gloveShopDone', self.__gloveShopDone)
         self.gloveDialog = GloveShopGui.GloveShopGui()
     
     def freeAvatar(self):
         base.cr.playGame.getPlace().fsm.request('walk')
-        base.setCellsActive(base.bottomCells, 1)
+        base.setCellsAvailable(base.bottomCells, 1)
     
     def __gloveShopDone(self, state, glove):
         self.freeAvatar()

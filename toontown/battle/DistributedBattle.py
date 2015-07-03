@@ -7,10 +7,10 @@ from BattleBase import *
 import DistributedBattleBase
 import SuitBattleGlobals
 from otp.avatar import Emote
-from toontown.chat.ChatGlobals import *
 from toontown.distributed import DelayDelete
-from toontown.nametag import NametagGlobals
 from toontown.toonbase import ToontownBattleGlobals
+from otp.nametag.NametagConstants import *
+from otp.nametag import NametagGlobals
 
 
 class DistributedBattle(DistributedBattleBase.DistributedBattleBase):
@@ -119,7 +119,7 @@ class DistributedBattle(DistributedBattleBase.DistributedBattleBase):
             soundTrack = Wait(delay + faceoffTime)
         mtrack = Parallel(suitTrack, toonTrack, soundTrack)
         if self.hasLocalToon():
-            NametagGlobals.setWant2dNametags(False)
+            NametagGlobals.setMasterArrowsOn(0)
             mtrack = Parallel(mtrack, camTrack)
         done = Func(callback)
         track = Sequence(mtrack, done, name=name)
@@ -157,7 +157,7 @@ class DistributedBattle(DistributedBattleBase.DistributedBattleBase):
         self.delayDeleteMembers()
         Emote.globalEmote.disableAll(base.localAvatar, 'dbattle, enterReward')
         if self.hasLocalToon():
-            NametagGlobals.setWant2dNametags(False)
+            NametagGlobals.setMasterArrowsOn(0)
             if self.localToonActive() == 0:
                 self.removeInactiveLocalToon(base.localAvatar)
         for toon in self.toons:
@@ -188,7 +188,7 @@ class DistributedBattle(DistributedBattleBase.DistributedBattleBase):
         self.ignore('resumeAfterReward')
         self.movie.resetReward(finish=1)
         self._removeMembersKeep()
-        NametagGlobals.setWant2dNametags(True)
+        NametagGlobals.setMasterArrowsOn(1)
         Emote.globalEmote.releaseAll(base.localAvatar, 'dbattle, exitReward')
 
     def enterResume(self, ts = 0):

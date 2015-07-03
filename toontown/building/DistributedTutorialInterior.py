@@ -15,7 +15,7 @@ from toontown.suit import Suit
 from toontown.quest import QuestParser
 from toontown.toon import DistributedNPCSpecialQuestGiver
 from toontown.toonbase import TTLocalizer
-from toontown.chat.ChatGlobals import CFSpeech
+from otp.nametag.NametagConstants import CFSpeech
 
 
 class DistributedTutorialInterior(DistributedObject.DistributedObject):
@@ -145,8 +145,8 @@ class DistributedTutorialInterior(DistributedObject.DistributedObject):
         suitDNA = SuitDNA.SuitDNA()
         suitDNA.newSuit('f')
         self.suit.setDNA(suitDNA)
-        self.suit.nametag.setNametag2d(None)
-        self.suit.nametag.setNametag3d(None)
+        self.suit.nametag3d.stash()
+        self.suit.nametag.destroy()
         self.suit.loop('neutral')
         self.suit.setPosHpr(-20, 8, 0, 0, 0, 0)
         self.suit.reparentTo(self.interior)

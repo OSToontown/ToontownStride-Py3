@@ -183,8 +183,8 @@ class DistributedGoon(DistributedCrushableEntity.DistributedCrushableEntity, Goo
             Goon.Goon.delete(self)
 
     def enterOff(self, *args):
-        self.nametag.setNametag2d(None)
-        self.nametag.setNametag3d(None)
+        self.nametag3d.stash()
+        self.nametag.destroy()
         self.hide()
         self.isStunned = 0
         self.isDead = 0

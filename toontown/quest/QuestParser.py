@@ -3,7 +3,7 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
 from direct.showbase import DirectObject
 from otp.speedchat import SpeedChatGlobals
-from toontown.chat.ChatGlobals import *
+from otp.nametag.NametagConstants import *
 from toontown.suit import Suit, SuitDNA
 from toontown.toon import ToonHeadFrame
 from toontown.toonbase import TTLocalizer, ToontownBattleGlobals

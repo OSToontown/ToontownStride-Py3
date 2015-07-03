@@ -8,8 +8,8 @@ import types
 import Toon, ToonDNA
 from otp.avatar import Emote
 from otp.otpbase import OTPLocalizer
-from toontown.chat.ChatGlobals import *
-from toontown.nametag.NametagGlobals import *
+from otp.nametag.NametagConstants import *
+from otp.nametag.NametagGroup import *
 from toontown.toonbase import TTLocalizer
 
 
@@ -77,7 +77,7 @@ def doSleep(toon, volume = 1):
         toon.openEyes()
         toon.startBlink()
         toon.setPlayRate(1, 'neutral')
-        if toon.nametag.getChatText() == TTLocalizer.ToonSleepString:
+        if toon.nametag.getChat() == TTLocalizer.ToonSleepString:
             toon.clearChat()
         toon.lerpLookAt(Point3(0, 1, 0), time=0.25)
 

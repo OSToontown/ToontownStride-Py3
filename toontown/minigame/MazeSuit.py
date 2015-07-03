@@ -43,8 +43,8 @@ class MazeSuit(DirectObject):
         d = SuitDNA.SuitDNA()
         d.newSuit(suitDnaName)
         self.suit.setDNA(d)
-        self.suit.nametag.setNametag2d(None)
-        self.suit.nametag.setNametag3d(None)
+        self.suit.nametag3d.stash()
+        self.suit.nametag.destroy()
         if startTile is None:
             defaultStartPos = MazeGameGlobals.SUIT_START_POSITIONS[self.serialNum]
             self.startTile = (defaultStartPos[0] * self.maze.width, defaultStartPos[1] * self.maze.height)

@@ -29,8 +29,8 @@ from toontown.catalog import CatalogItem
 from toontown.catalog import CatalogItemList
 from toontown.chat import ResistanceChat
 from toontown.chat import ToonChatGarbler
-from toontown.chat.ChatGlobals import *
-from toontown.chat.WhisperPopup import *
+from otp.nametag.NametagConstants import *
+from otp.margins.WhisperPopup import *
 from toontown.coghq import CogDisguiseGlobals
 from toontown.distributed import DelayDelete
 from toontown.distributed import DelayDelete
@@ -46,8 +46,8 @@ from toontown.fishing import FishTank
 from toontown.friends import FriendHandle
 from toontown.golf import GolfGlobals
 from toontown.hood import ZoneUtil
-from toontown.nametag import NametagGlobals
-from toontown.nametag.NametagGlobals import *
+from otp.nametag import NametagGroup
+from otp.nametag.NametagGroup import *
 from toontown.parties import PartyGlobals
 from toontown.parties.InviteInfo import InviteInfo
 from toontown.parties.PartyGlobals import InviteStatus, PartyStatus
@@ -1201,10 +1201,11 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         realIndexToUse = 0
         if type(index) == type(0) and 0 <= index and index < len(speedChatStyles):
             realIndexToUse = index
+        else:
+            base.cr.centralLogger.writeClientEvent('Hacker victim setSpeedChatStyleIndex invalid attacking toon = %d' % self.doId)
         self.speedChatStyleIndex = realIndexToUse
         nameKey, arrowColor, rolloverColor, frameColor = speedChatStyles[realIndexToUse]
-        self.nametag.setSpeedChatColor(VBase4(frameColor[0], frameColor[1], frameColor[2], 1))
-        self.nametag.updateAll()
+        self.nametag.setQtColor(VBase4(frameColor[0], frameColor[1], frameColor[2], 1))
         if self.isLocal():
             messenger.send('SpeedChatStyleChange', [])
 
@@ -1399,7 +1400,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             self.trophyStarSpeed = 0
         if self.trophyScore >= ToontownGlobals.TrophyStarLevels[4]:
             self.trophyStar = loader.loadModel('phase_3.5/models/gui/name_star')
-            np = NodePath(self.nametag.getIcon())
+            np = NodePath(self.nametag.getNameIcon())
             self.trophyStar.reparentTo(np)
             self.trophyStar.setScale(2)
             self.trophyStar.setColor(ToontownGlobals.TrophyStarColors[4])
@@ -1408,7 +1409,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
                 taskMgr.add(self.__starSpin, self.uniqueName('starSpin'))
         elif self.trophyScore >= ToontownGlobals.TrophyStarLevels[2]:
             self.trophyStar = loader.loadModel('phase_3.5/models/gui/name_star')
-            np = NodePath(self.nametag.getIcon())
+            np = NodePath(self.nametag.getNameIcon())
             self.trophyStar.reparentTo(np)
             self.trophyStar.setScale(1.5)
             self.trophyStar.setColor(ToontownGlobals.TrophyStarColors[2])
@@ -1417,7 +1418,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
                 taskMgr.add(self.__starSpin, self.uniqueName('starSpin'))
         elif self.trophyScore >= ToontownGlobals.TrophyStarLevels[0]:
             self.trophyStar = loader.loadModel('phase_3.5/models/gui/name_star')
-            np = NodePath(self.nametag.getIcon())
+            np = NodePath(self.nametag.getNameIcon())
             self.trophyStar.reparentTo(np)
             self.trophyStar.setScale(1.5)
             self.trophyStar.setColor(ToontownGlobals.TrophyStarColors[0])
@@ -1974,11 +1975,11 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             base.playSfx(dialogue, node=self)
         elif chatFlags & CFSpeech != 0:
             if self.nametag.getNumChatPages() > 0:
-                self.playDialogueForString(self.nametag.getChatText())
+                self.playDialogueForString(self.nametag.getChat())
                 if self.soundChatBubble != None:
                     base.playSfx(self.soundChatBubble, node=self)
-            elif self.nametag.getStompChatText():
-                self.playDialogueForString(self.nametag.getStompChatText(), self.nametag.CHAT_STOMP_DELAY)
+            elif self.nametag.getChatStomp():
+                self.playDialogueForString(self.nametag.getStompText(), self.nametag.getStompDelay())
 
     def playDialogueForString(self, chatString, delay = 0.0):
         if len(chatString) == 0:
@@ -2045,36 +2046,15 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         DistributedAvatar.DistributedAvatar.setChatAbsolute(self, chatString, chatFlags, dialogue, interrupt)
 
     def setChatMuted(self, chatString, chatFlags, dialogue=None, interrupt=1, quiet=0):
-        if chatFlags & CFQuicktalker:
-            self.nametag.setChatType(NametagGlobals.SPEEDCHAT)
-        elif chatFlags & CFSpeech:
-            self.nametag.setChatType(NametagGlobals.CHAT)
-
-        if chatFlags & CFThought:
-            self.nametag.setChatBalloonType(NametagGlobals.THOUGHT_BALLOON)
-        else:
-            self.nametag.setChatBalloonType(NametagGlobals.CHAT_BALLOON)
-
-        if chatFlags & CFPageButton:
-            self.nametag.setChatButton(NametagGlobals.pageButton)
-        elif chatFlags & CFQuitButton:
-            self.nametag.setChatButton(NametagGlobals.quitButton)
-        else:
-            self.nametag.setChatButton(NametagGlobals.noButton)
-
-        self.nametag.setChatText(chatString, timeout=bool(chatFlags & CFTimeout))
+        self.nametag.setChat(chatString, chatFlags)
         self.playCurrentDialogue(dialogue, chatFlags - CFSpeech, interrupt)
 
     def displayTalk(self, chatString):
         flags = CFSpeech | CFTimeout
-        self.nametag.setChatType(NametagGlobals.CHAT)
         if ChatUtil.isThought(chatString):
             flags = CFThought
-            self.nametag.setChatBalloonType(NametagGlobals.THOUGHT_BALLOON)
             chatString = ChatUtil.removeThoughtPrefix(chatString)
-        else:
-            self.nametag.setChatBalloonType(NametagGlobals.CHAT_BALLOON)
-        self.nametag.setChatText(chatString, timeout=(flags & CFTimeout))
+        self.nametag.setChat(chatString, flags)
         if base.toonChatSounds:
             self.playCurrentDialogue(None, flags, interrupt=1)
 

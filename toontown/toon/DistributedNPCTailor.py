@@ -6,7 +6,7 @@ from DistributedNPCToonBase import *
 import NPCToons
 import TailorClothesGUI
 import ToonDNA
-from toontown.chat.ChatGlobals import *
+from otp.nametag.NametagConstants import *
 from toontown.estate import ClosetGlobals
 from toontown.toonbase import TTLocalizer
 

@@ -5,7 +5,7 @@ import sys, os
 
 import ToonDNA
 from toontown.hood import ZoneUtil
-from toontown.nametag import NametagGlobals
+from otp.nametag.NametagGroup import *
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownBattleGlobals
 from toontown.toonbase import ToontownGlobals
@@ -177,7 +177,7 @@ def createLocalNPC(npcId):
     npc = Toon.Toon()
     npc.setName(name)
     npc.setPickable(0)
-    npc.setPlayerType(NametagGlobals.CCNonPlayer)
+    npc.setPlayerType(NametagGroup.CCNonPlayer)
     dna = ToonDNA.ToonDNA()
     if dnaType == 'r':
         dnaList = getRandomDNA(npcId, gender)

@@ -11,7 +11,7 @@ from toontown.suit import SuitDNA
 from direct.fsm import State
 from direct.fsm import ClassicFSM, State
 from toontown.toonbase import ToontownGlobals
-from toontown.nametag import NametagGlobals
+from otp.nametag import NametagGlobals
 
 class DistributedMintBattle(DistributedLevelBattle.DistributedLevelBattle):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedMintBattle')
@@ -29,7 +29,7 @@ class DistributedMintBattle(DistributedLevelBattle.DistributedLevelBattle):
         self.disableCollision()
         self.delayDeleteMembers()
         if self.hasLocalToon():
-            NametagGlobals.setWant2dNametags(False)
+            NametagGlobals.setMasterArrowsOn(0)
             if self.bossBattle:
                 messenger.send('localToonConfrontedMintBoss')
         self.movie.playReward(ts, self.uniqueName('building-reward'), self.__handleMintRewardDone, noSkip=True)
@@ -45,4 +45,4 @@ class DistributedMintBattle(DistributedLevelBattle.DistributedLevelBattle):
         self.notify.debug('exitMintReward()')
         self.movie.resetReward(finish=1)
         self._removeMembersKeep()
-        NametagGlobals.setWant2dNametags(True)
+        NametagGlobals.setMasterArrowsOn(1)

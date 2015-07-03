@@ -21,8 +21,8 @@ from direct.distributed import DistributedObject
 from toontown.effects import Wake
 from direct.controls.ControlManager import CollisionHandlerRayStart
 
-from toontown.nametag.NametagFloat3d import NametagFloat3d
-from toontown.nametag.Nametag import Nametag
+from otp.nametag.NametagFloat3d import NametagFloat3d
+from otp.nametag.Nametag import Nametag
 
 LAND_TIME = 2
 WORLD_SCALE = 2.0
@@ -1239,19 +1239,19 @@ class DistributedCannon(DistributedObject.DistributedObject):
     def __calcHitTreasures(self, trajectory):
         estate = self.cr.doId2do.get(self.estateId)
         self.hitTreasures = []
-        if estate:
+        '''if estate:
             doIds = estate.flyingTreasureId
             for id in doIds:
                 t = self.cr.doId2do.get(id)
                 if t:
-                    pos = t.nodePath.getPos()
+                    pos = t.pos
                     rad = 10.5
                     height = 10.0
                     t_impact = trajectory.checkCollisionWithCylinderSides(pos, rad, height)
                     if t_impact > 0:
                         self.hitTreasures.append([t_impact, t])
 
-        del estate
+        del estate'''
         return None
 
     def __shootTask(self, task):
@@ -1580,4 +1580,3 @@ class DistributedCannon(DistributedObject.DistributedObject):
     def turnOnBumperCollision(self, whatever = 0):
         if self.bumperCol:
             self.bumperCol.setCollideMask(ToontownGlobals.WallBitmask)
-            

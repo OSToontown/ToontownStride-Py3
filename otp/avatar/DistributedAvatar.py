@@ -9,6 +9,7 @@ from Avatar import Avatar
 from otp.ai.MagicWordGlobal import *
 from otp.otpbase import OTPGlobals
 from toontown.battle.BattleProps import globalPropPool
+from otp.nametag.Nametag import Nametag
 
 
 class DistributedAvatar(DistributedActor, Avatar):
@@ -84,12 +85,11 @@ class DistributedAvatar(DistributedActor, Avatar):
 
     def do_setParent(self, parentToken):
         if not self.isDisabled():
-            nametag2d = self.nametag.getNametag2d()
             if parentToken == OTPGlobals.SPHidden:
-                nametag2d.hideNametag()
+                self.nametag2dDist &= ~Nametag.CName
             else:
-                nametag2d.showNametag()
-            nametag2d.update()
+                self.nametag2dDist |= Nametag.CName
+            self.nametag.getNametag2d().setContents(self.nametag2dContents & self.nametag2dDist)
             DistributedActor.do_setParent(self, parentToken)
             self.__setTags()
 

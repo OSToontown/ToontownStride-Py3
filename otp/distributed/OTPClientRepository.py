@@ -16,7 +16,7 @@ from otp.distributed.OtpDoGlobals import *
 from otp.distributed.TelemetryLimiter import TelemetryLimiter
 from otp.otpbase import OTPGlobals, OTPLocalizer
 from otp.otpgui import OTPDialog
-from toontown.chat.ChatGlobals import *
+from otp.nametag.NametagConstants import *
 import sys, time, types, random
 
 class OTPClientRepository(ClientRepositoryBase):

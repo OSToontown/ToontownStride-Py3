@@ -98,7 +98,7 @@ class DistributedTagGame(DistributedMinigame):
         camera.setPosHpr(0, -24, 16, 0, -30, 0)
         base.camLens.setFar(450.0)
         base.transitions.irisIn(0.4)
-        NametagGlobals.setWant2dNametags(True)
+        NametagGlobals.setMasterArrowsOn(1)
         DistributedSmoothNode.activateSmoothing(1, 1)
         self.IT = None
         
@@ -110,7 +110,7 @@ class DistributedTagGame(DistributedMinigame):
     def offstage(self):
         self.notify.debug('offstage')
         DistributedSmoothNode.activateSmoothing(1, 0)
-        NametagGlobals.setWant2dNametags(False)
+        NametagGlobals.setMasterArrowsOn(0)
         DistributedMinigame.offstage(self)
         self.sky.reparentTo(hidden)
         self.ground.reparentTo(hidden)
@@ -162,7 +162,7 @@ class DistributedTagGame(DistributedMinigame):
             scorePanel.reparentTo(base.a2dBottomRight)
             self.scorePanels.append(scorePanel)
 
-        base.setCellsActive(base.rightCells, 0)
+        base.setCellsAvailable(base.rightCells, 0)
         self.walkStateData.enter()
         self.walkStateData.fsm.request('walking')
         if base.localAvatar.isIt:
@@ -195,7 +195,7 @@ class DistributedTagGame(DistributedMinigame):
             panel.cleanup()
 
         self.scorePanels = []
-        base.setCellsActive(base.rightCells, 1)
+        base.setCellsAvailable(base.rightCells, 1)
         base.mouseInterfaceNode.setForwardSpeed(ToontownGlobals.ToonForwardSpeed)
         base.mouseInterfaceNode.setRotateSpeed(ToontownGlobals.ToonRotateSpeed)
         self.itPointer.reparentTo(hidden)

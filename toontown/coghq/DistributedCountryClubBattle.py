@@ -5,7 +5,7 @@ from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.interval.IntervalGlobal import *
 from otp.avatar import Emote
-from toontown.nametag import NametagGlobals
+from otp.nametag import NametagGlobals
 from panda3d.core import *
 from toontown.battle import SuitBattleGlobals
 from toontown.battle.BattleBase import *
@@ -31,7 +31,7 @@ class DistributedCountryClubBattle(DistributedLevelBattle.DistributedLevelBattle
         self.disableCollision()
         self.delayDeleteMembers()
         if self.hasLocalToon():
-            NametagGlobals.setWant2dNametags(False)
+            NametagGlobals.setMasterArrowsOn(0)
             if self.bossBattle:
                 messenger.send('localToonConfrontedCountryClubBoss')
         self.movie.playReward(ts, self.uniqueName('building-reward'), self.__handleCountryClubRewardDone, noSkip=True)
@@ -47,4 +47,4 @@ class DistributedCountryClubBattle(DistributedLevelBattle.DistributedLevelBattle
         self.notify.debug('exitCountryClubReward()')
         self.movie.resetReward(finish=1)
         self._removeMembersKeep()
-        NametagGlobals.setWant2dNametags(True)
+        NametagGlobals.setMasterArrowsOn(1)

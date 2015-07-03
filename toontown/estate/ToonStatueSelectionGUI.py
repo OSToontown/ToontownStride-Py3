@@ -9,7 +9,8 @@ from panda3d.core import *
 from toontown.estate import DistributedToonStatuary
 from toontown.estate import GardenGlobals
 from toontown.estate import PlantingGUI
-from toontown.nametag import NametagGlobals
+from otp.nametag import NametagGlobals
+from otp.nametag.NametagGroup import *
 from toontown.toon import DistributedToon
 from toontown.toon import Toon
 from toontown.toonbase import TTLocalizer
@@ -96,20 +97,23 @@ class ToonStatueSelectionGUI(DirectFrame):
         return test
 
     def __makeFFlist(self):
-        playerAvatar = (base.localAvatar.doId, base.localAvatar.name, NametagGlobals.CCNonPlayer)
+        playerAvatar = (base.localAvatar.doId, base.localAvatar.name, CCNonPlayer)
         self.ffList.append(playerAvatar)
         self.dnaSelected = base.localAvatar.style
         self.createPreviewToon(self.dnaSelected)
         for familyMember in base.cr.avList:
             if familyMember.id != base.localAvatar.doId:
-                newFF = (familyMember.id, familyMember.name, NametagGlobals.CCNonPlayer)
+                newFF = (familyMember.id, familyMember.name, CCNonPlayer)
                 self.ffList.append(newFF)
 
         for friendId in base.localAvatar.friendsList:
             handle = base.cr.identifyFriend(friendId)
             if handle and not self.checkFamily(friendId):
                 if hasattr(handle, 'getName'):
-                    newFF = (friendId, handle.getName(), NametagGlobals.getFriendColor(handle))
+                    colorCode = CCSpeedChat
+                    if flags & ToontownGlobals.FriendChat:
+                        colorCode = CCFreeChat
+                    newFF = (friendId, handle.getName(), colorCode)
                     self.ffList.append(newFF)
                 else:
                     self.notify.warning('Bad Handle for getName in makeFFlist')
@@ -124,7 +128,7 @@ class ToonStatueSelectionGUI(DirectFrame):
         self.scrollList.refresh()
 
     def makeFamilyButton(self, familyId, familyName, colorCode):
-        fg = NametagGlobals.NametagColors[colorCode][3][0]
+        fg = NametagGlobals.getNameFg(colorCode, PGButton.SInactive)
         return DirectButton(relief=None, text=familyName, text_scale=0.04, text_align=TextNode.ALeft, text_fg=fg, text1_bg=self.textDownColor, text2_bg=self.textRolloverColor, text3_fg=self.textDisabledColor, textMayChange=0, command=self.__chooseFriend, extraArgs=[familyId, familyName])
 
     def __chooseFriend(self, friendId, friendName):

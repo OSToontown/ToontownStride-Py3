@@ -31,8 +31,7 @@ PAINTING_DICT = {'s': 'tt_m_ara_crg_paintingMoverShaker',
  'm': 'tt_m_ara_crg_paintingMoverShaker',
  'c': 'tt_m_ara_crg_paintingMoverShaker'}
 
-from toontown.nametag.NametagGlobals import *
-from toontown.chat.ChatGlobals import *
+from otp.nametag.NametagConstants import *
 
 class DistributedCogdoInterior(DistributedObject.DistributedObject):
     id = 0

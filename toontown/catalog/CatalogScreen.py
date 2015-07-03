@@ -14,8 +14,8 @@ from direct.actor import Actor
 import random
 from toontown.toon import DistributedToon
 from direct.directnotify import DirectNotifyGlobal
-from toontown.nametag import NametagGlobals
-import CatalogChatBalloon
+from otp.nametag.ChatBalloon import ChatBalloon
+from otp.nametag import NametagGroup
 
 NUM_CATALOG_ROWS = 3
 NUM_CATALOG_COLS = 2
@@ -971,13 +971,13 @@ class CatalogScreen(DirectFrame):
 
         if not self.clarabelleChatBalloon:
             self.clarabelleChatBalloon = loader.loadModel('phase_3/models/props/chatbox')
-        
-        self.clarabelleChat = CatalogChatBalloon.CatalogChatBalloon(self.clarabelleChatBalloon)
+
+        self.clarabelleChat = ChatBalloon(self.clarabelleChatBalloon)
         chatNode = self.clarabelleChat.generate(str, ToontownGlobals.getInterfaceFont())[0]
         self.clarabelleChatNP = self.attachNewNode(chatNode.node(), 1000)
         self.clarabelleChatNP.setScale(0.08)
         self.clarabelleChatNP.setPos(0.7, 0, 0.6)
-        
+
         if timeout:
             taskMgr.doMethodLater(timeout, self.clearClarabelleChat, 'clearClarabelleChat')
 

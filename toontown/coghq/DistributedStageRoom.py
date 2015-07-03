@@ -9,8 +9,8 @@ import StageRoomBase, StageRoom
 import FactoryEntityCreator
 import StageRoomSpecs
 from otp.level import LevelSpec, LevelConstants
+from otp.nametag.NametagConstants import *
 from toontown.toonbase import TTLocalizer
-from toontown.nametag.NametagGlobals import *
 
 def getStageRoomReadyPostName(doId):
     return 'stageRoomReady-%s' % doId

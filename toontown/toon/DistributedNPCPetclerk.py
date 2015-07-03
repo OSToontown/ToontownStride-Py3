@@ -4,11 +4,10 @@ from panda3d.core import *
 
 from DistributedNPCToonBase import *
 import NPCToons
-from toontown.chat.ChatGlobals import *
 from toontown.hood import ZoneUtil
-from toontown.nametag.NametagGlobals import *
 from toontown.pets import PetshopGUI
 from toontown.toonbase import TTLocalizer
+from otp.nametag.NametagConstants import *
 
 
 class DistributedNPCPetclerk(DistributedNPCToonBase):

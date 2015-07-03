@@ -1,7 +1,7 @@
 from direct.distributed.DistributedObject import DistributedObject
 from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
 
-from toontown.chat.ChatGlobals import *
+from otp.nametag.NametagConstants import *
 from toontown.parties import PartyGlobals
 from toontown.toon import ToonDNA
 from toontown.toonbase import TTLocalizer

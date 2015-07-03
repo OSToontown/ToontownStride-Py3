@@ -9,9 +9,9 @@ import DistributedElevator
 from ElevatorConstants import *
 from ElevatorUtils import *
 from toontown.hood import ZoneUtil
-from toontown.nametag import NametagGlobals
-from toontown.nametag.Nametag import Nametag
-from toontown.nametag.NametagGroup import NametagGroup
+from otp.nametag.NametagGroup import NametagGroup
+from otp.nametag.Nametag import Nametag
+from otp.nametag.NametagConstants import *
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
 
@@ -41,20 +41,17 @@ class DistributedElevatorExt(DistributedElevator.DistributedElevator):
             self.nametag.setFont(ToontownGlobals.getBuildingNametagFont())
             if TTLocalizer.BuildingNametagShadow:
                 self.nametag.setShadow(*TTLocalizer.BuildingNametagShadow)
-            self.nametag.hideChat()
-            self.nametag.hideThought()
-            nametagColor = NametagGlobals.NametagColors[NametagGlobals.CCSuitBuilding]
-            self.nametag.setNametagColor(nametagColor)
-            self.nametag.setActive(False)
+            self.nametag.setContents(Nametag.CName)
+            self.nametag.setColorCode(NametagGroup.CCSuitBuilding)
+            self.nametag.setActive(0)
             self.nametag.setAvatar(self.getElevatorModel())
             name = self.cr.playGame.dnaStore.getTitleFromBlockNumber(self.bldg.block)
             if not name:
                 name = TTLocalizer.CogsInc
             else:
                 name += TTLocalizer.CogsIncExt
-            self.nametag.setText(name)
+            self.nametag.setName(name)
             self.nametag.manage(base.marginManager)
-            self.nametag.updateAll()
 
     def clearNametag(self):
         if self.nametag != None:

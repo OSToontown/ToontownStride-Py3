@@ -157,7 +157,7 @@ class DistributedGolfCourse(DistributedObject.DistributedObject, FSM, DelayDelet
                 else:
                     color += 1
 
-            base.setCellsActive(base.leftCells, 0)
+            base.setCellsAvailable(base.leftCells, 0)
 
         else:
             self.toonPanels = None
@@ -201,7 +201,7 @@ class DistributedGolfCourse(DistributedObject.DistributedObject, FSM, DelayDelet
             else:
                 self.notify.warning('GOLF COURSE: Attempting to clean up twice')
 
-            base.setCellsActive(base.leftCells, 1)
+            base.setCellsAvailable(base.leftCells, 1)
 
     def onstage(self):
         self.notify.debug('GOLF COURSE: onstage')
