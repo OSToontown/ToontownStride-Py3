@@ -66,7 +66,7 @@ class Nametag(ClickablePopup):
         pass # Does nothing by default.
 
     def clickStateChanged(self):
-        self.update()
+        self.update(False)
 
     def getButton(self):
         cs = self.getClickState()
@@ -77,7 +77,7 @@ class Nametag(ClickablePopup):
         else:
             return self.buttons.get(0)
 
-    def update(self):
+    def update(self, scale=True):
         if self.colorCode in NAMETAG_COLORS:
             cc = self.colorCode
         else:
@@ -87,11 +87,19 @@ class Nametag(ClickablePopup):
 
         self.innerNP.node().removeAllChildren()
         if self.contents & self.CThought and self.chatFlags & CFThought:
-            self.showThought()
+            balloon = self.showBalloon(self.getThoughtBalloon(), self.chatString)
         elif self.contents & self.CSpeech and self.chatFlags&CFSpeech:
-            self.showSpeech()
+            balloon = self.showBalloon(self.getSpeechBalloon(), self.chatString)
         elif self.contents & self.CName and self.displayName:
             self.showName()
+            return
+        else:
+            return
+
+        if scale and self.IS_3D:
+            balloon.setScale(0)
+            scaleLerp = Sequence(Wait(0.10), LerpScaleInterval(balloon, 0.2, VBase3(1, 1, 1), VBase3(0, 0, 0), blendType='easeInOut'))
+            scaleLerp.start()
 
     def showBalloon(self, balloon, text):
         if not self.speechFont:
@@ -110,17 +118,8 @@ class Nametag(ClickablePopup):
                                           button=self.getButton(),
                                           reversed=reversed)
         balloon.reparentTo(self.innerNP)
-        if self.IS_3D:
-            balloon.setScale(0)
-            scaleLerp = Sequence(Wait(0.10), LerpScaleInterval(balloon, 0.2, VBase3(1, 1, 1), VBase3(0, 0, 0), blendType='easeInOut'))
-            scaleLerp.start()
         self.frame = frame
-
-    def showThought(self):
-        self.showBalloon(self.getThoughtBalloon(), self.chatString)
-
-    def showSpeech(self):
-        self.showBalloon(self.getSpeechBalloon(), self.chatString)
+        return balloon
 
     def showName(self):
         if not self.font:
