@@ -16,7 +16,7 @@ class MarginManager(PandaNode):
         cell = MarginCell(self)
         cell.reparentTo(a2d)
         cell.setScale(0.2)
-        cell.setPos(x, 0, y)
+        cell.setPos(x, 0, y + 0.025)
         cell.setAvailable(True)
         cell.setPythonTag('MarginCell', cell)
 
