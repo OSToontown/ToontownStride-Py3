@@ -130,44 +130,29 @@ class Avatar(Actor, ShadowCaster):
         self.setNametagName()
 
     def considerUnderstandable(self):
-        speed = 0
-        if self.playerType in (NametagGroup.CCNormal, NametagGroup.CCFreeChat, NametagGroup.CCSpeedChat):
+        if self.playerType in (NametagGroup.CCNormal, NametagGroup.CCSpeedChat):
             self.setPlayerType(NametagGroup.CCSpeedChat)
-            speed = 1
-        if hasattr(base, 'localAvatar') and self == base.localAvatar:
+        if hasattr(base, 'localAvatar') and (self == base.localAvatar):
             self.understandable = 1
-            self.setPlayerType(NametagGroup.CCFreeChat)
+            self.setPlayerType(NametagGroup.CCNormal)
+        elif hasattr(self, 'adminAccess') and self.isAdmin():
+            self.understandable = 2
+            self.setPlayerType(NametagGroup.CCAdmin)
         elif self.playerType == NametagGroup.CCSuit:
             self.understandable = 1
             self.setPlayerType(NametagGroup.CCSuit)
-        elif self.playerType not in (NametagGroup.CCNormal, NametagGroup.CCFreeChat, NametagGroup.CCSpeedChat):
+        elif self.playerType not in (NametagGroup.CCNormal, NametagGroup.CCSpeedChat):
             self.understandable = 1
-            self.setPlayerType(NametagGroup.CCNoChat)
-        elif hasattr(base, 'localAvatar') and self.commonChatFlags & base.localAvatar.commonChatFlags & OTPGlobals.CommonChat:
+            self.setPlayerType(NametagGroup.CCNonPlayer)
+        elif settings['trueFriends'] and base.localAvatar.isTrueFriends(self.doId):
+            self.understandable = 2
+            self.setPlayerType(NametagGroup.CCNormal)
+        elif settings['speedchatPlus']:
             self.understandable = 1
-            self.setPlayerType(NametagGroup.CCFreeChat)
-        elif self.commonChatFlags & OTPGlobals.SuperChat:
-            self.understandable = 1
-            self.setPlayerType(NametagGroup.CCFreeChat)
-        elif hasattr(base, 'localAvatar') and base.localAvatar.commonChatFlags & OTPGlobals.SuperChat:
-            self.understandable = 1
-            self.setPlayerType(NametagGroup.CCFreeChat)
-        elif base.cr.getFriendFlags(self.doId) & OTPGlobals.FriendChat:
-            self.understandable = 1
-            self.setPlayerType(NametagGroup.CCFreeChat)
-        elif base.cr.playerFriendsManager.findPlayerIdFromAvId(self.doId) is not None:
-            playerInfo = base.cr.playerFriendsManager.findPlayerInfoFromAvId(self.doId)
-            if playerInfo.openChatFriendshipYesNo:
-                self.understandable = 1
-                self.nametag.setColorCode(NametagGroup.CCFreeChat)
-            elif playerInfo.isUnderstandable():
-                self.understandable = 1
-            else:
-                self.understandable = 0
-        elif hasattr(base, 'localAvatar') and self.whitelistChatFlags & base.localAvatar.whitelistChatFlags:
-            self.understandable = 1
+            self.setPlayerType(NametagGroup.CCSpeedChat)
         else:
             self.understandable = 0
+            self.setPlayerType(NametagGroup.CCSpeedChat)
         if not hasattr(self, 'nametag'):
             self.notify.warning('no nametag attributed, but would have been used')
         else:
@@ -248,7 +233,7 @@ class Avatar(Actor, ShadowCaster):
             if access in OTPLocalizer.AccessToString:
                 name += '\n\x01shadow\x01%s\x02' % OTPLocalizer.AccessToString[access]
 
-        self.nametag.setDisplayName(name)
+        self.nametag.setName(name)
 
     def getFont(self):
         return self.__font

@@ -175,7 +175,8 @@ DEFAULT_WORDWRAPS = {
     CCSuitBuilding: 8.5,
     CCHouseBuilding: 10.0,
     CCSpeedChat: 7.5,
-    CCFreeChat: 7.5
+    CCFreeChat: 7.5,
+    CCAdmin: 7.5
 }
 
 WTNormal = 0
