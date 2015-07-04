@@ -8416,9 +8416,7 @@ BugReportNotice = 'Attention!\n\nThis button will open a browser which will send
 
 buffIdStrings = {
   0: ('Your movement speed will be slightly increased for the next %d %s.',
-      'Reward: Increased movement speed'),
-  1: ('Your gag accuracy will be slightly increased for the next %d %s.',
-      'Reward: Increased gag accuracy')
+      'Reward: Increased movement speed')
 }
 
 def getBuffString(buffId, buffTime):
