@@ -87,7 +87,7 @@ def checkName(name, otherCheckFuncs = [], font = None):
             tn = TextNode('NameCheck')
             tn.setFont(font)
             for c in name:
-                if not tn.hasCharacter(unicode(c)):
+                if not tn.hasCharacter(c.decode('utf-8')):
                     notify.info('name contains bad char: %s' % TextEncoder().encodeWtext(c))
                     return OTPLocalizer.NCBadCharacter % TextEncoder().encodeWtext(c)
 

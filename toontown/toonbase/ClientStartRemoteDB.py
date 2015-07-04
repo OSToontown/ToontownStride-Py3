@@ -1,29 +1,30 @@
-#!/usr/bin/env python2
 import json
 import os
 import requests
-from panda3d.core import *
+from pandac.PandaModules import *
 
 
 username = os.environ['ttsUsername']
 password = os.environ['ttsPassword']
 
-accountServerEndpoint = ConfigVariableString(
-    'account-server-endpoint',
-    'http://tigercat1.me/tmpremote/api/').getValue()
-request = requests.post(
+accountServerEndpoint = 'http://www.toontownstride.com/api/'
+session = requests.Session()
+csrf_query = session.get(accountServerEndpoint + 'login/')
+csrf = session.cookies.get_dict().get('csrftoken', '')
+request = session.post(
     accountServerEndpoint + 'login/',
-    data={'n': username, 'p': password})
+    data={'username': username, 'password': password, 'csrfmiddlewaretoken': csrf})
 
 try:
-    response = json.loads(request.text)
+    response = json.loads('{'+request.text.split('{', 1)[1]) # so that we ignore the csrf token
 except ValueError:
     print "Couldn't verify account credentials."
 else:
-    if not response['success']:
-        print response['reason']
+    if response['status'] != 7:
+        print response['message']
     else:
         os.environ['TTS_PLAYCOOKIE'] = response['token']
+        os.environ['TTS_GAMESERVER'] = response['gameserver']
 
         # Start the game:
         import toontown.toonbase.ClientStart

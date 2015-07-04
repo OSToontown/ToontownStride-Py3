@@ -15,7 +15,7 @@ from panda3d.core import *
 
 import hashlib, hmac, json
 import anydbm, math, os
-import urllib2, time
+import urllib2, time, urllib, base64
 
 def rejectConfig(issue, securityIssue=True, retarded=True):
     print
@@ -42,9 +42,13 @@ def entropyIdeal(length):
 accountDBType = config.GetString('accountdb-type', 'developer')
 accountServerSecret = config.GetString('account-server-secret', 'dev')
 accountServerHashAlgo = config.GetString('account-server-hash-algo', 'sha512')
+apiSecret = accountServerSecret = config.GetString('api-key', 'dev')
 if accountDBType == 'remote':
     if accountServerSecret == 'dev':
         rejectConfig('you have not changed the secret in config/local.prc')
+    
+    if apiSecret == 'dev':
+        rejectConfig('you have not changed the api key in config/local.prc')
 
     if len(accountServerSecret) < 16:
         rejectConfig('the secret is too small! Make it 16+ bytes', retarded=False)
@@ -67,18 +71,17 @@ minAccessLevel = config.GetInt('min-access-level', 100)
 
 def executeHttpRequest(url, **extras):
     # TO DO: THIS IS QUITE DISGUSTING
-    # INSTEAD OF USING THE SAME SECRET, WE SHOULD HAVE AN API KEY EXCLUSIVE TO THAT
     # MOVE THIS TO ToontownInternalRepository (this might be interesting for AI)
-    request = urllib2.Request('http://tigercat1.me/tmpremote/api/' + url)
-    timestamp = str(int(time.time()))
-    signature = hashlib.sha256(timestamp + accountServerSecret + "h*^ahJGHA017JI&A&*uyhU07")
-    request.add_header('User-Agent', 'TTS-CSM')
-    request.add_header('X-CSM-Timestamp', timestamp)
-    request.add_header('X-CSM-Signature', signature.hexdigest())
-    for k, v in extras.items():
-        request.add_header('X-CSM-' + k, v)
+    _data = {}
+    if len(extras.items()) != 0:
+        for k, v in extras.items():
+            _data[k] = v
+    signature = hashlib.sha512(json.dumps(_data) + apiSecret).hexdigest()
+    data = urllib.urlencode({'data': json.dumps(_data), 'hmac': signature})
+    req = urllib2.Request('http://www.toontownstride.com/api/' + url, data)
+    req.get_method = lambda: "POST"
     try:
-        return urllib2.urlopen(request).read()
+        return urllib2.urlopen(req).read()
     except:
         return None
 
@@ -103,7 +106,8 @@ def executeHttpRequestAndLog(url, **extras):
 
     return data
 
-blacklist = executeHttpRequest('names/blacklist.json')
+#blacklist = executeHttpRequest('names/blacklist.json') # todo; create a better system for this
+blacklist = json.dumps(["none"])
 if blacklist:
     blacklist = json.loads(blacklist)
 
@@ -139,7 +143,7 @@ class AccountDB:
     def addNameRequest(self, avId, name):
         return True
 
-    def getNameStatus(self, avId):
+    def getNameStatus(self, avId, callback = None):
         return 'APPROVED'
 
     def removeNameRequest(self, avId):
@@ -183,17 +187,36 @@ class RemoteAccountDB(AccountDB):
     # CURRENTLY IT MAKES n REQUESTS FOR EACH AVATAR
     # IN THE FUTURE, MAKE ONLY 1 REQUEST
     # WHICH RETURNS ALL PENDING AVS
+    # ^ done, check before removing todo note
     notify = directNotify.newCategory('RemoteAccountDB')
 
-    def addNameRequest(self, avId, name):
-        return executeHttpRequest('names/append', ID=str(avId), Name=name)
 
-    def getNameStatus(self, avId):
-        #return executeHttpRequest('names/status/?Id=' + str(avId))
-        return 'APPROVED' # Override temporarily.
+    def addNameRequest(self, avId, name, accountID = None):
+        username = avId
+        if accountID is not None:
+            username = accountID
+        
+        res = executeHttpRequest('names', action='set', username=str(username), 
+                                  avId=str(avId), wantedName=name)
+        if res is not None:
+            return True
+        return False
+
+    def getNameStatus(self, accountId, callback = None):
+        r = executeHttpRequest('names', action='get', username=str(accountId))
+        try:
+            r = json.loads(r)
+            if callback is not None:
+                callback(r)
+            return True
+        except:
+            return False
 
     def removeNameRequest(self, avId):
-        return executeHttpRequest('names/remove', ID=str(avId))
+        r = executeHttpRequest('names', action='del', avId=str(avId))
+        if r:
+            return 'SUCCESS'
+        return 'FAILURE'
 
     def lookup(self, token, callback):
         '''
@@ -213,7 +236,6 @@ class RemoteAccountDB(AccountDB):
         try:
             token = token.decode('base64')
             hash, token = token[:hashSize], token[hashSize:]
-
             correctHash = hashAlgo(token + accountServerSecret).digest()
             if len(hash) != len(correctHash):
                 raise ValueError('Invalid hash.')
@@ -233,6 +255,7 @@ class RemoteAccountDB(AccountDB):
             return resp
 
         return AccountDB.lookup(self, token, callback)
+
 
 # --- FSMs ---
 class OperationFSM(FSM):
@@ -456,6 +479,9 @@ class CreateAvatarFSM(OperationFSM):
             return
 
         self.account = fields
+        
+        # For use in calling name requests:
+        self.accountID = self.account['ACCOUNT_ID']
 
         self.avList = self.account['ACCOUNT_AV_SET']
         # Sanitize:
@@ -507,6 +533,8 @@ class CreateAvatarFSM(OperationFSM):
             {'ACCOUNT_AV_SET': self.avList},
             {'ACCOUNT_AV_SET': self.account['ACCOUNT_AV_SET']},
             self.__handleStoreAvatar)
+        
+        self.accountID = self.account['ACCOUNT_ID']
 
     def __handleStoreAvatar(self, fields):
         if fields:
@@ -532,6 +560,9 @@ class AvatarOperationFSM(OperationFSM):
             return
 
         self.account = fields
+        
+        # For use in calling name requests:
+        self.accountID = self.account['ACCOUNT_ID']
 
         self.avList = self.account['ACCOUNT_AV_SET']
         # Sanitize:
@@ -546,6 +577,7 @@ class GetAvatarsFSM(AvatarOperationFSM):
 
     def enterStart(self):
         self.demand('RetrieveAccount')
+        self.nameStateData = None
 
     def enterQueryAvatars(self):
         self.pendingAvatars = set()
@@ -585,7 +617,10 @@ class GetAvatarsFSM(AvatarOperationFSM):
             if wishNameState == 'OPEN':
                 nameState = 1
             elif wishNameState == 'PENDING':
-                actualNameState = self.csm.accountDB.getNameStatus(avId)
+                if self.nameStateData is None:
+                    self.demand('QueryNameState')
+                    return
+                actualNameState = self.nameStateData[str(avId)]
                 self.csm.air.dbInterface.updateObject(
                     self.csm.air.dbId,
                     avId,
@@ -609,6 +644,16 @@ class GetAvatarsFSM(AvatarOperationFSM):
 
         self.csm.sendUpdateToAccountId(self.target, 'setAvatars', [potentialAvs])
         self.demand('Off')
+
+    def enterQueryNameState(self):
+        def gotStates(data):
+            self.nameStateData = data
+            taskMgr.doMethodLater(0, GetAvatarsFSM.demand, 'demand-QueryAvatars',
+                                  extraArgs=[self, 'QueryAvatars'])
+
+        self.csm.accountDB.getNameStatus(self.account['ACCOUNT_ID'], gotStates)
+        # We should've called the taskMgr action by now.
+    
 
 # This inherits from GetAvatarsFSM, because the delete operation ends in a
 # setAvatars message being sent to the client.
@@ -671,6 +716,7 @@ class SetNameTypedFSM(AvatarOperationFSM):
     def enterStart(self, avId, name):
         self.avId = avId
         self.name = name
+        self.set_account_id = None
 
         if self.avId:
             self.demand('RetrieveAccount')
@@ -680,6 +726,8 @@ class SetNameTypedFSM(AvatarOperationFSM):
         self.demand('JudgeName')
 
     def enterRetrieveAvatar(self):
+        if self.accountID:
+            self.set_account_id = self.accountID
         if self.avId and self.avId not in self.avList:
             self.demand('Kill', 'Tried to name an avatar not in the account!')
             return
@@ -703,7 +751,7 @@ class SetNameTypedFSM(AvatarOperationFSM):
         status = judgeName(self.name)
 
         if self.avId and status:
-            if self.csm.accountDB.addNameRequest(self.avId, self.name):
+            if self.csm.accountDB.addNameRequest(self.avId, self.name, accountID=self.set_account_id):
                 self.csm.air.dbInterface.updateObject(
                     self.csm.air.dbId,
                     self.avId,
