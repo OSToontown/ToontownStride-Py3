@@ -1146,7 +1146,7 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
         return seq
 
     def showTitleText(self):
-        if self.style.dept not in TTLocalizer.BossLocations
+        if self.style.dept not in TTLocalizer.BossLocations:
             return Sequence()
 
         titleText = OnscreenText.OnscreenText(TTLocalizer.BossLocations[self.style.dept], fg=(1, 1, 1, 1), shadow=(0, 0, 0, 1), font=ToontownGlobals.getSuitFont(), pos=(0, -0.5), scale=0.16, wordwrap=16)
