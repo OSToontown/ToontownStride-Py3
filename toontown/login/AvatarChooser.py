@@ -210,8 +210,6 @@ class AvatarChooser(StateData.StateData):
         self.choice = panelChoice
         if panelDoneStatus == 'chose':
             self.__handleChoice()
-        elif panelDoneStatus == 'nameIt':
-            self.__handleChoice()
         elif panelDoneStatus == 'delete':
             self.__handleDelete()
         elif panelDoneStatus == 'create':
