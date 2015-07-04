@@ -1,7 +1,7 @@
 import json
 import os
 import requests
-from pandac.PandaModules import *
+from panda3d.core import *
 
 
 username = os.environ['ttsUsername']

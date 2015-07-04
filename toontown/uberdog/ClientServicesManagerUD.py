@@ -15,7 +15,7 @@ from panda3d.core import *
 
 import hashlib, hmac, json
 import anydbm, math, os
-import urllib2, time, urllib, base64
+import urllib2, time, urllib
 
 def rejectConfig(issue, securityIssue=True, retarded=True):
     print
@@ -140,7 +140,7 @@ class AccountDB:
 
         self.dbm = anydbm.open(filename, 'c')
 
-    def addNameRequest(self, avId, name):
+    def addNameRequest(self, avId, name, accountID = None):
         return True
 
     def getNameStatus(self, avId, callback = None):
