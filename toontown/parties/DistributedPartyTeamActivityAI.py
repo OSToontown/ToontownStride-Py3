@@ -33,4 +33,3 @@ class DistributedPartyTeamActivityAI(DistributedPartyActivityAI):
 
     def switchTeamRequestDenied(self, todo0):
         pass
-

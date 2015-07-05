@@ -61,11 +61,11 @@ class DistributedPhoneAI(DistributedFurnitureItemAI):
         av.b_setCatalogNotify(ToontownGlobals.NoItems, av.mailboxNotify)
 
     def __gotHouse(self, dclass, fields):
-            if dclass != self.air.dclassesByName['DistributedHouseAI']:
-                return
+        if dclass != self.air.dclassesByName['DistributedHouseAI']:
+            return
 
-            numItems = len(CatalogItemList(fields['setInteriorItems'][0], store=CatalogItem.Customization)) + len(CatalogItemList(fields['setAtticItems'][0], store=CatalogItem.Customization)) + len(CatalogItemList(fields['setAtticWallpaper'][0], store=CatalogItem.Customization)) + len(CatalogItemList(fields['setAtticWindows'][0], store=CatalogItem.Customization)) + len(CatalogItemList(fields['setInteriorWallpaper'][0], store=CatalogItem.Customization)) + len(CatalogItemList(fields['setInteriorWindows'][0], store=CatalogItem.Customization))
-            self.sendUpdateToAvatarId(fields['setAvatarId'][0], 'setLimits', [numItems])
+        numItems = len(CatalogItemList(fields['setInteriorItems'][0], store=CatalogItem.Customization)) + len(CatalogItemList(fields['setAtticItems'][0], store=CatalogItem.Customization)) + len(CatalogItemList(fields['setAtticWallpaper'][0], store=CatalogItem.Customization)) + len(CatalogItemList(fields['setAtticWindows'][0], store=CatalogItem.Customization)) + len(CatalogItemList(fields['setInteriorWallpaper'][0], store=CatalogItem.Customization)) + len(CatalogItemList(fields['setInteriorWindows'][0], store=CatalogItem.Customization))
+        self.sendUpdateToAvatarId(fields['setAvatarId'][0], 'setLimits', [numItems])
 
     def avatarExit(self):
         avId = self.air.getAvatarIdFromSender()
@@ -129,7 +129,7 @@ class DistributedPhoneAI(DistributedFurnitureItemAI):
 
             resp = item.recordPurchase(av, optional)
             if resp < 0:
-                    av.addMoney(price)
+                av.addMoney(price)
 
             self.sendUpdateToAvatarId(avId, 'requestPurchaseResponse', [context, resp])
             taskMgr.doMethodLater(0.2, self.sendUpdateToAvatarId, 'purchaseItemComplete-%d' % self.getDoId(), extraArgs=[avId, 'purchaseItemComplete', []])

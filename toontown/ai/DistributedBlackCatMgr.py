@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObject import DistributedObject
 from toontown.toonbase import ToontownGlobals
- 
+
 class DistributedBlackCatMgr(DistributedObject):
     neverDisable = 1
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBlackCatMgr')

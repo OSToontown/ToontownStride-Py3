@@ -311,9 +311,9 @@ class Movie(DirectObject.DirectObject):
         elif tutTrack >= len(earnedXp):
             self.playTutorialReward_2()
             return
-        
+
         xp = earnedXp[tutTrack]
-        
+
         if xp > 0:
             self.tutRewardDialog = TTDialog.TTDialog(text=TTLocalizer.MovieTutorialReward1 % (xp, TTLocalizer.BattleGlobalTracks[tutTrack].capitalize()), command=self.playTutorialReward_1, extraArgs=[earnedXp, tutTrack + 1], style=TTDialog.Acknowledge, fadeScreen=None, pos=(0.65, 0, 0.5), scale=0.8)
             sequence = Sequence()
@@ -321,7 +321,7 @@ class Movie(DirectObject.DirectObject):
             sequence.start()
         else:
             self.playTutorialReward_1(None, earnedXp, tutTrack + 1)
-    
+
     def playTutorialReward_2(self, value=None):
         from toontown.toon import Toon
         from toontown.toon import ToonDNA

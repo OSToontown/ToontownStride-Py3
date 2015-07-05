@@ -69,7 +69,7 @@ class InventoryPage(ShtikerPage.ShtikerPage):
 
         for i in xrange(len(self.meritBars)):
             meritBar = self.meritBars[i]
-            
+
             if CogDisguiseGlobals.isSuitComplete(base.localAvatar.cogParts, i):
                 meritBar.hide() if hide else meritBar.show()
             else:
@@ -104,7 +104,7 @@ class InventoryPage(ShtikerPage.ShtikerPage):
 
     def __moneyChange(self, money):
         self.moneyDisplay['text'] = str(money)
-    
+
     def __bankMoneyChange(self, bankMoney):
         self.bankMoneyDisplay['text'] = str(bankMoney)
 

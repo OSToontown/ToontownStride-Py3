@@ -343,7 +343,7 @@ class DistributedMinigame(DistributedObject.DistributedObject):
         self.notify.debug('BASE: handleRulesDone')
         self.sendUpdate('setAvatarReady', [])
         self.frameworkFSM.request('frameworkWaitServerStart')
-    
+
     def setAvatarReady(self):
         messenger.send('disableMinigameSkip')
 

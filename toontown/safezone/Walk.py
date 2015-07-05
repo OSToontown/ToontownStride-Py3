@@ -78,7 +78,7 @@ class Walk(StateData.StateData):
         self.swimSound.stop()
         del self.swimSound
         self.swimSoundPlaying = 0
-    
+
     def __swimSoundTest(self, task):
         speed, rotSpeed, slideSpeed = base.localAvatar.controlManager.getSpeeds()
 
@@ -94,7 +94,7 @@ class Walk(StateData.StateData):
         self.getFog().setColor(*colorsys.hsv_to_rgb(0.616, saturation, 0.5))
 
         return Task.cont
-    
+
     def getFog(self):
         return base.cr.playGame.hood.fog if hasattr(base.cr.playGame.hood, 'fog') else base.cr.playGame.place.fog
 

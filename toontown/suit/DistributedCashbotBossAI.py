@@ -538,4 +538,4 @@ def killCFO():
     if not boss:
         return "You aren't in a CFO"
     boss.b_setState('Victory')
-    return 'Killed CFO.'    
+    return 'Killed CFO.'

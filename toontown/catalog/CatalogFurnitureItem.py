@@ -1086,7 +1086,7 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
             movie.synchronizeTo(self.sound)
             screen = NodePath(CardMaker('tv-screen').generate())
             screen.reparentTo(model)
-            
+
             screen.setScale(2.5, 1.7, 1.4)
             screen.setPos(-1.15, -0.5, 1.1)
             screen.setTexture(movie)
@@ -1146,12 +1146,12 @@ def nextAvailableCloset(avatar, duplicateItems):
 def nextAvailableBank(avatar, duplicateItems):
     if not avatar.getMaxBankMoney() in MoneyToBank:
         return CatalogFurnitureItem(1300)
-    
+
     currentBank = MoneyToBank[avatar.getMaxBankMoney()]
-    
+
     if currentBank == MaxBankId:
         return
-    
+
     return CatalogFurnitureItem(currentBank + 10)
 
 def get50ItemCloset(avatar, duplicateItems):
@@ -1183,10 +1183,10 @@ def getAllClosets():
 
 def getAllBanks():
     list = []
-    
+
     for bankId in BankToMoney.keys():
         list.append(CatalogFurnitureItem(bankId))
-    
+
     return list
 
 def get50ItemTrunk(avatar, duplicateItems):

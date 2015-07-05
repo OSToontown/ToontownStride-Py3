@@ -163,7 +163,7 @@ class CalendarGuiDay(DirectFrame):
                 elif 'startMonth' in holiday or 'startDay' in holiday:
                     startDate = HolidayGlobals.getStartDate(holiday, self.myDate)
                     endDate = HolidayGlobals.getEndDate(holiday, self.myDate)
-                    
+
                     if self.isDateMatch(self.myDate, startDate):
                         if self.isDateMatch(startDate, endDate):
                             description = '%s. %s' % (title, description)
@@ -179,7 +179,7 @@ class CalendarGuiDay(DirectFrame):
 
     def isDateMatch(self, date1, date2):
         return date1.day == date2.day and date1.month == date2.month
-    
+
     def addTitleAndDescToScrollList(self, title, desc):
         textSize = self.ScrollListTextSize
         descTextSize = 0.05

@@ -6,4 +6,3 @@ class DistributedGridGoonAI(DistributedGoonAI):
 
     def setPathPts(self, todo0, todo1, todo2, todo3, todo4, todo5):
         pass
-

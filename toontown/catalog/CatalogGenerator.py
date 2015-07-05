@@ -1479,7 +1479,7 @@ class CatalogGenerator:
 
     def __init__(self):
         self.__itemLists = {}
-        
+
         if config.GetBool('save-catalog-schedule', False):
             self.outputSchedule('catalog-schedule.txt')
 
@@ -1511,13 +1511,13 @@ class CatalogGenerator:
 
             if nextAvailableCloset not in schedule:
                 weeklyCatalog += self.__selectItem(avatar, nextAvailableCloset, monthlyCatalog, saleItem=0)
-            
+
             if nextAvailableBank not in schedule:
                 weeklyCatalog += self.__selectItem(avatar, nextAvailableBank, monthlyCatalog, saleItem=0)
-            
+
             if nextAvailableTank not in schedule:
                 weeklyCatalog += self.__selectItem(avatar, nextAvailableTank, monthlyCatalog, saleItem=0)
-            
+
             weeklyCatalog += self.__selectItem(avatar, get50ItemTrunk, monthlyCatalog, saleItem=0)
         if True:
 

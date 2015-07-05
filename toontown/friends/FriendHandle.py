@@ -18,7 +18,7 @@ class FriendHandle:
 
     def getAdminAccess(self):
         return self.adminAccess
-    
+
     def isAdmin(self):
         return self.adminAccess >= MINIMUM_MAGICWORD_ACCESS
 

@@ -103,10 +103,10 @@ class FriendInviter(DirectFrame):
 
     def getName(self):
         name = self.toonName
-        
+
         if name == None:
             name = TTLocalizer.FriendInviterThatToon
-        
+
         return name
 
     def enterOff(self):

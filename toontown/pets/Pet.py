@@ -279,7 +279,7 @@ class Pet(Avatar.Avatar):
 
     def generateMoods(self):
         nodePath = NodePath(self.nametag.getNameIcon())
-        
+
         if not nodePath:
             return
 

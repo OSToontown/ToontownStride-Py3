@@ -132,7 +132,7 @@ class GSHoodAI(HoodAI.HoodAI):
                     pos = childDnaGroup.getPos()
                     hpr = childDnaGroup.getHpr()
                     nameInfo = childDnaGroup.getName().split('_')
-                    
+
                     if nameInfo[1] in RaceGlobals.LBSubscription:
                         leaderBoard = DistributedLeaderBoardAI(simbase.air, RaceGlobals.LBSubscription[nameInfo[1]])
                         leaderBoard.setPosHpr(pos[0], pos[1], pos[2], hpr[0], hpr[1], hpr[2])

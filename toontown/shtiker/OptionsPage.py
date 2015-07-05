@@ -243,7 +243,7 @@ class OptionsPage(ShtikerPage.ShtikerPage):
             self.optionsTab['state'] = DGG.NORMAL
             self.optionsTabPage.exit()
             self.extraOptionsTab['state'] = DGG.NORMAL
-            self.extraOptionsTabPage.exit()            
+            self.extraOptionsTabPage.exit()
             self.codesTab['state'] = DGG.DISABLED
             self.codesTabPage.enter()
         elif mode == PageMode.Extra:
@@ -253,7 +253,7 @@ class OptionsPage(ShtikerPage.ShtikerPage):
             self.codesTab['state'] = DGG.NORMAL
             self.codesTabPage.exit()
             self.extraOptionsTab['state'] = DGG.DISABLED
-            self.extraOptionsTabPage.enter()            
+            self.extraOptionsTabPage.enter()
 
 class OptionsTabPage(DirectFrame):
     notify = directNotify.newCategory('OptionsTabPage')
@@ -681,7 +681,7 @@ class CodesTabPage(DirectFrame):
             self.resultPanel['text'] = TTLocalizer.CdrResultNotReady
         elif result == 6:
             self.resultPanel['image'] = self.resultPanelErrorGui
-            self.resultPanel['text'] = TTLocalizer.CdrResultNotEligible          
+            self.resultPanel['text'] = TTLocalizer.CdrResultNotEligible
         if result == 0:
             self.successSfx.play()
         else:
@@ -741,7 +741,7 @@ class ExtraOptionsTabPage(DirectFrame):
         self.speedchatPlus_toggleButton = DirectButton(parent=self, relief=None, image=button_image, image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight), command=self.__doToggleSpeedchatPlus)
         self.trueFriends_toggleButton = DirectButton(parent=self, relief=None, image=button_image, image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - 2 * textRowHeight), command=self.__doToggleTrueFriends)
         self.cogInterface_toggleButton = DirectButton(parent=self, relief=None, image=button_image, image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - 3 * textRowHeight), command=self.__doToggleCogInterface)
-        self.bugReportButton = DirectButton(parent=self, relief=None, text=TTLocalizer.BugReportButton, image=button_image, image_scale=button_image_scale, text_pos=(0, -0.01), text_fg=(0, 0, 0, 1), 
+        self.bugReportButton = DirectButton(parent=self, relief=None, text=TTLocalizer.BugReportButton, image=button_image, image_scale=button_image_scale, text_pos=(0, -0.01), text_fg=(0, 0, 0, 1),
         command=self.showReportNotice, pos=(0.0, 0.0, -0.6), text_scale=(0.045))
         guiButton.removeNode()
         circleModel.removeNode()
@@ -786,7 +786,7 @@ class ExtraOptionsTabPage(DirectFrame):
     def __setCogInterfaceButton(self):
         self.cogInterface_label['text'] = TTLocalizer.CogInterfaceLabelOn if settings['cogInterface'] else TTLocalizer.CogInterfaceLabelOff
         self.cogInterface_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff if settings['cogInterface'] else TTLocalizer.OptionsPageToggleOn
-    
+
     def __doToggleSpeedchatPlus(self):
         messenger.send('wakeup')
         settings['speedchatPlus'] = not settings['speedchatPlus']
@@ -797,7 +797,7 @@ class ExtraOptionsTabPage(DirectFrame):
     def __setSpeedchatPlusButton(self):
         self.speedchatPlus_label['text'] = TTLocalizer.SpeedchatPlusLabelOn if settings['speedchatPlus'] else TTLocalizer.SpeedchatPlusLabelOff
         self.speedchatPlus_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff if settings['speedchatPlus'] else TTLocalizer.OptionsPageToggleOn
-    
+
     def __doToggleTrueFriends(self):
         messenger.send('wakeup')
         settings['trueFriends'] = not settings['trueFriends']
@@ -813,7 +813,7 @@ class ExtraOptionsTabPage(DirectFrame):
         if hasattr(self, 'dialog'):
             self.dialog.destroy()
             del self.dialog
-    
+
     def showReportNotice(self):
         self.destroyReportNotice()
         self.dialog = TTDialog.TTDialog(style=TTDialog.YesNo, text=TTLocalizer.BugReportNotice, command=self.confirmBugReport)

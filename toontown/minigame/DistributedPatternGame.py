@@ -209,7 +209,7 @@ class DistributedPatternGame(DistributedMinigame):
             self.lt.pose(anim, 0)
 
         self.toonAnimSpeedMult = {}
-        
+
         for anim in self.toonAnimNames:
             numFrames = self.lt.getNumFrames(anim)
             self.toonAnimSpeedMult[anim] = float(self.__numPingPongFrames(numFrames)) / float(self.stdNumDanceStepPingPongFrames)

@@ -5,7 +5,7 @@ from datetime import datetime
 class AccountDate(DistributedObject):
     neverDisable = 1
     notify = directNotify.newCategory('AccountDate')
-    
+
     def __init__(self, cr):
         DistributedObject.__init__(self, cr)
         self.accountDays = 0
@@ -20,16 +20,16 @@ class AccountDate(DistributedObject):
             if base.cr.accountDateMgr is self:
                 del base.cr.accountDateMgr
         DistributedObject.delete(self)
-    
+
     def getAccountDays(self):
         return self.accountDays
-    
+
     def requestDate(self, task=None):
         self.sendUpdate('requestDate')
-        
+
         if task is not None:
             return task.done
-    
+
     def requestDateResult(self, result):
         if result is None:
             notify.warning('Invalid response from server.')

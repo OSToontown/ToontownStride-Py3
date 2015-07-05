@@ -98,7 +98,7 @@ class BattleCalculatorAI:
         debug = self.notify.getDebug()
         attack = self.battle.toonAttacks[attackIndex]
         atkTrack, atkLevel = self.__getActualTrackLevel(attack)
-            
+
         if atkTrack == NPCSOS:
             return (1, 95)
         if atkTrack == FIRE:
@@ -506,7 +506,7 @@ class BattleCalculatorAI:
                     suit = self.battle.findSuit(targetId)
                     if suit:
                         slips = toon.getPinkSlips()
-                        
+
                         if slips < 1:
                             simbase.air.writeServerEvent('suspicious', toonId, 'Toon attempting to fire a cog without any pinkslips')
                         else:

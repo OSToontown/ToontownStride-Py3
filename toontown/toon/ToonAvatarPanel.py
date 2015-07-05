@@ -506,7 +506,7 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
                              text_shadow=(0, 0, 0, 1), text_scale=0.07, text_pos=(0, -0.125), text_align=TextNode.ACenter, command=self.__handleCastDialog)
             helpGui.removeNode()
             return
-        
+
         petGui = loader.loadModel('phase_3.5/models/gui/PetControlPannel')
         self.petButton = DirectButton(parent=self.frame, image=(petGui.find('**/PetControlToonButtonUp1'), petGui.find('**/PetControlToonButtonDown1'), petGui.find('**/PetControlToonButtonRollover1')), geom=petGui.find('**/PetBattleIcon'), geom3_color=self.disabledImageColor, relief=None, pos=(0.22, -0.2, -0.475), text=('',
          TTLocalizer.AvatarPanelPet,
@@ -589,7 +589,7 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
             self.dialog.show()
         else:
             base.cr.playGame.getPlace().fsm.request('walk')
-    
+
     def cleanupDialogAndWalk(self, state=None):
         self.cleanupDialog()
         base.cr.playGame.getPlace().fsm.request('walk')

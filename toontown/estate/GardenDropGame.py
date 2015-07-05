@@ -425,7 +425,7 @@ class GardenDropGame:
 
     def __run(self, Task):
         if self.lastTime == None:
-             self.lastTime = globalClock.getRealTime()
+            self.lastTime = globalClock.getRealTime()
 
         timeDelta = 0.0265
         self.lastTime = globalClock.getRealTime()

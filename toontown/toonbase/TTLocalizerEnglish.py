@@ -3026,7 +3026,7 @@ SuitAttackTaunts = {'Audit': ["I believe your books don't balance.",
                'Objection!',
                'Under article 14 subsection C...',
                'I see you have broken the law!',
-               "It seems you don't understand the authority of law.", 
+               "It seems you don't understand the authority of law.",
                "I'll see you in court, Toon."],
  'Tremor': ['Did you feel that?',
             'Not afraid of a little tremor are you?',
@@ -5426,7 +5426,7 @@ SpecialEventNames = {1: 'Generic Award',
  18: 'Most C.F.O.s Defeated',
  19: 'Operation Cashbot Chaos Event',
  20: 'Most C.E.O.s Defeated',
- 21: 'Operation Besiege Bossbot Event'}	 	 	 
+ 21: 'Operation Besiege Bossbot Event'}
 NewCatalogNotify = 'There are new items available to order at your phone!'
 NewDeliveryNotify = 'A new delivery has just arrived at your mailbox!'
 CatalogNotifyFirstCatalog = 'Your first cattlelog has arrived!  You may use this to order new items for yourself or for your house.'
@@ -8437,8 +8437,8 @@ id = 0
 
 for dictionary in [BoyPetNames, GirlPetNames, NeutralPetNames]:
     for name in dictionary:
-       PetNameDictionary[id] = name
-       id += 1
+        PetNameDictionary[id] = name
+        id += 1
 
 def getPetName(uniqueID):
     try:
@@ -8449,14 +8449,14 @@ def getPetName(uniqueID):
 def getRandomPetName(gender = None, seed = None):
     if seed is not None:
         random.seed(seed)
-    
+
     nameList = list(NeutralPetNames)
-        
+
     if gender == 0:
         nameList += BoyPetNames
     else:
         nameList += GirlPetNames
-        
+
     return random.choice(nameList)
 
 def getPetNameId(name):

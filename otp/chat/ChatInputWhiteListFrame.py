@@ -108,10 +108,10 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
 
         if text:
             self.chatEntry.set('')
-            
+
             if not base.cr.chatAgent.verifyMessage(text):
                 return
-            
+
             self.sendChatBySwitch(text)
 
         if not overflow:

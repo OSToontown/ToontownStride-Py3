@@ -614,7 +614,7 @@ class CatalogScreen(DirectFrame):
             if item in allBankItems and item.furnitureType == CatalogFurnitureItem.MaxBankId:
                 isMaxBankOffered = True
                 break
-                
+
         for item in itemList:
             if isinstance(item, CatalogInvalidItem.CatalogInvalidItem):
                 self.notify.warning('skipping catalog invalid item %s' % item)

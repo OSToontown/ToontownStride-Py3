@@ -22,7 +22,7 @@ class DistributedNPCGlove(DistributedNPCToonBase):
         if self.gloveDialog:
             self.gloveDialog.destroy()
             self.gloveDialog = None
-    
+
     def initToonState(self):
         self.setAnimState('neutral', 0.9, None, None)
 
@@ -37,23 +37,23 @@ class DistributedNPCGlove(DistributedNPCToonBase):
     def handleCollisionSphereEnter(self, collEntry):
         if self.lastCollision > time.time():
             return
-        
+
         self.lastCollision = time.time() + ToontownGlobals.NPCCollisionDelay
-        
+
         if base.localAvatar.getTotalMoney() < ToontownGlobals.GloveCost:
             self.setChatAbsolute(TTLocalizer.GloveMoreMoneyMessage % ToontownGlobals.GloveCost, CFSpeech|CFTimeout)
             return
-        
+
         base.cr.playGame.getPlace().fsm.request('stopped')
         base.setCellsAvailable(base.bottomCells, 0)
         self.setChatAbsolute(TTLocalizer.GlovePickColorMessage, CFSpeech|CFTimeout)
         self.acceptOnce('gloveShopDone', self.__gloveShopDone)
         self.gloveDialog = GloveShopGui.GloveShopGui()
-    
+
     def freeAvatar(self):
         base.cr.playGame.getPlace().fsm.request('walk')
         base.setCellsAvailable(base.bottomCells, 1)
-    
+
     def __gloveShopDone(self, state, glove):
         self.freeAvatar()
 
@@ -69,7 +69,7 @@ class DistributedNPCGlove(DistributedNPCToonBase):
     def changeGloveResult(self, avId, state):
         if state in GloveNPCGlobals.ChangeMessages:
             self.setChatAbsolute(GloveNPCGlobals.ChangeMessages[state], CFSpeech|CFTimeout)
-        
+
         if state == GloveNPCGlobals.CHANGE_SUCCESSFUL:
             av = self.cr.doId2do.get(avId)
 

@@ -133,7 +133,7 @@ def getStartDate(holiday, rightNow=None):
     startMonth = holiday['startMonth'] if 'startMonth' in holiday else rightNow.month
     startDay = holiday['startDay'] if 'startDay' in holiday else (rightNow.day if 'weekDay' in holiday else calendar.monthrange(rightNow.year, startMonth)[0])
     startDate = datetime.datetime(rightNow.year, startMonth, startDay, tzinfo=TIME_ZONE)
-    
+
     return startDate
 
 def getEndDate(holiday, rightNow=None):

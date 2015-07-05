@@ -12,7 +12,7 @@ class WhiteList:
 
     def setSequenceList(self, sequences):
         self.sequenceList = sequences
-    
+
     def getSequenceList(self, word):
         return self.sequenceList[word] if word and word in self.sequenceList else None
 
@@ -27,7 +27,7 @@ class WhiteList:
         i = bisect_left(self.words, text)
 
         return i != self.numWords and self.words[i].startswith(text)
-    
+
     def getReplacement(self, text, av=None, garbler=None):
         return '\x01WLRed\x01%s\x02' % text if not garbler else garbler.garble(av, len(text.split(' ')))
 
@@ -53,7 +53,7 @@ class WhiteList:
                 newWords[-1] = self.getReplacement(lastWord, av, garbler)
 
         return ' '.join(newWords)
-    
+
     def processSequences(self, text, av=None, garbler=None):
         if not self.sequenceList:
             return text

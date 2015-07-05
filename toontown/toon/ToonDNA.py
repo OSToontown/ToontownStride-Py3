@@ -633,7 +633,7 @@ ClothesColors = [VBase4(0.933594, 0.265625, 0.28125, 1.0),
  VBase4(0.3, 0.3, 0.35, 1.0),
  VBase4(0.196078, 0.803921, 0.196078, 1.0),
  VBase4(0.462745098039216, 0.0901960784313725, 0.0901960784313725, 1.0)]
- 
+
 ShirtStyles = {'bss1': [0, 0, [(0, 0),
            (1, 1),
            (2, 2),
@@ -1689,13 +1689,13 @@ if mergeMATTailor:
                 TailorCollections[MAKE_A_TOON][GIRL_BOTTOMS].append(girlBottoms)
         for boyShorts in TailorCollections[tailors][BOY_SHORTS]:
             if boyShorts not in TailorCollections[MAKE_A_TOON][BOY_SHORTS]:
-                 TailorCollections[MAKE_A_TOON][BOY_SHORTS].append(boyShorts)
+                TailorCollections[MAKE_A_TOON][BOY_SHORTS].append(boyShorts)
         for girlShirts in TailorCollections[tailors][GIRL_SHIRTS]:
             if girlShirts not in TailorCollections[MAKE_A_TOON][GIRL_SHIRTS]:
-                 TailorCollections[MAKE_A_TOON][GIRL_SHIRTS].append(girlShirts)
+                TailorCollections[MAKE_A_TOON][GIRL_SHIRTS].append(girlShirts)
         for boyShirts in TailorCollections[tailors][BOY_SHIRTS]:
             if boyShirts not in TailorCollections[MAKE_A_TOON][BOY_SHIRTS]:
-                 TailorCollections[MAKE_A_TOON][BOY_SHIRTS].append(boyShirts)
+                TailorCollections[MAKE_A_TOON][BOY_SHIRTS].append(boyShirts)
 
 for style in TailorCollections[MAKE_A_TOON][BOY_SHORTS]:
     index = BottomStyles[style][0]
@@ -2509,7 +2509,7 @@ class ToonDNA:
             return dgi.getUint8()
         except:
             return fallback
-    
+
     def isValidNetString(self, string):
         dg = PyDatagram(string)
         dgi = PyDatagramIterator(dg)
@@ -2871,10 +2871,10 @@ class ToonDNA:
 
     def getWhiteColor(self):
         return allColorsList[0]
-    
+
     def isLaughingMan(self):
         return self.laughingMan
-    
+
     def setTemporary(self, newHead, newArmColor, newLegColor, newHeadColor):
         if not self.cache and self.getArmColor != newArmColor:
             self.cache = (self.head,

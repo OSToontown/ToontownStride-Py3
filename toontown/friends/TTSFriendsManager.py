@@ -34,10 +34,10 @@ class TTSFriendsManager(DistributedObjectGlobal):
             ['setDNAString' , dnaString],
         ]
         base.cr.n_handleGetAvatarDetailsResp(avId, fields=fields)
-    
+
     def d_getPetDetails(self, avId):
         self.sendUpdate('getPetDetails', [avId])
- 
+
     def petDetails(self, avId, ownerId, petName, traitSeed, sz, traits, moods, dna, lastSeen):
         fields = list(zip(("setHead", "setEars", "setNose", "setTail", "setBodyTexture", "setColor", "setColorScale", "setEyeColor", "setGender"), dna))
         fields.extend(zip(("setBoredom", "setRestlessness", "setPlayfulness", "setLoneliness",
@@ -53,7 +53,7 @@ class TTSFriendsManager(DistributedObjectGlobal):
         fields.append(("setTraitSeed", traitSeed))
         fields.append(("setSafeZone", sz))
         fields.append(("setLastSeenTimestamp", lastSeen))
-        base.cr.n_handleGetAvatarDetailsResp(avId, fields=fields)    
+        base.cr.n_handleGetAvatarDetailsResp(avId, fields=fields)
 
     def d_teleportQuery(self, toId):
         self.sendUpdate('routeTeleportQuery', [toId])

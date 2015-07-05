@@ -222,11 +222,11 @@ class Avatar(Actor, ShadowCaster):
             if self.isDisguised:
                 return
         self.setNametagName(str)
-    
+
     def setNametagName(self, name=None):
         if not name:
             name = self.name
-        
+
         self.nametag.setName(name)
 
         if hasattr(self, 'adminAccess') and self.isAdmin():

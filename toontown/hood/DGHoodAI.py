@@ -32,7 +32,7 @@ class DGHoodAI(HoodAI.HoodAI):
 
         self.trickOrTreatMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.HALLOWEEN, 12)
         self.trickOrTreatMgr.generateWithRequired(5620) # Rake It Inn, Elm Street
-        
+
         self.winterCarolingMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.CHRISTMAS, 14)
         self.winterCarolingMgr.generateWithRequired(5626) # Pine Needle Crafts, Elm Street
 

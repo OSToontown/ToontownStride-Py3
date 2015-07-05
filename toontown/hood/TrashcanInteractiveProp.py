@@ -7,7 +7,7 @@ class TrashcanInteractiveProp(InteractiveAnimatedProp.InteractiveAnimatedProp):
     notify = DirectNotifyGlobal.directNotify.newCategory('TrashcanInteractiveProp')
     BattleTrack = ToontownBattleGlobals.HEAL_TRACK
     BattleCheerText = TTLocalizer.InteractivePropTrackBonusTerms[BattleTrack]
-    
+
     ZoneToIdles = {
         ToontownGlobals.ToontownCentral: (('tt_a_ara_ttc_trashcan_idleTake2', 1, 1, None, 3, 10),
                                          ('tt_a_ara_ttc_trashcan_idleHiccup0', 1, 1, None, 3, 10),

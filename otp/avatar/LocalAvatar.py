@@ -1100,7 +1100,7 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
 
     def clickedWhisper(self, doId):
         friend = base.cr.identifyFriend(doId)
-        
+
         if friend != None:
             messenger.send('clickedNametag', [friend])
             self.chatMgr.whisperTo(friend.getName(), doId)

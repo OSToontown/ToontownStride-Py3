@@ -228,7 +228,7 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
     def isBossFloor(self, floorNum):
         if not self.layout.hasBossBattle():
             return False
-        
+
         return (self.layout.getBossBattleFloor() + 0) == floorNum
 
     def __cleanup(self):
@@ -798,7 +798,7 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
 
         if self.FOType == "l":
             speech = TTLocalizer.CogdoExecutiveSuiteToonThankYouLawbot
-            
+
         else:
             speech = TTLocalizer.CogdoExecutiveSuiteToonThankYou % self.SOSToonName
 

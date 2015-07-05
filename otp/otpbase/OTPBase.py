@@ -19,7 +19,7 @@ class OTPBase(ShowBase):
         self.enviroCam = None
         self.pixelZoomSetup = False
         self.whiteList = None
-        
+
         if config.GetBool('want-whitelist', True):
             self.whiteList = WhiteList.WhiteList()
             self.whiteList.setWords(WhiteListData.WHITELIST)

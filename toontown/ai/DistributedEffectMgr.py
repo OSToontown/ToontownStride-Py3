@@ -7,7 +7,7 @@ class DistributedEffectMgr(DistributedObject):
     def __init__(self, cr):
         DistributedObject.__init__(self, cr)
         self.nextTime = 0
-    
+
     def delete(self):
         self.ignoreAll()
         DistributedObject.delete(self)

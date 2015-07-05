@@ -17,7 +17,7 @@ class DistributedSmartNPC(DistributedNPCToonBase):
     def __init__(self, cr):
         DistributedNPCToonBase.__init__(self, cr)
         self.accept('chatUpdate', self.chatUpdate)
-    
+
     def disable(self):
         self.ignoreAll()
         DistributedNPCToonBase.disable(self)
@@ -31,7 +31,7 @@ class DistributedSmartNPC(DistributedNPCToonBase):
 
     def chatUpdate(self, message, chatFlags):
         self.sendUpdate('talkMessage', [base.localAvatar.doId, message])
-    
+
     def greet(self, npcId, avId):
         if avId in base.cr.doId2do:
             avName = base.cr.doId2do.get(avId).getName()

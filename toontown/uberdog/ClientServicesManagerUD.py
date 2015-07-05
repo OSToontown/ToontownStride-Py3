@@ -46,7 +46,7 @@ apiSecret = accountServerSecret = config.GetString('api-key', 'dev')
 if accountDBType == 'remote':
     if accountServerSecret == 'dev':
         rejectConfig('you have not changed the secret in config/local.prc')
-    
+
     if apiSecret == 'dev':
         rejectConfig('you have not changed the api key in config/local.prc')
 
@@ -121,7 +121,7 @@ def judgeName(name):
                 return False
             for banned in blacklist:
                 if banned in namePart:
-                    return False             
+                    return False
     return True
 
 # --- ACCOUNT DATABASES ---
@@ -195,8 +195,8 @@ class RemoteAccountDB(AccountDB):
         username = avId
         if accountID is not None:
             username = accountID
-        
-        res = executeHttpRequest('names', action='set', username=str(username), 
+
+        res = executeHttpRequest('names', action='set', username=str(username),
                                   avId=str(avId), wantedName=name)
         if res is not None:
             return True
@@ -479,7 +479,7 @@ class CreateAvatarFSM(OperationFSM):
             return
 
         self.account = fields
-        
+
         # For use in calling name requests:
         self.accountID = self.account['ACCOUNT_ID']
 
@@ -533,7 +533,7 @@ class CreateAvatarFSM(OperationFSM):
             {'ACCOUNT_AV_SET': self.avList},
             {'ACCOUNT_AV_SET': self.account['ACCOUNT_AV_SET']},
             self.__handleStoreAvatar)
-        
+
         self.accountID = self.account['ACCOUNT_ID']
 
     def __handleStoreAvatar(self, fields):
@@ -560,7 +560,7 @@ class AvatarOperationFSM(OperationFSM):
             return
 
         self.account = fields
-        
+
         # For use in calling name requests:
         self.accountID = self.account['ACCOUNT_ID']
 
@@ -653,7 +653,7 @@ class GetAvatarsFSM(AvatarOperationFSM):
 
         self.csm.accountDB.getNameStatus(self.account['ACCOUNT_ID'], gotStates)
         # We should've called the taskMgr action by now.
-    
+
 
 # This inherits from GetAvatarsFSM, because the delete operation ends in a
 # setAvatars message being sent to the client.

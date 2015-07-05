@@ -1,7 +1,7 @@
 import random
 
 class ChatGarbler:
-    
+
     def __init__(self, messages):
         self.messages = messages
 

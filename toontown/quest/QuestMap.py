@@ -123,7 +123,7 @@ class QuestMap(DirectFrame):
 
         if zoneId:
             base.cr.buildingQueryMgr.d_isSuit(zoneId, lambda isSuit: self.updateMarkerColor(marker, isSuit))
-    
+
     def updateMarkerColor(self, marker, isSuit):
         if isSuit:
             marker['image_color'] = (0.4, 0.4, 0.4, 1.0)

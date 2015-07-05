@@ -8,7 +8,7 @@ import PartyGlobals
 
 class DistributedPartyTrampolineActivityAI(DistributedPartyActivityAI, FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedPartyTrampolineActivityAI")
-    
+
     def __init__(self, air, parent, activityTuple):
         DistributedPartyActivityAI.__init__(self, air, parent, activityTuple)
         FSM.__init__(self, 'DistributedPartyTrampolineActivityAI')
@@ -16,7 +16,7 @@ class DistributedPartyTrampolineActivityAI(DistributedPartyActivityAI, FSM):
         self.record = 0
         self.jellybeans = []
         self.collected = 0
-        
+
     def generate(self):
         self.demand('Idle')
 
@@ -44,7 +44,7 @@ class DistributedPartyTrampolineActivityAI(DistributedPartyActivityAI, FSM):
         # Ideally, we shouldn't even be passing strings that *should* be localized.
         self.sendUpdateToAvatarId(avId, 'showJellybeanReward', [reward, av.getMoney(), message])
         av.addMoney(reward)
-        
+
 
     def reportHeightInformation(self, height):
         avId = self.air.getAvatarIdFromSender()
@@ -57,21 +57,21 @@ class DistributedPartyTrampolineActivityAI(DistributedPartyActivityAI, FSM):
             self.sendUpdate('setBestHeightInfo', [av.getName(), height])
         else:
             self.air.writeServerEvent('suspicious',avId,'Toon incorrectly reported height!')
-            
+
     def enterActive(self):
         self.jellybeans = range(PartyGlobals.TrampolineNumJellyBeans)
         taskMgr.doMethodLater(PartyGlobals.TrampolineDuration, self.sendUpdate, 'exitTrampoline%d' % self.doId, extraArgs=['leaveTrampoline', []])
         self.sendUpdate('setState', ['Active', globalClockDelta.getRealNetworkTime()])
         self.collected = 0
-                        
+
     def enterIdle(self):
         self.sendUpdate('setState', ['Idle', globalClockDelta.getRealNetworkTime()])
         self.currentAv = 0
         self.updateToonsPlaying()
-        
+
     def enterRules(self):
         self.sendUpdate('setState', ['Rules', globalClockDelta.getRealNetworkTime()])
-        
+
     def requestAnim(self, anim):
         avId = self.air.getAvatarIdFromSender()
         if self.state != 'Active':
@@ -97,7 +97,7 @@ class DistributedPartyTrampolineActivityAI(DistributedPartyActivityAI, FSM):
             else:
                 self.collected += 1
         self.sendUpdate('removeBeansEcho', [beans])
-        
+
     def updateToonsPlaying(self):
         if self.currentAv == 0:
             self.sendUpdate('setToonsPlaying', [[]])
@@ -118,7 +118,7 @@ class DistributedPartyTrampolineActivityAI(DistributedPartyActivityAI, FSM):
         if self.state != 'Active':
             self.air.writeServerEvent('suspicious',avId,'Toon tried to leave a trampoline that was not running!')
             return
-        if self.currentAv != avId:  
+        if self.currentAv != avId:
             self.air.writeServerEvent('suspicious',avId,'Toon tried to exit trampoline for someone else!')
             return
         taskMgr.remove('exitTrampoline'%self.doId)
@@ -130,7 +130,7 @@ class DistributedPartyTrampolineActivityAI(DistributedPartyActivityAI, FSM):
             self.air.writeServerEvent('suspicious',avId,'Toon tried to exit trampoline they\'re not using!')
             return
         self.demand('Idle')
-        
+
     def toonReady(self):
         avId = self.air.getAvatarIdFromSender()
         if self.state != 'Rules':
@@ -140,6 +140,3 @@ class DistributedPartyTrampolineActivityAI(DistributedPartyActivityAI, FSM):
             self.air.writeServerEvent('suspicious',avId,'Toon tried to verify rules for someone else!')
             return
         self.demand('Active')
-        
-
-

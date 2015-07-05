@@ -9,4 +9,3 @@ class DDStreet(Street.Street):
     def exit(self):
         Street.Street.exit(self)
         self.loader.hood.setNoFog()
-

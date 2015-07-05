@@ -37,7 +37,7 @@ class HalloweenHolidayDecorator(HolidayDecorator.HolidayDecorator):
             base.cr.playGame.getPlace().loader.hood.loader and
             hasattr(base.cr.playGame.getPlace().loader.hood.loader, 'geom') and
             base.cr.playGame.getPlace().loader.hood.loader.geom):
-                return True
+            return True
         else:
             if hasattr(base.cr.playGame, 'getPlace') and base.cr.playGame.getPlace():
                 self.notify.debug('Failed Hood Check %s' % base.cr.playGame.getPlace())

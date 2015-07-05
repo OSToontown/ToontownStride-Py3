@@ -79,7 +79,7 @@ class Hood(StateData.StateData):
 
         if self.storageDNAFile:
             files.append(self.storageDNAFile)
-        
+
         for key, value in self.holidayStorageDNADict.iteritems():
             if base.cr.newsManager.isHolidayRunning(key):
                 for storageFile in value:

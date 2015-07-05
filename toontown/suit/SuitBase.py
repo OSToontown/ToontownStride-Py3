@@ -41,7 +41,7 @@ class SuitBase:
             return self.maxHP
         else:
             self.notify.error('maxHP is None')
-            return 'unknown'      
+            return 'unknown'
 
     def getStyleName(self):
         if hasattr(self, 'dna') and self.dna:

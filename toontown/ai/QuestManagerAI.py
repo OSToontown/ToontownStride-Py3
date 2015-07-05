@@ -544,7 +544,7 @@ def quests(command, arg0=0, arg1=0):
             if canCarry:
                 if arg0 in Quests.QuestDict.keys():
                     quest = Quests.QuestDict[arg0]
-                    
+
                     simbase.air.questManager.avatarChoseQuest(invoker.doId, None, arg0, quest[5], quest[4])
                     return 'Added QuestID %s'%(arg0)
                 else:

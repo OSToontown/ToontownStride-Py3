@@ -3,4 +3,3 @@ from toontown.parties.DistributedPartyCatchActivityAI import DistributedPartyCat
 
 class DistributedPartyWinterCatchActivityAI(DistributedPartyCatchActivityAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedPartyWinterCatchActivityAI")
-

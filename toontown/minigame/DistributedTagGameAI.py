@@ -62,7 +62,7 @@ class DistributedTagGameAI(DistributedMinigameAI):
         self.notify.debug('enterPlay')
         self.b_setIt(random.choice(self.avIdList))
         taskMgr.doMethodLater(self.DURATION, self.timerExpired, self.taskName('gameTimer'))
-        
+
         safezoneId = self.getSafezoneId()
 
         if safezoneId in TreasureGlobals.SafeZoneTreasureSpawns:

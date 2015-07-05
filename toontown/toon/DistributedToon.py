@@ -393,7 +393,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def isAvFriend(self, avId):
         return base.cr.isFriend(avId)
-    
+
     def setTalkWhisper(self, avId, chat):
         if not base.cr.chatAgent.verifyMessage(chat):
             return
@@ -1214,7 +1214,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def setMaxMoney(self, maxMoney):
         self.maxMoney = maxMoney
-    
+
     def getMaxMoney(self):
         return self.maxMoney
 
@@ -2323,59 +2323,59 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def setRedeemedCodes(self, redeemedCodes):
         self.redeemedCodes = redeemedCodes
-    
+
     def b_setIgnored(self, ignored):
         self.setIgnored(ignored)
         self.d_setIgnored(ignored)
-    
+
     def setIgnored(self, ignored):
         self.ignored = ignored
-    
+
     def d_setIgnored(self, ignored):
         self.sendUpdate('setIgnored', [ignored])
-    
+
     def isIgnored(self, doId):
         return doId in self.ignored
-    
+
     def addIgnore(self, doId):
         if not self.isIgnored(doId):
             self.ignored.append(doId)
             self.d_setIgnored(self.ignored)
-    
+
     def removeIgnore(self, doId):
         if self.isIgnored(doId):
             self.ignored.remove(doId)
             self.d_setIgnored(self.ignored)
-    
+
     def setReported(self, reported):
         self.reported = reported
-    
+
     def isReported(self, doId):
         return doId in self.reported
-    
+
     def addReport(self, doId):
         if not self.isReported(doId):
             self.reported.append(doId)
-    
+
     def b_setTrueFriends(self, trueFriends):
         self.setTrueFriends(trueFriends)
         self.d_setTrueFriends(trueFriends)
-    
+
     def setTrueFriends(self, trueFriends):
         Toon.reconsiderAllToonsUnderstandable()
         self.trueFriends = trueFriends
-    
+
     def d_setTrueFriends(self, trueFriends):
         self.sendUpdate('setTrueFriends', [trueFriends])
-    
+
     def isTrueFriends(self, doId):
         return doId in self.trueFriends
-    
+
     def addTrueFriends(self, doId):
         if not self.isTrueFriends(doId):
             self.trueFriends.append(doId)
             self.b_setTrueFriends(self.trueFriends)
-    
+
     def removeTrueFriends(self, doId):
         if self.isTrueFriends(doId):
             self.trueFriends.remove(doId)
@@ -2428,11 +2428,11 @@ def showParticle(name):
     """
     Shows a particle.
     """
-    
+
     particle = BattleParticles.createParticleEffect(name)
-    
+
     if particle:
         particle.start(spellbook.getTarget())
         return 'Successfully started particle!'
-    
+
     return 'Particle %s does not exist.' % name

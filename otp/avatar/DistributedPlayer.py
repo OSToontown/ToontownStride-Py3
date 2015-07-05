@@ -195,7 +195,7 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
 
     def displayTalk(self, chat):
         print 'Talk: %s' % chat
-    
+
     def displayTalkWhisper(self, avId, chat):
         print 'TalkWhisper from %s: %s' % (avId, chat)
 
@@ -258,7 +258,7 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
 
     def teleportQuery(self, requesterId):
         avatar = base.cr.identifyFriend(requesterId)
-        
+
         if avatar is None:
             self.d_teleportResponse(self.doId, 0, 0, 0, 0, sendToId=requesterId)
         elif base.localAvatar.isIgnored(requesterId):

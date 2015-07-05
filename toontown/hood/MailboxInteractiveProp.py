@@ -8,7 +8,7 @@ class MailboxInteractiveProp(InteractiveAnimatedProp.InteractiveAnimatedProp):
     notify = DirectNotifyGlobal.directNotify.newCategory('MailboxInteractiveProp')
     BattleTrack = ToontownBattleGlobals.THROW_TRACK
     BattleCheerText = TTLocalizer.InteractivePropTrackBonusTerms[BattleTrack]
-    
+
     ZoneToIdles = {
         ToontownGlobals.ToontownCentral: (('tt_a_ara_ttc_mailbox_idle0', 3, 10, 'tt_a_ara_ttc_mailbox_idle0settle', 3, 10),
                                          ('tt_a_ara_ttc_mailbox_idleTake2', 1, 1, None, 3, 10),

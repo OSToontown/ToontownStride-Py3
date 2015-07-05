@@ -32,7 +32,3 @@ print 'Encrypted string:', encoded
 # decode the encoded string
 decoded = DecodeAES(cipher, encoded)
 print 'Decrypted string:', decoded
-        
-
-
-

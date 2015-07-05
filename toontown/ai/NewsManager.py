@@ -22,7 +22,7 @@ class NewsManager(DistributedObject):
 
     def isHolidayRunning(self, id):
         return id in self.activeHolidays
-    
+
     def setActiveHolidays(self, ids):
         for id in ids:
             self.startHoliday(id, True)
@@ -30,13 +30,13 @@ class NewsManager(DistributedObject):
     def broadcastHoliday(self, holiday, type):
         if type in holiday:
             base.localAvatar.setSystemMessage(0, holiday[type])
-    
+
     def startHoliday(self, id, ongoing=False):
         if id in self.activeHolidays or id not in HolidayGlobals.Holidays:
             return
 
         holiday = HolidayGlobals.getHoliday(id)
-        
+
         self.activeHolidays.append(id)
         self.broadcastHoliday(holiday, 'ongoingMessage' if ongoing else 'startMessage')
         self.startSpecialHoliday(id)
@@ -82,7 +82,7 @@ class NewsManager(DistributedObject):
             base.localAvatar.chatMgr.chatInputSpeedChat.removeHalloweenMenu()
         elif id == ToontownGlobals.CHRISTMAS:
             base.localAvatar.chatMgr.chatInputSpeedChat.removeWinterMenu()
-    
+
     def setInvasionStatus(self, msgType, suitType, remaining, flags):
         if msgType not in ToontownGlobals.SuitInvasions:
             return
@@ -97,7 +97,7 @@ class NewsManager(DistributedObject):
 
         track = Sequence()
         base.localAvatar.inventory.setInvasionCreditMultiplier(1 if msgType in ToontownGlobals.EndingInvasions else ToontownBattleGlobals.getInvasionMultiplier())
-        
+
         for i, message in enumerate(ToontownGlobals.SuitInvasions[msgType]):
             track.append(Wait(5 if i else 1))
             track.append(Func(base.localAvatar.setSystemMessage, 0, (TTLocalizer.SuitInvasionPrefix + message) % suitNames))

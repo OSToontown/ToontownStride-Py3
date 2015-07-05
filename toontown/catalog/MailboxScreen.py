@@ -512,5 +512,5 @@ class MailboxScreen(DirectObject.DirectObject):
 
     def getSenderName(self, avId):
         sender = base.cr.identifyFriend(avId)
-        
+
         return sender.getName() if sender else TTLocalizer.MailboxGiftTagAnonymous

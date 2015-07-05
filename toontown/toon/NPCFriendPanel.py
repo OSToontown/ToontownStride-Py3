@@ -57,18 +57,18 @@ class NPCFriendPanel(DirectFrame):
 
     def addPageIndex(self, index):
         self.pos += (16 * index)
-        
+
         if self.pos > 0:
             self.leftArrow.show()
         else:
             self.leftArrow.hide()
-        
+
         self.update()
-    
+
     def update(self):
         friendList = self.friendDict.keys()
         cardNum = 0
-        
+
         for i in xrange(self.pos, self.pos + 16):
             card = self.cardList[cardNum]
 

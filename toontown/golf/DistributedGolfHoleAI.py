@@ -277,7 +277,7 @@ class DistributedGolfHoleAI(DistributedPhysicsWorldAI.DistributedPhysicsWorldAI,
 
     def chooseAvatarToSimulate(self):
         stillPlaying = self.golfCourse.getStillPlayingAvIds()
-        
+
         return stillPlaying[0] if stillPlaying else 0
 
     def ballMovie2AI(self, cycleTime, avId, movie, spinMovie, ballInFrame, ballTouchedHoleFrame, ballFirstTouchedHoleFrame, commonObjectData):

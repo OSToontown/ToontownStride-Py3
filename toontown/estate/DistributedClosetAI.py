@@ -126,8 +126,8 @@ class DistributedClosetAI(DistributedFurnitureItemAI):
         if not finished:
             testDna.makeFromNetString(dnaString)
             if not self.__checkValidDNAChange(av, testDna):
-                    self.air.writeServerEvent('suspicious', avId, 'Tried to change their DNA temporarily!')
-                    return
+                self.air.writeServerEvent('suspicious', avId, 'Tried to change their DNA temporarily!')
+                return
             self.sendUpdate('setCustomerDNA', [avId, dnaString])
             return
         elif finished == 1:
@@ -159,12 +159,12 @@ class DistributedClosetAI(DistributedFurnitureItemAI):
                     self.customerDNA.botTex = testDna.botTex
                     self.customerDNA.botTexColor = testDna.botTexColor
                     if self.customerDNA.torso != testDna.torso:
-                            if self.customerDNA.gender == 'm':
-                                self.air.writeServerEvent('suspicious', avId, 'Tried to change their torso size!')
-                                return
-                            elif self.customerDNA.torso[0] != testDna.torso[0]:
-                                self.air.writeServerEvent('suspicious', avId, 'Tried to change their torso size!')
-                                return
+                        if self.customerDNA.gender == 'm':
+                            self.air.writeServerEvent('suspicious', avId, 'Tried to change their torso size!')
+                            return
+                        elif self.customerDNA.torso[0] != testDna.torso[0]:
+                            self.air.writeServerEvent('suspicious', avId, 'Tried to change their torso size!')
+                            return
                     self.customerDNA.torso = testDna.torso
                 else:
                     self.air.writeServerEvent('suspicious', avId, 'Tried to set their shorts to a pair they don\'t own!')

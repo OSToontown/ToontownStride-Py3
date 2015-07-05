@@ -52,7 +52,7 @@ class DistributedTagGame(DistributedMinigame):
         self.tracks = []
         self.initialPositions = TagGameGlobals.getDropPoints(safezoneId)
         self.IT = None
-        
+
         if TagGameGlobals.isSnowHood(safezoneId):
             self.snow, self.snowRender = SnowUtil.createSnow(self.ground)
 
@@ -101,7 +101,7 @@ class DistributedTagGame(DistributedMinigame):
         NametagGlobals.setMasterArrowsOn(1)
         DistributedSmoothNode.activateSmoothing(1, 1)
         self.IT = None
-        
+
         if hasattr(self, 'snow'):
             self.snow.start(camera, self.snowRender)
 

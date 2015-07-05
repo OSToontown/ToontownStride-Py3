@@ -14,18 +14,18 @@ class NewsManagerAI(DistributedObjectAI):
         DistributedObjectAI.__init__(self, air)
         self.activeHolidays = []
         self.fireworkTask = None
-    
+
     def announceGenerate(self):
         DistributedObjectAI.announceGenerate(self)
         self.__checkHolidays()
         self.checkTask = taskMgr.doMethodLater(15, self.__checkHolidays, 'holidayCheckTask')
         self.accept('avatarEntered', self.__handleAvatarEntered)
-    
+
     def delete(self):
         DistributedObjectAI.delete(self)
         taskMgr.remove(self.checkTask)
         self.deleteFireworkTask()
-    
+
     def deleteFireworkTask(self):
         if self.fireworkTask:
             taskMgr.remove(self.fireworkTask)
@@ -48,7 +48,7 @@ class NewsManagerAI(DistributedObjectAI):
         for id in HolidayGlobals.Holidays:
             holiday = HolidayGlobals.Holidays[id]
             running = self.isHolidayRunning(id)
-            
+
             if self.isHolidayInRange(holiday, date):
                 if not running:
                     self.startHoliday(id)
@@ -56,7 +56,7 @@ class NewsManagerAI(DistributedObjectAI):
                 self.endHoliday(id)
 
         return Task.again
-    
+
     def isHolidayInRange(self, holiday, date):
         if 'weekDay' in holiday:
             return holiday['weekDay'] == date.weekday()
@@ -73,7 +73,7 @@ class NewsManagerAI(DistributedObjectAI):
         self.activeHolidays.append(id)
         self.startSpecialHoliday(id)
         self.sendUpdate('startHoliday', [id])
-    
+
     def endHoliday(self, id):
         if id not in self.activeHolidays or id not in HolidayGlobals.Holidays:
             return
@@ -81,7 +81,7 @@ class NewsManagerAI(DistributedObjectAI):
         self.activeHolidays.remove(id)
         self.endSpecialHoliday(id)
         self.sendUpdate('endHoliday', [id])
-    
+
     def startSpecialHoliday(self, id):
         if id == ToontownGlobals.FISH_BINGO or id == ToontownGlobals.SILLY_SATURDAY:
             messenger.send('checkBingoState')
@@ -94,7 +94,7 @@ class NewsManagerAI(DistributedObjectAI):
             messenger.send('checkBingoState')
         elif id in [ToontownGlobals.SUMMER_FIREWORKS, ToontownGlobals.NEW_YEAR_FIREWORKS]:
             self.deleteFireworkTask()
-    
+
     def startFireworks(self, type, task=None):
         maxShow = len(FireworkShows.shows.get(type, [])) - 1
 

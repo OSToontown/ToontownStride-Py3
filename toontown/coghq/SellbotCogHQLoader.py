@@ -26,7 +26,7 @@ class SellbotCogHQLoader(CogHQLoader.CogHQLoader):
             state.addTransition('factoryExterior')
 
         self.fsm.addState(State.State('factoryInterior', self.enterFactoryInterior, self.exitFactoryInterior, ['quietZone', 'factoryExterior']))
-        self.fsm.addState(State.State('megaCorpInterior', self.enterMegaCorpInterior, self.exitMegaCorpInterior, ['quietZone', 'factoryExterior']))        
+        self.fsm.addState(State.State('megaCorpInterior', self.enterMegaCorpInterior, self.exitMegaCorpInterior, ['quietZone', 'factoryExterior']))
         for stateName in ['quietZone']:
             state = self.fsm.getStateNamed(stateName)
             state.addTransition('factoryInterior')
@@ -176,10 +176,10 @@ class SellbotCogHQLoader(CogHQLoader.CogHQLoader):
     def enterMegaCorpInterior(self, requestStatus):
         self.placeClass = MegaCorpInterior.MegaCorpInterior
         self.enterPlace(requestStatus)
-        
+
     def exitMegaCorpInterior(self):
         self.exitPlace()
-        self.placeClass = None    
+        self.placeClass = None
 
     def enterFactoryInterior(self, requestStatus):
         self.placeClass = FactoryInterior.FactoryInterior

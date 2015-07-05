@@ -42,7 +42,7 @@ def setupInvasionMarker(node, invasionStatus):
 
     icons = loader.loadModel('phase_3/models/gui/cog_icons')
     iconStatus = invasionStatus - 1
-    
+
     if iconStatus in SuitDNA.suitDeptModelPaths:
         icon = icons.find(SuitDNA.suitDeptModelPaths[iconStatus]).copyTo(markerNode)
 

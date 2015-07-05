@@ -6,6 +6,6 @@ class DistributedMegaCorp(DistributedFactory.DistributedFactory):
 
     def __init__(self, cr):
         DistributedFactory.DistributedFactory.__init__(self, cr)
-    
+
     def getFloorOuchLevel(self):
         return 8

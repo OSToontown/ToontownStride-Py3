@@ -718,7 +718,7 @@ def getToonTakeDamageTrack(toon, attack, died, dmg, delay, damageAnimNames = Non
     toonTrack.append(Func(toon.loop, 'neutral'))
     if died:
         pbpText = attack['playByPlayText']
-        
+
         toonTrack.append(pbpText.getToonsDiedInterval([TTLocalizer.ToonDefeatedMessage % toon.getName()], 7.0))
     return Parallel(toonTrack, indicatorTrack)
 

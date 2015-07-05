@@ -199,7 +199,7 @@ class TTSFriendsManagerUD(DistributedObjectGlobalUD):
 
             self.sendUpdateToAvatarId(senderId, 'friendDetails', [avId, inventory, trackAccess, trophies, hp, maxHp, defaultShard, lastHood, dnaString, experience, trackBonusLevel])
         self.air.dbInterface.queryObject(self.air.dbId, avId, handleToon)
-    
+
     def getPetDetails(self, avId):
         senderId = self.air.getAvatarIdFromSender()
         def handlePet(dclass, fields):

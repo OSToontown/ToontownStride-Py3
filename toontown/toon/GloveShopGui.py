@@ -22,7 +22,7 @@ class GloveShopGui:
         gui = loader.loadModel('phase_3/models/gui/tt_m_gui_mat_mainGui')
         arrowImage = (gui.find('**/tt_t_gui_mat_shuffleArrowUp'), gui.find('**/tt_t_gui_mat_shuffleArrowDown'))
         buttonImage = (gui.find('**/tt_t_gui_mat_shuffleUp'), gui.find('**/tt_t_gui_mat_shuffleDown'))
-        
+
         self.title = DirectLabel(aspect2d, relief=None, text=TTLocalizer.GloveGuiTitle,
                      text_fg=(0, 1, 0, 1), text_scale=0.15, text_font=ToontownGlobals.getSignFont(),
                      pos=(0, 0, -0.30), text_shadow=(1, 1, 1, 1))
@@ -43,7 +43,7 @@ class GloveShopGui:
 
         self.downArrow = DirectButton(aspect2d, relief=None, image=arrowImage, pos=(-0.60, 0, -0.66))
         self.upArrow = DirectButton(aspect2d, relief=None, image=arrowImage, pos=(0.60, 0, -0.66), scale=-1)
-        
+
         gui.removeNode()
 
     def bindButtons(self):
@@ -79,10 +79,10 @@ class GloveShopGui:
 
     def setClientGlove(self, color):
         dna = base.localAvatar.style
-        
+
         dna.gloveColor = color
         base.localAvatar.setDNA(dna)
-    
+
     def __exit(self, state):
         self.destroy()
         self.setClientGlove(self.lastGlove)
@@ -97,7 +97,7 @@ class GloveShopGui:
             hitLimit = 1
         else:
             self.downArrow['state'] = DGG.NORMAL
-        
+
         if (self.index + 1) >= len(TTLocalizer.NumToColor):
             self.upArrow['state'] = DGG.DISABLED
             hitLimit = 1

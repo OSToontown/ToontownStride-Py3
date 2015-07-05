@@ -987,7 +987,7 @@ class Toon(Avatar.Avatar, ToonHead):
     def generateLaughingMan(self):
         if self.getWantLaughingMan():
             self.swapToonHead(laughingMan=True)
-    
+
     def generateHat(self, fromRTM = False):
         hat = self.getHat()
         if hat[0] >= len(ToonDNA.HatModels):
@@ -1160,13 +1160,13 @@ class Toon(Avatar.Avatar, ToonHead):
 
     def getHat(self):
         return self.hat
-    
+
     def getWantLaughingMan(self):
         return self.style.laughingMan or self.getWantLaughingManHoliday()
-    
+
     def getWantLaughingManHoliday(self):
         return base.cr.newsManager and base.cr.newsManager.isHolidayRunning(ToontownGlobals.LAUGHING_MAN)
-    
+
     def setGlasses(self, glassesIdx, textureIdx, colorIdx, fromRTM = False):
         self.glasses = (glassesIdx, textureIdx, colorIdx)
         self.generateGlasses(fromRTM=fromRTM)
@@ -3064,7 +3064,7 @@ class Toon(Avatar.Avatar, ToonHead):
         self.headMeter.destroy()
         self.headMeter = None
         self.setHeadPositions()
-    
+
     def setGMIcon(self, access):
         if self.gmIcon:
             return

@@ -24,12 +24,12 @@ def getAllowedTracks():
 
 def getCogdoTrack(suitName):
     tracks = getAllowedTracks()
-    
+
     if not tracks:
         return None
 
     track = SuitDNA.getSuitDept(suitName)
-    
+
     return track if track in tracks else random.choice(tracks)
 
 def loadFlyingModel(baseName, type = 'model', group = 'area'):

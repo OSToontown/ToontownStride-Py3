@@ -37,7 +37,7 @@ class DistributedLeaderBoard(DistributedObject.DistributedObject):
     def setDisplay(self, track, type, results):
         if not track in TTLocalizer.KartRace_TrackNames or len(TTLocalizer.RecordPeriodStrings) <= type:
             return
-        
+
         trackName = TTLocalizer.KartRace_TrackNames[track]
         recordTitle = TTLocalizer.RecordPeriodStrings[type]
         self.display(trackName, recordTitle, results)

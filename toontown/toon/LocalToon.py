@@ -1664,7 +1664,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
 
     def getAccountDays(self):
         return base.cr.accountDateMgr.getAccountDays()
-    
+
     def hasActiveBoardingGroup(self):
         if hasattr(localAvatar, 'boardingParty') and localAvatar.boardingParty:
             return localAvatar.boardingParty.hasActiveGroup(localAvatar.doId)
@@ -1737,13 +1737,13 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
 
     def hasPet(self):
         return self.petId != 0
-    
+
     def getPetDNA(self):
         if self.hasPet():
             pet = base.cr.identifyFriend(self.petId)
             return pet.style if pet else None
         return None
-    
+
     def setPetId(self, petId):
         self.petId = petId
         if self.isLocal():

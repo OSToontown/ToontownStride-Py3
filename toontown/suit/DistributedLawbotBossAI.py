@@ -700,7 +700,7 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
             possibleSummonType = ['building', 'invasion', 'cogdo', 'v2invasion']
             #typeWeights = ['single'] * 70 + ['building'] * 27 + ['invasion'] * 3
             if not foundOne:
-                 for i in xrange(5):
+                for i in xrange(5):
                     randomCogLevel = random.choice(possibleCogLevel)
                     randomSummonType = random.choice(possibleSummonType)
                     randomDeptIndex = random.choice(possibleDeptIndex)

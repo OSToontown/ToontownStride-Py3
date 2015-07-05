@@ -46,7 +46,7 @@ class CatalogTankItem(CatalogItem.CatalogItem):
         bucket = gui.find('**/bucket')
         bucket.setScale(2.7)
         bucket.setPos(-3.15, 0, 3.2)
-        
+
         frame = self.makeFrame()
         bucket.reparentTo(frame)
         gui.removeNode()
@@ -84,7 +84,7 @@ def nextAvailableTank(avatar, duplicateItems):
 
     if not tank in FishGlobals.NextTank:
         return None
-    
+
     return CatalogTankItem(FishGlobals.NextTank[tank])
 
 def getAllTanks():
