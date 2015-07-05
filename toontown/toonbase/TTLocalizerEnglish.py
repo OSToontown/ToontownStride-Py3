@@ -8133,7 +8133,7 @@ ElevatorBossBotBoss = 'Bossbot Clubhouse'
 ElevatorBossBotCourse0 = 'The Front Three'
 ElevatorBossBotCourse1 = 'The Middle Six'
 ElevatorBossBotCourse2 = 'The Back Nine'
-ElevatorCashBotBoss = 'Cashbot Vault'
+ElevatorCashBotBoss = 'Cashbot Treasury Vault'
 ElevatorCashBotMint0 = 'Coin Mint'
 ElevatorCashBotMint1 = 'Dollar Mint'
 ElevatorCashBotMint2 = 'Bullion Mint'
@@ -8521,6 +8521,6 @@ FieldOfViewLabel = 'Field of View:'
 BossLocations = {
  'c': 'Bossbot Clubhouse\nBanquet',
  'l': "Lawbot Courthouse\nBumpy Bumblebehr's Trial",
- 'm': 'Cashbot Vault',
+ 'm': 'Cashbot Treasury Vault',
  's': 'Sellbot Towers\nRooftop'
 }
