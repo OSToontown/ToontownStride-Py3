@@ -197,7 +197,7 @@ class ToonHead(Actor.Actor):
         if dna.getAnimal() == 'dog':
             self.loop('neutral')
         if dna.laughingMan:
-            LaughingManGlobals.addHeadEffect(self.getGeomNode(), book=True)
+            LaughingManGlobals.addHeadEffect(self.getGeomNode(), book=forGui)
 
     def fitAndCenterHead(self, maxDim, forGui = 0):
         p1 = Point3()

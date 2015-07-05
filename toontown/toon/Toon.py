@@ -830,7 +830,7 @@ class Toon(Avatar.Avatar, ToonHead):
             self.loadAnims(HeadAnimDict[self.style.head], 'head', '500')
             self.loadAnims(HeadAnimDict[self.style.head], 'head', '250')
 
-    def swapToonHead(self, headStyle=-1, laughingMan=-1, copy = 1):
+    def swapToonHead(self, headStyle=-1, laughingMan=0, copy = 1):
         self.stopLookAroundNow()
         self.eyelids.request('open')
         self.unparentToonParts()
@@ -842,7 +842,6 @@ class Toon(Avatar.Avatar, ToonHead):
             del self._Actor__commonBundleHandles['head']
         if headStyle > -1:
             self.style.head = headStyle
-        laughingMan = laughingMan or self.style.laughingMan or self.getWantLaughingManHoliday()
         self.generateToonHead(copy)
         self.generateToonColor()
         self.parentToonParts()
@@ -850,7 +849,7 @@ class Toon(Avatar.Avatar, ToonHead):
         self.resetHeight()
         self.eyelids.request('open')
         self.startLookAround()
-        if laughingMan:
+        if laughingMan or self.getWantLaughingMan():
             LaughingManGlobals.addToonEffect(self)
 
     def generateToonColor(self):
@@ -985,8 +984,8 @@ class Toon(Avatar.Avatar, ToonHead):
 
         return swappedTorso
 
-    def generateLaughingMan(self, force=False):
-        if force or self.getWantLaughingMan():
+    def generateLaughingMan(self):
+        if self.getWantLaughingMan():
             self.swapToonHead(laughingMan=True)
     
     def generateHat(self, fromRTM = False):

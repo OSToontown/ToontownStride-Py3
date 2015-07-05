@@ -2648,7 +2648,7 @@ class ToonDNA:
         self.botTexColor = bottomTextureColor
         self.laughingMan = laughingMan
 
-    def updateToonProperties(self, head = None, torso = None, legs = None, gender = None, armColor = None, gloveColor = None, legColor = None, headColor = None, topTexture = None, topTextureColor = None, sleeveTexture = None, sleeveTextureColor = None, bottomTexture = None, bottomTextureColor = None, shirt = None, bottom = None, laughingMan = None):
+    def updateToonProperties(self, head = None, torso = None, legs = None, gender = None, armColor = None, gloveColor = None, legColor = None, headColor = None, topTexture = None, topTextureColor = None, sleeveTexture = None, sleeveTextureColor = None, bottomTexture = None, bottomTextureColor = None, shirt = None, bottom = None, laughingMan = False):
         if head:
             self.head = head
         if torso:
@@ -2677,8 +2677,7 @@ class ToonDNA:
             self.botTex = bottomTexture
         if bottomTextureColor:
             self.botTexColor = bottomTextureColor
-        if laughingMan:
-            self.laughingMan = laughingMan
+        self.laughingMan = laughingMan
         if shirt:
             str, colorIndex = shirt
             defn = ShirtStyles[str]
