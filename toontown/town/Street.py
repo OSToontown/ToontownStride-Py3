@@ -139,9 +139,7 @@ class Street(BattlePlace.BattlePlace):
             for light in self.halloweenLights:
                 light.reparentTo(hidden)
 
-        newsManager = base.cr.newsManager
         NametagGlobals.setMasterArrowsOn(0)
-
         self.loader.hood.stopSky()
         self.loader.music.stop()
         base.localAvatar.setGeom(render)
