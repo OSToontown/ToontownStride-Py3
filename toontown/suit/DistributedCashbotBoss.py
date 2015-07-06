@@ -67,6 +67,7 @@ class DistributedCashbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         shieldNodePath = self.pelvis.attachNewNode(shieldNode)
         self.heldObject = None
         self.bossDamage = 0
+        self.intermissionMusic = base.loadMusic('phase_9/audio/bgm/CBHQ_Boss_intermission.ogg')
         self.loadEnvironment()
         self.__makeResistanceToon()
         self.physicsMgr = PhysicsManager()
@@ -93,6 +94,7 @@ class DistributedCashbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.fnp.removeNode()
         self.physicsMgr.clearLinearForces()
         self.battleThreeMusic.stop()
+        self.intermissionMusic.stop()
         self.epilogueMusic.stop()
         base.localAvatar.chatMgr.chatInputSpeedChat.removeCFOMenu()
         if OneBossCog == self:
@@ -408,6 +410,7 @@ class DistributedCashbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         battleHpr = VBase3(ToontownGlobals.CashbotBossBattleThreePosHpr[3], ToontownGlobals.CashbotBossBattleThreePosHpr[4], ToontownGlobals.CashbotBossBattleThreePosHpr[5])
         finalHpr = VBase3(135, 0, 0)
         bossTrack = Sequence()
+        bossTrack.append(Func(base.playMusic, self.intermissionMusic, 1, 0.9))
         bossTrack.append(Func(self.reparentTo, render))
         bossTrack.append(Func(self.getGeomNode().setH, 180))
         bossTrack.append(Func(self.pelvis.setHpr, self.pelvisForwardHpr))
@@ -468,6 +471,7 @@ class DistributedCashbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
                 rToon.posHprInterval(3, Point3(136, -212.9, 0), VBase3(-14, 0, 0), startPos=Point3(110.8, -292.7, 0), startHpr=VBase3(-14, 0, 0)),
                 goon.posHprInterval(3, Point3(125.2, -243.5, 0), VBase3(-14, 0, 0), startPos=Point3(104.8, -309.5, 0), startHpr=VBase3(-14, 0, 0))),
             Func(self.__hideFakeGoons),
+            Func(self.intermissionMusic.stop),
             Func(crane.request, 'Free'),
             Func(self.getGeomNode().setH, 0),
             self.moveToonsToBattleThreePos(self.involvedToons),
