@@ -1662,9 +1662,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         DistributedToon.DistributedToon.setPinkSlips(self, pinkSlips)
         self.inventory.updateTotalPropsText()
 
-    def getAccountDays(self):
-        return base.cr.accountDateMgr.getAccountDays()
-
     def hasActiveBoardingGroup(self):
         if hasattr(localAvatar, 'boardingParty') and localAvatar.boardingParty:
             return localAvatar.boardingParty.hasActiveGroup(localAvatar.doId)
