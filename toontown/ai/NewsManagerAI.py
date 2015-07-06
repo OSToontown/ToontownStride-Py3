@@ -87,7 +87,7 @@ class NewsManagerAI(DistributedObjectAI):
         if id == ToontownGlobals.FISH_BINGO or id == ToontownGlobals.SILLY_SATURDAY:
             messenger.send('checkBingoState')
         elif id in [ToontownGlobals.SUMMER_FIREWORKS, ToontownGlobals.NEW_YEAR_FIREWORKS]:
-            self.fireworkTasks.append(taskMgr.doMethodLater((60 - datetime.datetime.now().minute) * 60, self.startFireworkTask, 'initialFireworkTask-%s' % id))
+            self.fireworkTasks.append(taskMgr.doMethodLater((60 - datetime.datetime.now().minute) * 60, self.startFireworkTask, 'initialFireworkTask-%s' % id, extraArgs=[id]))
 
     def endSpecialHoliday(self, id):
         if id == ToontownGlobals.FISH_BINGO or id == ToontownGlobals.SILLY_SATURDAY:

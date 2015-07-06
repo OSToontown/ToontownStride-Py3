@@ -8535,6 +8535,17 @@ SendCogBossTaunts = {
   'The deal has only just begun.',
   'Going sad already? How about we settle a retirement plan.',
   'Get them! Get them all!'
+ ],
+ 'm': [
+  "Let's show you how money talks.",
+  "We'll bring you into bankruptcy.",
+  'The Jellybean is only worth a tenth of the cogbuck!',
+  'Hey! Those cogs cost me money!',
+  "I'll put you on the next train back to the playground!",
+  'You toons are wasting so much of your currency fighting us.',
+  'It seems Toontown has high amounts of debt to the Cogs.',
+  "Invest in Cogbucks, it'll fix Toontown right up!",
+  'Do toons understand the value of money?'
  ]
 }
 VPRampMessage = "I don't have time for this, I'm late for my meeting!"
@@ -8545,6 +8556,12 @@ DirectedAttackBossTaunts = {
   'I see you over there!',
   'My products beat out all of Toontown!',
   "Don't think I skipped you, %(toon)s!"
+ ],
+ 'm': [
+  "Here's money well spent.",
+  'Hey! Get away from that crane!',
+  'Stop!',
+  '%(toon)s, get over here!'
  ]
 }
 VPSpinMessages = [
