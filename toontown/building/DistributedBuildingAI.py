@@ -334,7 +334,7 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
         victorList.extend([None, None, None, None])
         for i in xrange(0, 4):
             victor = victorList[i]
-            if victor == None or not self.air.doId2do.has_key(victor):
+            if victor == None or not victor in self.air.doId2do:
                 victorList[i] = 0
                 continue
             event = self.air.getAvatarExitEvent(victor)

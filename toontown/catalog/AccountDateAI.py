@@ -15,7 +15,7 @@ class AccountDateAI(DistributedObjectAI):
             return
 
         def callback(dclass, fields):
-            if dclass is not None and dclass == self.air.dclassesByName['AccountAI'] and fields.has_key('CREATED'):
+            if dclass is not None and dclass == self.air.dclassesByName['AccountAI'] and 'CREATED' in fields:
                 self.sendUpdateToAvatarId(avId, 'requestDateResult', [fields.get('CREATED')])
             else:
                 self.sendUpdateToAvatarId(avId, 'requestDateResult', [None])

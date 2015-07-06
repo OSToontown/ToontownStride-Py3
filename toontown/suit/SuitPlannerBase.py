@@ -563,7 +563,7 @@ class SuitPlannerBase:
                             self.notify.warning('interactive prop %s  at %s not associated with a a battle' % (childDnaGroup, zoneId))
 
                         elif battleCellId == 0:
-                            if self.cellToGagBonusDict.has_key(zoneId):
+                            if zoneId in self.cellToGagBonusDict:
                                 self.notify.error('FIXME battle cell at zone %s has two props %s %s linked to it' % (zoneId, self.cellToGagBonusDict[zoneId], childDnaGroup))
                             else:
                                 name = childDnaGroup.getName()

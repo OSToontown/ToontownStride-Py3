@@ -258,7 +258,7 @@ class PhotoAlbumPage(ShtikerPage.ShtikerPage):
                 del self.photos[photo]
 
         for photo in newPhotos:
-            if not self.photos.has_key(photo):
+            if not photo in self.photos:
                 photoButton = self.makePhotoButton(photo)
                 self.scrollList.addItem(photoButton)
                 self.photos[photo] = photoButton

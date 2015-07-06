@@ -198,7 +198,7 @@ class DistributedCogdoInteriorAI(DistributedObjectAI, FSM.FSM):
         if not avId in self.toons:
             self.toons.append(avId)
 
-        if self.air.doId2do.has_key(avId):
+        if avId in self.air.doId2do:
             event = self.air.getAvatarExitEvent(avId)
             self.accept(event, self.__handleUnexpectedExit, [avId])
 
