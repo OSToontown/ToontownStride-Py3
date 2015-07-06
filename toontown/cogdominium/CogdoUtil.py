@@ -143,9 +143,9 @@ def rotateTable(table, angle):
         t = []
         width = len(table[0])
         height = len(table)
-        for j in range(width):
+        for j in xrange(width):
             row = []
-            for i in range(height):
+            for i in xrange(height):
                 row.append(table[height - 1 - i][j])
 
             t.append(row)
@@ -160,9 +160,9 @@ def rotateTable(table, angle):
         t = []
         width = len(table[0])
         height = len(table)
-        for j in range(width):
+        for j in xrange(width):
             row = []
-            for i in range(height):
+            for i in xrange(height):
                 row.append(table[i][width - 1 - j])
 
             t.append(row)

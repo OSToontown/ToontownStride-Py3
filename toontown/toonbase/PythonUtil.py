@@ -59,7 +59,7 @@ def describeException(backTrace = 4):
         lnotab = array.array('B', code.co_lnotab)
 
         line   = code.co_firstlineno
-        for i in range(0, len(lnotab), 2):
+        for i in xrange(0, len(lnotab), 2):
             byte -= lnotab[i]
             if byte <= 0:
                 return line
@@ -91,7 +91,7 @@ def describeException(backTrace = 4):
     stack.append("%s:%s, " % (module, lineno))
 
     description = ""
-    for i in range(len(stack) - 1, max(len(stack) - backTrace, 0) - 1, -1):
+    for i in xrange(len(stack) - 1, max(len(stack) - backTrace, 0) - 1, -1):
         description += stack[i]
 
     description += "%s: %s" % (exceptionName, extraInfo)

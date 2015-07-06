@@ -243,7 +243,7 @@ class OTPClientRepository(ClientRepositoryBase):
         self.hashVal = dcFile.getHash()
 
         # Now import all of the modules required by the DC file.
-        for n in range(dcFile.getNumImportModules()):
+        for n in xrange(dcFile.getNumImportModules()):
             moduleName = dcFile.getImportModule(n)[:]
 
             # Maybe the module name is represented as "moduleName/AI".
@@ -256,7 +256,7 @@ class OTPClientRepository(ClientRepositoryBase):
                 moduleName += 'AI'
 
             importSymbols = []
-            for i in range(dcFile.getNumImportSymbols(n)):
+            for i in xrange(dcFile.getNumImportSymbols(n)):
                 symbolName = dcFile.getImportSymbol(n, i)
 
                 # Maybe the symbol name is represented as "symbolName/AI".
@@ -274,7 +274,7 @@ class OTPClientRepository(ClientRepositoryBase):
 
         # Now get the class definition for the classes named in the DC
         # file.
-        for i in range(dcFile.getNumClasses()):
+        for i in xrange(dcFile.getNumClasses()):
             dclass = dcFile.getClass(i)
             number = dclass.getNumber()
             className = dclass.getName() + self.dcSuffix
@@ -315,7 +315,7 @@ class OTPClientRepository(ClientRepositoryBase):
             ownerImportSymbols = {}
 
             # Now import all of the modules required by the DC file.
-            for n in range(dcFile.getNumImportModules()):
+            for n in xrange(dcFile.getNumImportModules()):
                 moduleName = dcFile.getImportModule(n)
 
                 # Maybe the module name is represented as "moduleName/AI".
@@ -326,7 +326,7 @@ class OTPClientRepository(ClientRepositoryBase):
                     moduleName = moduleName + ownerDcSuffix
 
                 importSymbols = []
-                for i in range(dcFile.getNumImportSymbols(n)):
+                for i in xrange(dcFile.getNumImportSymbols(n)):
                     symbolName = dcFile.getImportSymbol(n, i)
 
                     # Check for the OV suffix
@@ -342,7 +342,7 @@ class OTPClientRepository(ClientRepositoryBase):
 
             # Now get the class definition for the owner classes named
             # in the DC file.
-            for i in range(dcFile.getNumClasses()):
+            for i in xrange(dcFile.getNumClasses()):
                 dclass = dcFile.getClass(i)
                 if ((dclass.getName()+ownerDcSuffix) in ownerImportSymbols):
                     number = dclass.getNumber()

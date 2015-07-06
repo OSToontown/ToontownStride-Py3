@@ -263,7 +263,7 @@ class LoadEstateFSM(FSM):
 
     def enterLoadPets(self):
         self.petFSMs = []
-        for houseIndex in range(6):
+        for houseIndex in xrange(6):
             toon = self.toons[houseIndex]
             if toon and toon['setPetId'][0] != 0:
                 fsm = LoadPetFSM(self.mgr, self.estate, toon, self.__petDone)

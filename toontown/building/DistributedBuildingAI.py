@@ -332,7 +332,7 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
                 continue
 
         victorList.extend([None, None, None, None])
-        for i in range(0, 4):
+        for i in xrange(0, 4):
             victor = victorList[i]
             if victor == None or not self.air.doId2do.has_key(victor):
                 victorList[i] = 0

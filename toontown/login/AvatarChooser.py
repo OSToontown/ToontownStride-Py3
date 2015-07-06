@@ -92,7 +92,7 @@ class AvatarChooser(StateData.StateData):
             used_position_indexs.append(av.position)
             self.panelList.append(panel)
 
-        for panelNum in range(0, MAX_AVATARS):
+        for panelNum in xrange(0, MAX_AVATARS):
             if panelNum not in used_position_indexs:
                 panel = AvatarChoice.AvatarChoice(position=panelNum)
                 panel.setPos(POSITIONS[panelNum])
@@ -122,7 +122,7 @@ class AvatarChooser(StateData.StateData):
             return toonHead.getRandomForwardLookAtPoint()
         else:
             other_toon_idxs = []
-            for i in range(len(self.IsLookingAt)):
+            for i in xrange(len(self.IsLookingAt)):
                 if self.IsLookingAt[i] == toonidx:
                     other_toon_idxs.append(i)
 
@@ -171,7 +171,7 @@ class AvatarChooser(StateData.StateData):
         if len(self.used_panel_indexs) == 0:
             return
         self.IsLookingAt = []
-        for i in range(MAX_AVATARS):
+        for i in xrange(MAX_AVATARS):
             self.IsLookingAt.append('f')
 
         for panel in self.panelList:

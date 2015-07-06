@@ -107,7 +107,7 @@ def getAllWainscotings(*indexList):
     for index in indexList:
         colors = WainscotingTypes[index][WSTColor]
         if colors:
-            for n in range(len(colors)):
+            for n in xrange(len(colors)):
                 list.append(CatalogWainscotingItem(index, n))
 
         else:
@@ -131,7 +131,7 @@ def getWainscotingRange(fromIndex, toIndex, *otherRanges):
             if patternIndex >= fromIndex and patternIndex <= toIndex:
                 colors = WainscotingTypes[patternIndex][WSTColor]
                 if colors:
-                    for n in range(len(colors)):
+                    for n in xrange(len(colors)):
                         list.append(CatalogWainscotingItem(patternIndex, n))
 
                 else:

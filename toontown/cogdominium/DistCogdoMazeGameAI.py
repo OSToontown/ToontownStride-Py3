@@ -37,13 +37,13 @@ class DistCogdoMazeGameAI(DistCogdoGameAI):
         slowMiniHp = CogdoMazeGameGlobals.SuitData[2]['hp']
 
         serialNum = 0
-        for i in range(self.numSuits[0]):
+        for i in xrange(self.numSuits[0]):
             self.bosses[serialNum] = bossHp
             serialNum += 1
-        for i in range(self.numSuits[1]):
+        for i in xrange(self.numSuits[1]):
             self.fastMinions[serialNum] = fastMiniHp
             serialNum += 1
-        for i in range(self.numSuits[2]):
+        for i in xrange(self.numSuits[2]):
             self.slowMinions[serialNum] = slowMiniHp
             serialNum += 1
 

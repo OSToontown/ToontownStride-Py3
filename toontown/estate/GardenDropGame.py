@@ -177,8 +177,8 @@ class GardenDropGame:
         currentClosest = None
         currentDist = 10000000
 
-        for countX in range(GardenGameGlobals.gridDimX):
-            for countZ in range(GardenGameGlobals.gridDimZ):
+        for countX in xrange(GardenGameGlobals.gridDimX):
+            for countZ in xrange(GardenGameGlobals.gridDimZ):
                 testDist = self.testPointDistanceSquare(x, z, self.grid[countX][countZ][1], self.grid[countX][countZ][2])
                 if self.grid[countX][countZ][0] == None and testDist < currentDist and (force or self.hasNeighbor(countX, countZ)):
                     currentClosest = self.grid[countX][countZ]
@@ -323,8 +323,8 @@ class GardenDropGame:
             self.tick = 0
         sizeSprites = len(self.sprites)
 
-        for movingSpriteIndex in range(len(self.sprites)):
-            for testSpriteIndex in range(movingSpriteIndex, len(self.sprites)):
+        for movingSpriteIndex in xrange(len(self.sprites)):
+            for testSpriteIndex in xrange(movingSpriteIndex, len(self.sprites)):
                 movingSprite = self.getSprite(movingSpriteIndex)
                 testSprite = self.getSprite(testSpriteIndex)
 
@@ -494,7 +494,7 @@ class GardenDropGame:
         self.cogSprite = self.addUnSprite(self.block, posX=0.25, posZ=0.5)
         self.cogSprite.setColor(GardenGameGlobals.colorBlack)
 
-        for ball in range(0, levelNum):
+        for ball in xrange(0, levelNum):
             place = random.random() * GardenGameGlobals.rangeX
             self.newSprite = self.addSprite(self.block, size=0.5, posX=GardenGameGlobals.minX + place, posZ=0.0, found=1)
             self.stickInGrid(self.newSprite, 1)
@@ -512,9 +512,9 @@ class GardenDropGame:
         size = 0.085
         sizeZ = size * 0.8
 
-        for countX in range(GardenGameGlobals.gridDimX):
+        for countX in xrange(GardenGameGlobals.gridDimX):
             newRow = []
-            for countZ in range(GardenGameGlobals.gridDimZ):
+            for countZ in xrange(GardenGameGlobals.gridDimZ):
                 offset = 0
                 if countZ % 2 == 0:
                     offset = size / 2
