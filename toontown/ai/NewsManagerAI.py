@@ -13,7 +13,7 @@ class NewsManagerAI(DistributedObjectAI):
     def __init__(self, air):
         DistributedObjectAI.__init__(self, air)
         self.activeHolidays = []
-        self.fireworkTask = None
+        self.fireworkTasks = []
 
     def announceGenerate(self):
         DistributedObjectAI.announceGenerate(self)
@@ -24,12 +24,13 @@ class NewsManagerAI(DistributedObjectAI):
     def delete(self):
         DistributedObjectAI.delete(self)
         taskMgr.remove(self.checkTask)
-        self.deleteFireworkTask()
+        self.deleteFireworkTasks()
 
-    def deleteFireworkTask(self):
-        if self.fireworkTask:
-            taskMgr.remove(self.fireworkTask)
-            self.fireworkTask = None
+    def deleteFireworkTasks(self):
+        if self.fireworkTasks:
+            for task in self.fireworkTasks:
+                taskMgr.remove(task)
+            self.fireworkTasks = []
 
     def __handleAvatarEntered(self, av):
         avId = av.getDoId()
@@ -86,14 +87,18 @@ class NewsManagerAI(DistributedObjectAI):
         if id == ToontownGlobals.FISH_BINGO or id == ToontownGlobals.SILLY_SATURDAY:
             messenger.send('checkBingoState')
         elif id in [ToontownGlobals.SUMMER_FIREWORKS, ToontownGlobals.NEW_YEAR_FIREWORKS]:
-            if not self.fireworkTask:
-                self.fireworkTask = taskMgr.doMethodLater(3600, self.startFireworks, 'newsFireworkTask', extraArgs=[id])
+            self.fireworkTasks.append(taskMgr.doMethodLater((60 - datetime.datetime.now().minute) * 60, self.startFireworkTask))
 
     def endSpecialHoliday(self, id):
         if id == ToontownGlobals.FISH_BINGO or id == ToontownGlobals.SILLY_SATURDAY:
             messenger.send('checkBingoState')
         elif id in [ToontownGlobals.SUMMER_FIREWORKS, ToontownGlobals.NEW_YEAR_FIREWORKS]:
-            self.deleteFireworkTask()
+            self.deleteFireworkTasks()
+
+    def startFireworkTask(self, id, task=None):
+        self.startFireworks(id)
+        self.fireworkTasks.append(taskMgr.doMethodLater(3600, self.startFireworks, extraArgs=[id]))
+        return Task.done
 
     def startFireworks(self, type, task=None):
         maxShow = len(FireworkShows.shows.get(type, [])) - 1

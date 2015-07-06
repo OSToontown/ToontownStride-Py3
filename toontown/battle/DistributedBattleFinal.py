@@ -92,7 +92,7 @@ class DistributedBattleFinal(DistributedBattleBase.DistributedBattleBase):
         if self.bossCog == None:
             return
         
-        random.seed(suits[0].dna.name)
+        random.seed(suits[0].doId)
         bossTaunt = Func(self.bossCog.setChatAbsolute, random.choice(TTLocalizer.BossTaunts), CFSpeech | CFTimeout)
 
         if self.battleSide:
