@@ -4056,7 +4056,7 @@ def hp(hp):
     invoker = spellbook.getInvoker()
     maxHp = invoker.getMaxHp()
     if not -1 <= hp <= maxHp:
-        return 'HP must be in xrange (-1-%d).' % maxHp
+        return 'HP must be in range (-1-%d).' % maxHp
     invoker.b_setHp(hp)
     return 'Set your HP to: %d' % hp
 
@@ -4066,7 +4066,7 @@ def maxHp(maxHp):
     Modify the invoker's max HP.
     """
     if not 15 <= maxHp <= ToontownGlobals.MaxHpLimit:
-        return 'HP must be in xrange (15-%d).' % ToontownGlobals.MaxHpLimit
+        return 'HP must be in range (15-%d).' % ToontownGlobals.MaxHpLimit
     invoker = spellbook.getTarget()
     invoker.b_setHp(maxHp)
     invoker.b_setMaxHp(maxHp)
@@ -4223,7 +4223,7 @@ def sos(count, name):
     """
     invoker = spellbook.getInvoker()
     if not 0 <= count <= 100:
-        return 'Your SOS count must be in xrange (0-100).'
+        return 'Your SOS count must be in range (0-100).'
     for npcId, npcName in TTLocalizer.NPCToonNames.items():
         if name.lower() == npcName.lower():
             if npcId not in NPCToons.npcFriends:
@@ -4255,7 +4255,7 @@ def fires(count):
     """
     invoker = spellbook.getInvoker()
     if not 0 <= count <= 255:
-        return 'Your fire count must be in xrange (0-255).'
+        return 'Your fire count must be in range (0-255).'
     invoker.b_setPinkSlips(count)
     return 'You were given %d fires.' % count
 
@@ -4447,7 +4447,7 @@ def tickets(tickets):
     Set the invoker's racing tickets value.
     """
     if not 0 <= tickets <= 99999:
-        return 'Racing tickets value must be in xrange (0-99999).'
+        return 'Racing tickets value must be in range (0-99999).'
     invoker = spellbook.getInvoker()
     invoker.b_setTickets(tickets)
     return 'Set your tickets to: %d' % tickets
@@ -4714,7 +4714,7 @@ def givePies(pieType, numPies=0):
         target.b_setNumPies(0)
         return "Removed %s's pies." % target.getName()
     if not 0 <= pieType <= 7:
-        return 'Pie type must be in xrange (0-7).'
+        return 'Pie type must be in range (0-7).'
     if not -1 <= numPies <= 99:
         return 'Pie count out of range (-1-99).'
     target.b_setPieType(pieType)
