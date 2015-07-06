@@ -7566,7 +7566,6 @@ LawbotBossTaunts = ['%s, I find you in contempt of court!',
  'Strike that from the record.',
  'Your appeal has been rejected. I sentence you to sadness!',
  'Order in the court!']
-LawbotBossAreaAttackTaunt = "You're all in contempt of court!"
 WitnessToonName = 'Bumpy Bumblebehr'
 WitnessToonPrepareBattleTwo = "Oh no! They're putting only Cogs on the jury!\x07Quick, use the cannons and shoot some Toon jurors into the jury chairs.\x07We need %d to get a balanced scale."
 WitnessToonNoJuror = 'Oh oh, no Toon jurors. This will be a tough trial.'
@@ -8546,6 +8545,17 @@ SendCogBossTaunts = {
   'It seems Toontown has high amounts of debt to the Cogs.',
   "Invest in Cogbucks, it'll fix Toontown right up!",
   'Do toons understand the value of money?'
+ ],
+ 'l': [
+  'Order in the court!',
+  'The defendant is appearing to be proven guilty.',
+  'Justice is important to keep a stable society.',
+  'Toontown will be full of corruption and greed.',
+  'Toons do not understand the importance of the Cog order.',
+  'The state of your actions will prove you toons guilty.',
+  "Bah! Don't you tell me how to run a trial!",
+  'My decision will state what to legally do to you Toons.',
+  'This blindfold protects me from the horrible corruption!'
  ]
 }
 VPRampMessage = "I don't have time for this, I'm late for my meeting!"
@@ -8576,6 +8586,9 @@ JumpBossTaunts = {
   'Pay attention to my pitch!',
   'This is a waste of my time!',
   'Time to send you back to the playground!'
+ ],
+ 'l': [
+  "You're all in contempt of court!"
  ]
 }
 BossTaunts = [

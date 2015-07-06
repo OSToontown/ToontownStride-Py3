@@ -1791,7 +1791,6 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
     def setAttackCode(self, attackCode, avId = 0):
         DistributedBossCog.DistributedBossCog.setAttackCode(self, attackCode, avId)
         if attackCode == ToontownGlobals.BossCogAreaAttack:
-            self.saySomething(TTLocalizer.LawbotBossAreaAttackTaunt)
             base.playSfx(self.warningSfx)
 
     def setBattleDifficulty(self, diff):
