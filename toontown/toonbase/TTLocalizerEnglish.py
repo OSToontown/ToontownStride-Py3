@@ -8524,3 +8524,10 @@ BossLocations = {
  'm': 'Cashbot Treasury Vault',
  's': 'Sellbot Towers\nRooftop'
 }
+BossTaunts = [
+ "You can't stop this. We'll just keep on coming.",
+ 'Break time is over.',
+ "Your laffable fun can't stop our work.",
+ 'You toons need to be taught some manners.',
+ "We're only starting our business proposal."
+]

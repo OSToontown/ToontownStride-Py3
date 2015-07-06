@@ -13,9 +13,7 @@ from toontown.distributed import DelayDelete
 from otp.nametag.NametagConstants import *
 from otp.nametag import NametagGlobals
 from toontown.suit import Suit
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.toonbase import ToontownGlobals
-
+from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals, TTLocalizer
 
 class DistributedBattleFinal(DistributedBattleBase.DistributedBattleBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBattleFinal')
@@ -93,6 +91,10 @@ class DistributedBattleFinal(DistributedBattleBase.DistributedBattleBase):
     def showSuitsJoining(self, suits, ts, name, callback):
         if self.bossCog == None:
             return
+        
+        random.seed(suits[0].dna.name)
+        bossTaunt = Func(self.bossCog.setChatAbsolute, random.choice(TTLocalizer.BossTaunts), CFSpeech | CFTimeout)
+
         if self.battleSide:
             openDoor = Func(self.bossCog.doorB.request, 'open')
             closeDoor = Func(self.bossCog.doorB.request, 'close')
@@ -125,7 +127,7 @@ class DistributedBattleFinal(DistributedBattleBase.DistributedBattleBase):
             else:
                 base.camera.setPosHpr(-20, -4, 7, -60, 0, 0)
         done = Func(callback)
-        track = Sequence(openDoor, suitTrack, closeDoor, done, name=name)
+        track = Sequence(bossTaunt, openDoor, suitTrack, closeDoor, done, name=name)
         track.start(ts)
         self.storeInterval(track, name)
         return
