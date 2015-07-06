@@ -432,6 +432,11 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.servingTimer.countdown(ToontownGlobals.BossbotBossServingDuration)
         base.playMusic(self.phaseTwoMusic, looping=1, volume=0.9)
 
+        intervalName = 'BattleTwoSpeech'
+        seq = self.createTalkSequence(TTLocalizer.CEOSpeech, 10, intervalName)
+        seq.start()
+        self.storeInterval(seq, intervalName)
+
     def exitBattleTwo(self):
         if self.servingTimer:
             self.servingTimer.destroy()
@@ -440,6 +445,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         for toonId in self.involvedToons:
             self.removeFoodFromToon(toonId)
 
+        self.clearInterval('BattleTwoSpeech')
         self.phaseTwoMusic.stop()
         return
 

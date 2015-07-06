@@ -8565,13 +8565,19 @@ DirectedAttackBossTaunts = {
   'Have a free sample!',
   'I see you over there!',
   'My products beat out all of Toontown!',
-  "Don't think I skipped you, %(toon)s!"
+  "Don't think I've skipped you, %(toon)s!"
  ],
  'm': [
   "Here's money well spent.",
   'Hey! Get away from that crane!',
   'Stop!',
   '%(toon)s, get over here!'
+ ],
+ 'c': [
+  'These are brand new tables!',
+  "A little water isn't going to affect me!",
+  'Bug off! This is my clubhouse!',
+  "You've ruined my banquet! Now you'll pay!"
  ]
 }
 VPSpinMessages = [
@@ -8591,10 +8597,6 @@ JumpBossTaunts = {
   "You're all in contempt of court!"
  ]
 }
-BossTaunts = [
- "You can't stop this. We'll just keep on coming.",
- 'Break time is over.',
- "Your laffable fun can't stop our work.",
- 'You toons need to be taught some manners.',
- "We're only starting our business proposal."
+CEOSpeech = [
+ "Who's gonna write all this speech?"
 ]

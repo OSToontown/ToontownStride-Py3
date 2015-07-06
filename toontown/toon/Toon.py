@@ -1,7 +1,6 @@
 from direct.actor import Actor
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
-from direct.showbase.PythonUtil import Functor
 from direct.task.Task import Task
 from panda3d.core import *
 import random
@@ -3012,17 +3011,6 @@ class Toon(Avatar.Avatar, ToonHead):
 
     def exitScientistPlay(self):
         self.stop()
-
-    def createTalkSequence(self, speech, waitTime):
-        sequence = Sequence()
-
-        for text in speech:
-            sequence.append(Func(self.setChatAbsolute, text, CFSpeech))
-            sequence.append(Wait(len(text.split(' '))))
-            sequence.append(Func(self.clearChat))
-            sequence.append(Wait(waitTime))
-
-        return sequence
 
     def getDustCloud(self, delay=0.5, color=None):
         dustCloud = DustCloud.DustCloud(fBillboard=0, wantSound=1)

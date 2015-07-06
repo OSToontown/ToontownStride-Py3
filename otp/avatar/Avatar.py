@@ -1,6 +1,7 @@
 from direct.actor.Actor import Actor
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import ClockDelta
+from direct.interval.IntervalGlobal import *
 from direct.showbase.PythonUtil import recordCreationStack
 from panda3d.core import *
 import random
@@ -14,7 +15,7 @@ from otp.otpbase import OTPLocalizer
 from otp.otpbase import OTPRender
 from otp.nametag.Nametag import Nametag
 from otp.nametag.NametagGroup import NametagGroup
-from otp.nametag.NametagConstants import CFSpeech, CFThought, CFTimeout, CFPageButton, CFNoQuitButton, CFQuitButton
+from otp.nametag.NametagConstants import *
 
 
 teleportNotify = DirectNotifyGlobal.directNotify.newCategory('Teleport')
@@ -596,7 +597,17 @@ class Avatar(Actor, ShadowCaster):
 
     def loop(self, animName, restart = 1, partName = None, fromFrame = None, toFrame = None):
         return Actor.loop(self, animName, restart, partName, fromFrame, toFrame)
+    
+    def createTalkSequence(self, speech, waitTime, name='talkSequence'):
+        sequence = Sequence(name=name)
 
+        for text in speech:
+            sequence.append(Func(self.setChatAbsolute, text, CFSpeech))
+            sequence.append(Wait(len(text.split(' '))))
+            sequence.append(Func(self.clearChat))
+            sequence.append(Wait(waitTime))
+
+        return sequence
 
 @magicWord(category=CATEGORY_COMMUNITY_MANAGER, types=[])
 def target():
