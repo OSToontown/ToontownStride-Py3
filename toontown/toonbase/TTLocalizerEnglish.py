@@ -8524,6 +8524,43 @@ BossLocations = {
  'm': 'Cashbot Treasury Vault',
  's': 'Sellbot Towers\nRooftop'
 }
+SendCogBossTaunts = {
+ 's': [
+  "We're going door to door to give you an dedious offer.",
+  "It's time for your estimated cost.",
+  'You toons never learn when to snatch up a great deal.',
+  "Call now and we'll reduce your laff, absolutely free.",
+  'Sell, sell, sell!',
+  'Let us Sellbots give you a helping hand.',
+  'The deal has only just begun.',
+  'Going sad already? How about we settle a retirement plan.',
+  'Get them! Get them all!'
+ ]
+}
+VPRampMessage = "I don't have time for this, I'm late for my meeting!"
+VPDeathTaunt = "WAAAH! YOU HAVEN'T SEEN THE LAST OF ME!"
+DirectedAttackBossTaunts = {
+ 's': [
+  'Have a free sample!',
+  'I see you over there!',
+  'My products beat out all of Toontown!',
+  "Don't think I skipped you, %(toon)s!"
+ ]
+}
+VPSpinMessages = [
+ "Let's get these ideas going!",
+ "I wouldn't get too close. My patents protect these gears.",
+ 'Why worry about problems when you can shake them off?',
+ "I may be old, but I'm still reliable."
+]
+JumpBossTaunts = {
+ 's': [
+  'STOP!',
+  'Pay attention to my pitch!',
+  'This is a waste of my time!',
+  'Time to send you back to the playground!'
+ ]
+}
 BossTaunts = [
  "You can't stop this. We'll just keep on coming.",
  'Break time is over.',

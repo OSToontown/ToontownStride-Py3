@@ -380,6 +380,7 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         battlePos = Point3(ToontownGlobals.SellbotBossBattleTwoPosHpr[0], ToontownGlobals.SellbotBossBattleTwoPosHpr[1], ToontownGlobals.SellbotBossBattleTwoPosHpr[2])
         battleHpr = VBase3(ToontownGlobals.SellbotBossBattleTwoPosHpr[3], ToontownGlobals.SellbotBossBattleTwoPosHpr[4], ToontownGlobals.SellbotBossBattleTwoPosHpr[5])
         bossTrack = Sequence()
+        bossTrack.append(Func(self.setChatAbsolute, TTLocalizer.VPRampMessage, CFSpeech | CFTimeout))
         bossTrack.append(Func(self.getGeomNode().setH, 180))
         bossTrack.append(Func(self.loop, 'Fb_neutral'))
         track, hpr = self.rollBossToPoint(startPos, None, topRampPos, None, 0)
@@ -970,6 +971,7 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.happy = 0
         self.raised = 0
         self.forward = 1
+        self.setChatAbsolute(TTLocalizer.VPDeathTaunt, CFSpeech | CFTimeout)
         self.doAnimate('Fb_fall', now=1)
         self.acceptOnce(self.animDoneEvent, self.__continueVictory)
         base.playMusic(self.battleThreeMusic, looping=1, volume=0.9, time=self.battleThreeMusicTime)

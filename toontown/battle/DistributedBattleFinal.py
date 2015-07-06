@@ -92,8 +92,10 @@ class DistributedBattleFinal(DistributedBattleBase.DistributedBattleBase):
         if self.bossCog == None:
             return
         
-        random.seed(suits[0].doId)
-        bossTaunt = Func(self.bossCog.setChatAbsolute, random.choice(TTLocalizer.BossTaunts), CFSpeech | CFTimeout)
+        bossDept = self.bossCog.dna.dept
+        
+        if bossDept in TTLocalizer.SendCogBossTaunts:
+            self.bossCog.setChatAbsolute(random.choice(TTLocalizer.SendCogBossTaunts[bossDept]), CFSpeech | CFTimeout)
 
         if self.battleSide:
             openDoor = Func(self.bossCog.doorB.request, 'open')
@@ -127,7 +129,7 @@ class DistributedBattleFinal(DistributedBattleBase.DistributedBattleBase):
             else:
                 base.camera.setPosHpr(-20, -4, 7, -60, 0, 0)
         done = Func(callback)
-        track = Sequence(bossTaunt, openDoor, suitTrack, closeDoor, done, name=name)
+        track = Sequence(openDoor, suitTrack, closeDoor, done, name=name)
         track.start(ts)
         self.storeInterval(track, name)
         return
