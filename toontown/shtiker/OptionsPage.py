@@ -396,12 +396,7 @@ class OptionsTabPage(DirectFrame):
         vol = float(vol) / 100
         settings['musicVol'] = vol
         base.musicManager.setVolume(vol)
-        if vol == 0.0:
-            settings['music'] = False
-            base.musicActive = False
-        else:
-            settings['music'] = True
-            base.musicActive = True
+        base.musicActive = vol > 0.0
 
     def __doSfxLevel(self):
         vol = self.SoundFX_toggleSlider['value']
@@ -409,12 +404,7 @@ class OptionsTabPage(DirectFrame):
         settings['sfxVol'] = vol
         for sfm in base.sfxManagerList:
             sfm.setVolume(vol)
-        if vol == 0.0:
-            settings['sfx'] = False
-            base.sfxActive = False
-        else:
-            settings['sfx'] = True
-            base.sfxActive = True
+        base.sfxActive = vol > 0.0
         self.__setToonChatSoundsButton()
 
     def __doToggleToonChatSounds(self):

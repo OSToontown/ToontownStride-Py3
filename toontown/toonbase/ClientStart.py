@@ -76,10 +76,6 @@ if 'res' not in settings:
     settings['res'] = (1280, 720)
 if 'fullscreen' not in settings:
     settings['fullscreen'] = False
-if 'music' not in settings:
-    settings['music'] = True
-if 'sfx' not in settings:
-    settings['sfx'] = True
 if 'musicVol' not in settings:
     settings['musicVol'] = 1.0
 if 'sfxVol' not in settings:
@@ -101,8 +97,6 @@ if 'fov' not in settings:
 
 loadPrcFileData('Settings: res', 'win-size %d %d' % tuple(settings['res']))
 loadPrcFileData('Settings: fullscreen', 'fullscreen %s' % settings['fullscreen'])
-loadPrcFileData('Settings: music', 'audio-music-active %s' % settings['music'])
-loadPrcFileData('Settings: sfx', 'audio-sfx-active %s' % settings['sfx'])
 loadPrcFileData('Settings: musicVol', 'audio-master-music-volume %s' % settings['musicVol'])
 loadPrcFileData('Settings: sfxVol', 'audio-master-sfx-volume %s' % settings['sfxVol'])
 loadPrcFileData('Settings: loadDisplay', 'load-display %s' % settings['loadDisplay'])
