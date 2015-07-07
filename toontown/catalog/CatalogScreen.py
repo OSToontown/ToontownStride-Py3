@@ -917,16 +917,15 @@ class CatalogScreen(DirectFrame):
     def remoteUpdate(self):
         self.update()
 
-    def update(self, lock = 0):
+    def update(self, task = None):
         if not hasattr(self.giftAvatar, 'doId'):
             if self.gifting == 1:
                 self.__giftToggle()
         if hasattr(self, 'beanBank'):
             self.beanBank['text'] = str(base.localAvatar.getTotalMoney())
-            if lock == 0:
-                for item in self.panelList + self.backPanelList + self.specialPanelList + self.emblemPanelList:
-                    if type(item) != type(''):
-                        item.updateButtons(self.gifting)
+            for item in self.panelList + self.backPanelList + self.specialPanelList + self.emblemPanelList:
+                if type(item) != type(''):
+                    item.updateButtons(self.gifting)
 
     def __handlePurchaseRequest(self, item):
         item.requestPurchase(self['phone'], self.__handlePurchaseResponse)
@@ -943,8 +942,8 @@ class CatalogScreen(DirectFrame):
 
         if hasattr(item, 'houseId') and retCode == ToontownGlobals.P_ItemAvailable:
             localAvatar.houseType = item.houseId
-            self.update()
 
+        taskMgr.doMethodLater(0.5, self.update, 'purchaseUpdate')
         self.setClarabelleChat(item.getRequestPurchaseErrorText(retCode), item.getRequestPurchaseErrorTextTimeout())
 
     def __handleGiftPurchaseResponse(self, retCode, item):
@@ -990,16 +989,10 @@ class CatalogScreen(DirectFrame):
         return
 
     def __moneyChange(self, money):
-        if self.gifting > 0:
-            self.update(1)
-        else:
-            self.update(0)
+        self.update()
 
     def __bankMoneyChange(self, bankMoney):
-        if self.gifting > 0:
-            self.update(1)
-        else:
-            self.update(0)
+        self.update()
 
     def __emblemChange(self, newEmblems):
         self.silverLabel['text'] = str(newEmblems[0])
