@@ -49,8 +49,8 @@ class CatalogPetTrickItem(CatalogItem.CatalogItem):
             dna = PetDNA.getRandomPetDNA()
         pet.setDNA(dna)
         pet.setH(180)
+        pet.setScale(1.25)
         model, ival = self.makeFrameModel(pet, 0)
-        pet.setScale(2.0)
         pet.setP(-40)
         track = PetTricks.getTrickIval(pet, self.trickId)
         name = 'petTrick-item-%s' % self.sequenceNumber

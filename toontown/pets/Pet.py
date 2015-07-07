@@ -114,9 +114,9 @@ class Pet(Avatar.Avatar):
         else:
             self.style = dna
             self.generatePet()
-            self.generateMoods()
             self.initializeDropShadow()
             self.initializeNametag3d()
+            self.generateMoods()
             self.dropShadow.setScale(0.75)
 
     def generatePet(self):
