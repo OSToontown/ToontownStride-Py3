@@ -435,7 +435,7 @@ class QuestManagerAI:
 
         return (recoveredItems, unrecoveredItems)
 
-    def toonKilledBuilding(self, av, type, difficulty, floors, zoneId, activeToons, cogdo):
+    def toonKilledBuilding(self, av, type, difficulty, floors, zoneId, cogdo):
         # Get the avatars current quests.
         avQuests = av.getQuests()
         questList = []
@@ -447,14 +447,14 @@ class QuestManagerAI:
             questClass = Quests.getQuest(questDesc[QuestIdIndex])
             if isinstance(questClass, Quests.BuildingQuest) and questClass.getCompletionStatus(av, questDesc) == Quests.INCOMPLETE:
                 if questClass.isLocationMatch(zoneId) and questClass.doesBuildingTypeCount(type):
-                    if questClass.isCogdo() == cogdo and questClass.doesBuildingCount(av, activeToons):
+                    if questClass.isCogdo() == cogdo:
                         if floors >= questClass.getNumFloors():
                             questDesc[QuestProgressIndex] += 1
             questList.append(questDesc)
 
         av.b_setQuests(questList)
 
-    def toonDefeatedFactory(self, av, factoryId, activeVictors):
+    def toonDefeatedFactory(self, av, factoryId):
         # Get the avatars current quests.
         avQuests = av.getQuests()
         questList = []
@@ -464,13 +464,13 @@ class QuestManagerAI:
             questDesc = avQuests[i : i + 5]
             questClass = Quests.getQuest(questDesc[QuestIdIndex])
             if isinstance(questClass, Quests.FactoryQuest):
-                if questClass.doesFactoryCount(av, factoryId, activeVictors):
+                if questClass.doesFactoryCount(av, factoryId):
                     questDesc[QuestProgressIndex] += 1
             questList.append(questDesc)
 
         av.b_setQuests(questList)
 
-    def toonDefeatedMint(self, av, mintId, activeVictors):
+    def toonDefeatedMint(self, av, mintId):
         # Get the avatars current quests.
         avQuests = av.getQuests()
         questList = []
@@ -480,22 +480,19 @@ class QuestManagerAI:
             questDesc = avQuests[i : i + 5]
             questClass = Quests.getQuest(questDesc[QuestIdIndex])
             if isinstance(questClass, Quests.MintQuest):
-                if questClass.doesMintCount(av, mintId, activeVictors):
+                if questClass.doesMintCount(av, mintId):
                     questDesc[QuestProgressIndex] += 1
             questList.append(questDesc)
 
         av.b_setQuests(questList)
 
-    def toonDefeatedStage(self, av, stageId, activeVictors):
+    def toonDefeatedStage(self, av, stageId):
         pass
 
-    def toonKilledCogs(self, av, suitsKilled, zoneId, activeToonList):
+    def toonKilledCogs(self, av, suitsKilled, zoneId):
         # Get the avatar's current quests.
         avQuests = av.getQuests()
         questList = []
-
-        # Make a list of the activeToonDoIds
-        activeToonDoIds = [toon.doId for toon in activeToonList if not None]
 
         # Iterate through the avatar's current quests.
         for i in xrange(0, len(avQuests), 5):
@@ -506,7 +503,7 @@ class QuestManagerAI:
             if isinstance(questClass, Quests.CogQuest):
                 # Check if the cog counts...
                 for suit in suitsKilled:
-                    if questClass.doesCogCount(av.doId, suit, zoneId, activeToonDoIds):
+                    if questClass.doesCogCount(av.doId, suit, zoneId):
                         # Looks like the cog counts!
                         if questClass.getCompletionStatus(av, questDesc) != Quests.COMPLETE:
                             questDesc[QuestProgressIndex] += 1

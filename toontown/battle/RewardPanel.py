@@ -544,10 +544,6 @@ class RewardPanel(DirectFrame):
         avId = toon.getDoId()
         tickDelay = 0.2
         intervalList = []
-        toonShortList = []
-        for t in toonList:
-            if t is not None:
-                toonShortList.append(t)
 
         cogList = []
         for i in xrange(0, len(deathList), 4):
@@ -610,7 +606,7 @@ class RewardPanel(DirectFrame):
                         earned = itemList.count(questItem)
                 else:
                     for cogDict in cogList:
-                        num = quest.doesCogCount(avId, cogDict, zoneId, toonShortList)
+                        num = quest.doesCogCount(avId, cogDict, zoneId)
 
                         if num:
                             if base.config.GetBool('battle-passing-no-credit', True):

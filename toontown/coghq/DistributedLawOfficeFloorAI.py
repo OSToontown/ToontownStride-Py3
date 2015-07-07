@@ -96,7 +96,7 @@ class DistributedLawOfficeFloorAI(DistributedLevelAI.DistributedLevelAI, LawOffi
         for avId in activeVictorIds:
             self.air.writeServerEvent('DAOffice Defeated', avId, description)
         for toon in activeVictors:
-            simbase.air.questManager.toonDefeatedFactory(toon, self.lawOfficeId, activeVictors)
+            simbase.air.questManager.toonDefeatedFactory(toon, self.lawOfficeId)
 
     def b_setDefeated(self):
         self.d_setDefeated()
