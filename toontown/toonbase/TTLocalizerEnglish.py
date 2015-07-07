@@ -4604,29 +4604,29 @@ SuitInvasionBulletin = [
 SkelecogInvasionBegin = [
  "Hmm... We're getting a strange reading over here...",
  'The Cog factories are running out of parts to build new Cogs!',
- 'Skelecogs have taken over Toontown!!!'
+ '%(singular)s Skelecogs have taken over Toontown!!!'
 ]
 SkelecogInvasionEnd = [
- 'The Skelecog invasion has ended!!!',
+ 'The %(singular)s Skelecog invasion has ended!!!',
  'The Toons have saved the day once again!!!'
 ]
 SkelecogInvasionBulletin = [
  'There is a Cog invasion in progress!!!',
  'The Cog factories are running out of parts to build new Cogs!',
- 'Skelecogs have taken over Toontown!!!'
+ '%(singular)s Skelecogs have taken over Toontown!!!'
 ]
 WaiterInvasionBegin = [
  'It appears that the C.E.O. has fired all his waiters...',
- 'The unemployed waiters are invading Toontown!!!'
+ 'The unemployed %(singular)s waiters are invading Toontown!!!'
 ]
 WaiterInvasionEnd = [
- 'The unemployed waiters have been defeated!!!',
+ 'The unemployed %(singular)s waiters have been defeated!!!',
  'The Toons have saved the day once again!!!'
 ]
 WaiterInvasionBulletin = [
  'There is a Cog invasion in progress!!!',
  'The C.E.O. has fired all of his waiters!!!',
- 'The unemployed waiters are invading Toontown!!!'
+ 'The unemployed %(singular)s waiters are invading Toontown!!!'
 ]
 V2InvasionBegin = [
  "Yikes!!! This isn't good, Toons!",
@@ -7567,12 +7567,16 @@ WitnessToonJuryWeightBonusPlural = {6: 'This is a tough case. You seated %d Toon
  8: 'This is the toughest case. You seated %d Toon jurors, so your evidence has a bonus weight of %d.'}
 IssueSummons = 'Summon'
 SummonDlgTitle = 'Issue a Cog Summon'
-SummonDlgButton2 = 'Summon a Cog Building'
-SummonDlgButton3 = 'Summon a Cog Invasion'
-SummonDlgButton4 = 'Summon a Field Office'
-SummonDlgButton5 = 'Summon a Version 2.0 Invasion'
+SummonDlgButton1 = 'Summon a Cog Building'
+SummonDlgButton2 = 'Summon a Cog Invasion'
+SummonDlgButton3 = 'Summon a Field Office'
+SummonDlgButton4 = 'Summon a Skelecog Invasion'
+SummonDlgButton5 = 'Summon a Waiter Invasion'
+SummonDlgButton6 = 'Summon a Version 2.0 Invasion'
 SummonDlgBuildingConf = 'Would you like to summon a %s to a nearby Toon building?'
 SummonDlgInvasionConf = 'Would you like to summon a %s invasion?'
+SummonDlgSkelInvasionConf = 'Would you like to summon a %s (Skelecog) invasion?'
+SummonDlgWaiterInvasionConf = 'Would you like to summon a %s (Waiter) invasion?'
 SummonDlgV2InvasionConf = 'Would you like to summon a Version 2.0 %s invasion?'
 SummonDlgNumLeft = 'You have %s left.'
 SummonDlgDelivering = 'Delivering Summons...'

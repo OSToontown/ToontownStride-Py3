@@ -1690,8 +1690,12 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             return curSetting & 2
         elif type == 'cogdo':
             return curSetting & 4
-        elif type == 'v2invasion':
+        elif type == 'skelinvasion':
             return curSetting & 8
+        elif type == 'waiterinvasion':
+            return curSetting & 16
+        elif type == 'v2invasion':
+            return curSetting & 32
         return curSetting
 
     def setFlowerCollection(self, speciesList, varietyList):

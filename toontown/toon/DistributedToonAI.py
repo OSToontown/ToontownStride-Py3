@@ -3014,7 +3014,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.kart.start()
 
     def reqCogSummons(self, type, suitIndex):
-        if type not in ('building', 'invasion', 'cogdo', 'v2invasion'):
+        if type not in ('building', 'invasion', 'cogdo', 'skelinvasion', 'waiterinvasion', 'v2invasion'):
             self.air.writeServerEvent('suspicious', self.doId, 'invalid cog summons type: %s' % type)
             self.sendUpdate('cogSummonsResponse', ['fail', suitIndex, 0])
             return
@@ -3034,7 +3034,14 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         elif type.endswith('invasion'):
             suitDeptIndex = suitIndex / SuitDNA.suitsPerDept
             suitTypeIndex = suitIndex % SuitDNA.suitsPerDept
-            flags = SuitInvasionGlobals.IFV2 if type.startswith('v2') else 0
+            if type.startswith('v2'):
+                flags = SuitInvasionGlobals.IFV2
+            elif type.startswith('skel'):
+                flags = SuitInvasionGlobals.IFSkelecog
+            elif type.startswith('waiter'):
+                flags = SuitInvasionGlobals.IFWaiter
+            else:
+                flags = 0
             returnCode = self.doCogInvasion(suitDeptIndex, suitTypeIndex, flags)
         if returnCode:
             if returnCode[0] == 'success':
@@ -3149,8 +3156,12 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             curSetting |= 2
         elif type == 'cogdo':
             curSetting |= 4
-        elif type == 'v2invasion':
+        elif type == 'skelinvasion':
             curSetting |= 8
+        elif type == 'waiterinvasion':
+            curSetting |= 16
+        elif type == 'v2invasion':
+            curSetting |= 32
         summons[suitIndex] = curSetting
         self.b_setCogSummonsEarned(summons)
 
@@ -3164,8 +3175,12 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
                 curSetting &= -3
             elif type == 'cogdo':
                 curSetting &= -5
-            elif type == 'v2invasion':
+            elif type == 'skelinvasion':
                 curSetting &= -9
+            elif type == 'waiterinvasion':
+                curSetting &= -17
+            elif type == 'v2invasion':
+                curSetting &= -33
             summons[suitIndex] = curSetting
             self.b_setCogSummonsEarned(summons)
             if hasattr(self, 'autoRestockSummons') and self.autoRestockSummons:
@@ -3183,8 +3198,12 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             return curSetting & 2
         elif type == 'cogdo':
             return curSetting & 4
-        elif type == 'v2invasion':
+        elif type == 'skelinvasion':
             return curSetting & 8
+        elif type == 'waiterinvasion':
+            return curSetting & 16
+        elif type == 'v2invasion':
+            return curSetting & 32
         return curSetting
 
     def hasParticularCogSummons(self, deptIndex, level, type):
@@ -3212,7 +3231,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         else:
             numSuits = len(SuitDNA.suitHeadTypes)
             suitIndex = random.randrange(0, numSuits)
-        summonTypes = ['building', 'invasion', 'cogdo', 'v2invasion']
+        summonTypes = ['building', 'invasion', 'cogdo', 'skelinvasion', 'waiterinvasion', 'v2invasion']
         if summonType in summonTypes:
             type = summonType
         else:
@@ -4089,7 +4108,7 @@ def allSummons():
     invoker = spellbook.getInvoker()
 
     numSuits = len(SuitDNA.suitHeadTypes)
-    fullSetForSuit = 1 | 2 | 4 | 8
+    fullSetForSuit = 1 | 2 | 4 | 8 | 16 | 32
     allSummons = numSuits * [fullSetForSuit]
     invoker.b_setCogSummonsEarned(allSummons)
     return 'Lots of summons!'

@@ -15,7 +15,7 @@ class SummonCogDialog(DirectFrame, StateData.StateData):
     notify.setInfo(True)
 
     def __init__(self, suitIndex):
-        DirectFrame.__init__(self, parent=aspect2dp, pos=(0, 0, 0.3), relief=None, image=DGG.getDefaultDialogGeom(), image_scale=(1.6, 1, 0.85), image_pos=(0, 0, 0.18), image_color=ToontownGlobals.GlobalDialogColor, text=TTLocalizer.SummonDlgTitle, text_scale=0.12, text_pos=(0, 0.5), borderWidth=(0.01, 0.01), sortOrder=NO_FADE_SORT_INDEX)
+        DirectFrame.__init__(self, parent=aspect2dp, pos=(0, 0, 0.3), relief=None, image=DGG.getDefaultDialogGeom(), image_scale=(1.6, 1, 1.07), image_pos=(0, 0, 0.09), image_color=ToontownGlobals.GlobalDialogColor, text=TTLocalizer.SummonDlgTitle, text_scale=0.12, text_pos=(0, 0.5), borderWidth=(0.01, 0.01), sortOrder=NO_FADE_SORT_INDEX)
         StateData.StateData.__init__(self, 'summon-cog-done')
         self.initialiseoptions(SummonCogDialog)
         self.suitIndex = suitIndex
@@ -41,17 +41,20 @@ class SummonCogDialog(DirectFrame, StateData.StateData):
         guiButton = loader.loadModel('phase_3/models/gui/quit_button')
         self.head = Suit.attachSuitHead(self, self.suitName)
         z = self.head.getZ()
-        self.head.setPos(-0.4, -0.1, z + 0.25)
-        self.suitLabel = DirectLabel(parent=self, relief=None, text=self.suitFullName, text_font=ToontownGlobals.getSuitFont(), pos=(-0.4, 0, 0.025), scale=0.07)
+        self.head.setPos(-0.4, -0.1, z + 0.14)
+        self.suitLabel = DirectLabel(parent=self, relief=None, text=self.suitFullName, text_font=ToontownGlobals.getSuitFont(), pos=(-0.4, 0, -0.085), scale=0.07)
         closeButtonImage = (gui.find('**/CloseBtn_UP'), gui.find('**/CloseBtn_DN'), gui.find('**/CloseBtn_Rllvr'))
         buttonImage = (guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR'))
         disabledColor = Vec4(0.5, 0.5, 0.5, 1)
-        self.summonBuildingButton = DirectButton(parent=self, relief=None, text=TTLocalizer.SummonDlgButton2, image=buttonImage, image_scale=(1.7, 1, 1), image3_color=disabledColor, text_scale=0.06, text_pos=(0, -0.01), pos=(0.3, 0, 0.35), command=self.issueSummons, extraArgs=['building'])
-        self.summonInvasionButton = DirectButton(parent=self, relief=None, text=TTLocalizer.SummonDlgButton3, image=buttonImage, image_scale=(1.7, 1, 1), image3_color=disabledColor, text_scale=0.06, text_pos=(0, -0.01), pos=(0.3, 0, 0.225), command=self.issueSummons, extraArgs=['invasion'])
-        self.summonCogdoButton = DirectButton(parent=self, relief=None, text=TTLocalizer.SummonDlgButton4, image=buttonImage, image_scale=(1.7, 1, 1), image3_color=disabledColor, text_scale=0.06, text_pos=(0, -0.01), pos=(0.3, 0, 0.1), command=self.issueSummons, extraArgs=['cogdo'])
-        self.summonV2InvasionButton = DirectButton(parent=self, relief=None, text=TTLocalizer.SummonDlgButton5, image=buttonImage, image_scale=(1.7, 1, 1), image3_color=disabledColor, text_scale=0.048, text_pos=(0, -0.01), pos=(0.3, 0, -0.025), command=self.issueSummons, extraArgs=['v2invasion'])
+        base.cr.lmao = self
+        self.summonBuildingButton = DirectButton(parent=self, relief=None, text=TTLocalizer.SummonDlgButton1, image=buttonImage, image_scale=(1.7, 1, 1), image3_color=disabledColor, text_scale=0.06, text_pos=(0, -0.01), pos=(0.3, 0, 0.35), command=self.issueSummons, extraArgs=['building'])
+        self.summonInvasionButton = DirectButton(parent=self, relief=None, text=TTLocalizer.SummonDlgButton2, image=buttonImage, image_scale=(1.7, 1, 1), image3_color=disabledColor, text_scale=0.06, text_pos=(0, -0.01), pos=(0.3, 0, 0.225), command=self.issueSummons, extraArgs=['invasion'])
+        self.summonCogdoButton = DirectButton(parent=self, relief=None, text=TTLocalizer.SummonDlgButton3, image=buttonImage, image_scale=(1.7, 1, 1), image3_color=disabledColor, text_scale=0.06, text_pos=(0, -0.01), pos=(0.3, 0, 0.1), command=self.issueSummons, extraArgs=['cogdo'])
+        self.summonSkelInvasionButton = DirectButton(parent=self, relief=None, text=TTLocalizer.SummonDlgButton4, image=buttonImage, image_scale=(1.7, 1, 1), image3_color=disabledColor, text_scale=0.051, text_pos=(0, -0.01), pos=(0.3, 0, -0.025), command=self.issueSummons, extraArgs=['skelinvasion'])
+        self.summonWaiterInvasionButton = DirectButton(parent=self, relief=None, text=TTLocalizer.SummonDlgButton5, image=buttonImage, image_scale=(1.7, 1, 1), image3_color=disabledColor, text_scale=0.056, text_pos=(0, -0.01), pos=(0.3, 0, -0.15), command=self.issueSummons, extraArgs=['waiterinvasion'])
+        self.summonV2InvasionButton = DirectButton(parent=self, relief=None, text=TTLocalizer.SummonDlgButton6, image=buttonImage, image_scale=(1.7, 1, 1), image3_color=disabledColor, text_scale=0.048, text_pos=(0, -0.01), pos=(0.3, 0, -0.275), command=self.issueSummons, extraArgs=['v2invasion'])
         self.statusLabel = DirectLabel(parent=self, relief=None, text='', text_wordwrap=12, pos=(0.3, 0, 0.3), scale=0.07)
-        self.cancel = DirectButton(parent=self, relief=None, image=closeButtonImage, pos=(0.7, 0, -0.15), command=self.__cancel)
+        self.cancel = DirectButton(parent=self, relief=None, image=closeButtonImage, pos=(0.7, 0, -0.366), command=self.__cancel)
         gui.removeNode()
         guiButton.removeNode()
         self.hide()
@@ -122,6 +125,8 @@ class SummonCogDialog(DirectFrame, StateData.StateData):
         self.summonBuildingButton.hide()
         self.summonInvasionButton.hide()
         self.summonCogdoButton.hide()
+        self.summonSkelInvasionButton.hide()
+        self.summonWaiterInvasionButton.hide()
         self.summonV2InvasionButton.hide()
 
     def issueSummons(self, summonsType):
@@ -129,6 +134,10 @@ class SummonCogDialog(DirectFrame, StateData.StateData):
             text = TTLocalizer.SummonDlgBuildingConf
         elif summonsType == 'invasion':
             text = TTLocalizer.SummonDlgInvasionConf
+        elif summonsType == 'skelinvasion':
+            text = TTLocalizer.SummonDlgSkelInvasionConf
+        elif summonsType == 'waiterinvasion':
+            text = TTLocalizer.SummonDlgWaiterInvasionConf
         elif summonsType == 'v2invasion':
             text = TTLocalizer.SummonDlgV2InvasionConf
         text = text % self.suitFullName
@@ -159,6 +168,8 @@ class SummonCogDialog(DirectFrame, StateData.StateData):
         self.summonBuildingButton['state'] = DGG.DISABLED
         self.summonInvasionButton['state'] = DGG.DISABLED
         self.summonCogdoButton['state'] = DGG.DISABLED
+        self.summonSkelInvasionButton['state'] = DGG.DISABLED
+        self.summonWaiterInvasionButton['state'] = DGG.DISABLED
         self.summonV2InvasionButton['state'] = DGG.DISABLED
 
     def enableButtons(self):
@@ -168,6 +179,10 @@ class SummonCogDialog(DirectFrame, StateData.StateData):
             self.summonInvasionButton['state'] = DGG.NORMAL
         if base.localAvatar.hasCogSummons(self.suitIndex, 'cogdo'):
             self.summonCogdoButton['state'] = DGG.NORMAL
+        if base.localAvatar.hasCogSummons(self.suitIndex, 'skelinvasion'):
+            self.summonSkelInvasionButton['state'] = DGG.NORMAL
+        if base.localAvatar.hasCogSummons(self.suitIndex, 'waiterinvasion'):
+            self.summonWaiterInvasionButton['state'] = DGG.NORMAL
         if base.localAvatar.hasCogSummons(self.suitIndex, 'v2invasion'):
             self.summonV2InvasionButton['state'] = DGG.NORMAL
 
