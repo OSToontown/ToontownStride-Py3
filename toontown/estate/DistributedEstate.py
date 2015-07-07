@@ -408,6 +408,8 @@ class DistributedEstate(DistributedObject.DistributedObject):
                 self.popupFishGUI()
 
     def __handleFishSaleDone(self, sell=0):
+        base.setCellsAvailable(base.bottomCells, 1)
+        base.cr.playGame.getPlace().setState('walk')
         self.ignore(self.fishGuiDoneEvent)
         self.sendUpdate('completeFishSale', [sell])
         self.ignore('stoppedAsleep')
@@ -415,6 +417,8 @@ class DistributedEstate(DistributedObject.DistributedObject):
         self.fishGui = None
 
     def popupFishGUI(self):
+        base.setCellsAvailable(base.bottomCells, 0)
+        base.cr.playGame.getPlace().setState('stopped')
         self.acceptOnce(self.fishGuiDoneEvent, self.__handleFishSaleDone)
         self.fishGui = FishSellGUI.FishSellGUI(self.fishGuiDoneEvent)
         self.accept('stoppedAsleep', self.__handleFishSaleDone)
