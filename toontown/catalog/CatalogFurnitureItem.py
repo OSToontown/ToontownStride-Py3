@@ -1111,7 +1111,7 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
         movie.synchronizeTo(sound)
         model.setTexture(movie)
         model.setTexScale(TextureStage.getDefault(), movie.getTexScale())
-        self.videoSequence = Sequence(SoundInterval(sound, node=model, listenerNode=base.localAvatar), Func(self.startVideo, model, file + 1))
+        self.videoSequence = Sequence(SoundInterval(sound, volume=1.0), Func(self.startVideo, model, file + 1))
         self.videoSequence.start()
 
     def decodeDatagram(self, di, versionNumber, store):
