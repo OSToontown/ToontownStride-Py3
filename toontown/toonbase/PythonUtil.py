@@ -96,3 +96,6 @@ def describeException(backTrace = 4):
 
     description += "%s: %s" % (exceptionName, extraInfo)
     return description
+
+import __builtin__
+__builtin__.describeException = describeException

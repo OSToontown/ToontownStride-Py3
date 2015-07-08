@@ -189,6 +189,5 @@ if autoRun:
     except SystemExit:
         raise
     except:
-        from toontown.toonbase import PythonUtil
-        print PythonUtil.describeException()
+        print describeException()
         raise

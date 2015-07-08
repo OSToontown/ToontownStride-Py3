@@ -1,5 +1,4 @@
 from direct.directnotify.DirectNotifyGlobal import directNotify
-from toontown.toonbase import PythonUtil
 
 
 class ToontownRPCDispatcher:
@@ -48,4 +47,4 @@ class ToontownRPCDispatcher:
             else:
                 request.result(method(*params))
         except:
-            request.error(-32603, PythonUtil.describeException())
+            request.error(-32603, describeException())

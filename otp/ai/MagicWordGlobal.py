@@ -1,4 +1,3 @@
-from toontown.toonbase import PythonUtil
 
 class MagicError(Exception): pass
 
@@ -34,7 +33,7 @@ class Spellbook:
         except MagicError as e:
             return e.message
         except Exception:
-            return PythonUtil.describeException(backTrace=1)
+            return describeException(backTrace=1)
         finally:
             self.currentInvoker = None
             self.currentTarget = None

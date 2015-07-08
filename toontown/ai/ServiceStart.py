@@ -18,8 +18,6 @@ sys.path.append(
     )
 )
 
-from toontown.toonbase import PythonUtil
-
 import argparse
 
 parser = argparse.ArgumentParser()
@@ -65,6 +63,6 @@ try:
 except SystemExit:
     raise
 except Exception:
-    info = PythonUtil.describeException()
+    info = describeException()
     simbase.air.writeServerEvent('ai-exception', avId=simbase.air.getAvatarIdFromSender(), accId=simbase.air.getAccountIdFromSender(), exception=info)
     raise
