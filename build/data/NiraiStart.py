@@ -73,4 +73,4 @@ if pack and pack != 'default':
 
 if not abort:
     # Run
-    import toontown.toonbase.ClientStart
+    import toontown.toonbase.ToontownStart

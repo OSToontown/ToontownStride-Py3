@@ -58,7 +58,7 @@ if __debug__:
 
 from direct.directnotify.DirectNotifyGlobal import directNotify
 
-notify = directNotify.newCategory('ClientStart')
+notify = directNotify.newCategory('ToontownStart')
 notify.setInfo(True)
 
 from otp.settings.Settings import Settings

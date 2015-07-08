@@ -21,4 +21,4 @@ echo "Username: $ttsUsername"
 echo "Gameserver: $TTS_GAMESERVER"
 echo "==============================="
 
-ppython -m toontown.toonbase.ClientStart
+ppython -m toontown.toonbase.ToontownStart
