@@ -9,6 +9,7 @@ import BattleProps
 from toontown.toonbase import TTLocalizer
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieUtil')
 SUIT_LOSE_DURATION = 8.5
+SUIT_LOSE_REVIVE_DURATION = 6.0
 SUIT_LURE_DISTANCE = 2.6
 SUIT_LURE_DOLLAR_DISTANCE = 5.1
 SUIT_EXTRA_REACH_DISTANCE = 0.9
@@ -257,10 +258,12 @@ def createSuitReviveTrack(suit, toon, battle, npcs = []):
     suitTrack.append(Func(notify.debug, 'before insertDeathSuit'))
     suitTrack.append(Func(insertReviveSuit, suit, deathSuit, battle, suitPos, suitHpr))
     suitTrack.append(Func(notify.debug, 'before actorInterval lose'))
-    suitTrack.append(ActorInterval(deathSuit, 'lose', duration=SUIT_LOSE_DURATION))
+    suitTrack.append(ActorInterval(deathSuit, 'lose', duration=SUIT_LOSE_REVIVE_DURATION))
     suitTrack.append(Func(notify.debug, 'before removeDeathSuit'))
     suitTrack.append(Func(removeReviveSuit, suit, deathSuit, name='remove-death-suit'))
     suitTrack.append(Func(notify.debug, 'after removeDeathSuit'))
+    suitTrack.append(ActorInterval(suit, 'slip-forward', startTime=2.48, duration=0.1))
+    suitTrack.append(ActorInterval(suit, 'slip-forward', startTime=2.58))
     suitTrack.append(Func(suit.loop, 'neutral'))
     suitTrack.append(Func(messenger.send, suit.uniqueName('hpChange')))
     spinningSound = base.loadSfx('phase_3.5/audio/sfx/Cog_Death.ogg')
