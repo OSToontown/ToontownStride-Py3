@@ -8583,5 +8583,17 @@ JumpBossTaunts = {
  ]
 }
 CEOSpeech = [
- "Who's gonna write all this speech?"
-]
+ "Good evening Cogs, it's an honor having you here tonight in the Bossbot Clubhouse.",
+ 'I apologize for sending invitations on such short notice, but your presence is urgent.',
+ 'Lately, it appears the Toons have created strategies to fight against us.',
+ "This is a sign that each day us Cogs are getting weaker, and they're getting stronger.",
+ 'I have gathered you all here today not only to state this problem, but to propose an idea.',
+ 'This idea is the same one that was mentioned in the meeting 3 weeks ago, as to hire a new department of employees.',
+ 'If we were to do such however, they would be more or less assisting over attacking.',
+ 'We also can consider the odds that a department would have to be treated special.',
+ 'On another note, business operations are higher than ever.',
+ 'Because of this, improvement for HQs will be funded.',
+ 'And thus we, the Cog Nation, are striving.',
+ 'I am very delighted by this news, I just wanted to thank you all for working so hard for this news.',
+ "Wait, what's going on? I can't see but I hear explosions."
+] # Len of words + 10
