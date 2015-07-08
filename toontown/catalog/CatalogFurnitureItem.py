@@ -1,6 +1,7 @@
+from direct.interval.IntervalGlobal import *
 import CatalogAtticItem
 import CatalogItem
-import random
+import random, glob
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
 from panda3d.core import *
@@ -1080,21 +1081,38 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
             if not scale == None:
                 model.setScale(scale)
                 model.flattenLight()
-        if self.furnitureType == 1530 and animate:
-            movie = loader.loadTexture('phase_5.5/movies/cheekyscrublords.avi')
-            self.sound = loader.loadSfx('phase_5.5/movies/cheekyscrublords.mp3')
-            movie.synchronizeTo(self.sound)
-            screen = NodePath(CardMaker('tv-screen').generate())
-            screen.reparentTo(model)
 
+        if self.furnitureType == 1530 and animate:
+            screen = NodePath(CardMaker('tv-screen').generate())
+
+            model.find('**/toonTownBugTV_screen').hide()
+            screen.reparentTo(model)
             screen.setScale(2.5, 1.7, 1.4)
             screen.setPos(-1.15, -0.5, 1.1)
-            screen.setTexture(movie)
-            screen.setTexScale(TextureStage.getDefault(), movie.getTexScale())
-            model.find('**/toonTownBugTV_screen').hide()
-            self.sound.setLoop(True)
-            self.sound.play()
+            self.startVideo(screen)
+
         return model
+    
+    def startVideo(self, model, file=None):
+        files = glob.glob('user/videos/*.mp4')
+        
+        if not files:
+            model.setTextureOff(TextureStage.getDefault())
+            model.setColor(0.3, 0.3, 0.3, 1.0)
+            return
+        
+        if file is None:
+            file = random.randint(0, len(files) - 1)
+        elif file >= len(files):
+            file = 0
+
+        movie = loader.loadTexture(files[file])
+        sound = loader.loadSfx(files[file])
+        movie.synchronizeTo(sound)
+        model.setTexture(movie)
+        model.setTexScale(TextureStage.getDefault(), movie.getTexScale())
+        self.videoSequence = Sequence(SoundInterval(sound, node=model, listenerNode=base.localAvatar), Func(self.startVideo, model, file + 1))
+        self.videoSequence.start()
 
     def decodeDatagram(self, di, versionNumber, store):
         CatalogAtticItem.CatalogAtticItem.decodeDatagram(self, di, versionNumber, store)

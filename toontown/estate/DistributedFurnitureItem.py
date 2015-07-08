@@ -47,8 +47,8 @@ class DistributedFurnitureItem(DistributedHouseItem.DistributedHouseItem, Distri
 
     def delete(self):
         self.removeNode()
-        if hasattr(self.item, 'sound'):
-            self.item.sound.stop()
+        if hasattr(self.item, 'videoSequence') and self.item.videoSequence:
+            self.item.videoSequence.pause()
         del self.item
         DistributedHouseItem.DistributedHouseItem.delete(self)
         DistributedSmoothNode.DistributedSmoothNode.delete(self)
