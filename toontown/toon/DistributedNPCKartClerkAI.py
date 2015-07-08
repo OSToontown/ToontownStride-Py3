@@ -69,8 +69,8 @@ class DistributedNPCKartClerkAI(DistributedNPCToonBaseAI):
             extraArgs = []
             cost = getKartCost(whichKart)
             if cost == 'key error':
-                self.air.writeServerEvent('suspicious', avId, 'Player trying to buy non-existant kart %s' % whichKart)
-                self.notify.warning('somebody is trying to buy non-existant kart%s! avId: %s' % (whichKart, avId))
+                self.air.writeServerEvent('suspicious', avId, 'Player trying to buy non-existent kart %s' % whichKart)
+                self.notify.warning('somebody is trying to buy non-existent kart%s! avId: %s' % (whichKart, avId))
                 return
             elif cost > av.getTickets():
                 self.air.writeServerEvent('suspicious', avId, "DistributedNPCKartClerkAI.buyKart and toon doesn't have enough tickets!")

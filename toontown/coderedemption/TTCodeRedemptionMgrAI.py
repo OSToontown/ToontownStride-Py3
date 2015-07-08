@@ -96,7 +96,7 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
         if code in self.codes:
             if av.isCodeRedeemed(code):
                 self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [4])
-                print ('%s tried to redeem already redeemed code %s' % (avId, code))
+                self.air.writeServerEvent('suspicious', avId, 'Toon tried to redeem already redeemed code %s' % code)
                 return
 
             codeInfo = self.codes[code]
@@ -104,19 +104,19 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
 
             if ('year' in codeInfo and date.year is not codeInfo['year']) and date.year > codeInfo['year'] or ('expirationDate' in codeInfo and codeInfo['expirationDate'] - date < timedelta(hours = 1)):
                 self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [2])
-                print ('%s attempted to redeem code %s but it was expired!' % (avId, code))
+                self.air.writeServerEvent('suspicious', avId, 'Toon attempted to redeem code %s but it was expired!' % code)
                 return
             elif ('year' in codeInfo and date.year is not codeInfo['year']) and date.year < codeInfo['year'] or ('month' in codeInfo and date.month is not codeInfo['month']) or ('day' in codeInfo and date.day is not codeInfo['day']):
                 self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [5])
-                print ("%s attempted to redeem code %s but it wasn't usable yet!" % (avId, code))
+                self.air.writeServerEvent('suspicious', avId, "Toon attempted to redeem code %s but it wasn't usable yet!" % code)
                 return
 
             av.redeemCode(code)
             self.requestCodeRedeem(avId, av, codeInfo['items'])
-            print ('%s successfully redeemed %s' % (avId, code))
+            self.air.writeServerEvent('code-redeemed', avId, 'Toon successfully redeemed %s' % code)
         else:
             self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [1])
-            print ('%s tried to redeem non-existant code %s' % (avId, code))
+            self.air.writeServerEvent('suspicious', avId, 'Toon tried to redeem non-existent code %s' % code)
 
     def requestCodeRedeem(self, avId, av, items):
         count = self.getMailboxCount(items)
@@ -134,4 +134,4 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
 
         av.b_setDeliverySchedule(av.onOrder)
         self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [0])
-        print ('%s is being sent %s from redeemed code' % (avId, items))
+        self.air.writeServerEvent('code-redeemed', avId, 'Toon is being sent %s from redeemed code' % items)

@@ -1364,8 +1364,8 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                         if toon != None and not toon.unlimitedGags:
                             check = toon.inventory.useItem(track, level)
                             if check == -1:
-                                self.air.writeServerEvent('suspicious', toonId, 'Toon generating movie for non-existant gag track %s level %s' % (track, level))
-                                self.notify.warning('generating movie for non-existant gag track %s level %s! avId: %s' % (track, level, toonId))
+                                self.air.writeServerEvent('suspicious', toonId, 'Toon generating movie for non-existent gag track %s level %s' % (track, level))
+                                self.notify.warning('generating movie for non-existent gag track %s level %s! avId: %s' % (track, level, toonId))
                             toon.d_setInventory(toon.inventory.makeNetString())
                     hps = attack[TOON_HP_COL]
                     if track == SOS:
