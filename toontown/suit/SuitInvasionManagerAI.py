@@ -49,7 +49,7 @@ class SuitInvasionManagerAI:
             # It's impossible to determine the invading Cog.
             return False
 
-        if flags not in (0, IFV3, IFV2, IFSkelecog, IFWaiter):
+        if flags not in (0, IFV2, IFSkelecog, IFWaiter):
             # The provided flag combination is not possible.
             return False
 
