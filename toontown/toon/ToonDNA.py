@@ -2114,7 +2114,8 @@ GlassesModels = [None,
  'phase_4/models/accessories/tt_m_chr_avt_acc_msk_mouthGlasses',
  'phase_4/models/accessories/tt_m_chr_avt_acc_msk_squareRims',
  'phase_4/models/accessories/tt_m_chr_avt_acc_msk_eyepatch',
- 'phase_4/models/accessories/tt_m_chr_avt_acc_msk_alienGlasses']
+ 'phase_4/models/accessories/tt_m_chr_avt_acc_msk_alienGlasses',
+ 'phase_4/models/accessories/tt_m_chr_avt_acc_msk_hypno_goggles17']
 GlassesTextures = [None,
  'phase_4/maps/tt_t_chr_avt_acc_msk_masqueradeTypeMask2.jpg',
  'phase_4/maps/tt_t_chr_avt_acc_msk_masqueradeTypeMask4.jpg',
@@ -2306,6 +2307,7 @@ GlassesStyles = {'none': [0, 0, 0],
  'gce1': [7, 0, 0],
  'gdk1': [8, 0, 0],
  'gag1': [21, 0, 0],
+ 'ghy1': [22, 0, 0],
  'ghw1': [20, 0, 0],
  'ghw2': [20, 4, 0]}
 BackpackStyles = {'none': [0, 0, 0],
