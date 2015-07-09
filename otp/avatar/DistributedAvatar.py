@@ -336,6 +336,8 @@ def setFov(fov=OTPGlobals.DefaultCameraFov):
     """
     Set your field of view in-game.
     """
+    if fov == 0:
+        return 'Cannot set FOV to 0!'
     base.camLens.setMinFov(fov/(4./3.))
     if fov == OTPGlobals.DefaultCameraFov:
         return 'Set FOV to the default.'
