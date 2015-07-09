@@ -29360,6 +29360,7 @@ WHITELIST = [
     "schedule's",
     'schedules',
     'schell',
+    'schellgames',
     'scheme',
     'schemer',
     'schemes',
