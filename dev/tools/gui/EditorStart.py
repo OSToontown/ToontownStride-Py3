@@ -1,48 +1,32 @@
 from direct.stdpy import threading
 from direct.showbase.ShowBase import ShowBase
 from panda3d.core import VirtualFileSystem
-import __builtin__, wx, os, sys
+import __builtin__, wx, os
 
-sys.path.append(
-    os.path.abspath(
-        os.path.join(
-            os.path.dirname(__file__),
-            "../../../"
-        )
-    )
-)
-
-__builtin__.__dict__.update(__import__('pandac.PandaModules', fromlist=['*']).__dict__)
+__builtin__.__dict__.update(__import__('panda3d.core', fromlist=['*']).__dict__)
 
 loadPrcFile('dependencies/config/guieditor.prc')
 loadPrcFile('dependencies/config/general.prc')
 
-defaultText = """from panda3d.core import *
-from direct.gui import DirectGuiGlobals
-from direct.gui.DirectGui import *
-from toontown.toonbase import ToontownGlobals
+defaultText = """from direct.gui.DirectGui import *
 
-DirectGuiGlobals.setDefaultFontFunc(ToontownGlobals.getInterfaceFont)
-DirectGuiGlobals.setDefaultRolloverSound(base.loadSfx('phase_3/audio/sfx/GUI_rollover.ogg'))
-DirectGuiGlobals.setDefaultClickSound(base.loadSfx('phase_3/audio/sfx/GUI_create_toon_fwd.ogg'))
-DirectGuiGlobals.setDefaultDialogGeom(loader.loadModel('phase_3/models/gui/dialog_box_gui'))
 """
 
-exec(
-    "from %s import %s as imported" % \
-    (
-        '.'.join(
-            sys.argv[1].split('.')[:-1]
-        ),
-        sys.argv[1].split('.')[-1]
-    )
-)
+def inject(_):
+    code = textbox.GetValue()
+    exec(code, globals())
 
-if hasattr(imported, 'GUI_EDITOR'):
-    defaultText += imported.GUI_EDITOR
+app = wx.App(redirect=False)
+frame = wx.Frame(None, title="Injector", size=(640, 400), style=wx.SYSTEM_MENU | wx.CAPTION | wx.CLOSE_BOX | wx.MINIMIZE_BOX)
+panel = wx.Panel(frame)
+button = wx.Button(parent=panel, id=-1, label="Inject", size=(50, 20), pos=(295, 0))
+textbox = wx.TextCtrl(parent=panel, id=-1, pos=(20, 22), size=(600, 340), style=wx.TE_MULTILINE)
+
+frame.Bind(wx.EVT_BUTTON, inject, button)
+frame.Show()
+app.SetTopWindow(frame)
+textbox.AppendText(defaultText)
+threading.Thread(target=app.MainLoop).start()
 
 __builtin__.base = ShowBase()
-
-exec(defaultText)
-
 base.run()
