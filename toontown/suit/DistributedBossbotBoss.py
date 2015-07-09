@@ -944,7 +944,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
                     return
                 self.doMethodLater(0.01, detachGearRoot, 'detach-%s' % gearRoot.getName())
 
-            seq = Sequence(ParallelEndTogether(self.pelvis.hprInterval(1, VBase3(toToonH, 0, 0)), neutral1Anim), extraAnim, Parallel(Sequence(Wait(0.19), gearTrack, Func(detachGearRootLater), self.pelvis.hprInterval(0.2, VBase3(0, 0, 0))), Sequence(throwAnim, neutral2Anim)))
+            seq = Sequence(ParallelEndTogether(self.pelvis.hprInterval(1, VBase3(toToonH, 0, 0)), neutral1Anim), extraAnim, Parallel(Sequence(Wait(0.19), gearTrack, Func(detachGearRootLater), self.pelvis.hprInterval(0.2, VBase3(0, 0, 0))), Sequence(Func(self.setChatAbsolute, random.choice(TTLocalizer.DirectedAttackBossTaunts[self.dna.dept]) % {'toon': toon.getName()}, CFSpeech | CFTimeout), throwAnim, neutral2Anim)))
             self.doAnimate(seq, now=1, raised=1)
 
     def setBattleDifficulty(self, diff):
@@ -1358,7 +1358,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
             def detachGearRootLater(gearRoot = gearRoot):
                 self.doMethodLater(0.01, detachGearRoot, 'detach-%s' % gearRoot.getName())
 
-            seq = Sequence(ParallelEndTogether(self.pelvis.hprInterval(1, VBase3(toToonH, 0, 0)), neutral1Anim), extraAnim, Parallel(Sequence(Wait(0.19), gearTrack, Func(detachGearRootLater), self.pelvis.hprInterval(0.2, VBase3(0, 0, 0))), Sequence(throwAnim, neutral2Anim), Sequence(Wait(0.85), SoundInterval(self.swingClubSfx, node=self, duration=0.45, cutOff=300, listenerNode=base.localAvatar))))
+            seq = Sequence(ParallelEndTogether(self.pelvis.hprInterval(1, VBase3(toToonH, 0, 0)), neutral1Anim), extraAnim, Parallel(Sequence(Wait(0.19), gearTrack, Func(detachGearRootLater), self.pelvis.hprInterval(0.2, VBase3(0, 0, 0))), Sequence(Func(self.setChatAbsolute, random.choice(TTLocalizer.DirectedAttackBossTaunts[self.dna.dept]) % {'toon': toon.getName()}, CFSpeech | CFTimeout), throwAnim, neutral2Anim), Sequence(Wait(0.85), SoundInterval(self.swingClubSfx, node=self, duration=0.45, cutOff=300, listenerNode=base.localAvatar))))
             self.doAnimate(seq, now=1, raised=1)
 
     def doGolfAreaAttack(self):
