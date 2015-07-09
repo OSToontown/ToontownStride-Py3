@@ -4872,7 +4872,7 @@ HatStylesDescriptions = {'hbb1': 'Green Baseball Cap',
  'hhw1': 'Bandana',
  'hhw2': 'Toonosaur Hat',
  'hob1': 'Jamboree Hat',
- 'hbn1': 'Bird Hat by Brianna'}
+ 'hbn1': 'Bird Hat'}
 GlassesStylesDescriptions = {'grd1': 'Round Glasses',
  'gmb1': 'White Mini Blinds',
  'gnr1': 'Purple Narrow Glasses',
@@ -4897,7 +4897,8 @@ GlassesStylesDescriptions = {'grd1': 'Round Glasses',
  'gsr1': 'Square Frame Glasses',
  'ghw1': 'Skull Eyepatch',
  'ghw2': 'Gem Eyepatch',
- 'gag1': 'Alien Eyes by Alexandra'}
+ 'gag1': 'Alien Eyes',
+ 'ghy1': 'Hypno Lure Look'}
 BackpackStylesDescriptions = {'bpb1': 'Blue Backpack',
  'bpb2': 'Orange Backpack',
  'bpb3': 'Purple BackPack',
@@ -4927,7 +4928,7 @@ BackpackStylesDescriptions = {'bpb1': 'Blue Backpack',
  'bhw4': 'Toonosaur Backpack',
  'bob1': 'Jamboree Pack',
  'bfg1': 'Gag Attack Pack',
- 'bfl1': 'Cog Pack by Savanah'}
+ 'bfl1': 'Cog Pack'}
 ShoesStylesDescriptions = {'sat1': 'Green Athletic Shoes',
  'sat2': 'Red Athletic Shoes',
  'smb1': 'Green Toon Boots',
