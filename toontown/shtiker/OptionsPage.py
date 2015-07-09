@@ -195,7 +195,8 @@ class OptionsPage(ShtikerPage.ShtikerPage):
     def exit(self):
         self.optionsTabPage.exit()
         self.codesTabPage.exit()
-
+        self.extraOptionsTabPage.exit()
+        
         ShtikerPage.ShtikerPage.exit(self)
 
     def unload(self):
@@ -218,6 +219,10 @@ class OptionsPage(ShtikerPage.ShtikerPage):
         if self.codesTab is not None:
             self.codesTab.destroy()
             self.codesTab = None
+        
+        if self.extraOptionsTab is not None:
+            self.extraOptionsTab.destroy()
+            self.extraOptionsTab = None
 
         ShtikerPage.ShtikerPage.unload(self)
 
@@ -761,6 +766,7 @@ class ExtraOptionsTabPage(DirectFrame):
         del self.cogInterface_label
         self.cogInterface_toggleButton.destroy()
         del self.cogInterface_toggleButton
+        self.destroyReportNotice()
 
     def __doFov(self):
         fov = self.fov_slider['value']
