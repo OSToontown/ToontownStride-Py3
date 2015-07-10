@@ -11,6 +11,7 @@ import ToonTeleportPanel
 from toontown.toonbase import TTLocalizer
 from toontown.hood import ZoneUtil
 from toontown.toonbase.ToontownBattleGlobals import Tracks, Levels
+from toontown.toon import Toon
 globalAvatarDetail = None
 
 def showAvatarDetail(avId, avName):
@@ -76,7 +77,6 @@ class ToonAvatarDetailPanel(DirectFrame):
         self.fsm.request('begin')
         buttons.removeNode()
         gui.removeNode()
-        return
 
     def cleanup(self):
         if self.fsm:
@@ -165,10 +165,22 @@ class ToonAvatarDetailPanel(DirectFrame):
         else:
             text = TTLocalizer.AvatarDetailPanelOffline % {'identifier': identifier}
         self.dataText['text'] = text
+        self.__addToonModel()
         self.__updateTrackInfo()
         self.__updateTrophyInfo()
         self.__updateLaffInfo()
 
+    def __addToonModel(self):
+        toon = Toon.Toon()
+        toon.setDNA(self.avatar.style)
+        toon.reparentTo(self)
+        toon.setPos(0.45, 0, 0.3)
+        toon.setH(180)
+        toon.setScale(0.11)
+        toon.loop('neutral')
+        toon.setDepthWrite(True)
+        toon.setDepthTest(True)
+    
     def __updateLaffInfo(self):
         avatar = self.avatar
         messenger.send('updateLaffMeter', [avatar, avatar.hp, avatar.maxHp])
