@@ -698,6 +698,13 @@ AvPropTarget = (0,
  3,
  3,
  3)
+NumRoundsLured = [2,
+ 2,
+ 3,
+ 3,
+ 4,
+ 4,
+ 15]
 
 def getAvPropDamage(attackTrack, attackLevel, exp, organicBonus = False, propBonus = False, propAndOrganicBonusStack = False):
     minD = AvPropDamage[attackTrack][attackLevel][0][0]
