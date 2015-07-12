@@ -94,6 +94,7 @@ class CatalogScreen(DirectFrame):
         if hasattr(self, 'giftToggle'):
             self.giftToggle['state'] = DGG.NORMAL
             self.giftToggle['text'] = TTLocalizer.CatalogGiftToggleOn
+        #self.__handleUDack()
 
     def hide(self):
         self.ignore('CatalogItemPurchaseRequest')
@@ -544,6 +545,7 @@ class CatalogScreen(DirectFrame):
          -1.45), image_scale=(1.0, 1.0, smash), image_pos=(0.0, 0.0, -1.9 + lift), image=backDown, pressEffect=0, command=self.showEmblemItems, text=TTLocalizer.CatalogEmblem, text_font=ToontownGlobals.getSignFont(), text_pos=(1.75, 0.132), text_scale=0.065, text_fg=(0.353, 0.627, 0.627, 1.0), text2_fg=(0.353, 0.427, 0.427, 1.0))
         self.emblemCatalogButton2.hide()
         self.__makeFFlist()
+        print self.ffList
         if len(self.ffList) > 0:
             if config.GetBool('want-gifting', True):
                 self.giftToggle = DirectButton(self.base, relief=None, pressEffect=0, image=(giftToggleUp, giftToggleDown, giftToggleUp), image_scale=(1.0, 1, 0.7), command=self.__giftToggle, text=TTLocalizer.CatalogGiftToggleOff, text_font=ToontownGlobals.getSignFont(), text_pos=TTLocalizer.CSgiftTogglePos, text_scale=TTLocalizer.CSgiftToggle, text_fg=(0.353, 0.627, 0.627, 1.0), text3_fg=(0.15, 0.3, 0.3, 1.0), text2_fg=(0.353, 0.427, 0.427, 1.0), image_color=Vec4(1.0, 1.0, 0.2, 1.0), image1_color=Vec4(0.9, 0.85, 0.2, 1.0), image2_color=Vec4(0.9, 0.85, 0.2, 1.0), image3_color=Vec4(0.5, 0.45, 0.2, 1.0))

@@ -3,6 +3,7 @@ import urlparse
 from otp.distributed.OtpDoGlobals import *
 from otp.distributed.DistributedDirectoryAI import DistributedDirectoryAI
 from toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
+from toontown.catalog.CatalogManagerUD import CatalogManagerUD
 import toontown.minigame.MinigameCreatorAI
 
 if config.GetBool('want-rpc-server', False):
@@ -25,6 +26,8 @@ class ToontownUberRepository(ToontownInternalRepository):
                 self.mongo = pymongo.MongoClient(url)
             db = (urlparse.urlparse(url).path or '/test')[1:]
             self.mongodb = self.mongo[db]
+		
+        self.catalogManager = CatalogManagerUD(self)
 
         self.notify.setInfo(True)
 
@@ -51,3 +54,4 @@ class ToontownUberRepository(ToontownInternalRepository):
         self.friendsManager = simbase.air.generateGlobalObject(OTP_DO_ID_TTS_FRIENDS_MANAGER, 'TTSFriendsManager')
         self.globalPartyMgr = simbase.air.generateGlobalObject(OTP_DO_ID_GLOBAL_PARTY_MANAGER, 'GlobalPartyManager')
         self.groupManager = simbase.air.generateGlobalObject(OPT_DO_ID_GROUP_MANAGER, 'GroupManager')
+

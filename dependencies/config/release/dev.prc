@@ -29,6 +29,7 @@ want-find-four #t
 want-chinese-checkers #t
 want-checkers #t
 want-house-types #t
+want-gifting #t
 
 # Chat:
 want-whitelist #t

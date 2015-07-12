@@ -287,7 +287,7 @@ class CatalogItem:
              p,
              r)
         if store & GiftTag:
-            self.giftTag = di.getString()
+            self.giftTag = di.getUint32()
         self.specialEventId = di.getUint8()
 
     def encodeDatagram(self, dg, store):
@@ -301,7 +301,7 @@ class CatalogItem:
             dg.putArg(self.posHpr[4], STInt8, 256.0 / 360.0)
             dg.putArg(self.posHpr[5], STInt8, 256.0 / 360.0)
         if store & GiftTag:
-            dg.addString(self.giftTag)
+            dg.addUint32(self.giftTag)
         dg.addUint8(self.specialEventId)
 
     def getTypeCode(self):
