@@ -18,7 +18,7 @@ class ToontownDistrictStatsAI(DistributedObjectAI):
     def handleShardStatusQuery(self):
         # Send a shard status update containing our population:
         status = {'population': self.avatarCount}
-        self.air.sentNetEvent('shardStatus', [self.air.ourChannel, status])
+        self.air.sendNetEvent('shardStatus', [self.air.ourChannel, status])
 
     def setDistrictId(self, districtId):
         self.districtId = districtId
