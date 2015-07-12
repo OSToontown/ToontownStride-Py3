@@ -29,6 +29,7 @@ class ToontownUberRepository(ToontownInternalRepository):
         self.notify.setInfo(True)
 
     def handleConnected(self):
+        ToontownInternalRepository.handleConnected(self)
         rootObj = DistributedDirectoryAI(self)
         rootObj.generateWithRequiredAndId(self.getGameDoId(), 0, 0)
 
