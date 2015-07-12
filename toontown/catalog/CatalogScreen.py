@@ -92,9 +92,9 @@ class CatalogScreen(DirectFrame):
         taskMgr.doMethodLater(1.0, clarabelleGreeting, 'clarabelleGreeting')
         taskMgr.doMethodLater(12.0, clarabelleHelpText1, 'clarabelleHelpText1')
         if hasattr(self, 'giftToggle'):
-            self.giftToggle['state'] = DGG.NORMAL
-            self.giftToggle['text'] = TTLocalizer.CatalogGiftToggleOn
-        #self.__handleUDack()
+            self.giftToggle['state'] = DGG.DISABLED
+            self.giftToggle['text'] = TTLocalizer.CatalogGiftToggleWait
+        self.__handleUDack()
 
     def hide(self):
         self.ignore('CatalogItemPurchaseRequest')
@@ -1104,3 +1104,13 @@ class CatalogScreen(DirectFrame):
             self.showEmblems()
             self.giftToggle['text'] = TTLocalizer.CatalogGiftToggleOff
             self.update()
+
+    def __handleUDack(self, caller = None):
+        taskMgr.remove('ackTimeOut')
+        if hasattr(self, 'giftToggle') and self.giftToggle:
+            self.giftToggle['state'] = DGG.NORMAL
+            self.giftToggle['text'] = TTLocalizer.CatalogGiftToggleOff
+
+    def __handleNoAck(self, caller = None):
+        if hasattr(self, 'giftToggle') and self.giftToggle:
+            self.giftToggle['text'] = TTLocalizer.CatalogGiftToggleNoAck
