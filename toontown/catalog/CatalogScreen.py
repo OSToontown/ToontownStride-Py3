@@ -33,6 +33,7 @@ class CatalogScreen(DirectFrame):
     def __init__(self, parent = aspect2d, **kw):
         guiItems = loader.loadModel('phase_5.5/models/gui/catalog_gui')
         background = guiItems.find('**/catalog_background')
+        background.setBin("background", 10)
         guiButton = loader.loadModel('phase_3/models/gui/quit_button')
         guiBack = loader.loadModel('phase_5.5/models/gui/package_delivery_panel')
         optiondefs = (('scale', 0.667, None),
