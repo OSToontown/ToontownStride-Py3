@@ -240,7 +240,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
         DistributedSmoothNodeAI.DistributedSmoothNodeAI.delete(self)
         DistributedPlayerAI.DistributedPlayerAI.delete(self)
-		
+        
         self.ignore('CATALOG_addGift_UD2Toon_%d' % self.doId)
 
     def deleteDummy(self):
