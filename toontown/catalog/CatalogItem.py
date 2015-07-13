@@ -42,8 +42,8 @@ class CatalogItem:
         return
 
     def isAward(self):
-        result = self.specialEventId != 0
-        return result
+        #result = self.specialEventId != 0
+        return False
 
     def makeNewItem(self):
         pass

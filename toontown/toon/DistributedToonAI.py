@@ -175,6 +175,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         from toontown.toon.DistributedNPCToonBaseAI import DistributedNPCToonBaseAI
         if not isinstance(self, DistributedNPCToonBaseAI):
             self.sendUpdate('setDefaultShard', [self.air.districtId])
+        
         self.accept('CATALOG_addGift_UD2Toon_%d' % self.doId, self.__handleAddGift)
 
     def setLocation(self, parentId, zoneId):
@@ -237,11 +238,11 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             PetLookerAI.PetLookerAI.destroy(self)
         del self.kart
         self._sendExitServerEvent()
+        
+        self.ignore('CATALOG_addGift_UD2Toon_%d' % self.doId)
 
         DistributedSmoothNodeAI.DistributedSmoothNodeAI.delete(self)
         DistributedPlayerAI.DistributedPlayerAI.delete(self)
-        
-        self.ignore('CATALOG_addGift_UD2Toon_%d' % self.doId)
 
     def deleteDummy(self):
         if self.inventory:
@@ -2182,7 +2183,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.b_setCatalogNotify(self.catalogNotify, ToontownGlobals.NewItems)
         return Task.done
     
-    def __handleAddGift(self, blob):
+    def __handleAddGift(self, blob, ctx):
         store = CatalogItem.Customization | CatalogItem.DeliveryDate | CatalogItem.GiftTag
         self.onGiftOrder.append(CatalogItem.getItem(blob, store=store))
         self.b_setBothSchedules(self.onOrder, self.onGiftOrder)

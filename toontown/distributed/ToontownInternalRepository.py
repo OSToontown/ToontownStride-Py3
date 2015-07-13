@@ -11,10 +11,10 @@ class ToontownInternalRepository(AstronInternalRepository):
         AstronInternalRepository.__init__(
             self, baseChannel, serverId=serverId, dcFileNames=dcFileNames,
             dcSuffix=dcSuffix, connectMethod=connectMethod, threadedNet=threadedNet)
-	
+    
     def handleConnected(self):
         self.__messenger = ToontownNetMessengerAI(self)
-	
+    
     def sendNetEvent(self, message, sentArgs=[]):
         self.__messenger.send(message, sentArgs)
         
