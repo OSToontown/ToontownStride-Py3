@@ -34,9 +34,9 @@ class CatalogManagerUD(DirectObject):
             self.notify.warning('Unable to deliver gift: avId is not a DistributedToon!')
             return
           
-        store = CatalogItem.Customization | CatalogItem.DeliveryDate | CatalogItem.GiftTag
+        store = CatalogItem.Customization | CatalogItem.DeliveryDate
         giftOnOrder = CatalogItemList.CatalogItemList(fields.get('setGiftSchedule', [''])[0], store=store)
-        giftOnOrder.append(CatalogItem.getItem(blob, store=store))
+        giftOnOrder.append(CatalogItem.getItem(blob, store=store | CatalogItem.GiftTag))
         fields['setGiftSchedule'] = (giftOnOrder.getBlob(store=store),)
         
         self.air.dbInterface.updateObject(self.air.dbId, avId, self.air.dclassesByName['DistributedToonUD'], fields)
