@@ -1,6 +1,9 @@
 from direct.distributed.AstronInternalRepository import AstronInternalRepository
 from otp.distributed.OtpDoGlobals import *
 from toontown.distributed.ToontownNetMessengerAI import ToontownNetMessengerAI
+from direct.distributed.PyDatagram import PyDatagram
+import traceback
+import sys
 
 class ToontownInternalRepository(AstronInternalRepository):
     GameGlobalsId = OTP_DO_ID_TOONTOWN
@@ -32,13 +35,35 @@ class ToontownInternalRepository(AstronInternalRepository):
         AstronInternalRepository.handleDatagram(self, di)
 
     def getAvatarIdFromSender(self):
-        return self.getMsgSender() & 0xFFFFFFFF
+        return int(self.getMsgSender() & 0xFFFFFFFF)
 
     def getAccountIdFromSender(self):
-        return (self.getMsgSender()>>32) & 0xFFFFFFFF
+        return int((self.getMsgSender()>>32) & 0xFFFFFFFF)
 
     def _isValidPlayerLocation(self, parentId, zoneId):
         if zoneId < 1000 and zoneId != 1:
             return False
 
         return True
+
+    def readerPollOnce(self):
+        try:
+            return AstronInternalRepository.readerPollOnce(self)
+            
+        except SystemExit, KeyboardInterrupt:
+            raise
+            
+        except Exception as e:
+            if self.getAvatarIdFromSender() > 100000000:
+                dg = PyDatagram()
+                dg.addServerHeader(self.getMsgSender(), self.ourChannel, CLIENTAGENT_EJECT)
+                dg.addUint16(166)
+                dg.addString('You were disconnected to prevent a district reset.')
+                self.send(dg)
+                
+            self.writeServerEvent('INTERNAL-EXCEPTION', self.getAvatarIdFromSender(), self.getAccountIdFromSender(), repr(e), traceback.format_exc())
+            self.notify.warning('INTERNAL-EXCEPTION: %s (%s)' % (repr(e), self.getAvatarIdFromSender()))
+            print traceback.format_exc()
+            sys.exc_clear()
+            
+        return 1
