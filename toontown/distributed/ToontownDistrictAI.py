@@ -14,7 +14,7 @@ class ToontownDistrictAI(DistributedDistrictAI):
 
         # We want to handle shard status queries so that a ShardStatusReceiver
         # being created after we're generated will know where we're at:
-        self.air.accept('shardStatus', self.handleShardStatusQuery)
+        self.air.accept('queryShardStatus', self.handleShardStatusQuery)
 
         # Send a shard status update with the information we have:
         status = {
