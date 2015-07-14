@@ -1131,6 +1131,8 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
     def getToonupDmgStr(self, track, level):
         if track == HEAL_TRACK:
             return TTLocalizer.InventoryHealString
+        elif track == LURE_TRACK:
+            return TTLocalizer.InventoryLureString
         else:
             return TTLocalizer.InventoryDamageString
 

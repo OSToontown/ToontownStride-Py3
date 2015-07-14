@@ -1529,9 +1529,7 @@ class BattleCalculatorAI:
         return self.__suitIsLured(suitId) and self.currentlyLuredSuits[suitId][0] > 0 and random.randint(0, 99) < self.currentlyLuredSuits[suitId][2]
 
     def itemIsCredit(self, track, level):
-        if track == PETSOS:
-            return 0
-        return level < self.creditLevel
+        return track != PETSOS and level < self.creditLevel
 
     def __getActualTrack(self, toonAttack):
         if toonAttack[TOON_TRACK_COL] == NPCSOS:

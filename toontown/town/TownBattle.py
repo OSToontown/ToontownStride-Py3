@@ -270,33 +270,12 @@ class TownBattle(StateData.StateData):
             cogPanel.updateHealthBar()
             cogPanel.setPos(0, 0, 0.62)
 
-        if num == 1:
-            self.cogPanels[0].setX(self.oddPos[1])
-            self.cogPanels[0].show()
-        elif num == 2:
-            self.cogPanels[0].setX(self.evenPos[1])
-            self.cogPanels[0].show()
-            self.cogPanels[1].setX(self.evenPos[2])
-            self.cogPanels[1].show()
-        elif num == 3:
-            self.cogPanels[0].setX(self.oddPos[0])
-            self.cogPanels[0].show()
-            self.cogPanels[1].setX(self.oddPos[1])
-            self.cogPanels[1].show()
-            self.cogPanels[2].setX(self.oddPos[2])
-            self.cogPanels[2].show()
-        elif num == 4:
-            self.cogPanels[0].setX(self.evenPos[0])
-            self.cogPanels[0].show()
-            self.cogPanels[1].setX(self.evenPos[1])
-            self.cogPanels[1].show()
-            self.cogPanels[2].setX(self.evenPos[2])
-            self.cogPanels[2].show()
-            self.cogPanels[3].setX(self.evenPos[3])
-            self.cogPanels[3].show()
-        else:
-            self.notify.error('Bad number of toons: %s' % num)
-        return None
+        pos = self.evenPos if num % 2 == 0 else self.oddPos
+
+        for i, panel in enumerate(self.cogPanels):
+            if num > i:
+                panel.setX(pos[i if num >= 3 else i + 1])
+                panel.show()
 
     def updateChosenAttacks(self, battleIndices, tracks, levels, targets):
         self.notify.debug('updateChosenAttacks bi=%s tracks=%s levels=%s targets=%s' % (battleIndices,

@@ -71,6 +71,12 @@ for closetId, maxClothes in ClosetToClothes.items():
 
 MaxClosetIds = (508, 518)
 MaxTrunkIds = (4000, 4010)
+
+TvToPosScale = {
+ 1530: ((-1.15, -0.5, 1.1), (2.5, 1.7, 1.4)),
+ 1531: ((-2.3, -0.2, 1.6), (5, 5, 5))
+}
+
 FurnitureTypes = {
  100: ('phase_5.5/models/estate/chairA',  # Model
        None,                              # Color
@@ -715,6 +721,10 @@ FurnitureTypes = {
         None,
         None,
         675),
+ 1531: ('phase_5.5/models/estate/bugRoomTV_50inch',
+        None,
+        None,
+        1250),
  1600: ('phase_5.5/models/estate/vaseA_short',
         None,
         None,
@@ -947,20 +957,7 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
         return BankToMoney.get(self.furnitureType)
 
     def getMaxClothes(self):
-        index = self.furnitureType % 10
-        if index == 0:
-            return 10
-        elif index == 2:
-            return 15
-        elif index == 4:
-            return 20
-        elif index == 6:
-            return 25
-        elif index == 8:
-            return 50
-        else:
-            return None
-        return None
+        return ClosetToClothes[self.furnitureType]
 
     def reachedPurchaseLimit(self, avatar):
         if self.getFlags() & FLBank:
@@ -1082,13 +1079,14 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
                 model.setScale(scale)
                 model.flattenLight()
 
-        if self.furnitureType == 1530 and animate:
+        if animate and self.furnitureType in TvToPosScale:
+            pos = TvToPosScale[self.furnitureType]
             screen = NodePath(CardMaker('tv-screen').generate())
 
             model.find('**/toonTownBugTV_screen').hide()
             screen.reparentTo(model)
-            screen.setScale(2.5, 1.7, 1.4)
-            screen.setPos(-1.15, -0.5, 1.1)
+            screen.setScale(*pos[1])
+            screen.setPos(*pos[0])
             self.startVideo(screen)
 
         return model

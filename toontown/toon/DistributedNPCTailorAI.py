@@ -5,10 +5,6 @@ import ToonDNA
 from direct.task.Task import Task
 from toontown.estate import ClosetGlobals
 
-#Going to code this later. For now lets just have it return false.
-def isClosetAlmostFull(av):
-    return False
-
 class DistributedNPCTailorAI(DistributedNPCToonBaseAI):
     freeClothes = simbase.config.GetBool('free-clothes', 0)
     housingEnabled = simbase.config.GetBool('want-housing', 1)
@@ -34,7 +30,6 @@ class DistributedNPCTailorAI(DistributedNPCToonBaseAI):
         self.customerDNA = None
         self.customerId = None
         DistributedNPCToonBaseAI.delete(self)
-        return
 
     def avatarEnter(self):
         avId = self.air.getAvatarIdFromSender()
@@ -63,7 +58,7 @@ class DistributedNPCTailorAI(DistributedNPCToonBaseAI):
         elif self.air.questManager.hasTailorClothingTicket(av, self):
             flag = NPCToons.PURCHASE_MOVIE_START
 
-        if self.housingEnabled and isClosetAlmostFull(av):
+        if self.housingEnabled and self.isClosetAlmostFull(av):
             flag = NPCToons.PURCHASE_MOVIE_START_NOROOM
 
         self.sendShoppingMovie(avId, flag)
@@ -71,14 +66,10 @@ class DistributedNPCTailorAI(DistributedNPCToonBaseAI):
 
     def isClosetAlmostFull(self, av):
         numClothes = len(av.clothesTopsList) / 4 + len(av.clothesBottomsList) / 2
-        if numClothes >= av.maxClothes - 1:
-            return 1
-        return 0
+        return numClothes >= av.maxClothes - 1
 
     def hasEnoughJbs(self, av):
-        if av.getTotalMoney() >= self.jbCost:
-            return True
-        return False
+        return av.getTotalMoney() >= self.jbCost
 
     def sendShoppingMovie(self, avId, flag):
         self.busy = avId
@@ -126,7 +117,6 @@ class DistributedNPCTailorAI(DistributedNPCToonBaseAI):
         self.sendClearMovie(None)
         if self.air.questManager.hasTailorClothingTicket(av, self):
             self.air.questManager.removeClothingTicket(av, self)
-        return
 
     def setDNA(self, blob, finished, which):
         avId = self.air.getAvatarIdFromSender()
