@@ -74,7 +74,8 @@ MaxTrunkIds = (4000, 4010)
 
 TvToPosScale = {
  1530: ((-1.15, -0.5, 1.1), (2.5, 1.7, 1.4)),
- 1531: ((-2.3, -0.2, 1.6), (5, 5, 5))
+ 1531: ((-2.3, -0.2, 1.6), (5)),
+ 1532: ((-7, -0.2, 1.8), (15, 10, 8.5)) 
 }
 
 FurnitureTypes = {
@@ -725,6 +726,10 @@ FurnitureTypes = {
         None,
         None,
         1250),
+ 1532: ('phase_5.5/models/estate/bugRoomTV_100inch',
+        None,
+        None,
+        5000),		
  1600: ('phase_5.5/models/estate/vaseA_short',
         None,
         None,
