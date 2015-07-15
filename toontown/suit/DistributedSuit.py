@@ -55,7 +55,7 @@ class DistributedSuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):
         self.pathState = 0
         self.path = None
         self.localPathState = 0
-        self.currentLeg = 0
+        self.currentLeg = -1
         self.pathStartTime = 0.0
         self.legList = None
         self.initState = None
@@ -219,7 +219,7 @@ class DistributedSuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):
         self.maxPathLen = maxPathLen
         self.path = None
         self.pathLength = 0
-        self.currentLeg = 0
+        self.currentLeg = -1
         self.legList = None
         if self.maxPathLen == 0 or not self.verifySuitPlanner() or start not in self.sp.pointIndexes or end not in self.sp.pointIndexes:
             return
@@ -327,7 +327,7 @@ class DistributedSuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):
             return Task.done
         now = globalClock.getFrameTime()
         elapsed = now - self.pathStartTime
-        nextLeg = self.legList.getLegIndexAtTime(elapsed, self.currentLeg)
+        nextLeg = self.legList.getLegIndexAtTime(elapsed, 0)
         numLegs = self.legList.getNumLegs()
         if self.currentLeg != nextLeg:
             self.currentLeg = nextLeg
@@ -348,7 +348,7 @@ class DistributedSuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):
     def stopPathNow(self):
         name = self.taskName('move')
         taskMgr.remove(name)
-        self.currentLeg = 0
+        self.currentLeg = -1
 
     def calculateHeading(self, a, b):
         xdelta = b[0] - a[0]
