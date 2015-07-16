@@ -916,6 +916,10 @@ class LoadAvatarFSM(AvatarOperationFSM):
 
         # Tell the GlobalPartyManager as well:
         self.csm.air.globalPartyMgr.avatarJoined(self.avId)
+        
+        fields = self.avatar
+        fields.update({'setAdminAccess': [self.account.get('ACCESS_LEVEL', 100)]})
+        self.csm.air.friendsManager.addToonData(self.avId, fields)        
 
         self.csm.air.writeServerEvent('avatarChosen', self.avId, self.target)
         self.demand('Off')
@@ -966,7 +970,7 @@ class LoadAvatarFSM(AvatarOperationFSM):
         # Eliminate race conditions.
         taskMgr.doMethodLater(0.2, self.enterSetAvatarTask,
                               'avatarTask-%s' % self.avId, extraArgs=[channel],
-                              appendTask=True)
+                              appendTask=True)                         
 
 class UnloadAvatarFSM(OperationFSM):
     notify = directNotify.newCategory('UnloadAvatarFSM')

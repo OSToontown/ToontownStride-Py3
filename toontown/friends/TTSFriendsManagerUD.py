@@ -149,6 +149,7 @@ class TTSFriendsManagerUD(DistributedObjectGlobalUD):
         self.onlineToons = []
         self.tpRequests = {}
         self.whisperRequests = {}
+        self.toon2data = {}
         self.operations = []
         self.delayTime = 1.0
 
@@ -252,6 +253,8 @@ class TTSFriendsManagerUD(DistributedObjectGlobalUD):
                     self.sendUpdateToAvatarId(friendId, 'friendOffline', [doId])
             if doId in self.onlineToons:
                 self.onlineToons.remove(doId)
+            if doId in self.toon2data:
+                del self.toon2data[doId]
         self.air.dbInterface.queryObject(self.air.dbId, doId, handleToon)
 
     # -- Clear List --
@@ -356,3 +359,19 @@ class TTSFriendsManagerUD(DistributedObjectGlobalUD):
     def sleepAutoReply(self, toId):
         requester = self.air.getAvatarIdFromSender()
         self.sendUpdateToAvatarId(toId, 'setSleepAutoReply', [requester])
+
+    def getToonAccess(self, doId):
+        return self.toon2data.get(doId, {}).get('access', 0)
+        
+    def getToonName(self, doId):
+        return self.toon2data.get(doId, {}).get('name', '???')
+        
+    def getToonAccId(self, doId):
+        return self.toon2data.get(doId, {}).get('accId', 0)
+
+    def addToonData(self, doId, fields):
+        data = {}
+        data['access'] = fields.get('setAdminAccess', [0])[0]
+        data['name'] = fields['setName'][0]
+        data['accId'] = fields.get('setDISLid', [0])[0]
+        self.toon2data[doId] = data
