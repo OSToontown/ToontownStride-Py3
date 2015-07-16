@@ -1019,6 +1019,11 @@ class CatalogScreen(DirectFrame):
         return test
 
     def __makeFFlist(self):
+        for familyMember in base.cr.avList:
+            if familyMember.id != base.localAvatar.doId:
+                newFF = (familyMember.id, familyMember.name, NametagGroup.CCNonPlayer)
+                self.ffList.append(newFF)
+                
         for id, handle in base.cr.friendsMap.items():
             if isinstance(handle, FriendHandle.FriendHandle):
                 self.ffList.append((id, handle.getName(), None))#NametagGlobals.getFriendColor(handle)))
