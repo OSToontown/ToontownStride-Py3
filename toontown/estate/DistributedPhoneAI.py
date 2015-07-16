@@ -18,7 +18,7 @@ class DistributedPhoneAI(DistributedFurnitureItemAI):
     
     def __init__(self, air, furnitureMgr, catalogItem):
         DistributedFurnitureItemAI.__init__(self, air, furnitureMgr, catalogItem)
-        self.initialScale = (1, 1, 1)
+        self.initialScale = (0.8, 0.8, 0.8)
         self.inUse = False
         self.currAvId = 0
     
