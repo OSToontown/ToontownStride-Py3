@@ -36,7 +36,7 @@ class LoadGiftAvatar:
         
         newDict = self.copyDict(fields, 'setDNAString', 'setMailboxContents', 'setGiftSchedule', 'setDeliverySchedule', 'setHat', 'setGlasses', 'setBackpack',
                                 'setShoes', 'setHatList', 'setGlassesList', 'setBackpackList', 'setShoes', 'setShoesList', 'setCustomMessages', 'setEmoteAccess',
-                                'setClothesTopsList', 'setClothesBottomsList', 'setPetTrickPhrases')
+                                'setClothesTopsList', 'setClothesBottomsList', 'setPetTrickPhrases', 'setNametagStyles')
         
         self.callback(self.avId, self.targetId, newDict, self.optional)
         del self.phone.fsms[self.avId]

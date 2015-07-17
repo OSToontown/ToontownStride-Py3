@@ -84,3 +84,6 @@ class GiftAvatar:
     
     def setPetTrickPhrases(self, tricks):
         self.petTrickPhrases = tricks[0]
+    
+    def setNametagStyles(self, nametagStyles):
+        self.nametagStyles = nametagStyles[0]
