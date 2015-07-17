@@ -291,11 +291,7 @@ class CatalogItemPanel(DirectFrame):
                 auxText = TTLocalizer.CatalogOnOrderText
         else:
             auxText = ''
-        isNameTag = typeCode == CatalogItemTypes.NAMETAG_ITEM
-        if isNameTag and self['item'].nametagStyle == base.localAvatar.getNametagStyle():
-            auxText = TTLocalizer.CatalogCurrent
-            self.buyButton['state'] = DGG.DISABLED
-        elif self['item'].reachedPurchaseLimit(base.localAvatar):
+        if self['item'].reachedPurchaseLimit(base.localAvatar):
             max = self['item'].getPurchaseLimit()
             if max <= 1:
                 auxText = TTLocalizer.CatalogPurchasedText

@@ -242,16 +242,13 @@ class TrunkGUI(StateData.StateData):
         self.glasses = []
         self.backpacks = []
         self.shoes = []
+        choices = [0, 0, 0, 0]
+        currentAccessories = (self.toon.getHat(), self.toon.getGlasses(), self.toon.getBackpack(), self.toon.getShoes())
 
         self.hats.append((0, 0, 0))
         self.glasses.append((0, 0, 0))
         self.backpacks.append((0, 0, 0))
         self.shoes.append((0, 0, 0))
-
-        self.hatChoice = 0
-        self.glassesChoice = 0
-        self.backpackChoice = 0
-        self.shoesChoice = 0
 
         i = 0
         while i < len(self.hatList):
@@ -272,7 +269,17 @@ class TrunkGUI(StateData.StateData):
         while i < len(self.shoesList):
             self.shoes.append((self.shoesList[i], self.shoesList[i + 1], self.shoesList[i + 2]))
             i = i + 3
+        
+        for i, list in enumerate((self.hats, self.glasses, self.backpacks, self.shoes)):
+            if len(list) >= 3:
+                index = list.index(currentAccessories[i])
+                list[index], list[1] = list[1], list[index]
+                choices[i] = 1
 
+        self.hatChoice = choices[0]
+        self.glassesChoice = choices[1]
+        self.backpackChoice = choices[2]
+        self.shoesChoice = choices[3]
         self.swapHat(0)
         self.swapGlasses(0)
         self.swapBackpack(0)
