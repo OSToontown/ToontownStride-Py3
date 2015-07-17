@@ -143,7 +143,7 @@ class AccountDB:
     def addNameRequest(self, avId, name, accountID = None):
         return True
 
-    def getNameStatus(self, avId, callback = None):
+    def getNameStatus(self, accountId, callback = None):
         return 'APPROVED'
 
     def removeNameRequest(self, avId):
@@ -617,10 +617,13 @@ class GetAvatarsFSM(AvatarOperationFSM):
             if wishNameState == 'OPEN':
                 nameState = 1
             elif wishNameState == 'PENDING':
-                if self.nameStateData is None:
-                    self.demand('QueryNameState')
-                    return
-                actualNameState = self.nameStateData[str(avId)]
+                if accountDBType == 'remote':
+                    if self.nameStateData is None:
+                        self.demand('QueryNameState')
+                        return
+                    actualNameState = self.nameStateData[str(avId)]
+                else:
+                    actualNameState = self.csm.accountDB.getNameStatus(self.account['ACCOUNT_ID'])
                 self.csm.air.dbInterface.updateObject(
                     self.csm.air.dbId,
                     avId,
