@@ -119,7 +119,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.onOrder = CatalogItemList.CatalogItemList(store=CatalogItem.Customization | CatalogItem.DeliveryDate)
         self.onGiftOrder = CatalogItemList.CatalogItemList(store=CatalogItem.Customization | CatalogItem.DeliveryDate)
         self.mailboxContents = CatalogItemList.CatalogItemList(store=CatalogItem.Customization)
-        self.deliveryboxContentsContents = CatalogItemList.CatalogItemList(store=CatalogItem.Customization | CatalogItem.GiftTag)
         self.awardMailboxContents = CatalogItemList.CatalogItemList(store=CatalogItem.Customization)
         self.onAwardOrder = CatalogItemList.CatalogItemList(store=CatalogItem.Customization | CatalogItem.DeliveryDate)
         self.splash = None

@@ -31,7 +31,6 @@ class MailboxScreen(DirectObject.DirectObject):
         self.dialogBox = None
         self.load()
         self.hide()
-        return
 
     def show(self):
         self.frame.show()
@@ -79,7 +78,7 @@ class MailboxScreen(DirectObject.DirectObject):
         self.quitButton = DirectButton(parent=self.frame, relief=None, image=(gui2.find('**/QuitBtn_UP'), gui2.find('**/QuitBtn_DN'), gui2.find('**/QuitBtn_RLVR')), pos=(0.5, 1.0, -0.42), scale=0.9, text=TTLocalizer.MailboxExitButton, text_font=ToontownGlobals.getSignFont(), text0_fg=(0.152, 0.75, 0.258, 1), text1_fg=(0.152, 0.75, 0.258, 1), text2_fg=(0.977, 0.816, 0.133, 1), text_scale=0.045, text_pos=(0, -0.01), command=self.__handleExit)
         self.gettingText = DirectLabel(parent=self.frame, relief=None, text='', text_wordwrap=10, pos=(0.0, 0.0, 0.32), scale=0.09)
         self.gettingText.hide()
-        self.giftTagPanel = DirectLabel(parent=self.frame, relief=None, text='Gift TAG!!', text_wordwrap=16, pos=(0.0, 0.0, 0.01), scale=0.06)
+        self.giftTagPanel = DirectLabel(parent=self.frame, relief=None, text=TTLocalizer.MailboxGiftTag % TTLocalizer.MailboxGiftTagAnonymous, text_wordwrap=16, pos=(0.0, 0.0, 0.01), scale=0.06)
         self.giftTagPanel.hide()
         self.itemText = DirectLabel(parent=self.frame, relief=None, text='', text_wordwrap=16, pos=(0.0, 0.0, -0.022), scale=0.07)
         self.itemText.hide()

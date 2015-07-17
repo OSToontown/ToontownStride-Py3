@@ -445,11 +445,6 @@ from toontown.parties.GlobalPartyManager/AI/UD import GlobalPartyManager/AI/UD
 from toontown.uberdog.GlobalLobbyManager/AI/UD import GlobalLobbyManager/AI/UD
 from toontown.uberdog.ARGManager import ARGManager
 
-struct GiftItem {
-  blob Item;
-  string giftTag;
-};
-
 struct gardenSpecial {
   uint8 index;
   uint8 count;

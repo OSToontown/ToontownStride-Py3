@@ -1014,7 +1014,6 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
 
     def recordPurchase(self, avatar, optional):
         house, retcode = self.getHouseInfo(avatar)
-        self.giftTag = None
         if retcode >= 0:
             if self.getFlags() & FLCloset:
                 if avatar.getMaxClothes() > self.getMaxClothes():

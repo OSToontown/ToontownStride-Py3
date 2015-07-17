@@ -37,7 +37,6 @@ class CatalogWindowItem(CatalogAtticItem.CatalogAtticItem):
         return TTLocalizer.WindowViewNames.get(self.windowType)
 
     def recordPurchase(self, avatar, optional):
-        self.giftTag = None
         house, retcode = self.getHouseInfo(avatar)
         if retcode >= 0:
             house.addWindow(self)
