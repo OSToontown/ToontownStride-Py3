@@ -19,6 +19,10 @@ sys.path.append(
 )
 
 import argparse
+import gc
+
+# Panda3D 1.10.0 is 63.
+gc.disable()
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--base-channel', help='The base channel that the server may use.')
@@ -57,6 +61,8 @@ if ':' in host:
     host, port = host.split(':', 1)
     port = int(port)
 simbase.air.connect(host, port)
+
+gc.enable()
 
 try:
     run()

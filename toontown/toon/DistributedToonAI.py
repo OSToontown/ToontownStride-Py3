@@ -160,6 +160,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.trueFriends = []
         self.fishBingoTutorialDone = False
         self.nextKnockHeal = 0
+        self.epp = []
 
     def generate(self):
         DistributedPlayerAI.DistributedPlayerAI.generate(self)
@@ -1262,20 +1263,27 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         return self.cogMerits
 
     def b_promote(self, dept):
-        self.promote(dept)
-        self.d_promote(dept)
-
-    def promote(self, dept):
-        if self.cogLevels[dept] < ToontownGlobals.MaxCogSuitLevel:
-            self.cogMerits[dept] = 0
+        oldMerits = CogDisguiseGlobals.getTotalMerits(self, dept)
         self.incCogLevel(dept)
-
-    def d_promote(self, dept):
-        merits = self.getCogMerits()
+        
         if self.cogLevels[dept] < ToontownGlobals.MaxCogSuitLevel:
-            merits[dept] = 0
-        self.d_setCogMerits(merits)
-
+            merits = self.getCogMerits()
+            
+            if not self.hasEPP(dept):
+                merits[dept] = 0
+            
+            else:
+                # If we have EPP, check if the merit count is too much (i.e. enough to promote again)
+                if oldMerits >= CogDisguiseGlobals.getTotalMerits(self, dept):
+                    # We have more merits than needed (i.e. promoting to another cog or earning laff)
+                    # Therefore:
+                    merits[dept] = 0
+                
+                else:
+                    merits[dept] = oldMerits
+            
+            self.d_setCogMerits(merits)
+                    
     def readyForPromotion(self, dept):
         merits = self.cogMerits[dept]
         totalMerits = CogDisguiseGlobals.getTotalMerits(self, dept)
@@ -4037,6 +4045,29 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def getNextKnockHeal(self):
         return self.nextKnockHeal
 
+    def setEPP(self, epp):
+        self.epp = epp
+    
+    def d_setEPP(self, epp):
+        self.sendUpdate("setEPP", [epp])
+    
+    def b_setEPP(self, epp):
+        self.setEPP(epp)
+        self.d_setEPP(epp)
+    
+    def addEPP(self, dept):
+        self.epp.append(dept)
+        self.d_setEPP(self.epp)
+    
+    def removeEPP(self, dept):
+        if dept in self.epp:
+            self.epp.remove(dept)
+        
+        self.d_setEPP(self.epp)
+    
+    def hasEPP(self, dept):
+        return dept in self.epp
+
 @magicWord(category=CATEGORY_PROGRAMMER, types=[str, int, int])
 def cheesyEffect(value, hood=0, expire=0):
     """
@@ -4904,3 +4935,26 @@ def canSkill(skill):
     """
     av = spellbook.getTarget()
     av.b_setWateringCanSkill(skill)
+
+@magicWord(category=CATEGORY_PROGRAMMER, types=[int, str])
+def epp(dept, command="add"):
+    av = spellbook.getTarget()
+    if command == "add":
+        av.addEPP(dept)
+    
+    elif command == "remove":
+        av.removeEPP(dept)
+    
+    elif command == "get":
+        if dept == -1:
+            return av.epp
+        
+        return av.hasEPP(dept)
+        
+    else:
+        return "Unknown command!"
+
+@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+def promote(dept):
+    spellbook.getTarget().b_promote(dept)
+    
