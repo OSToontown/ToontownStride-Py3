@@ -78,9 +78,6 @@ class CatalogItem:
     def storedInCloset(self):
         return 0
 
-    def storedInTrunk(self):
-        return 0
-
     def storedInAttic(self):
         return 0
 
