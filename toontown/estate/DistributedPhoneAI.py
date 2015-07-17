@@ -12,9 +12,6 @@ import base64
 import json
 import time
 
-MAX_MAILBOX = 10
-MAX_ON_ORDER = 10
-
 class LoadGiftAvatar:
 
     def __init__(self, phone, avId, targetId, optional, callback):
@@ -135,13 +132,11 @@ class DistributedPhoneAI(DistributedFurnitureItemAI):
         return av
     
     def checkPurchaseLimit(self, recipient, item):
-        if len(recipient.onOrder) >= MAX_ON_ORDER:
-            return ToontownGlobals.P_ReachedPurchaseLimit
-        elif len(recipient.mailboxContents) >= MAX_MAILBOX:
+        if len(recipient.mailboxContents) + len(recipient.onOrder) + len(recipient.onGiftOrder) + 1 >= ToontownGlobals.MaxMailboxContents:
             return ToontownGlobals.P_MailboxFull
         elif item.reachedPurchaseLimit(recipient):
             return ToontownGlobals.P_ReachedPurchaseLimit
-        
+
         return ToontownGlobals.P_ItemOnOrder
     
     def chargeAvatar(self, av, money, emblems):

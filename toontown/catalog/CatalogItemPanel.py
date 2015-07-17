@@ -404,7 +404,7 @@ class CatalogItemPanel(DirectFrame):
         else:
             message = TTLocalizer.CatalogVerifyGift % {'item': self['item'].getName(),
              'price': self['item'].getPrice(self['type']),
-             'friend': TTLocalizer.CatalogGiftError if not self.parentCatalogScreen.friendName else self.parentCatalogScreen.friendName}
+             'friend': self.parentCatalogScreen.friendName if self.parentCatalogScreen.friendName else TTLocalizer.CatalogGiftError}
         self.verify = TTDialog.TTGlobalDialog(doneEvent='verifyGiftDone', message=message, style=TTDialog.TwoChoice)
         self.verify.show()
         self.accept('verifyGiftDone', self.__handleVerifyGift)
@@ -436,44 +436,38 @@ class CatalogItemPanel(DirectFrame):
     def updateGiftButton(self, giftUpdate = 0):
         if not self.loaded:
             return
+
         self.giftButton.show()
+
         if giftUpdate == 0:
             return
-        self.auxText['text'] = ' '
-        numFriends = len(base.localAvatar.friendsList) + len(base.cr.avList) - 1
-        if numFriends > 0:
-            self.giftButton['state'] = DGG.DISABLED
-            self.giftButton.show()
-            auxText = ' '
-            if self['item'].isGift() <= 0:
-                self.giftButton.show()
-                self.giftButton['state'] = DGG.DISABLED
-                auxText = TTLocalizer.CatalogNotAGift
-                self.auxText['text'] = auxText
-                return
-            elif self.parentCatalogScreen.friend:
-                avatar = self.parentCatalogScreen.friend
-                if self['item'].forBoysOnly() and avatar.getStyle().getGender() == 'f' or self['item'].forGirlsOnly() and avatar.getStyle().getGender() == 'm':
-                    self.giftButton.show()
-                    self.giftButton['state'] = DGG.DISABLED
-                    auxText = TTLocalizer.CatalogNoFit
-                    self.auxText['text'] = auxText
-                    return
-                elif self['item'].reachedPurchaseLimit(avatar):
-                    self.giftButton.show()
-                    self.giftButton['state'] = DGG.DISABLED
-                    auxText = TTLocalizer.CatalogPurchasedGiftText
-                    self.auxText['text'] = auxText
-                    return
-                elif len(avatar.mailboxContents) + len(avatar.onGiftOrder) >= ToontownGlobals.MaxMailboxContents:
-                    self.giftButton.show()
-                    self.giftButton['state'] = DGG.DISABLED
-                    auxText = TTLocalizer.CatalogMailboxFull
-                    self.auxText['text'] = auxText
-                    return
-                elif self['item'].getPrice(self['type']) <= base.localAvatar.getMoney() + base.localAvatar.getBankMoney():
-                    self.giftButton['state'] = DGG.NORMAL
-                    self.giftButton.show()
+
+        self.auxText['text'] = ''
+        self.giftButton['state'] = DGG.DISABLED
+        self.giftButton.show()
+
+        if self['item'].isGift() <= 0:
+            self.auxText['text'] = TTLocalizer.CatalogNotAGift
+            return
+        
+        if not self.parentCatalogScreen.friend:
+            return
+        
+        avatar = self.parentCatalogScreen.friend
+        
+        if self['item'].forBoysOnly() and avatar.getStyle().getGender() == 'f' or self['item'].forGirlsOnly() and avatar.getStyle().getGender() == 'm':
+            self.auxText['text'] = TTLocalizer.CatalogNoFit
+        elif self['item'].reachedPurchaseLimit(avatar):
+            self.auxText['text'] = TTLocalizer.CatalogPurchasedGiftText
+        elif len(avatar.mailboxContents) + len(avatar.onOrder) + len(avatar.onGiftOrder) + 1 >= ToontownGlobals.MaxMailboxContents:
+            self.auxText['text'] = TTLocalizer.CatalogMailboxFull
+        else:
+            orderCount = avatar.onGiftOrder.count(self['item'])
+            
+            if orderCount:
+                self.auxText['text'] = TTLocalizer.CatalogOnOrderText if orderCount == 1 else '%d %s' % (orderCount, TTLocalizer.CatalogOnOrderText)
+            if self['item'].getPrice(self['type']) <= base.localAvatar.getMoney() + base.localAvatar.getBankMoney():
+                self.giftButton['state'] = DGG.NORMAL
 
     def handleSoundOnButton(self):
         item = self.items[self.itemIndex]

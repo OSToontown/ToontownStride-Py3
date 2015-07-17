@@ -75,15 +75,6 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
     def announceGenerate(self):
         DistributedObjectAI.announceGenerate(self)
 
-    def getMailboxCount(self, items):
-        count = 0
-
-        for item in items:
-            if item.getDeliveryTime() > 0:
-                count += 1
-
-        return count
-
     def redeemCode(self, code):
         avId = self.air.getAvatarIdFromSender()
         av = self.air.doId2do.get(avId)
@@ -121,7 +112,7 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
     def requestCodeRedeem(self, avId, av, items):
         count = self.getMailboxCount(items)
 
-        if len(av.onOrder) + count > 5 or len(av.mailboxContents) + len(av.onOrder) + count >= ToontownGlobals.MaxMailboxContents:
+        if len(av.mailboxContents) + len(av.onOrder) + len(av.onGiftOrder) + len(items) >= ToontownGlobals.MaxMailboxContents:
             self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [3])
             return
 
