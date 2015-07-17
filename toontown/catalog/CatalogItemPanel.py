@@ -10,7 +10,6 @@ from CatalogFlooringItem import getAllFloorings
 from CatalogMouldingItem import getAllMouldings
 from CatalogWainscotingItem import getAllWainscotings
 from CatalogFurnitureItem import getAllFurnitures
-from CatalogFurnitureItem import FLTrunk
 from otp.otpbase import OTPGlobals
 CATALOG_PANEL_WORDWRAP = 10
 CATALOG_PANEL_CHAT_WORDWRAP = 9
@@ -325,13 +324,9 @@ class CatalogItemPanel(DirectFrame):
 
     def __handlePurchaseRequest(self):
         if self['item'].replacesExisting() and self['item'].hasExisting():
-            if self['item'].getFlags() & FLTrunk:
-                message = TTLocalizer.CatalogVerifyPurchase % {'item': self['item'].getName(),
-                 'price': self['item'].getPrice(self['type'])}
-            else:
-                message = TTLocalizer.CatalogOnlyOnePurchase % {'old': self['item'].getYourOldDesc(),
-                 'item': self['item'].getName(),
-                 'price': self['item'].getPrice(self['type'])}
+            message = TTLocalizer.CatalogOnlyOnePurchase % {'old': self['item'].getYourOldDesc(),
+             'item': self['item'].getName(),
+             'price': self['item'].getPrice(self['type'])}
         elif self['item'].isRental():
             message = TTLocalizer.CatalogVerifyRent % {'item': self['item'].getName(),
              'price': self['item'].getPrice(self['type'])}

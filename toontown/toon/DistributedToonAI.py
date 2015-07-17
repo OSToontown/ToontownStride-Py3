@@ -594,22 +594,9 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         for npcId in desiredNpcFriends:
             self.attemptAddNPCFriend(npcId)
 
-    def d_setMaxAccessories(self, max):
-        self.sendUpdate('setMaxAccessories', [self.maxAccessories])
-
-    def setMaxAccessories(self, max):
-        self.maxAccessories = max
-
-    def b_setMaxAccessories(self, max):
-        self.setMaxAccessories(max)
-        self.d_setMaxAccessories(max)
-
-    def getMaxAccessories(self):
-        return self.maxAccessories
-
     def isTrunkFull(self, extraAccessories = 0):
         numAccessories = (len(self.hatList) + len(self.glassesList) + len(self.backpackList) + len(self.shoesList)) / 3
-        return numAccessories + extraAccessories >= self.maxAccessories
+        return numAccessories + extraAccessories >= ToontownGlobals.MaxAccessories
 
     def d_setHatList(self, clothesList):
         self.sendUpdate('setHatList', [clothesList])

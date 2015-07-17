@@ -120,10 +120,7 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
 
     def recordPurchase(self, avatar, optional):
         if avatar.isTrunkFull():
-            if avatar.getMaxAccessories() == 0:
-                return ToontownGlobals.P_NoTrunk
-            else:
-                return ToontownGlobals.P_NoRoomForItem
+            return ToontownGlobals.P_NoRoomForItem
         str = AccessoryTypes[self.accessoryType][ATString]
         if self.isHat():
             defn = ToonDNA.HatStyles[str]
@@ -269,10 +266,7 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
         if avatar.isTrunkFull(accessoriesOnOrder):
             self.requestPurchaseCleanup()
             buttonCallback = PythonUtil.Functor(self.__handleFullPurchaseDialog, phone, callback)
-            if avatar.getMaxAccessories() == 0:
-                text = TTLocalizer.CatalogPurchaseNoTrunk
-            else:
-                text = TTLocalizer.CatalogPurchaseTrunkFull
+            text = TTLocalizer.CatalogPurchaseTrunkFull
             self.dialog = TTDialog.TTDialog(style=TTDialog.YesNo, text=text, text_wordwrap=15, command=buttonCallback)
             self.dialog.show()
         else:
@@ -303,8 +297,6 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
                 return TTLocalizer.CatalogAcceptShoes
         elif retcode == ToontownGlobals.P_NoRoomForItem:
             return TTLocalizer.CatalogAcceptTrunkFull
-        elif retcode == ToontownGlobals.P_NoTrunk:
-            return TTLocalizer.CatalogAcceptNoTrunk
         return CatalogItem.CatalogItem.getAcceptItemErrorText(self, retcode)
 
     def isHat(self):

@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 import CatalogItem
 import CatalogItemList
-from CatalogFurnitureItem import CatalogFurnitureItem, nextAvailableCloset, nextAvailableBank, getAllClosets, get50ItemCloset, getMaxClosets, get50ItemTrunk, getAllBanks
+from CatalogFurnitureItem import CatalogFurnitureItem, nextAvailableCloset, nextAvailableBank, getAllClosets, get50ItemCloset, getMaxClosets, getAllBanks
 from CatalogAnimatedFurnitureItem import CatalogAnimatedFurnitureItem
 from CatalogClothingItem import CatalogClothingItem, getAllClothes
 from CatalogChatItem import CatalogChatItem, getChatRange
@@ -1518,8 +1518,6 @@ class CatalogGenerator:
 
             if nextAvailableTank not in schedule:
                 weeklyCatalog += self.__selectItem(avatar, nextAvailableTank, monthlyCatalog, saleItem=0)
-
-            weeklyCatalog += self.__selectItem(avatar, get50ItemTrunk, monthlyCatalog, saleItem=0)
         if True:
 
             def hasPetTrick(catalog):
@@ -1720,8 +1718,6 @@ class CatalogGenerator:
                         item = getAllTanks()
                     elif item == get50ItemCloset:
                         item = getMaxClosets()
-                    elif item == get50ItemTrunk:
-                        item = getMaxTrunks()
                     else:
                         self.notify.warning("Don't know how to interpret function " % repr(name))
                         item = None

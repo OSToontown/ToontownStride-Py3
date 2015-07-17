@@ -70,7 +70,6 @@ for closetId, maxClothes in ClosetToClothes.items():
         ClothesToCloset[maxClothes] += (closetId,)
 
 MaxClosetIds = (508, 518)
-MaxTrunkIds = (4000, 4010)
 
 TvToPosScale = {
  1530: ((-1.15, -0.5, 1.1), (2.5, 1.7, 1.4)),
@@ -910,7 +909,7 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
         return 1
 
     def replacesExisting(self):
-        return self.getFlags() & (FLCloset | FLBank | FLTrunk) != 0
+        return self.getFlags() & (FLCloset | FLBank) != 0
 
     def hasExisting(self):
         return 1
@@ -920,16 +919,14 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
             return TTLocalizer.FurnitureYourOldCloset
         elif self.getFlags() & FLBank:
             return TTLocalizer.FurnitureYourOldBank
-        elif self.getFlags() & FLTrunk:
-            return TTLocalizer.FurnitureYourOldTrunk
         else:
             return None
         return None
 
     def notOfferedTo(self, avatar):
-        if self.getFlags() & FLCloset or self.getFlags() & FLTrunk:
+        if self.getFlags() & FLCloset:
             decade = self.furnitureType - self.furnitureType % 10
-            forBoys = (decade == 500 or decade == 4000)
+            forBoys = decade == 500
             if avatar.getStyle().getGender() == 'm':
                 return not forBoys
             else:
@@ -955,9 +952,6 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
     def isDeletable(self):
         return self.getFlags() & (FLBank | FLCloset | FLPhone | FLTrunk) == 0
 
-    def getMaxAccessories(self):
-        return ToontownGlobals.MaxAccessories
-
     def getMaxBankMoney(self):
         return BankToMoney.get(self.furnitureType)
 
@@ -972,11 +966,6 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
                 return 1
         if self.getFlags() & FLCloset:
             if self.getMaxClothes() <= avatar.getMaxClothes():
-                return 1
-            if self in avatar.onOrder or self in avatar.mailboxContents:
-                return 1
-        if self.getFlags() & FLTrunk:
-            if self.getMaxAccessories() <= avatar.getMaxAccessories():
                 return 1
             if self in avatar.onOrder or self in avatar.mailboxContents:
                 return 1
@@ -1007,7 +996,7 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
     def isGift(self):
         if self.getEmblemPrices():
             return 0
-        if self.getFlags() & (FLCloset | FLBank | FLTrunk):
+        if self.getFlags() & (FLCloset | FLBank):
             return 0
         else:
             return 1
@@ -1019,11 +1008,8 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
                 if avatar.getMaxClothes() > self.getMaxClothes():
                     return ToontownGlobals.P_AlreadyOwnBiggerCloset
                 avatar.b_setMaxClothes(self.getMaxClothes())
-            if self.getFlags() & FLTrunk:
-                avatar.b_setMaxAccessories(self.getMaxAccessories())
             if self.getFlags() & FLBank:
                 avatar.b_setMaxBankMoney(self.getMaxBankMoney())
-                return retcode
             house.addAtticItem(self)
         return retcode
 
@@ -1208,29 +1194,6 @@ def getAllBanks():
         list.append(CatalogFurnitureItem(bankId))
 
     return list
-
-def get50ItemTrunk(avatar, duplicateItems):
-    if config.GetBool('want-accessories', 1):
-        if avatar.getStyle().getGender() == 'm':
-            index = 0
-        else:
-            index = 1
-        trunkId = MaxTrunkIds[index]
-        item = CatalogFurnitureItem(trunkId)
-        if item in avatar.onOrder or item in avatar.mailboxContents:
-            return None
-        return item
-    # If we get here, we probably don't want accessories yet.
-    return None
-
-
-def getMaxTrunks():
-    list = []
-    for trunkId in MaxTrunkIds:
-        list.append(CatalogFurnitureItem(trunkId))
-
-    return list
-
 
 def getAllFurnitures(index):
     list = []

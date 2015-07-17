@@ -498,12 +498,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
         self.NPCFriendsDict = NPCFriendsDict
 
-    def setMaxAccessories(self, max):
-        self.maxAccessories = max
-
-    def getMaxAccessories(self):
-        return self.maxAccessories
-
     def setHatList(self, clothesList):
         self.hatList = clothesList
 
@@ -530,7 +524,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def isTrunkFull(self, extraAccessories = 0):
         numAccessories = (len(self.hatList) + len(self.glassesList) + len(self.backpackList) + len(self.shoesList)) / 3
-        return numAccessories + extraAccessories >= self.maxAccessories
+        return numAccessories + extraAccessories >= ToontownGlobals.MaxAccessories
 
     def setMaxClothes(self, max):
         self.maxClothes = max

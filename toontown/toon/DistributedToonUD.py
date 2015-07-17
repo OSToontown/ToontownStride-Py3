@@ -82,9 +82,6 @@ class DistributedToonUD(DistributedObjectUD):
     def setClothesBottomsList(self, todo0):
         pass
 
-    def setMaxAccessories(self, todo0):
-        pass
-
     def setHatList(self, todo0):
         pass
 

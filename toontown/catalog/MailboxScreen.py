@@ -248,10 +248,7 @@ class MailboxScreen(DirectObject.DirectObject):
         self.acceptingIndex = None
         if retcode < 0:
             self.notify.info('Could not take item %s: retcode %s' % (item, retcode))
-            if retcode == ToontownGlobals.P_NoTrunk:
-                self.dialogBox = TTDialog.TTDialog(style=TTDialog.Acknowledge, text=TTLocalizer.CatalogAcceptNoTrunk, text_wordwrap=15, command=self.__acceptError)
-            else:
-                self.dialogBox = TTDialog.TTDialog(style=TTDialog.TwoChoiceCustom, text=item.getAcceptItemErrorText(retcode), text_wordwrap=15, command=self.__handleDiscard, buttonText=[TTLocalizer.MailboxDiscard, TTLocalizer.MailboxLeave])
+            self.dialogBox = TTDialog.TTDialog(style=TTDialog.TwoChoiceCustom, text=item.getAcceptItemErrorText(retcode), text_wordwrap=15, command=self.__handleDiscard, buttonText=[TTLocalizer.MailboxDiscard, TTLocalizer.MailboxLeave])
             self.dialogBox.show()
         elif hasattr(item, 'storedInAttic') and item.storedInAttic():
             self.numAtticAccepted += 1

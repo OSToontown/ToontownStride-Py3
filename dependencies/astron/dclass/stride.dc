@@ -594,7 +594,6 @@ dclass DistributedToon : DistributedPlayer {
   setMaxClothes(uint32 = 10) required ownrecv db;
   setClothesTopsList(uint8[] = []) required ownrecv db;
   setClothesBottomsList(uint8[] = []) required ownrecv db;
-  setMaxAccessories(uint32 = 0) required ownrecv db;
   setHatList(uint8[] = []) required ownrecv db;
   setGlassesList(uint8[] = []) required ownrecv db;
   setBackpackList(uint8[] = []) required ownrecv db;
