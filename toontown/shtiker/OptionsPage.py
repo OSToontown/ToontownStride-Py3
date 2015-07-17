@@ -836,8 +836,9 @@ class ExtraOptionsTabPage(DirectFrame):
         if resetIndex:
             self.nametagStyle_index = base.localAvatar.nametagStyles.index(base.localAvatar.getNametagStyle())
 
-        self.nametagStyle_name['text'] = base.localAvatar.getName()
-        self.nametagStyle_name['text_font'] = ToontownGlobals.getNametagFont(base.localAvatar.nametagStyles[self.nametagStyle_index])
+        nametagId = base.localAvatar.nametagStyles[self.nametagStyle_index]
+        self.nametagStyle_name['text'] = base.localAvatar.getName() + '\n' + TTLocalizer.NametagFontNames[nametagId]
+        self.nametagStyle_name['text_font'] = ToontownGlobals.getNametagFont(nametagId)
         nametagCount = len(base.localAvatar.nametagStyles)
         
         if self.nametagStyle_index >= (nametagCount - 1):

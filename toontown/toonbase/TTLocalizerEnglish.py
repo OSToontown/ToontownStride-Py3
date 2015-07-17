@@ -36,7 +36,7 @@ NametagFonts = (
     'phase_3/models/fonts/DinosaursAreAlive.ttf'
 )
 NametagFontNames = (
-    'Default',
+    'Basic',
     'Plain',
     'Shivering',
     'Wonky',
@@ -56,7 +56,6 @@ NametagFontNames = (
     'Dinosaurs'
 )
 NametagLabel = ' Nametag'
-BasicNameTag = 'Basic'
 ScreenshotPath = 'user/screenshots/'
 Flippy = 'Flippy'
 lTheBrrrgh = 'The Brrrgh'
