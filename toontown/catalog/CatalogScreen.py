@@ -47,7 +47,7 @@ class CatalogScreen(DirectFrame):
         DirectFrame.__init__(self, parent)
         self.friend = None
         self.friendAvId = None
-        self.friendName = 'Error Nameless Toon'
+        self.friendName = None
         self.friendList = []
         self.friends = []
         self.load(guiItems, guiButton, guiBack)
@@ -1045,6 +1045,7 @@ class CatalogScreen(DirectFrame):
             self.scrollList.show()
             self.hideEmblems()
             self.giftToggle['text'] = TTLocalizer.CatalogGiftToggleOn
+            self.friendLabel['text'] = TTLocalizer.CatalogGiftChoose
             self.__loadFriend()
         else:
             self.friend = None

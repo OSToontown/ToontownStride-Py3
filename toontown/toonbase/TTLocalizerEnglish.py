@@ -5462,6 +5462,7 @@ CatalogGoodbyeList = ['Bye now!',
  'Bye!']
 CatalogHelpText1 = 'Turn the page to see items for sale.'
 CatalogSeriesLabel = 'Series %s'
+CatalogGiftError = 'Error'
 CatalogGiftFor = 'Buy Gift for:'
 CatalogGiftTo = 'To: %s'
 CatalogGiftToggleOn = 'Stop Gifting'

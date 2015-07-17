@@ -402,13 +402,9 @@ class CatalogItemPanel(DirectFrame):
              'item': self['item'].getName(),
              'price': self['item'].getPrice(self['type'])}
         else:
-            friendText = 'Error'
-            numFriends = len(base.localAvatar.friendsList) + len(base.cr.avList) - 1
-            if numFriends > 0:
-                friendText = self.parentCatalogScreen.friendName
             message = TTLocalizer.CatalogVerifyGift % {'item': self['item'].getName(),
              'price': self['item'].getPrice(self['type']),
-             'friend': friendText}
+             'friend': TTLocalizer.CatalogGiftError if not self.parentCatalogScreen.friendName else self.parentCatalogScreen.friendName}
         self.verify = TTDialog.TTGlobalDialog(doneEvent='verifyGiftDone', message=message, style=TTDialog.TwoChoice)
         self.verify.show()
         self.accept('verifyGiftDone', self.__handleVerifyGift)
