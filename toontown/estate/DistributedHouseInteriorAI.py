@@ -70,7 +70,7 @@ class DistributedHouseInteriorAI(DistributedObjectAI):
         dnaData = loadDNAFileAI(dnaStorage, dnaFile)
 
         # Read it into furniture...
-        furnitureReader = DNAFurnitureReaderAI(dnaData, [-11, 2, 0, 0, 0, 0])
+        furnitureReader = DNAFurnitureReaderAI(dnaData, self.house.gender, [-11, 2, 0, 0, 0, 0])
 
         # Set furniture:
         self.furnitureManager.setItems(furnitureReader.getBlob())

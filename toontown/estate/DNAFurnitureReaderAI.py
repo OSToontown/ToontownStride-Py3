@@ -9,9 +9,9 @@ DNA2Furniture = {
 
     'chairA': 100,
     'chair': 110,
-    'regular_bed': 200,
+    'regular_bed': (200, 210),
     'FireplaceSq': 400,
-    'closetBoy': 500,
+    'closetBoy': (500, 510),
     'lamp_short': 600,
     'lamp_tall': 610,
     'couch_1person': 700,
@@ -28,7 +28,7 @@ DNA2Furniture = {
     'bookcase_low': 1130,
     'ending_table': 1200,
     'jellybeanBank': 1300,
-    'trunkBoy': 4000
+    'trunkBoy': (4000, 4010)
 }
 
 
@@ -39,8 +39,9 @@ class DNAFurnitureReaderAI:
     # house to the default furniture arrangement.
     notify = directNotify.newCategory("DNAFurnitureReaderAI")
 
-    def __init__(self, dnaData, phonePos):
+    def __init__(self, dnaData, gender, phonePos):
         self.dnaData = dnaData
+        self.gender = gender
         self.phonePos = phonePos
         self.itemList = None
 
@@ -70,6 +71,8 @@ class DNAFurnitureReaderAI:
             itemId = DNA2Furniture[code]
             if itemId is None:
                 continue
+            if hasattr(itemId, '__getitem__'):
+                itemId = itemId[self.gender]
 
             x, y, z = child.getPos()
             h, p, r = child.getHpr()

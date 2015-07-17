@@ -3,6 +3,7 @@ from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from direct.fsm.FSM import FSM
 from toontown.estate.DistributedEstateAI import DistributedEstateAI
 from toontown.estate.DistributedHouseAI import DistributedHouseAI
+from toontown.toon import ToonDNA
 import HouseGlobals
 import functools
 
@@ -48,12 +49,16 @@ class LoadHouseFSM(FSM):
         self.demand('Off')
 
     def enterCreateHouse(self):
+        style = ToonDNA.ToonDNA()
+        style.makeFromNetString(self.toon['setDNAString'][0])
+        
         self.mgr.air.dbInterface.createObject(
             self.mgr.air.dbId,
             self.mgr.air.dclassesByName['DistributedHouseAI'],
             {
                 'setName' : [self.toon['setName'][0]],
                 'setAvatarId' : [self.toon['ID']],
+                'setGender': [0 if style.getGender() == 'm' else 1]
             },
             self.__handleCreate)
 
@@ -90,6 +95,7 @@ class LoadHouseFSM(FSM):
 
     def __gotHouse(self, house):
         self.house = house
+        house.initializeInterior()
 
         self.estate.houses[self.houseIndex] = self.house
 
