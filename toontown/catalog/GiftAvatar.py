@@ -1,6 +1,6 @@
 from toontown.toon import ToonDNA
 import CatalogItem, CatalogItemList
-import base64, json
+import json
 
 def createFromJson(jsonData):
     return createFromFields(json.loads(jsonData))
@@ -35,16 +35,16 @@ class GiftAvatar:
     
     def setDNAString(self, dnaString):
         self.style = ToonDNA.ToonDNA()
-        self.style.makeFromNetString(base64.b64decode(dnaString))
+        self.style.makeFromNetString(dnaString.decode('base64'))
     
     def setMailboxContents(self, contents):
-        self.mailboxContents = CatalogItemList.CatalogItemList(base64.b64decode(contents), store=CatalogItem.Customization)
+        self.mailboxContents = CatalogItemList.CatalogItemList(contents.decode('base64'), store=CatalogItem.Customization)
     
     def setGiftSchedule(self, onOrder):
-        self.onGiftOrder = CatalogItemList.CatalogItemList(base64.b64decode(onOrder), store=CatalogItem.Customization | CatalogItem.DeliveryDate)
+        self.onGiftOrder = CatalogItemList.CatalogItemList(onOrder.decode('base64'), store=CatalogItem.Customization | CatalogItem.DeliveryDate)
     
     def setDeliverySchedule(self, onOrder):
-        self.onOrder = CatalogItemList.CatalogItemList(base64.b64decode(onOrder), store=CatalogItem.Customization | CatalogItem.DeliveryDate)
+        self.onOrder = CatalogItemList.CatalogItemList(onOrder.decode('base64'), store=CatalogItem.Customization | CatalogItem.DeliveryDate)
     
     def setHat(self, hat):
         self.hat = hat

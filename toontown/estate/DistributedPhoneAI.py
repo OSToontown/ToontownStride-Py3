@@ -8,7 +8,6 @@ from toontown.catalog import CatalogItem, CatalogInvalidItem, GiftAvatar
 from toontown.catalog.CatalogItemList import CatalogItemList
 from toontown.uberdog import TopToonsGlobals
 
-import base64
 import json
 import time
 
@@ -33,7 +32,7 @@ class LoadGiftAvatar:
             return
         
         for key in ('setDNAString', 'setMailboxContents', 'setGiftSchedule', 'setDeliverySchedule'):
-            fields[key] = base64.b64encode(fields[key][0])
+            fields[key] = fields[key][0].encode('base64')
         
         newDict = self.copyDict(fields, 'setDNAString', 'setMailboxContents', 'setGiftSchedule', 'setDeliverySchedule', 'setHat', 'setGlasses', 'setBackpack',
                                 'setShoes', 'setHatList', 'setGlassesList', 'setBackpackList', 'setShoes', 'setShoesList', 'setCustomMessages', 'setEmoteAccess',
