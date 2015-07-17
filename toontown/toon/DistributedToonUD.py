@@ -510,3 +510,9 @@ class DistributedToonUD(DistributedObjectUD):
 
     def setTrueFriends(self, trueFriends):
         pass
+    
+    def setWishName(self, todo0):
+        pass
+    
+    def setWishNameState(self, todo0):
+        pass
