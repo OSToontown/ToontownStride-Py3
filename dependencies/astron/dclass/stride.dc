@@ -2093,6 +2093,8 @@ dclass DistributedPhone : DistributedFurnitureItem {
   requestGiftPurchaseMessage(uint16, uint32, blob, int32) airecv clsend;
   requestGiftPurchaseResponse(uint16, int8);
   purchaseItemComplete();
+  requestGiftAvatar(uint32) airecv clsend;
+  setGiftAvatar(blob);
 };
 
 dclass DistributedFireworkShow : DistributedObject {

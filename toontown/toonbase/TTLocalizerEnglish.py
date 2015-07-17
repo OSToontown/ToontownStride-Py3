@@ -5466,8 +5466,8 @@ CatalogGiftFor = 'Buy Gift for:'
 CatalogGiftTo = 'To: %s'
 CatalogGiftToggleOn = 'Stop Gifting'
 CatalogGiftToggleOff = 'Buy Gifts'
-CatalogGiftToggleWait = 'Trying!...'
-CatalogGiftToggleNoAck = 'Unavailable'
+CatalogGiftUpdating = 'Updating...'
+CatalogGiftChoose = 'Choose a friend!'
 CatalogPurchaseItemAvailable = 'Congratulations on your new purchase!  You can start using it right away.'
 CatalogPurchaseGiftItemAvailable = 'Excellent!  %s can start using your gift right away.'
 CatalogPurchaseItemOnOrder = 'Congratulations! Your purchase will be delivered to your mailbox soon.'
@@ -8601,7 +8601,7 @@ CEOSpeech = [
  'And thus we, the Cog Nation, are striving.',
  'I am very delighted by this news, I just wanted to thank you all for working so hard for this news.',
  "Wait, what's going on? I can't see but I hear explosions."
- ]
+] # Len of words + 10
 Blacklist = [
  "$1ut",
  "$h1t",
@@ -9864,4 +9864,4 @@ Blacklist = [
  "willy",
  "xrated",
  "xxx"
- ] # Len of words + 10
+]

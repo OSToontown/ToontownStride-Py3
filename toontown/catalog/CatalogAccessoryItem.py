@@ -64,8 +64,6 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
             return 1
         if avatar.mailboxContents.count(self) != 0:
             return 1
-        if self in avatar.awardMailboxContents or self in avatar.onAwardOrder:
-            return 1
         str = AccessoryTypes[self.accessoryType][ATString]
         if self.isHat():
             defn = ToonDNA.HatStyles[str]

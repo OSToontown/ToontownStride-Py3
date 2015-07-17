@@ -3,7 +3,6 @@ import urlparse
 from otp.distributed.OtpDoGlobals import *
 from otp.distributed.DistributedDirectoryAI import DistributedDirectoryAI
 from toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
-from toontown.catalog.CatalogManagerUD import CatalogManagerUD
 import toontown.minigame.MinigameCreatorAI
 
 if config.GetBool('want-rpc-server', False):
@@ -26,8 +25,6 @@ class ToontownUberRepository(ToontownInternalRepository):
                 self.mongo = pymongo.MongoClient(url)
             db = (urlparse.urlparse(url).path or '/test')[1:]
             self.mongodb = self.mongo[db]
-		
-        self.catalogManager = CatalogManagerUD(self)
 
         self.notify.setInfo(True)
 

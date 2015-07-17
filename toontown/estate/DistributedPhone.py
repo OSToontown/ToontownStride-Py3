@@ -2,6 +2,7 @@ from toontown.toonbase import ToontownGlobals
 import PhoneGlobals
 from toontown.catalog import CatalogScreen
 from toontown.catalog import CatalogItem
+from toontown.catalog import GiftAvatar
 from toontown.toontowngui import TTDialog
 from toontown.toonbase import TTLocalizer
 import DistributedHouseInterior
@@ -13,7 +14,6 @@ from direct.showutil import Rope
 from direct.directnotify.DirectNotifyGlobal import *
 from panda3d.core import *
 from direct.interval.IntervalGlobal import *
-import string
 from toontown.quest import Quests
 from direct.task import Task
 
@@ -274,7 +274,6 @@ class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):
         self.sendUpdate('requestPurchaseMessage', [context, blob, optional])
 
     def requestGiftPurchase(self, item, targetDoID, callback, optional = -1):
-        print 'in the client phone'
         blob = item.getBlob(store=CatalogItem.Customization)
         context = self.getCallbackContext(callback, [item])
         self.sendUpdate('requestGiftPurchaseMessage', [context, targetDoID, blob, optional])
@@ -382,3 +381,15 @@ class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):
         ringIval = Parallel(Func(base.playSfx, self.ringSfx), shakeSeq, Func(phone.setR, 0))
         self.playInterval(ringIval, 0.0, None)
         return
+    
+    def requestGiftAvatar(self, doId):
+        if not self.phoneGui:
+            return
+
+        self.sendUpdate('requestGiftAvatar', [doId])
+    
+    def setGiftAvatar(self, fields):
+        if not self.phoneGui:
+            return
+
+        self.phoneGui.setFriendReady(GiftAvatar.createFromJson(fields))
