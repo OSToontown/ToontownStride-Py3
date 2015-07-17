@@ -51,7 +51,7 @@ from toontown.toon import NPCToons
 from toontown.toonbase import ToontownGlobals
 from toontown.tutorial.TutorialManagerAI import TutorialManagerAI
 from toontown.uberdog.DistributedPartyManagerAI import DistributedPartyManagerAI
-from toontown.uberdog.DistributedLobbyManagerAI import DistributedLobbyManagerAI
+#from toontown.uberdog.DistributedLobbyManagerAI import DistributedLobbyManagerAI
 
 class ToontownAIRepository(ToontownInternalRepository):
     def __init__(self, baseChannel, stateServerChannel, districtName):
@@ -136,10 +136,10 @@ class ToontownAIRepository(ToontownInternalRepository):
             self.partyManager.generateWithRequired(2)
             self.globalPartyMgr = self.generateGlobalObject(
                 OTP_DO_ID_GLOBAL_PARTY_MANAGER, 'GlobalPartyManager')
-        self.lobbyManager = DistributedLobbyManagerAI(self)
-        self.lobbyManager.generateWithRequired(2)
-        self.globalLobbyMgr = self.generateGlobalObject(
-            OTP_DO_ID_GLOBAL_LOBBY_MANAGER, 'GlobalLobbyManager')
+        #self.lobbyManager = DistributedLobbyManagerAI(self)
+        #self.lobbyManager.generateWithRequired(2)
+        #self.globalLobbyMgr = self.generateGlobalObject(
+        #    OTP_DO_ID_GLOBAL_LOBBY_MANAGER, 'GlobalLobbyManager')
 
     def createSafeZones(self):
         NPCToons.generateZone2NpcDict()
