@@ -722,6 +722,7 @@ dclass DistributedToon : DistributedPlayer {
   forceLogoutWithNotify() ownrecv;
   setPinkSlips(uint8 = 0) required ownrecv db;
   setNametagStyle(uint8 = 0) required broadcast ownrecv db;
+  setNametagStyles(uint8[] = [0]) required broadcast ownrecv db;
   setMail(simpleMail []) ownrecv;
   setNumMailItems(uint32) airecv;
   setSimpleMailNotify(uint8) ownrecv airecv;
@@ -742,6 +743,7 @@ dclass DistributedToon : DistributedPlayer {
   setTrueFriends(uint32[] = []) required clsend ownrecv db;
   setNextKnockHeal(uint32) ram airecv;
   setEPP(uint8[] = []) required ownrecv db;
+  requestNametagStyle(uint8) airecv ownsend;
 };
 
 dclass DistributedPartyGate : DistributedObject {

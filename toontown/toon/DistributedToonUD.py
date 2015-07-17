@@ -462,6 +462,9 @@ class DistributedToonUD(DistributedObjectUD):
 
     def setNametagStyle(self, todo0):
         pass
+    
+    def setNametagStyles(self, todo0):
+        return
 
     def setMail(self, todo0):
         pass

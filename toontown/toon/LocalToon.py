@@ -168,6 +168,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
     def setName(self, name):
         base.localAvatarName = name
         DistributedToon.DistributedToon.setName(self, name)
+        messenger.send('refreshNametagStyle')
 
     def wantLegacyLifter(self):
         return True

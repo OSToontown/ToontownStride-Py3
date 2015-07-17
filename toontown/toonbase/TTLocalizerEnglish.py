@@ -8506,6 +8506,7 @@ SpeedchatPlusLabelOff = 'Speedchat Plus is off.'
 TrueFriendsLabelOn = 'True Friends is on.'
 TrueFriendsLabelOff = 'True Friends is off.'
 FieldOfViewLabel = 'Field of View:'
+NametagStyleLabel = 'Nametag Style:'
 BossLocations = {
  'c': 'Bossbot Clubhouse\nBanquet',
  'l': "Lawbot Courthouse\nBumpy Bumblebehr's Trial",
