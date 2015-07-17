@@ -110,8 +110,6 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
             self.air.writeServerEvent('suspicious', avId, 'Toon tried to redeem non-existent code %s' % code)
 
     def requestCodeRedeem(self, avId, av, items):
-        count = self.getMailboxCount(items)
-
         if len(av.mailboxContents) + len(av.onOrder) + len(av.onGiftOrder) + len(items) >= ToontownGlobals.MaxMailboxContents:
             self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [3])
             return

@@ -27,24 +27,15 @@ def reconsiderAllUnderstandable():
     for av in Avatar.ActiveAvatars:
         av.considerUnderstandable()
 
-
 class Avatar(Actor, ShadowCaster):
     notify = directNotify.newCategory('Avatar')
     ActiveAvatars = []
-    ManagesNametagAmbientLightChanged = False
 
     def __init__(self, other = None):
-        self.name = ''
-        try:
-            self.Avatar_initialized
-            return
-        except:
-            self.Avatar_initialized = 1
-
         Actor.__init__(self, None, None, other, flattenable=0, setFinal=1)
         ShadowCaster.__init__(self)
         self.__font = OTPGlobals.getInterfaceFont()
-        self.__speechFont = OTPGlobals.getInterfaceFont()
+        self.name = ''
         self.soundChatBubble = None
         self.avatarType = ''
         self.nametagNodePath = None
@@ -59,18 +50,11 @@ class Avatar(Actor, ShadowCaster):
         self.nametag3d = self.attachNewNode('nametag3d')
         self.nametag3d.setTag('cam', 'nametag')
         self.nametag3d.setLightOff()
-        if self.ManagesNametagAmbientLightChanged:
-            self.acceptNametagAmbientLightChange()
-        OTPRender.renderReflection(False, self.nametag3d, 'otp_avatar_nametag', None)
         self.getGeomNode().showThrough(OTPRender.ShadowCameraBitmask)
         self.nametag3d.hide(OTPRender.ShadowCameraBitmask)
         self.collTube = None
-        self.battleTube = None
         self.scale = 1.0
-        self.nametagScale = 1.0
         self.height = 0.0
-        self.battleTubeHeight = 0.0
-        self.battleTubeRadius = 0.0
         self.style = None
         self.understandable = 1
         self.setPlayerType(NametagGroup.CCNormal)
@@ -91,11 +75,8 @@ class Avatar(Actor, ShadowCaster):
         except:
             self.deleteNametag3d()
             Actor.cleanup(self)
-            if self.ManagesNametagAmbientLightChanged:
-                self.ignoreNametagAmbientLightChange()
             self.Avatar_deleted = 1
             del self.__font
-            del self.__speechFont
             del self.style
             del self.soundChatBubble
             self.nametag.destroy()
@@ -103,12 +84,6 @@ class Avatar(Actor, ShadowCaster):
             self.nametag3d.removeNode()
             ShadowCaster.delete(self)
             Actor.delete(self)
-
-    def acceptNametagAmbientLightChange(self):
-        self.accept('nametagAmbientLightChanged', self.nametagAmbientLightChanged)
-
-    def ignoreNametagAmbientLightChange(self):
-        self.ignore('nametagAmbientLightChanged')
 
     def isLocal(self):
         return 0
@@ -177,13 +152,6 @@ class Avatar(Actor, ShadowCaster):
             self.getGeomNode().setScale(scale)
             self.setHeight(self.height)
 
-    def getNametagScale(self):
-        return self.nametagScale
-
-    def setNametagScale(self, scale):
-        self.nametagScale = scale
-        self.nametag3d.setScale(scale)
-
     def adjustNametag3d(self, parentScale = 1.0):
         self.nametag3d.setPos(0, 0, self.height + 0.5)
 
@@ -197,8 +165,6 @@ class Avatar(Actor, ShadowCaster):
             self.collTube.setPointB(0, 0, height - self.getRadius())
             if self.collNodePath:
                 self.collNodePath.forceRecomputeBounds()
-        if self.battleTube:
-            self.battleTube.setPointB(0, 0, height - self.getRadius())
 
     def getRadius(self):
         return OTPGlobals.AvatarDefaultRadius
@@ -244,13 +210,6 @@ class Avatar(Actor, ShadowCaster):
     def setFont(self, font):
         self.__font = font
         self.nametag.setFont(font)
-
-    def getSpeechFont(self):
-        return self.__speechFont
-
-    def setSpeechFont(self, font):
-        self.__speechFont = font
-        self.nametag.setSpeechFont(font)
 
     def getStyle(self):
         return self.style
@@ -349,9 +308,6 @@ class Avatar(Actor, ShadowCaster):
         self.nametag.setChat(chatString, chatFlags)
         self.playCurrentDialogue(dialogue, chatFlags, interrupt)
 
-    def setChatMuted(self, chatString, chatFlags, dialogue = None, interrupt = 1, quiet = 0):
-        pass
-
     def displayTalk(self, chatString):
         if not base.localAvatar.isIgnored(self.doId):
             self.clearChat()
@@ -363,11 +319,6 @@ class Avatar(Actor, ShadowCaster):
 
     def clearChat(self):
         self.nametag.clearChat()
-
-    def isInView(self):
-        pos = self.getPos(camera)
-        eyePos = Point3(pos[0], pos[1], pos[2] + self.getHeight())
-        return base.camNode.isInView(eyePos)
 
     def getNameVisible(self):
         return self.__nameVisible
@@ -539,11 +490,6 @@ class Avatar(Actor, ShadowCaster):
             cJoint.clearNetTransforms()
             cJoint.addNetTransform(nametagNode)
 
-    def nametagAmbientLightChanged(self, newlight):
-        self.nametag3d.setLightOff()
-        if newlight:
-            self.nametag3d.setLight(newlight)
-
     def deleteNametag3d(self):
         if self.nametagNodePath:
             self.nametagNodePath.removeNode()
@@ -615,10 +561,5 @@ def target():
     Returns the current Spellbook target.
     """
     target = spellbook.getTarget()
-    print 'Called target.'
-    print 'Name: ' + target.getName()
-    doId = str(int(target.doId))
-    print 'doId: ', doId
-    accessLevel = str(int(target.getAdminAccess()))
-    print 'Access Level: ', accessLevel
+
     return 'Target: %s-%d [%d]' % (target.getName(), int(target.doId), int(target.getAdminAccess()))

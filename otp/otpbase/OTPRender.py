@@ -4,7 +4,6 @@ ReflectionCameraBitmask = BitMask32.bit(1)
 ShadowCameraBitmask = BitMask32.bit(2)
 SkyReflectionCameraBitmask = BitMask32.bit(3)
 GlowCameraBitmask = BitMask32.bit(4)
-EnviroCameraBitmask = BitMask32.bit(5)
 
 def setCameraBitmask(default, node_path, camera_bitmask, tag = None, tag_function = None, context = None):
     if node_path:

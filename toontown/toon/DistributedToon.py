@@ -2056,10 +2056,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def setChatAbsolute(self, chatString, chatFlags, dialogue = None, interrupt = 1, quiet = 0):
         DistributedAvatar.DistributedAvatar.setChatAbsolute(self, chatString, chatFlags, dialogue, interrupt)
 
-    def setChatMuted(self, chatString, chatFlags, dialogue=None, interrupt=1, quiet=0):
-        self.nametag.setChat(chatString, chatFlags)
-        self.playCurrentDialogue(dialogue, chatFlags - CFSpeech, interrupt)
-
     def displayTalk(self, chatString):
         flags = CFSpeech | CFTimeout
         if ChatUtil.isThought(chatString):
