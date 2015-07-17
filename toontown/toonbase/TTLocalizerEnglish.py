@@ -5513,6 +5513,7 @@ CatalogPurchaseGiftNotAGift = 'This item could not be sent to %s because it woul
 CatalogPurchaseGiftWillNotFit = "This item could not be sent to %s because it doesn't fit them."
 CatalogPurchaseGiftLimitReached = "This item could not be sent to %s because they already have it."
 CatalogPurchaseGiftNotEnoughMoney = "This item could not be sent to %s because you can't afford it."
+CatalogPurchaseGiftTooFast = "This item could not be sent to %s because you are sending gifts too fast."
 CatalogAcceptGeneralError = 'The item could not be removed from your mailbox because of some internal game error: error code %s.'
 CatalogAcceptRoomError = "You don't have any place to put this. You'll have to get rid of something."
 CatalogAcceptLimitError = "You already have as many of these as you can handle. You'll have to get rid of something."

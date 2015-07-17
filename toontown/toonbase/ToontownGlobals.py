@@ -46,6 +46,7 @@ CatalogNumWeeksPerSeries = 13
 CatalogNumWeeks = 78
 PetFloorCollPriority = 5
 PetPanelProximityPriority = 6
+P_TooFast = -29
 P_NoTrunk = -28
 P_AlreadyOwnBiggerCloset = -27
 P_ItemAlreadyRented = -26

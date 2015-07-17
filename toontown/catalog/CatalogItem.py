@@ -196,6 +196,8 @@ class CatalogItem:
             return TTLocalizer.CatalogPurchaseGiftLimitReached
         elif retcode == ToontownGlobals.P_NotEnoughMoney:
             return TTLocalizer.CatalogPurchaseGiftNotEnoughMoney
+        elif retcode == ToontownGlobals.P_TooFast:
+            return TTLocalizer.CatalogPurchaseGiftTooFast
         else:
             return TTLocalizer.CatalogPurchaseGiftGeneralError % {'friend': '%s',
              'error': retcode}

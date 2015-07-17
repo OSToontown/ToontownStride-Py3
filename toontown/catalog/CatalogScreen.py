@@ -814,6 +814,7 @@ class CatalogScreen(DirectFrame):
         taskMgr.remove('clarabelleGreeting')
         taskMgr.remove('clarabelleHelpText1')
         taskMgr.remove('clarabelleAskAnythingElse')
+        taskMgr.remove('friendButtonsReady')
         self.hide()
         self.hangup.hide()
         self.destroy()
@@ -1026,15 +1027,18 @@ class CatalogScreen(DirectFrame):
 
         self.friend = None
         self.friendLabel['text'] = TTLocalizer.CatalogGiftUpdating
+        taskMgr.remove('friendButtonsReady')
         self['phone'].requestGiftAvatar(self.friendAvId)
     
     def setFriendReady(self, friend):
-        for friendButton in self.friends:
-            friendButton['state'] = DGG.NORMAL
-
         self.friend = friend
         self.friendLabel['text'] = TTLocalizer.CatalogGiftTo % self.friendName
+        taskMgr.doMethodLater(1.5, self.setFriendButtonsReady, 'friendButtonsReady')
         self.update()
+    
+    def setFriendButtonsReady(self, task=None):
+        for friendButton in self.friends:
+            friendButton['state'] = DGG.NORMAL
 
     def __giftToggle(self):
         messenger.send('wakeup')

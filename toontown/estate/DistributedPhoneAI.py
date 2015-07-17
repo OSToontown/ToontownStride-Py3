@@ -248,7 +248,7 @@ class DistributedPhoneAI(DistributedFurnitureItemAI):
     
     def requestGiftAvatarOperation(self, avId, doId, optional, callback):
         if avId in self.fsms:
-            return 
+            return ToontownGlobals.P_TooFast
         
         loadOperation = LoadGiftAvatar(self, avId, doId, optional, callback)
         loadOperation.start()
