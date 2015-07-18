@@ -102,7 +102,7 @@ class Avatar(Actor, ShadowCaster):
         if self.isUnderstandable():
             self.nametag.setColorCode(self.playerType)
         else:
-            self.nametag.setColorCode(NametagGroup.CCNoChat)
+            self.nametag.setColorCode(NametagGroup.CCNonPlayer)
         self.setNametagName()
 
     def considerUnderstandable(self):

@@ -9,7 +9,7 @@ from panda3d.core import *
 from toontown.estate import DistributedToonStatuary
 from toontown.estate import GardenGlobals
 from toontown.estate import PlantingGUI
-from otp.nametag import NametagGlobals
+from otp.nametag import NametagGlobals, NametagConstants
 from otp.nametag.NametagGroup import *
 from toontown.toon import DistributedToon
 from toontown.toon import Toon
@@ -110,11 +110,7 @@ class ToonStatueSelectionGUI(DirectFrame):
             handle = base.cr.identifyFriend(friendId)
             if handle and not self.checkFamily(friendId):
                 if hasattr(handle, 'getName'):
-                    colorCode = CCSpeedChat
-                    if flags & ToontownGlobals.FriendChat:
-                        colorCode = CCFreeChat
-                    newFF = (friendId, handle.getName(), colorCode)
-                    self.ffList.append(newFF)
+                    self.ffList.append((friendId, handle.getName(), NametagConstants.getFriendColor(handle)))
                 else:
                     self.notify.warning('Bad Handle for getName in makeFFlist')
 
@@ -128,8 +124,7 @@ class ToonStatueSelectionGUI(DirectFrame):
         self.scrollList.refresh()
 
     def makeFamilyButton(self, familyId, familyName, colorCode):
-        fg = NametagGlobals.getNameFg(colorCode, PGButton.SInactive)
-        return DirectButton(relief=None, text=familyName, text_scale=0.04, text_align=TextNode.ALeft, text_fg=fg, text1_bg=self.textDownColor, text2_bg=self.textRolloverColor, text3_fg=self.textDisabledColor, textMayChange=0, command=self.__chooseFriend, extraArgs=[familyId, familyName])
+        return DirectButton(relief=None, text=familyName, text_scale=0.04, text_align=TextNode.ALeft, text_fg=NametagConstants.NAMETAG_COLORS[colorCode][0][0], text1_bg=self.textDownColor, text2_bg=self.textRolloverColor, text3_fg=self.textDisabledColor, textMayChange=0, command=self.__chooseFriend, extraArgs=[familyId, familyName])
 
     def __chooseFriend(self, friendId, friendName):
         messenger.send('wakeup')
