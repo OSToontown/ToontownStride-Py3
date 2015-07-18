@@ -17,6 +17,15 @@ class ToontownInternalRepository(AstronInternalRepository):
     
     def handleConnected(self):
         self.__messenger = ToontownNetMessengerAI(self)
+        if config.GetBool('want-mongo', False):
+            import pymongo
+            self.dbConn = pymongo.MongoClient(config.GetString('mongodb-url', 'localhost'))
+            self.dbGlobalCursor = self.dbConn.toontownstride
+            self.dbCursor = self.dbGlobalCursor['air-%d' % self.ourChannel]
+        else:
+            self.dbConn = None
+            self.dbGlobalCursor = None
+            self.dbCursor = None
     
     def sendNetEvent(self, message, sentArgs=[]):
         self.__messenger.send(message, sentArgs)

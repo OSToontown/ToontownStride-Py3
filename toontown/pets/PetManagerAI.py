@@ -28,11 +28,11 @@ class PetManagerAI:
             
         self.seeds['day'] = getDayId()
 
-    def getAvailablePets(self, seed, safezoneId):
+    def getAvailablePets(self, safezoneId):
         if self.seeds.get('day', -1) != getDayId():
             self.generateSeeds()
             
-        return list(set(self.seeds.get(safezoneId, [seed])))
+        return list(set(self.seeds.get(safezoneId, [random.randint(0, 255)])))
 
     def createNewPetFromSeed(self, avId, seed, nameIndex, gender, safeZoneId):
         av = self.air.doId2do[avId]
