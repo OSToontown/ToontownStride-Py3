@@ -74,6 +74,7 @@ class DistributedRace(DistributedObject.DistributedObject):
         self.bananaSound = base.loadSfx('phase_6/audio/sfx/KART_tossBanana.ogg')
         self.anvilFall = base.loadSfx('phase_6/audio/sfx/KART_Gag_Hit_Anvil.ogg')
         self.accept('leaveRace', self.leaveRace)
+        self.accept('finishRace', self.finishRace)
         self.toonsToLink = []
         self.curveTs = []
         self.curvePoints = []
@@ -569,11 +570,7 @@ class DistributedRace(DistributedObject.DistributedObject):
         now = globalClock.getFrameTime()
         timestamp = globalClockDelta.localToNetworkTime(now)
         if self.laps == self.lapCount:
-            self.sendUpdate('heresMyT', [localAvatar.doId,
-             self.laps,
-             self.currLapT,
-             timestamp])
-            self.fsm.request('finished')
+            self.finishRace()
         if self.laps > self.maxLap:
             self.maxLap = self.laps
             self.sendUpdate('heresMyT', [localAvatar.doId,
@@ -1088,6 +1085,10 @@ class DistributedRace(DistributedObject.DistributedObject):
 
     def leaveRace(self):
         self.fsm.request('leave')
+    
+    def finishRace(self):
+        self.sendUpdate('heresMyT', [localAvatar.doId, self.lapCount, self.currLapT, globalClockDelta.localToNetworkTime(globalClock.getFrameTime())])
+        self.fsm.request('finished')
 
     def racerLeft(self, avId):
         if avId != localAvatar.doId:
@@ -1243,4 +1244,7 @@ def race(command):
     if command == 'leave':
         messenger.send('leaveRace')
         return 'You left the race!'
+    elif command == 'finish':
+        messenger.send('finishRace')
+        return 'You finished the race!'
     return 'Invalid command!'

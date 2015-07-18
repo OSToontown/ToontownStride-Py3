@@ -31,14 +31,14 @@ class LeaderboardMgrAI:
                 originalRace = self.database[race][1]
                 newRace = list(originalRace)
 
-                newRace.append((name, timestamp))
+                newRace.append([name, timestamp])
                 sortedRace = self.trimList(sorted(newRace, key=operator.itemgetter(1)))
 
                 if originalRace != sortedRace:
                     self.database[race][1] = sortedRace
                     self.saveDatabase()
             else:
-                self.database[race] = (time.time(), [(name, timestamp)])
+                self.database[race] = [time.time(), [(name, timestamp)]]
                 self.saveDatabase()
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[str, int, int, str, int])
