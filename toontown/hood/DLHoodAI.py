@@ -1,5 +1,5 @@
 from toontown.hood import HoodAI
-from toontown.safezone import DistributedTrolleyAI, DistributedPillowAI
+from toontown.safezone import DistributedTrolleyAI
 from toontown.toonbase import ToontownGlobals
 from toontown.ai import DistributedResistanceEmoteMgrAI
 from toontown.ai import DistributedEffectMgrAI
@@ -29,13 +29,7 @@ class DLHoodAI(HoodAI.HoodAI):
         self.winterCarolingMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.CHRISTMAS, 14)
         self.winterCarolingMgr.generateWithRequired(9722) # Dream On Talent Agency, Pajama Place
 
-        self.createPillow()
-
     def createTrolley(self):
         self.trolley = DistributedTrolleyAI.DistributedTrolleyAI(self.air)
         self.trolley.generateWithRequired(self.zoneId)
         self.trolley.start()
-
-    def createPillow(self):
-        self.pillow = DistributedPillowAI.DistributedPillowAI(self.air)
-        self.pillow.generateWithRequired(self.zoneId)
