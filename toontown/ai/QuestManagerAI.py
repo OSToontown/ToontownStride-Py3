@@ -3,7 +3,7 @@ from toontown.building import FADoorCodes
 from otp.ai.MagicWordGlobal import *
 from toontown.hood import ZoneUtil
 from toontown.quest import Quests
-
+from toontown.uberdog import TopToonsGlobals
 
 QuestIdIndex = 0
 QuestFromNpcIdIndex = 1
@@ -75,6 +75,7 @@ class QuestManagerAI:
             # If they've completed a quest.
             if completeStatus == Quests.COMPLETE:
                 # ToonUp the toon to max health.
+                messenger.send('topToonsManager-event', [av.doId, TopToonsGlobals.CAT_TASKS, 1])
                 av.toonUp(av.maxHp)
 
                 # If it's a TrackChoiceQuest then present their track choices.
@@ -437,6 +438,7 @@ class QuestManagerAI:
 
     def toonKilledBuilding(self, av, type, difficulty, floors, zoneId, cogdo):
         # Get the avatars current quests.
+        messenger.send('topToonsManager-event', [av.doId, TopToonsGlobals.CAT_BLDG, 1])
         avQuests = av.getQuests()
         questList = []
         zoneId = ZoneUtil.getBranchZone(zoneId)
@@ -491,6 +493,7 @@ class QuestManagerAI:
 
     def toonKilledCogs(self, av, suitsKilled, zoneId):
         # Get the avatar's current quests.
+        messenger.send('topToonsManager-event', [av.doId, TopToonsGlobals.CAT_COGS, len(suitsKilled)])
         avQuests = av.getQuests()
         questList = []
 

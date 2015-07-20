@@ -51,6 +51,7 @@ from toontown.toon import NPCToons
 from toontown.toonbase import ToontownGlobals
 from toontown.tutorial.TutorialManagerAI import TutorialManagerAI
 from toontown.uberdog.DistributedPartyManagerAI import DistributedPartyManagerAI
+from toontown.uberdog.DistributedTopToonsManagerAI import DistributedTopToonsManagerAI
 #from toontown.uberdog.DistributedLobbyManagerAI import DistributedLobbyManagerAI
 
 class ToontownAIRepository(ToontownInternalRepository):
@@ -72,6 +73,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.lawOfficeMgr = None
         self.countryClubMgr = None
         self.groupManager = GroupManagerAI(self)
+        self.topToonsMgr = DistributedTopToonsManagerAI(self)
 
         self.zoneAllocator = UniqueIdAllocator(ToontownGlobals.DynamicZonesBegin,
                                                ToontownGlobals.DynamicZonesEnd)
@@ -103,7 +105,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.tutorialManager.generateWithRequired(2)
         self.friendManager = FriendManagerAI(self)
         self.friendManager.generateWithRequired(2)
-        self.questManager = QuestManagerAI(self)
+        self.questManager = QuestManagerAI(self)       
         self.banManager = BanManagerAI.BanManagerAI(self)
         self.suitInvasionManager = SuitInvasionManagerAI(self)
         self.blackCatMgr = DistributedBlackCatMgrAI(self)

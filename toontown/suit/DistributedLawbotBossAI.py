@@ -29,6 +29,7 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
     hitCountDamage = 35
     numPies = 10
     maxToonLevels = 77
+    BossName = "CJ"
 
     def __init__(self, air):
         DistributedBossCogAI.DistributedBossCogAI.__init__(self, air, 'l')
