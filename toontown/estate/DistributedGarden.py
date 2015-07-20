@@ -1,9 +1,22 @@
-from panda3d.core import *
-from direct.distributed import DistributedObject
-from direct.distributed.ClockDelta import *
-from direct.directnotify import DirectNotifyGlobal
-from direct.gui.DirectGui import *
+from pandac.PandaModules import *
 from toontown.toonbase.ToonBaseGlobal import *
+from direct.gui.DirectGui import *
+from pandac.PandaModules import *
+from direct.distributed.ClockDelta import *
+from toontown.toonbase import ToontownGlobals
+from direct.distributed import DistributedObject
+from direct.directnotify import DirectNotifyGlobal
+from direct.fsm import ClassicFSM
+from direct.fsm import State
+from toontown.toon import Toon
+from direct.showbase import RandomNumGen
+from toontown.toonbase import TTLocalizer
+import random
+import random
+import cPickle
+from direct.showbase import PythonUtil
+from toontown.hood import Place
+import Estate
 import HouseGlobals
 
 class DistributedGarden(DistributedObject.DistributedObject):
@@ -18,7 +31,7 @@ class DistributedGarden(DistributedObject.DistributedObject):
         self.radius = 0
         self.gridCells = 20
         self.propTable = [None] * self.gridCells
-        for i in xrange(len(self.propTable)):
+        for i in range(len(self.propTable)):
             self.propTable[i] = [None] * self.gridCells
 
         self.dx = 1.0 / self.gridCells

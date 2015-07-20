@@ -25,6 +25,7 @@ class CatalogToonStatueItem(CatalogGardenItem.CatalogGardenItem):
         model, ival = self.makeFrameModel(toonStatuary.toon, 1)
         self.pictureToonStatue = toonStatuary
         self.hasPicture = True
+        toonStatuary.toon.setBin('gui-popup', 60)
         return (model, ival)
 
     def cleanupPicture(self):
@@ -50,7 +51,7 @@ class CatalogToonStatueItem(CatalogGardenItem.CatalogGardenItem):
 
     def getAllToonStatues(self):
         self.statueList = []
-        for index in xrange(self.startPoseIndex, self.endPoseIndex + 1):
+        for index in range(self.startPoseIndex, self.endPoseIndex + 1):
             self.statueList.append(CatalogToonStatueItem(index, 1, endPoseIndex=index))
 
         return self.statueList

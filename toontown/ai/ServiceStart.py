@@ -62,10 +62,9 @@ if ':' in host:
     port = int(port)
 simbase.air.connect(host, port)
 
-gc.enable()
-
 try:
     run()
+    gc.enable()
 except SystemExit:
     raise
 except Exception:

@@ -12,7 +12,6 @@ INVALID_TYPE = -1
 GAG_TREE_TYPE = 0
 FLOWER_TYPE = 1
 STATUARY_TYPE = 2
-TOON_STATUARY_TYPE = 3
 WATERING_CAN_SMALL = 0
 WATERING_CAN_MEDIUM = 1
 WATERING_CAN_LARGE = 2
@@ -34,7 +33,7 @@ WateringMult = 2
 
 def getWateringCanPower(wateringCan, wateringCanSkill):
     numBoxes = 0
-    for curWateringCan in xrange(wateringCan + 1):
+    for curWateringCan in range(wateringCan + 1):
         wateringCanAttrib = WateringCanAttributes[curWateringCan]
         curBoxes = wateringCanAttrib['numBoxes']
         skill = wateringCanAttrib['skillPts']
@@ -309,7 +308,7 @@ def getTreeTypeIndex(track, level):
 
 
 NUM_GAGS = 7 * 7
-for i in xrange(NUM_GAGS):
+for i in range(NUM_GAGS):
     track, level = getTreeTrackAndLevel(i)
     if level <= 6:
         name = TTLocalizer.BattleGlobalAvPropStrings[track][level] + TTLocalizer.GardenGagTree
@@ -495,7 +494,7 @@ ShovelAttributes = {0: {'numBoxes': 2,
 
 def getShovelPower(shovel, shovelSkill):
     numBoxes = 0
-    for curShovel in xrange(shovel + 1):
+    for curShovel in range(shovel + 1):
         shovelAttrib = ShovelAttributes[curShovel]
         curBoxes = shovelAttrib['numBoxes']
         skill = shovelAttrib['skillPts']
@@ -597,8 +596,8 @@ def getSpeciesVarietyGivenRecipe(recipeKey):
         attrib = PlantAttributes[species]
         if attrib['plantType'] == GAG_TREE_TYPE:
             continue
-        if 'varieties' in attrib:
-            for variety in xrange(len(attrib['varieties'])):
+        if attrib.has_key('varieties'):
+            for variety in range(len(attrib['varieties'])):
                 if attrib['varieties'][variety][0] == recipeKey:
                     return (species, variety)
 
@@ -609,14 +608,14 @@ def getNumBeansRequired(species, variety):
     retval = -1
     if not PlantAttributes.get(species):
         return retval
-    if 'varieties' not in PlantAttributes[species]:
+    if not PlantAttributes[species].has_key('varieties'):
         return retval
     if variety >= len(PlantAttributes[species]['varieties']):
         return -1
     recipeKey = PlantAttributes[species]['varieties'][variety][0]
     recipe = Recipes.get(recipeKey)
     if recipe:
-        if 'beans' in recipe:
+        if recipe.has_key('beans'):
             retval = len(recipe['beans'])
     return retval
 
@@ -653,7 +652,7 @@ def validateRecipes(notify):
 def validatePlantAttributes(notify):
     uniqueRecipes = []
     flowerRecipeDistribution = []
-    for i in xrange(getNumberOfShovelBoxes() + 1):
+    for i in range(getNumberOfShovelBoxes() + 1):
         flowerRecipeDistribution.append([])
 
     for key in PlantAttributes.keys():
@@ -675,7 +674,7 @@ def validatePlantAttributes(notify):
                     newInfo = (getFlowerVarietyName(key, list(varieties).index(variety)), Recipes[recipeNum]['beans'], TTLocalizer.FlowerColorStrings[variety[1]])
                     flowerRecipeDistribution[recipeLength].append(newInfo)
 
-    for numBeans in xrange(len(flowerRecipeDistribution)):
+    for numBeans in range(len(flowerRecipeDistribution)):
         notify.debug('%d flowers with %d beans' % (len(flowerRecipeDistribution[numBeans]), numBeans))
         for flower in flowerRecipeDistribution[numBeans]:
             notify.debug('    %s,  beans = %s, color=%s' % (flower[0], flower[1], flower[2]))
@@ -683,7 +682,7 @@ def validatePlantAttributes(notify):
     notify.debug('plant attributes are ok')
 
 
-plots0 = [(0,
+plots0 = ((0,
   0,
   0.0,
   FLOWER_TYPE),
@@ -758,45 +757,45 @@ plots0 = [(0,
  (-100,
   -43,
   -90.0,
-  STATUARY_TYPE)]
-plots1 = [(85.0,
-  -67.0,
+  STATUARY_TYPE))
+plots1 = ((0,
+  0,
   0.0,
   FLOWER_TYPE),
- (75,
-  -72,
+ (1,
+  0,
   0.0,
   FLOWER_TYPE),
- (89.865,
-  -71.7725,
+ (2,
+  0,
   0.0,
   FLOWER_TYPE),
- (91.0,
-  -74.0,
+ (2,
+  1,
   0.0,
   FLOWER_TYPE),
- (92.135,
-  -76.2275,
+ (2,
+  2,
   0.0,
   FLOWER_TYPE),
- (75.865,
-  -78.7725,
+ (3,
+  0,
   0.0,
   FLOWER_TYPE),
- (77,
-  -81,
+ (3,
+  1,
   0.0,
   FLOWER_TYPE),
- (78.135,
-  -83.2275,
+ (3,
+  2,
   0.0,
   FLOWER_TYPE),
- (86.6518,
-  -86.6576,
+ (4,
+  0,
   0.0,
   FLOWER_TYPE),
- (89.3482,
-  -85.3424,
+ (4,
+  1,
   0.0,
   FLOWER_TYPE),
  (62,
@@ -834,8 +833,8 @@ plots1 = [(85.0,
  (47,
   -82,
   -30.0,
-  STATUARY_TYPE)]
-plots2 = [(0,
+  STATUARY_TYPE))
+plots2 = ((0,
   0,
   0.0,
   FLOWER_TYPE),
@@ -910,8 +909,8 @@ plots2 = [(0,
  (-97,
   -114,
   -60.0,
-  STATUARY_TYPE)]
-plots3 = [(0,
+  STATUARY_TYPE))
+plots3 = ((0,
   0,
   0.0,
   FLOWER_TYPE),
@@ -986,8 +985,8 @@ plots3 = [(0,
  (117,
   27,
   102.0,
-  STATUARY_TYPE)]
-plots4 = [(0,
+  STATUARY_TYPE))
+plots4 = ((0,
   0,
   0.0,
   FLOWER_TYPE),
@@ -1062,8 +1061,8 @@ plots4 = [(0,
  (16,
   87,
   -140.0,
-  STATUARY_TYPE)]
-plots5 = [(0,
+  STATUARY_TYPE))
+plots5 = ((0,
   0,
   0.0,
   FLOWER_TYPE),
@@ -1138,7 +1137,7 @@ plots5 = [(0,
  (-55,
   70,
   213.0,
-  STATUARY_TYPE)]
+  STATUARY_TYPE))
 estatePlots = (plots0,
  plots1,
  plots2,
@@ -1148,7 +1147,8 @@ estatePlots = (plots0,
 BOX_ONE = 1
 BOX_TWO = 2
 BOX_THREE = 3
-flowerBoxes0 = [(-62.5,
+FLOWER_POS = (None, (0,), (-1.5, 1.5), (-3.5, 0, 3.5))
+flowerBoxes0 = ((-62.5,
   -52.5,
   182.0,
   BOX_ONE),
@@ -1167,8 +1167,8 @@ flowerBoxes0 = [(-62.5,
  (-57,
   -33,
   0.0,
-  BOX_TWO)]
-flowerBoxes1 = [(85.0,
+  BOX_TWO))
+flowerBoxes1 = ((85.0,
   -67.0,
   26.0,
   BOX_ONE),
@@ -1187,8 +1187,8 @@ flowerBoxes1 = [(85.0,
  (88,
   -86,
   206.0,
-  BOX_TWO)]
-flowerBoxes2 = [(-62,
+  BOX_TWO))
+flowerBoxes2 = ((-62,
   -112,
   350.0,
   BOX_ONE),
@@ -1207,8 +1207,8 @@ flowerBoxes2 = [(-62,
  (-71,
   -129,
   169.0,
-  BOX_TWO)]
-flowerBoxes3 = [(72,
+  BOX_TWO))
+flowerBoxes3 = ((72,
   5,
   265.0,
   BOX_ONE),
@@ -1227,8 +1227,8 @@ flowerBoxes3 = [(72,
  (54,
   12,
   86.0,
-  BOX_TWO)]
-flowerBoxes4 = [(35.5,
+  BOX_TWO))
+flowerBoxes4 = ((35.5,
   70,
   152.0,
   BOX_ONE),
@@ -1247,8 +1247,8 @@ flowerBoxes4 = [(35.5,
  (47,
   86,
   -19.0,
-  BOX_TWO)]
-flowerBoxes5 = [(-26.5,
+  BOX_TWO))
+flowerBoxes5 = ((-26.5,
   37.5,
   318.0,
   BOX_ONE),
@@ -1267,7 +1267,7 @@ flowerBoxes5 = [(-26.5,
  (-45,
   31,
   124.0,
-  BOX_TWO)]
+  BOX_TWO))
 estateBoxes = (flowerBoxes0,
  flowerBoxes1,
  flowerBoxes2,

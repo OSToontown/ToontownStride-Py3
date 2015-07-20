@@ -4,11 +4,15 @@ from toontown.estate import FlowerBase
 from toontown.estate import GardenGlobals
 from toontown.toontowngui import TTDialog
 from toontown.toonbase import TTLocalizer
+
+from DistributedGardenBox import DistributedGardenBox
+
 DIRT_AS_WATER_INDICATOR = True
 DIRT_MOUND_HEIGHT = 0.3
 
 class DistributedFlower(DistributedPlantBase.DistributedPlantBase, FlowerBase.FlowerBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedFlower')
+    deferFor = 2
 
     def __init__(self, cr):
         DistributedPlantBase.DistributedPlantBase.__init__(self, cr)
@@ -17,25 +21,22 @@ class DistributedFlower(DistributedPlantBase.DistributedPlantBase, FlowerBase.Fl
         self.stickUp = 1.07
         if DIRT_AS_WATER_INDICATOR:
             self.stickUp += DIRT_MOUND_HEIGHT
-        self.collSphereRadius = 2.8
+        self.collSphereRadius = 2.2
         self.shadowScale = 0.5
         self.collSphereOffset = 0.0
         self.dirtMound = None
         self.sandMound = None
         self.resultDialog = None
-        return
 
     def delete(self):
         DistributedPlantBase.DistributedPlantBase.delete(self)
+            
         del self.dirtMound
         del self.sandMound
 
     def setTypeIndex(self, typeIndex):
         DistributedPlantBase.DistributedPlantBase.setTypeIndex(self, typeIndex)
         self.setSpecies(typeIndex)
-
-    def getTypeIndex(self):
-        return self.typeIndex
 
     def showWiltOrBloom(self):
         if not self.model:
@@ -52,7 +53,7 @@ class DistributedFlower(DistributedPlantBase.DistributedPlantBase, FlowerBase.Fl
             desat = wilt.find('**/*desat*')
             bloom.hide()
             leaves = wilt.findAllMatches('**/*leaf*')
-            for leafIndex in xrange(leaves.getNumPaths()):
+            for leafIndex in range(leaves.getNumPaths()):
                 leaf = leaves.getPath(leafIndex)
                 leaf.setColorScale(1.0, 0.3, 0.1, 1.0)
 
@@ -132,7 +133,7 @@ class DistributedFlower(DistributedPlantBase.DistributedPlantBase, FlowerBase.Fl
         base.localAvatar.removeShovelRelatedDoId(self.doId)
         base.localAvatar.setInGardenAction(self)
         base.cr.playGame.getPlace().detectedGardenPlotUse()
-        self.sendUpdate('removeItem', [base.localAvatar.doId])
+        self.sendUpdate('removeItem', [])
 
     def setWaterLevel(self, waterLevel):
         DistributedPlantBase.DistributedPlantBase.setWaterLevel(self, waterLevel)
@@ -140,18 +141,15 @@ class DistributedFlower(DistributedPlantBase.DistributedPlantBase, FlowerBase.Fl
         if self.model:
             self.adjustWaterIndicator()
 
-    def getWaterLevel(self):
-        return self.waterLevel
-
     def setGrowthLevel(self, growthLevel):
         origGrowthLevel = self.growthLevel
         self.growthLevel = growthLevel
         if origGrowthLevel > -1:
             self.loadModel()
             self.makeMovieNode()
-
-    def getGrowthLevel(self):
-        return self.growthLevel
+            
+        if hasattr(self, '_boxDoId'):
+            self.setBoxDoId(*self._boxDoId)
 
     def makeMovieNode(self):
         self.movieNode = self.rotateNode.attachNewNode('moviePos')
@@ -200,4 +198,17 @@ class DistributedFlower(DistributedPlantBase.DistributedPlantBase, FlowerBase.Fl
             self.resultDialog.destroy()
             self.resultDialog = None
         self.finishInteraction()
-        return
+        
+    def setBoxDoId(self, boxId, index):
+        self._boxDoId = (boxId, index)
+        box = base.cr.doId2do[boxId]
+        x = GardenGlobals.FLOWER_POS[box.typeIndex][index]
+        
+        self.setPos(0, 0, 0)
+        self.reparentTo(box)
+        self.setZ(1.5)
+        self.setX(x)
+        
+    def stick2Ground(self):
+        pass
+        
