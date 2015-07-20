@@ -184,7 +184,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         TexturePool.garbageCollect()
         self.sendSetAvatarIdMsg(0)
         self.clearFriendState()
-        self.startHeartbeat()
         if self.music == None and base.musicManagerIsValid:
             self.music = base.musicManager.getSound('phase_3/audio/bgm/tt_theme.ogg')
             if self.music:
