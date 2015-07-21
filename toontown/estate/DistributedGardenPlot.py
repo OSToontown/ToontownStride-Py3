@@ -354,20 +354,25 @@ class DistributedGardenPlot(DistributedLawnDecor.DistributedLawnDecor):
             self.stick2Ground()
         else:
             DistributedLawnDecor.DistributedLawnDecor.makeMovieNode(self)
-    
+
     def setBoxDoId(self, boxId, index):
-        box = base.cr.doId2do[boxId]
-        x = GardenGlobals.FLOWER_POS[box.typeIndex][index]
-        
+        self.index = index
+        if boxId in base.cr.doId2do:
+            self.setBox(base.cr.doId2do[boxId])
+        else:
+            self.acceptOnce('generate-%d' % boxId, self.setBox)
+
+    def setBox(self, box):
+        x = GardenGlobals.FLOWER_POS[box.typeIndex][self.index]
+
         self.setPos(0, 0, 0)
         self.reparentTo(box)
         self.setZ(1.2)
         self.setX(x)
-        
+
     def stick2Ground(self, *args, **kwargs):
         plotType = GardenGlobals.whatCanBePlanted(self.ownerIndex, self.plot)
         if plotType == GardenGlobals.FLOWER_TYPE:
             return
-            
+
         return DistributedLawnDecor.DistributedLawnDecor.stick2Ground(self, *args, **kwargs)
-        
