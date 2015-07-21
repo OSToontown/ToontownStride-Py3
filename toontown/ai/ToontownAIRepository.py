@@ -51,7 +51,7 @@ from toontown.toon import NPCToons
 from toontown.toonbase import ToontownGlobals
 from toontown.tutorial.TutorialManagerAI import TutorialManagerAI
 from toontown.uberdog.DistributedPartyManagerAI import DistributedPartyManagerAI
-from toontown.uberdog.DistributedTopToonsManagerAI import DistributedTopToonsManagerAI
+from toontown.uberdog.TopToonsManagerAI import TopToonsManagerAI
 #from toontown.uberdog.DistributedLobbyManagerAI import DistributedLobbyManagerAI
 
 class ToontownAIRepository(ToontownInternalRepository):
@@ -73,7 +73,6 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.lawOfficeMgr = None
         self.countryClubMgr = None
         self.groupManager = GroupManagerAI(self)
-        self.topToonsMgr = DistributedTopToonsManagerAI(self)
 
         self.zoneAllocator = UniqueIdAllocator(ToontownGlobals.DynamicZonesBegin,
                                                ToontownGlobals.DynamicZonesEnd)
@@ -122,6 +121,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.buildingQueryMgr = DistributedBuildingQueryMgrAI(self)
         self.buildingQueryMgr.generateWithRequired(2)
         self.groupManager.generateWithRequired(2)
+        self.topToonsMgr = TopToonsManagerAI(self)
         if self.wantKarts:
             self.leaderboardMgr = LeaderboardMgrAI(self)
         if self.wantFishing:
