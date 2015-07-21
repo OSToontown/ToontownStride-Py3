@@ -4,7 +4,7 @@ from otp.distributed.OtpDoGlobals import *
 from otp.distributed.DistributedDirectoryAI import DistributedDirectoryAI
 from toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
 import toontown.minigame.MinigameCreatorAI
-from toontown.uberdog.DistributedTopToonsManagerUD import DistributedTopToonsManagerUD
+from toontown.uberdog.TopToonsManagerUD import TopToonsManagerUD
 
 if config.GetBool('want-rpc-server', False):
     from toontown.rpc.ToontownRPCServer import ToontownRPCServer
@@ -39,5 +39,5 @@ class ToontownUberRepository(ToontownInternalRepository):
         self.friendsManager = simbase.air.generateGlobalObject(OTP_DO_ID_TTS_FRIENDS_MANAGER, 'TTSFriendsManager')
         self.globalPartyMgr = simbase.air.generateGlobalObject(OTP_DO_ID_GLOBAL_PARTY_MANAGER, 'GlobalPartyManager')
         self.groupManager = simbase.air.generateGlobalObject(OPT_DO_ID_GROUP_MANAGER, 'GroupManager')
-        self.topToonsMgr = DistributedTopToonsManagerUD(self)
+        self.topToonsMgr = TopToonsManagerUD(self)
 

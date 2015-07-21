@@ -2,7 +2,6 @@
 
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm.FSM import FSM
-from direct.distributed.DistributedObjectUD import *
 from direct.showbase.DirectObject import *
 from toontown.toon.ToonDNA import ToonDNA, getSpeciesName
 import TopToonsGlobals
@@ -186,8 +185,8 @@ class SiteUploadFSM(FSM):
                 
         return (success, error), res
         
-class DistributedTopToonsManagerUD(DirectObject):
-    notify = DirectNotifyGlobal.directNotify.newCategory('DistributedTopToonsManagerUD')
+class TopToonsManagerUD(DirectObject):
+    notify = DirectNotifyGlobal.directNotify.newCategory('TopToonsManagerUD')
     
     def __init__(self, air):
         self.air = air
@@ -225,7 +224,7 @@ class DistributedTopToonsManagerUD(DirectObject):
             
             return task.done
             
-        taskMgr.doMethodLater(timeToNextMonth() + 1, _nm, 'DistributedTopToonsManagerUD-nextMonth')
+        taskMgr.doMethodLater(timeToNextMonth() + 1, _nm, 'TopToonsManagerUD-nextMonth')
         
     def saveSite(self):
         if self.air.dbConn:        

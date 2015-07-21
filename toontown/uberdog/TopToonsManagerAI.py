@@ -1,8 +1,7 @@
-from direct.distributed.DistributedObjectAI import *
 from direct.showbase.DirectObject import *
 import TopToonsGlobals
 
-class DistributedTopToonsManagerAI(DirectObject):
+class TopToonsManagerAI(DirectObject):
     def __init__(self, air):
         self.air = air
         
