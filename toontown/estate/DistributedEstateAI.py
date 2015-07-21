@@ -8,7 +8,8 @@ from toontown.fishing.DistributedFishingPondAI import DistributedFishingPondAI
 from toontown.fishing.DistributedFishingTargetAI import DistributedFishingTargetAI
 from toontown.fishing.DistributedPondBingoManagerAI import DistributedPondBingoManagerAI
 from toontown.fishing import FishingTargetGlobals
-from toontown.safezone import TreasurePlannerAI
+from toontown.safezone import TreasureGlobals
+from toontown.safezone.SZTreasurePlannerAI import SZTreasurePlannerAI
 from toontown.safezone import DistributedTreasureAI
 from toontown.safezone import ButterflyGlobals
 from toontown.safezone import DistributedButterflyAI
@@ -434,7 +435,7 @@ class CannonRental(Rental):
         for i in xrange(20):
             x = random.randint(100, 300) - 200
             y = random.randint(100, 300) - 200
-            treasure = DistributedTreasureAI.DistributedTreasureAI(self.estate.air, self, 9, x, y, z)
+            treasure = DistributedTreasureAI.DistributedTreasureAI(self.estate.air, self, 7, x, y, z)
             treasure.generateWithRequired(self.estate.zoneId)
             self.objects.add(treasure)
             doIds.append(treasure.doId)
@@ -510,8 +511,9 @@ class DistributedEstateAI(DistributedObjectAI):
             target.generateWithRequired(self.zoneId)
             self.targets.append(target)
 
-        #self.treasurePlanner = ETreasurePlannerAI.ETreasurePlannerAI(self.zoneId)
-        #self.treasurePlanner.start()
+        treasureType, healAmount, spawnPoints, spawnRate, maxTreasures = TreasureGlobals.SafeZoneTreasureSpawns[ToontownGlobals.MyEstate]
+        self.treasurePlanner = SZTreasurePlannerAI(self.zoneId, treasureType, healAmount, spawnPoints, spawnRate, maxTreasures)
+        self.treasurePlanner.start()
 
         spot = DistributedFishingSpotAI(self.air)
         spot.setPondDoId(self.pond.getDoId())
@@ -549,7 +551,7 @@ class DistributedEstateAI(DistributedObjectAI):
         for house in self.houses:
             if house:
                 house.requestDelete()
-        self.houses = []
+        del self.houses[:]
         if self.pond:
             for spot in self.spots:
                 spot.requestDelete()
@@ -559,6 +561,8 @@ class DistributedEstateAI(DistributedObjectAI):
             self.targets = []
             self.pond.requestDelete()
             self.pond = None
+        if self.treasurePlanner:
+            self.treasurePlanner.stop()
                 
         self.gardenManager.destroy()
         if self.rentalHandle:
