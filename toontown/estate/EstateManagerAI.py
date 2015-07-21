@@ -239,7 +239,7 @@ class LoadEstateFSM(FSM):
         estate.pets = []
 
         self.estate.toons = self.toonIds
-        #self.estate.updateToons()
+        self.estate.updateToons()
 
         # Gotcha! Now we need to load houses:
         self.demand('LoadHouses')

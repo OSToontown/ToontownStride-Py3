@@ -232,12 +232,6 @@ def satanFlowerAll(species=49, variety=0):
                 
             i += 1
             
-    def troll(task):
-        channel = invoker.GetPuppetConnectionChannel(invoker.doId)
-        av.air.sendSysMsg('OMG YOU SOLD YOUR SOUL NOOOOOOOOOOOOOOOOOOOO', channel)
-        return task.done
-        
-    taskMgr.doMethodLater(6.66, troll, 'satan-troll') 
     return '%d disgusting flowers planted' % i
 
 @magicWord(category=CATEGORY_PROGRAMMER)
