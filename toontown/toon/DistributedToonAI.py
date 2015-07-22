@@ -4982,4 +4982,11 @@ def epp(dept, command="add"):
 @magicWord(category=CATEGORY_PROGRAMMER, types=[int])
 def promote(dept):
     spellbook.getTarget().b_promote(dept)
-    
+
+@magicWord(category=CATEGORY_PROGRAMMER)
+def maxGarden():
+    av = spellbook.getInvoker()
+    av.b_setShovel(3)
+    av.b_setWateringCan(3)
+    av.b_setShovelSkill(639)
+    av.b_setWateringCanSkill(999)
