@@ -379,14 +379,8 @@ class DistributedGagTree(DistributedPlantBase.DistributedPlantBase):
         self.finishInteraction()
         return
 
-    def velvetRoped(self):
-        return not base.cr.isPaid() and ToontownBattleGlobals.gagIsPaidOnly(self.gagTrack, self.gagLevel)
-
     def allowedToPick(self):
-        retval = True
-        if self.velvetRoped():
-            retval = False
-        return retval
+        return True
 
     def unlockPick(self):
         retval = True
