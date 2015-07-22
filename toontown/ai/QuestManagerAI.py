@@ -291,11 +291,16 @@ class QuestManagerAI:
 
         av.b_setQuests(questList)
     
-    def toonCalledClarabelle(self, toon):
-        for index, quest in enumerate(self.__toonQuestsList2Quests(toon.quests)):
-            if isinstance(quest, Quests.PhoneQuest):
-                self.__incrementQuestProgress(toon.quests[index])
-        toon.updateQuests()
+    def toonCalledClarabelle(self, av):
+        avQuests = av.getQuests()
+        questList = []
+        for i in xrange(0, len(avQuests), 5):
+            questDesc = avQuests[i : i + 5]
+            questClass = Quests.getQuest(questDesc[QuestIdIndex])
+            if isinstance(questClass, Quests.PhoneQuest) and questClass.getCompletionStatus(av, questDesc) == Quests.INCOMPLETE:
+                questDesc[QuestProgressIndex] += 1
+            questList.append(questDesc)
+        av.b_setQuests(questList)
 
     def toonMadeNPCFriend(self, av, count, method):
         avQuests = av.getQuests()
