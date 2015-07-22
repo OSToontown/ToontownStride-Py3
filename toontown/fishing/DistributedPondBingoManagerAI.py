@@ -8,10 +8,9 @@ from toontown.fishing.ThreewayBingo import ThreewayBingo
 from toontown.fishing.DiagonalBingo import DiagonalBingo
 from toontown.fishing.BlockoutBingo import BlockoutBingo
 from toontown.fishing.FourCornerBingo import FourCornerBingo
-from otp.ai.MagicWordGlobal import *
 from direct.task import Task
 from direct.distributed.ClockDelta import *
-import random
+import random, datetime
 RequestCard = {}
 
 
@@ -25,25 +24,43 @@ class DistributedPondBingoManagerAI(DistributedObjectAI):
         self.tileSeed = None
         self.typeId = None
         self.state = 'Off'
+        self.pond = None
         self.canCall = False
         self.shouldStop = False
         self.lastUpdate = globalClockDelta.getRealNetworkTime()
         self.cardId = 0
+
+    def initTasks(self):
+        now = datetime.datetime.now()
+        weekday = now.weekday()
+        targetday = 2 # Wednesday
+        if weekday in (3, 4):
+            targetday = 5
+        togo = targetday - weekday
+        if togo < 0:
+            togo += 7
+        s = now + datetime.timedelta(days=togo)
+        start = datetime.datetime(s.year, s.month, s.day)
+        secs = max(0, (start - now).total_seconds())
+        self.notify.debug('Today it\'s %d, so we wait for %d, togo: %d %d' % (weekday, targetday, togo, secs))
+        taskMgr.doMethodLater(secs, DistributedPondBingoManagerAI.startTask, self.taskName('start'), extraArgs=[self])
+
+    def startTask(self):
+        self.notify.debug('Starting game')
+
+        def stop(task):
+            self.notify.debug('Stopping game')
+            self.shouldStop = True
+            return task.done
+
+        taskMgr.doMethodLater(24 * 60 * 60, stop, self.taskName('stop'))
+        self.createGame()
 
     def setPondDoId(self, pondId):
         self.pond = self.air.doId2do[pondId]
 
     def getPondDoId(self):
         return self.pond.getDoId()
-
-    def updateGameState(self, gameState, cellId):
-        pass
-
-    def setCardState(self, cardId, typeId, tileSeed, gameState):
-        pass
-
-    def setState(self, state, timeStamp):
-        pass
 
     def cardUpdate(self, cardId, cellId, genus, species):
         avId = self.air.getAvatarIdFromSender()
@@ -69,9 +86,6 @@ class DistributedPondBingoManagerAI(DistributedObjectAI):
             self.sendGameStateUpdate(cellId)
         elif result == BingoGlobals.UPDATE:
             self.sendGameStateUpdate(cellId)
-
-    def enableBingo(self):
-        createGame()
 
     def d_enableBingo(self):
         self.sendUpdate('enableBingo', [])
@@ -149,8 +163,6 @@ class DistributedPondBingoManagerAI(DistributedObjectAI):
             return
         taskMgr.doMethodLater(5, DistributedPondBingoManagerAI.startWait, 'startWait%d' % self.getDoId(), [self])
         taskMgr.remove('finishGame%d' % self.getDoId())
-
-
 
     def finishGame(self):
         self.state = 'GameOver'
