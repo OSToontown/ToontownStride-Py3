@@ -137,7 +137,6 @@ class DistributedGardenPlot(DistributedLawnDecor.DistributedLawnDecor):
             recipeKey = GardenGlobals.getRecipeKey(recipeStr, special)
             if recipeKey >= 0:
                 species, variety = GardenGlobals.getSpeciesVarietyGivenRecipe(recipeKey)
-                print 'RK>0', species, variety
                 if species >= 0 and variety >= 0:
                     self.sendUpdate('plantFlower', [species, variety])
                     successPlanting = True

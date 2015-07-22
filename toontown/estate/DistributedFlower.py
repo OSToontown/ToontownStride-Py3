@@ -1,11 +1,10 @@
-from toontown.estate import DistributedPlantBase
 from direct.directnotify import DirectNotifyGlobal
+from toontown.estate import DistributedPlantBase
+from toontown.estate.DistributedGardenBox import DistributedGardenBox
 from toontown.estate import FlowerBase
 from toontown.estate import GardenGlobals
 from toontown.toontowngui import TTDialog
 from toontown.toonbase import TTLocalizer
-
-from DistributedGardenBox import DistributedGardenBox
 
 DIRT_AS_WATER_INDICATOR = True
 DIRT_MOUND_HEIGHT = 0.3
@@ -30,7 +29,7 @@ class DistributedFlower(DistributedPlantBase.DistributedPlantBase, FlowerBase.Fl
 
     def delete(self):
         DistributedPlantBase.DistributedPlantBase.delete(self)
-            
+
         del self.dirtMound
         del self.sandMound
 
@@ -53,7 +52,7 @@ class DistributedFlower(DistributedPlantBase.DistributedPlantBase, FlowerBase.Fl
             desat = wilt.find('**/*desat*')
             bloom.hide()
             leaves = wilt.findAllMatches('**/*leaf*')
-            for leafIndex in range(leaves.getNumPaths()):
+            for leafIndex in xrange(leaves.getNumPaths()):
                 leaf = leaves.getPath(leafIndex)
                 leaf.setColorScale(1.0, 0.3, 0.1, 1.0)
 

@@ -505,7 +505,7 @@ class DistributedEstateAI(DistributedObjectAI):
         self.pond.setArea(ToontownGlobals.MyEstate)
         self.pond.generateWithRequired(self.zoneId)
             
-        for i in range(FishingTargetGlobals.getNumTargets(ToontownGlobals.MyEstate)):
+        for i in xrange(FishingTargetGlobals.getNumTargets(ToontownGlobals.MyEstate)):
             target = DistributedFishingTargetAI(self.air)
             target.setPondDoId(self.pond.getDoId())
             target.generateWithRequired(self.zoneId)
@@ -540,8 +540,8 @@ class DistributedEstateAI(DistributedObjectAI):
         self.spots.append(spot)
 
         ButterflyGlobals.generateIndexes(self.zoneId, ButterflyGlobals.ESTATE)
-        for i in range(0, ButterflyGlobals.NUM_BUTTERFLY_AREAS[ButterflyGlobals.ESTATE]):
-            for j in range(0, ButterflyGlobals.NUM_BUTTERFLIES[ButterflyGlobals.ESTATE]):
+        for i in xrange(0, ButterflyGlobals.NUM_BUTTERFLY_AREAS[ButterflyGlobals.ESTATE]):
+            for j in xrange(0, ButterflyGlobals.NUM_BUTTERFLIES[ButterflyGlobals.ESTATE]):
                 bfly = DistributedButterflyAI.DistributedButterflyAI(self.air, ButterflyGlobals.ESTATE, i, self.zoneId)
                 bfly.generateWithRequired(self.zoneId)
                 bfly.start()
@@ -844,7 +844,7 @@ class DistributedEstateAI(DistributedObjectAI):
         return self.items[5]
 
     def setIdList(self, idList):
-        for i in range(len(idList)):
+        for i in xrange(len(idList)):
             if i >= 6:
                 return
             self.toons[i] = idList[i]
