@@ -20,7 +20,7 @@ dc-file dependencies/astron/dclass/stride.dc
 
 # Core features:
 want-pets #t
-want-parties #t
+want-parties #f
 want-cogdominiums #t
 want-lawbot-cogdo #t
 want-anim-props #t
