@@ -270,7 +270,7 @@ class PetAvatarPanel(AvatarPanel.AvatarPanel):
     def __fillPetInfo(self, avatar):
         self.notify.debug('__fillPetInfo(): doId=%s' % avatar.doId)
         self.petView = self.frame.attachNewNode('petView')
-        self.petView.setPos(0, 0, 5.4)
+        self.petView.setPos(0, 0, 5)
         if hasattr(avatar, 'announceGenerate'):
             avatar.announceGenerate()
         self.petModel = Pet.Pet(forGui=1)
