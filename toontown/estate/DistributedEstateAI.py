@@ -504,7 +504,13 @@ class DistributedEstateAI(DistributedObjectAI):
         self.pond = DistributedFishingPondAI(simbase.air)
         self.pond.setArea(ToontownGlobals.MyEstate)
         self.pond.generateWithRequired(self.zoneId)
-            
+        self.pond.start()
+
+        self.pond.bingoMgr = DistributedPondBingoManagerAI(simbase.air)
+        self.pond.bingoMgr.setPondDoId(self.pond.getDoId())
+        self.pond.bingoMgr.generateWithRequired(self.zoneId)
+        self.pond.bingoMgr.initTasks()
+
         for i in xrange(FishingTargetGlobals.getNumTargets(ToontownGlobals.MyEstate)):
             target = DistributedFishingTargetAI(self.air)
             target.setPondDoId(self.pond.getDoId())
