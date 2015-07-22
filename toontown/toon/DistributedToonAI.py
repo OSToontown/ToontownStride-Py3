@@ -2942,8 +2942,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             taskMgr.add(self._moveSphere, self._getMoveSphereTaskName(), priority=OTPGlobals.AICollMovePriority)
             self.inEstate = 1
             self.estateOwnerId = ownerId
-            self.estateZones = simbase.air.estateMgr.getEstateZones(ownerId)
-            self.estateHouseZones = simbase.air.estateMgr.getEstateHouseZones(ownerId)
+            self.estateZones = [zoneId]
             self.enterPetLook()
 
         def _getPetLookerBodyNode(self):
@@ -2967,7 +2966,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.collNodePath.removeNode()
             del self.collNodePath
             del self.estateOwnerId
-            del self.estateHouseZones
             del self.inEstate
             self._wasInEstate = 1
 

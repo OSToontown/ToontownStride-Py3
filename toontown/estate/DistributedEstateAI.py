@@ -683,15 +683,6 @@ class DistributedEstateAI(DistributedObjectAI):
     def rentItem(self, rentType, duration):
         self.b_setRentalTimeStamp(time.time() + duration * 60)
         self.b_setRentalType(rentType)
-    
-    def updateToons(self):
-        self.d_setSlot0ToonId(self.toons[0])
-        self.d_setSlot1ToonId(self.toons[1])
-        self.d_setSlot2ToonId(self.toons[2])
-        self.d_setSlot3ToonId(self.toons[3])
-        self.d_setSlot4ToonId(self.toons[4])
-        self.d_setSlot5ToonId(self.toons[5])
-        self.sendUpdate('setIdList', [self.toons])
         
     def setSlot0ToonId(self, id):
         self.toons[0] = id
