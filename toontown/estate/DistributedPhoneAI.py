@@ -89,6 +89,8 @@ class DistributedPhoneAI(DistributedFurnitureItemAI):
             self.d_setMovie(PHONE_MOVIE_PICKUP, avId)
             av.b_setCatalogNotify(0, av.mailboxNotify)
             
+            self.air.questManager.toonCalledClarabelle(av)
+            
     def avatarExit(self):
         if not self.inUse:
             self.notify.warning('Requested avatarExit but phone isn\'t in use!')
