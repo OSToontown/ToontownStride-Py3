@@ -1622,9 +1622,8 @@ BMovementSpeedMultiplier = 1.3
 
 BugReportSite = 'https://bugs.launchpad.net/toontown-united/+filebug'
 CostPerLaffRestock = 3
-FISHSALE_NONE = 0
-FISHSALE_COMPLETE = 1
-FISHSALE_TROPHY = 2
+FISHSALE_COMPLETE = 0
+FISHSALE_TROPHY = 1
 NPCCollisionDelay = 2.5
 KnockKnockHeal = 12
 KnockKnockCooldown = 600

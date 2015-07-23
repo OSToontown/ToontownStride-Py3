@@ -163,7 +163,6 @@ class DistributedTugOfWarGame(DistributedMinigame):
     def unload(self):
         self.notify.debug('unload')
         DistributedMinigame.unload(self)
-        del self.lt
         self.timer.destroy()
         del self.timer
         self.room.removeNode()
@@ -250,7 +249,6 @@ class DistributedTugOfWarGame(DistributedMinigame):
     def onstage(self):
         self.notify.debug('onstage')
         DistributedMinigame.onstage(self)
-        self.lt = base.localAvatar
         NametagGlobals.setGlobalNametagScale(1)
         self.arrowKeys = ArrowKeys.ArrowKeys()
         self.room.reparentTo(render)

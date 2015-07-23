@@ -7,13 +7,14 @@ import time, random
 from toontown.fishing.DistributedFishingPondAI import DistributedFishingPondAI
 from toontown.fishing.DistributedFishingTargetAI import DistributedFishingTargetAI
 from toontown.fishing.DistributedPondBingoManagerAI import DistributedPondBingoManagerAI
-from toontown.fishing import FishingTargetGlobals
+from toontown.fishing import FishingTargetGlobals, FishGlobals
 from toontown.safezone import TreasureGlobals
 from toontown.safezone.SZTreasurePlannerAI import SZTreasurePlannerAI
 from toontown.safezone import DistributedTreasureAI
 from toontown.safezone import ButterflyGlobals
 from toontown.safezone import DistributedButterflyAI
 from toontown.safezone.DistributedFishingSpotAI import DistributedFishingSpotAI
+from toontown.parties.DistributedPartyJukeboxActivityAI import DistributedPartyJukeboxActivityAI
 
 from DistributedGardenBoxAI import *
 from DistributedGardenPlotAI import *
@@ -486,17 +487,21 @@ class DistributedEstateAI(DistributedObjectAI):
         self.houses = [None] * 6
         self.rentalType = 0
         self.rentalHandle = None
-        self.doId2do = { }
         
         self.pond = None
+        self.jukebox = None
         self.spots = []
-        
+        self.butterflies = []
         self.targets = []
 
         self.owner = None
         
         self.gardenManager = GardenManager(self)
         self.__pendingGardens = {}
+    
+    @property
+    def hostId(self):
+        return 1000000001
         
     def generate(self):
         DistributedObjectAI.generate(self)
@@ -544,19 +549,29 @@ class DistributedEstateAI(DistributedObjectAI):
         spot.setPosHpr(46.8254, -113.682, 0.46015, 135, 0, 0)
         spot.generateWithRequired(self.zoneId)
         self.spots.append(spot)
+        
+        self.jukebox = DistributedPartyJukeboxActivityAI(self.air, self.doId, (0, 0, 0, 0))
+        self.jukebox.generateWithRequired(self.zoneId)
+        self.jukebox.sendUpdate('setX', [-21.8630])
+        self.jukebox.sendUpdate('setY', [-154.669])
+        self.jukebox.sendUpdate('setH', [148.7050])
+        self.jukebox.sendUpdate('unloadSign')
 
         ButterflyGlobals.generateIndexes(self.zoneId, ButterflyGlobals.ESTATE)
         for i in xrange(0, ButterflyGlobals.NUM_BUTTERFLY_AREAS[ButterflyGlobals.ESTATE]):
             for j in xrange(0, ButterflyGlobals.NUM_BUTTERFLIES[ButterflyGlobals.ESTATE]):
-                bfly = DistributedButterflyAI.DistributedButterflyAI(self.air, ButterflyGlobals.ESTATE, i, self.zoneId)
-                bfly.generateWithRequired(self.zoneId)
-                bfly.start()
-                self.addDistObj(bfly)
+                butterfly = DistributedButterflyAI.DistributedButterflyAI(self.air, ButterflyGlobals.ESTATE, i, self.zoneId)
+                butterfly.generateWithRequired(self.zoneId)
+                butterfly.start()
+                self.butterflies.append(butterfly)
 
     def destroy(self):
         for house in self.houses:
             if house:
                 house.requestDelete()
+        for butterfly in self.butterflies:
+            if butterfly:
+                butterfly.requestDelete()
         del self.houses[:]
         if self.pond:
             for spot in self.spots:
@@ -567,6 +582,8 @@ class DistributedEstateAI(DistributedObjectAI):
             self.targets = []
             self.pond.requestDelete()
             self.pond = None
+        if self.jukebox:
+            self.jukebox.requestDelete()
         if self.treasurePlanner:
             self.treasurePlanner.stop()
                 
@@ -889,6 +906,18 @@ class DistributedEstateAI(DistributedObjectAI):
             self.sendUpdate('awardedTrophy', [avId])
         
         av.b_setGardenTrophies(range(len(collection) // 10))
+    
+    def completeFishSale(self):
+        avId = self.air.getAvatarIdFromSender()
+        av = self.air.doId2do.get(avId)
+        
+        if not av:
+            return
+
+        if self.air.fishManager.creditFishTank(av):
+            self.sendUpdateToAvatarId(avId, 'thankSeller', [ToontownGlobals.FISHSALE_TROPHY, len(av.fishCollection), FishGlobals.getTotalNumFish()])
+        else:
+            self.sendUpdateToAvatarId(avId, 'thankSeller', [ToontownGlobals.FISHSALE_COMPLETE, 0, 0])
                          
     def setClouds(self, clouds):
         self.cloudType = clouds

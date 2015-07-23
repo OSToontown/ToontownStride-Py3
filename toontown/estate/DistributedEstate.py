@@ -6,27 +6,16 @@ from direct.interval.IntervalGlobal import *
 import math
 from toontown.toonbase import ToontownGlobals
 from direct.distributed import DistributedObject
-from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import ClassicFSM
-from direct.fsm import State
-from toontown.toon import Toon
-from direct.showbase import RandomNumGen
 from direct.task.Task import Task
 from toontown.toonbase import TTLocalizer
 import random
 import cPickle
 import time
-from direct.showbase import PythonUtil
-from toontown.hood import Place
-import Estate
 import HouseGlobals
 from toontown.estate import GardenGlobals
-from toontown.estate import DistributedFlower
-from toontown.estate import DistributedGagTree
-from toontown.estate import DistributedStatuary
-import GardenProgressMeter
 from toontown.estate import FlowerSellGUI
 from toontown.toontowngui import TTDialog
+from toontown.fishing import FishSellGUI
 
 class DistributedEstate(DistributedObject.DistributedObject):
     notify = directNotify.newCategory('DistributedEstate')
@@ -44,16 +33,15 @@ class DistributedEstate(DistributedObject.DistributedObject):
         self.initCamera()
         self.plotTable = []
         self.idList = []
-        base.estate = self
         self.flowerGuiDoneEvent = 'flowerGuiDone'
-        return
+        self.fishGuiDoneEvent = 'fishGuiDone'
 
     def disable(self):
         self.notify.debug('disable')
         self.__stopBirds()
         self.__stopCrickets()
         DistributedObject.DistributedObject.disable(self)
-        self.ignore('enterFlowerSellBox')
+        self.ignoreAll()
 
     def delete(self):
         self.notify.debug('delete')
@@ -61,12 +49,14 @@ class DistributedEstate(DistributedObject.DistributedObject):
         DistributedObject.DistributedObject.delete(self)
 
     def load(self):
-        self.lt = base.localAvatar
+        self.defaultSignModel = loader.loadModel('phase_13/models/parties/eventSign')
+        self.activityIconsModel = loader.loadModel('phase_4/models/parties/eventSignIcons')
         if base.cr.newsManager.isHolidayRunning(ToontownGlobals.HALLOWEEN):
             self.loadWitch()
         else:
             self.loadAirplane()
         self.loadFlowerSellBox()
+        self.loadFishSellBox()
         self.oldClear = base.win.getClearColor()
         base.win.setClearColor(Vec4(0.09, 0.55, 0.21, 1.0))
 
@@ -95,7 +85,10 @@ class DistributedEstate(DistributedObject.DistributedObject):
             self.flowerSellBox.removeNode()
             del self.flowerSellBox
             self.flowerSellBox = None
-        return
+        if self.fishSellBox:
+            self.fishSellBox.removeNode()
+            del self.fishSellBox
+            self.fishSellBox = None
 
     def announceGenerate(self):
         DistributedObject.DistributedObject.announceGenerate(self)
@@ -189,7 +182,6 @@ class DistributedEstate(DistributedObject.DistributedObject):
         self.housePos = posList
         self.numHouses = len(self.houseType)
         self.house = [None] * self.numHouses
-        return
 
     def __startAirplaneTask(self):
         self.theta = 0
@@ -371,12 +363,56 @@ class DistributedEstate(DistributedObject.DistributedObject):
         self.ignore('stoppedAsleep')
         self.flowerGui.destroy()
         self.flowerGui = None
-        return
 
     def popupFlowerGUI(self):
         self.acceptOnce(self.flowerGuiDoneEvent, self.__handleSaleDone)
         self.flowerGui = FlowerSellGUI.FlowerSellGUI(self.flowerGuiDoneEvent)
         self.accept('stoppedAsleep', self.__handleSaleDone)
+    
+    def loadFishSellBox(self):
+        self.fishSellBox = loader.loadModel('phase_4/models/minigames/treasure_chest.bam')
+        self.fishSellBox.setPos(45, -165.75, 0.025)
+        self.fishSellBox.setH(210)
+        self.fishSellBox.reparentTo(render)
+        cSphere = CollisionSphere(0.0, 0.0, 0.0, 2.25)
+        cSphere.setTangible(0)
+        colNode = CollisionNode('FishSellBox')
+        colNode.addSolid(cSphere)
+        cSpherePath = self.fishSellBox.attachNewNode(colNode)
+        cSpherePath.hide()
+        cSpherePath.setCollideMask(ToontownGlobals.WallBitmask)
+        self.accept('enterFishSellBox', self.__touchedFishSellBox)
+
+    def __touchedFishSellBox(self, entry):
+        if base.localAvatar.doId in self.idList:
+            if base.localAvatar.fishTank.getFish():
+                self.popupFishGUI()
+
+    def __handleFishSaleDone(self, sell=0):
+        if sell:
+            self.sendUpdate('completeFishSale')
+        else:
+            base.localAvatar.setSystemMessage(0, TTLocalizer.STOREOWNER_NOFISH)
+
+        base.setCellsAvailable(base.bottomCells, 1)
+        base.cr.playGame.getPlace().setState('walk')
+        self.ignore(self.fishGuiDoneEvent)
+        self.ignore('stoppedAsleep')
+        self.fishGui.destroy()
+        self.fishGui = None
+
+    def popupFishGUI(self):
+        base.setCellsAvailable(base.bottomCells, 0)
+        base.cr.playGame.getPlace().setState('stopped')
+        self.acceptOnce(self.fishGuiDoneEvent, self.__handleFishSaleDone)
+        self.fishGui = FishSellGUI.FishSellGUI(self.fishGuiDoneEvent)
+        self.accept('stoppedAsleep', self.__handleFishSaleDone)
+
+    def thankSeller(self, mode, fish, maxFish):
+        if mode == ToontownGlobals.FISHSALE_TROPHY:
+            base.localAvatar.setSystemMessage(0, TTLocalizer.STOREOWNER_TROPHY % (fish, maxFish))
+        elif mode == ToontownGlobals.FISHSALE_COMPLETE:
+            base.localAvatar.setSystemMessage(0, TTLocalizer.STOREOWNER_THANKSFISH)
 
     def closedAwardDialog(self, value):
         self.awardDialog.destroy()

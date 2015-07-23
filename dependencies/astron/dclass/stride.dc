@@ -1217,7 +1217,6 @@ struct lawnItem {
 };
 
 dclass DistributedEstate : DistributedObject {
-  string DcObjectType db;
   setEstateReady() broadcast;
   setClientReady() airecv clsend;
   setEstateType(uint8 type = 0) required broadcast db;
@@ -1244,6 +1243,8 @@ dclass DistributedEstate : DistributedObject {
   setSlot5Garden(blob g) required airecv db;
   setIdList(uint32 []) broadcast ram;
   completeFlowerSale(uint8) airecv clsend;
+  completeFishSale() airecv clsend;
+  thankSeller(int8, int8, int8);
   awardedTrophy(uint32) broadcast;
   setClouds(uint8) required broadcast ram;
   cannonsOver() broadcast;
