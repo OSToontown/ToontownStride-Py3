@@ -1,101 +1,121 @@
-from direct.directnotify import DirectNotifyGlobal
-from direct.distributed.DistributedObjectAI import DistributedObjectAI
-from direct.distributed.ClockDelta import *
-from toontown.minigame import CannonGameGlobals
 from toontown.toonbase import ToontownGlobals
+from direct.distributed.ClockDelta import *
+from direct.fsm import ClassicFSM
+from direct.fsm import State
+from direct.task import Task
+from toontown.minigame import CannonGameGlobals
+from direct.distributed import DistributedObjectAI
+from toontown.minigame import Trajectory
 import CannonGlobals
 
-class DistributedCannonAI(DistributedObjectAI):
-    notify = DirectNotifyGlobal.directNotify.newCategory("DistributedCannonAI")
+class DistributedCannonAI(DistributedObjectAI.DistributedObjectAI):
+    notify = directNotify.newCategory('DistributedCannonAI')
 
-    def __init__(self, air):
-        DistributedObjectAI.__init__(self, air)
-        self.estateId = 0
-        self.targetId = 0
-        self.posHpr = (0, 0, 0, 0, 0, 0)
-        self.bumperPos = ToontownGlobals.PinballCannonBumperInitialPos
-        self.active = 0
+    def __init__(self, air, estateId, targetId, x, y, z, h, p, r):
+        DistributedObjectAI.DistributedObjectAI.__init__(self, air)
+        self.posHpr = [x,
+         y,
+         z,
+         h,
+         p,
+         r]
         self.avId = 0
-
-    def setEstateId(self, estateId):
         self.estateId = estateId
-
-    def getEstateId(self):
-        return self.estateId
-
-    def setTargetId(self, targetId):
+        self.timeoutTask = None
         self.targetId = targetId
+        self.cannonBumperPos = list(ToontownGlobals.PinballCannonBumperInitialPos)
+        return
 
-    def getTargetId(self):
-        return self.targetId
+    def delete(self):
+        self.ignoreAll()
+        self.__stopTimeout()
+        DistributedObjectAI.DistributedObjectAI.delete(self)
 
-    def setPosHpr(self, x, y, z, h, p, r):
-        self.posHpr = (x, y, z, h, p, r)
+    def requestEnter(self):
+        avId = self.air.getAvatarIdFromSender()
+        if self.avId == 0:
+            self.avId = avId
+            self.__stopTimeout()
+            self.setMovie(CannonGlobals.CANNON_MOVIE_LOAD, self.avId)
+            self.acceptOnce(self.air.getAvatarExitEvent(avId), self.__handleUnexpectedExit, extraArgs=[avId])
+            self.acceptOnce('bootAvFromEstate-' + str(avId), self.__handleBootMessage, extraArgs=[avId])
+            self.__startTimeout(CannonGlobals.CANNON_TIMEOUT)
+        else:
+            self.air.writeServerEvent('suspicious', avId, 'DistributedCannonAI.requestEnter cannon already occupied')
+            self.notify.warning('requestEnter() - cannon already occupied')
+            self.sendUpdateToAvatarId(avId, 'requestExit', [])
+
+    def setMovie(self, mode, avId):
+        self.avId = avId
+        self.sendUpdate('setMovie', [mode, avId])
+
+    def getCannonBumperPos(self):
+        self.notify.debug('---------getCannonBumperPos %s' % self.cannonBumperPos)
+        return self.cannonBumperPos
+
+    def requestBumperMove(self, x, y, z):
+        self.cannonBumperPos = [x, y, z]
+        self.sendUpdate('setCannonBumperPos', [x, y, z])
 
     def getPosHpr(self):
         return self.posHpr
 
-    def setActive(self, active):
-        self.active = active
-        self.sendUpdate("setActiveState", [active])
+    def getEstateId(self):
+        return self.estateId
 
-    def requestEnter(self):
+    def getTargetId(self):
+        return self.targetId
+
+    def setCannonPosition(self, zRot, angle):
         avId = self.air.getAvatarIdFromSender()
-        av = self.air.doId2do.get(avId)
-        if not av:
+        self.notify.debug('setCannonPosition: ' + str(avId) + ': zRot=' + str(zRot) + ', angle=' + str(angle))
+        self.sendUpdate('updateCannonPosition', [avId, zRot, angle])
+
+    def setCannonLit(self, zRot, angle):
+        avId = self.air.getAvatarIdFromSender()
+        self.__stopTimeout()
+        self.notify.debug('setCannonLit: ' + str(avId) + ': zRot=' + str(zRot) + ', angle=' + str(angle))
+        fireTime = CannonGameGlobals.FUSE_TIME
+        self.sendUpdate('setCannonWillFire', [avId,
+         fireTime,
+         zRot,
+         angle,
+         globalClockDelta.getRealNetworkTime()])
+
+    def setLanded(self):
+        self.ignore(self.air.getAvatarExitEvent(self.avId))
+        self.setMovie(CannonGlobals.CANNON_MOVIE_LANDED, 0)
+        self.avId = 0
+
+    def setActive(self, active):
+        if active < 0 or active > 1:
+            self.air.writeServerEvent('suspicious', active, 'DistributedCannon.setActive value should be 0-1 range')
             return
+        self.active = active
+        self.sendUpdate('setActiveState', [active])
 
-        if not self.avId:
-            self.avId = avId
-            self.d_setMovie(CannonGlobals.CANNON_MOVIE_LOAD)
-            self.acceptOnce(self.air.getAvatarExitEvent(avId), self.__handleUnexpectedExit, extraArgs=[avId])
-        else:
-            self.air.writeServerEvent('suspicious', avId, 'DistributedCannonAI.requestEnter cannon already occupied')
-            self.notify.warning('requestEnter() - cannon already occupied')
+    def __startTimeout(self, timeLimit):
+        self.__stopTimeout()
+        self.timeoutTask = taskMgr.doMethodLater(timeLimit, self.__handleTimeout, self.taskName('timeout'))
 
-    def setMovie(self, mode, avId, extraInfo):
-        self.avId = avId
-        self.sendUpdate('setMovie', [mode, avId, extraInfo])
+    def __stopTimeout(self):
+        if self.timeoutTask != None:
+            taskMgr.remove(self.timeoutTask)
+            self.timeoutTask = None
+        return
+
+    def __handleTimeout(self, task):
+        self.notify.debug('Timeout expired!')
+        self.__doExit()
+        return Task.done
 
     def __handleUnexpectedExit(self, avId):
         self.notify.warning('avatar:' + str(avId) + ' has exited unexpectedly')
         self.__doExit()
 
-    def __doExit(self, movie=CannonGlobals.CANNON_MOVIE_FORCE_EXIT):
-        self.ignore(self.air.getAvatarExitEvent(self.avId))
-        self.d_setMovie(movie)
-        self.avId = 0
+    def __handleBootMessage(self, avId):
+        self.notify.warning('avatar:' + str(avId) + ' got booted ')
+        self.__doExit()
 
-    def requestExit(self):
-        pass
-
-    def d_setMovie(self, movie):
-        self.sendUpdate("setMovie", [movie, self.avId])
-
-    def setCannonPosition(self, zRot, angle):
-        self.sendUpdate("updateCannonPosition", [self.avId, zRot, angle])
-
-    def setCannonLit(self, zRot, angle):
-        avId = self.air.getAvatarIdFromSender()
-        if avId != self.avId:
-            return
-
-        fireTime = CannonGameGlobals.FUSE_TIME
-        self.sendUpdate('setCannonWillFire', [avId, fireTime, zRot, angle, globalClockDelta.getRealNetworkTime()])
-
-    def setFired(self):
-        pass
-
-    def setLanded(self):
-        self.__doExit(CannonGlobals.CANNON_MOVIE_CLEAR)
-        self.sendUpdate('setCannonExit', [self.avId])
-
-    def setCannonExit(self, todo0):
-        pass
-
-    def requestBumperMove(self, x, y, z):
-        self.bumperPos = (x, y, z)
-        self.sendUpdate('setCannonBumperPos', self.getCannonBumperPos())
-
-    def getCannonBumperPos(self):
-        return self.bumperPos
+    def __doExit(self):
+        self.setMovie(CannonGlobals.CANNON_MOVIE_FORCE_EXIT, self.avId)

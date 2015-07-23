@@ -414,10 +414,7 @@ class CannonRental(Rental):
         target.generateWithRequired(self.estate.zoneId)
         
         for drop in CannonGlobals.cannonDrops:
-            cannon = DistributedCannonAI(self.estate.air)
-            cannon.setEstateId(self.estate.doId)
-            cannon.setTargetId(target.doId)
-            cannon.setPosHpr(*drop)
+            cannon = DistributedCannonAI(self.estate.air, self.estate.zoneId, target.doId, *drop)
             cannon.generateWithRequired(self.estate.zoneId)
             self.objects.add(cannon)
             
