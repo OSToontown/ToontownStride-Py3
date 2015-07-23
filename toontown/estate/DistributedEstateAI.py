@@ -5,7 +5,6 @@ import HouseGlobals
 import time, random
 
 from toontown.fishing.DistributedFishingPondAI import DistributedFishingPondAI
-from toontown.fishing.DistributedFishingTargetAI import DistributedFishingTargetAI
 from toontown.fishing.DistributedPondBingoManagerAI import DistributedPondBingoManagerAI
 from toontown.fishing import FishingTargetGlobals, FishGlobals
 from toontown.safezone import TreasureGlobals
@@ -492,7 +491,6 @@ class DistributedEstateAI(DistributedObjectAI):
         self.jukebox = None
         self.spots = []
         self.butterflies = []
-        self.targets = []
 
         self.owner = None
         
@@ -515,12 +513,6 @@ class DistributedEstateAI(DistributedObjectAI):
         self.pond.bingoMgr.setPondDoId(self.pond.getDoId())
         self.pond.bingoMgr.generateWithRequired(self.zoneId)
         self.pond.bingoMgr.initTasks()
-
-        for i in xrange(FishingTargetGlobals.getNumTargets(ToontownGlobals.MyEstate)):
-            target = DistributedFishingTargetAI(self.air)
-            target.setPondDoId(self.pond.getDoId())
-            target.generateWithRequired(self.zoneId)
-            self.targets.append(target)
 
         treasureType, healAmount, spawnPoints, spawnRate, maxTreasures = TreasureGlobals.SafeZoneTreasureSpawns[ToontownGlobals.MyEstate]
         self.treasurePlanner = SZTreasurePlannerAI(self.zoneId, treasureType, healAmount, spawnPoints, spawnRate, maxTreasures)
@@ -577,9 +569,6 @@ class DistributedEstateAI(DistributedObjectAI):
             for spot in self.spots:
                 spot.requestDelete()
             self.spots = []
-            for target in self.targets:
-                target.requestDelete()
-            self.targets = []
             self.pond.requestDelete()
             self.pond = None
         if self.jukebox:
