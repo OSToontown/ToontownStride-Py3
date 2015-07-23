@@ -735,3 +735,4 @@ AccessoryTypes = {101: (AHat,
        'shw2',
        APriceCool,
        7)}
+LoyaltyAccessoryItems = []

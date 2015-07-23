@@ -306,6 +306,9 @@ class CatalogItemPanel(DirectFrame):
         elif hasattr(self['item'], 'isSkillTooLow') and self['item'].isSkillTooLow(base.localAvatar):
             auxText = TTLocalizer.SkillTooLow
             self.buyButton['state'] = DGG.DISABLED
+        elif hasattr(self['item'], 'getDaysToGo') and self['item'].getDaysToGo(base.localAvatar):
+            auxText = TTLocalizer.DaysToGo % self['item'].getDaysToGo(base.localAvatar)
+            self.buyButton['state'] = DGG.DISABLED
         elif self['item'].getEmblemPrices() and not base.localAvatar.isEnoughMoneyAndEmblemsToBuy(self['item'].getPrice(self['type']), self['item'].getEmblemPrices()):
             self.buyButton['state'] = DGG.DISABLED
         elif hasattr(self['item'], 'houseId') and self['item'].houseId == localAvatar.houseType:

@@ -17,7 +17,8 @@ ABoysShorts = 3
 AGirlsShorts = 4
 AGirlsSkirt = 5
 AShorts = 6
-ClothingTypes = {101: (ABoysShirt, 'bss1', 40),
+ClothingTypes = {
+ 101: (ABoysShirt, 'bss1', 40),
  102: (ABoysShirt, 'bss2', 40),
  103: (ABoysShirt, 'bss3', 40),
  105: (ABoysShirt, 'bss4', 40),
@@ -290,15 +291,23 @@ ClothingTypes = {101: (ABoysShirt, 'bss1', 40),
  1817: (AGirlsSkirt, 'sa_gs19', 5000),
  1818: (AGirlsSkirt, 'sa_gs20', 5000),
  1819: (AGirlsSkirt, 'sa_gs21', 5000),
- 1820: (AShirt, 'sa_ss55', 5000),
- 1821: (AShirt, 'weed', 5000)}
+ 1820: (AShirt, 'sa_ss55', 5000)}
+LoyaltyClothingItems = (1600,
+ 1601,
+ 1602,
+ 1603,
+ 1604,
+ 1605,
+ 1606,
+ 1607,
+ 1608)
 
 class CatalogClothingItem(CatalogItem.CatalogItem):
 
-    def makeNewItem(self, clothingType, colorIndex, isSpecial = False):
+    def makeNewItem(self, clothingType, colorIndex, loyaltyDays = 0):
         self.clothingType = clothingType
         self.colorIndex = colorIndex
-        self.isSpecial = isSpecial
+        self.loyaltyDays = loyaltyDays
         CatalogItem.CatalogItem.makeNewItem(self)
 
     def storedInCloset(self):
@@ -337,6 +346,8 @@ class CatalogClothingItem(CatalogItem.CatalogItem):
         if avatar.onGiftOrder.count(self) != 0:
             return 1
         if avatar.mailboxContents.count(self) != 0:
+            return 1
+        if self in avatar.awardMailboxContents or self in avatar.onAwardOrder:
             return 1
         str = ClothingTypes[self.clothingType][CTString]
         dna = avatar.getStyle()
@@ -417,7 +428,7 @@ class CatalogClothingItem(CatalogItem.CatalogItem):
         return ToontownGlobals.P_ItemAvailable
 
     def getDeliveryTime(self):
-        return 1
+        return 60
 
     def getPicture(self, avatar):
         from toontown.toon import Toon
@@ -554,7 +565,7 @@ class CatalogClothingItem(CatalogItem.CatalogItem):
         CatalogItem.CatalogItem.decodeDatagram(self, di, versionNumber, store)
         self.clothingType = di.getUint16()
         self.colorIndex = di.getUint8()
-        self.isSpecial = di.getBool()
+        self.loyaltyDays = di.getUint16()
         str = ClothingTypes[self.clothingType][CTString]
         if self.isShirt():
             color = ToonDNA.ShirtStyles[str][2][self.colorIndex]
@@ -565,10 +576,18 @@ class CatalogClothingItem(CatalogItem.CatalogItem):
         CatalogItem.CatalogItem.encodeDatagram(self, dg, store)
         dg.addUint16(self.clothingType)
         dg.addUint8(self.colorIndex)
-        dg.addBool(self.isSpecial)
+        dg.addUint16(self.loyaltyDays)
 
     def isGift(self):
-        return not self.getEmblemPrices()
+        if self.getEmblemPrices():
+            return 0
+        if self.loyaltyRequirement() > 0:
+            return 0
+        elif self.clothingType in LoyaltyClothingItems:
+            return 0
+        else:
+            return 1
+
 
 def getAllClothes(*clothingTypes):
     list = []

@@ -20,7 +20,7 @@ CatalogTypeUnspecified = 0
 CatalogTypeWeekly = 1
 CatalogTypeBackorder = 2
 CatalogTypeMonthly = 3
-CatalogTypeSpecial = 4
+CatalogTypeLoyalty = 4
 
 class CatalogItem:
     notify = DirectNotifyGlobal.directNotify.newCategory('CatalogItem')
@@ -32,7 +32,6 @@ class CatalogItem:
         self.giftTag = None
         self.giftCode = 0
         self.hasPicture = False
-        self.isSpecial = False
         self.volume = 0
         self.specialEventId = 0
         if len(args) >= 1 and isinstance(args[0], DatagramIterator):
@@ -125,8 +124,14 @@ class CatalogItem:
     def forGirlsOnly(self):
         return 0
 
-    def getIsSpecial(self):
-        return self.isSpecial
+    def setLoyaltyRequirement(self, days):
+        self.loyaltyDays = days
+    
+    def loyaltyRequirement(self):
+        if not hasattr(self, 'loyaltyDays'):
+            return 0
+        else:
+            return self.loyaltyDays
 
     def getPrice(self, catalogType):
         if catalogType == CatalogTypeBackorder:
@@ -375,6 +380,13 @@ class CatalogItem:
 
     def getRequestPurchaseErrorTextTimeout(self):
         return 6
+    
+    def getDaysToGo(self, avatar):
+        accountDays = avatar.getAccountDays()
+        daysToGo = self.loyaltyRequirement() - accountDays
+        if daysToGo < 0:
+            daysToGo = 0
+        return int(daysToGo)
 
 def encodeCatalogItem(dg, item, store):
     import CatalogItemTypes
