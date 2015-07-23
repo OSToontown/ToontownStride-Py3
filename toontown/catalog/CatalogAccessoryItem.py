@@ -174,6 +174,9 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
         avatar.d_catalogGenAccessories()
         return ToontownGlobals.P_ItemAvailable
 
+    def getDeliveryTime(self):
+        return 60
+
     def getPicture(self, avatar):
         model = self.loadModel()
         spin = 1

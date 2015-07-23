@@ -41,7 +41,7 @@ class CatalogPoleItem(CatalogItem.CatalogItem):
         return 0
 
     def getDeliveryTime(self):
-        return 1
+        return 24 * 60
 
     def getPicture(self, avatar):
         rodPath = FishGlobals.RodFileDict.get(self.rodId)
