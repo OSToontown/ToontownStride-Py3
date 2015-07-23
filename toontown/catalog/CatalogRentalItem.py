@@ -24,7 +24,7 @@ class CatalogRentalItem(CatalogItem.CatalogItem):
         return 0
 
     def reachedPurchaseLimit(self, avatar):
-        return self in avatar.onOrder or self in avatar.mailboxContents or self in avatar.onGiftOrder #or self in avatar.awardMailboxContents or self in avatar.onAwardOrder
+        return self in avatar.onOrder or self in avatar.mailboxContents or self in avatar.onGiftOrder
 
     def saveHistory(self):
         return 1
@@ -45,15 +45,14 @@ class CatalogRentalItem(CatalogItem.CatalogItem):
             return TTLocalizer.RentalTypeName
 
     def recordPurchase(self, avatar, optional):
-        self.notify.debug('rental -- record purchase')
         if avatar:
-            self.notify.debug('rental -- has avater')
+            self.notify.debug('rental -- has avatar')
             estate = simbase.air.estateManager._lookupEstate(avatar)
             if estate:
                 self.notify.debug('rental -- has estate')
                 estate.rentItem(self.typeIndex, self.duration)
             else:
-                self.notify.debug('rental -- something not there')
+                self.notify.warning('rental -- something not there')
         return ToontownGlobals.P_ItemAvailable
 
     def getPicture(self, avatar):
@@ -126,5 +125,7 @@ def getAllRentalItems():
     list = []
     for rentalType in (ToontownGlobals.RentalCannon,):
         list.append(CatalogRentalItem(rentalType, 2880, 1000))
+    for rentalType in (ToontownGlobals.RentalGameTable,):
+        list.append(CatalogRentalItem(rentalType, 2890, 1000))
 
     return list

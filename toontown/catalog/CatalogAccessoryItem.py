@@ -10,9 +10,9 @@ from panda3d.core import *
 
 class CatalogAccessoryItem(CatalogItem.CatalogItem):
 
-    def makeNewItem(self, accessoryType, loyaltyDays = 0):
+    def makeNewItem(self, accessoryType, isSpecial = False):
         self.accessoryType = accessoryType
-        self.loyaltyDays = loyaltyDays
+        self.isSpecial = isSpecial
         CatalogItem.CatalogItem.makeNewItem(self)
 
     def getPurchaseLimit(self):
@@ -328,7 +328,7 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
     def decodeDatagram(self, di, versionNumber, store):
         CatalogItem.CatalogItem.decodeDatagram(self, di, versionNumber, store)
         self.accessoryType = di.getUint16()
-        self.loyaltyDays = di.getUint16()
+        self.isSpecial = di.getBool()
         str = AccessoryTypes[self.accessoryType][ATString]
         if self.isHat():
             defn = ToonDNA.HatStyles[str]
@@ -343,17 +343,10 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
     def encodeDatagram(self, dg, store):
         CatalogItem.CatalogItem.encodeDatagram(self, dg, store)
         dg.addUint16(self.accessoryType)
-        dg.addUint16(self.loyaltyDays)
+        dg.addBool(self.isSpecial)
 
     def isGift(self):
-        if self.getEmblemPrices():
-            return 0
-        if self.loyaltyRequirement() > 0:
-            return 0
-        elif self.accessoryType in LoyaltyAccessoryItems:
-            return 0
-        else:
-            return 1
+        return not self.getEmblemPrices()
 
 def getAllAccessories(*accessoryTypes):
     list = []

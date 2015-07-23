@@ -151,7 +151,7 @@ class DistributedPhoneAI(DistributedFurnitureItemAI):
         if isinstance(item, CatalogInvalidItem.CatalogInvalidItem):
             self.air.writeServerEvent('suspicious', avId, 'tried purchasing invalid item')
             self.notify.warning('%d tried purchasing invalid item' % avId)
-            return ToontownGlobals.P_NotInCatalog        
+            return ToontownGlobals.P_NotInCatalog
         elif (not item.hasEmblemPrices()) and item not in av.backCatalog and item not in av.weeklyCatalog and item not in av.monthlyCatalog:
             self.air.writeServerEvent('suspicious', avId, 'tried purchasing non-existing item')
             self.notify.warning('%d tried purchasing non-existing item' % avId)

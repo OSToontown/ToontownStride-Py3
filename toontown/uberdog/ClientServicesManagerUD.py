@@ -329,7 +329,7 @@ class LoginAccountFSM(OperationFSM):
             'ACCOUNT_AV_SET': [0] * 6,
             'ESTATE_ID': 0,
             'ACCOUNT_AV_SET_DEL': [],
-            'CREATED': time.ctime(),
+            'CREATED': time.time(),
             'LAST_LOGIN': time.ctime(),
             'LAST_LOGIN_TS': time.time(),
             'ACCOUNT_ID': str(self.userId),

@@ -3,22 +3,21 @@ from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 from otp.otpbase import OTPLocalizer
 from direct.interval.IntervalGlobal import *
-LoyaltyEmoteItems = (20, 21, 22, 23, 24, 25, 26)
 
 class CatalogEmoteItem(CatalogItem.CatalogItem):
     sequenceNumber = 0
     pictureToon = None
 
-    def makeNewItem(self, emoteIndex, loyaltyDays = 0):
+    def makeNewItem(self, emoteIndex, isSpecial = False):
         self.emoteIndex = emoteIndex
-        self.loyaltyDays = loyaltyDays
+        self.isSpecial = isSpecial
         CatalogItem.CatalogItem.makeNewItem(self)
 
     def getPurchaseLimit(self):
         return 1
 
     def reachedPurchaseLimit(self, avatar):
-        if self in avatar.onOrder or self in avatar.mailboxContents or self in avatar.onGiftOrder or self in avatar.awardMailboxContents or self in avatar.onAwardOrder:
+        if self in avatar.onOrder or self in avatar.mailboxContents or self in avatar.onGiftOrder:
             return 1
         if self.emoteIndex >= len(avatar.emoteAccess):
             return 0
@@ -115,21 +114,14 @@ class CatalogEmoteItem(CatalogItem.CatalogItem):
     def decodeDatagram(self, di, versionNumber, store):
         CatalogItem.CatalogItem.decodeDatagram(self, di, versionNumber, store)
         self.emoteIndex = di.getUint8()
-        self.loyaltyDays = di.getUint16()
+        self.isSpecial = di.getBool()
         if self.emoteIndex > len(OTPLocalizer.EmoteList):
             raise ValueError
 
     def encodeDatagram(self, dg, store):
         CatalogItem.CatalogItem.encodeDatagram(self, dg, store)
         dg.addUint8(self.emoteIndex)
-        dg.addUint16(self.loyaltyDays)
+        dg.addBool(self.isSpecial)
 
     def isGift(self):
-        if self.getEmblemPrices():
-            return 0
-        if self.loyaltyRequirement() > 0:
-            return 0
-        elif self.emoteIndex in LoyaltyEmoteItems:
-            return 0
-        else:
-            return 1
+        return not self.getEmblemPrices()

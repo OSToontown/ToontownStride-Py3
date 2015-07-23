@@ -27,7 +27,7 @@ dclass Account {
   uint32 ACCOUNT_AV_SET[] required db;
   uint32 ESTATE_ID db;
   AvatarPendingDel ACCOUNT_AV_SET_DEL[] db;
-  string CREATED db;
+  uint64 CREATED db;
   string LAST_LOGIN db;
   string ACCOUNT_ID db;
   uint16 ACCESS_LEVEL db;
@@ -234,7 +234,6 @@ from toontown.shtiker import NewbiePurchaseManager/AI
 from toontown.safezone import SafeZoneManager/AI
 from toontown.tutorial import TutorialManager/AI
 from toontown.catalog import CatalogManager/AI
-from toontown.catalog import AccountDate/AI
 from toontown.safezone import DistributedTreasure/AI
 from toontown.coghq import DistributedCashbotBossTreasure/AI
 from toontown.building import DistributedTrophyMgr/AI
@@ -1518,11 +1517,6 @@ dclass TutorialManager : DistributedObject {
 
 dclass CatalogManager : DistributedObject {
   startCatalog() airecv clsend;
-};
-
-dclass AccountDate : DistributedObject {
-  requestDate() airecv clsend;
-  requestDateResult(string);
 };
 
 dclass DistributedTreasure : DistributedObject {

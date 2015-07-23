@@ -18,7 +18,6 @@ from toontown.ai.DistributedReportMgrAI import DistributedReportMgrAI
 from toontown.building.DistributedBuildingQueryMgrAI import DistributedBuildingQueryMgrAI
 from toontown.building.DistributedTrophyMgrAI import DistributedTrophyMgrAI
 from toontown.catalog.CatalogManagerAI import CatalogManagerAI
-from toontown.catalog.AccountDateAI import AccountDateAI
 from toontown.coghq import CountryClubManagerAI
 from toontown.coghq import FactoryManagerAI
 from toontown.coghq import LawOfficeManagerAI
@@ -119,8 +118,6 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.cogPageManager = CogPageManagerAI.CogPageManagerAI()
         self.codeRedemptionMgr = TTCodeRedemptionMgrAI(self)
         self.codeRedemptionMgr.generateWithRequired(2)
-        self.accountDateMgr = AccountDateAI(self)
-        self.accountDateMgr.generateWithRequired(2)
         self.buildingQueryMgr = DistributedBuildingQueryMgrAI(self)
         self.buildingQueryMgr.generateWithRequired(2)
         self.groupManager.generateWithRequired(2)
