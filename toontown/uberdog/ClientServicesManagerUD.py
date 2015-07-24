@@ -325,18 +325,17 @@ class LoginAccountFSM(OperationFSM):
         self.demand('SetAccount')
 
     def enterCreateAccount(self):
-        self.notify.debug('We are trying to create the account')
         self.account = {
             'ACCOUNT_AV_SET': [0] * 6,
             'ESTATE_ID': 0,
             'ACCOUNT_AV_SET_DEL': [],
-            'CREATED': time.ctime(),
+            'CREATED': time.time(),
             'LAST_LOGIN': time.ctime(),
             'LAST_LOGIN_TS': time.time(),
             'ACCOUNT_ID': str(self.userId),
             'ACCESS_LEVEL': self.accessLevel
         }
-        res = self.csm.air.dbInterface.createObject(
+        self.csm.air.dbInterface.createObject(
             self.csm.air.dbId,
             self.csm.air.dclassesByName['AccountUD'],
             self.account,

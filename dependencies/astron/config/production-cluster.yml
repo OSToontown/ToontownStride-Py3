@@ -20,7 +20,8 @@ roles:
         max: 399999999
       backend:
         type: mongodb
-        server: mongodb://127.0.0.1:27017/stride
+        server: 127.0.0.1:21021
+        database: test
 
     - type: dbss
       database: 4003

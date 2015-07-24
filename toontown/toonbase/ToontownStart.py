@@ -26,13 +26,7 @@ from panda3d.core import loadPrcFile
 
 
 if __debug__:
-    try:
-        import wx
-    except:
-        import wxversion
-        wxversion.select('3.0')
-        import wx
-    import sys
+    import wx, sys
     from direct.stdpy import threading
 
     loadPrcFile('dependencies/config/general.prc')
