@@ -379,9 +379,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.enableUberGags()
 
     def deactivateButtons(self):
-        if self.previousActivateMode == 'book':
-            self.bookDeactivateButtons()
-        elif self.previousActivateMode == 'purchaseDelete':
+        if self.previousActivateMode == 'purchaseDelete':
             self.purchaseDeleteDeactivateButtons()
         elif self.previousActivateMode == 'purchase':
             self.purchaseDeactivateButtons()
@@ -399,9 +397,6 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
             self.storePurchaseBrokeDeactivateButtons()
         elif self.previousActivateMode == 'plantTree':
             self.plantTreeDeactivateButtons()
-        else:
-            self.notify.error('No such mode as %s' % self.previousActivateMode)
-        return None
 
     def __activateButtons(self):
         if hasattr(self, 'activateMode'):
@@ -454,9 +449,6 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
 
             else:
                 self.hideTrack(track)
-
-    def bookDeactivateButtons(self):
-        self.deleteEnterButton['command'] = None
 
     def updateDeleteButtons(self):
         for track in xrange(len(Tracks)):
