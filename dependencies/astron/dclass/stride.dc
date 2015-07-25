@@ -1811,9 +1811,8 @@ dclass DistributedNPCKartClerk : DistributedNPCToonBase {
 };
 
 dclass DistributedNPCLaffRestock : DistributedNPCToonBase {
-  setMovie(uint8, uint32, uint32, uint32[], int16) broadcast ram;
-  restock(uint32, uint16, uint16) airecv clsend;
-  transactionDone() airecv clsend;
+  restock(uint8) airecv clsend;
+  restockResult(uint8) broadcast;
 };
 
 dclass DistributedNPCGlove : DistributedNPCToonBase {

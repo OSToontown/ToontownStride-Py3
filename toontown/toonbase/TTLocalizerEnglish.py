@@ -8470,11 +8470,13 @@ DonaldChatter = ["I'm glad you're here today!",
  'I love to play tag. Do you?']
 NPCFriendUnavailable = 'Unavailable'
 FireTalkMessage = "You're fired!"
-RestockFullLaffMessage = "You're already happy!"
-RestockNoMoneyMessage = "You need more jellybeans to restock your laff!"
-RestockLaffMessage = "Have fun!"
+
 RestockAskMessage = "Would you like to\nrestock %s laff for %s jellybeans?"
-RestockCheaterMessage = "No cheaters allowed! Your transaction has been declined."
+RestockNoMoneyGuiMessage = "\n\x01WLRed\x01Not enough jellybeans\x02"
+RestockFullLaffMessage = "You're already happy!"
+RestockLessLaffMessage = "Why would you want to be less happy than you are right now?"
+RestockNoMoneyMessage = "You don't have enough jellybeans for that!"
+RestockSuccessfulMessage = "You're welcome! Have fun!"
 InVP = ' in a V.P. Battle'
 InFieldOffice = ' in a Sellbot Field Office'
 CogPanelLevel = 'Level %s'
