@@ -5,7 +5,7 @@ from direct.fsm.FSM import FSM
 from direct.showbase.DirectObject import *
 from toontown.toon.ToonDNA import ToonDNA, getSpeciesName
 import TopToonsGlobals
-import time, cPickle, random
+import time, random
 import datetime, json
 import urllib
 import urllib2

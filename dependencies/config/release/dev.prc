@@ -37,6 +37,7 @@ want-whitelist #t
 # Developer options:
 show-population #t
 want-instant-parties #t
+want-instant-delivery #t
 cogdo-pop-factor 1.5
 cogdo-ratio 0.5
 default-directnotify-level info
