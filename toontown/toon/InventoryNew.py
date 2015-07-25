@@ -139,6 +139,8 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         del self.battleFrame
         del self.purchaseFrame
         del self.storePurchaseFrame
+        self.deleteAllButton.destroy()
+        del self.deleteAllButton
         self.deleteEnterButton.destroy()
         del self.deleteEnterButton
         self.deleteExitButton.destroy()
@@ -187,7 +189,9 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.purchaseFrame = None
         self.storePurchaseFrame = None
         trashcanGui = loader.loadModel('phase_3/models/gui/trashcan_gui')
-        self.deleteEnterButton = DirectButton(parent=self.invFrame, image=(trashcanGui.find('**/TrashCan_CLSD'), trashcanGui.find('**/TrashCan_OPEN'), trashcanGui.find('**/TrashCan_RLVR')), text=('', TTLocalizer.InventoryDelete, TTLocalizer.InventoryDelete), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), text_scale=0.1, text_pos=(0, -0.1), text_font=getInterfaceFont(), textMayChange=0, relief=None, pos=(-1, 0, -0.35), scale=1.0)
+        trashcanImage = (trashcanGui.find('**/TrashCan_CLSD'), trashcanGui.find('**/TrashCan_OPEN'), trashcanGui.find('**/TrashCan_RLVR'))
+        self.deleteEnterButton = DirectButton(parent=self.invFrame, image=trashcanImage, text=('', TTLocalizer.InventoryDelete, TTLocalizer.InventoryDelete), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), text_scale=0.1, text_pos=(0, -0.1), text_font=getInterfaceFont(), textMayChange=0, relief=None, pos=(-1, 0, -0.35), scale=1.0)
+        self.deleteAllButton = DirectButton(parent=self.invFrame, image=trashcanImage, text=('', TTLocalizer.InventoryDeleteAll, TTLocalizer.InventoryDeleteAll), text_fg=(1, 0, 0, 1), text_shadow=(1, 1, 1, 1), text_scale=0.1, text_pos=(0, -0.1), text_font=getInterfaceFont(), textMayChange=0, relief=None, pos=(-0.3, 0, -0.91), scale=0.75, command=self.__zeroInvAndUpdate)
         self.deleteExitButton = DirectButton(parent=self.invFrame, image=(trashcanGui.find('**/TrashCan_OPEN'), trashcanGui.find('**/TrashCan_CLSD'), trashcanGui.find('**/TrashCan_RLVR')), text=('', TTLocalizer.InventoryDone, TTLocalizer.InventoryDone), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), text_scale=0.1, text_pos=(0, -0.1), text_font=getInterfaceFont(), textMayChange=0, relief=None, pos=(-1, 0, -0.35), scale=1.0)
         trashcanGui.removeNode()
         self.deleteHelpText = DirectLabel(parent=self.invFrame, relief=None, pos=(0.272, 0.3, -0.907), text=TTLocalizer.InventoryDeleteHelp, text_fg=(0, 0, 0, 1), text_scale=0.08, textMayChange=0)
@@ -234,10 +238,8 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
                 button.bind(DGG.EXIT, self.hideDetail)
                 self.buttons[track].append(button)
 
-        return
-
     def __handleSelection(self, track, level):
-        if self.activateMode == 'purchaseDelete' or self.activateMode == 'bookDelete' or self.activateMode == 'storePurchaseDelete':
+        if self.activateMode == 'purchaseDelete' or self.activateMode == 'storePurchaseDelete':
             if self.numItem(track, level):
                 self.useItem(track, level)
                 self.updateGUI(track, level)
@@ -265,6 +267,10 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
 
     def __handleBackToPlayground(self):
         messenger.send('inventory-back-to-playground')
+    
+    def __zeroInvAndUpdate(self):
+        self.zeroInv()
+        self.updateGUI()
 
     def showDetail(self, track, level, event = None):
         self.totalLabel.hide()
@@ -375,8 +381,6 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
     def deactivateButtons(self):
         if self.previousActivateMode == 'book':
             self.bookDeactivateButtons()
-        elif self.previousActivateMode == 'bookDelete':
-            self.bookDeleteDeactivateButtons()
         elif self.previousActivateMode == 'purchaseDelete':
             self.purchaseDeleteDeactivateButtons()
         elif self.previousActivateMode == 'purchase':
@@ -403,8 +407,6 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         if hasattr(self, 'activateMode'):
             if self.activateMode == 'book':
                 self.bookActivateButtons()
-            elif self.activateMode == 'bookDelete':
-                self.bookDeleteActivateButtons()
             elif self.activateMode == 'purchaseDelete':
                 self.purchaseDeleteActivateButtons()
             elif self.activateMode == 'purchase':
@@ -433,16 +435,12 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.detailFrame.setPos(-0.05, 0, -0.855)
         self.detailFrame.setScale(0.75)
         self.deleteEnterButton.hide()
-        self.deleteEnterButton.setPos(1.029, 0, -0.639)
-        self.deleteEnterButton.setScale(0.75)
+        self.deleteAllButton.hide()
         self.deleteExitButton.hide()
-        self.deleteExitButton.setPos(1.029, 0, -0.639)
-        self.deleteExitButton.setScale(0.75)
         self.invFrame.reparentTo(self)
         self.invFrame.setPos(0, 0, 0)
         self.invFrame.setScale(1)
-        self.deleteEnterButton['command'] = self.setActivateMode
-        self.deleteEnterButton['extraArgs'] = ['bookDelete']
+
         for track in xrange(len(Tracks)):
             if self.toon.hasTrackAccess(track):
                 self.showTrack(track)
@@ -457,28 +455,10 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
             else:
                 self.hideTrack(track)
 
-        return None
-
     def bookDeactivateButtons(self):
         self.deleteEnterButton['command'] = None
-        return
 
-    def bookDeleteActivateButtons(self):
-        messenger.send('enterBookDelete')
-        self.setPos(-0.2, 0, 0.4)
-        self.setScale(0.8)
-        self.deleteEnterButton.hide()
-        self.deleteEnterButton.setPos(1.029, 0, -0.639)
-        self.deleteEnterButton.setScale(0.75)
-        self.deleteExitButton.show()
-        self.deleteExitButton.setPos(1.029, 0, -0.639)
-        self.deleteExitButton.setScale(0.75)
-        self.deleteHelpText.show()
-        self.invFrame.reparentTo(self)
-        self.invFrame.setPos(0, 0, 0)
-        self.invFrame.setScale(1)
-        self.deleteExitButton['command'] = self.setActivateMode
-        self.deleteExitButton['extraArgs'] = [self.previousActivateMode]
+    def updateDeleteButtons(self):
         for track in xrange(len(Tracks)):
             if self.toon.hasTrackAccess(track):
                 self.showTrack(track)
@@ -486,21 +466,46 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
                     button = self.buttons[track][level]
                     if self.itemIsUsable(track, level):
                         button.show()
-                        if self.numItem(track, level) <= 0:
+                        if self.numItem(track, level) <= 0 or level >= UBER_GAG_LEVEL_INDEX:
                             self.makeUnpressable(button, track, level)
                         else:
                             self.makeDeletePressable(button, track, level)
                     else:
                         button.hide()
-
             else:
                 self.hideTrack(track)
-
-    def bookDeleteDeactivateButtons(self):
-        messenger.send('exitBookDelete')
-        self.deleteHelpText.hide()
-        self.deleteDeactivateButtons()
-
+    
+    def updateUseableButtons(self):
+        for track in xrange(len(Tracks)):
+            if self.toon.hasTrackAccess(track):
+                self.showTrack(track)
+                for level in xrange(len(Levels[track])):
+                    button = self.buttons[track][level]
+                    if self.itemIsUsable(track, level):
+                        button.show()
+                        self.makeUnpressable(button, track, level)
+                    else:
+                        button.hide()
+            else:
+                self.hideTrack(track)
+    
+    def updatePurchaseButtons(self):
+        for track in xrange(len(Tracks)):
+            if self.toon.hasTrackAccess(track):
+                self.showTrack(track)
+                for level in xrange(len(Levels[track])):
+                    button = self.buttons[track][level]
+                    if self.itemIsUsable(track, level):
+                        button.show()
+                        if self.numItem(track, level) >= self.getMax(track, level) or self.totalProps == self.toon.getMaxCarry() or level > LAST_REGULAR_GAG_LEVEL:
+                            self.makeUnpressable(button, track, level)
+                        else:
+                            self.makePressable(button, track, level)
+                    else:
+                        button.hide()
+            else:
+                self.hideTrack(track)
+    
     def purchaseDeleteActivateButtons(self):
         self.reparentTo(aspect2d)
         self.setPos(0.2, 0, -0.04)
@@ -514,52 +519,20 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.detailFrame.setPos(1.17, 0, -0.02)
         self.detailFrame.setScale(1.25)
         self.deleteEnterButton.hide()
-        self.deleteEnterButton.setPos(-0.441, 0, -0.917)
+        self.deleteEnterButton.setPos(-0.8, 0, -0.917)
         self.deleteEnterButton.setScale(0.75)
         self.deleteExitButton.show()
-        self.deleteExitButton.setPos(-0.441, 0, -0.917)
+        self.deleteExitButton.setPos(-0.8, 0, -0.917)
         self.deleteExitButton.setScale(0.75)
         self.deleteExitButton['command'] = self.setActivateMode
         self.deleteExitButton['extraArgs'] = [self.previousActivateMode]
-        for track in xrange(len(Tracks)):
-            if self.toon.hasTrackAccess(track):
-                self.showTrack(track)
-                for level in xrange(len(Levels[track])):
-                    button = self.buttons[track][level]
-                    if self.itemIsUsable(track, level):
-                        button.show()
-                        if self.numItem(track, level) <= 0 or level >= UBER_GAG_LEVEL_INDEX:
-                            self.makeUnpressable(button, track, level)
-                        else:
-                            self.makeDeletePressable(button, track, level)
-                    else:
-                        button.hide()
-
-            else:
-                self.hideTrack(track)
-
-        return
+        self.updateDeleteButtons()
 
     def purchaseDeleteDeactivateButtons(self):
         self.invFrame.reparentTo(self)
         self.purchaseFrame.hide()
         self.deleteDeactivateButtons()
-        for track in xrange(len(Tracks)):
-            if self.toon.hasTrackAccess(track):
-                self.showTrack(track)
-                for level in xrange(len(Levels[track])):
-                    button = self.buttons[track][level]
-                    if self.itemIsUsable(track, level):
-                        button.show()
-                        if self.numItem(track, level) <= 0 or level >= UBER_GAG_LEVEL_INDEX:
-                            self.makeUnpressable(button, track, level)
-                        else:
-                            self.makeDeletePressable(button, track, level)
-                    else:
-                        button.hide()
-
-            else:
-                self.hideTrack(track)
+        self.updateDeleteButtons()
 
     def storePurchaseDeleteActivateButtons(self):
         self.reparentTo(aspect2d)
@@ -574,31 +547,14 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.detailFrame.setPos(1.175, 0, 0)
         self.detailFrame.setScale(1.25)
         self.deleteEnterButton.hide()
-        self.deleteEnterButton.setPos(-0.55, 0, -0.91)
+        self.deleteEnterButton.setPos(-0.8, 0, -0.91)
         self.deleteEnterButton.setScale(0.75)
         self.deleteExitButton.show()
-        self.deleteExitButton.setPos(-0.55, 0, -0.91)
+        self.deleteExitButton.setPos(-0.8, 0, -0.91)
         self.deleteExitButton.setScale(0.75)
         self.deleteExitButton['command'] = self.setActivateMode
         self.deleteExitButton['extraArgs'] = [self.previousActivateMode]
-        for track in xrange(len(Tracks)):
-            if self.toon.hasTrackAccess(track):
-                self.showTrack(track)
-                for level in xrange(len(Levels[track])):
-                    button = self.buttons[track][level]
-                    if self.itemIsUsable(track, level):
-                        button.show()
-                        if self.numItem(track, level) <= 0 or level >= UBER_GAG_LEVEL_INDEX:
-                            self.makeUnpressable(button, track, level)
-                        else:
-                            self.makeDeletePressable(button, track, level)
-                    else:
-                        button.hide()
-
-            else:
-                self.hideTrack(track)
-
-        return
+        self.updateDeleteButtons()
 
     def storePurchaseDeleteDeactivateButtons(self):
         self.invFrame.reparentTo(self)
@@ -617,27 +573,14 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.invFrame.setScale(0.81)
         self.detailFrame.setPos(1.175, 0, 0)
         self.detailFrame.setScale(1.25)
+        self.deleteAllButton.show()
         self.deleteEnterButton.show()
-        self.deleteEnterButton.setPos(-0.55, 0, -0.91)
+        self.deleteEnterButton.setPos(-0.8, 0, -0.91)
         self.deleteEnterButton.setScale(0.75)
         self.deleteExitButton.hide()
-        self.deleteExitButton.setPos(-0.551, 0, -0.91)
+        self.deleteExitButton.setPos(-0.8, 0, -0.91)
         self.deleteExitButton.setScale(0.75)
-        for track in xrange(len(Tracks)):
-            if self.toon.hasTrackAccess(track):
-                self.showTrack(track)
-                for level in xrange(len(Levels[track])):
-                    button = self.buttons[track][level]
-                    if self.itemIsUsable(track, level):
-                        button.show()
-                        self.makeUnpressable(button, track, level)
-                    else:
-                        button.hide()
-
-            else:
-                self.hideTrack(track)
-
-        return
+        self.updateUseableButtons()
 
     def storePurchaseBrokeDeactivateButtons(self):
         self.invFrame.reparentTo(self)
@@ -686,36 +629,19 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.invFrame.setScale(0.81)
         self.detailFrame.setPos(1.17, 0, -0.02)
         self.detailFrame.setScale(1.25)
-        totalProps = self.totalProps
-        maxProps = self.toon.getMaxCarry()
+        self.deleteAllButton.show()
         self.deleteEnterButton.show()
-        self.deleteEnterButton.setPos(-0.441, 0, -0.917)
+        self.deleteEnterButton.setPos(-0.8, 0, -0.917)
         self.deleteEnterButton.setScale(0.75)
         self.deleteExitButton.hide()
-        self.deleteExitButton.setPos(-0.441, 0, -0.917)
+        self.deleteExitButton.setPos(-0.8, 0, -0.917)
         self.deleteExitButton.setScale(0.75)
         if self.gagTutMode:
+            self.deleteAllButton.hide()
             self.deleteEnterButton.hide()
         self.deleteEnterButton['command'] = self.setActivateMode
         self.deleteEnterButton['extraArgs'] = ['purchaseDelete']
-        for track in xrange(len(Tracks)):
-            if self.toon.hasTrackAccess(track):
-                self.showTrack(track)
-                for level in xrange(len(Levels[track])):
-                    button = self.buttons[track][level]
-                    if self.itemIsUsable(track, level):
-                        button.show()
-                        if self.numItem(track, level) >= self.getMax(track, level) or totalProps == maxProps or level > LAST_REGULAR_GAG_LEVEL:
-                            self.makeUnpressable(button, track, level)
-                        else:
-                            self.makePressable(button, track, level)
-                    else:
-                        button.hide()
-
-            else:
-                self.hideTrack(track)
-
-        return
+        self.updatePurchaseButtons()
 
     def purchaseDeactivateButtons(self):
         self.invFrame.reparentTo(self)
@@ -733,31 +659,16 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.invFrame.setScale(0.81)
         self.detailFrame.setPos(1.175, 0, 0)
         self.detailFrame.setScale(1.25)
-        totalProps = self.totalProps
-        maxProps = self.toon.getMaxCarry()
+        self.deleteAllButton.show()
         self.deleteEnterButton.show()
-        self.deleteEnterButton.setPos(-0.55, 0, -0.91)
+        self.deleteEnterButton.setPos(-0.8, 0, -0.91)
         self.deleteEnterButton.setScale(0.75)
         self.deleteExitButton.hide()
-        self.deleteExitButton.setPos(-0.55, 0, -0.91)
+        self.deleteExitButton.setPos(-0.8, 0, -0.91)
         self.deleteExitButton.setScale(0.75)
         self.deleteEnterButton['command'] = self.setActivateMode
         self.deleteEnterButton['extraArgs'] = ['storePurchaseDelete']
-        for track in xrange(len(Tracks)):
-            if self.toon.hasTrackAccess(track):
-                self.showTrack(track)
-                for level in xrange(len(Levels[track])):
-                    button = self.buttons[track][level]
-                    if self.itemIsUsable(track, level):
-                        button.show()
-                        if self.numItem(track, level) >= self.getMax(track, level) or totalProps == maxProps or level > LAST_REGULAR_GAG_LEVEL:
-                            self.makeUnpressable(button, track, level)
-                        else:
-                            self.makePressable(button, track, level)
-                    else:
-                        button.hide()
-            else:
-                self.hideTrack(track)
+        self.updatePurchaseButtons()
 
     def storePurchaseDeactivateButtons(self):
         self.invFrame.reparentTo(self)
@@ -775,13 +686,15 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.invFrame.setScale(0.81)
         self.detailFrame.setPos(1.17, 0, -0.02)
         self.detailFrame.setScale(1.25)
+        self.deleteAllButton.show()
         self.deleteEnterButton.show()
-        self.deleteEnterButton.setPos(-0.441, 0, -0.917)
+        self.deleteEnterButton.setPos(-0.8, 0, -0.917)
         self.deleteEnterButton.setScale(0.75)
         self.deleteExitButton.hide()
-        self.deleteExitButton.setPos(-0.441, 0, -0.917)
+        self.deleteExitButton.setPos(-0.8, 0, -0.917)
         self.deleteExitButton.setScale(0.75)
         if self.gagTutMode:
+            self.deleteAllButton.hide()
             self.deleteEnterButton.hide()
         for track in xrange(len(Tracks)):
             if self.toon.hasTrackAccess(track):
@@ -816,28 +729,10 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.invFrame.setScale(0.81)
         self.detailFrame.setPos(1.17, 0, -0.02)
         self.detailFrame.setScale(1.25)
-        self.deleteEnterButton.show()
-        self.deleteEnterButton.setPos(-0.441, 0, -0.917)
-        self.deleteEnterButton.setScale(0.75)
         self.deleteExitButton.hide()
-        self.deleteExitButton.setPos(-0.441, 0, -0.917)
-        self.deleteExitButton.setScale(0.75)
         self.deleteEnterButton.hide()
-        for track in xrange(len(Tracks)):
-            if self.toon.hasTrackAccess(track):
-                self.showTrack(track)
-                for level in xrange(len(Levels[track])):
-                    button = self.buttons[track][level]
-                    if self.itemIsUsable(track, level):
-                        button.show()
-                        self.makeUnpressable(button, track, level)
-                    else:
-                        button.hide()
-
-            else:
-                self.hideTrack(track)
-
-        return
+        self.deleteAllButton.hide()
+        self.updateUseableButtons()
 
     def gagTutDisabledDeactivateButtons(self):
         self.invFrame.reparentTo(self)
@@ -857,6 +752,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.invFrame.setScale(1)
         self.detailFrame.setPos(1.125, 0, -0.08)
         self.detailFrame.setScale(1)
+        self.deleteAllButton.hide()
         self.deleteEnterButton.hide()
         self.deleteExitButton.hide()
         if self.bldg == 1:
@@ -919,6 +815,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.invFrame.setScale(1)
         self.detailFrame.setPos(1.125, 0, -0.08)
         self.detailFrame.setScale(1)
+        self.deleteAllButton.hide()
         self.deleteEnterButton.hide()
         self.deleteExitButton.hide()
         self.runButton.hide()
