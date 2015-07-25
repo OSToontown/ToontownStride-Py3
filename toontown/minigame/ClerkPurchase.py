@@ -35,7 +35,7 @@ class ClerkPurchase(PurchaseBase):
         self.handleDone(0)
 
     def __timerExpired(self):
-        self.handleDone(1)
+        self.handleDone(2)
 
     def enterPurchase(self):
         PurchaseBase.enterPurchase(self)
