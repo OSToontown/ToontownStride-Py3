@@ -1621,9 +1621,16 @@ BMovementSpeed = 0
 BMovementSpeedMultiplier = 1.3
 
 BugReportSite = 'https://bugs.launchpad.net/toontown-united/+filebug'
+NPCCollisionDelay = 2.5
+
 CostPerLaffRestock = 3
+
 FISHSALE_COMPLETE = 0
 FISHSALE_TROPHY = 1
-NPCCollisionDelay = 2.5
+
+CLERK_GOODBYE = 0
+CLERK_GREETING = 1
+CLERK_TOOKTOOLONG = 2
+
 KnockKnockHeal = 12
 KnockKnockCooldown = 600

@@ -22,7 +22,6 @@ class ClerkPurchase(PurchaseBase):
         self.timer.reparentTo(self.frame)
         self.timer.posInTopRightCorner()
         purchaseModels.removeNode()
-        return
 
     def unload(self):
         PurchaseBase.unload(self)
@@ -36,7 +35,7 @@ class ClerkPurchase(PurchaseBase):
         self.handleDone(0)
 
     def __timerExpired(self):
-        self.handleDone(0)
+        self.handleDone(1)
 
     def enterPurchase(self):
         PurchaseBase.enterPurchase(self)

@@ -123,7 +123,7 @@ class ToonHood(Hood):
         self.purchase.unload()
         del self.purchase
 
-    def handlePurchaseDone(self):
+    def handlePurchaseDone(self, playAgain):
         doneStatus = self.purchase.getDoneStatus()
         if doneStatus['where'] == 'playground':
             self.fsm.request('quietZone', [{'loader': 'safeZoneLoader',

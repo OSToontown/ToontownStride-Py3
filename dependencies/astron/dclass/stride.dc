@@ -1770,8 +1770,8 @@ dclass DistributedNPCScientist : DistributedNPCToonBase {
 };
 
 dclass DistributedNPCClerk : DistributedNPCToonBase {
-  setMovie(uint8, uint32, uint32, int16) broadcast ram;
-  setInventory(blob, int16, uint8) airecv clsend;
+  setState(uint32, uint8) broadcast airecv clsend;
+  setInventory(blob, int16) airecv clsend;
 };
 
 dclass DistributedNPCTailor : DistributedNPCToonBase {
@@ -3174,11 +3174,11 @@ dclass TTCodeRedemptionMgr : DistributedObject {
 
 struct Friend
 {
-uint32 doId;
-string name;
-blob dna;
-uint16 adminAccess;
-uint32 petId;
+  uint32 doId;
+  string name;
+  blob dna;
+  uint16 adminAccess;
+  uint32 petId;
 };
 
 dclass TTSFriendsManager : DistributedObjectGlobal {

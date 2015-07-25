@@ -4753,6 +4753,8 @@ def dna(part, value):
 
     if part == 'show':
         return dna.asTuple()
+    if part == 'showrandom':
+        return NPCToons.getRandomDNA(time.time(), value)
     return 'Invalid part: ' + part
 
 @magicWord(category=CATEGORY_ADMINISTRATOR, types=[int])
