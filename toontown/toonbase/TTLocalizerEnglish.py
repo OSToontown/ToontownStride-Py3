@@ -4621,7 +4621,7 @@ SkelecogInvasionBulletin = [
 ]
 WaiterInvasionBegin = [
  'Uh oh, it appears that the Cogs banquet has been rescheduled!',
- 'Waiter %(singular)s are invading Toontown!!!'
+ 'The Waiter %(singular)s are invading Toontown!!!'
 ]
 WaiterInvasionEnd = [
  'The Waiter %(singular)s waiters have been defeated!!!',
@@ -4630,7 +4630,7 @@ WaiterInvasionEnd = [
 WaiterInvasionBulletin = [
  'There is a Cog invasion in progress!!!',
  'The Cogs banquet has been rescheduled!!!',
- 'The Waiter %(singular)s waiters are invading Toontown!!!'
+ 'The Waiter %(singular)s are invading Toontown!!!'
 ]
 V2InvasionBegin = [
  "Oh my, stock up on gags toons!",
