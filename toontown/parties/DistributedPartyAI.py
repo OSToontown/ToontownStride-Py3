@@ -149,6 +149,7 @@ class DistributedPartyAI(DistributedObjectAI):
 
     def _removeAvatar(self, avId):
         if avId in self.avIdsAtParty:
-            print 'REMOVE FROM PARTTY!'
+            print 'REMOVE FROM PARTY!'
             self.air.globalPartyMgr.d_toonLeftParty(self.info.get('partyId', 0), avId)
             self.avIdsAtParty.remove(avId)
+#Thanks Fooster for the typo fix
