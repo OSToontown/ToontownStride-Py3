@@ -18,10 +18,11 @@ FLPainting = 8
 FLOnTable = 16
 FLIsTable = 32
 FLPhone = 64
-FLBillboard = 128
-FLTrunk = 256
-FLBoysOnly = 512
-FLGirlsOnly = 1024
+FLCrate = 128
+FLBillboard = 256
+FLTrunk = 512
+FLBoysOnly = 1024
+FLGirlsOnly = 2048
 furnitureColors = [
   (0.792, 0.353, 0.29, 1.0),
   (0.176, 0.592, 0.439, 1.0),
@@ -896,7 +897,7 @@ FurnitureTypes = {
          None,
          None,
          0,
-         None,
+         FLCrate,
          0.5)
 }
 

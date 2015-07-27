@@ -290,6 +290,7 @@ from toontown.estate import DistributedBank/AI
 from toontown.estate import DistributedCloset/AI
 from toontown.estate import DistributedTrunk/AI
 from toontown.estate import DistributedPhone/AI
+from toontown.estate import DistributedRewardCrate/AI
 from toontown.effects import DistributedFireworkShow/AI
 from toontown.estate import DistributedFireworksCannon/AI
 from toontown.coghq import LobbyManager/AI
@@ -2087,6 +2088,11 @@ dclass DistributedPhone : DistributedFurnitureItem {
   purchaseItemComplete();
   requestGiftAvatar(uint32) airecv clsend;
   setGiftAvatar(blob);
+};
+
+dclass DistributedRewardCrate : DistributedFurnitureItem {
+  requestKeyUsage() airecv clsend;
+  useKeyResponse(uint8, uint32);
 };
 
 dclass DistributedFireworkShow : DistributedObject {

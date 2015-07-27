@@ -8616,6 +8616,15 @@ CEOSpeech = [
 CrateRewardMessage1 = 'Nice! You have earned a crate! It will arrive in your mailbox shortly.'
 CrateRewardMessage2 = 'You can open it with keys from boss battles.'
 CrateRewardMessages = [CrateRewardMessage1, CrateRewardMessage2]
+CrateNotOwner = 'Sorry, this is not your crate.'
+CrateNoKeys = 'Sorry, but you have no keys. You can find some in the cog facilities.'
+CrateAskToUse = 'Would you like to use a key to open this crate?'
+CrateBeanPrize = "Congratulations! You found %s jellybeans. They've been automatically added to your jellybean bank!"
+CrateBuffPrize = 'Congratulations! %s'
+CrateNametagPrize = "Congratulations! You've received a nametag. Check your mailbox to find out which one!"
+CrateEmotePrize = "Congratulations! You've unlocked a new emote. Check your mailbox to pick it up!"
+CrateClothingPrize = "Congratulations! You've received a new clothing item. Check your mailbox to check it out!"
+CrateAccessoryPrize = 'Congratulations! You found a new accessory for your Toon. Check your mailbox and rock it!'
 
 Blacklist = [
  "$1ut",

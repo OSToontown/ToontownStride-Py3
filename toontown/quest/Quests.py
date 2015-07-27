@@ -4432,6 +4432,7 @@ RewardDict = {
     10003: (EPPReward, 3) # Sellbot
 }
 
+BuffRewardIds = [3001, 3002, 3003, 3004]
 
 def getNumTiers():
     return len(RequiredRewardTrackDict) - 1

@@ -1,7 +1,7 @@
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from toontown.catalog.CatalogItemList import CatalogItemList
 from toontown.catalog import CatalogItem
-from toontown.catalog.CatalogFurnitureItem import CatalogFurnitureItem, FLTrunk, FLCloset, FLBank, FLPhone
+from toontown.catalog.CatalogFurnitureItem import CatalogFurnitureItem, FLTrunk, FLCloset, FLBank, FLPhone, FLCrate
 from toontown.catalog.CatalogWallpaperItem import CatalogWallpaperItem
 from toontown.catalog.CatalogMouldingItem import CatalogMouldingItem
 from toontown.catalog.CatalogFlooringItem import CatalogFlooringItem
@@ -12,6 +12,7 @@ from DistributedPhoneAI import DistributedPhoneAI
 from DistributedClosetAI import DistributedClosetAI
 from DistributedTrunkAI import DistributedTrunkAI
 from DistributedBankAI import DistributedBankAI
+from DistributedRewardCrateAI import DistributedRewardCrateAI
 from otp.ai.MagicWordGlobal import *
 
 class FurnitureError(Exception):
@@ -243,6 +244,8 @@ class DistributedFurnitureManagerAI(DistributedObjectAI):
             do = DistributedBankAI(self.air, self, item)
         elif item.getFlags() & FLPhone:
             do = DistributedPhoneAI(self.air, self, item)
+        elif item.getFlags() & FLCrate:
+            do = DistributedRewardCrateAI(self.air, self, item)
         else:
             do = DistributedFurnitureItemAI(self.air, self, item)
         
@@ -285,8 +288,21 @@ class DistributedFurnitureManagerAI(DistributedObjectAI):
 
         return ToontownGlobals.FM_DeletedItem
 
-    def deleteItemFromRoom(self, blob, doId):
-        pass
+    def deleteItemFromRoom(self, doId, addToTrash=True):
+        item = self.getItemObject(doId)
+
+        if not item:
+            self.air.writeServerEvent('suspicious', avId=self.air.getAvatarIdFromSender(), issue='Tried to delete an invalid item with doId %s' % doId)
+            return ToontownGlobals.FM_InvalidIndex
+
+        if addToTrash:
+            self.deletedItems.append(item.catalogItem)
+            self.d_setDeletedItems(self.getDeletedItems())
+
+        item.destroy()
+        self.items.remove(item)
+        
+        return ToontownGlobals.FM_DeletedItem
 
     def moveWallpaperFromAttic(self, index, room):
         retcode = ToontownGlobals.FM_SwappedItem
@@ -372,7 +388,16 @@ class DistributedFurnitureManagerAI(DistributedObjectAI):
         return ToontownGlobals.FM_DeletedItem
 
     def recoverDeletedItem(self, blob, index):
-        pass
+        if len(self.deletedItems) <= index:
+            return
+        
+        item = self.deletedItems[index]
+        self.deletedItems.remove(item)
+        self.atticItems.append(item)
+        self.d_setDeletedItems(self.deletedItems)
+        self.d_setAtticItems(self.getAtticItems())
+        
+        return ToontownGlobals.FM_MovedItem
 
     def handleMessage(self, func, response, *args):
         context = args[-1]
@@ -409,7 +434,7 @@ class DistributedFurnitureManagerAI(DistributedObjectAI):
         self.handleMessage(self.deleteItemFromAttic, 'deleteItemFromAtticResponse', blob, index, context)
 
     def deleteItemFromRoomMessage(self, blob, doId, context):
-        self.handleMessage(self.deleteItemFromRoom, 'deleteItemFromRoomResponse', blob, doId, context)
+        self.handleMessage(self.deleteItemFromRoom, 'deleteItemFromRoomResponse', doId, context)
 
     def moveWallpaperFromAtticMessage(self, index, room, context):
         self.handleMessage(self.moveWallpaperFromAttic, 'moveWallpaperFromAtticResponse', index, room, context)

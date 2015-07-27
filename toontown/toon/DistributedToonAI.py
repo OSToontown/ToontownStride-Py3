@@ -3698,7 +3698,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def addCrateKeys(self, amountToAdd):
         self.b_setCrateKeys(min(self.getCrateKeys() + amountToAdd, 255))
 
-    def removeeCrateKeys(self, amount):
+    def removeCrateKeys(self, amount):
         self.b_setCrateKeys(max(self.getCrateKeys() - amount, 0))
 
     def b_setNametagStyle(self, nametagStyle):
