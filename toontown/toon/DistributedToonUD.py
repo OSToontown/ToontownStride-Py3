@@ -282,6 +282,9 @@ class DistributedToonUD(DistributedObjectUD):
 
     def setFishingRod(self, todo0):
         pass
+    
+    def setMaxFishingRod(self, todo0):
+        pass
 
     def setFishingTrophies(self, todo0):
         pass

@@ -40,9 +40,8 @@ class CatalogNametagItem(CatalogItem.CatalogItem):
 
     def recordPurchase(self, avatar, optional):
         if avatar:
-            avatar.nametagStyles.append(self.nametagStyle)
-            avatar.b_setNametagStyles(avatar.nametagStyles)
             avatar.b_setNametagStyle(self.nametagStyle)
+            avatar.addNametagStyle(self.nametagStyle)
         return ToontownGlobals.P_ItemAvailable
 
     def getDeliveryTime(self):

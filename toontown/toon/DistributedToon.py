@@ -867,9 +867,25 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def setFishingRod(self, rodId):
         self.fishingRod = rodId
+        if self == base.localAvatar:
+            messenger.send('refreshFishingRod')
 
     def getFishingRod(self):
         return self.fishingRod
+    
+    def setMaxFishingRod(self, rodId):
+        self.maxFishingRod = rodId
+        if self == base.localAvatar:
+            messenger.send('refreshFishingRod')
+
+    def getMaxFishingRod(self):
+        return self.maxFishingRod
+    
+    def requestFishingRod(self, rodId):
+        if not 0 <= rodId <= self.maxFishingRod:
+            return
+
+        self.sendUpdate('requestFishingRod', [rodId])
 
     def setFishingTrophies(self, trophyList):
         self.fishingTrophies = trophyList

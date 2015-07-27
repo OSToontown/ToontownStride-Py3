@@ -6,6 +6,7 @@ from panda3d.core import *
 
 import DisplaySettingsDialog
 import ShtikerPage
+import OptionChooser
 from otp.speedchat import SCColorScheme
 from otp.speedchat import SCStaticTextTerminal
 from otp.speedchat import SpeedChat
@@ -701,6 +702,7 @@ class ExtraOptionsTabPage(DirectFrame):
     def __init__(self, parent = aspect2d):
         self.parent = parent
         self.currentSizeIndex = None
+        self.optionChoosers = {}
 
         DirectFrame.__init__(self, parent=self.parent, relief=None, pos=(0.0, 0.0, 0.0), scale=(1.0, 1.0, 1.0))
 
@@ -711,9 +713,9 @@ class ExtraOptionsTabPage(DirectFrame):
         DirectFrame.destroy(self)
 
     def load(self):
+        self.optionChoosers = {}
         guiButton = loader.loadModel('phase_3/models/gui/quit_button')
         circleModel = loader.loadModel('phase_3/models/gui/tt_m_gui_mat_nameShop')
-        matGui = loader.loadModel('phase_3/models/gui/tt_m_gui_mat_mainGui')
         titleHeight = 0.61
         textStartHeight = 0.45
         textRowHeight = 0.145
@@ -725,13 +727,11 @@ class ExtraOptionsTabPage(DirectFrame):
         options_text_scale = 0.052
         disabled_arrow_color = Vec4(0.6, 0.6, 0.6, 1.0)
         button_image = (guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR'))
-        arrow_image = (matGui.find('**/tt_t_gui_mat_shuffleArrowUp'), matGui.find('**/tt_t_gui_mat_shuffleArrowDown'))
         self.speed_chat_scale = 0.055
         self.fov_label = DirectLabel(parent=self, relief=None, text=TTLocalizer.FieldOfViewLabel, text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight))
         self.speedchatPlus_label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - textRowHeight))
         self.trueFriends_label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - 2 * textRowHeight))
         self.cogInterface_label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - 3 * textRowHeight))
-        self.nametagStyle_label = DirectLabel(parent=self, relief=None, text=TTLocalizer.NametagStyleLabel, text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - 4 * textRowHeight))
         self.fov_slider = DirectSlider(parent=self, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord),
                                                value=settings['fov'], pageSize=5, range=(ToontownGlobals.DefaultCameraFov, ToontownGlobals.MaxCameraFov), command=self.__doFov,
                                                thumb_geom=(circleModel.find('**/tt_t_gui_mat_namePanelCircle')), thumb_relief=None, thumb_geom_scale=2)
@@ -739,15 +739,13 @@ class ExtraOptionsTabPage(DirectFrame):
         self.speedchatPlus_toggleButton = DirectButton(parent=self, relief=None, image=button_image, image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight), command=self.__doToggleSpeedchatPlus)
         self.trueFriends_toggleButton = DirectButton(parent=self, relief=None, image=button_image, image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - 2 * textRowHeight), command=self.__doToggleTrueFriends)
         self.cogInterface_toggleButton = DirectButton(parent=self, relief=None, image=button_image, image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - 3 * textRowHeight), command=self.__doToggleCogInterface)
-        self.nametagStyle_name = DirectLabel(self, relief=None, text='', scale=0.06, text_wordwrap=9, pos=(buttonbase_xcoord, 0, textStartHeight - 4 * textRowHeight))
-        self.nametagStyle_leftButton = DirectButton(self, relief=None, image=arrow_image, scale=0.45, pos=(0.05, 0, textStartHeight - 4 * textRowHeight), command=self.__updateNametagIndex, extraArgs=[-1])
-        self.nametagStyle_rightButton = DirectButton(self, relief=None, image=arrow_image, scale=-0.45, pos=(0.65, 0, textStartHeight - 4 * textRowHeight), command=self.__updateNametagIndex, extraArgs=[1])
-        self.nametagStyle_index = -1
         self.bugReportButton = DirectButton(parent=self, relief=None, text=TTLocalizer.BugReportButton, image=button_image, image_scale=button_image_scale, text_pos=(0, -0.01), text_fg=(0, 0, 0, 1),
         command=self.showReportNotice, pos=(0.0, 0.0, -0.6), text_scale=(0.045))
         guiButton.removeNode()
         circleModel.removeNode()
-        matGui.removeNode()
+
+        self.optionChoosers['pole'] = OptionChooser.OptionChooser(self, TTLocalizer.FishingPoleLabel, 4, self.__updateFishingPole, [False], self.__applyFishingPole)
+        self.optionChoosers['nametag_style'] = OptionChooser.OptionChooser(self, TTLocalizer.NametagStyleLabel, 5, self.__updateNametagStyle, [False], self.__applyNametagStyle)
 
     def enter(self):
         self.show()
@@ -756,15 +754,17 @@ class ExtraOptionsTabPage(DirectFrame):
         self.__setTrueFriendsButton()
         self.__setCogInterfaceButton()
         self.__updateNametagStyle()
+        self.__updateFishingPole()
         self.accept('refreshNametagStyle', self.__updateNametagStyle)
+        self.accept('refreshFishingRod', self.__updateFishingPole)
 
     def exit(self):
         self.ignoreAll()
         self.destroyReportNotice()
         self.hide()
-
-        if self.nametagStyle_index != -1 and self.nametagStyle_index != base.localAvatar.nametagStyles.index(base.localAvatar.getNametagStyle()):
-            base.localAvatar.requestNametagStyle(base.localAvatar.nametagStyles[self.nametagStyle_index])
+        
+        for chooser in self.optionChoosers.values():
+            chooser.exit(chooser.index)
 
     def unload(self):
         self.fov_label.destroy()
@@ -777,8 +777,6 @@ class ExtraOptionsTabPage(DirectFrame):
         del self.trueFriends_label
         self.cogInterface_label.destroy()
         del self.cogInterface_label
-        self.nametagStyle_label.destroy()
-        del self.nametagStyle_label
         self.speedchatPlus_toggleButton.destroy()
         del speedchatPlus_toggleButton
         self.trueFriends_toggleButton.destroy()
@@ -787,13 +785,10 @@ class ExtraOptionsTabPage(DirectFrame):
         del self.cogInterface_toggleButton
         self.bugReportButton.destroy()
         del self.bugReportButton
-        self.nametagStyle_name.destroy()
-        del self.nametagStyle_name
-        self.nametagStyle_leftButton.destroy()
-        del self.nametagStyle_leftButton
-        self.nametagStyle_rightButton.destroy()
-        del self.nametagStyle_rightButton
         self.destroyReportNotice()
+        
+        for chooser in self.optionChoosers.values():
+            optionChooser.unload()
 
     def __doFov(self):
         fov = self.fov_slider['value']
@@ -833,27 +828,33 @@ class ExtraOptionsTabPage(DirectFrame):
         self.trueFriends_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff if settings['trueFriends'] else TTLocalizer.OptionsPageToggleOn
 
     def __updateNametagStyle(self, resetIndex=True):
-        if resetIndex:
-            self.nametagStyle_index = base.localAvatar.nametagStyles.index(base.localAvatar.getNametagStyle())
+        chooser = self.optionChoosers['nametag_style']
 
-        nametagId = base.localAvatar.nametagStyles[self.nametagStyle_index]
-        self.nametagStyle_name['text'] = base.localAvatar.getName() + '\n' + TTLocalizer.NametagFontNames[nametagId]
-        self.nametagStyle_name['text_font'] = ToontownGlobals.getNametagFont(nametagId)
-        nametagCount = len(base.localAvatar.nametagStyles)
-        
-        if self.nametagStyle_index >= (nametagCount - 1):
-            self.nametagStyle_rightButton.hide()
-        else:
-            self.nametagStyle_rightButton.show()
-        
-        if self.nametagStyle_index <= 0:
-            self.nametagStyle_leftButton.hide()
-        else:
-            self.nametagStyle_leftButton.show()
+        if resetIndex:
+            chooser.setIndex(base.localAvatar.nametagStyles.index(base.localAvatar.getNametagStyle()))
+
+        nametagId = base.localAvatar.nametagStyles[chooser.index]
+        chooser.setDisplayText('%s\n%s' % (base.localAvatar.getName(), TTLocalizer.NametagFontNames[nametagId]))
+        chooser.setDisplayFont(ToontownGlobals.getNametagFont(nametagId))
+        chooser.decideButtons(0, len(base.localAvatar.nametagStyles) - 1)
     
-    def __updateNametagIndex(self, offset):
-        self.nametagStyle_index += offset
-        self.__updateNametagStyle(False)
+    def __applyNametagStyle(self, index):
+        if index != -1 and index != base.localAvatar.nametagStyles.index(base.localAvatar.getNametagStyle()):
+            base.localAvatar.requestNametagStyle(base.localAvatar.nametagStyles[index])
+
+    def __updateFishingPole(self, resetIndex=True):
+        chooser = self.optionChoosers['pole']
+
+        if resetIndex:
+            print 'resetting index'
+            chooser.setIndex(base.localAvatar.getFishingRod())
+
+        chooser.setDisplayText(TTLocalizer.FishingRodNameDict[chooser.index])
+        chooser.decideButtons(0, base.localAvatar.maxFishingRod)
+    
+    def __applyFishingPole(self, index):
+        if index != -1 and index != base.localAvatar.getFishingRod():
+            base.localAvatar.requestFishingRod(index)
     
     def destroyReportNotice(self):
         if hasattr(self, 'dialog'):

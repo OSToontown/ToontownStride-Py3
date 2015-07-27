@@ -1420,6 +1420,28 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def getFishingRod(self):
         return self.fishingRod
 
+    def b_setMaxFishingRod(self, rodId):
+        if (not 0 <= rodId <= 4) or rodId <= self.maxFishingRod:
+            return
+
+        self.d_setMaxFishingRod(rodId)
+        self.setMaxFishingRod(rodId)
+
+    def d_setMaxFishingRod(self, rodId):
+        self.sendUpdate('setMaxFishingRod', [rodId])
+
+    def setMaxFishingRod(self, rodId):
+        self.maxFishingRod = rodId
+
+    def getMaxFishingRod(self):
+        return self.maxFishingRod
+    
+    def requestFishingRod(self, rodId):
+        if not 0 <= rodId <= self.maxFishingRod:
+            return
+        
+        self.b_setFishingRod(rodId)
+
     def b_setFishingTrophies(self, trophyList):
         self.setFishingTrophies(trophyList)
         self.d_setFishingTrophies(trophyList)
@@ -3684,6 +3706,13 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def setNametagStyles(self, nametagStyles):
         self.nametagStyles = nametagStyles
+    
+    def addNametagStyle(self, nametagStyle):
+        if nametagStyle in self.nametagStyles:
+            return
+
+        self.nametagStyles.append(nametagStyle)
+        self.b_setNametagStyles(self.nametagStyles)
 
     def getNametagStyles(self):
         return self.nametagStyles
@@ -4378,6 +4407,7 @@ def fishingRod(rod):
         return 'Rod value must be in xrange (0-4).'
     target = spellbook.getTarget()
     target.b_setFishingRod(rod)
+    target.b_setMaxFishingRod(rod)
     return "Set %s's fishing rod to %d!" % (target.getName(), rod)
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[int])
@@ -4863,10 +4893,8 @@ def nametagStyle(nametagStyle):
     if nametagStyle >= len(TTLocalizer.NametagFontNames):
         return 'Invalid nametag style.'
     target = spellbook.getTarget()
-    if nametagStyle not in target.nametagStyles:
-        target.nametagStyles.append(nametagStyle)
-        target.b_setNametagStyles(target.nametagStyles)
     target.b_setNametagStyle(nametagStyle)
+    target.addNametagStyle(nametagStyle)
     return 'Nametag style set to: %s.' % TTLocalizer.NametagFontNames[nametagStyle]
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[str, int, int])

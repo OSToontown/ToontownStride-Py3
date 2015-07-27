@@ -661,6 +661,7 @@ dclass DistributedToon : DistributedPlayer {
   setMaxFishTank(uint8 = 20) required ownrecv db;
   setFishTank(uint8[] = [], uint8[] = [], uint16[] = []) required ownrecv db;
   setFishingRod(uint8 = 0) required broadcast ownrecv db;
+  setMaxFishingRod(uint8 = 0) required broadcast ownrecv db;
   setFishingTrophies(uint8[] = []) required ownrecv db;
   setFlowerCollection(uint8[] = [], uint8[] = []) required ownrecv db;
   setFlowerBasket(uint8[] = [], uint8[] = []) required ownrecv db;
@@ -743,6 +744,7 @@ dclass DistributedToon : DistributedPlayer {
   setNextKnockHeal(uint32) ram airecv;
   setEPP(uint8[] = []) required ownrecv db;
   requestNametagStyle(uint8) airecv ownsend;
+  requestFishingRod(uint8) airecv ownsend;
 };
 
 dclass DistributedPartyGate : DistributedObject {
