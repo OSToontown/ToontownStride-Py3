@@ -831,7 +831,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         return self.clothesTopsList
 
     def addToClothesTopsList(self, topTex, topTexColor, sleeveTex, sleeveTexColor):
-        if self.isClosetFull():
+        if self.isClosetFull(1):
             return 0
         index = 0
         for i in xrange(0, len(self.clothesTopsList), 4):
@@ -883,7 +883,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         return self.clothesBottomsList
 
     def addToClothesBottomsList(self, botTex, botTexColor):
-        if self.isClosetFull():
+        if self.isClosetFull(1):
             self.notify.warning('clothes bottoms list is full')
             return 0
         index = 0

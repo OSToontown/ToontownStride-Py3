@@ -5278,7 +5278,7 @@ ClothingTypeNames = {1001: 'Ghost Shirt',
  1784: 'Racing Skirt 1',
  1801: 'Batty Moon Shirt',
  1802: 'Mittens Shirt',
- 1821: '420 BlazeIt Shirt'}
+ 1821: 'Plaid Punk Shirt'}
 AccessoryArticleNames = ('Hat',
  'Glasses',
  'Backpack',

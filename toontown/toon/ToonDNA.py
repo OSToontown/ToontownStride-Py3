@@ -294,7 +294,7 @@ Shirts = ['phase_3/maps/desat_shirt_1.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_saveBuilding4.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_saveBuilding05.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_anniversary.jpg',
- 'phase_4/maps/WeedShirt.jpg']
+ 'phase_4/maps/flannelshirt_red.jpg']
 BoyShirts = [(0, 0),
  (1, 1),
  (2, 2),
@@ -477,7 +477,7 @@ Sleeves = ['phase_3/maps/desat_sleeve_1.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_saveBuilding4.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_saveBuilding05.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_anniversary.jpg',
- 'phase_4/maps/WeedSleeve.jpg']
+ 'phase_4/maps/flannelsleeve_red.jpg']
 BoyShorts = ['phase_3/maps/desat_shorts_1.jpg',
  'phase_3/maps/desat_shorts_2.jpg',
  'phase_3/maps/desat_shorts_4.jpg',
@@ -1202,7 +1202,7 @@ ShirtStyles = {'bss1': [0, 0, [(0, 0),
  'jb_2': [113, 100, [(27, 27)]],
  'ugcms': [117, 104, [(27, 27)]],
  'lb_1': [119, 106, [(27, 27)]],
- 'weed': [148, 135, [(27, 27)]]}
+ 'flannel': [148, 135, [(27, 27)]]}
 BottomStyles = {'bbs1': [0, [0,
            1,
            2,

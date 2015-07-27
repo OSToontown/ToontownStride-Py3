@@ -92,9 +92,13 @@ class DistributedMailboxAI(DistributedObjectAI):
             return
 
         item = av.mailboxContents[index]
-        del av.mailboxContents[index]
-        av.b_setMailboxContents(av.mailboxContents)
-        self.sendUpdateToAvatarId(avId, 'acceptItemResponse', [context, item.recordPurchase(av, optional)])
+        returnCode = item.recordPurchase(av, optional)
+        
+        if returnCode == ToontownGlobals.P_ItemAvailable:
+            del av.mailboxContents[index]
+            av.b_setMailboxContents(av.mailboxContents)
+
+        self.sendUpdateToAvatarId(avId, 'acceptItemResponse', [context, returnCode])
 
     def discardItemMessage(self, context, item, index, optional):
         avId = self.air.getAvatarIdFromSender()

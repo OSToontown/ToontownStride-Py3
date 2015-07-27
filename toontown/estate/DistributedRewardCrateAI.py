@@ -9,9 +9,6 @@ import random, time
 RANDOM_PRIZES = [ToontownGlobals.CRATE_BEANS] * 10 + [ToontownGlobals.CRATE_BUFFS] * 5 + [ToontownGlobals.CRATE_NAMETAGS] * 10 + [ToontownGlobals.CRATE_EMOTES] * 10 + [ToontownGlobals.CRATE_CLOTHING] * 30 + [ToontownGlobals.CRATE_ACCESSORIES] * 35
 
 class DistributedRewardCrateAI(DistributedFurnitureItemAI):
-
-    def __init__(self, air, furnitureMgr, item):
-        DistributedFurnitureItemAI.__init__(self, air, furnitureMgr, item)
     
     def requestKeyUsage(self):
         avId = self.air.getAvatarIdFromSender()
