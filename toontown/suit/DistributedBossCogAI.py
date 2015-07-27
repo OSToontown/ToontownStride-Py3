@@ -44,8 +44,8 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
         self.attackCode = None
         self.attackAvId = 0
         self.hitCount = 0
+        self.keyReward = config.GetBool('get-key-reward-always', False) or random.random() <= 0.15
         AllBossCogs.append(self)
-        return
 
     def delete(self):
         self.ignoreAll()
@@ -182,6 +182,9 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
 
     def getState(self):
         return self.state
+    
+    def getKeyReward(self):
+        return self.keyReward
 
     def formatReward(self):
         return 'unspecified'
@@ -259,7 +262,7 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
         pass
 
     def enterEpilogue(self):
-        pass
+        self.giveKeyReward()
 
     def exitEpilogue(self):
         pass
@@ -606,3 +609,13 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
 
     def doNextAttack(self, task):
         self.b_setAttackCode(ToontownGlobals.BossCogNoAttack)
+    
+    def giveKeyReward(self):
+        if not self.keyReward:
+            return
+        
+        for toonId in self.involvedToons:
+            toon = self.air.doId2do.get(toonId)
+
+            if toon:
+                toon.addCrateKeys(1)

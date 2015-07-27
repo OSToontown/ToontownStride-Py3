@@ -1659,8 +1659,8 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.tipPage.load()
         self.book.addPage(self.tipPage, pageName=TTLocalizer.TIPPageTitle)
 
-    def setPinkSlips(self, pinkSlips):
-        DistributedToon.DistributedToon.setPinkSlips(self, pinkSlips)
+    def setSpecialInventory(self, specialInventory):
+        DistributedToon.DistributedToon.setSpecialInventory(self, specialInventory)
         self.inventory.updateTotalPropsText()
 
     def hasActiveBoardingGroup(self):

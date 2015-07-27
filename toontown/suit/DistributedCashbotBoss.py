@@ -659,6 +659,10 @@ class DistributedCashbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
                 speech += TTLocalizer.ResistanceToonHPBoost
         else:
             speech += TTLocalizer.ResistanceToonMaxed % (ToontownGlobals.MaxCogSuitLevel + 1)
+        
+        if self.keyReward:
+            speech += TTLocalizer.BossRTKeyReward
+
         return speech
 
     def enterOff(self):

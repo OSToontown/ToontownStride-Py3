@@ -3662,27 +3662,44 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.sendUpdate('setUnlimitedSwing', [unlimitedSwing])
 
     def b_setPinkSlips(self, pinkSlips):
-        self.d_setPinkSlips(pinkSlips)
-        self.setPinkSlips(pinkSlips)
+        self.specialInventory[0] = pinkSlips
+        self.b_setSpecialInventory(self.specialInventory)
+    
+    def b_setCrateKeys(self, crateKeys):
+        self.specialInventory[1] = crateKeys
+        self.b_setSpecialInventory(self.specialInventory)
+    
+    def b_setSpecialInventory(self, specialInventory):
+        self.d_setSpecialInventory(specialInventory)
+        self.setSpecialInventory(specialInventory)
 
-    def d_setPinkSlips(self, pinkSlips):
-        self.sendUpdate('setPinkSlips', [pinkSlips])
+    def d_setSpecialInventory(self, specialInventory):
+        self.sendUpdate('setSpecialInventory', [specialInventory])
 
-    def setPinkSlips(self, pinkSlips):
-        self.pinkSlips = pinkSlips
+    def setSpecialInventory(self, specialInventory):
+        self.specialInventory = specialInventory
 
     def getPinkSlips(self):
-        return self.pinkSlips
+        return self.specialInventory[0]
+    
+    def getCrateKeys(self):
+        return self.specialInventory[1]
 
     def addPinkSlips(self, amountToAdd):
-        pinkSlips = min(self.pinkSlips + amountToAdd, 255)
+        pinkSlips = min(self.getPinkSlips() + amountToAdd, 255)
         self.b_setPinkSlips(pinkSlips)
 
     def removePinkSlips(self, amount):
         if hasattr(self, 'autoRestockPinkSlips') and self.autoRestockPinkSlips:
             amount = 0
-        pinkSlips = max(self.pinkSlips - amount, 0)
+        pinkSlips = max(self.getPinkSlips() - amount, 0)
         self.b_setPinkSlips(pinkSlips)
+    
+    def addCrateKeys(self, amountToAdd):
+        self.b_setCrateKeys(min(self.getCrateKeys() + amountToAdd, 255))
+
+    def removeeCrateKeys(self, amount):
+        self.b_setCrateKeys(max(self.getCrateKeys() - amount, 0))
 
     def b_setNametagStyle(self, nametagStyle):
         self.d_setNametagStyle(nametagStyle)
@@ -4349,6 +4366,17 @@ def fires(count):
         return 'Your fire count must be in range (0-255).'
     invoker.b_setPinkSlips(count)
     return 'You were given %d fires.' % count
+
+@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+def crateKeys(count):
+    """
+    Modifies the invoker's crate key count.
+    """
+    invoker = spellbook.getInvoker()
+    if not 0 <= count <= 255:
+        return 'Your crate key must be in range (0-255).'
+    invoker.b_setCrateKeys(count)
+    return 'You were given %d crate keys.' % count
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[int])
 def maxMoney(maxMoney):

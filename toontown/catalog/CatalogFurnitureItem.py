@@ -891,7 +891,13 @@ FurnitureTypes = {
          None,
          None,
          200,
-         FLPainting)
+         FLPainting),
+ 10040: ('phase_10/models/cashbotHQ/CBWoodCrate',
+         None,
+         None,
+         0,
+         None,
+         0.5)
 }
 
 class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):

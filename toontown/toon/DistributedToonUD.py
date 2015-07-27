@@ -460,7 +460,7 @@ class DistributedToonUD(DistributedObjectUD):
     def forceLogoutWithNotify(self):
         pass
 
-    def setPinkSlips(self, todo0):
+    def setSpecialInventory(self, todo0):
         pass
 
     def setNametagStyle(self, todo0):

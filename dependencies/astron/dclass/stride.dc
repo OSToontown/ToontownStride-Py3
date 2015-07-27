@@ -720,7 +720,7 @@ dclass DistributedToon : DistributedPlayer {
   setUnlimitedSwing(uint8) broadcast ownrecv ram;
   logSuspiciousEvent(char [0-1024]) ownsend airecv;
   forceLogoutWithNotify() ownrecv;
-  setPinkSlips(uint8 = 0) required ownrecv db;
+  setSpecialInventory(uint8[] = [0, 0]) required ownrecv db;
   setNametagStyle(uint8 = 0) required broadcast ownrecv db;
   setNametagStyles(uint8[] = [0]) required broadcast ownrecv db;
   setMail(simpleMail []) ownrecv;
@@ -825,6 +825,7 @@ dclass DistributedBossCog : DistributedNode {
   setToonIds(uint32[], uint32[], uint32[]) broadcast ram;
   setBattleIds(uint8, uint32, uint32) broadcast ram;
   setArenaSide(uint8) broadcast ram;
+  setKeyReward(bool) required broadcast ram;
   avatarEnter() airecv clsend;
   avatarExit() airecv clsend;
   avatarNearEnter() airecv clsend;
@@ -974,6 +975,7 @@ dclass DistributedBattleTutorial : DistributedBattle {
 };
 
 dclass DistributedLevelBattle : DistributedBattle {
+  announceCrateReward() broadcast;
 };
 
 dclass DistributedBattleFactory : DistributedLevelBattle {

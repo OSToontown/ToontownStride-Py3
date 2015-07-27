@@ -36,6 +36,7 @@ class DistributedStageBattleAI(DistributedLevelBattleAI.DistributedLevelBattleAI
         amount = ToontownGlobals.StageNoticeRewards[self.level.stageId]
         index = ToontownGlobals.cogHQZoneId2deptIndex(self.level.stageId)
         extraMerits[index] = amount
+        self.handleCrateReward(toons)
         for toon in toons:
             recovered, notRecovered = self.air.questManager.recoverItems(toon, self.suitsKilled, self.getTaskZoneId())
             self.toonItems[toon.doId][0].extend(recovered)

@@ -3982,8 +3982,10 @@ TIPPageTitle = 'TIP'
 SuitBaseNameWithLevel = '%(name)s\n%(dept)s\nLevel %(level)s'
 HealthForceAcknowledgeMessage = 'You cannot leave the playground until your Laff meter is smiling!'
 InventoryTotalGags = 'Total gags\n%d / %d'
-InventroyPinkSlips = '%s Pink Slips'
-InventroyPinkSlip = '1 Pink Slip'
+InventoryPinkSlips = '%s Pink Slips'
+InventoryPinkSlip = '1 Pink Slip'
+InventoryCrateKeys = '%s Crate Keys'
+InventoryCrateKey = '1 Crate Key'
 InventoryDelete = 'DELETE'
 InventoryDeleteAll = 'DELETE ALL'
 InventoryDone = 'DONE'
@@ -5188,7 +5190,8 @@ FurnitureNames = {100: 'Armchair',
  10000: 'Short Pumpkin',
  10010: 'Tall Pumpkin',
  10020: 'Winter Tree',
- 10030: 'Winter Wreath'}
+ 10030: 'Winter Wreath',
+ 10040: 'Cog Nation Crate'}
 ClothingArticleNames = ('Shirt',
  'Shirt',
  'Shirt',
@@ -8118,6 +8121,7 @@ BossbotRTCongratulations = "You did it!  You've demoted the C.E.O.!\x07Here, tak
 BossbotRTHPBoost = "\x07You've done a lot of work for the Resistance.\x07The Toon Council has decided to give you another Laff point. Congratulations!"
 BossbotRTMaxed = '\x07I see that you have a level %s Cog Suit. Very impressive!\x07On behalf of the Toon Council, thank you for coming back to defend more Toons!'
 BossbotRTLastPromotion = "\x07Wow, you've reached level %s on your Cog Suit!\x07Cogs don't get promoted higher than that.\x07You can't upgrade your Cog Suit anymore, but you can certainly keep working for the Resistance!"
+BossRTKeyReward = '\x07By the way, thanks to your exquisite performance, the Toon Council has decided to offer to you a Cog Nation Crate key!\x07Using this, you will be able to open the crates you have earned in the cog factories.'
 GolfAreaAttackTaunt = 'Fore!'
 OvertimeAttackTaunts = ["It's time to reorganize.", "Now let's downsize."]
 ElevatorBossBotBoss = 'Bossbot Clubhouse'
@@ -8608,6 +8612,11 @@ CEOSpeech = [
  'I am very delighted by this news, I just wanted to thank you all for working so hard for this news.',
  "Wait, what's going on? I can't see but I hear explosions."
 ] # Len of words + 10
+
+CrateRewardMessage1 = 'Nice! You have earned a crate! It will arrive in your mailbox shortly.'
+CrateRewardMessage2 = 'You can open it with keys from boss battles.'
+CrateRewardMessages = [CrateRewardMessage1, CrateRewardMessage2]
+
 Blacklist = [
  "$1ut",
  "$h1t",

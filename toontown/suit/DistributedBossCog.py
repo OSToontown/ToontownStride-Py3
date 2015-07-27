@@ -44,6 +44,7 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
         self.battleB = None
         self.battleRequest = None
         self.arenaSide = 0
+        self.keyReward = False
         self.toonSphere = None
         self.localToonIsSafe = 0
         self.__toonsStuckToFloor = []
@@ -303,6 +304,9 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
 
     def setArenaSide(self, arenaSide):
         self.arenaSide = arenaSide
+    
+    def setKeyReward(self, reward):
+        self.keyReward = reward
 
     def setState(self, state):
         self.request(state)

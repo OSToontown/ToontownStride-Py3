@@ -172,6 +172,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.ignored = []
         self.reported = []
         self.trueFriends = []
+        self.specialInventory = [0, 0, 0, 0, 0]
 
     def disable(self):
         for soundSequence in self.soundSequenceList:
@@ -1936,13 +1937,16 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         return self.unlimitedSwing
 
     def getPinkSlips(self):
-        if hasattr(self, 'pinkSlips'):
-            return self.pinkSlips
-        else:
-            return 0
+        return self.specialInventory[0]
+    
+    def getCrateKeys(self):
+        return self.specialInventory[1]
 
-    def setPinkSlips(self, pinkSlips):
-        self.pinkSlips = pinkSlips
+    def setSpecialInventory(self, specialInventory):
+        self.specialInventory = specialInventory
+    
+    def getSpecialInventory(self):
+        return self.specialInventory
 
     def setDisplayName(self, str):
         if not self.isDisguised:
