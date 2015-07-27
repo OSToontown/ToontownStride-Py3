@@ -24,6 +24,11 @@ class DistributedRewardCrate(DistributedFurnitureItem):
     
     def disable(self):
         self.ignoreAll()
+        dustCloud = DustCloud.DustCloud(fBillboard=0, wantSound=1)
+        dustCloud.setBillboardAxis(2.0)
+        dustCloud.setScale(0.6)
+        dustCloud.createTrack()
+        Sequence(Func(dustCloud.reparentTo, render), Func(dustCloud.setPos, self.getPos()), dustCloud.track, Func(dustCloud.detachNode), Func(dustCloud.destroy)).start()
         DistributedFurnitureItem.disable(self)
     
     def destroyDialog(self):
@@ -80,9 +85,3 @@ class DistributedRewardCrate(DistributedFurnitureItem):
             self.showDialog(TTLocalizer.CrateClothingPrize)
         elif responseCode == ToontownGlobals.CRATE_ACCESSORIES:
             self.showDialog(TTLocalizer.CrateAccessoryPrize)
-        
-        dustCloud = DustCloud.DustCloud(fBillboard=0, wantSound=1)
-        dustCloud.setBillboardAxis(2.0)
-        dustCloud.setScale(0.6)
-        dustCloud.createTrack()
-        Sequence(Func(dustCloud.reparentTo, render), Func(dustCloud.setPos, self.getPos()), dustCloud.track, Func(dustCloud.detachNode), Func(dustCloud.destroy)).start()
