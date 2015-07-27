@@ -85,30 +85,6 @@ def doSleep(toon, volume = 1):
     return (track, duration, exitTrack)
 
 
-def doYes(toon, volume = 1):
-    tracks = Parallel(autoFinish=1)
-    for lod in toon.getLODNames():
-        h = toon.getPart('head', lod)
-        tracks.append(Sequence(LerpHprInterval(h, 0.1, Vec3(0, -30, 0)), LerpHprInterval(h, 0.15, Vec3(0, 20, 0)), LerpHprInterval(h, 0.15, Vec3(0, -20, 0)), LerpHprInterval(h, 0.15, Vec3(0, 20, 0)), LerpHprInterval(h, 0.15, Vec3(0, -20, 0)), LerpHprInterval(h, 0.15, Vec3(0, 20, 0)), LerpHprInterval(h, 0.1, Vec3(0, 0, 0))))
-
-    tracks.start()
-    return (None, 0, None)
-
-
-def doNo(toon, volume = 1):
-    tracks = Parallel(autoFinish=1)
-    for lod in toon.getLODNames():
-        h = toon.getPart('head', lod)
-        tracks.append(Sequence(LerpHprInterval(h, 0.1, Vec3(40, 0, 0)), LerpHprInterval(h, 0.15, Vec3(-40, 0, 0)), LerpHprInterval(h, 0.15, Vec3(40, 0, 0)), LerpHprInterval(h, 0.15, Vec3(-40, 0, 0)), LerpHprInterval(h, 0.15, Vec3(20, 0, 0)), LerpHprInterval(h, 0.15, Vec3(-20, 0, 0)), LerpHprInterval(h, 0.1, Vec3(0, 0, 0))))
-
-    tracks.start()
-    return (None, 0, None)
-
-
-def doOk(toon, volume = 1):
-    return (None, 0, None)
-
-
 def doShrug(toon, volume = 1):
     sfx = base.loadSfx('phase_3.5/audio/sfx/avatar_emotion_shrug.ogg')
 
@@ -363,10 +339,7 @@ EmoteFunc = [[doWave, 0],
  [doBow, 0],
  [doSlipBackward, 0],
  [doResistanceSalute, 0],
- [doNothing, 0],
- [doYes, 0],
- [doNo, 0],
- [doOk, 0],
+ [doLaugh, 0],
  [doSurprise, 0],
  [doUpset, 0],
  [doDelighted, 0],
@@ -396,17 +369,15 @@ class TTEmote(Emote.Emote):
          13,
          14,
          15,
+         16,
+         17,
+         18,
+         19,
          20,
          21,
          22,
-         23,
-         24,
-         25,
-         26]
-        self.headEmotes = [2,
-         17,
-         18,
-         19]
+         23]
+        self.headEmotes = [2]
         if len(self.emoteFunc) != len(OTPLocalizer.EmoteList):
             self.notify.error('Emote.EmoteFunc and OTPLocalizer.EmoteList are different lengths.')
         self.track = None

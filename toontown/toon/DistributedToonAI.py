@@ -4240,10 +4240,6 @@ def maxToon(missingTrack=None):
     for emoteId in OTPLocalizer.EmoteFuncDict.values():
         if emoteId >= len(emotes):
             continue
-        # The following emotions are ignored because they are unable to be
-        # obtained:
-        if emoteId in (17, 18, 19):
-            continue
         emotes[emoteId] = 1
     invoker.b_setEmoteAccess(emotes)
 
@@ -4310,10 +4306,6 @@ def unlocks():
     emotes = list(invoker.getEmoteAccess())
     for emoteId in OTPLocalizer.EmoteFuncDict.values():
         if emoteId >= len(emotes):
-            continue
-        # The following emotions are ignored because they are unable to be
-        # obtained:
-        if emoteId in (17, 18, 19):
             continue
         emotes[emoteId] = 1
     invoker.b_setEmoteAccess(emotes)
