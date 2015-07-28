@@ -64,7 +64,7 @@ class DistributedRewardCrateAI(DistributedFurnitureItemAI):
             self.sendUpdateToAvatarId(av.doId, 'useKeyResponse', [ToontownGlobals.CRATE_NAMETAGS, 0])
         elif prizeType == ToontownGlobals.CRATE_EMOTES:
             playerEmotes = av.emoteAccess
-            remainingEmotes = [i for i, access in enumerate(playerEmotes) if not access]
+            remainingEmotes = [i for i, access in enumerate(playerEmotes) if (not access) and access not in (17, 18, 19)]
 
             if not remainingEmotes:
                 self.choosePrize(av, tryNumber + 1)
