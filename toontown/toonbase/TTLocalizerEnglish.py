@@ -3977,7 +3977,7 @@ EmoteHappy = 'Happy'
 EmoteSad = 'Sad'
 EmoteAnnoyed = 'Annoyed'
 EmoteSleep = 'Sleepy'
-TIPPageTitle = 'TIP'
+StatPageTitle = 'Statistics'
 SuitBaseNameWithLevel = '%(name)s\n%(dept)s\nLevel %(level)s'
 HealthForceAcknowledgeMessage = 'You cannot leave the playground until your Laff meter is smiling!'
 InventoryTotalGags = 'Total gags\n%d / %d'
@@ -8624,6 +8624,33 @@ CrateNametagPrize = "Congratulations! You've received a nametag. Check your mail
 CrateEmotePrize = "Congratulations! You've unlocked a new emote. Check your mailbox to pick it up!"
 CrateClothingPrize = "Congratulations! You've received a new clothing item. Check your mailbox to check it out!"
 CrateAccessoryPrize = 'Congratulations! You found a new accessory for your Toon. Check your mailbox and rock it!'
+
+Stats = [
+ 'Cogs defeated: %(cog)s',
+ 'V2.0 cogs defeated: %(v2)s',
+ 'Skelecogs defeated: %(skele)s',
+ 'Jellybeans spent: %(beanSpent)s',
+ 'Jellybeans earnt: %(beanEarnt)s',
+ 'Tasks completed: %(task)s',
+ 'Total VP defeats: %(vp)s',
+ 'Total CFO defeats: %(cfo)s',
+ 'Total CJ defeats: %(cj)s',
+ 'Total CEO defeats: %(ceo)s',
+ 'Gone sad: %(sad)s times',
+ 'Buildings liberated: %(bldg)s',
+ 'Field Offices defeated: %(cogdo)s',
+ 'Items purchased: %(item)s',
+ 'Fish caught: %(fish)s',
+ 'Flowers picked: %(flower)s',
+ 'Races completed: %(race)s',
+ 'Golf holes played: %(golf)s',
+ 'Total SOS cards: %(sos)s',
+ 'Total unites: %(unite)s',
+ 'Total pink slips: %(slip)s',
+ 'Total gags used: %(gag)s'
+]
+StatResetAsk = 'Are you sure you want to reset your stats? This is an irreversible action!'
+StatResetDone = 'Your stats have been reset.'
 
 Blacklist = [
  "$1ut",

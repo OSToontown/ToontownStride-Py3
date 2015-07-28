@@ -768,6 +768,7 @@ class DistributedGolfCourseAI(DistributedObjectAI.DistributedObjectAI, FSM):
                 oldTrophies = GolfGlobals.calcTrophyListFromHistory(oldHistory)
                 endingTrophies = GolfGlobals.calcTrophyListFromHistory(endingHistory)
                 av.b_setGolfHistory(endingHistory)
+                av.addStat(ToontownGlobals.STAT_GOLF)
                 newTrophies = []
                 for index in xrange(len(oldTrophies)):
                     if not oldTrophies[index] and endingTrophies[index]:

@@ -1366,6 +1366,7 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                             if check == -1:
                                 self.air.writeServerEvent('suspicious', toonId, 'Toon generating movie for non-existent gag track %s level %s' % (track, level))
                                 self.notify.warning('generating movie for non-existent gag track %s level %s! avId: %s' % (track, level, toonId))
+                            toon.addStat(ToontownGlobals.STAT_GAGS)
                             toon.d_setInventory(toon.inventory.makeNetString())
                     hps = attack[TOON_HP_COL]
                     if track == SOS:

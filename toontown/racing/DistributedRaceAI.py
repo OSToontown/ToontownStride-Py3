@@ -9,7 +9,7 @@ import random
 from toontown.racing import RaceGlobals
 from toontown.racing.DistributedGagAI import DistributedGagAI
 from toontown.racing.DistributedVehicleAI import DistributedVehicleAI
-from toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer, ToontownGlobals
 
 
 class DistributedRaceAI(DistributedObjectAI, FSM):
@@ -318,6 +318,7 @@ class DistributedRaceAI(DistributedObjectAI, FSM):
         av.b_setTickets(av.getTickets() + winnings)
         if av.getTickets() > RaceGlobals.MaxTickets:
             av.b_setTickets(RaceGlobals.MaxTickets)
+        av.addStat(ToontownGlobals.STAT_RACING)
         self.sendUpdate('setPlace', [avId, totalTime, place, entryFee, qualify, max((winnings-entryFee), 0), bonus, trophies, [], 0])
 
     def calculateTrophies(self, avId, won, qualify, time):

@@ -13,6 +13,13 @@ import SuitDNA
 import random
 AllBossCogs = []
 
+BOSS_TO_STAT = {
+ 's': ToontownGlobals.STAT_VP,
+ 'm': ToontownGlobals.STAT_CFO,
+ 'l': ToontownGlobals.STAT_CJ,
+ 'c': ToontownGlobals.STAT_CEO
+}
+
 class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBossCogAI')
 
@@ -619,3 +626,12 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
 
             if toon:
                 toon.addCrateKeys(1)
+    
+    def addStats(self):
+        stat = BOSS_TO_STAT[self.dept]
+
+        for toonId in self.involvedToons:
+            toon = self.air.doId2do.get(toonId)
+            
+            if toon:
+                toon.addStat(stat)

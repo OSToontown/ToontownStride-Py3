@@ -2424,6 +2424,20 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
                     ToontownGlobals.ToonJumpForce,
                     ToontownGlobals.ToonReverseSpeed * ToontownGlobals.BMovementSpeedMultiplier,
                     ToontownGlobals.ToonRotateSpeed * ToontownGlobals.BMovementSpeedMultiplier)
+    
+    def setStats(self, stats):
+        self.stats = stats
+        if self == base.localAvatar:
+            messenger.send('refreshStats')
+    
+    def getStats(self):
+        return self.stats
+    
+    def getStat(self, index):
+        return self.stats[index]
+    
+    def wipeStats(self):
+        self.sendUpdate('wipeStats')
 
 @magicWord(category=CATEGORY_COMMUNITY_MANAGER)
 def globalTeleport():

@@ -574,6 +574,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.NPCFriendsDict[npcFriend] = self.maxCallsPerNPC
         self.d_setNPCFriendsDict(self.NPCFriendsDict)
         self.air.questManager.toonMadeNPCFriend(self, numCalls, method)
+        self.addStat(ToontownGlobals.STAT_SOS, numCalls)
         return 1
 
     def attemptSubtractNPCFriend(self, npcFriend):
@@ -932,11 +933,13 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
                 self.hp -= hpLost
                 if self.hp <= 0:
                     self.hp = -1
-                    messenger.send(self.getGoneSadMessage())
         if not self.hpOwnedByBattle:
             self.hp = min(self.hp, self.maxHp)
             if sendTotal:
                 self.d_setHp(self.hp)
+        
+        if self.hp <= 0:
+            self.addStat(ToontownGlobals.STAT_SAD)
 
     def b_setMaxHp(self, maxHp):
         if (maxHp > ToontownGlobals.MaxHpLimit):
@@ -952,18 +955,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.air.writeServerEvent('suspicious', self.doId, 'Toon tried to go over the HP limit.')
         else:
             self.sendUpdate('setMaxHp', [maxHp])
-
-    @staticmethod
-    def getGoneSadMessageForAvId(avId):
-        return 'goneSad-%s' % avId
-
-    def getGoneSadMessage(self):
-        return self.getGoneSadMessageForAvId(self.doId)
-
-    def setHp(self, hp):
-        DistributedPlayerAI.DistributedPlayerAI.setHp(self, hp)
-        if hp <= 0:
-            messenger.send(self.getGoneSadMessage())
 
     def b_setTutorialAck(self, tutorialAck):
         self.d_setTutorialAck(tutorialAck)
@@ -2033,6 +2024,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
         msgs.append([textId, 1])
         self.b_setResistanceMessages(msgs)
+        self.addStat(ToontownGlobals.STAT_UNITES)
 
     def removeResistanceMessage(self, textId):
         msgs = self.getResistanceMessages()
@@ -2303,6 +2295,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         if overflowMoney > 0:
             bankMoney = self.bankMoney + overflowMoney
             self.b_setBankMoney(bankMoney)
+        self.addStat(ToontownGlobals.STAT_BEANS_EARNT, deltaMoney)
 
     def takeMoney(self, deltaMoney, bUseBank = True):
         totalMoney = self.money
@@ -2316,6 +2309,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.b_setMoney(0)
         else:
             self.b_setMoney(self.money - deltaMoney)
+        self.addStat(ToontownGlobals.STAT_BEANS_SPENT, deltaMoney)
         return True
 
     def b_setMoney(self, money):
@@ -3408,6 +3402,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             return 0
         elif self.flowerBasket.addFlower(species, variety):
             self.d_setFlowerBasket(*self.flowerBasket.getNetLists())
+            self.addStat(ToontownGlobals.STAT_FLOWERS)
             return 1
         else:
             self.notify.warning('addFlowerToBasket: addFlower failed')
@@ -3688,6 +3683,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def addPinkSlips(self, amountToAdd):
         pinkSlips = min(self.getPinkSlips() + amountToAdd, 255)
         self.b_setPinkSlips(pinkSlips)
+        self.addStat(ToontownGlobals.STAT_SLIPS, amountToAdd)
 
     def removePinkSlips(self, amount):
         if hasattr(self, 'autoRestockPinkSlips') and self.autoRestockPinkSlips:
@@ -4134,6 +4130,33 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     
     def hasEPP(self, dept):
         return dept in self.epp
+    
+    def b_setStats(self, stats):
+        self.d_setStats(stats)
+        self.setStats(stats)
+
+    def d_setStats(self, stats):
+        self.sendUpdate('setStats', [stats])
+
+    def setStats(self, stats):
+        self.stats = stats
+    
+    def getStats(self):
+        return self.stats
+    
+    def getStat(self, index):
+        return self.stats[index]
+    
+    def addStat(self, index, amount=1):
+        if amount <= 0:
+            return
+
+        self.stats[index] += amount
+        self.d_setStats(self.stats)
+    
+    def wipeStats(self):
+        self.stats = [0] * 22
+        self.d_setStats(self.stats)
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[str, int, int])
 def cheesyEffect(value, hood=0, expire=0):

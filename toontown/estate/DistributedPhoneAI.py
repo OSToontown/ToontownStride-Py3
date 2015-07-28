@@ -176,17 +176,19 @@ class DistributedPhoneAI(DistributedFurnitureItemAI):
             
             if returnCode != ToontownGlobals.P_ItemOnOrder:
                 return returnCode
-            
+
             if item.getDeliveryTime():
                 self.chargeAvatar(av, price, item.getEmblemPrices())
                 av.onOrder.append(item)
                 av.b_setDeliverySchedule(av.onOrder)
+                av.addStat(ToontownGlobals.STAT_ITEMS)
             else:
                 returnCode = item.recordPurchase(av, optional)
                 
                 if returnCode == ToontownGlobals.P_ItemAvailable:
                     self.chargeAvatar(av, price, item.getEmblemPrices())
-            
+                    av.addStat(ToontownGlobals.STAT_ITEMS)
+
             return returnCode
 
         return None
@@ -209,6 +211,7 @@ class DistributedPhoneAI(DistributedFurnitureItemAI):
         item.giftTag = avId
         self.chargeAvatar(av, optional[2], item.getEmblemPrices())
         recipient.onGiftOrder.append(item)
+        av.addStat(ToontownGlobals.STAT_ITEMS)
         
         dg = self.air.dclassesByName['DistributedToonAI'].aiFormatUpdate('setGiftSchedule', targetId, targetId, self.air.ourChannel, [recipient.getGiftScheduleBlob()])
         self.air.send(dg)

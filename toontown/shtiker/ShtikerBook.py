@@ -34,6 +34,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         self.pageOrder = [TTLocalizer.OptionsPageTitle,
          TTLocalizer.ShardPageTitle,
          TTLocalizer.MapPageTitle,
+         TTLocalizer.StatPageTitle,
          TTLocalizer.InventoryPageTitle,
          TTLocalizer.QuestPageToonTasks,
          TTLocalizer.TrackPageShortTitle,
@@ -46,7 +47,6 @@ class ShtikerBook(DirectFrame, StateData.StateData):
          TTLocalizer.GolfPageTitle,
          TTLocalizer.PhotoPageTitle,
          TTLocalizer.EventsPageName]
-        return
 
     def setSafeMode(self, setting):
         self.safeMode = setting
@@ -182,7 +182,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         iconGeom = None
         iconImage = None
         iconScale = 1
-        iconColor = Vec4(1)
+        iconColor = (1, 1, 1, 1)
         buttonPressedCommand = goToPage
         extraArgs = []
         if pageName == TTLocalizer.OptionsPageTitle:
@@ -250,6 +250,10 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         elif pageName == TTLocalizer.PhotoPageTitle:
             iconGeom = iconModels = loader.loadModel('phase_4/models/minigames/photogame_filmroll')
             iconScale = (1.9, 1.5, 1.5)
+            iconModels.detachNode()
+        elif pageName == TTLocalizer.StatPageTitle:
+            iconGeom = iconModels = loader.loadModel('phase_3.5/models/gui/name_star')
+            iconColor = (0, 0.6, 1, 1)
             iconModels.detachNode()
         if pageName == TTLocalizer.OptionsPageTitle:
             pageName = TTLocalizer.OptionsTabTitle

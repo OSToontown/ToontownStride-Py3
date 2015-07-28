@@ -47,7 +47,7 @@ from toontown.shtiker import QuestPage
 from toontown.shtiker import ShardPage
 from toontown.shtiker import ShtikerBook
 from toontown.shtiker import SuitPage
-from toontown.shtiker import TIPPage
+from toontown.shtiker import StatPage
 from toontown.shtiker import TrackPage
 from toontown.toon import ElevatorNotifier
 from toontown.toon import ToonDNA
@@ -307,6 +307,9 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.shardPage = ShardPage.ShardPage()
         self.shardPage.load()
         self.book.addPage(self.shardPage, pageName=TTLocalizer.ShardPageTitle)
+        self.statPage = StatPage.StatPage()
+        self.statPage.load()
+        self.book.addPage(self.statPage, pageName=TTLocalizer.StatPageTitle)
         self.mapPage = MapPage.MapPage()
         self.mapPage.load()
         self.book.addPage(self.mapPage, pageName=TTLocalizer.MapPageTitle)
@@ -1653,11 +1656,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.eventsPage.load()
         self.book.addPage(self.eventsPage, pageName=TTLocalizer.EventsPageName)
         return
-
-    def addTIPPage(self):
-        self.tipPage = TIPPage.TIPPage()
-        self.tipPage.load()
-        self.book.addPage(self.tipPage, pageName=TTLocalizer.TIPPageTitle)
 
     def setSpecialInventory(self, specialInventory):
         DistributedToon.DistributedToon.setSpecialInventory(self, specialInventory)
