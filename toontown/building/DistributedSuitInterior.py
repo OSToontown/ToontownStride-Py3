@@ -10,6 +10,7 @@ from direct.distributed import DistributedObject
 from direct.fsm import State
 from toontown.battle import BattleBase
 from toontown.hood import ZoneUtil
+from toontown.suit import SuitDNA
 
 class DistributedSuitInterior(DistributedObject.DistributedObject):
     id = 0
@@ -249,10 +250,11 @@ class DistributedSuitInterior(DistributedObject.DistributedObject):
     def __playElevator(self, ts, name, callback):
         SuitHs = []
         SuitPositions = []
+        DeptName = SuitDNA.suitDeptFilenames[self.suits[0].style.dept]
         if self.floorModel:
             self.floorModel.removeNode()
         if self.currentFloor == 0:
-            self.floorModel = loader.loadModel('phase_7/models/modules/suit_interior')
+            self.floorModel = loader.loadModel('phase_7/models/modules/suit_interior_%s' % DeptName)
             SuitHs = self.BottomFloor_SuitHs
             SuitPositions = self.BottomFloor_SuitPositions
         elif self.currentFloor == self.numFloors - 1:

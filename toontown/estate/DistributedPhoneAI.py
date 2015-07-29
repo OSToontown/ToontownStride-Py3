@@ -9,7 +9,6 @@ from toontown.catalog.CatalogItemList import CatalogItemList
 from toontown.uberdog import TopToonsGlobals
 
 import json
-import time
 
 class LoadGiftAvatar:
 
@@ -165,10 +164,6 @@ class DistributedPhoneAI(DistributedFurnitureItemAI):
         if price > av.getTotalMoney() or (item.hasEmblemPrices() and not av.isEnoughEmblemsToBuy(item.getEmblemPrices())):
             return ToontownGlobals.P_NotEnoughMoney
         
-        if item.getDeliveryTime() or gifting:
-            deliveryTime = 0 if config.GetBool('want-instant-delivery', False) else item.getDeliveryTime()
-            item.deliveryDate = int(time.time() / 60. + deliveryTime + .5)
-        
         if gifting:
             return self.requestGiftAvatarOperation(avId, gifting, [context, item, price], self.attemptGiftPurchase)
         else:
@@ -179,8 +174,7 @@ class DistributedPhoneAI(DistributedFurnitureItemAI):
 
             if item.getDeliveryTime():
                 self.chargeAvatar(av, price, item.getEmblemPrices())
-                av.onOrder.append(item)
-                av.b_setDeliverySchedule(av.onOrder)
+                av.addToDeliverySchedule(item, item.getDeliveryTime())
                 av.addStat(ToontownGlobals.STAT_ITEMS)
             else:
                 returnCode = item.recordPurchase(av, optional)
@@ -208,13 +202,10 @@ class DistributedPhoneAI(DistributedFurnitureItemAI):
             self.sendGiftPurchaseResponse(context, avId, returnCode)
             return
 
-        item.giftTag = avId
         self.chargeAvatar(av, optional[2], item.getEmblemPrices())
-        recipient.onGiftOrder.append(item)
+        recipient.addToGiftSchedule(avId, targetId, item, item.getDeliveryTime())
         av.addStat(ToontownGlobals.STAT_ITEMS)
-        
-        dg = self.air.dclassesByName['DistributedToonAI'].aiFormatUpdate('setGiftSchedule', targetId, targetId, self.air.ourChannel, [recipient.getGiftScheduleBlob()])
-        self.air.send(dg)
+
         self.sendGiftPurchaseResponse(context, avId, ToontownGlobals.P_ItemOnOrder)
     
     def sendGiftPurchaseResponse(self, context, avId, returnCode):

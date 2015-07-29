@@ -60,7 +60,7 @@ class DistributedRewardCrateAI(DistributedFurnitureItemAI):
             if item.reachedPurchaseLimit(av):
                 return
 
-            self.addToOrder(av, item)
+            av.addToDeliverySchedule(item)
             self.sendUpdateToAvatarId(av.doId, 'useKeyResponse', [ToontownGlobals.CRATE_NAMETAGS, 0])
         elif prizeType == ToontownGlobals.CRATE_EMOTES:
             playerEmotes = av.emoteAccess
@@ -77,7 +77,7 @@ class DistributedRewardCrateAI(DistributedFurnitureItemAI):
                 self.choosePrize(av, tryNumber + 1)
                 return
 
-            self.addToOrder(av, item)
+            av.addToDeliverySchedule(item)
             self.sendUpdateToAvatarId(av.doId, 'useKeyResponse', [ToontownGlobals.CRATE_EMOTES, 0])
         elif prizeType == ToontownGlobals.CRATE_CLOTHING:
             clothing = CatalogClothingItem.ClothingTypes.keys()
@@ -87,7 +87,7 @@ class DistributedRewardCrateAI(DistributedFurnitureItemAI):
                 item = CatalogClothingItem.CatalogClothingItem(id, 0)
                 
                 if not item.notOfferedTo(av) and not item.reachedPurchaseLimit(av):
-                    self.addToOrder(av, item)
+                    av.addToDeliverySchedule(item)
                     self.sendUpdateToAvatarId(av.doId, 'useKeyResponse', [ToontownGlobals.CRATE_CLOTHING, 0])
                     return
         elif prizeType == ToontownGlobals.CRATE_ACCESSORIES:
@@ -98,14 +98,9 @@ class DistributedRewardCrateAI(DistributedFurnitureItemAI):
                 item = CatalogAccessoryItem.CatalogAccessoryItem(id, 0)
                 
                 if not item.reachedPurchaseLimit(av):
-                    self.addToOrder(av, item)
+                    av.addToDeliverySchedule(item)
                     self.sendUpdateToAvatarId(av.doId, 'useKeyResponse', [ToontownGlobals.CRATE_ACCESSORIES, 0])
                     return
-    
-    def addToOrder(self, av, item):
-        item.deliveryDate = int(time.time() / 60. + .5)
-        av.onOrder.append(item)
-        av.b_setDeliverySchedule(av.onOrder)
                 
     def giveBeans(self, av):
         beans = random.randint(1, 15) * 100

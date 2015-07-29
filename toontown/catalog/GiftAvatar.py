@@ -1,6 +1,6 @@
 from toontown.toon import ToonDNA
 import CatalogItem, CatalogItemList
-import json
+import json, time
 
 def createFromJson(jsonData):
     return createFromFields(json.loads(jsonData))
@@ -87,3 +87,12 @@ class GiftAvatar:
     
     def setNametagStyles(self, nametagStyles):
         self.nametagStyles = nametagStyles[0]
+    
+    def addToGiftSchedule(self, avId, targetId, item, minutes=0):
+        if config.GetBool('want-instant-delivery', False):
+            minutes = 0
+
+        item.giftTag = avId
+        item.deliveryDate = int(time.time() / 60. + minutes + .5)
+        self.onGiftOrder.append(item)
+        simbase.air.send(simbase.air.dclassesByName['DistributedToonAI'].aiFormatUpdate('setGiftSchedule', targetId, targetId, simbase.air.ourChannel, [self.getGiftScheduleBlob()]))

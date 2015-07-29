@@ -86,6 +86,11 @@ suitDeptFullnamesP = {'c': TTLocalizer.BossbotP,
  'l': TTLocalizer.LawbotP,
  'm': TTLocalizer.CashbotP,
  's': TTLocalizer.SellbotP}
+suitDeptFilenames = {'c': 'boss',
+ 'l': 'law',
+ 'm': 'cash',
+ 's': 'sell'
+}
 suitDeptModelPaths = {'c': '**/CorpIcon',
  0: '**/CorpIcon',
  'l': '**/LegalIcon',

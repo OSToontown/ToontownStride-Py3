@@ -2098,6 +2098,14 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def getCatalogNotify(self):
         return (self.catalogNotify, self.mailboxNotify)
+    
+    def addToDeliverySchedule(self, item, minutes=0):
+        if config.GetBool('want-instant-delivery', False):
+            minutes = 0
+
+        item.deliveryDate = int(time.time() / 60. + minutes + .5)
+        self.onOrder.append(item)
+        self.b_setDeliverySchedule(self.onOrder)
 
     def b_setDeliverySchedule(self, onOrder, doUpdateLater = True):
         self.setDeliverySchedule(onOrder, doUpdateLater)
