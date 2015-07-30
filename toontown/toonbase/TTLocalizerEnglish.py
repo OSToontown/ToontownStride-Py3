@@ -8652,6 +8652,8 @@ Stats = [
 StatResetAsk = 'Are you sure you want to reset your stats? This is an irreversible action!'
 StatResetDone = 'Your stats have been reset.'
 
+ChairAskToUse = 'Would you like to sit on this chair?'
+
 Blacklist = [
  "$1ut",
  "$h1t",

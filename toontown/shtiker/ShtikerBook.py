@@ -34,7 +34,6 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         self.pageOrder = [TTLocalizer.OptionsPageTitle,
          TTLocalizer.ShardPageTitle,
          TTLocalizer.MapPageTitle,
-         TTLocalizer.StatPageTitle,
          TTLocalizer.InventoryPageTitle,
          TTLocalizer.QuestPageToonTasks,
          TTLocalizer.TrackPageShortTitle,
@@ -46,7 +45,8 @@ class ShtikerBook(DirectFrame, StateData.StateData):
          TTLocalizer.GardenPageTitle,
          TTLocalizer.GolfPageTitle,
          TTLocalizer.PhotoPageTitle,
-         TTLocalizer.EventsPageName]
+         TTLocalizer.EventsPageName,
+         TTLocalizer.StatPageTitle]
 
     def setSafeMode(self, setting):
         self.safeMode = setting

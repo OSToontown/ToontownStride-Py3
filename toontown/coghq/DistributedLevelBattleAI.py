@@ -7,7 +7,6 @@ from direct.fsm import ClassicFSM
 from toontown.battle.BattleBase import *
 import CogDisguiseGlobals
 from direct.showbase.PythonUtil import addListsByValue
-import time
 
 class DistributedLevelBattleAI(DistributedBattleAI.DistributedBattleAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLevelBattleAI')
@@ -105,11 +104,9 @@ class DistributedLevelBattleAI(DistributedBattleAI.DistributedBattleAI):
         
         self.sendUpdate('announceCrateReward')
         item = CatalogFurnitureItem.CatalogFurnitureItem(10040)
-        item.deliveryDate = int(time.time() / 60. + .5)
 
         for toon in toons:
-            toon.onOrder.append(item)
-            toon.b_setDeliverySchedule(toon.onOrder)
+            toon.addToDeliverySchedule(item)
 
     def enterFaceOff(self):
         self.notify.debug('DistributedLevelBattleAI.enterFaceOff()')
