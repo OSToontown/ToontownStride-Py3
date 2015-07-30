@@ -258,7 +258,7 @@ class DistributedSuitInterior(DistributedObject.DistributedObject):
             SuitHs = self.BottomFloor_SuitHs
             SuitPositions = self.BottomFloor_SuitPositions
         elif self.currentFloor == self.numFloors - 1:
-            self.floorModel = loader.loadModel('phase_7/models/modules/boss_suit_office')
+            self.floorModel = loader.loadModel('phase_7/models/modules/boss_suit_office_%s' % DeptName)
             SuitHs = self.BossOffice_SuitHs
             SuitPositions = self.BossOffice_SuitPositions
         else:
