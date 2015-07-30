@@ -96,9 +96,6 @@ ChairToPosHpr = {
  720: ((0, -2.7, 0.2), (180, 0, 0), (0, -3.7, 0), -3.0)
 }
 
-def getChairCollOffset(furnitureId):
-    return ChairToPosHpr[furnitureId][3]
-
 FurnitureTypes = {
  100: ('phase_5.5/models/estate/chairA',  # Model
        None,                              # Color

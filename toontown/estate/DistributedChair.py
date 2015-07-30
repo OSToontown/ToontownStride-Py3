@@ -1,24 +1,21 @@
 from direct.interval.IntervalGlobal import *
 from direct.gui.DirectGui import *
-from toontown.effects import DustCloud
+from toontown.catalog import CatalogFurnitureItem
 from toontown.toonbase import ToontownGlobals, TTLocalizer
 from toontown.toontowngui import TTDialog
-from toontown.quest import Quests
-import DistributedFurnitureItem
-from toontown.catalog import CatalogFurnitureItem
+from DistributedFurnitureItem import DistributedFurnitureItem
 
-class DistributedChair(DistributedFurnitureItem.DistributedFurnitureItem):
+class DistributedChair(DistributedFurnitureItem):
 
     def __init__(self, cr):
-        DistributedFurnitureItem.DistributedFurnitureItem.__init__(self, cr)
+        DistributedFurnitureItem.__init__(self, cr)
         self.dialog = None
         self.exitButton = None
-        self.locked = False
         self.avId = ToontownGlobals.CHAIR_NONE
     
     def loadModel(self):
-        model = DistributedFurnitureItem.DistributedFurnitureItem.loadModel(self)
-        cSphere = CollisionSphere(0.0, CatalogFurnitureItem.getChairCollOffset(self.item.furnitureType), 1.0, 1.575)
+        model = DistributedFurnitureItem.loadModel(self)
+        cSphere = CollisionSphere(0.0, self.getChair()[3], 1.0, 1.575)
         cSphere.setTangible(0)
         colNode = CollisionNode('Chair-%s' % self.doId)
         colNode.addSolid(cSphere)
@@ -29,10 +26,12 @@ class DistributedChair(DistributedFurnitureItem.DistributedFurnitureItem):
     
     def disable(self):
         av = base.cr.doId2do.get(self.avId)
+
         if av:
             self.resetAvatar(av)
+
         self.ignoreAll()
-        DistributedFurnitureItem.DistributedFurnitureItem.disable(self)
+        DistributedFurnitureItem.disable(self)
     
     def getChair(self):
         return CatalogFurnitureItem.ChairToPosHpr[self.item.furnitureType]
@@ -96,9 +95,6 @@ class DistributedChair(DistributedFurnitureItem.DistributedFurnitureItem):
 
         if not av:
             return
-
-        if status == ToontownGlobals.CHAIR_LOCKED:
-            self.locked = True
         
         if status == ToontownGlobals.CHAIR_UNEXPECTED_EXIT:
             self.resetAvatar(av)
@@ -120,7 +116,7 @@ class DistributedChair(DistributedFurnitureItem.DistributedFurnitureItem):
             self.destroyGui()
     
     def __enterSphere(self, collisionEntry):
-        if self.locked or self.avId in base.cr.doId2do:
+        if self.avId in base.cr.doId2do:
             return
         
         base.cr.playGame.getPlace().setState('stopped')
