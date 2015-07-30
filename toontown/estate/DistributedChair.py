@@ -66,7 +66,6 @@ class DistributedChair(DistributedFurnitureItem.DistributedFurnitureItem):
             base.cr.playGame.getPlace().setState('walk')
 
     def setAvId(self, avId):
-        print 'Get av id %s' % avId
         if avId == ToontownGlobals.CHAIR_NONE:
             self.avId = avId
             return
@@ -93,22 +92,17 @@ class DistributedChair(DistributedFurnitureItem.DistributedFurnitureItem):
         self.avId = avId
     
     def setStatus(self, status):
-        print 'Got status %s %s' % (status, self.avId)
         av = base.cr.doId2do.get(self.avId)
 
         if not av:
-            print 'RIP'
             return
 
         if status == ToontownGlobals.CHAIR_LOCKED:
-            print 'locked'
             self.locked = True
         
         if status == ToontownGlobals.CHAIR_UNEXPECTED_EXIT:
-            print 'unexpected'
             self.resetAvatar(av)
         else:
-            print 'rektangle'
             sitStartDuration = av.getDuration('sit-start')
             self.destroyGui()
             Sequence(Parallel(ActorInterval(av, 'sit-start', startTime=sitStartDuration, endTime=0.0), Sequence(Wait(sitStartDuration * 0.25), av.posInterval(sitStartDuration * 0.25, self.getChair()[2]))), Func(self.resetAvatar, av)).start()
