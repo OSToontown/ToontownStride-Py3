@@ -27,21 +27,6 @@ class DistributedNPCClerk(DistributedNPCToonBase):
             self.purchaseGui.unload()
             self.purchaseGui = None
     
-    def initToonState(self):
-        if self.name in NPCToons.ClerkPositions:
-            self.putOnSuit(ToontownGlobals.cogHQZoneId2deptIndex(self.zoneId), rental=True)
-
-        self.setAnimState('neutral', 0.9, None, None)
-        self.updatePosition()
-    
-    def updatePosition(self):
-        if self.name in NPCToons.ClerkPositions:
-            pos = NPCToons.ClerkPositions[self.name]
-            self.setPos(*pos[0])
-            self.setH(pos[1])
-        else:
-            DistributedNPCToonBase.initToonState(self)
-    
     def freeAvatar(self):
         base.localAvatar.posCamera(0, 0)
         base.cr.playGame.getPlace().fsm.request('walk')
@@ -83,7 +68,7 @@ class DistributedNPCClerk(DistributedNPCToonBase):
         elif state == ToontownGlobals.CLERK_TOOKTOOLONG:
             self.setChatAbsolute(TTLocalizer.STOREOWNER_TOOKTOOLONG, CFSpeech | CFTimeout)
 
-        self.updatePosition()
+        self.initToonState()
    
     def popupPurchaseGUI(self, task):
         self.clearChat()
