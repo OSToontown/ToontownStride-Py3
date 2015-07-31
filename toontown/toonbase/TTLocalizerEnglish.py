@@ -8592,11 +8592,10 @@ JumpBossTaunts = {
   "You're all in contempt of court!"
  ],
  'm': [
-  'STOP!',
-  'What are you doing? Wake up!',
-  "I can't believe it!",
-  "You're all asleep on the job!",
-  'Wake up!'
+  "These Goons weren't free you know!",
+  'HEY, THOSE ARE VINTAGE SAFES!',
+  'This will cost you a lot more than candy!',
+  "I'll buy out Toontown if it means getting rid of you Toons!"
  ]
 }
 CEOSpeech = [
