@@ -145,7 +145,7 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
     def doNextAttack(self, task):
         if random.random() <= 0.2:
             self.b_setAttackCode(ToontownGlobals.BossCogAreaAttack)
-            taskMgr.doMethodLater(4.36, self.__reviveGoons, self.uniqueName('reviveGoons'))
+            taskMgr.doMethodLater(9.36, self.__reviveGoons, self.uniqueName('reviveGoons'))
         else:
             self.__doDirectedAttack()
             if self.heldObject == None and not self.waitingForHelmet:
@@ -175,7 +175,6 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
             self.toonsToAttack.append(avId)
 
     def makeTreasure(self, goon):
-        return
         if self.state != 'BattleThree':
             return
         pos = goon.getPos(self)
