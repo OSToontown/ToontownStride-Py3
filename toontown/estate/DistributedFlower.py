@@ -74,7 +74,7 @@ class DistributedFlower(DistributedPlantBase.DistributedPlantBase, FlowerBase.Fl
         invFlowerScale = 1.0 / flowerScale
         self.model.setScale(flowerScale)
         if DIRT_AS_WATER_INDICATOR:
-            dirtMoundScale = invFlowerScale * 0.73
+            dirtMoundScale = invFlowerScale * 0.63
             self.dirtMound = loader.loadModel('phase_5.5/models/estate/dirt_mound')
             self.dirtMound.reparentTo(self.model)
             self.dirtMound.setScale(dirtMoundScale)

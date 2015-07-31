@@ -44,7 +44,7 @@ class DistributedGardenPlot(DistributedLawnDecor.DistributedLawnDecor):
         elif self.plotType == GardenGlobals.FLOWER_TYPE:
             self.collSphereRadius = 2.0
             self.collSphereOffset = 0.0
-            self.plotScale = 0.7
+            self.plotScale = 0.6
             self.stickUp = 1.1
         elif self.plotType == GardenGlobals.GAG_TREE_TYPE:
             self.collSphereRadius = 3.0
