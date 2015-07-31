@@ -175,6 +175,9 @@ dclass FriendManager : DistributedObject {
   friendResponse(int8, int32);
   inviteeFriendQuery(int32, string, blob, int32);
   inviteeCancelFriendQuery(int32);
+  requestTFCode() airecv clsend;
+  redeemTFCode(string) airecv clsend;
+  tfResponse(uint8, string);
 };
 
 from toontown.building import DistributedAnimatedProp/AI
@@ -742,8 +745,9 @@ dclass DistributedToon : DistributedPlayer {
   setBuffs(uint32[] = []) required ownrecv db;
   setRedeemedCodes(string [] = []) required ownrecv db;
   setEmblems(uint32[] = [0, 0]) required ownrecv db;
-  setTrueFriends(uint32[] = []) required clsend ownrecv db;
+  setTrueFriends(uint32[] = []) required ownrecv db;
   setNextKnockHeal(uint32) ram airecv;
+  setTFRequest(uint32[] = [0, 0]) ram airecv;
   setEPP(uint8[] = []) required ownrecv db;
   setStats(uint32[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]) required ownrecv db;
   requestNametagStyle(uint8) airecv ownsend;

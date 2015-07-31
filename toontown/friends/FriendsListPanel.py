@@ -2,6 +2,7 @@ from panda3d.core import *
 from direct.gui.DirectGui import *
 from direct.fsm import StateData
 from toontown.toon import ToonAvatarPanel
+from toontown.friends import ToontownFriendSecret
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 from otp.nametag.NametagGroup import *
@@ -94,7 +95,6 @@ class FriendsListPanel(DirectFrame, StateData.StateData):
         self.textDownColor = Vec4(0.5, 0.9, 1, 1)
         self.textDisabledColor = Vec4(0.4, 0.8, 0.4, 1)
         self.panelType = FLPOnline
-        return
 
     def load(self):
         if self.isLoaded == 1:
@@ -128,9 +128,12 @@ class FriendsListPanel(DirectFrame, StateData.StateData):
          gui.find('**/Horiz_Arrow_Rllvr'),
          gui.find('**/Horiz_Arrow_UP')), image3_color=Vec4(0.6, 0.6, 0.6, 0.6), pos=(0.17, 0, -0.38), command=self.__right)
         self.newFriend = DirectButton(parent=self, relief=None, pos=(-0.14, 0.0, 0.14), image=(auxGui.find('**/Frnds_Btn_UP'), auxGui.find('**/Frnds_Btn_DN'), auxGui.find('**/Frnds_Btn_RLVR')), text=('', TTLocalizer.FriendsListPanelNewFriend, TTLocalizer.FriendsListPanelNewFriend), text_scale=TTLocalizer.FLPnewFriend, text_fg=(0, 0, 0, 1), text_bg=(1, 1, 1, 1), text_pos=(0.1, -0.085), textMayChange=0, command=self.__newFriend)
+        self.trueFriends = DirectButton(parent=self, relief=None, pos=TTLocalizer.FLPtruefriendsPos, image=(auxGui.find('**/ChtBx_ChtBtn_UP'), auxGui.find('**/ChtBx_ChtBtn_DN'), auxGui.find('**/ChtBx_ChtBtn_RLVR')), text=('',
+         TTLocalizer.FriendsListPanelTrueFriends,
+         TTLocalizer.FriendsListPanelTrueFriends,
+         ''), text_scale=TTLocalizer.FLPtruefriends, text_fg=(0, 0, 0, 1), text_bg=(1, 1, 1, 1), text_pos=(-0.04, -0.085), textMayChange=0, command=self.__trueFriends)
         gui.removeNode()
         auxGui.removeNode()
-        return
 
     def unload(self):
         if self.isLoaded == 0:
@@ -144,7 +147,6 @@ class FriendsListPanel(DirectFrame, StateData.StateData):
         del self.right
         del self.friends
         DirectFrame.destroy(self)
-        return None
 
     def makeFriendButton(self, avId, color):
         handle = base.cr.identifyFriend(avId)
@@ -212,10 +214,13 @@ class FriendsListPanel(DirectFrame, StateData.StateData):
         self.__updateTitle()
         self.__updateArrows()
 
+    def __trueFriends(self):
+        messenger.send('wakeup')
+        ToontownFriendSecret.showFriendSecret()
+
     def __newFriend(self):
         messenger.send('wakeup')
         messenger.send('friendAvatar', [None, None, None])
-        return
 
     def __choseFriend(self, friendId):
         messenger.send('wakeup')

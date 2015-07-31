@@ -161,6 +161,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.trueFriends = []
         self.fishBingoTutorialDone = False
         self.nextKnockHeal = 0
+        self.tfRequest = (0, 0)
         self.epp = []
 
     def generate(self):
@@ -4091,7 +4092,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.b_setRedeemedCodes(self.redeemedCodes)
 
     def setTrueFriends(self, trueFriends):
-        self.trueFriends = trueFriends[:OTPGlobals.MaxFriends]
+        self.trueFriends = trueFriends
 
     def d_setTrueFriends(self, trueFriends):
         self.sendUpdate('setTrueFriends', [trueFriends])
@@ -4099,6 +4100,16 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def b_setTrueFriends(self, trueFriends):
         self.setTrueFriends(trueFriends)
         self.d_setTrueFriends(trueFriends)
+    
+    def isTrueFriends(self, avId):
+        return avId in self.trueFriends
+    
+    def addTrueFriend(self, avId):
+        if avId in self.trueFriends:
+            return
+        
+        self.trueFriends.append(avId)
+        self.b_setTrueFriends(self.trueFriends)
 
     def getTrueFriends(self, trueFriends):
         return self.trueFriends
@@ -4115,6 +4126,19 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def getNextKnockHeal(self):
         return self.nextKnockHeal
+    
+    def setTFRequest(self, tfRequest):
+        self.tfRequest = tfRequest
+
+    def d_setTFRequest(self, tfRequest):
+        self.sendUpdate('setTFRequest', [tfRequest])
+
+    def b_setTFRequest(self, tfRequest):
+        self.setTFRequest(tfRequest)
+        self.d_setTFRequest(tfRequest)
+
+    def getTFRequest(self):
+        return self.tfRequest
 
     def setEPP(self, epp):
         self.epp = epp

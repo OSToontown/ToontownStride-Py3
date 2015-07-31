@@ -234,6 +234,7 @@ FriendInviterConfirmRemove = 'Remove'
 FriendInviterYes = lYes
 FriendInviterNo = lNo
 FriendInviterClickToon = 'Click on the toon you would like to make friends with.'
+FriendInviterTooMany = 'You have too many friends on your list to add another one now. You will have to remove some friends if you want to make friends with %s.'
 FriendInviterToonTooMany = 'You have too many toon friends on your list to add another one now. You will have to remove some toon friends if you want to make friends with %s.'
 FriendInviterNotYet = 'Would you like to make friends with %s?'
 FriendInviterCheckAvailability = 'Seeing if %s is available.'

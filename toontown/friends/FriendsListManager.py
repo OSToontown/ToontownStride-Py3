@@ -5,6 +5,7 @@ import FriendInvitee
 import FriendNotifier
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toon import ToonTeleportPanel
+from toontown.friends import ToontownFriendSecret
 from toontown.pets import PetAvatarPanel
 from toontown.toon import ToonAvatarPanel
 from toontown.suit import SuitAvatarPanel
@@ -73,6 +74,7 @@ class FriendsListManager:
         self.ignore('friendAvatar')
         self.ignore('avatarDetails')
         FriendsListPanel.hideFriendsList()
+        ToontownFriendSecret.hideFriendSecret()
         if base.cr.friendManager:
             base.cr.friendManager.setAvailable(0)
         self.ignore('friendInvitation')

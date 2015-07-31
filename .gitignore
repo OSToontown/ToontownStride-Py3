@@ -19,3 +19,8 @@
 
 # Local config
 dependencies/config/local.prc
+
+# PyMongo
+bson
+gridfs
+pymongo
