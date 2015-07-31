@@ -8590,6 +8590,13 @@ JumpBossTaunts = {
  ],
  'l': [
   "You're all in contempt of court!"
+ ],
+ 'm': [
+  'STOP!',
+  'What are you doing? Wake up!',
+  "I can't believe it!",
+  "You're all asleep on the job!",
+  'Wake up!'
  ]
 }
 CEOSpeech = [
