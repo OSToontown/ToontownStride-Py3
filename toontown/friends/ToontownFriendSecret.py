@@ -131,9 +131,10 @@ class ToontownFriendSecret(DirectFrame):
         self.ok2.show()
 
     def successGetSecret(self, code):
-        self.nextText['text'] = TTLocalizer.FriendSecretGotSecret % code
+        self.nextText['text'] = TTLocalizer.FriendSecretGotSecret
         self.nextText.setPos(*TTLocalizer.FSgotSecretPos)
-        self.secretText['text'] = secret
+        self.secretText['text'] = code
+        self.secretText.setScale(0.1 if code.startswith('TT') else 0.08)
         self.nextText.show()
         self.secretText.show()
         self.cancel.hide()

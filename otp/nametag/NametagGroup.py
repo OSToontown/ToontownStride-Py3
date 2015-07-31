@@ -11,7 +11,6 @@ class NametagGroup:
     CCSuitBuilding = CCSuitBuilding
     CCHouseBuilding = CCHouseBuilding
     CCSpeedChat = CCSpeedChat
-    CCAdmin = CCAdmin
 
     CHAT_TIMEOUT_MAX = 12.0
     CHAT_TIMEOUT_MIN = 4.0

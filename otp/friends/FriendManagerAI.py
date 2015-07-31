@@ -2,7 +2,9 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from otp.otpbase import OTPGlobals
 from toontown.toonbase import ToontownGlobals
-import datetime, uuid, time
+import datetime, uuid, time, string, random
+
+AVAILABLE_CHARS = string.ascii_lowercase + string.digits
 
 class AddTrueFriend:
 
@@ -179,6 +181,20 @@ class FriendManagerAI(DistributedObjectAI):
 
         del self.requests[context]
     
+    def getRandomCharSequence(self, count):
+        return ''.join(random.choice(AVAILABLE_CHARS) for i in xrange(count))
+    
+    def getTFCode(self, tryNumber):
+        if tryNumber == ToontownGlobals.MAX_TF_TRIES:
+            return str(uuid.uuid4())
+        
+        code = 'TT %s %s' % (self.getRandomCharSequence(3), self.getRandomCharSequence(3))
+        
+        if (hasattr(self, 'data') and code in self.data) or (self.air.dbConn and self.air.dbGlobalCursor.tfCodes.find({'_id': code}).count() > 0):
+            return self.getTFCode(tryNumber + 1)
+        
+        return code
+    
     def requestTFCode(self):
         avId = self.air.getAvatarIdFromSender()
         av = self.air.doId2do.get(avId)
@@ -192,7 +208,7 @@ class FriendManagerAI(DistributedObjectAI):
             self.sendUpdateToAvatarId(avId, 'tfResponse', [ToontownGlobals.TF_COOLDOWN, ''])
             return
         
-        code = str(uuid.uuid4())
+        code = self.getTFCode(0)
         
         if hasattr(self, 'data'):
             self.data[code] = avId

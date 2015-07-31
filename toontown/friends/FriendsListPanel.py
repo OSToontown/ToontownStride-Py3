@@ -276,7 +276,6 @@ class FriendsListPanel(DirectFrame, StateData.StateData):
             del self.friends[friendId]
 
         self.createButtons(petFriends, NAMETAG_COLORS[CCNonPlayer][0][0])
-        self.createButtons(admins, NAMETAG_COLORS[CCAdmin][0][0])
         self.createButtons(trueFriends, NAMETAG_COLORS[CCNormal][0][0])
         self.createButtons(friends, NAMETAG_COLORS[CCSpeedChat][0][0])
 
