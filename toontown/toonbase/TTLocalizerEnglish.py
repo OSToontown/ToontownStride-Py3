@@ -95,23 +95,23 @@ GlobalStreetNames = {20000: ('to', 'on', 'Tutorial Terrace'),
  9100: ('to', 'on', 'Lullaby Lane'),
  9200: ('to', 'on', 'Pajama Place'),
  9300: ('to', 'on', 'Bedtime Boulevard'),
- 10000: ('to', 'in', 'Bossbot HQ Country Club'),
+ 10000: ('to the', 'in the', 'Bossbot HQ Country Club'),
  10100: ('to the', 'in the', 'Bossbot HQ Lobby'),
- 10200: ('to the', 'in the', 'The Clubhouse'),
- 10500: ('to the', 'in the', 'The Front Three'),
- 10600: ('to the', 'in the', 'The Middle Six'),
- 10700: ('to the', 'in the', 'The Back Nine'),
+ 10200: ('to', 'in', 'The Clubhouse'),
+ 10500: ('to', 'in', 'The Front Three'),
+ 10600: ('to', 'in', 'The Middle Six'),
+ 10700: ('to', 'in', 'The Back Nine'),
  11000: ('to the', 'in the', 'Sellbot HQ Courtyard'),
  11100: ('to the', 'in the', 'Sellbot HQ Lobby'),
  11200: ('to the', 'in the', 'Sellbot Factory'),
  11500: ('to the', 'in the', 'Sellbot Factory'),
  11600: ('to the', 'in the', 'Sellbot Megacorp'),
- 12000: ('to', 'in', 'Cashbot Train Yard'),
+ 12000: ('to the', 'in the', 'Cashbot Train Yard'),
  12100: ('to the', 'in the', 'Cashbot HQ Lobby'),
  12500: ('to the', 'in the', 'Cashbot Coin Mint'),
  12600: ('to the', 'in the', 'Cashbot Dollar Mint'),
  12700: ('to the', 'in the', 'Cashbot Bullion Mint'),
- 13000: ('to', 'in', 'Lawbot HQ Courtyard'),
+ 13000: ('to the', 'in the', 'Lawbot HQ Courtyard'),
  13100: ('to the', 'in the', 'Courthouse Lobby'),
  13200: ('to the', 'in the', "DA's Office Lobby"),
  13300: ('to the', 'in the', 'Lawbot A Office'),
@@ -8670,6 +8670,10 @@ FriendSecretAlreadyFriendsName = 'You are already True Friends with %s!'
 FriendSecretEnteredSecretSelf = 'You just typed in your own True Friend Code!'
 FriendSecretTooFast = 'You are redeeming codes too fast! Please wait a few seconds.'
 FriendSecretNowFriends = 'You are now True Friends with %s!'
+
+GroupAskNoAccess = 'Sorry, but you have no teleport access %s %s.\n\nWould you still like to teleport to %s?'
+GroupAskNoAccessSame = 'Sorry, but you have no teleport access %s %s.'
+GroupAskAccess = 'Would you like to teleport %s %s in %s?'
 
 Blacklist = [
  "$1ut",

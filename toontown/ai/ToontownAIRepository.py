@@ -46,7 +46,6 @@ from toontown.racing.LeaderboardMgrAI import LeaderboardMgrAI
 from toontown.pets.PetManagerAI import PetManagerAI
 from toontown.safezone.SafeZoneManagerAI import SafeZoneManagerAI
 from toontown.suit.SuitInvasionManagerAI import SuitInvasionManagerAI
-from toontown.groups.GroupManagerAI import GroupManagerAI
 from toontown.toon import NPCToons
 from toontown.toonbase import ToontownGlobals
 from toontown.tutorial.TutorialManagerAI import TutorialManagerAI
@@ -72,7 +71,6 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.mintMgr = None
         self.lawOfficeMgr = None
         self.countryClubMgr = None
-        self.groupManager = GroupManagerAI(self)
 
         self.zoneAllocator = UniqueIdAllocator(ToontownGlobals.DynamicZonesBegin,
                                                ToontownGlobals.DynamicZonesEnd)
@@ -121,7 +119,6 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.codeRedemptionMgr.generateWithRequired(2)
         self.buildingQueryMgr = DistributedBuildingQueryMgrAI(self)
         self.buildingQueryMgr.generateWithRequired(2)
-        self.groupManager.generateWithRequired(2)
         if self.wantTopToons:
             self.topToonsMgr = TopToonsManagerAI(self)
         if self.wantKarts:

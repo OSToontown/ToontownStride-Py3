@@ -230,7 +230,6 @@ from toontown.estate import DistributedHouse/AI
 from toontown.estate import DistributedHouseInterior/AI
 from toontown.estate import DistributedGarden/AI
 from toontown.shtiker import DeleteManager/AI
-from toontown.groups import GroupManager/AI/UD
 from toontown.ai import NewsManager/AI
 from toontown.shtiker import PurchaseManager/AI
 from toontown.shtiker import NewbiePurchaseManager/AI
@@ -556,6 +555,7 @@ dclass ToontownDistrictStats : DistributedObject {
   setDistrictId(uint32) broadcast required ram;
   setAvatarCount(uint32) broadcast required ram;
   setInvasionStatus(uint8) broadcast required ram;
+  setGroupAvCount(uint32[]) broadcast required ram;
 };
 
 dclass DistributedAnimatedProp : DistributedObject {
@@ -1469,23 +1469,6 @@ dclass DistributedPartyTugOfWarActivity : DistributedPartyTeamActivity {
 
 dclass DeleteManager : DistributedObject {
   setInventory(blob) airecv clsend;
-};
-
-dclass GroupManager : DistributedObject {
-  setChildId() clsend airecv;
-  isPlayerGrouped(uint32);
-  isInGroup(uint32, uint32);
-  updateInfo() clsend airecv;
-  requestInfo() broadcast ram;
-  getTypeFromId(uint32);
-  setGroups(string) broadcast ram;
-  getGroups();
-  setGroupPlayers(string) broadcast ram;
-  getGroupPlayers(uint32);
-  createGroup(uint32, string) clsend airecv;
-  closeGroup(uint32) clsend airecv;
-  addPlayerToGroup(uint32, uint32) clsend airecv;
-  removePlayerFromGroup(uint32, uint32) clsend airecv;
 };
 
 dclass NewsManager : DistributedObject {
