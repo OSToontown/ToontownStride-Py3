@@ -24,7 +24,7 @@ from direct.task.Task import Task
 from otp.nametag import NametagGlobals
 
 class DistributedTugOfWarGame(DistributedMinigame):
-    bgm = 'phase_4/audio/bgm/MG_tug_o_war.ogg'
+    bgm = 'phase_4/audio/bgm/MG_cannon_game_tug.ogg'
     toonAnimNames = ['neutral',
      'tug-o-war',
      'slip-forward',
