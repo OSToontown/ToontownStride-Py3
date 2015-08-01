@@ -84,5 +84,5 @@ class ToontownDistrictStats(DistributedObject.DistributedObject):
     
     def setGroupAvCount(self, groupAvCount):
         if self.districtId in self.cr.activeDistrictMap:
-            self.cr.activeDistrictMap[self.districtId].groupAvCount = groupAvCount=
+            self.cr.activeDistrictMap[self.districtId].groupAvCount = groupAvCount
             messenger.send('shardInfoUpdated')
