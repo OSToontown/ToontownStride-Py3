@@ -2442,14 +2442,20 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def startToonUp(self, healFrequency):
         self.stopToonUp()
-        self.healFrequency = healFrequency
+        self.nextToonup = (healFrequency, self.indexOf(ToontownGlobals.TOONUP_PULSE_ZONES, ZoneUtil.getCanonicalHoodId(self.zoneId), 0) + 1)
         self.__waitForNextToonUp()
+    
+    def indexOf(self, list, element, default):
+        try:
+            return list.index(element)
+        except:
+            return default
 
     def __waitForNextToonUp(self):
-        taskMgr.doMethodLater(self.healFrequency, self.toonUpTask, self.uniqueName('safeZoneToonUp'))
+        taskMgr.doMethodLater(self.nextToonup[0], self.toonUpTask, self.uniqueName('safeZoneToonUp'))
 
     def toonUpTask(self, task):
-        self.toonUp(1)
+        self.toonUp(self.nextToonup[1])
         self.__waitForNextToonUp()
         return Task.done
 

@@ -115,13 +115,13 @@ def satanGrowFlowers():
 
     now = int(time.time())
     i = 0
-    for flower in garden.flowers:
+    for flower in garden.flowers.union(garden.trees):
         flower.b_setWaterLevel(5)
         flower.b_setGrowthLevel(2)
         flower.update()
         i += 1
             
-    return '%d disgusting flowers grown' % i
+    return '%d disgusting flowers and trees grown' % i
     
 @magicWord(category=CATEGORY_PROGRAMMER)
 def satanPickAll():

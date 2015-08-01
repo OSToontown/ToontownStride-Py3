@@ -1687,3 +1687,5 @@ TF_ALREADY_FRIENDS_NAME = 7
 TF_SUCCESS = 8
 
 GROUP_ZONES = [11000, 11100, 11200, 12000, 12100, 13000, 13100, 13200, 10000, 10100]
+TOONUP_PULSE_ZONES = [ToontownCentral, DonaldsDock, DaisyGardens, MinniesMelodyland, TheBrrrgh, DonaldsDreamland]
+TOONUP_FREQUENCY = 30
