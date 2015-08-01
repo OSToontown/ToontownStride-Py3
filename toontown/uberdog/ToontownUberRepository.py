@@ -15,6 +15,7 @@ class ToontownUberRepository(ToontownInternalRepository):
         ToontownInternalRepository.__init__(self, baseChannel, serverId, dcSuffix='UD')
 
         self.notify.setInfo(True)
+        self.wantTopToons = self.config.GetBool('want-top-toons', True)
 
     def handleConnected(self):
         ToontownInternalRepository.handleConnected(self)
@@ -39,5 +40,6 @@ class ToontownUberRepository(ToontownInternalRepository):
         self.friendsManager = simbase.air.generateGlobalObject(OTP_DO_ID_TTS_FRIENDS_MANAGER, 'TTSFriendsManager')
         self.globalPartyMgr = simbase.air.generateGlobalObject(OTP_DO_ID_GLOBAL_PARTY_MANAGER, 'GlobalPartyManager')
         self.groupManager = simbase.air.generateGlobalObject(OPT_DO_ID_GROUP_MANAGER, 'GroupManager')
-        self.topToonsMgr = TopToonsManagerUD(self)
+        if self.wantTopToons:
+            self.topToonsMgr = TopToonsManagerUD(self)
 

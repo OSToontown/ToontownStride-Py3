@@ -30,6 +30,7 @@ want-chinese-checkers #t
 want-checkers #t
 want-house-types #t
 want-gifting #t
+want-top-toons #f
 
 # Chat:
 want-whitelist #t
