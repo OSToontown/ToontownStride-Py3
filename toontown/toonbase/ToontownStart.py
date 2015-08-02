@@ -102,6 +102,8 @@ if 'tpTransition' not in settings:
     settings['tpTransition'] = True
 if 'fov' not in settings:
     settings['fov'] = OTPGlobals.DefaultCameraFov
+if 'talk2speech' not in settings:
+    settings['talk2speech'] = False
 
 loadPrcFileData('Settings: res', 'win-size %d %d' % tuple(settings['res']))
 loadPrcFileData('Settings: fullscreen', 'fullscreen %s' % settings['fullscreen'])

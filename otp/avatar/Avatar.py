@@ -17,7 +17,6 @@ from otp.nametag.Nametag import Nametag
 from otp.nametag.NametagGroup import NametagGroup
 from otp.nametag.NametagConstants import *
 
-
 teleportNotify = DirectNotifyGlobal.directNotify.newCategory('Teleport')
 teleportNotify.showTime = True
 if config.GetBool('want-teleport-debug', 1):
