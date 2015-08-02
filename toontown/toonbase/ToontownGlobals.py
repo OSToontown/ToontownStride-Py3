@@ -177,7 +177,7 @@ HoodHierarchy = {ToontownCentral: (SillyStreet, LoopyLane, PunchlinePlace),
  TheBrrrgh: (WalrusWay, SleetStreet, PolarPlace),
  MinniesMelodyland: (AltoAvenue, BaritoneBoulevard, TenorTerrace),
  DaisyGardens: (ElmStreet, MapleStreet, OakStreet),
- DonaldsDreamland: (LullabyLane, PajamaPlace),
+ DonaldsDreamland: (LullabyLane, PajamaPlace, BedtimeBoulevard),
  GoofySpeedway: ()}
 BossbotHQ = 10000
 BossbotLobby = 10100
