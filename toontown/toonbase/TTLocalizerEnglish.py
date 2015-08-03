@@ -8678,6 +8678,14 @@ GroupAskNoAccess = 'Sorry, but you have no teleport access %s %s.\n\nWould you s
 GroupAskNoAccessSame = 'Sorry, but you have no teleport access %s %s.'
 GroupAskAccess = 'Would you like to teleport %s %s in %s?'
 
+TVNotOwner = 'Sorry, but this is not your TV.'
+TVInvalidVideo = "Sorry, but we can't play that video. Make sure it is a MP4 video."
+TVUnknownVideo = "Oops! Looks like the owner has picked a video to play which isn't currently on your computer!"
+TVUnknownVideoPack = 'Oops! Looks like the owner has picked a video to play, but you need to download the %s TV Pack in the launcher.'
+TVChooseVideo = 'Choose a video to play!'
+TVOK = 'The video you selected is now playing!'
+TVPacks = ['QuackityHQ']
+
 Blacklist = [
  "$1ut",
  "$h1t",

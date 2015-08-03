@@ -21,9 +21,10 @@ FLBillboard = 64
 FLPhone = 128
 FLCrate = 256
 FLChair = 512
-FLTrunk = 1024
-FLBoysOnly = 2048
-FLGirlsOnly = 4096
+FLTV = 1024
+FLTrunk = 2048
+FLBoysOnly = 4096
+FLGirlsOnly = 8192
 furnitureColors = [
   (0.792, 0.353, 0.29, 1.0),
   (0.176, 0.592, 0.439, 1.0),
@@ -752,15 +753,18 @@ FurnitureTypes = {
  1530: ('phase_5.5/models/estate/bugRoomTV',
         None,
         None,
-        675),
+        675,
+        FLTV),
  1531: ('phase_5.5/models/estate/bugRoomTV_50inch',
         None,
         None,
-        1250),
+        1250,
+        FLTV),
  1532: ('phase_5.5/models/estate/bugRoomTV_100inch',
         None,
         None,
-        5000),		
+        5000,
+        FLTV),		
  1600: ('phase_5.5/models/estate/vaseA_short',
         None,
         None,
@@ -1107,38 +1111,7 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
                 model.setScale(scale)
                 model.flattenLight()
 
-        if animate and self.furnitureType in TvToPosScale:
-            pos = TvToPosScale[self.furnitureType]
-            screen = NodePath(CardMaker('tv-screen').generate())
-
-            model.find('**/toonTownBugTV_screen').hide()
-            screen.reparentTo(model)
-            screen.setScale(*pos[1])
-            screen.setPos(*pos[0])
-            self.startVideo(screen)
-
         return model
-    
-    def startVideo(self, model, file=None):
-        files = glob.glob('user/videos/*.mp4')
-        
-        if not files:
-            model.setTextureOff(TextureStage.getDefault())
-            model.setColor(0.3, 0.3, 0.3, 1.0)
-            return
-        
-        if file is None:
-            file = random.randint(0, len(files) - 1)
-        elif file >= len(files):
-            file = 0
-
-        movie = loader.loadTexture(files[file])
-        sound = loader.loadSfx(files[file])
-        movie.synchronizeTo(sound)
-        model.setTexture(movie)
-        model.setTexScale(TextureStage.getDefault(), movie.getTexScale())
-        self.videoSequence = Sequence(SoundInterval(sound, volume=1.0), Func(self.startVideo, model, file + 1))
-        self.videoSequence.start()
 
     def decodeDatagram(self, di, versionNumber, store):
         CatalogAtticItem.CatalogAtticItem.decodeDatagram(self, di, versionNumber, store)

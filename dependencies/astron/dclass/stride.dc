@@ -294,6 +294,7 @@ from toontown.estate import DistributedTrunk/AI
 from toontown.estate import DistributedPhone/AI
 from toontown.estate import DistributedRewardCrate/AI
 from toontown.estate import DistributedChair/AI
+from toontown.estate import DistributedTV/AI
 from toontown.effects import DistributedFireworkShow/AI
 from toontown.estate import DistributedFireworksCannon/AI
 from toontown.coghq import LobbyManager/AI
@@ -2089,6 +2090,12 @@ dclass DistributedChair : DistributedFurnitureItem {
   setAvId(uint32) broadcast ram;
   requestSit(uint8) airecv clsend;
   setStatus(uint8) broadcast ram;
+};
+
+dclass DistributedTV : DistributedFurnitureItem {
+  setVideo(string(0-255), uint32) required broadcast ram;
+  requestVideo(string(0-255)) airecv clsend;
+  requestVideoResponse(uint8);
 };
 
 dclass DistributedFireworkShow : DistributedObject {

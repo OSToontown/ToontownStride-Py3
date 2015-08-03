@@ -1,7 +1,7 @@
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from toontown.catalog.CatalogItemList import CatalogItemList
 from toontown.catalog import CatalogItem
-from toontown.catalog.CatalogFurnitureItem import CatalogFurnitureItem, FLTrunk, FLCloset, FLBank, FLPhone, FLCrate, FLChair
+from toontown.catalog.CatalogFurnitureItem import CatalogFurnitureItem, FLTrunk, FLCloset, FLBank, FLPhone, FLCrate, FLChair, FLTV
 from toontown.catalog.CatalogWallpaperItem import CatalogWallpaperItem
 from toontown.catalog.CatalogMouldingItem import CatalogMouldingItem
 from toontown.catalog.CatalogFlooringItem import CatalogFlooringItem
@@ -14,6 +14,7 @@ from DistributedTrunkAI import DistributedTrunkAI
 from DistributedBankAI import DistributedBankAI
 from DistributedRewardCrateAI import DistributedRewardCrateAI
 from DistributedChairAI import DistributedChairAI
+from DistributedTVAI import DistributedTVAI
 from otp.ai.MagicWordGlobal import *
 
 class FurnitureError(Exception):
@@ -249,6 +250,8 @@ class DistributedFurnitureManagerAI(DistributedObjectAI):
             do = DistributedRewardCrateAI(self.air, self, item)
         elif item.getFlags() & FLChair:
             do = DistributedChairAI(self.air, self, item)
+        elif item.getFlags() & FLTV:
+            do = DistributedTVAI(self.air, self, item)
         else:
             do = DistributedFurnitureItemAI(self.air, self, item)
         
