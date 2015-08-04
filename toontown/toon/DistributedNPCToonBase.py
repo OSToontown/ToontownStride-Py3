@@ -56,7 +56,6 @@ class DistributedNPCToonBase(DistributedToon.DistributedToon):
         self.parentToonParts()
         self.rescaleToon()
         self.resetHeight()
-        self.generateLaughingMan()
         self.rightHands = []
         self.leftHands = []
         self.headParts = []

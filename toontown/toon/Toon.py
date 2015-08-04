@@ -28,7 +28,6 @@ from otp.nametag.NametagGroup import *
 from toontown.suit import SuitDNA
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
-from toontown.toon import LaughingManGlobals
 
 def teleportDebug(requestStatus, msg, onlyIfToAv = True):
     if teleportNotify.getDebug():
@@ -564,8 +563,8 @@ class Toon(Avatar.Avatar, ToonHead):
     def updateToonDNA(self, newDNA, fForce = 0):
         self.style.gender = newDNA.getGender()
         oldDNA = self.style
-        if fForce or newDNA.head != oldDNA.head or newDNA.laughingMan != oldDNA.laughingMan:
-            self.swapToonHead(newDNA.head, newDNA.laughingMan)
+        if fForce or newDNA.head != oldDNA.head:
+            self.swapToonHead(newDNA.head)
         if fForce or newDNA.torso != oldDNA.torso:
             self.swapToonTorso(newDNA.torso, genClothes=0)
             self.loop('neutral')
@@ -644,7 +643,6 @@ class Toon(Avatar.Avatar, ToonHead):
         self.rescaleToon()
         self.resetHeight()
         self.setupToonNodes()
-        self.generateLaughingMan()
 
     def setupToonNodes(self):
         rightHand = NodePath('rightHand')
@@ -829,7 +827,7 @@ class Toon(Avatar.Avatar, ToonHead):
             self.loadAnims(HeadAnimDict[self.style.head], 'head', '500')
             self.loadAnims(HeadAnimDict[self.style.head], 'head', '250')
 
-    def swapToonHead(self, headStyle=-1, laughingMan=0, copy = 1):
+    def swapToonHead(self, headStyle=-1, copy = 1):
         self.stopLookAroundNow()
         self.eyelids.request('open')
         self.unparentToonParts()
@@ -848,8 +846,6 @@ class Toon(Avatar.Avatar, ToonHead):
         self.resetHeight()
         self.eyelids.request('open')
         self.startLookAround()
-        if laughingMan or self.getWantLaughingMan():
-            LaughingManGlobals.addToonEffect(self)
 
     def generateToonColor(self):
         ToonHead.generateToonColor(self, self.style)
@@ -982,10 +978,6 @@ class Toon(Avatar.Avatar, ToonHead):
                 caps.setColor(darkBottomColor)
 
         return swappedTorso
-
-    def generateLaughingMan(self):
-        if self.getWantLaughingMan():
-            self.swapToonHead(laughingMan=True)
 
     def generateHat(self, fromRTM = False):
         hat = self.getHat()
@@ -1159,12 +1151,6 @@ class Toon(Avatar.Avatar, ToonHead):
 
     def getHat(self):
         return self.hat
-
-    def getWantLaughingMan(self):
-        return self.style.laughingMan or self.getWantLaughingManHoliday()
-
-    def getWantLaughingManHoliday(self):
-        return base.cr.newsManager and base.cr.newsManager.isHolidayRunning(ToontownGlobals.LAUGHING_MAN)
 
     def setGlasses(self, glassesIdx, textureIdx, colorIdx, fromRTM = False):
         self.glasses = (glassesIdx, textureIdx, colorIdx)
