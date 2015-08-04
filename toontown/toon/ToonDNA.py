@@ -1931,47 +1931,7 @@ allColorsList = [VBase4(1.0, 1.0, 1.0, 1.0),
  VBase4(0.862745, 0.078431, 0.235294, 1.0),
  VBase4(0.0, 0.635294, 0.513725, 1.0),
  VBase4(0.803921, 0.498039, 0.196078, 1.0)]
-defaultBoyColorList = [0,
- 1,
- 32,
- 2,
- 3,
- 4,
- 5,
- 6,
- 7,
- 29,
- 8,
- 37,
- 35,
- 9,
- 10,
- 33,
- 11,
- 12,
- 30,
- 13,
- 14,
- 15,
- 39,
- 27,
- 28,
- 16,
- 17,
- 18,
- 19,
- 20,
- 21,
- 38,
- 36,
- 22,
- 23,
- 24,
- 25,
- 34,
- 31,
- 26]
-defaultGirlColorList = [0,
+defaultColorList = [0,
  1,
  32,
  2,
@@ -2012,7 +1972,7 @@ defaultGirlColorList = [0,
  31,
  26]
 allColorsListApproximations = map(lambda x: VBase4(round(x[0], 3), round(x[1], 3), round(x[2], 3), round(x[3], 3)), allColorsList)
-allowedColors = set(map(lambda x: allColorsListApproximations[x], set([0] + defaultBoyColorList + defaultGirlColorList + [26])))
+allowedColors = set(map(lambda x: allColorsListApproximations[x], set([0] + defaultColorList + [26])))
 HatModels = [None,
  'phase_4/models/accessories/tt_m_chr_avt_acc_hat_baseball',
  'phase_4/models/accessories/tt_m_chr_avt_acc_hat_safari',
@@ -2715,6 +2675,7 @@ class ToonDNA:
             self.head = generator.choice(toonHeadTypes[:22])
         top, topColor, sleeve, sleeveColor = getRandomTop(gender, generator=generator)
         bottom, bottomColor = getRandomBottom(gender, generator=generator)
+        color = generator.choice(defaultColorList)
         if gender == 'm':
             self.torso = generator.choice(toonTorsoTypes[:3])
             self.topTex = top
@@ -2723,10 +2684,6 @@ class ToonDNA:
             self.sleeveTexColor = sleeveColor
             self.botTex = bottom
             self.botTexColor = bottomColor
-            color = generator.choice(defaultBoyColorList)
-            self.armColor = color
-            self.legColor = color
-            self.headColor = color
         else:
             self.torso = generator.choice(toonTorsoTypes[:6])
             self.topTex = top
@@ -2739,10 +2696,9 @@ class ToonDNA:
                 bottom, bottomColor = getRandomBottom(gender, generator=generator, girlBottomType=SHORTS)
             self.botTex = bottom
             self.botTexColor = bottomColor
-            color = generator.choice(defaultGirlColorList)
-            self.armColor = color
-            self.legColor = color
-            self.headColor = color
+        self.armColor = color
+        self.legColor = color
+        self.headColor = color
         self.gloveColor = 0
         self.laughingMan = 0
 
