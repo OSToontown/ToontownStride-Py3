@@ -165,14 +165,6 @@ class BodyShop(StateData.StateData):
         del self.legRButton
         self.shuffleButton.unload()
         self.ignore('MAT-newToonCreated')
-
-    def checkColors(self):
-        if self.dna.armColor not in ToonDNA.allColorsList:
-            self.dna.armColor = ToonDNA.allColorsList[0]
-        if self.dna.legColor not in ToonDNA.allColorsList:
-            self.dna.legColor = ToonDNA.allColorsList[0]
-        if self.dna.headColor not in ToonDNA.allColorsList:
-            self.dna.headColor = ToonDNA.allColorsList[0]
     
     def __swapTorso(self, offset):
         gender = self.toon.style.getGender()
@@ -182,7 +174,6 @@ class BodyShop(StateData.StateData):
         elif gender == 'm':
             length = len(ToonDNA.toonTorsoTypes[:3])
             torsoOffset = 0
-            self.checkColors()
             if self.toon.style.topTex not in ToonDNA.MakeAToonBoyShirts:
                 randomShirt = ToonDNA.getRandomTop(gender, ToonDNA.MAKE_A_TOON)
                 shirtTex, shirtColor, sleeveTex, sleeveColor = randomShirt
@@ -200,7 +191,6 @@ class BodyShop(StateData.StateData):
                 torsoOffset = 3
             else:
                 torsoOffset = 0
-            self.checkColors()
             if self.toon.style.topTex not in ToonDNA.MakeAToonGirlShirts:
                 randomShirt = ToonDNA.getRandomTop(gender, ToonDNA.MAKE_A_TOON)
                 shirtTex, shirtColor, sleeveTex, sleeveColor = randomShirt

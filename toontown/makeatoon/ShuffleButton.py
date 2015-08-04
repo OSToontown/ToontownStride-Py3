@@ -68,7 +68,6 @@ class ShuffleButton:
         del self.shuffleBtn
         del self.incBtn
         del self.decBtn
-        return
 
     def showButtons(self):
         self.shuffleFrame.show()

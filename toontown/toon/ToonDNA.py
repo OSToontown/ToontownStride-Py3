@@ -1,8 +1,9 @@
-import random, colorsys, ast
+import random, colorsys
 from panda3d.core import *
 from direct.directnotify.DirectNotifyGlobal import *
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
+from toontown.toonbase import ToontownGlobals
 notify = directNotify.newCategory('ToonDNA')
 mergeMATTailor = config.GetBool('want-mat-all-tailors', 0)
 toonSpeciesTypes = ['d',
@@ -2408,8 +2409,6 @@ class ToonDNA:
                     self.newToonFromProperties(*dna.asTuple())
         else:
             self.type = 'u'
-        self.cache = ()
-        return
 
     def __str__(self):
         string = 'type = toon\n'
@@ -2504,16 +2503,12 @@ class ToonDNA:
         if botTexColor >= len(ClothesColors):
             return False
         if not self.isValid(armColor):
-            print 'arm'
             return False
         if not self.isValid(gloveColor):
-            print 'glove'
             return False
         if not self.isValid(legColor):
-            print 'leg'
             return False
         if not self.isValid(headColor):
-            print 'head'
             return False
         return True
     
@@ -2522,7 +2517,7 @@ class ToonDNA:
             return True
         
         hsv = colorsys.rgb_to_hsv(*color[:-1])
-        return 0.36 <= hsv[1] <= 0.7 and 0.5 <= hsv[2] <= 0.8
+        return ToontownGlobals.COLOR_SATURATION_MIN <= hsv[1] <= ToontownGlobals.COLOR_SATURATION_MAX and ToontownGlobals.COLOR_VALUE_MIN <= hsv[2] <= ToontownGlobals.COLOR_VALUE_MAX
 
     def makeFromNetString(self, string):
         dg = PyDatagram(string)
