@@ -8724,6 +8724,8 @@ TVChooseVideo = 'Choose a video to play!'
 TVOK = 'The video you selected is now playing!'
 TVPacks = ['QuackityHQ']
 
+GagPopup = '%s: %s\nGags: %s'
+
 Blacklist = [
  "$1ut",
  "$h1t",
