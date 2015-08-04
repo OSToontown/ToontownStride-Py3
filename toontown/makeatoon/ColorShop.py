@@ -289,19 +289,15 @@ class ColorShop(StateData.StateData):
         newArmColorIndex = colorList.index(newChoice[1])
         newGloveColorIndex = colorList.index(newChoice[2])
         newLegColorIndex = colorList.index(newChoice[3])
-        oldHeadColorIndex = colorList.index(self.toon.style.headColor)
-        oldArmColorIndex = colorList.index(self.toon.style.armColor)
-        oldGloveColorIndex = colorList.index(self.toon.style.gloveColor)
-        oldLegColorIndex = colorList.index(self.toon.style.legColor)
-        self.__swapHeadColor(newHeadColorIndex - oldHeadColorIndex)
+        self.__swapHeadColor(newHeadColorIndex - self.headChoice)
         if self.colorAll:
-            self.__swapArmColor(newHeadColorIndex - oldArmColorIndex)
-            self.__swapGloveColor(newHeadColorIndex - oldGloveColorIndex)
-            self.__swapLegColor(newHeadColorIndex - oldLegColorIndex)
+            self.__swapArmColor(newHeadColorIndex - self.armChoice)
+            self.__swapGloveColor(newHeadColorIndex - self.gloveChoice)
+            self.__swapLegColor(newHeadColorIndex - self.legChoice)
         else:
-            self.__swapArmColor(newArmColorIndex - oldArmColorIndex)
-            self.__swapGloveColor(newGloveColorIndex - oldGloveColorIndex)
-            self.__swapLegColor(newLegColorIndex - oldLegColorIndex)
+            self.__swapArmColor(newArmColorIndex - self.armChoice)
+            self.__swapGloveColor(newGloveColorIndex - self.gloveChoice)
+            self.__swapLegColor(newLegColorIndex - self.legChoice)
 
     def getCurrToonSetting(self):
         return [self.dna.headColor, self.dna.armColor, self.dna.gloveColor, self.dna.legColor]
