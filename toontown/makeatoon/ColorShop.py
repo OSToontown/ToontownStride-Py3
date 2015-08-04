@@ -18,19 +18,21 @@ class ColorShop(StateData.StateData):
         return
 
     def getColorList(self):
-        return ToonDNA.defaultColorList
+        return ToonDNA.allColorsList
 
     def enter(self, toon, shopsVisited = []):
         base.disableMouse()
         self.toon = toon
         self.dna = toon.getStyle()
         colorList = self.getColorList()
+        print str(self.dna)
         try:
             self.headChoice = colorList.index(self.dna.headColor)
             self.armChoice = colorList.index(self.dna.armColor)
             self.gloveChoice = colorList.index(self.dna.gloveColor)
             self.legChoice = colorList.index(self.dna.legColor)
-        except:
+        except Exception as e:
+            raise e
             self.headChoice = random.choice(colorList)
             self.armChoice = self.headChoice
             self.gloveChoice = self.gloveChoice

@@ -167,12 +167,12 @@ class BodyShop(StateData.StateData):
         self.ignore('MAT-newToonCreated')
 
     def checkColors(self):
-        if self.dna.armColor not in ToonDNA.defaultColorList:
-            self.dna.armColor = ToonDNA.defaultColorList[0]
-        if self.dna.legColor not in ToonDNA.defaultColorList:
-            self.dna.legColor = ToonDNA.defaultColorList[0]
-        if self.dna.headColor not in ToonDNA.defaultColorList:
-            self.dna.headColor = ToonDNA.defaultColorList[0]
+        if self.dna.armColor not in ToonDNA.allColorsList:
+            self.dna.armColor = ToonDNA.allColorsList[0]
+        if self.dna.legColor not in ToonDNA.allColorsList:
+            self.dna.legColor = ToonDNA.allColorsList[0]
+        if self.dna.headColor not in ToonDNA.allColorsList:
+            self.dna.headColor = ToonDNA.allColorsList[0]
     
     def __swapTorso(self, offset):
         gender = self.toon.style.getGender()
