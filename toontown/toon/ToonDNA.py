@@ -2452,7 +2452,9 @@ class ToonDNA:
             dg.addUint8(self.sleeveTexColor)
             dg.addUint8(self.botTex)
             dg.addUint8(self.botTexColor)
-            dg.addString(str((self.armColor, self.gloveColor, self.legColor, self.headColor)))
+            for colors in (self.armColor, self.gloveColor, self.legColor, self.headColor):
+                for color in colors[:-1]:
+                    dg.addFloat64(color)
         elif self.type == 'u':
             notify.error('undefined avatar')
         else:
@@ -2485,12 +2487,10 @@ class ToonDNA:
         sleeveTexColor = dgi.getUint8()
         botTex = dgi.getUint8()
         botTexColor = dgi.getUint8()
-        colors = ast.literal_eval(dgi.getString())
-        armColor = colors[0]
-        gloveColor = colors[1]
-        legColor = colors[2]
-        headColor = colors[3]
-        print armColor, gloveColor, legColor, headColor
+        armColor = (dgi.getFloat64(), dgi.getFloat64(), dgi.getFloat64(), 1.0)
+        gloveColor = (dgi.getFloat64(), dgi.getFloat64(), dgi.getFloat64(), 1.0)
+        legColor = (dgi.getFloat64(), dgi.getFloat64(), dgi.getFloat64(), 1.0)
+        headColor = (dgi.getFloat64(), dgi.getFloat64(), dgi.getFloat64(), 1.0)
         if topTex >= len(Shirts):
             return False
         if topTexColor >= len(ClothesColors):
@@ -2518,14 +2518,10 @@ class ToonDNA:
         return True
     
     def isValid(self, color):
-        print 'isvalid %s' % (color,)
-        if color + (1.0,) in allColorsList:
-            print 'all colors'
+        if color in allColorsList:
             return True
         
-        hsv = colorsys.rgb_to_hsv(*color)
-        print 'hsv %s' % (hsv,)
-        print str(0.36 <= hsv[1] <= 0.7 and 0.5 <= hsv[2] <= 0.8)
+        hsv = colorsys.rgb_to_hsv(*color[:-1])
         return 0.36 <= hsv[1] <= 0.7 and 0.5 <= hsv[2] <= 0.8
 
     def makeFromNetString(self, string):
@@ -2550,14 +2546,12 @@ class ToonDNA:
             self.sleeveTexColor = dgi.getUint8()
             self.botTex = dgi.getUint8()
             self.botTexColor = dgi.getUint8()
-            colors = ast.literal_eval(dgi.getString())
-            self.armColor = colors[0]
-            self.gloveColor = colors[1]
-            self.legColor = colors[2]
-            self.headColor = colors[3]
+            self.armColor = (dgi.getFloat64(), dgi.getFloat64(), dgi.getFloat64(), 1.0)
+            self.gloveColor = (dgi.getFloat64(), dgi.getFloat64(), dgi.getFloat64(), 1.0)
+            self.legColor = (dgi.getFloat64(), dgi.getFloat64(), dgi.getFloat64(), 1.0)
+            self.headColor = (dgi.getFloat64(), dgi.getFloat64(), dgi.getFloat64(), 1.0)
         else:
             notify.error('unknown avatar type: ', self.type)
-        return None
 
     def defaultColor(self):
         return 25

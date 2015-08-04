@@ -4616,7 +4616,7 @@ def badName():
     """
     target = spellbook.getTarget()
     _name = target.getName()
-    colorString = TTLocalizer.NumToColor[target.dna.headColor]
+    colorString = TTLocalizer.ColorfulToon
     animalType = TTLocalizer.AnimalToSpecies[target.dna.getAnimal()]
     target.b_setName(colorString + ' ' + animalType)
     target.sendUpdate('setWishNameState', ['REJECTED'])

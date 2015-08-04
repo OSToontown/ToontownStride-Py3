@@ -8723,6 +8723,8 @@ TVPacks = ['QuackityHQ']
 
 GagPopup = '%s: %s\nGags: %s'
 
+ColorfulToon = 'Colorful'
+
 Blacklist = [
  "$1ut",
  "$h1t",
