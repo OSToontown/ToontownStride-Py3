@@ -80,7 +80,7 @@ class GloveShopGui:
     def setClientGlove(self, color):
         dna = base.localAvatar.style
 
-        dna.gloveColor = color
+        dna.gloveColor = ToonDNA.allColorsList[color]
         base.localAvatar.setDNA(dna)
 
     def __exit(self, state):

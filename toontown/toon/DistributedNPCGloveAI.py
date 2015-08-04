@@ -22,6 +22,6 @@ class DistributedNPCGloveAI(DistributedNPCToonBaseAI.DistributedNPCToonBaseAI):
         av.takeMoney(ToontownGlobals.GloveCost)
         newDNA = ToonDNA.ToonDNA()
         newDNA.makeFromNetString(av.getDNAString())
-        newDNA.gloveColor = color
+        newDNA.gloveColor = ToonDNA.allColorsList[color]
         taskMgr.doMethodLater(1.0, lambda task: av.b_setDNAString(newDNA.makeNetString()), 'transform-%d' % avId)
         self.sendUpdate('changeGloveResult', [avId, GloveNPCGlobals.CHANGE_SUCCESSFUL])
