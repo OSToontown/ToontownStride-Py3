@@ -2451,6 +2451,10 @@ class ToonDNA:
             dg.addUint8(self.sleeveTexColor)
             dg.addUint8(self.botTex)
             dg.addUint8(self.botTexColor)
+            self.armColor = self.migrateColor(self.armColor)
+            self.gloveColor = self.migrateColor(self.gloveColor)
+            self.legColor = self.migrateColor(self.legColor)
+            self.headColor = self.migrateColor(self.headColor)
             for colors in (self.armColor, self.gloveColor, self.legColor, self.headColor):
                 for color in colors[:-1]:
                     dg.addFloat64(color)
