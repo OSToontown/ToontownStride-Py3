@@ -94,7 +94,6 @@ class DistributedTV(DistributedFurnitureItem):
         self.screen.setColor(1, 1, 1, 1)
         self.screen.setTexture(movie)
         self.screen.setTexScale(TextureStage.getDefault(), movie.getTexScale())
-        self.sound.setLoop(True)
         self.sound.setTime(min(self.sound.length(), int(time.time() - startTime)))
         self.sound.play()
     
