@@ -205,20 +205,17 @@ class DistributedBuildingMgrAI:
 
     def load(self):
         blocks = {}
-        
         if not self.air.dbConn:
             blocks = simbase.backups.load('block-info', (self.air.districtId, self.branchId), default={})
             return blocks
-
         self.air.mongodb.toontown.blockinfo.ensure_index([('ai', 1), ('branch', 1)])
-
         street = {'ai': self.shard, 'branch': self.branchID}
         try:
             doc = self.air.mongodb.toontown.blockinfo.find_one(street)
         except AutoReconnect:
             return blocks
-
         if not doc:
             return blocks
-        
-        return doc
+        for building in doc.get('buildings', []):
+            blocks[int(building['block'])] = building
+        return blocks

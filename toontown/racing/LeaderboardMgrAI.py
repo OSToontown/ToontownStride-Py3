@@ -6,7 +6,16 @@ class LeaderboardMgrAI:
 
     def __init__(self, air):
         self.air = air
-        self.database = simbase.backups.load('leaderboard', (self.air.districtId,), default=({}))
+        self.database = {}
+        if not self.air.dbConn:
+            self.database = simbase.backups.load('leaderboard', (self.air.districtId,), default=({}))
+        else:
+            self.air.mongodb.toontown.leaderboard.ensure_index([('ai', 1)])
+            street = {'ai': self.air.districtId}
+            try:
+                doc = self.air.mongodb.toontown.leaderboard.find_one(street)
+            except AutoReconnect:
+                return blocks
 
     def getDatabase(self):
         return self.database
