@@ -1,10 +1,10 @@
-This deployment folder contains files that describe how a release of TT should be run on the gameservers.
+This deployment folder contains files that describe how a release of TTSride should be run on the gameservers.
 
 uberdogs.yml contains the 'uberdogs' section of an astrond.yml. Please keep it updated, or else you'll break prod!
 
-deploy.json describes a the environment for a release of TT. It contains the version of astron to use as well as the version of Panda3D to use.
-deploy.json also contains a version prefix. This is used to generate dev version strings on the development server (which are probably something like tts-beta-dev-gabcdef0).
-When we deploy a release to prod, we push a git tag named after the version to the repository (i.e. TT-alpha-v1.3.7). It is required that the tag's name contain the version prefix specified in deploy.json.
+deploy.json describes a the environment for a release of TTSride. It contains the version of astron to use as well as the version of Panda3D to use.
+deploy.json also contains a version prefix. This is used to generate dev version strings on the development server (which are probably something like ttstride-beta-dev-gabcdef0).
+When we deploy a release to prod, we push a git tag named after the version to the repository (i.e. ttstride-alpha-v1.3.7). It is required that the tag's name contain the version prefix specified in deploy.json.
 The key 'server-resources' maps to a list of file extensions of files in the resources directory that are necessary to be used server-side. We do not package and deploy art assets onto servers.
 
 Last, server.prc is the configuration file we use for specifying config vars related to gameplay (a variable like want-sbhq should be put in server.prc, while a variable like air-stateserver does not belong here). server.prc is the last portion added to generated configuration files.
