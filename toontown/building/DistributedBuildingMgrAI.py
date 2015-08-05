@@ -199,7 +199,7 @@ class DistributedBuildingMgrAI:
         else:
             street = {'district': self.air.districtId, 'branch': self.branchID}
             try:
-                self.air.mongodb.toontown.blockinfo.update(street, {'$setOnInsert': street, '$set': {'buildings': backups}}, upsert=True)
+                self.air.dbGlobalCursor.blockInfo.update(street, {'$setOnInsert': street, '$set': {'buildings': backups}}, upsert=True)
             except AutoReconnect:
                 taskMgr.doMethodLater(config.GetInt('mongodb-retry-time', 2), self.save, 'retrySave', extraArgs=[])
 
@@ -208,10 +208,10 @@ class DistributedBuildingMgrAI:
         if not self.air.dbConn:
             blocks = simbase.backups.load('block-info', (self.air.districtId, self.branchId), default={})
             return blocks
-        self.air.mongodb.toontown.blockinfo.ensure_index([('district', 1), ('branch', 1)])
+        self.air.dbGlobalCursor.blockInfo.ensure_index([('district', 1), ('branch', 1)])
         street = {'district': self.air.districtId, 'branch': self.branchID}
         try:
-            doc = self.air.mongodb.toontown.blockinfo.find_one(street)
+            doc = self.air.dbGlobalCursor.blockInfo.find_one(street)
         except AutoReconnect:
             return blocks
         if not doc:

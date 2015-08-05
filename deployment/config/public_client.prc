@@ -1,0 +1,88 @@
+# This is the PRC configuration file for a published TTStride client. Note that only
+# this file and Panda3D's Confauto.prc are included. Any relevant directives in
+# Config.prc should be reproduced here.
+
+# Client settings
+window-title Toontown Stride
+server-version SERVER_VERSION_HERE
+audio-library-name p3openal_audio
+video-library-name p3ffmpeg
+want-dev #f
+preload-avatars #t
+
+
+# Textures:
+texture-anisotropic-degree 16
+
+
+# Resources settings
+model-path /
+model-cache-models #f
+model-cache-textures #f
+vfs-mount phase_3.mf /
+vfs-mount phase_3.5.mf /
+vfs-mount phase_4.mf /
+vfs-mount phase_5.mf /
+vfs-mount phase_5.5.mf /
+vfs-mount phase_6.mf /
+vfs-mount phase_7.mf /
+vfs-mount phase_8.mf /
+vfs-mount phase_9.mf /
+vfs-mount phase_10.mf /
+vfs-mount phase_11.mf /
+vfs-mount phase_12.mf /
+vfs-mount phase_13.mf /
+default-model-extension .bam
+
+
+# DC files are NOT configured.
+# They're wrapped up into the code automatically.
+
+
+# Core features:
+want-pets #t
+want-parties #f
+want-cogdominiums #t
+want-lawbot-cogdo #t
+want-anim-props #t
+want-game-tables #t
+want-find-four #t
+want-chinese-checkers #t
+want-checkers #t
+want-house-types #t
+want-gifting #t
+want-top-toons #f
+want-language-selection #t
+estate-day-night #t
+want-mat-all-tailors #t
+
+
+# Temporary:
+smooth-lag 0.4
+want-old-fireworks #t
+
+
+# Developer options:
+want-dev #f
+want-pstats 0
+
+
+# Crates:
+dont-destroy-crate #t
+get-key-reward-always #t
+get-crate-reward-always #t
+
+
+# Chat:
+want-whitelist #t
+
+
+#<dev>
+show-total-population #t
+want-instant-parties #t
+want-instant-delivery #t
+cogdo-pop-factor 1.5
+cogdo-ratio 0.5
+default-directnotify-level info
+#</dev>
+
