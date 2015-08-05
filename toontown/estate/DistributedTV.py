@@ -13,10 +13,7 @@ class DistributedTV(DistributedFurnitureItem):
         self.dialog = None
         self.screen = None
         self.sound = None
-    
-    def announceGenerate(self):
         self.accept('exitingStoppedState', self.destroyGui)
-        DistributedFurnitureItem.announceGenerate(self)
     
     def loadModel(self, animate=1):
         model = DistributedFurnitureItem.loadModel(self)

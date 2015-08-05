@@ -12,6 +12,7 @@ class DistributedChair(DistributedFurnitureItem):
         self.dialog = None
         self.exitButton = None
         self.avId = ToontownGlobals.CHAIR_NONE
+        self.accept('exitingStoppedState', self.destroyGui)
     
     def loadModel(self):
         model = DistributedFurnitureItem.loadModel(self)
