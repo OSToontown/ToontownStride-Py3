@@ -11,9 +11,9 @@ class LeaderboardMgrAI:
             self.database = simbase.backups.load('leaderboard', (self.air.districtId,), default=({}))
         else:
             self.air.mongodb.toontown.leaderboard.ensure_index([('ai', 1)])
-            street = {'ai': self.air.districtId}
+            district = {'ai': self.air.districtId}
             try:
-                doc = self.air.mongodb.toontown.leaderboard.find_one(street)
+                doc = self.air.mongodb.toontown.leaderboard.find_one(district)
             except AutoReconnect:
                 return blocks
 

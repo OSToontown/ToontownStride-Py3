@@ -197,7 +197,7 @@ class DistributedBuildingMgrAI:
         if not self.air.dbConn:
             simbase.backups.save('block-info', (self.air.districtId, self.branchId), backups)
         else:
-            street = {'ai': self.shard, 'branch': self.branchID}
+            street = {'district': self.air.districtId, 'branch': self.branchID}
             try:
                 self.air.mongodb.toontown.blockinfo.update(street, {'$setOnInsert': street, '$set': {'buildings': backups}}, upsert=True)
             except AutoReconnect:
@@ -208,8 +208,8 @@ class DistributedBuildingMgrAI:
         if not self.air.dbConn:
             blocks = simbase.backups.load('block-info', (self.air.districtId, self.branchId), default={})
             return blocks
-        self.air.mongodb.toontown.blockinfo.ensure_index([('ai', 1), ('branch', 1)])
-        street = {'ai': self.shard, 'branch': self.branchID}
+        self.air.mongodb.toontown.blockinfo.ensure_index([('district', 1), ('branch', 1)])
+        street = {'district': self.air.districtId, 'branch': self.branchID}
         try:
             doc = self.air.mongodb.toontown.blockinfo.find_one(street)
         except AutoReconnect:
