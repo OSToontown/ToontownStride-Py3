@@ -20,7 +20,7 @@ import DistributedTwoDGameAI
 import DistributedVineGameAI
 from otp.ai.MagicWordGlobal import *
 from toontown.toonbase import ToontownGlobals
-
+from toontown.uberdog import TopToonsGlobals
 
 simbase.forcedMinigameId = simbase.config.GetInt('force-minigame', 0)
 RequestMinigame = {}
@@ -84,6 +84,8 @@ def createMinigame(air, playerArray, trolleyZone, minigameZone=None,
         toon = simbase.air.doId2do.get(doId)
         if toon is not None:
             toons.append(toon)
+    for toon in toons:
+        messenger.send('topToonsManager-event', [toon.doId, TopToonsGlobals.CAT_TROLLEY, 1])
     for toon in toons:
         simbase.air.questManager.toonPlayedMinigame(toon, toons)
     retVal = {}

@@ -147,9 +147,6 @@ class ToonBase(OTPBase.OTPBase):
         self.setCursorAndIcon()
         return result
 
-    def windowEvent(self, win):
-        OTPBase.OTPBase.windowEvent(self, win)
-
     def setCursorAndIcon(self):
         tempdir = tempfile.mkdtemp()
         atexit.register(shutil.rmtree, tempdir)
@@ -418,13 +415,6 @@ class ToonBase(OTPBase.OTPBase):
             self.cr.timeManager.setDisconnectReason(ToontownGlobals.DisconnectGraphicsError)
         self.cr.sendDisconnect()
         sys.exit()
-
-    def getShardPopLimits(self):
-        return (
-            config.GetInt('shard-low-pop', ToontownGlobals.LOW_POP),
-            config.GetInt('shard-mid-pop', ToontownGlobals.MID_POP),
-            config.GetInt('shard-high-pop', ToontownGlobals.HIGH_POP)
-        )
 
     def playMusic(self, music, looping = 0, interrupt = 1, volume = None, time = 0.0):
         OTPBase.OTPBase.playMusic(self, music, looping, interrupt, volume, time)

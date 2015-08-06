@@ -3,7 +3,8 @@ from toontown.building import FADoorCodes
 from otp.ai.MagicWordGlobal import *
 from toontown.hood import ZoneUtil
 from toontown.quest import Quests
-
+from toontown.uberdog import TopToonsGlobals
+from toontown.toonbase import ToontownGlobals
 
 QuestIdIndex = 0
 QuestFromNpcIdIndex = 1
@@ -75,6 +76,7 @@ class QuestManagerAI:
             # If they've completed a quest.
             if completeStatus == Quests.COMPLETE:
                 # ToonUp the toon to max health.
+                messenger.send('topToonsManager-event', [av.doId, TopToonsGlobals.CAT_TASKS, 1])
                 av.toonUp(av.maxHp)
 
                 # If it's a TrackChoiceQuest then present their track choices.
@@ -91,6 +93,7 @@ class QuestManagerAI:
                     # The toon has completed this quest. Give them a reward!
                     npc.completeQuest(avId, questId, rewardId)
                     self.completeQuest(av, questId)
+                    av.addStat(ToontownGlobals.STAT_TASKS)
                 break
         else:
             # They haven't completed any quests so we have to give them choices.
@@ -289,6 +292,17 @@ class QuestManagerAI:
             questList.append(questDesc)
 
         av.b_setQuests(questList)
+    
+    def toonCalledClarabelle(self, av):
+        avQuests = av.getQuests()
+        questList = []
+        for i in xrange(0, len(avQuests), 5):
+            questDesc = avQuests[i : i + 5]
+            questClass = Quests.getQuest(questDesc[QuestIdIndex])
+            if isinstance(questClass, Quests.PhoneQuest) and questClass.getCompletionStatus(av, questDesc) == Quests.INCOMPLETE:
+                questDesc[QuestProgressIndex] += 1
+            questList.append(questDesc)
+        av.b_setQuests(questList)
 
     def toonMadeNPCFriend(self, av, count, method):
         avQuests = av.getQuests()
@@ -437,6 +451,7 @@ class QuestManagerAI:
 
     def toonKilledBuilding(self, av, type, difficulty, floors, zoneId, cogdo):
         # Get the avatars current quests.
+        messenger.send('topToonsManager-event', [av.doId, TopToonsGlobals.CAT_BLDG, 1])
         avQuests = av.getQuests()
         questList = []
         zoneId = ZoneUtil.getBranchZone(zoneId)
@@ -491,6 +506,7 @@ class QuestManagerAI:
 
     def toonKilledCogs(self, av, suitsKilled, zoneId):
         # Get the avatar's current quests.
+        messenger.send('topToonsManager-event', [av.doId, TopToonsGlobals.CAT_COGS, len(suitsKilled)])
         avQuests = av.getQuests()
         questList = []
 

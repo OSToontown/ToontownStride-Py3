@@ -100,7 +100,7 @@ class PurchaseBase(StateData.StateData):
         return Task.done
 
     def handleDone(self, playAgain):
-        messenger.send(self.doneEvent)
+        messenger.send(self.doneEvent, [playAgain])
 
     def enter(self):
         self.fsm.request('purchase')

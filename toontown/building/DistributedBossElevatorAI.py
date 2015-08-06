@@ -12,8 +12,8 @@ from toontown.suit import DistributedSellbotBossAI
 
 class DistributedBossElevatorAI(DistributedElevatorExtAI.DistributedElevatorExtAI):
 
-    def __init__(self, air, bldg, zone, antiShuffle = 0, minLaff = 0):
-        DistributedElevatorExtAI.DistributedElevatorExtAI.__init__(self, air, bldg, numSeats=8, antiShuffle=antiShuffle, minLaff=minLaff)
+    def __init__(self, air, bldg, zone, antiShuffle = 0):
+        DistributedElevatorExtAI.DistributedElevatorExtAI.__init__(self, air, bldg, numSeats=8, antiShuffle=antiShuffle)
         self.zone = zone
         self.type = ELEVATOR_VP
         self.countdownTime = ElevatorData[self.type]['countdown']
@@ -53,8 +53,6 @@ class DistributedBossElevatorAI(DistributedElevatorExtAI.DistributedElevatorExtA
 
     def checkBoard(self, av):
         dept = ToontownGlobals.cogHQZoneId2deptIndex(self.zone)
-        if av.hp < self.minLaff:
-            return REJECT_MINLAFF
         if not av.readyForPromotion(dept):
             return REJECT_PROMOTION
         return 0

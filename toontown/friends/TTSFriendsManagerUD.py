@@ -95,10 +95,11 @@ class RemoveFriendOperation(OperationFSM):
             self.demand('Error', 'Distributed Class was not a Toon.')
             return
 
-        self.demand('Retrieved', fields['setFriendsList'][0])
+        self.demand('Retrieved', fields['setFriendsList'][0], fields['setTrueFriends'][0])
 
-    def enterRetrieved(self, friendsList):
+    def enterRetrieved(self, friendsList, trueFriendsList):
         friendsList.remove(self.target)
+        trueFriendsList.remove(self.target)
         if self.sender in self.mgr.onlineToons:
             dg = self.air.dclassesByName['DistributedToonUD'].aiFormatUpdate(
                     'setFriendsList', self.sender, self.sender,
@@ -114,7 +115,7 @@ class RemoveFriendOperation(OperationFSM):
 
         self.air.dbInterface.updateObject(self.air.dbId, self.sender,
             self.air.dclassesByName['DistributedToonUD'],
-            {'setFriendsList' : [friendsList]})
+            {'setFriendsList' : [friendsList], 'setTrueFriends' : [trueFriendsList]})
         self.demand('Off')
 
 # -- Clear List --
@@ -149,6 +150,7 @@ class TTSFriendsManagerUD(DistributedObjectGlobalUD):
         self.onlineToons = []
         self.tpRequests = {}
         self.whisperRequests = {}
+        self.toon2data = {}
         self.operations = []
         self.delayTime = 1.0
 
@@ -252,6 +254,8 @@ class TTSFriendsManagerUD(DistributedObjectGlobalUD):
                     self.sendUpdateToAvatarId(friendId, 'friendOffline', [doId])
             if doId in self.onlineToons:
                 self.onlineToons.remove(doId)
+            if doId in self.toon2data:
+                del self.toon2data[doId]
         self.air.dbInterface.queryObject(self.air.dbId, doId, handleToon)
 
     # -- Clear List --
@@ -356,3 +360,19 @@ class TTSFriendsManagerUD(DistributedObjectGlobalUD):
     def sleepAutoReply(self, toId):
         requester = self.air.getAvatarIdFromSender()
         self.sendUpdateToAvatarId(toId, 'setSleepAutoReply', [requester])
+
+    def getToonAccess(self, doId):
+        return self.toon2data.get(doId, {}).get('access', 0)
+        
+    def getToonName(self, doId):
+        return self.toon2data.get(doId, {}).get('name', '???')
+        
+    def getToonAccId(self, doId):
+        return self.toon2data.get(doId, {}).get('accId', 0)
+
+    def addToonData(self, doId, fields):
+        data = {}
+        data['access'] = fields.get('setAdminAccess', [0])[0]
+        data['name'] = fields['setName'][0]
+        data['accId'] = fields.get('setDISLid', [0])[0]
+        self.toon2data[doId] = data

@@ -56,7 +56,6 @@ class DistributedNPCToonBase(DistributedToon.DistributedToon):
         self.parentToonParts()
         self.rescaleToon()
         self.resetHeight()
-        self.generateLaughingMan()
         self.rightHands = []
         self.leftHands = []
         self.headParts = []
@@ -112,6 +111,9 @@ class DistributedNPCToonBase(DistributedToon.DistributedToon):
 
     def setupAvatars(self, av):
         self.ignoreAvatars()
+        self.lookAtAvatar(av)
+    
+    def lookAtAvatar(self, av):
         av.headsUp(self, 0, 0, 0)
         self.headsUp(av, 0, 0, 0)
         av.stopLookAround()

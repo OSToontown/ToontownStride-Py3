@@ -25,6 +25,7 @@ class CatalogToonStatueItem(CatalogGardenItem.CatalogGardenItem):
         model, ival = self.makeFrameModel(toonStatuary.toon, 1)
         self.pictureToonStatue = toonStatuary
         self.hasPicture = True
+        toonStatuary.toon.setBin('gui-popup', 60)
         return (model, ival)
 
     def cleanupPicture(self):

@@ -28,7 +28,6 @@ from otp.nametag.NametagGroup import *
 from toontown.suit import SuitDNA
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
-from toontown.toon import LaughingManGlobals
 
 def teleportDebug(requestStatus, msg, onlyIfToAv = True):
     if teleportNotify.getDebug():
@@ -453,7 +452,7 @@ class Toon(Avatar.Avatar, ToonHead):
         self.partyHat = None
         self.setTag('pieCode', str(ToontownGlobals.PieCodeToon))
         self.setFont(ToontownGlobals.getToonFont())
-        self.setSpeechFont(ToontownGlobals.getToonFont())
+        self.nametag.setSpeechFont(ToontownGlobals.getToonFont())
         self.soundChatBubble = base.loadSfx('phase_3/audio/sfx/GUI_balloon_popup.ogg')
         self.swimRunSfx = base.loadSfx('phase_4/audio/sfx/AV_footstep_runloop_water.ogg')
         self.swimRunLooping = False
@@ -564,8 +563,8 @@ class Toon(Avatar.Avatar, ToonHead):
     def updateToonDNA(self, newDNA, fForce = 0):
         self.style.gender = newDNA.getGender()
         oldDNA = self.style
-        if fForce or newDNA.head != oldDNA.head or newDNA.laughingMan != oldDNA.laughingMan:
-            self.swapToonHead(newDNA.head, newDNA.laughingMan)
+        if fForce or newDNA.head != oldDNA.head:
+            self.swapToonHead(newDNA.head)
         if fForce or newDNA.torso != oldDNA.torso:
             self.swapToonTorso(newDNA.torso, genClothes=0)
             self.loop('neutral')
@@ -644,7 +643,6 @@ class Toon(Avatar.Avatar, ToonHead):
         self.rescaleToon()
         self.resetHeight()
         self.setupToonNodes()
-        self.generateLaughingMan()
 
     def setupToonNodes(self):
         rightHand = NodePath('rightHand')
@@ -829,7 +827,7 @@ class Toon(Avatar.Avatar, ToonHead):
             self.loadAnims(HeadAnimDict[self.style.head], 'head', '500')
             self.loadAnims(HeadAnimDict[self.style.head], 'head', '250')
 
-    def swapToonHead(self, headStyle=-1, laughingMan=0, copy = 1):
+    def swapToonHead(self, headStyle=-1, copy = 1):
         self.stopLookAroundNow()
         self.eyelids.request('open')
         self.unparentToonParts()
@@ -848,8 +846,6 @@ class Toon(Avatar.Avatar, ToonHead):
         self.resetHeight()
         self.eyelids.request('open')
         self.startLookAround()
-        if laughingMan or self.getWantLaughingMan():
-            LaughingManGlobals.addToonEffect(self)
 
     def generateToonColor(self):
         ToonHead.generateToonColor(self, self.style)
@@ -860,17 +856,17 @@ class Toon(Avatar.Avatar, ToonHead):
             torso = self.getPart('torso', lodName)
             if len(self.style.torso) == 1:
                 parts = torso.findAllMatches('**/torso*')
-                parts.setColor(armColor)
+                parts.setColor(*armColor)
             for pieceName in ('arms', 'neck'):
                 piece = torso.find('**/' + pieceName)
-                piece.setColor(armColor)
+                piece.setColor(*armColor)
 
             hands = torso.find('**/hands')
-            hands.setColor(gloveColor)
+            hands.setColor(*gloveColor)
             legs = self.getPart('legs', lodName)
             for pieceName in ('legs', 'feet'):
                 piece = legs.find('**/%s;+s' % pieceName)
-                piece.setColor(legColor)
+                piece.setColor(*legColor)
 
         if self.cheesyEffect == ToontownGlobals.CEGreenToon:
             self.reapplyCheesyEffect()
@@ -982,10 +978,6 @@ class Toon(Avatar.Avatar, ToonHead):
                 caps.setColor(darkBottomColor)
 
         return swappedTorso
-
-    def generateLaughingMan(self):
-        if self.getWantLaughingMan():
-            self.swapToonHead(laughingMan=True)
 
     def generateHat(self, fromRTM = False):
         hat = self.getHat()
@@ -1159,12 +1151,6 @@ class Toon(Avatar.Avatar, ToonHead):
 
     def getHat(self):
         return self.hat
-
-    def getWantLaughingMan(self):
-        return self.style.laughingMan or self.getWantLaughingManHoliday()
-
-    def getWantLaughingManHoliday(self):
-        return base.cr.newsManager and base.cr.newsManager.isHolidayRunning(ToontownGlobals.LAUGHING_MAN)
 
     def setGlasses(self, glassesIdx, textureIdx, colorIdx, fromRTM = False):
         self.glasses = (glassesIdx, textureIdx, colorIdx)
@@ -1818,6 +1804,20 @@ class Toon(Avatar.Avatar, ToonHead):
         self.getGeomNode().setClipPlane(self.holeClipPath)
         self.nametag3d.setClipPlane(self.holeClipPath)
         avHeight = max(self.getHeight(), 3)
+        
+        if self == base.localAvatar and settings['tpTransition'] and not ZoneUtil.isDynamicZone(self.zoneId):
+            def lerpCam(task):
+                degrees = task.time * 52.941
+                radians = degrees * (math.pi / 180.0)
+                x = -12 * math.sin(radians)
+                y = -12 * math.cos(radians)
+                z = base.localAvatar.getHeight()
+                camera.setPos(x, y, z)
+                camera.setH(-degrees)
+                return task.done if task.time > 3.4 else task.cont
+            
+            taskMgr.add(lerpCam, 'lerpCam')
+
         self.track.start(ts)
         self.setActiveShadow(0)
 
@@ -2417,14 +2417,14 @@ class Toon(Avatar.Avatar, ToonHead):
             legColor = color
             headColor = color
         for piece in torsoPieces:
-            colorTrack.append(Func(piece.setColor, armColor))
+            colorTrack.append(Func(piece.setColor, *armColor))
 
         for piece in legPieces:
-            colorTrack.append(Func(piece.setColor, legColor))
+            colorTrack.append(Func(piece.setColor, *legColor))
 
         for piece in headPieces:
             if 'hatNode' not in str(piece) and 'glassesNode' not in str(piece):
-                colorTrack.append(Func(piece.setColor, headColor))
+                colorTrack.append(Func(piece.setColor, *headColor))
 
         track.append(colorTrack)
         return track
@@ -2441,13 +2441,13 @@ class Toon(Avatar.Avatar, ToonHead):
             else:
                 headColor = color
             for piece in earPieces:
-                colorTrack.append(Func(piece.setColor, headColor))
+                colorTrack.append(Func(piece.setColor, *headColor))
 
         else:
             if colorScale == None:
                 colorScale = VBase4(1, 1, 1, 1)
             for piece in earPieces:
-                colorTrack.append(Func(piece.setColorScale, colorScale))
+                colorTrack.append(Func(piece.setColorScale, *colorScale))
 
         track.append(colorTrack)
         return track
@@ -2748,7 +2748,7 @@ class Toon(Avatar.Avatar, ToonHead):
         self.suit.loop('neutral')
         self.isDisguised = 1
         self.setFont(ToontownGlobals.getSuitFont())
-        self.setSpeechFont(ToontownGlobals.getSuitFont())
+        self.nametag.setSpeechFont(ToontownGlobals.getSuitFont())
         if setDisplayName:
             if hasattr(base, 'idTags') and base.idTags:
                 name = self.getAvIdName()
@@ -2782,7 +2782,7 @@ class Toon(Avatar.Avatar, ToonHead):
         Emote.globalEmote.releaseAll(self)
         self.isDisguised = 0
         self.setFont(ToontownGlobals.getToonFont())
-        self.setSpeechFont(ToontownGlobals.getToonFont())
+        self.nametag.setSpeechFont(ToontownGlobals.getToonFont())
         self.nametag.setWordwrap(None)
         if hasattr(base, 'idTags') and base.idTags:
             name = self.getAvIdName()

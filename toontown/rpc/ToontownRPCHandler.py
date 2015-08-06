@@ -626,7 +626,7 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
                 {
                    'name': 'Toon Name',
                    'species': 'cat',
-                   'head-color': 'Red',
+                   'head-color': (1, 0, 0, 1),
                    'max-hp': 15,
                    'online': True
                 }
@@ -642,7 +642,7 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
             dna.makeFromNetString(fields['setDNAString'][0])
             result['species'] = ToonDNA.getSpeciesName(dna.head)
 
-            result['head-color'] = TTLocalizer.NumToColor[dna.headColor]
+            result['head-color'] = dna.headColor
             result['max-hp'] = fields['setMaxHp'][0]
             result['online'] = (avId in self.air.friendsManager.onlineToons)
 
@@ -716,7 +716,7 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
             <int flags> = Extra invasion flags.
             <int type> = The invasion type.
         """
-        self.air.netMessenger.send(
+        self.air.sendNetEvent(
             'startInvasion',
             [shardId, suitDeptIndex, suitTypeIndex, flags, type])
 
@@ -730,7 +730,7 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
             [int shardId] = The ID of the shard that is running the invasion to
                 be terminated.
         """
-        self.air.netMessenger.send('stopInvasion', [shardId])
+        self.air.sendNetEvent('stopInvasion', [shardId])
 
     # --- NAME APPROVAL ---
 

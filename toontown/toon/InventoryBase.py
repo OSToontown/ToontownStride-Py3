@@ -214,7 +214,7 @@ class InventoryBase(DirectObject.DirectObject):
         return self.countPropsInList(newInventory) - self.totalProps
 
     def validatePurchase(self, newInventory, currentMoney, newMoney):
-        if newMoney > currentMoney:
+        if newMoney > currentMoney or newMoney < 0:
             self.notify.warning('Somebody lied about their money! Rejecting purchase.')
             return 0
         newItemTotal = self.countPropsInList(newInventory)

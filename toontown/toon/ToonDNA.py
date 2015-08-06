@@ -1,8 +1,9 @@
-import random
+import random, colorsys
 from panda3d.core import *
 from direct.directnotify.DirectNotifyGlobal import *
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
+from toontown.toonbase import ToontownGlobals
 notify = directNotify.newCategory('ToonDNA')
 mergeMATTailor = config.GetBool('want-mat-all-tailors', 0)
 toonSpeciesTypes = ['d',
@@ -294,7 +295,7 @@ Shirts = ['phase_3/maps/desat_shirt_1.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_saveBuilding4.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_saveBuilding05.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_anniversary.jpg',
- 'phase_4/maps/WeedShirt.jpg']
+ 'phase_4/maps/flannelshirt_red.jpg']
 BoyShirts = [(0, 0),
  (1, 1),
  (2, 2),
@@ -477,7 +478,7 @@ Sleeves = ['phase_3/maps/desat_sleeve_1.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_saveBuilding4.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_saveBuilding05.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_anniversary.jpg',
- 'phase_4/maps/WeedSleeve.jpg']
+ 'phase_4/maps/flannelsleeve_red.jpg']
 BoyShorts = ['phase_3/maps/desat_shorts_1.jpg',
  'phase_3/maps/desat_shorts_2.jpg',
  'phase_3/maps/desat_shorts_4.jpg',
@@ -1202,7 +1203,7 @@ ShirtStyles = {'bss1': [0, 0, [(0, 0),
  'jb_2': [113, 100, [(27, 27)]],
  'ugcms': [117, 104, [(27, 27)]],
  'lb_1': [119, 106, [(27, 27)]],
- 'weed': [148, 135, [(27, 27)]]}
+ 'flannel': [148, 135, [(27, 27)]]}
 BottomStyles = {'bbs1': [0, [0,
            1,
            2,
@@ -1891,47 +1892,47 @@ def getAllBottoms(gender, output = 'both'):
     return bottoms
 
 
-allColorsList = [VBase4(1.0, 1.0, 1.0, 1.0),
- VBase4(0.96875, 0.691406, 0.699219, 1.0),
- VBase4(0.933594, 0.265625, 0.28125, 1.0),
- VBase4(0.863281, 0.40625, 0.417969, 1.0),
- VBase4(0.710938, 0.234375, 0.4375, 1.0),
- VBase4(0.570312, 0.449219, 0.164062, 1.0),
- VBase4(0.640625, 0.355469, 0.269531, 1.0),
- VBase4(0.996094, 0.695312, 0.511719, 1.0),
- VBase4(0.832031, 0.5, 0.296875, 1.0),
- VBase4(0.992188, 0.480469, 0.167969, 1.0),
- VBase4(0.996094, 0.898438, 0.320312, 1.0),
- VBase4(0.996094, 0.957031, 0.597656, 1.0),
- VBase4(0.855469, 0.933594, 0.492188, 1.0),
- VBase4(0.550781, 0.824219, 0.324219, 1.0),
- VBase4(0.242188, 0.742188, 0.515625, 1.0),
- VBase4(0.304688, 0.96875, 0.402344, 1.0),
- VBase4(0.433594, 0.90625, 0.835938, 1.0),
- VBase4(0.347656, 0.820312, 0.953125, 1.0),
- VBase4(0.191406, 0.5625, 0.773438, 1.0),
- VBase4(0.558594, 0.589844, 0.875, 1.0),
- VBase4(0.285156, 0.328125, 0.726562, 1.0),
- VBase4(0.460938, 0.378906, 0.824219, 1.0),
- VBase4(0.546875, 0.28125, 0.75, 1.0),
- VBase4(0.726562, 0.472656, 0.859375, 1.0),
- VBase4(0.898438, 0.617188, 0.90625, 1.0),
- VBase4(0.7, 0.7, 0.8, 1.0),
- VBase4(0.3, 0.3, 0.35, 1.0),
- VBase4(0.0, 0.635294, 0.258823, 1.0),
- VBase4(0.674509, 0.925490, 1.0, 1.0),
- VBase4(0.988235, 0.894117, 0.745098, 1.0),
- VBase4(0.749019, 1.0, 0.847058, 1.0),
- VBase4(0.470588, 0.443137, 0.447058, 1.0),
- VBase4(0.996078, 0.254901, 0.392156, 1.0),
- VBase4(0.811764, 0.709803, 0.231372, 1.0),
- VBase4(0.749019, 0.756862, 0.760784, 1.0),
- VBase4(1.0, 0.639215, 0.262745, 1.0),
- VBase4(0.0, 0.403921, 0.647058, 1.0),
- VBase4(0.862745, 0.078431, 0.235294, 1.0),
- VBase4(0.0, 0.635294, 0.513725, 1.0),
- VBase4(0.803921, 0.498039, 0.196078, 1.0)]
-defaultBoyColorList = [0,
+allColorsList = [(1.0, 1.0, 1.0, 1.0),
+ (0.96, 0.69, 0.69, 1.0),
+ (0.93, 0.26, 0.28, 1.0),
+ (0.86, 0.40, 0.41, 1.0),
+ (0.71, 0.23, 0.43, 1.0),
+ (0.57, 0.44, 0.16, 1.0),
+ (0.64, 0.35, 0.26, 1.0),
+ (0.99, 0.69, 0.51, 1.0),
+ (0.83, 0.5, 0.29, 1.0),
+ (0.99, 0.48, 0.16, 1.0),
+ (0.99, 0.89, 0.32, 1.0),
+ (0.99, 0.95, 0.59, 1.0),
+ (0.85, 0.93, 0.49, 1.0),
+ (0.55, 0.82, 0.32, 1.0),
+ (0.24, 0.74, 0.51, 1.0),
+ (0.30, 0.96, 0.4, 1.0),
+ (0.43, 0.9, 0.83, 1.0),
+ (0.34, 0.82, 0.95, 1.0),
+ (0.19, 0.56, 0.77, 1.0),
+ (0.55, 0.58, 0.87, 1.0),
+ (0.28, 0.32, 0.72, 1.0),
+ (0.46, 0.37, 0.82, 1.0),
+ (0.54, 0.28, 0.75, 1.0),
+ (0.72, 0.47, 0.85, 1.0),
+ (0.89, 0.61, 0.9, 1.0),
+ (0.7, 0.7, 0.8, 1.0),
+ (0.3, 0.3, 0.35, 1.0),
+ (0.0, 0.63, 0.25, 1.0),
+ (0.67, 0.92, 1.0, 1.0),
+ (0.98, 0.89, 0.74, 1.0),
+ (0.74, 1.0, 0.84, 1.0),
+ (0.47, 0.44, 0.44, 1.0),
+ (0.99, 0.25, 0.39, 1.0),
+ (0.81, 0.7, 0.23, 1.0),
+ (0.74, 0.75, 0.76, 1.0),
+ (1.0, 0.63, 0.26, 1.0),
+ (0.0, 0.4, 0.64, 1.0),
+ (0.86, 0.07, 0.23, 1.0),
+ (0.0, 0.63, 0.51, 1.0),
+ (0.8, 0.49, 0.19, 1.0)]
+defaultColorList = [0,
  1,
  32,
  2,
@@ -1971,48 +1972,6 @@ defaultBoyColorList = [0,
  34,
  31,
  26]
-defaultGirlColorList = [0,
- 1,
- 32,
- 2,
- 3,
- 4,
- 5,
- 6,
- 7,
- 29,
- 8,
- 37,
- 35,
- 9,
- 10,
- 33,
- 11,
- 12,
- 30,
- 13,
- 14,
- 15,
- 39,
- 27,
- 28,
- 16,
- 17,
- 18,
- 19,
- 20,
- 21,
- 38,
- 36,
- 22,
- 23,
- 24,
- 25,
- 34,
- 31,
- 26]
-allColorsListApproximations = map(lambda x: VBase4(round(x[0], 3), round(x[1], 3), round(x[2], 3), round(x[3], 3)), allColorsList)
-allowedColors = set(map(lambda x: allColorsListApproximations[x], set([0] + defaultBoyColorList + defaultGirlColorList + [26])))
 HatModels = [None,
  'phase_4/models/accessories/tt_m_chr_avt_acc_hat_baseball',
  'phase_4/models/accessories/tt_m_chr_avt_acc_hat_safari',
@@ -2450,24 +2409,21 @@ class ToonDNA:
                     self.newToonFromProperties(*dna.asTuple())
         else:
             self.type = 'u'
-        self.cache = ()
-        return
 
     def __str__(self):
         string = 'type = toon\n'
         string = string + 'gender = %s\n' % self.gender
         string = string + 'head = %s, torso = %s, legs = %s\n' % (self.head, self.torso, self.legs)
-        string = string + 'arm color = %d\n' % self.armColor
-        string = string + 'glove color = %d\n' % self.gloveColor
-        string = string + 'leg color = %d\n' % self.legColor
-        string = string + 'head color = %d\n' % self.headColor
+        string = string + 'arm color = %s\n' % (self.armColor,)
+        string = string + 'glove color = %s\n' % (self.gloveColor,)
+        string = string + 'leg color = %s\n' % (self.legColor,)
+        string = string + 'head color = %s\n' % (self.headColor,)
         string = string + 'top texture = %d\n' % self.topTex
         string = string + 'top texture color = %d\n' % self.topTexColor
         string = string + 'sleeve texture = %d\n' % self.sleeveTex
         string = string + 'sleeve texture color = %d\n' % self.sleeveTexColor
         string = string + 'bottom texture = %d\n' % self.botTex
         string = string + 'bottom texture color = %d\n' % self.botTexColor
-        string = string + 'laughing man = %d\n' % self.laughingMan
         return string
 
     def clone(self):
@@ -2495,28 +2451,22 @@ class ToonDNA:
             dg.addUint8(self.sleeveTexColor)
             dg.addUint8(self.botTex)
             dg.addUint8(self.botTexColor)
-            dg.addUint8(self.armColor)
-            dg.addUint8(self.gloveColor)
-            dg.addUint8(self.legColor)
-            dg.addUint8(self.headColor)
-            dg.addUint8(self.laughingMan)
+            self.armColor = self.migrateColor(self.armColor)
+            self.gloveColor = self.migrateColor(self.gloveColor)
+            self.legColor = self.migrateColor(self.legColor)
+            self.headColor = self.migrateColor(self.headColor)
+            for colors in (self.armColor, self.gloveColor, self.legColor, self.headColor):
+                for color in colors[:-1]:
+                    dg.addFloat64(color)
         elif self.type == 'u':
             notify.error('undefined avatar')
         else:
             notify.error('unknown avatar type: ', self.type)
         return dg.getMessage()
 
-    def getDatagramWithFallback(self, dgi, fallback=0):
-        try:
-            return dgi.getUint8()
-        except:
-            return fallback
-
     def isValidNetString(self, string):
         dg = PyDatagram(string)
         dgi = PyDatagramIterator(dg)
-        if dgi.getRemainingSize() not in [15, 16]:
-            return False
         type = dgi.getFixedString(1)
         if type not in ('t',):
             return False
@@ -2540,11 +2490,10 @@ class ToonDNA:
         sleeveTexColor = dgi.getUint8()
         botTex = dgi.getUint8()
         botTexColor = dgi.getUint8()
-        armColor = dgi.getUint8()
-        gloveColor = dgi.getUint8()
-        legColor = dgi.getUint8()
-        headColor = dgi.getUint8()
-        laughingMan = self.getDatagramWithFallback(dgi, 0)
+        armColor = (dgi.getFloat64(), dgi.getFloat64(), dgi.getFloat64(), 1.0)
+        gloveColor = (dgi.getFloat64(), dgi.getFloat64(), dgi.getFloat64(), 1.0)
+        legColor = (dgi.getFloat64(), dgi.getFloat64(), dgi.getFloat64(), 1.0)
+        headColor = (dgi.getFloat64(), dgi.getFloat64(), dgi.getFloat64(), 1.0)
         if topTex >= len(Shirts):
             return False
         if topTexColor >= len(ClothesColors):
@@ -2557,15 +2506,22 @@ class ToonDNA:
             return False
         if botTexColor >= len(ClothesColors):
             return False
-        if armColor >= len(allColorsList):
+        if not self.isValid(armColor):
             return False
-        if legColor >= len(allColorsList):
+        if not self.isValid(gloveColor):
             return False
-        if headColor >= len(allColorsList):
+        if not self.isValid(legColor):
             return False
-        if laughingMan != 0 and laughingMan != 1:
+        if not self.isValid(headColor):
             return False
         return True
+    
+    def isValid(self, color):
+        if color in allColorsList:
+            return True
+        
+        hsv = colorsys.rgb_to_hsv(*color[:-1])
+        return ToontownGlobals.COLOR_SATURATION_MIN <= hsv[1] <= ToontownGlobals.COLOR_SATURATION_MAX and ToontownGlobals.COLOR_VALUE_MIN <= hsv[2] <= ToontownGlobals.COLOR_VALUE_MAX
 
     def makeFromNetString(self, string):
         dg = PyDatagram(string)
@@ -2589,24 +2545,15 @@ class ToonDNA:
             self.sleeveTexColor = dgi.getUint8()
             self.botTex = dgi.getUint8()
             self.botTexColor = dgi.getUint8()
-            self.armColor = dgi.getUint8()
-            self.gloveColor = dgi.getUint8()
-            self.legColor = dgi.getUint8()
-            self.headColor = dgi.getUint8()
-            self.laughingMan = self.getDatagramWithFallback(dgi, 0)
+            self.armColor = (dgi.getFloat64(), dgi.getFloat64(), dgi.getFloat64(), 1.0)
+            self.gloveColor = (dgi.getFloat64(), dgi.getFloat64(), dgi.getFloat64(), 1.0)
+            self.legColor = (dgi.getFloat64(), dgi.getFloat64(), dgi.getFloat64(), 1.0)
+            self.headColor = (dgi.getFloat64(), dgi.getFloat64(), dgi.getFloat64(), 1.0)
         else:
             notify.error('unknown avatar type: ', self.type)
-        return None
 
     def defaultColor(self):
         return 25
-
-    def __defaultColors(self):
-        color = self.defaultColor()
-        self.armColor = color
-        self.gloveColor = 0
-        self.legColor = color
-        self.headColor = color
 
     def newToon(self, dna, color = None):
         if len(dna) == 4:
@@ -2622,35 +2569,36 @@ class ToonDNA:
             self.botTex = 0
             self.botTexColor = 0
             if color == None:
-                color = self.defaultColor()
+                color = 25
+            color = self.migrateColor(color)
             self.armColor = color
             self.legColor = color
             self.headColor = color
             self.gloveColor = 0
-            self.laughingMan = 0
         else:
             notify.error("tuple must be in format ('%s', '%s', '%s', '%s')")
-        return
+    
+    def migrateColor(self, color):
+        return allColorsList[color] if isinstance(color, int) else color
 
-    def newToonFromProperties(self, head, torso, legs, gender, armColor, gloveColor, legColor, headColor, topTexture, topTextureColor, sleeveTexture, sleeveTextureColor, bottomTexture, bottomTextureColor, laughingMan=0):
+    def newToonFromProperties(self, head, torso, legs, gender, armColor, gloveColor, legColor, headColor, topTexture, topTextureColor, sleeveTexture, sleeveTextureColor, bottomTexture, bottomTextureColor):
         self.type = 't'
         self.head = head
         self.torso = torso
         self.legs = legs
         self.gender = gender
-        self.armColor = armColor
-        self.gloveColor = gloveColor
-        self.legColor = legColor
-        self.headColor = headColor
+        self.armColor = self.migrateColor(armColor)
+        self.gloveColor = self.migrateColor(gloveColor)
+        self.legColor = self.migrateColor(legColor)
+        self.headColor = self.migrateColor(headColor)
         self.topTex = topTexture
         self.topTexColor = topTextureColor
         self.sleeveTex = sleeveTexture
         self.sleeveTexColor = sleeveTextureColor
         self.botTex = bottomTexture
         self.botTexColor = bottomTextureColor
-        self.laughingMan = laughingMan
 
-    def updateToonProperties(self, head = None, torso = None, legs = None, gender = None, armColor = None, gloveColor = None, legColor = None, headColor = None, topTexture = None, topTextureColor = None, sleeveTexture = None, sleeveTextureColor = None, bottomTexture = None, bottomTextureColor = None, shirt = None, bottom = None, laughingMan = False):
+    def updateToonProperties(self, head = None, torso = None, legs = None, gender = None, armColor = None, gloveColor = None, legColor = None, headColor = None, topTexture = None, topTextureColor = None, sleeveTexture = None, sleeveTextureColor = None, bottomTexture = None, bottomTextureColor = None, shirt = None, bottom = None):
         if head:
             self.head = head
         if torso:
@@ -2660,13 +2608,13 @@ class ToonDNA:
         if gender:
             self.gender = gender
         if armColor:
-            self.armColor = armColor
+            self.armColor = self.migrateColor(armColor)
         if gloveColor:
-            self.gloveColor = gloveColor
+            self.gloveColor = self.migrateColor(gloveColor)
         if legColor:
-            self.legColor = legColor
+            self.legColor = self.migrateColor(legColor)
         if headColor:
-            self.headColor = headColor
+            self.headColor = self.migrateColor(headColor)
         if topTexture:
             self.topTex = topTexture
         if topTextureColor:
@@ -2679,7 +2627,6 @@ class ToonDNA:
             self.botTex = bottomTexture
         if bottomTextureColor:
             self.botTexColor = bottomTextureColor
-        self.laughingMan = laughingMan
         if shirt:
             str, colorIndex = shirt
             defn = ShirtStyles[str]
@@ -2715,6 +2662,7 @@ class ToonDNA:
             self.head = generator.choice(toonHeadTypes[:22])
         top, topColor, sleeve, sleeveColor = getRandomTop(gender, generator=generator)
         bottom, bottomColor = getRandomBottom(gender, generator=generator)
+        color = generator.choice(allColorsList)
         if gender == 'm':
             self.torso = generator.choice(toonTorsoTypes[:3])
             self.topTex = top
@@ -2723,10 +2671,6 @@ class ToonDNA:
             self.sleeveTexColor = sleeveColor
             self.botTex = bottom
             self.botTexColor = bottomColor
-            color = generator.choice(defaultBoyColorList)
-            self.armColor = color
-            self.legColor = color
-            self.headColor = color
         else:
             self.torso = generator.choice(toonTorsoTypes[:6])
             self.topTex = top
@@ -2739,12 +2683,10 @@ class ToonDNA:
                 bottom, bottomColor = getRandomBottom(gender, generator=generator, girlBottomType=SHORTS)
             self.botTex = bottom
             self.botTexColor = bottomColor
-            color = generator.choice(defaultGirlColorList)
-            self.armColor = color
-            self.legColor = color
-            self.headColor = color
-        self.gloveColor = 0
-        self.laughingMan = 0
+        self.armColor = color
+        self.legColor = color
+        self.headColor = color
+        self.gloveColor = self.migrateColor(0)
 
     def asTuple(self):
         return (self.head,
@@ -2760,8 +2702,7 @@ class ToonDNA:
          self.sleeveTex,
          self.sleeveTexColor,
          self.botTex,
-         self.botTexColor,
-         self.laughingMan)
+         self.botTexColor)
 
     def getType(self):
         if self.type == 't':
@@ -2842,28 +2783,16 @@ class ToonDNA:
             notify.error('unknown clothing type: ', self.torso[1])
 
     def getArmColor(self):
-        try:
-            return allColorsList[self.armColor]
-        except:
-            return allColorsList[0]
+        return self.armColor
 
     def getLegColor(self):
-        try:
-            return allColorsList[self.legColor]
-        except:
-            return allColorsList[0]
+        return self.legColor
 
     def getHeadColor(self):
-        try:
-            return allColorsList[self.headColor]
-        except:
-            return allColorsList[0]
+        return self.headColor
 
     def getGloveColor(self):
-        try:
-            return allColorsList[self.gloveColor]
-        except:
-            return allColorsList[0]
+        return self.gloveColor
 
     def getBlackColor(self):
         try:
@@ -2873,23 +2802,3 @@ class ToonDNA:
 
     def getWhiteColor(self):
         return allColorsList[0]
-
-    def isLaughingMan(self):
-        return self.laughingMan
-
-    def setTemporary(self, newHead, newArmColor, newLegColor, newHeadColor):
-        if not self.cache and self.getArmColor != newArmColor:
-            self.cache = (self.head,
-             self.armColor,
-             self.legColor,
-             self.headColor)
-            self.updateToonProperties(head=newHead, armColor=newArmColor, legColor=newLegColor, headColor=newHeadColor)
-
-    def restoreTemporary(self, oldStyle):
-        cache = ()
-        if oldStyle:
-            cache = oldStyle.cache
-        if cache:
-            self.updateToonProperties(head=cache[0], armColor=cache[1], legColor=cache[2], headColor=cache[3])
-            if oldStyle:
-                oldStyle.cache = ()

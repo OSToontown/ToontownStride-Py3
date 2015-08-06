@@ -75,7 +75,14 @@ class ToontownDistrictStats(DistributedObject.DistributedObject):
     def setAvatarCount(self, avatarCount):
         if self.districtId in self.cr.activeDistrictMap:
             self.cr.activeDistrictMap[self.districtId].avatarCount = avatarCount
+            messenger.send('shardInfoUpdated')
 
     def setInvasionStatus(self, invasionStatus):
         if self.districtId in self.cr.activeDistrictMap:
             self.cr.activeDistrictMap[self.districtId].invasionStatus = invasionStatus
+            messenger.send('shardInfoUpdated')
+    
+    def setGroupAvCount(self, groupAvCount):
+        if self.districtId in self.cr.activeDistrictMap:
+            self.cr.activeDistrictMap[self.districtId].groupAvCount = groupAvCount
+            messenger.send('shardInfoUpdated')

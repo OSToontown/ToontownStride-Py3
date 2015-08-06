@@ -82,9 +82,6 @@ class DistributedToonUD(DistributedObjectUD):
     def setClothesBottomsList(self, todo0):
         pass
 
-    def setMaxAccessories(self, todo0):
-        pass
-
     def setHatList(self, todo0):
         pass
 
@@ -285,6 +282,9 @@ class DistributedToonUD(DistributedObjectUD):
 
     def setFishingRod(self, todo0):
         pass
+    
+    def setMaxFishingRod(self, todo0):
+        pass
 
     def setFishingTrophies(self, todo0):
         pass
@@ -460,11 +460,14 @@ class DistributedToonUD(DistributedObjectUD):
     def forceLogoutWithNotify(self):
         pass
 
-    def setPinkSlips(self, todo0):
+    def setSpecialInventory(self, todo0):
         pass
 
     def setNametagStyle(self, todo0):
         pass
+    
+    def setNametagStyles(self, todo0):
+        return
 
     def setMail(self, todo0):
         pass
@@ -512,4 +515,13 @@ class DistributedToonUD(DistributedObjectUD):
         pass
 
     def setTrueFriends(self, trueFriends):
+        pass
+    
+    def setWishName(self, todo0):
+        pass
+    
+    def setWishNameState(self, todo0):
+        pass
+    
+    def setStats(self, todo0):
         pass

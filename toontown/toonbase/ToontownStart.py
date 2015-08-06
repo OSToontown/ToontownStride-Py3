@@ -1,4 +1,8 @@
 #!/usr/bin/env python2
+import gc
+
+gc.disable()
+
 import __builtin__
 
 __builtin__.process = 'client'
@@ -98,8 +102,12 @@ if 'speedchatPlus' not in settings:
     settings['speedchatPlus'] = True
 if 'trueFriends' not in settings:
     settings['trueFriends'] = True
+if 'tpTransition' not in settings:
+    settings['tpTransition'] = True
 if 'fov' not in settings:
     settings['fov'] = OTPGlobals.DefaultCameraFov
+if 'talk2speech' not in settings:
+    settings['talk2speech'] = False
 
 loadPrcFileData('Settings: res', 'win-size %d %d' % tuple(settings['res']))
 loadPrcFileData('Settings: fullscreen', 'fullscreen %s' % settings['fullscreen'])
@@ -189,11 +197,15 @@ del version
 base.loader = base.loader
 __builtin__.loader = base.loader
 autoRun = ConfigVariableBool('toontown-auto-run', 1)
+
+gc.enable()
+gc.collect()
+
 if autoRun:
     try:
         base.run()
     except SystemExit:
-        raise
+        pass
     except:
-        print describeException()
-        raise
+        import traceback
+        traceback.print_exc()

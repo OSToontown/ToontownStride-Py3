@@ -1,7 +1,7 @@
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from toontown.catalog.CatalogItemList import CatalogItemList
 from toontown.catalog import CatalogItem
-from toontown.catalog.CatalogFurnitureItem import CatalogFurnitureItem, FLTrunk, FLCloset, FLBank, FLPhone
+from toontown.catalog.CatalogFurnitureItem import CatalogFurnitureItem, FLTrunk, FLCloset, FLBank, FLPhone, FLCrate, FLChair, FLTV
 from toontown.catalog.CatalogWallpaperItem import CatalogWallpaperItem
 from toontown.catalog.CatalogMouldingItem import CatalogMouldingItem
 from toontown.catalog.CatalogFlooringItem import CatalogFlooringItem
@@ -12,6 +12,9 @@ from DistributedPhoneAI import DistributedPhoneAI
 from DistributedClosetAI import DistributedClosetAI
 from DistributedTrunkAI import DistributedTrunkAI
 from DistributedBankAI import DistributedBankAI
+from DistributedRewardCrateAI import DistributedRewardCrateAI
+from DistributedChairAI import DistributedChairAI
+from DistributedTVAI import DistributedTVAI
 from otp.ai.MagicWordGlobal import *
 
 class FurnitureError(Exception):
@@ -92,53 +95,15 @@ class DistributedFurnitureManagerAI(DistributedObjectAI):
         self.interior.b_setWindows(self.windows.getBlob())
 
     def setItems(self, items):
-        # Decode the blob:
         items = CatalogItemList(items, store=CatalogItem.Customization|CatalogItem.Location)
 
-        # Throw out our old items:
         for item in self.items:
             item.destroy()
+
         self.items = []
 
-        items.removeDuplicates(FLCloset)
-
-        # Due to a bug, some people are missing their closets...
-        hasCloset = False
         for item in items:
-            if item.getFlags() & FLCloset:
-                hasCloset = True
-                break
-
-        if not hasCloset and self.ownerId != 0:
-            item = CatalogFurnitureItem(500)  # the basic closet...
-            item.posHpr = (0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
-            items.append(item)
-            # Since we have modified the items list, should we save it back to the house?
-
-        for item in items:
-            if item.getFlags() & FLTrunk:
-                if self.house.gender is 0:
-                    if item.furnitureType - 4000 < 10:
-                        item.furnitureType += 10
-                elif item.furnitureType - 4000 > 10:
-                    item.furnitureType -= 10
-                do = DistributedTrunkAI(self.air, self, item)
-            elif item.getFlags() & FLCloset:
-                if self.house.gender is 0:
-                    if item.furnitureType - 500 < 10:
-                        item.furnitureType += 10
-                elif item.furnitureType - 500 > 10:
-                    item.furnitureType -= 10
-                do = DistributedClosetAI(self.air, self, item)
-            elif item.getFlags() & FLBank:
-                do = DistributedBankAI(self.air, self, item)
-            elif item.getFlags() & FLPhone:
-                do = DistributedPhoneAI(self.air, self, item)
-            else:
-                do = DistributedFurnitureItemAI(self.air, self, item)
-            if self.isGenerated():
-                do.generateWithRequired(self.zoneId)
-            self.items.append(do)
+            self.generateItem(item)
 
     def getItems(self):
         items = CatalogItemList(store=CatalogItem.Customization|CatalogItem.Location)
@@ -271,6 +236,31 @@ class DistributedFurnitureManagerAI(DistributedObjectAI):
         pass
 
     # Furniture-manipulation:
+
+    def generateItem(self, item):
+        if item.getFlags() & FLTrunk:
+            do = DistributedTrunkAI(self.air, self, item)
+        elif item.getFlags() & FLCloset:
+            do = DistributedClosetAI(self.air, self, item)
+        elif item.getFlags() & FLBank:
+            do = DistributedBankAI(self.air, self, item)
+        elif item.getFlags() & FLPhone:
+            do = DistributedPhoneAI(self.air, self, item)
+        elif item.getFlags() & FLCrate:
+            do = DistributedRewardCrateAI(self.air, self, item)
+        elif item.getFlags() & FLChair:
+            do = DistributedChairAI(self.air, self, item)
+        elif item.getFlags() & FLTV:
+            do = DistributedTVAI(self.air, self, item)
+        else:
+            do = DistributedFurnitureItemAI(self.air, self, item)
+        
+        if self.isGenerated():
+            do.generateWithRequired(self.zoneId)
+
+        self.items.append(do)
+        return do
+
     def moveItemToAttic(self, doId):
         item = self.getItemObject(doId)
 
@@ -289,32 +279,9 @@ class DistributedFurnitureManagerAI(DistributedObjectAI):
         self.d_setAtticItems(self.getAtticItems())
 
         item.posHpr = (x, y, z, h, p, r)
+        object = self.generateItem(item)
 
-        if item.getFlags() & FLTrunk:
-            if self.house.gender is 0:
-                if item.furnitureType - 4000 < 10:
-                    item.furnitureType += 10
-            elif item.furnitureType - 4000 > 10:
-                item.furnitureType -= 10
-            do = DistributedTrunkAI(self.air, self, item)
-        elif item.getFlags() & FLCloset:
-            if self.house.gender is 0:
-                if item.furnitureType - 500 < 10:
-                    item.furnitureType += 10
-            elif item.furnitureType - 500 > 10:
-                item.furnitureType -= 10
-            do = DistributedClosetAI(self.air, self, item)
-        elif item.getFlags() & FLBank:
-            do = DistributedBankAI(self.air, self, item)
-        elif item.getFlags() & FLPhone:
-            do = DistributedPhoneAI(self.air, self, item)
-        else:
-            do = DistributedFurnitureItemAI(self.air, self, item)
-
-        do.generateWithRequired(self.zoneId)
-        self.items.append(do)
-
-        return (ToontownGlobals.FM_MovedItem, do.doId)
+        return (ToontownGlobals.FM_MovedItem, object.doId)
 
     def deleteItemFromAttic(self, blob, index):
         item = self.getAtticFurniture(self.atticItems, index)
@@ -327,8 +294,21 @@ class DistributedFurnitureManagerAI(DistributedObjectAI):
 
         return ToontownGlobals.FM_DeletedItem
 
-    def deleteItemFromRoom(self, blob, doId):
-        pass
+    def deleteItemFromRoom(self, doId, addToTrash=True):
+        item = self.getItemObject(doId)
+
+        if not item:
+            self.air.writeServerEvent('suspicious', avId=self.air.getAvatarIdFromSender(), issue='Tried to delete an invalid item with doId %s' % doId)
+            return ToontownGlobals.FM_InvalidIndex
+
+        if addToTrash:
+            self.deletedItems.append(item.catalogItem)
+            self.d_setDeletedItems(self.getDeletedItems())
+
+        item.destroy()
+        self.items.remove(item)
+        
+        return ToontownGlobals.FM_DeletedItem
 
     def moveWallpaperFromAttic(self, index, room):
         retcode = ToontownGlobals.FM_SwappedItem
@@ -414,7 +394,16 @@ class DistributedFurnitureManagerAI(DistributedObjectAI):
         return ToontownGlobals.FM_DeletedItem
 
     def recoverDeletedItem(self, blob, index):
-        pass
+        if len(self.deletedItems) <= index:
+            return
+        
+        item = self.deletedItems[index]
+        self.deletedItems.remove(item)
+        self.atticItems.append(item)
+        self.d_setDeletedItems(self.deletedItems)
+        self.d_setAtticItems(self.getAtticItems())
+        
+        return ToontownGlobals.FM_MovedItem
 
     def handleMessage(self, func, response, *args):
         context = args[-1]
@@ -451,7 +440,7 @@ class DistributedFurnitureManagerAI(DistributedObjectAI):
         self.handleMessage(self.deleteItemFromAttic, 'deleteItemFromAtticResponse', blob, index, context)
 
     def deleteItemFromRoomMessage(self, blob, doId, context):
-        self.handleMessage(self.deleteItemFromRoom, 'deleteItemFromRoomResponse', blob, doId, context)
+        self.handleMessage(self.deleteItemFromRoom, 'deleteItemFromRoomResponse', doId, context)
 
     def moveWallpaperFromAtticMessage(self, index, room, context):
         self.handleMessage(self.moveWallpaperFromAttic, 'moveWallpaperFromAtticResponse', index, room, context)
@@ -493,96 +482,47 @@ class DistributedFurnitureManagerAI(DistributedObjectAI):
                 return window
         return None
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[])
-def findCloset():
-    """
-    find the closet
-    """
-    target = spellbook.getTarget()
-    if not target:
-        target = spellbook.getInvoker()
-    if not target:
-        return "Strange.. who are we talking about?"
-
-    if not hasattr(target, "estate") or not hasattr(target.estate, "houses"):
-        return "no houses in the state"
-
-    for house in target.estate.houses:
-        if house.doId == target.houseId:
-            fm = house.interior.furnitureManager
-            for item in fm.items:
-                if item.catalogItem.getFlags() & FLCloset:
-                    return 'items: %s'%(str(item.catalogItem))
-            for item in fm.atticItems:
-                if item.getFlags() & FLCloset:
-                    return 'atticItems: %s'%(str(item))
-    return "I cannot find your closet"
-
-@magicWord(category=CATEGORY_PROGRAMMER, types=[])
-def recoverCloset():
-    """
-    recover the closet
-    """
-    target = spellbook.getTarget()
-    if not target:
-        target = spellbook.getInvoker()
-    if not target:
-        return "Strange.. who are we talking about?"
-
-    if not hasattr(target, "estate") or not hasattr(target.estate, "houses"):
-        return "no houses in the state"
-
-    for house in target.estate.houses:
-        if house.doId == target.houseId:
-            fm = house.interior.furnitureManager
-            for item in reversed(fm.items):
-                if item.catalogItem.getFlags() & FLCloset:
-                    fm.moveItemToAttic(item.doId);
-                    return "Moved the closet"
-            fm.saveToHouse()
-    return "I cannot find your closet"
-
-@magicWord(category=CATEGORY_PROGRAMMER, types=[])
+@magicWord(category=CATEGORY_PROGRAMMER)
 def fillAttic():
     """
-    move everything to the attic
+    Move everything to the attic.
     """
     target = spellbook.getTarget()
-    if not target:
-        target = spellbook.getInvoker()
-    if not target:
-        return "Strange.. who are we talking about?"
 
     if not hasattr(target, "estate") or not hasattr(target.estate, "houses"):
-        return "no houses in the state"
+        return "The target is not in an estate!"
 
     for house in target.estate.houses:
         if house.doId == target.houseId:
-            fm = house.interior.furnitureManager
-            for item in reversed(fm.items):
-                fm.moveItemToAttic(item.doId);
-            fm.saveToHouse()
-    return "everything has been moved to the attic"
+            manager = house.interior.furnitureManager
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[])
+            for item in reversed(manager.items):
+                manager.moveItemToAttic(item.doId)
+
+            manager.saveToHouse()
+            return "Everything has been moved to the attic!"
+    
+    return "The target is not in his estate!"
+
+@magicWord(category=CATEGORY_PROGRAMMER)
 def emptyHouse():
     """
-    delete everything in the house
+    Delete everything in the house.
     """
     target = spellbook.getTarget()
-    if not target:
-        target = spellbook.getInvoker()
-    if not target:
-        return "Strange.. who are we talking about?"
 
     if not hasattr(target, "estate") or not hasattr(target.estate, "houses"):
-        return "no houses in the state"
+        return "The target is not in an estate!"
 
     for house in target.estate.houses:
         if house.doId == target.houseId:
-            fm = house.interior.furnitureManager
-            for item in reversed(fm.items):
+            manager = house.interior.furnitureManager
+
+            for item in reversed(manager.items):
                 item.destroy()
-                fm.items.remove(item)
-            fm.saveToHouse()
-    return "The house is empty"
+
+            manager.items = []
+            manager.saveToHouse()
+            return "Everything has been deleted!"
+    
+    return "The target is not in his estate!"

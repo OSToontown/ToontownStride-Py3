@@ -40,8 +40,8 @@ class DistributedElevatorFloorAI(DistributedElevatorFSMAI.DistributedElevatorFSM
             'Opening'] }
     id = 0
 
-    def __init__(self, air, lawOfficeId, bldg, avIds, markerId = None, numSeats = 4, antiShuffle = 0, minLaff = 0):
-        DistributedElevatorFSMAI.DistributedElevatorFSMAI.__init__(self, air, bldg, numSeats, antiShuffle = antiShuffle, minLaff = minLaff)
+    def __init__(self, air, lawOfficeId, bldg, avIds, markerId = None, numSeats = 4, antiShuffle = 0):
+        DistributedElevatorFSMAI.DistributedElevatorFSMAI.__init__(self, air, bldg, numSeats, antiShuffle = antiShuffle)
         FSM.__init__(self, 'ElevatorFloor_%s_FSM' % self.id)
         self.type = ELEVATOR_STAGE
         self.countdownTime = ElevatorData[self.type]['countdown']

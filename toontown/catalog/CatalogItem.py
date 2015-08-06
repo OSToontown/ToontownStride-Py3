@@ -42,8 +42,8 @@ class CatalogItem:
         return
 
     def isAward(self):
-        result = self.specialEventId != 0
-        return result
+        #result = self.specialEventId != 0
+        return False
 
     def makeNewItem(self):
         pass
@@ -76,9 +76,6 @@ class CatalogItem:
         return None
 
     def storedInCloset(self):
-        return 0
-
-    def storedInTrunk(self):
         return 0
 
     def storedInAttic(self):
@@ -196,6 +193,8 @@ class CatalogItem:
             return TTLocalizer.CatalogPurchaseGiftLimitReached
         elif retcode == ToontownGlobals.P_NotEnoughMoney:
             return TTLocalizer.CatalogPurchaseGiftNotEnoughMoney
+        elif retcode == ToontownGlobals.P_TooFast:
+            return TTLocalizer.CatalogPurchaseGiftTooFast
         else:
             return TTLocalizer.CatalogPurchaseGiftGeneralError % {'friend': '%s',
              'error': retcode}
@@ -277,9 +276,9 @@ class CatalogItem:
             x = di.getArg(STInt16, 10)
             y = di.getArg(STInt16, 10)
             z = di.getArg(STInt16, 100)
-            h = di.getArg(STInt8, 256.0 / 360.0)
-            p = di.getArg(STInt8, 256.0 / 360.0)
-            r = di.getArg(STInt8, 256.0 / 360.0)
+            h = di.getArg(STInt16, 256.0 / 360.0)
+            p = di.getArg(STInt16, 256.0 / 360.0)
+            r = di.getArg(STInt16, 256.0 / 360.0)
             self.posHpr = (x,
              y,
              z,
@@ -287,7 +286,7 @@ class CatalogItem:
              p,
              r)
         if store & GiftTag:
-            self.giftTag = di.getString()
+            self.giftTag = di.getUint32()
         self.specialEventId = di.getUint8()
 
     def encodeDatagram(self, dg, store):
@@ -297,9 +296,9 @@ class CatalogItem:
             dg.putArg(self.posHpr[0], STInt16, 10)
             dg.putArg(self.posHpr[1], STInt16, 10)
             dg.putArg(self.posHpr[2], STInt16, 100)
-            dg.putArg(self.posHpr[3], STInt8, 256.0 / 360.0)
-            dg.putArg(self.posHpr[4], STInt8, 256.0 / 360.0)
-            dg.putArg(self.posHpr[5], STInt8, 256.0 / 360.0)
+            dg.putArg(self.posHpr[3], STInt16, 256.0 / 360.0)
+            dg.putArg(self.posHpr[4], STInt16, 256.0 / 360.0)
+            dg.putArg(self.posHpr[5], STInt16, 256.0 / 360.0)
         if store & GiftTag:
             dg.addString(self.giftTag)
         dg.addUint8(self.specialEventId)

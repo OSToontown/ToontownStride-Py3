@@ -65,6 +65,7 @@ Easy = 75
 Medium = 50
 Hard = 25
 VeryHard = 20
+Fun = 15
 TT_TIER = 0
 DD_TIER = 4
 DG_TIER = 7
@@ -73,7 +74,8 @@ BR_TIER = 11
 DL_TIER = 14
 LAWBOT_HQ_TIER = 18
 BOSSBOT_HQ_TIER = 32
-ELDER_TIER = 49
+PRE_ELDER_TIER = 49
+ELDER_TIER = 50
 LOOPING_FINAL_TIER = ELDER_TIER
 VISIT_QUEST_ID = 1000
 TROLLEY_QUEST_ID = 110
@@ -1675,6 +1677,7 @@ class PhoneQuest(Quest):
 
     def getObjectiveStrings(self):
         return [TTLocalizer.QuestsPhoneQuestString]
+    
 
 DefaultDialog = {GREETING: DefaultGreeting,
  QUEST: DefaultQuest,
@@ -3024,7 +3027,7 @@ QuestDict = {
     9503: (DL_TIER + 3, Start, (BuildingQuest, Anywhere, 25, Any, 3, 1), Any, ToonHQ, Any, NA, DefaultDialog),
     9504: (DL_TIER + 3, Start, (BuildingQuest, Anywhere, 20, 's', 5, 1), Any, ToonHQ, Any, NA, DefaultDialog),
     9505: (DL_TIER + 3, Start, (BuildingQuest, Anywhere, 20, 'l', 5, 1), Any, ToonHQ, Any, NA, DefaultDialog),
-    9506: (DL_TIER + 3, Start, (RescueQuest, InFO, 10), Any, ToonHQ, Any, NA, DefaultDialog),
+    9506: (DL_TIER + 3, Start, (RescueQuest, InFO, 10), Any, ToonHQ, Any, NA, DefaultDialog), 
     10100: (ELDER_TIER, Start, (CogQuest, Anywhere, 80, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     10101: (ELDER_TIER, Start, (CogQuest, Anywhere, 100, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     10102: (ELDER_TIER, Start, (CogQuest, Anywhere, 120, Any), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -4007,6 +4010,27 @@ class BuffReward(Reward):
     def getPosterString(self):
         return TTLocalizer.getBuffPosterString(self.getBuffId())
 
+class EPPReward(Reward):
+    trackNames = [TTLocalizer.Bossbot,
+                  TTLocalizer.Lawbot,
+                  TTLocalizer.Cashbot,
+                  TTLocalizer.Sellbot]
+     
+    def sendRewardAI(self, av):
+        av.addEPP(self.reward[0])
+    
+    def countReward(self, qrc):
+        pass
+    
+    def getCogTrackName(self):
+        return EPPReward.trackNames[self.reward[0]]
+    
+    def getString(self):
+        return TTLocalizer.QuestsEPPReward % self.getCogTrackName()
+    
+    def getPosterString(self):
+        return TTLocalizer.QuestsEPPRewardPoster % self.getCogTrackName()       
+
 
 def getRewardClass(id):
     reward = RewardDict.get(id)
@@ -4401,9 +4425,14 @@ RewardDict = {
     3001: (BuffReward, ToontownGlobals.BMovementSpeed, 30),
     3002: (BuffReward, ToontownGlobals.BMovementSpeed, 60),
     3003: (BuffReward, ToontownGlobals.BMovementSpeed, 180),
-    3004: (BuffReward, ToontownGlobals.BMovementSpeed, 360)
+    3004: (BuffReward, ToontownGlobals.BMovementSpeed, 360),
+    10000: (EPPReward, 0), # Bossbot
+    10001: (EPPReward, 1), # Lawbot
+    10002: (EPPReward, 2), # Cashbot
+    10003: (EPPReward, 3) # Sellbot
 }
 
+BuffRewardIds = [3001, 3002, 3003, 3004]
 
 def getNumTiers():
     return len(RequiredRewardTrackDict) - 1
@@ -4446,12 +4475,12 @@ RequiredRewardTrackDict = {
     MM_TIER + 1: (100, 801, 802, 203, 803, 804, 101, 805, 806, 102, 807, 808, 100, 809, 810, 101, 811, 812, 703, 813, 814, 815, 303),
     MM_TIER + 2: (900,),
     BR_TIER: (400,),
-    BR_TIER + 1: (100, 801, 802, 704, 803, 804, 101, 805, 806, 502, 807, 808, 102, 809, 810, 204, 811, 812, 100, 813, 814, 101, 815, 304),
+    BR_TIER + 1: (100, 801, 802, 704, 803, 804, 101, 805, 806, 502, 807, 808, 102, 809, 810, 204, 811, 812, 100, 813, 814, 101, 815, 304, 10003),
     BR_TIER + 2: (900,),
     DL_TIER: (4000, 100, 205, 101, 102, 705, 103, 305, 4001, 4002),
     DL_TIER + 1: (100, 206, 101, 4003, 4004, 4005, 102, 4006, 4007, 4008, 706, 103, 4009, 4010, 4011, 4000, 4001, 4002),
     DL_TIER + 2: (4006, 4007, 4008, 100, 4000, 4001, 4002, 4003, 101, 4004, 4005, 4009, 102, 103, 4010, 4011),
-    DL_TIER + 3: (4009, 4010, 4011, 100, 4000, 4001, 101, 4002, 4003, 102, 4004, 4005, 102, 4006, 4007, 707, 207, 4008),
+    DL_TIER + 3: (4009, 4010, 4011, 100, 4000, 4001, 101, 4002, 4003, 102, 4004, 4005, 102, 4006, 4007, 707, 207, 4008, 10002),
     LAWBOT_HQ_TIER: (4100,),
     LAWBOT_HQ_TIER + 1: (4101,),
     LAWBOT_HQ_TIER + 2: (4102,),
@@ -4483,6 +4512,7 @@ RequiredRewardTrackDict = {
     BOSSBOT_HQ_TIER + 14: (4214,),
     BOSSBOT_HQ_TIER + 15: (4215,),
     BOSSBOT_HQ_TIER + 16: (4216,),
+    PRE_ELDER_TIER: (10001, 10000),
     ELDER_TIER: (4000, 4001, 4002, 4003, 4004, 4005, 4006, 4007, 4008, 4009, 4010, 4011)}
 
 OptionalRewardTrackDict = {

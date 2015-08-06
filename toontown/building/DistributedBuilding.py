@@ -435,7 +435,9 @@ class DistributedBuilding(DistributedObject.DistributedObject):
             return
         dnaStore = self.cr.playGame.dnaStore
         level = int(self.difficulty / 2) + 1
-        suitNP = dnaStore.findNode('suit_landmark_' + chr(self.track) + str(level))
+        if level > 5:
+            self.notify.warning('Level is bigger than 5: %s' % level)
+        suitNP = dnaStore.findNode('suit_landmark_' + chr(self.track) + str(min(level, 5)))
         zoneId = dnaStore.getZoneFromBlockNumber(self.block)
         newParentNP = base.cr.playGame.hood.loader.zoneDict[zoneId]
         suitBuildingNP = suitNP.copyTo(newParentNP)

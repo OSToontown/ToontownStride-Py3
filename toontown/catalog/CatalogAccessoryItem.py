@@ -15,45 +15,6 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
         self.isSpecial = isSpecial
         CatalogItem.CatalogItem.makeNewItem(self)
 
-    def storedInTrunk(self):
-        return 1
-
-    def notOfferedTo(self, avatar):
-        article = AccessoryTypes[self.accessoryType][ATArticle]
-        if article in [AHat,
-         AGlasses,
-         ABackpack,
-         AShoes]:
-            return 0
-        forBoys = article in [ABoysHat,
-         ABoysGlasses,
-         ABoysBackpack,
-         ABoysShoes]
-        if avatar.getStyle().getGender() == 'm':
-            return not forBoys
-        else:
-            return forBoys
-
-    def forBoysOnly(self):
-        article = AccessoryTypes[self.accessoryType][ATArticle]
-        if article in [ABoysHat,
-         ABoysGlasses,
-         ABoysBackpack,
-         ABoysShoes]:
-            return 1
-        else:
-            return 0
-
-    def forGirlsOnly(self):
-        article = AccessoryTypes[self.accessoryType][ATArticle]
-        if article in [AGirlsHat,
-         AGirlsGlasses,
-         AGirlsBackpack,
-         AGirlsShoes]:
-            return 1
-        else:
-            return 0
-
     def getPurchaseLimit(self):
         return 1
 
@@ -63,8 +24,6 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
         if avatar.onGiftOrder.count(self) != 0:
             return 1
         if avatar.mailboxContents.count(self) != 0:
-            return 1
-        if self in avatar.awardMailboxContents or self in avatar.onAwardOrder:
             return 1
         str = AccessoryTypes[self.accessoryType][ATString]
         if self.isHat():
@@ -122,10 +81,7 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
 
     def recordPurchase(self, avatar, optional):
         if avatar.isTrunkFull():
-            if avatar.getMaxAccessories() == 0:
-                return ToontownGlobals.P_NoTrunk
-            else:
-                return ToontownGlobals.P_NoRoomForItem
+            return ToontownGlobals.P_NoRoomForItem
         str = AccessoryTypes[self.accessoryType][ATString]
         if self.isHat():
             defn = ToonDNA.HatStyles[str]
@@ -218,6 +174,9 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
         avatar.d_catalogGenAccessories()
         return ToontownGlobals.P_ItemAvailable
 
+    def getDeliveryTime(self):
+        return 60
+
     def getPicture(self, avatar):
         model = self.loadModel()
         spin = 1
@@ -239,7 +198,6 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
             model.setColorScale(color, 1)
             if needsAlpha:
                 model.setTransparency(1)
-        return
 
     def loadModel(self):
         modelPath = self.getFilename()
@@ -264,17 +222,14 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
         from toontown.toontowngui import TTDialog
         avatar = base.localAvatar
         accessoriesOnOrder = 0
-        for item in avatar.onOrder + avatar.mailboxContents:
-            if item.storedInTrunk():
+        for item in avatar.onOrder + avatar.mailboxContents + avatar.onGiftOrder:
+            if hasattr(item, 'isHat'):
                 accessoriesOnOrder += 1
 
         if avatar.isTrunkFull(accessoriesOnOrder):
             self.requestPurchaseCleanup()
             buttonCallback = PythonUtil.Functor(self.__handleFullPurchaseDialog, phone, callback)
-            if avatar.getMaxAccessories() == 0:
-                text = TTLocalizer.CatalogPurchaseNoTrunk
-            else:
-                text = TTLocalizer.CatalogPurchaseTrunkFull
+            text = TTLocalizer.CatalogPurchaseTrunkFull
             self.dialog = TTDialog.TTDialog(style=TTDialog.YesNo, text=text, text_wordwrap=15, command=buttonCallback)
             self.dialog.show()
         else:
@@ -305,25 +260,19 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
                 return TTLocalizer.CatalogAcceptShoes
         elif retcode == ToontownGlobals.P_NoRoomForItem:
             return TTLocalizer.CatalogAcceptTrunkFull
-        elif retcode == ToontownGlobals.P_NoTrunk:
-            return TTLocalizer.CatalogAcceptNoTrunk
         return CatalogItem.CatalogItem.getAcceptItemErrorText(self, retcode)
 
     def isHat(self):
-        article = AccessoryTypes[self.accessoryType][ATArticle]
-        return article in [AHat, ABoysHat, AGirlsHat]
+        return AccessoryTypes[self.accessoryType][ATArticle] == AHat
 
     def areGlasses(self):
-        article = AccessoryTypes[self.accessoryType][ATArticle]
-        return article in [AGlasses, ABoysGlasses, AGirlsGlasses]
+        return AccessoryTypes[self.accessoryType][ATArticle] == AGlasses
 
     def isBackpack(self):
-        article = AccessoryTypes[self.accessoryType][ATArticle]
-        return article in [ABackpack, ABoysBackpack, AGirlsBackpack]
+        return AccessoryTypes[self.accessoryType][ATArticle] == ABackpack
 
     def areShoes(self):
-        article = AccessoryTypes[self.accessoryType][ATArticle]
-        return article in [AShoes, ABoysShoes, AGirlsShoes]
+        return AccessoryTypes[self.accessoryType][ATArticle] == AShoes
 
     def output(self, store = -1):
         return 'CatalogAccessoryItem(%s%s)' % (self.accessoryType, self.formatOptionalData(store))

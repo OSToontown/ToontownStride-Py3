@@ -1,5 +1,58 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
+from otp.otpbase import OTPGlobals
+from toontown.toonbase import ToontownGlobals
+import datetime, uuid, time, string, random
+
+AVAILABLE_CHARS = string.ascii_lowercase + string.digits
+
+class AddTrueFriend:
+
+    def __init__(self, manager, av, targetId, code):
+        self.air = manager.air
+        self.manager = manager
+        self.av = av
+        self.targetId = targetId
+        self.code = code
+
+    def start(self):
+        self.air.dbInterface.queryObject(self.air.dbId, self.targetId, self.__gotAvatar)
+    
+    def __gotAvatar(self, dclass, fields):
+        dclasses = self.air.dclassesByName['DistributedToonAI']
+
+        if dclass != dclasses:
+            return
+        
+        friendsList = fields['setFriendsList'][0]
+        trueFriendsList = fields['setTrueFriends'][0]
+        name = fields['setName'][0]
+        avId = self.av.doId
+        
+        if avId in trueFriendsList:
+            self.manager.sendUpdateToAvatarId(avId, 'tfResponse', [ToontownGlobals.TF_ALREADY_FRIENDS_NAME, name])
+            return
+        elif avId not in friendsList:
+            if len(friendsList) >= OTPGlobals.MaxFriends:
+                self.manager.sendUpdateToAvatarId(avId, 'tfResponse', [ToontownGlobals.TF_FRIENDS_LIST_FULL_HIM, name])
+                return
+            
+            friendsList.append(avId)
+        
+        if self.targetId not in self.av.getFriendsList():
+            self.av.extendFriendsList(self.targetId)
+        
+        if hasattr(self.manager, 'data'):
+            del self.manager.data[self.code]
+        else:
+            self.air.dbGlobalCursor.tfCodes.remove({'_id': self.code})
+
+        self.av.addTrueFriend(self.targetId)
+        trueFriendsList.append(avId)
+        self.air.send(dclasses.aiFormatUpdate('setFriendsList', self.targetId, self.targetId, self.air.ourChannel, [friendsList]))
+        self.air.send(dclasses.aiFormatUpdate('setTrueFriends', self.targetId, self.targetId, self.air.ourChannel, [trueFriendsList]))
+        self.manager.sendUpdateToAvatarId(avId, 'tfResponse', [ToontownGlobals.TF_SUCCESS, name])
+        del self.manager.tfFsms[avId]
 
 class FriendManagerAI(DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("FriendManagerAI")
@@ -9,6 +62,15 @@ class FriendManagerAI(DistributedObjectAI):
         self.air = air
         self.currentContext = 0
         self.requests = {}
+        self.tfFsms = {}
+        self.connectToDatabase()
+    
+    def connectToDatabase(self):
+        if not self.air.dbConn:
+            self.notify.warning('Not using mongodb, true friends will be non-persistent')
+            self.data = {}
+        else:
+            self.air.dbGlobalCursor.tfCodes.ensure_index('date', expireAfterSeconds=ToontownGlobals.TF_EXPIRE_SECS)
 
     def friendQuery(self, requested):
         avId = self.air.getAvatarIdFromSender()
@@ -118,3 +180,81 @@ class FriendManagerAI(DistributedObjectAI):
             return
 
         del self.requests[context]
+    
+    def getRandomCharSequence(self, count):
+        return ''.join(random.choice(AVAILABLE_CHARS) for i in xrange(count))
+    
+    def getTFCode(self, tryNumber):
+        if tryNumber == ToontownGlobals.MAX_TF_TRIES:
+            return str(uuid.uuid4())
+        
+        code = 'TT %s %s' % (self.getRandomCharSequence(3), self.getRandomCharSequence(3))
+        
+        if (hasattr(self, 'data') and code in self.data) or (self.air.dbConn and self.air.dbGlobalCursor.tfCodes.find({'_id': code}).count() > 0):
+            return self.getTFCode(tryNumber + 1)
+        
+        return code
+    
+    def requestTFCode(self):
+        avId = self.air.getAvatarIdFromSender()
+        av = self.air.doId2do.get(avId)
+        
+        if not av:
+            return
+        
+        tfRequest = av.getTFRequest()
+        
+        if tfRequest[1] >= ToontownGlobals.MAX_TF_TRIES and tfRequest[0] >= time.time():
+            self.sendUpdateToAvatarId(avId, 'tfResponse', [ToontownGlobals.TF_COOLDOWN, ''])
+            return
+        
+        code = self.getTFCode(0)
+        
+        if hasattr(self, 'data'):
+            self.data[code] = avId
+        else:
+            self.air.dbGlobalCursor.tfCodes.insert({'_id': code, 'date': datetime.datetime.utcnow(), 'avId': avId})
+        
+        av.b_setTFRequest((time.time() + ToontownGlobals.TF_COOLDOWN_SECS, tfRequest[1] + 1))
+        self.sendUpdateToAvatarId(avId, 'tfResponse', [ToontownGlobals.TF_SUCCESS, code])
+    
+    def redeemTFCode(self, code):
+        avId = self.air.getAvatarIdFromSender()
+
+        if avId in self.tfFsms:
+            self.sendUpdateToAvatarId(avId, 'tfResponse', [ToontownGlobals.TF_TOO_FAST, ''])
+            return
+
+        av = self.air.doId2do.get(avId)
+        
+        if not av:
+            return
+        
+        if hasattr(self, 'data'):
+            if code not in self.data:
+                self.sendUpdateToAvatarId(avId, 'tfResponse', [ToontownGlobals.TF_UNKNOWN_SECRET, ''])
+                return
+            
+            targetId = self.data[code]
+        else:
+            fields = self.air.dbGlobalCursor.tfCodes.find_one({'_id': code})
+            
+            if not fields:
+                self.sendUpdateToAvatarId(avId, 'tfResponse', [ToontownGlobals.TF_UNKNOWN_SECRET, ''])
+                return
+            
+            targetId = fields['avId']
+        
+        if avId == targetId:
+            self.sendUpdateToAvatarId(avId, 'tfResponse', [ToontownGlobals.TF_SELF_SECRET, ''])
+            return
+        elif av.isTrueFriends(targetId):
+            self.sendUpdateToAvatarId(avId, 'tfResponse', [ToontownGlobals.TF_ALREADY_FRIENDS, ''])
+            return
+        elif targetId not in av.getFriendsList() and len(av.getFriendsList()) >= OTPGlobals.MaxFriends:
+            self.sendUpdateToAvatarId(avId, 'tfResponse', [ToontownGlobals.TF_FRIENDS_LIST_FULL_YOU, ''])
+            return
+        
+        tfOperation = AddTrueFriend(self, av, targetId, code)
+        tfOperation.start()
+        self.tfFsms[avId] = tfOperation

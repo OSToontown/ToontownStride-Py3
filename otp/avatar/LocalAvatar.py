@@ -62,6 +62,7 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         self.sleepFlag = 0
         self.isDisguised = 0
         self.movingFlag = 0
+        self.preventCameraDisable = False
         self.lastNeedH = None
         self.accept('friendOnline', self.__friendOnline)
         self.accept('friendOffline', self.__friendOffline)
@@ -73,6 +74,9 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         self.accept('avatarMoving', self.clearPageUpDown)
         self.showNametag2d()
         self.setPickable(0)
+    
+    def setPreventCameraDisable(self, prevent):
+        self.preventCameraDisable = prevent
 
     def useSwimControls(self):
         self.controlManager.use('swim', self)
@@ -421,7 +425,7 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         self.controlManager.setSpeeds(OTPGlobals.ToonForwardSlowSpeed, OTPGlobals.ToonJumpSlowForce, OTPGlobals.ToonReverseSlowSpeed, OTPGlobals.ToonRotateSlowSpeed)
 
     def pageUp(self):
-        if not self.avatarControlsEnabled:
+        if not (self.avatarControlsEnabled or self.preventCameraDisable):
             return
         self.wakeUp()
         if not self.isPageUp:
@@ -433,7 +437,7 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
             self.clearPageUpDown()
 
     def pageDown(self):
-        if not self.avatarControlsEnabled:
+        if not (self.avatarControlsEnabled and self.preventCameraDisable):
             return
         self.wakeUp()
         if not self.isPageDown:
@@ -452,7 +456,7 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
             self.setCameraPositionByIndex(self.cameraIndex)
 
     def nextCameraPos(self, forward):
-        if not self.avatarControlsEnabled:
+        if not (self.avatarControlsEnabled or self.preventCameraDisable):
             return
         self.wakeUp()
         self.__cameraHasBeenMoved = 1
@@ -465,6 +469,10 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
             if self.cameraIndex < 0:
                 self.cameraIndex = len(self.cameraPositions) - 1
         self.setCameraPositionByIndex(self.cameraIndex)
+    
+    def setCameraPosition(self, index):
+        self.cameraIndex = index
+        self.setCameraPositionByIndex(index)
 
     def initCameraPositions(self):
         camHeight = self.getClampedAvatarHeight()

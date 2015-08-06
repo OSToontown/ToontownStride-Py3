@@ -47,7 +47,7 @@ from toontown.shtiker import QuestPage
 from toontown.shtiker import ShardPage
 from toontown.shtiker import ShtikerBook
 from toontown.shtiker import SuitPage
-from toontown.shtiker import TIPPage
+from toontown.shtiker import StatPage
 from toontown.shtiker import TrackPage
 from toontown.toon import ElevatorNotifier
 from toontown.toon import ToonDNA
@@ -168,6 +168,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
     def setName(self, name):
         base.localAvatarName = name
         DistributedToon.DistributedToon.setName(self, name)
+        messenger.send('refreshNametagStyle')
 
     def wantLegacyLifter(self):
         return True
@@ -338,6 +339,9 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.photoPage.load()
         self.book.addPage(self.photoPage, pageName=TTLocalizer.PhotoPageTitle)
         self.addEventsPage()
+        self.statPage = StatPage.StatPage()
+        self.statPage.load()
+        self.book.addPage(self.statPage, pageName=TTLocalizer.StatPageTitle)
         self.book.setPage(self.mapPage, enterPage=False)
         self.laffMeter = LaffMeter.LaffMeter(self.style, self.hp, self.maxHp)
         self.laffMeter.setAvatar(self)
@@ -1133,9 +1137,9 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         if self.__gardeningGui:
             return
         gardenGuiCard = loader.loadModel('phase_5.5/models/gui/planting_gui')
-        self.__gardeningGui = DirectFrame(relief=None, geom=gardenGuiCard, geom_color=GlobalDialogColor, geom_scale=(0.17, 1.0, 0.3), pos=(-1.2, 0, 0.5), scale=1.0)
+        self.__gardeningGui = DirectFrame(relief=None, parent=base.a2dTopLeft, geom=gardenGuiCard, geom_color=GlobalDialogColor, geom_scale=(0.17, 1.0, 0.3), pos=(0.1335, 0.0, -0.50), scale=1.0)
         self.__gardeningGui.setName('gardeningFrame')
-        self.__gardeningGuiFake = DirectFrame(relief=None, geom=None, geom_color=GlobalDialogColor, geom_scale=(0.17, 1.0, 0.3), pos=(-1.2, 0, 0.5), scale=1.0)
+        self.__gardeningGuiFake = DirectFrame(relief=None, parent=base.a2dTopLeft, geom=None, geom_color=GlobalDialogColor, geom_scale=(0.17, 1.0, 0.3), pos=(0.1335, 0.0, -0.50), scale=1.0)
         self.__gardeningGuiFake.setName('gardeningFrameFake')
         iconScale = 1
         iconColorWhite = Vec4(1.0, 1.0, 1.0, 1.0)
@@ -1653,13 +1657,8 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.book.addPage(self.eventsPage, pageName=TTLocalizer.EventsPageName)
         return
 
-    def addTIPPage(self):
-        self.tipPage = TIPPage.TIPPage()
-        self.tipPage.load()
-        self.book.addPage(self.tipPage, pageName=TTLocalizer.TIPPageTitle)
-
-    def setPinkSlips(self, pinkSlips):
-        DistributedToon.DistributedToon.setPinkSlips(self, pinkSlips)
+    def setSpecialInventory(self, specialInventory):
+        DistributedToon.DistributedToon.setSpecialInventory(self, specialInventory)
         self.inventory.updateTotalPropsText()
 
     def hasActiveBoardingGroup(self):

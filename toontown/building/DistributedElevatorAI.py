@@ -11,7 +11,7 @@ from direct.directnotify import DirectNotifyGlobal
 class DistributedElevatorAI(DistributedObjectAI.DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedElevatorAI')
 
-    def __init__(self, air, bldg, numSeats = 4, antiShuffle = 0, minLaff = 0):
+    def __init__(self, air, bldg, numSeats = 4, antiShuffle = 0):
         DistributedObjectAI.DistributedObjectAI.__init__(self, air)
         self.type = ELEVATOR_NORMAL
         self.countdownTime = ElevatorData[self.type]['countdown']
@@ -19,7 +19,6 @@ class DistributedElevatorAI(DistributedObjectAI.DistributedObjectAI):
         self.bldgDoId = bldg.getDoId()
         self.seats = []
         self.setAntiShuffle(antiShuffle)
-        self.setMinLaff(minLaff)
         if self.antiShuffle:
             if not hasattr(simbase.air, 'elevatorTripId'):
                 simbase.air.elevatorTripId = 1
@@ -145,11 +144,9 @@ class DistributedElevatorAI(DistributedObjectAI.DistributedObjectAI):
         return self.fsm.getCurrentState().getName()
 
     def avIsOKToBoard(self, av):
-        return av.hp > self.minLaff and self.accepting
+        return self.accepting
 
     def checkBoard(self, av):
-        if av.hp < self.minLaff:
-            return REJECT_MINLAFF
         return 0
 
     def requestBoard(self, *args):
@@ -289,9 +286,3 @@ class DistributedElevatorAI(DistributedObjectAI.DistributedObjectAI):
 
     def getAntiShuffle(self):
         return self.antiShuffle
-
-    def setMinLaff(self, minLaff):
-        self.minLaff = minLaff
-
-    def getMinLaff(self):
-        return self.minLaff

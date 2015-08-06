@@ -329,7 +329,7 @@ class LoginAccountFSM(OperationFSM):
             'ACCOUNT_AV_SET': [0] * 6,
             'ESTATE_ID': 0,
             'ACCOUNT_AV_SET_DEL': [],
-            'CREATED': time.time(),
+            'CREATED': time.ctime(),
             'LAST_LOGIN': time.ctime(),
             'LAST_LOGIN_TS': time.time(),
             'ACCOUNT_ID': str(self.userId),
@@ -499,7 +499,7 @@ class CreateAvatarFSM(OperationFSM):
     def enterCreateAvatar(self):
         dna = ToonDNA()
         dna.makeFromNetString(self.dna)
-        colorString = TTLocalizer.NumToColor[dna.headColor]
+        colorString = TTLocalizer.ColorfulToon
         animalType = TTLocalizer.AnimalToSpecies[dna.getAnimal()]
         name = ' '.join((colorString, animalType))
         toonFields = {
@@ -689,7 +689,7 @@ class DeleteAvatarFSM(GetAvatarsFSM):
                 estateId,
                 self.csm.air.dclassesByName['DistributedEstateAI'],
                 {'setSlot%dToonId' % index: [0],
-                 'setSlot%dItems' % index: [[]]}
+                 'setSlot%dGarden' % index: [[]]}
             )
 
         self.csm.air.dbInterface.updateObject(
@@ -919,6 +919,10 @@ class LoadAvatarFSM(AvatarOperationFSM):
 
         # Tell the GlobalPartyManager as well:
         self.csm.air.globalPartyMgr.avatarJoined(self.avId)
+        
+        fields = self.avatar
+        fields.update({'setAdminAccess': [self.account.get('ACCESS_LEVEL', 100)]})
+        self.csm.air.friendsManager.addToonData(self.avId, fields)        
 
         self.csm.air.writeServerEvent('avatarChosen', self.avId, self.target)
         self.demand('Off')
@@ -969,7 +973,7 @@ class LoadAvatarFSM(AvatarOperationFSM):
         # Eliminate race conditions.
         taskMgr.doMethodLater(0.2, self.enterSetAvatarTask,
                               'avatarTask-%s' % self.avId, extraArgs=[channel],
-                              appendTask=True)
+                              appendTask=True)                         
 
 class UnloadAvatarFSM(OperationFSM):
     notify = directNotify.newCategory('UnloadAvatarFSM')

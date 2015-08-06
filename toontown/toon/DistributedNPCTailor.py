@@ -215,7 +215,7 @@ class DistributedNPCTailor(DistributedNPCToonBase):
             print 'setDNA: which = %d, top = %d, bot = %d' % (which, self.clothesGUI.topChoice, self.clothesGUI.bottomChoice)
             if self.roomAvailable == 0:
                 if self.isLocalToon:
-                    if self.av.isClosetFull() or which & ClosetGlobals.SHIRT and which & ClosetGlobals.SHORTS:
+                    if self.av.isClosetFull(1) or which & ClosetGlobals.SHIRT and which & ClosetGlobals.SHORTS:
                         self.__enterConfirmLoss(2, which)
                         self.clothesGUI.hideButtons()
                         self.button.hide()

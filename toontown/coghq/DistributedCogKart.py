@@ -355,8 +355,6 @@ class DistributedCogKart(DistributedElevatorExt.DistributedElevatorExt):
         if hasattr(base.localAvatar, 'elevatorNotifier'):
             if reason == ElevatorConstants.REJECT_SHUFFLE:
                 base.localAvatar.elevatorNotifier.showMe(TTLocalizer.ElevatorHoppedOff)
-            elif reason == ElevatorConstants.REJECT_MINLAFF:
-                base.localAvatar.elevatorNotifier.showMe(TTLocalizer.KartMinLaff % self.minLaff)
             elif reason == ElevatorConstants.REJECT_PROMOTION:
                 base.localAvatar.elevatorNotifier.showMe(TTLocalizer.BossElevatorRejectMessage)
         doneStatus = {'where': 'reject'}

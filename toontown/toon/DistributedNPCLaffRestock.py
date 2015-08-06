@@ -1,121 +1,71 @@
-from panda3d.core import *
-from direct.distributed import ClockDelta
 from otp.nametag.NametagConstants import CFSpeech, CFTimeout
 from toontown.toonbase import TTLocalizer, ToontownGlobals
-from toontown.toontowngui import TTDialog
 from toontown.toon import NPCToons
 from DistributedNPCToonBase import DistributedNPCToonBase
-import LaffRestockGlobals
-from LaffShopGui import *
+import LaffRestockGlobals, LaffShopGui, time
 
 class DistributedNPCLaffRestock(DistributedNPCToonBase):
 
-    zone2id = {
-        10000: 0,
-        13000: 1,
-        12000: 2,
-        11000: 3,
-    }
-
     def __init__(self, cr):
         DistributedNPCToonBase.__init__(self, cr)
-        self.isLocalToon = 0
-        self.av = None
-        self.laffGui = None
+        self.lastCollision = 0
+        self.laffDialog = None
 
     def disable(self):
         self.ignoreAll()
-        if self.laffGui:
-            self.laffGui.destroy()
-            self.laffGui = None
-        self.av = None
+        self.destroyDialog()
         DistributedNPCToonBase.disable(self)
 
+    def destroyDialog(self):
+        self.clearChat()
+
+        if self.laffDialog:
+            self.laffDialog.destroy()
+            self.laffDialog = None
+    
     def initToonState(self):
         self.setAnimState('neutral', 0.9, None, None)
+        self.putOnSuit(ToontownGlobals.cogHQZoneId2deptIndex(self.zoneId), rental=True)
+
         if self.name in NPCToons.LaffRestockPositions:
             pos = NPCToons.LaffRestockPositions[self.name]
             self.setPos(*pos[0])
             self.setH(pos[1])
-        self.putOnSuit(self.zone2id.get(self.zoneId, -1), rental=True)
 
     def getCollSphereRadius(self):
-        return 3.0
+        return 1.25
 
     def handleCollisionSphereEnter(self, collEntry):
-        base.cr.playGame.getPlace().fsm.request('purchase')
-        self.sendUpdate('avatarEnter', [])
-
-    def __handleUnexpectedExit(self):
-        self.notify.warning('unexpected exit')
-        self.av = None
-
-    def resetLaffClerk(self):
-        self.ignoreAll()
-        if self.laffGui:
-            self.laffGui.destroy()
-            self.laffGui = None
-        self.show()
-        self.startLookAround()
-        self.detectAvatars()
-        if self.isLocalToon:
-            self.showNametag2d()
-            self.freeAvatar()
-        return Task.done
-
-    def setMovie(self, mode, npcId, avId, extraArgs, timestamp):
-        timeStamp = ClockDelta.globalClockDelta.localElapsedTime(timestamp)
-        self.remain = NPCToons.CLERK_COUNTDOWN_TIME - timeStamp
-        self.npcId = npcId
-        self.isLocalToon = avId == base.localAvatar.doId
-        if mode == NPCToons.SELL_MOVIE_CLEAR:
+        if self.lastCollision > time.time():
             return
-        if mode == NPCToons.SELL_MOVIE_TIMEOUT:
-            if self.isLocalToon:
-                if self.laffGui:
-                    self.laffGui.destroy()
-                    self.laffGui = None
-            self.setChatAbsolute(TTLocalizer.STOREOWNER_TOOKTOOLONG, CFSpeech | CFTimeout)
-            self.resetLaffClerk()
-        elif mode == NPCToons.SELL_MOVIE_START:
-            self.av = base.cr.doId2do.get(avId)
-            if self.av is None:
-                self.notify.warning('Avatar %d not found in doId' % avId)
-                return
-            else:
-                self.accept(self.av.uniqueName('disable'), self.__handleUnexpectedExit)
-            self.setupAvatars(self.av)
-            if self.isLocalToon:
-                self.hideNametag2d()
-                laff = self.av.getMaxHp() - self.av.getHp()
-                cost = laff * ToontownGlobals.CostPerLaffRestock
-                self.popupLaffGUI(laff, cost)
-        elif mode == NPCToons.SELL_MOVIE_COMPLETE:
-            self.setChatAbsolute(TTLocalizer.RestockLaffMessage, CFSpeech | CFTimeout)
-            self.resetLaffClerk()
-        elif mode == LaffRestockGlobals.FullLaff:
+        
+        self.lastCollision = time.time() + ToontownGlobals.NPCCollisionDelay
+        self.lookAt(base.localAvatar)
+        
+        if base.localAvatar.getHp() >= base.localAvatar.getMaxHp():
             self.setChatAbsolute(TTLocalizer.RestockFullLaffMessage, CFSpeech | CFTimeout)
-            self.resetLaffClerk()
-        elif mode == LaffRestockGlobals.NoMoney:
-            self.setChatAbsolute(TTLocalizer.RestockNoMoneyMessage, CFSpeech | CFTimeout)
-            self.resetLaffClerk()
-        elif mode == NPCToons.SELL_MOVIE_CHEATER:
-            self.setChatAbsolute(TTLocalizer.RestockCheaterMessage, CFSpeech | CFTimeout)
-            self.resetLaffClerk()
+            return
+        
+        base.cr.playGame.getPlace().fsm.request('stopped')
+        base.setCellsAvailable(base.bottomCells, 0)
+        self.destroyDialog()
+        self.acceptOnce('laffShopDone', self.__laffShopDone)
+        self.laffDialog = LaffShopGui.LaffShopGui()
+    
+    def freeAvatar(self):
+        base.cr.playGame.getPlace().fsm.request('walk')
+        base.setCellsAvailable(base.bottomCells, 1)
+    
+    def __laffShopDone(self, state, laff):
+        self.freeAvatar()
 
-    def __handleRestock(self, laff, cost):
-        self.sendUpdate('restock', [self.av.doId, laff, cost])
+        if state == LaffRestockGlobals.TIMER_END:
+            self.setChatAbsolute(TTLocalizer.STOREOWNER_TOOKTOOLONG, CFSpeech|CFTimeout)
+        elif state == LaffRestockGlobals.USER_CANCEL:
+            self.setChatAbsolute(TTLocalizer.STOREOWNER_GOODBYE, CFSpeech|CFTimeout)
+        elif state == LaffRestockGlobals.RESTOCK:
+            self.sendUpdate('restock', [laff])
 
-    def __handleGuiDone(self, bTimedOut=False):
-        self.ignoreAll()
-        if self.laffGui:
-            self.laffGui.destroy()
-            self.laffGui = None
-        if not bTimedOut:
-            self.sendUpdate('transactionDone')
-
-    def popupLaffGUI(self, laff, cost):
-        self.setChatAbsolute('', CFSpeech)
-        self.accept('restockLaff', self.__handleRestock)
-        self.acceptOnce('guiDone', self.__handleGuiDone)
-        self.laffGui = LaffShopGui(text=TTLocalizer.RestockAskMessage % (laff, cost))
+    def restockResult(self, state):
+        if state in LaffRestockGlobals.RestockMessages:
+            self.setChatAbsolute(LaffRestockGlobals.RestockMessages[state], CFSpeech | CFTimeout)

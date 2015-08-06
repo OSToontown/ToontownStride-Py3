@@ -8,6 +8,7 @@ from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
+from toontown.friends import ToontownFriendSecret
 import ToonAvatarDetailPanel
 import AvatarPanelBase
 from toontown.toontowngui import TTDialog
@@ -353,6 +354,10 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
     def __handleWhisper(self):
         base.localAvatar.chatMgr.whisperTo(self.avName, self.avId)
 
+    def __handleTrueFriends(self):
+        base.localAvatar.chatMgr.noWhisper()
+        ToontownFriendSecret.showFriendSecret()
+
     def __handleFriend(self):
         base.localAvatar.chatMgr.noWhisper()
         messenger.send('friendAvatar', [self.avId, self.avName, self.avDisableName])
@@ -550,46 +555,3 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
         groupInviteGui.removeNode()
         groupAvatarBgGui.removeNode()
         helpGui.removeNode()
-        return
-
-    def __handleTrueFriends(self):
-        if not settings['trueFriends']:
-            base.localAvatar.chatMgr.fsm.request('noTrueFriends')
-            return
-
-        self.cleanupDialog()
-        base.cr.playGame.getPlace().fsm.request('stopped')
-
-        if base.localAvatar.isTrueFriends(self.avatar.doId):
-            self.dialog = TTDialog.TTDialog(style=TTDialog.YesNo, text=TTLocalizer.TrueFriendsRemoveNotice % self.avatar.getName(), text_wordwrap=20, command=self.confirmTrueFriendsRemove)
-            self.dialog.show()
-        elif not base.cr.isFriend(self.avatar.doId):
-            self.dialog = TTDialog.TTDialog(style=TTDialog.Acknowledge, text=TTLocalizer.TrueFriendsNotFriends % self.avatar.getName(), text_wordwrap=20, command=self.cleanupDialogAndWalk)
-            self.dialog.show()
-        else:
-            self.dialog = TTDialog.TTDialog(style=TTDialog.YesNo, text=TTLocalizer.TrueFriendsAddNotice % self.avatar.getName(), text_wordwrap=20, command=self.confirmTrueFriendsAdd)
-            self.dialog.show()
-
-    def confirmTrueFriendsAdd(self, state):
-        self.cleanupDialog()
-
-        if state > 0:
-            base.localAvatar.addTrueFriends(self.avatar.doId)
-            self.dialog = TTDialog.TTDialog(style=TTDialog.Acknowledge, text=TTLocalizer.TrueFriendsAdded.replace('%s', self.avatar.getName()), text_wordwrap=20, command=self.cleanupDialogAndWalk)
-            self.dialog.show()
-        else:
-            base.cr.playGame.getPlace().fsm.request('walk')
-
-    def confirmTrueFriendsRemove(self, state):
-        self.cleanupDialog()
-
-        if state > 0:
-            base.localAvatar.removeTrueFriends(self.avatar.doId)
-            self.dialog = TTDialog.TTDialog(style=TTDialog.Acknowledge, text=TTLocalizer.TrueFriendsRemoved % self.avatar.getName(), text_wordwrap=20, command=self.cleanupDialogAndWalk)
-            self.dialog.show()
-        else:
-            base.cr.playGame.getPlace().fsm.request('walk')
-
-    def cleanupDialogAndWalk(self, state=None):
-        self.cleanupDialog()
-        base.cr.playGame.getPlace().fsm.request('walk')

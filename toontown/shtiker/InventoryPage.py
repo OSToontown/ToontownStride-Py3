@@ -115,8 +115,6 @@ class InventoryPage(ShtikerPage.ShtikerPage):
         base.localAvatar.inventory.reparentTo(self)
         self.__moneyChange(base.localAvatar.getMoney())
         self.__bankMoneyChange(base.localAvatar.getBankMoney())
-        self.accept('enterBookDelete', self.enterDeleteMode)
-        self.accept('exitBookDelete', self.exitDeleteMode)
         self.accept('enterTrackFrame', self.updateTrackInfo)
         self.accept('exitTrackFrame', self.clearTrackInfo)
         self.accept(localAvatar.uniqueName('moneyChange'), self.__moneyChange)
@@ -125,8 +123,6 @@ class InventoryPage(ShtikerPage.ShtikerPage):
     def exit(self):
         ShtikerPage.ShtikerPage.exit(self)
         self.clearTrackInfo(self.currentTrackInfo)
-        self.ignore('enterBookDelete')
-        self.ignore('exitBookDelete')
         self.ignore('enterTrackFrame')
         self.ignore('exitTrackFrame')
         self.ignore(localAvatar.uniqueName('moneyChange'))
@@ -134,17 +130,6 @@ class InventoryPage(ShtikerPage.ShtikerPage):
         self.makePageWhite(None)
         base.localAvatar.inventory.hide()
         base.localAvatar.inventory.reparentTo(hidden)
-        self.exitDeleteMode()
-
-    def enterDeleteMode(self):
-        self.title['text'] = TTLocalizer.InventoryPageDeleteTitle
-        self.title['text_fg'] = (0, 0, 0, 1)
-        self.book['image_color'] = Vec4(1, 1, 0, 1)
-
-    def exitDeleteMode(self):
-        self.title['text'] = TTLocalizer.InventoryPageTitle
-        self.title['text_fg'] = (0, 0, 0, 1)
-        self.book['image_color'] = Vec4(1, 1, 1, 1)
 
     def updateTrackInfo(self, trackIndex):
         self.currentTrackInfo = trackIndex

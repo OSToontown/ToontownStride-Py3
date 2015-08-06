@@ -10,3 +10,4 @@ class ToontownDistrict(DistributedDistrict.DistributedDistrict):
         self.avatarCount = 0
         self.invasionStatus = 0
         self.suitStatus = ''
+        self.groupAvCount = []

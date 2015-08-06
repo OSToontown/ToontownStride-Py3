@@ -17,11 +17,14 @@ FLRug = 4
 FLPainting = 8
 FLOnTable = 16
 FLIsTable = 32
-FLPhone = 64
-FLBillboard = 128
-FLTrunk = 256
-FLBoysOnly = 512
-FLGirlsOnly = 1024
+FLBillboard = 64
+FLPhone = 128
+FLCrate = 256
+FLChair = 512
+FLTV = 1024
+FLTrunk = 2048
+FLBoysOnly = 4096
+FLGirlsOnly = 8192
 furnitureColors = [
   (0.792, 0.353, 0.29, 1.0),
   (0.176, 0.592, 0.439, 1.0),
@@ -70,20 +73,36 @@ for closetId, maxClothes in ClosetToClothes.items():
         ClothesToCloset[maxClothes] += (closetId,)
 
 MaxClosetIds = (508, 518)
-MaxTrunkIds = (4000, 4010)
 
 TvToPosScale = {
  1530: ((-1.15, -0.5, 1.1), (2.5, 1.7, 1.4)),
- 1531: ((-2.3, -0.2, 1.6), (5, 5, 5)),
- 1532: ((-7, -0.2, 1.8), (15, 10, 8.5)) 
+ 1531: ((-2.3, -0.2, 2.522), (5, 3.75, 3.187)),
+ 1532: ((-7, -0.2, 2.8), (15, 10, 7.8))
+}
+
+ChairToPosHpr = {
+ 100: ((0, -3.9, 0.88), (180, 0, 0), (0, -4.9, 0), -3.0),
+ 105: ((0, -3.9, 0.88), (180, 0, 0), (0, -4.9, 0), -3.0),
+ 110: ((0, -1.6, 0.5), (180, 0, 0), (0, -2.6, 0), 0.0),
+ 120: ((0, -1.6, 0.5), (180, 0, 0), (0, -2.6, 0), 0.0),
+ 130: ((0, -2.8, 0.5), (180, 0, 0), (0, -3.8, 0), -2.0),
+ 140: ((0, -1.6, 0.5), (180, 0, 0), (0, -2.6, 0), 0.0),
+ 145: ((0, -2.1, 0.2), (180, 0, 0), (0, -3.1, 0), 0.0),
+ 160: ((-1.7, 0, 0.9), (90, 0, 0), (-2.7, 0, 0), 0.0),
+ 170: ((0, 1.8, 0.4), (0, 0, 0), (0, 2.8, 0), 0.0),
+ 700: ((0, -1.2, 0.5), (180, 0, 0), (0, -2.2, 0), 0.0),
+ 705: ((0, -1.2, 0.5), (180, 0, 0), (0, -2.2, 0), 0.0),
+ 710: ((0, -1.1, 0.4), (180, 0, 0), (0, -2.1, 0), 0.0),
+ 715: ((0, -1.1, 0.4), (180, 0, 0), (0, -2.1, 0), 0.0),
+ 720: ((0, -2.7, 0.2), (180, 0, 0), (0, -3.7, 0), -3.0)
 }
 
 FurnitureTypes = {
  100: ('phase_5.5/models/estate/chairA',  # Model
        None,                              # Color
        None,                              # Color Options
-       80),                               # Base Price
-                                          # Flags
+       80,                                # Base Price
+       FLChair),                          # Flags
                                           # Scale
  105: ('phase_5.5/models/estate/chairAdesat',
        None,
@@ -93,27 +112,33 @@ FurnitureTypes = {
         3: (('**/cushion*', furnitureColors[3]), ('**/arm*', furnitureColors[3])),
         4: (('**/cushion*', furnitureColors[4]), ('**/arm*', furnitureColors[4])),
         5: (('**/cushion*', furnitureColors[5]), ('**/arm*', furnitureColors[5]))},
-       160),
+       160,
+       FLChair),
  110: ('phase_3.5/models/modules/chair',
        None,
        None,
-       40),
+       40,
+       FLChair),
  120: ('phase_5.5/models/estate/deskChair',
        None,
        None,
-       60),
+       60,
+       FLChair),
  130: ('phase_5.5/models/estate/BugRoomChair',
        None,
        None,
-       160),
+       160,
+       FLChair),
  140: ('phase_5.5/models/estate/UWlobsterChair',
        None,
        None,
-       200),
+       200,
+       FLChair),
  145: ('phase_5.5/models/estate/UWlifeSaverChair',
        None,
        None,
-       200),
+       200,
+       FLChair),
  150: ('phase_5.5/models/estate/West_saddleStool2',
        None,
        None,
@@ -121,11 +146,13 @@ FurnitureTypes = {
  160: ('phase_5.5/models/estate/West_nativeChair',
        None,
        None,
-       160),
+       160,
+       FLChair),
  170: ('phase_5.5/models/estate/cupcakeChair',
        None,
        None,
-       240),
+       240,
+       FLChair),
  200: ('phase_5.5/models/estate/regular_bed',
        None,
        None,
@@ -415,7 +442,8 @@ FurnitureTypes = {
  700: ('phase_3.5/models/modules/couch_1person',
        None,
        None,
-       230),
+       230,
+       FLChair),
  705: ('phase_5.5/models/estate/couch_1personDesat',
        None,
        {0: (('**/*couch', furnitureColors[0]),),
@@ -424,11 +452,13 @@ FurnitureTypes = {
         3: (('**/*couch', furnitureColors[3]),),
         4: (('**/*couch', furnitureColors[4]),),
         5: (('**/*couch', furnitureColors[5]),)},
-       460),
+       460,
+       FLChair),
  710: ('phase_3.5/models/modules/couch_2person',
        None,
        None,
-       230),
+       230,
+       FLChair),
  715: ('phase_5.5/models/estate/couch_2personDesat',
        None,
        {0: (('**/*couch', furnitureColors[0]),),
@@ -437,11 +467,13 @@ FurnitureTypes = {
         3: (('**/*couch', furnitureColors[3]),),
         4: (('**/*couch', furnitureColors[4]),),
         5: (('**/*couch', furnitureColors[5]),)},
-       460),
+       460,
+       FLChair),
  720: ('phase_5.5/models/estate/West_HayCouch',
        None,
        None,
-       420),
+       420,
+       FLChair),
  730: ('phase_5.5/models/estate/twinkieCouch',
        None,
        None,
@@ -721,15 +753,18 @@ FurnitureTypes = {
  1530: ('phase_5.5/models/estate/bugRoomTV',
         None,
         None,
-        675),
+        675,
+        FLTV),
  1531: ('phase_5.5/models/estate/bugRoomTV_50inch',
         None,
         None,
-        1250),
+        1250,
+        FLTV),
  1532: ('phase_5.5/models/estate/bugRoomTV_100inch',
         None,
         None,
-        5000),		
+        5000,
+        FLTV),		
  1600: ('phase_5.5/models/estate/vaseA_short',
         None,
         None,
@@ -892,7 +927,13 @@ FurnitureTypes = {
          None,
          None,
          200,
-         FLPainting)
+         FLPainting),
+ 10040: ('phase_10/models/cashbotHQ/CBWoodCrate',
+         None,
+         None,
+         0,
+         FLCrate,
+         0.5)
 }
 
 class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
@@ -910,7 +951,7 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
         return 1
 
     def replacesExisting(self):
-        return self.getFlags() & (FLCloset | FLBank | FLTrunk) != 0
+        return self.getFlags() & (FLCloset | FLBank) != 0
 
     def hasExisting(self):
         return 1
@@ -920,16 +961,14 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
             return TTLocalizer.FurnitureYourOldCloset
         elif self.getFlags() & FLBank:
             return TTLocalizer.FurnitureYourOldBank
-        elif self.getFlags() & FLTrunk:
-            return TTLocalizer.FurnitureYourOldTrunk
         else:
             return None
         return None
 
     def notOfferedTo(self, avatar):
-        if self.getFlags() & FLCloset or self.getFlags() & FLTrunk:
+        if self.getFlags() & FLCloset:
             decade = self.furnitureType - self.furnitureType % 10
-            forBoys = (decade == 500 or decade == 4000)
+            forBoys = decade == 500
             if avatar.getStyle().getGender() == 'm':
                 return not forBoys
             else:
@@ -955,9 +994,6 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
     def isDeletable(self):
         return self.getFlags() & (FLBank | FLCloset | FLPhone | FLTrunk) == 0
 
-    def getMaxAccessories(self):
-        return ToontownGlobals.MaxAccessories
-
     def getMaxBankMoney(self):
         return BankToMoney.get(self.furnitureType)
 
@@ -972,11 +1008,6 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
                 return 1
         if self.getFlags() & FLCloset:
             if self.getMaxClothes() <= avatar.getMaxClothes():
-                return 1
-            if self in avatar.onOrder or self in avatar.mailboxContents:
-                return 1
-        if self.getFlags() & FLTrunk:
-            if self.getMaxAccessories() <= avatar.getMaxAccessories():
                 return 1
             if self in avatar.onOrder or self in avatar.mailboxContents:
                 return 1
@@ -1007,29 +1038,25 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
     def isGift(self):
         if self.getEmblemPrices():
             return 0
-        if self.getFlags() & (FLCloset | FLBank | FLTrunk):
+        if self.getFlags() & (FLCloset | FLBank):
             return 0
         else:
             return 1
 
     def recordPurchase(self, avatar, optional):
         house, retcode = self.getHouseInfo(avatar)
-        self.giftTag = None
         if retcode >= 0:
             if self.getFlags() & FLCloset:
                 if avatar.getMaxClothes() > self.getMaxClothes():
                     return ToontownGlobals.P_AlreadyOwnBiggerCloset
                 avatar.b_setMaxClothes(self.getMaxClothes())
-            if self.getFlags() & FLTrunk:
-                avatar.b_setMaxAccessories(self.getMaxAccessories())
             if self.getFlags() & FLBank:
                 avatar.b_setMaxBankMoney(self.getMaxBankMoney())
-                return retcode
             house.addAtticItem(self)
         return retcode
 
     def getDeliveryTime(self):
-        return 1
+        return 24 * 60
 
     def getPicture(self, avatar):
         model = self.loadModel(animate=0)
@@ -1084,38 +1111,7 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
                 model.setScale(scale)
                 model.flattenLight()
 
-        if animate and self.furnitureType in TvToPosScale:
-            pos = TvToPosScale[self.furnitureType]
-            screen = NodePath(CardMaker('tv-screen').generate())
-
-            model.find('**/toonTownBugTV_screen').hide()
-            screen.reparentTo(model)
-            screen.setScale(*pos[1])
-            screen.setPos(*pos[0])
-            self.startVideo(screen)
-
         return model
-    
-    def startVideo(self, model, file=None):
-        files = glob.glob('user/videos/*.mp4')
-        
-        if not files:
-            model.setTextureOff(TextureStage.getDefault())
-            model.setColor(0.3, 0.3, 0.3, 1.0)
-            return
-        
-        if file is None:
-            file = random.randint(0, len(files) - 1)
-        elif file >= len(files):
-            file = 0
-
-        movie = loader.loadTexture(files[file])
-        sound = loader.loadSfx(files[file])
-        movie.synchronizeTo(sound)
-        model.setTexture(movie)
-        model.setTexScale(TextureStage.getDefault(), movie.getTexScale())
-        self.videoSequence = Sequence(SoundInterval(sound, volume=1.0), Func(self.startVideo, model, file + 1))
-        self.videoSequence.start()
 
     def decodeDatagram(self, di, versionNumber, store):
         CatalogAtticItem.CatalogAtticItem.decodeDatagram(self, di, versionNumber, store)
@@ -1209,29 +1205,6 @@ def getAllBanks():
         list.append(CatalogFurnitureItem(bankId))
 
     return list
-
-def get50ItemTrunk(avatar, duplicateItems):
-    if config.GetBool('want-accessories', 1):
-        if avatar.getStyle().getGender() == 'm':
-            index = 0
-        else:
-            index = 1
-        trunkId = MaxTrunkIds[index]
-        item = CatalogFurnitureItem(trunkId)
-        if item in avatar.onOrder or item in avatar.mailboxContents:
-            return None
-        return item
-    # If we get here, we probably don't want accessories yet.
-    return None
-
-
-def getMaxTrunks():
-    list = []
-    for trunkId in MaxTrunkIds:
-        list.append(CatalogFurnitureItem(trunkId))
-
-    return list
-
 
 def getAllFurnitures(index):
     list = []

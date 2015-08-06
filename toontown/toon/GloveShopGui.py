@@ -91,6 +91,7 @@ class GloveShopGui:
     def __updateIndex(self, offset):
         self.index += offset
         hitLimit = 0
+        color = ToonDNA.allColorsList[self.index]
 
         if self.index <= 0:
             self.downArrow['state'] = DGG.DISABLED
@@ -103,8 +104,8 @@ class GloveShopGui:
             hitLimit = 1
         else:
             self.upArrow['state'] = DGG.NORMAL
-
-        if self.lastGlove == self.index:
+        
+        if self.lastGlove == color:
             self.buyButton['state'] = DGG.DISABLED
             self.notice['text'] = TTLocalizer.GloveGuiSameColor
         else:
@@ -112,8 +113,8 @@ class GloveShopGui:
             self.notice['text'] = TTLocalizer.GloveGuiNotice % ToontownGlobals.GloveCost
 
         self.color['text'] = TTLocalizer.NumToColor[self.index]
-        self.color['text_fg'] = ToonDNA.allColorsList[self.index]
-        self.setClientGlove(self.index)
+        self.color['text_fg'] = color
+        self.setClientGlove(color)
         return hitLimit
 
     def __runTask(self, task):

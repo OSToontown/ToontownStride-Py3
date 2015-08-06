@@ -165,9 +165,7 @@ class AvatarChoice(DirectButton):
             self.verifyDeleteWithPassword()
 
     def verifyDeleteWithPassword(self):
-        deleteText = TTLocalizer.AvatarChoiceDeleteConfirmText % {
-            'name': self.name,
-            'confirm': TTLocalizer.AvatarChoiceDeleteConfirmUserTypes}
+        deleteText = TTLocalizer.AvatarChoiceDeleteConfirmText % {'name': self.name}
         if self.deleteWithPasswordFrame == None:
             buttons = loader.loadModel('phase_3/models/gui/dialog_box_buttons_gui')
             nameBalloon = loader.loadModel('phase_3/models/props/chatbox_input')
@@ -190,13 +188,12 @@ class AvatarChoice(DirectButton):
         return
 
     def __handleDeleteWithConfirmOK(self, *args):
-        if self.passwordEntry.get().lower() == TTLocalizer.AvatarChoiceDeleteConfirmUserTypes:
+        if self.passwordEntry.get().lower() == self.name.lower():
             self.deleteWithPasswordFrame.hide()
             base.transitions.noTransitions()
             messenger.send(self.doneEvent, ['delete', self.position])
         else:
-            self.deleteWithPasswordFrame['text'] = TTLocalizer.AvatarChoiceDeleteWrongConfirm % {'name': self.name,
-             'confirm': TTLocalizer.AvatarChoiceDeleteConfirmUserTypes}
+            self.deleteWithPasswordFrame['text'] = TTLocalizer.AvatarChoiceDeleteWrongConfirm % {'name': self.name}
             self.passwordEntry['focus'] = 1
             self.passwordEntry.enterText('')
 

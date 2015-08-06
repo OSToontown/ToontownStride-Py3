@@ -28,7 +28,6 @@ class DistributedFactory(DistributedLevel.DistributedLevel, FactoryBase.FactoryB
         self.joiningReserves = []
         self.suitsInitialized = 0
         self.goonClipPlanes = {}
-        base.localAvatar.physControls.setCollisionRayHeight(10.0)
 
     def createEntityCreator(self):
         return FactoryEntityCreator.FactoryEntityCreator(level=self)
@@ -39,14 +38,15 @@ class DistributedFactory(DistributedLevel.DistributedLevel, FactoryBase.FactoryB
         self.factoryViews = FactoryCameraViews.FactoryCameraViews(self)
         base.localAvatar.chatMgr.chatInputSpeedChat.addFactoryMenu()
         self.accept('SOSPanelEnter', self.handleSOSPanel)
+        base.factory = self
 
     def delete(self):
         DistributedLevel.DistributedLevel.delete(self)
         base.localAvatar.chatMgr.chatInputSpeedChat.removeFactoryMenu()
         self.factoryViews.delete()
         del self.factoryViews
+        del base.factory
         self.ignore('SOSPanelEnter')
-        base.localAvatar.physControls.setCollisionRayHeight(CollisionHandlerRayStart)
 
     def setFactoryId(self, id):
         FactoryBase.FactoryBase.setFactoryId(self, id)
@@ -166,10 +166,7 @@ def factoryWarp(zoneNum):
     """
     Warp to a specific factory zone.
     """
-    factory = [base.cr.doFind('DistributedFactory'), base.cr.doFind('DistributedMegaCorp')]
-    for f in factory:
-        if (not f) or (not isinstance(f, DistributedFactory)):
-            return 'You must be in a factory.'
-        factory = f
-    factory.warpToZone(zoneNum)
+    if not hasattr(base, 'factory'):
+        return 'You must be in a factory!'
+    base.factory.warpToZone(zoneNum)
     return 'Warped to zone: %d' % zoneNum

@@ -1,4 +1,4 @@
-from panda3d.core import *
+from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import *
 from direct.distributed import ClockDelta
 from direct.showbase.PythonUtil import lerp
@@ -16,6 +16,7 @@ from otp.otpbase import OTPGlobals
 from toontown.estate import GardenGlobals
 
 def recurseParent(intoNode, ParentName):
+	# funny fact: cogtown had a func like this
     parent = intoNode.getParent(0)
     if not parent or parent.getName() == 'render':
         return 0
@@ -50,6 +51,7 @@ class DistributedLawnDecor(DistributedNode.DistributedNode, NodePath, ShadowCast
         return
 
     def setHeading(self, h):
+        self.notify.debug('setting h')
         DistributedNode.DistributedNode.setH(self, h)
 
     def generateInit(self):
@@ -93,6 +95,11 @@ class DistributedLawnDecor(DistributedNode.DistributedNode, NodePath, ShadowCast
         if not self.rotateNode:
             self.rotateNode = self.plantPath.attachNewNode('rotate')
         self.model = None
+        if __dev__:
+            self.model = loader.loadModel(self.defaultModel)
+            self.model.setScale(0.4, 0.4, 0.1)
+            self.model.reparentTo(self.rotateNode)
+        return
 
     def setupShadow(self):
         self.shadowJoint = self.rotateNode.attachNewNode('shadow')
@@ -121,6 +128,7 @@ class DistributedLawnDecor(DistributedNode.DistributedNode, NodePath, ShadowCast
         self.accept(self.exitMessageName, self.handleExitPlot)
 
     def handleEnterPlot(self, optional = None):
+        self.notify.debug('handleEnterPlot %d' % self.doId)
         self.sendUpdate('plotEntered', [])
 
     def handleExitPlot(self, optional = None):
@@ -141,12 +149,6 @@ class DistributedLawnDecor(DistributedNode.DistributedNode, NodePath, ShadowCast
             self.nodePath = None
         taskMgr.remove(self.uniqueName('adjust tree'))
         return
-
-    def setEstate(self, estate):
-        self.estate = estate
-
-    def getEstate(self):
-        return self.estate
 
     def setPos(self, x, y, z):
         DistributedNode.DistributedNode.setPos(self, x, y, z)
@@ -197,11 +199,11 @@ class DistributedLawnDecor(DistributedNode.DistributedNode, NodePath, ShadowCast
     def stickParts(self):
         pass
 
-    def setH(self, h):
-        DistributedNode.DistributedNode.setH(self, h)
-
     def setPlot(self, plot):
         self.plot = plot
+
+    def setH(self, h):
+        DistributedNode.DistributedNode.setH(self, h)
 
     def getPlot(self):
         return self.plot
@@ -242,7 +244,7 @@ class DistributedLawnDecor(DistributedNode.DistributedNode, NodePath, ShadowCast
         base.localAvatar.hideShovelButton()
         base.localAvatar.hideWateringCanButton()
         self.startInteraction()
-        self.sendUpdate('removeItem', [base.localAvatar.doId])
+        self.sendUpdate('removeItem', [])
 
     def generateToonMoveTrack(self, toon):
         node = NodePath('tempNode')
@@ -261,10 +263,7 @@ class DistributedLawnDecor(DistributedNode.DistributedNode, NodePath, ShadowCast
         finalY = node.getY(render)
         finalZ = node.getZ(render)
         node.removeNode()
-        toonTrack = Sequence(Parallel(ActorInterval(toon, 'walk', loop=True, duration=1),
-                                      Parallel(LerpPosInterval(toon, 1.0, Point3(finalX, finalY, toon.getZ(render)), fluid=True, bakeInStart=False)),
-                                      LerpHprInterval(toon, 1.0, hpr=hpr)),
-                             Func(toon.loop, 'neutral'))
+        toonTrack = Sequence(Parallel(ActorInterval(toon, 'walk', loop=True, duration=1), Parallel(LerpPosInterval(toon, 1.0, Point3(finalX, finalY, toon.getZ(render)), fluid=True, bakeInStart=False)), LerpHprInterval(toon, 1.0, hpr=hpr)), Func(toon.loop, 'neutral'))
         return toonTrack
 
     def unprint(self, string):
@@ -288,16 +287,13 @@ class DistributedLawnDecor(DistributedNode.DistributedNode, NodePath, ShadowCast
     def startCamIval(self, avId):
         track = Sequence()
         if avId == localAvatar.doId:
-            track = Sequence(Func(base.localAvatar.disableSmartCameraViews),
-                             Func(base.localAvatar.setCameraPosForPetInteraction))
+            track = Sequence(Func(base.localAvatar.disableSmartCameraViews), Func(base.localAvatar.setCameraPosForPetInteraction))
         return track
 
     def stopCamIval(self, avId):
         track = Sequence()
         if avId == localAvatar.doId:
-            track = Sequence(Func(base.localAvatar.unsetCameraPosForPetInteraction),
-                             Wait(0.8),
-                             Func(base.localAvatar.enableSmartCameraViews))
+            track = Sequence(Func(base.localAvatar.unsetCameraPosForPetInteraction), Wait(0.8), Func(base.localAvatar.enableSmartCameraViews))
         return track
 
     def canBeWatered(self):
@@ -332,8 +328,6 @@ class DistributedLawnDecor(DistributedNode.DistributedNode, NodePath, ShadowCast
         if not toon:
             return
         self.finishMovies()
-        if avId == localAvatar.doId:
-            self.startInteraction()
         self.model.setTransparency(1)
         self.model.setAlphaScale(1)
         shovel = toon.attachShovel()
@@ -341,11 +335,9 @@ class DistributedLawnDecor(DistributedNode.DistributedNode, NodePath, ShadowCast
         moveTrack = self.generateToonMoveTrack(toon)
         digupTrack = self.generateDigupTrack(toon)
         self.movie = Sequence(self.startCamIval(avId), moveTrack, Func(shovel.show), digupTrack)
-        self.movie.append(Func(base.cr.removeObject, self.doId))
         if avId == localAvatar.doId:
-            self.expectingReplacement = 1
-            plotAv = base.cr.doId2do.get(self.getOwnerPlot())
-            self.movie.append(Func(plotAv.sendUpdate, 'finishRemoving', [avId]))
+            # self.expectingReplacement = 1
+            self.movie.append(Func(self.movieDone))
         self.movie.start()
 
     def generateDigupTrack(self, toon):
@@ -354,22 +346,7 @@ class DistributedLawnDecor(DistributedNode.DistributedNode, NodePath, ShadowCast
         pos = self.model.getPos()
         pos.setZ(pos[2] - 1)
         track = Parallel()
-        sq = Sequence(ActorInterval(toon, 'start-dig'),
-                      Parallel(ActorInterval(toon, 'loop-dig', loop=1, duration=5.13),
-                               Sequence(Wait(0.25),
-                                        SoundInterval(sound, node=toon, duration=0.55),
-                                        Wait(0.8),
-                                        SoundInterval(sound, node=toon, duration=0.55),
-                                        Wait(1.35),
-                                        SoundInterval(sound, node=toon, duration=0.55))),
-                      ActorInterval(toon, 'start-dig', playRate=-1),
-                      LerpFunc(self.model.setAlphaScale, fromData=1, toData=0, duration=1))
-        if hasattr(self, 'signModel'):
-            sq.append(Parallel(LerpFunc(self.signModel.setAlphaScale, fromData=1, toData=0, duration=1),
-                               LerpScaleInterval(self.signModel, 1, 0, 1)))
-        sq.append(Func(toon.loop, 'neutral'))
-        sq.append(Func(toon.detachShovel))
-        track.append(sq)
+        track.append(Sequence(ActorInterval(toon, 'start-dig'), Parallel(ActorInterval(toon, 'loop-dig', loop=1, duration=5.13), Sequence(Wait(0.25), SoundInterval(sound, node=toon, duration=0.55), Wait(0.8), SoundInterval(sound, node=toon, duration=0.55), Wait(1.35), SoundInterval(sound, node=toon, duration=0.55))), ActorInterval(toon, 'start-dig', playRate=-1), LerpFunc(self.model.setAlphaScale, fromData=1, toData=0, duration=1), Func(toon.loop, 'neutral'), Func(toon.detachShovel)))
         return track
 
     def doFinishPlantingTrack(self, avId):

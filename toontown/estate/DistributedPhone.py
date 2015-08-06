@@ -2,6 +2,7 @@ from toontown.toonbase import ToontownGlobals
 import PhoneGlobals
 from toontown.catalog import CatalogScreen
 from toontown.catalog import CatalogItem
+from toontown.catalog import GiftAvatar
 from toontown.toontowngui import TTDialog
 from toontown.toonbase import TTLocalizer
 import DistributedHouseInterior
@@ -13,7 +14,6 @@ from direct.showutil import Rope
 from direct.directnotify.DirectNotifyGlobal import *
 from panda3d.core import *
 from direct.interval.IntervalGlobal import *
-import string
 from toontown.quest import Quests
 from direct.task import Task
 
@@ -44,7 +44,6 @@ class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):
         self.intervalAvatar = None
         self.phoneInUse = 0
         self.origToonHpr = None
-        return
 
     def announceGenerate(self):
         self.notify.debug('announceGenerate')
@@ -103,7 +102,7 @@ class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):
         if self.initialScale:
             mount.setScale(*self.initialScale)
             self.usedInitialScale = 1
-        phoneSphere = CollisionSphere(0, -0.66, 0, 0.2)
+        phoneSphere = CollisionSphere(0, -0.88, 0, 0.2)
         phoneSphere.setTangible(0)
         phoneSphereNode = CollisionNode(self.phoneSphereEvent)
         phoneSphereNode.setIntoCollideMask(ToontownGlobals.WallBitmask)
@@ -136,7 +135,6 @@ class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):
          (self.model.find('**/CurveNode7'), (0, 0, 0))))
         self.cord.reparentTo(self.model)
         self.cord.node().setBounds(BoundingSphere(Point3(-1.0, -3.2, 2.6), 2.0))
-        return
 
     def disable(self):
         self.notify.debug('disable')
@@ -154,7 +152,6 @@ class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):
             self.freeAvatar()
         self.ignoreAll()
         DistributedFurnitureItem.DistributedFurnitureItem.disable(self)
-        return
 
     def delete(self):
         self.notify.debug('delete')
@@ -168,16 +165,18 @@ class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):
             self.usedInitialScale = 1
 
     def __handleEnterSphere(self, collEntry):
-        if self.smoothStarted:
+        if self.phoneGui or self.smoothStarted:
             return
+
         if base.localAvatar.doId == self.lastAvId and globalClock.getFrameTime() <= self.lastTime + 0.5:
             self.notify.debug('Ignoring duplicate entry for avatar.')
             return
+
         if self.hasLocalAvatar:
             self.freeAvatar()
+
         self.notify.debug('Entering Phone Sphere....')
         taskMgr.remove(self.uniqueName('ringDoLater'))
-        self.ignore(self.phoneSphereEnterEvent)
         self.cr.playGame.getPlace().detectedPhoneCollision()
         self.hasLocalAvatar = 1
         self.sendUpdate('avatarEnter', [])
@@ -185,9 +184,8 @@ class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):
     def __handlePhoneDone(self):
         self.sendUpdate('avatarExit', [])
         self.ignore(self.phoneGuiDoneEvent)
-        self.accept(self.phoneSphereEnterEvent, self.__handleEnterSphere)
+        self.setPos(self.getPos())
         self.phoneGui = None
-        return
 
     def freeAvatar(self):
         if self.hasLocalAvatar:
@@ -198,9 +196,7 @@ class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):
                 base.cr.playGame.getPlace().setState('walk')
             self.hasLocalAvatar = 0
         self.ignore(self.pickupMovieDoneEvent)
-        self.accept(self.phoneSphereEnterEvent, self.__handleEnterSphere)
         self.lastTime = globalClock.getFrameTime()
-        return
 
     def setLimits(self, numHouseItems):
         self.numHouseItems = numHouseItems
@@ -223,14 +219,6 @@ class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):
             if self.phoneInUse:
                 self.clearInterval()
             self.phoneInUse = 0
-
-        elif mode == PhoneGlobals.PHONE_MOVIE_EMPTY:
-            self.notify.debug('setMovie: empty')
-            if isLocalToon:
-                self.phoneDialog = TTDialog.TTDialog(dialogName='PhoneEmpty', style=TTDialog.Acknowledge, text=TTLocalizer.DistributedPhoneEmpty, text_wordwrap=15, fadeScreen=1, command=self.__clearDialog)
-            self.numHouseItems = None
-            self.phoneInUse = 0
-
         elif mode == PhoneGlobals.PHONE_MOVIE_PICKUP:
             self.notify.debug('setMovie: gui')
             if avatar:
@@ -241,7 +229,6 @@ class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):
                     self.acceptOnce(self.pickupMovieDoneEvent, self.__showPhoneGui)
                 self.playInterval(interval, elapsed, avatar)
                 self.phoneInUse = 1
-
         elif mode == PhoneGlobals.PHONE_MOVIE_HANGUP:
             self.notify.debug('setMovie: gui')
             if avatar:
@@ -249,10 +236,8 @@ class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):
                 self.playInterval(interval, elapsed, avatar)
             self.numHouseItems = None
             self.phoneInUse = 0
-
         else:
             self.notify.warning('unknown mode in setMovie: %s' % mode)
-        return
 
     def __showPhoneGui(self):
         if self.toonScale:
@@ -274,7 +259,6 @@ class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):
         self.sendUpdate('requestPurchaseMessage', [context, blob, optional])
 
     def requestGiftPurchase(self, item, targetDoID, callback, optional = -1):
-        print 'in the client phone'
         blob = item.getBlob(store=CatalogItem.Customization)
         context = self.getCallbackContext(callback, [item])
         self.sendUpdate('requestGiftPurchaseMessage', [context, targetDoID, blob, optional])
@@ -289,7 +273,6 @@ class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):
         self.phoneDialog.cleanup()
         self.phoneDialog = None
         self.freeAvatar()
-        return
 
     def takePhoneInterval(self, toon):
         torso = TextEncoder.upper(toon.style.torso[0])
@@ -349,7 +332,6 @@ class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):
             if avatar:
                 self.accept(avatar.uniqueName('disable'), self.clearInterval)
             self.intervalAvatar = avatar
-        return
 
     def clearInterval(self):
         if self.interval != None:
@@ -361,7 +343,6 @@ class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):
         self.__receiverToPhone()
         self.model.pose('SS_phoneOut', 0)
         self.phoneInUse = 0
-        return
 
     def ringIfHasPhoneQuest(self, task):
         if Quests.avatarHasPhoneQuest(base.localAvatar) and not Quests.avatarHasCompletedPhoneQuest(base.localAvatar):
@@ -381,4 +362,15 @@ class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):
 
         ringIval = Parallel(Func(base.playSfx, self.ringSfx), shakeSeq, Func(phone.setR, 0))
         self.playInterval(ringIval, 0.0, None)
-        return
+    
+    def requestGiftAvatar(self, doId):
+        if not self.phoneGui:
+            return
+
+        self.sendUpdate('requestGiftAvatar', [doId])
+    
+    def setGiftAvatar(self, fields):
+        if not self.phoneGui:
+            return
+
+        self.phoneGui.setFriendReady(GiftAvatar.createFromJson(fields))

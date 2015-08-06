@@ -39,14 +39,14 @@ SpeedwayCameraFar = 8000.0
 SpeedwayCameraNear = 1.0
 MaxMailboxContents = 60
 MaxHouseItems = 250
-MaxAccessories = 75
+MaxAccessories = 100
 ExtraDeletedItems = 5
 DeletedItemLifetime = 7 * 24 * 60
 CatalogNumWeeksPerSeries = 13
 CatalogNumWeeks = 78
 PetFloorCollPriority = 5
 PetPanelProximityPriority = 6
-P_NoTrunk = -28
+P_TooFast = -28
 P_AlreadyOwnBiggerCloset = -27
 P_ItemAlreadyRented = -26
 P_OnAwardOrderListFull = -25
@@ -177,7 +177,7 @@ HoodHierarchy = {ToontownCentral: (SillyStreet, LoopyLane, PunchlinePlace),
  TheBrrrgh: (WalrusWay, SleetStreet, PolarPlace),
  MinniesMelodyland: (AltoAvenue, BaritoneBoulevard, TenorTerrace),
  DaisyGardens: (ElmStreet, MapleStreet, OakStreet),
- DonaldsDreamland: (LullabyLane, PajamaPlace),
+ DonaldsDreamland: (LullabyLane, PajamaPlace, BedtimeBoulevard),
  GoofySpeedway: ()}
 BossbotHQ = 10000
 BossbotLobby = 10100
@@ -347,7 +347,7 @@ MinigameNames = {'race': RaceGameId,
  'cannon': CannonGameId,
  'tag': TagGameId,
  'pattern': PatternGameId,
- 'minnie': PatternGameId,
+ 'jaymo': PatternGameId,
  'match': PatternGameId,
  'matching': PatternGameId,
  'ring': RingGameId,
@@ -577,7 +577,7 @@ BossCogOvertimeAttack = 20
 BossCogAttackTimes = {BossCogElectricFence: 0,
  BossCogSwatLeft: 5.5,
  BossCogSwatRight: 5.5,
- BossCogAreaAttack: 4.21,
+ BossCogAreaAttack: 4.5,
  BossCogFrontAttack: 2.65,
  BossCogRecoverDizzyAttack: 5.1,
  BossCogDirectedAttack: 4.84,
@@ -941,7 +941,6 @@ JELLYBEAN_TROLLEY_HOLIDAY_MONTH = 113
 JELLYBEAN_FISHING_HOLIDAY_MONTH = 114
 JELLYBEAN_PARTIES_HOLIDAY_MONTH = 115
 SILLYMETER_EXT_HOLIDAY = 116
-LAUGHING_MAN = 123
 TOT_REWARD_JELLYBEAN_AMOUNT = 100
 TOT_REWARD_END_OFFSET_AMOUNT = 0
 LawbotBossMaxDamage = 2700
@@ -1426,13 +1425,6 @@ ColorNoChat = (0.8,
  0.5,
  0.1,
  1)
-FactoryLaffMinimums = [(0, 31, 0),
- (0, 66, 71),
- (0,
-  81,
-  86,
-  96),
- (0, 101, 106)]
 PICNIC_COUNTDOWN_TIME = 60
 BossbotRTIntroStartPosHpr = (0,
  -64,
@@ -1621,10 +1613,81 @@ BMovementSpeed = 0
 BMovementSpeedMultiplier = 1.3
 
 BugReportSite = 'https://bugs.launchpad.net/toontown-united/+filebug'
-CostPerLaffRestock = 3
-FISHSALE_NONE = 0
-FISHSALE_COMPLETE = 1
-FISHSALE_TROPHY = 2
 NPCCollisionDelay = 2.5
+
+CostPerLaffRestock = 3
+
+FISHSALE_COMPLETE = 0
+FISHSALE_TROPHY = 1
+
+CLERK_GOODBYE = 0
+CLERK_GREETING = 1
+CLERK_TOOKTOOLONG = 2
+
 KnockKnockHeal = 12
 KnockKnockCooldown = 600
+
+CRATE_NOT_OWNER = 0
+CRATE_NO_KEYS = 1
+CRATE_BEANS = 2
+CRATE_BUFFS = 3
+CRATE_NAMETAGS = 4
+CRATE_EMOTES = 5
+CRATE_CLOTHING = 6
+CRATE_ACCESSORIES = 7
+
+STAT_COGS = 0
+STAT_V2 = 1
+STAT_SKELE = 2
+STAT_BEANS_SPENT = 3
+STAT_BEANS_EARNT = 4
+STAT_TASKS = 5
+STAT_VP = 6
+STAT_CFO = 7
+STAT_CJ = 8
+STAT_CEO = 9
+STAT_SAD = 10
+STAT_BLDG = 11
+STAT_COGDO = 12
+STAT_ITEMS = 13
+STAT_FISH = 14
+STAT_FLOWERS = 15
+STAT_RACING = 16
+STAT_GOLF = 17
+STAT_SOS = 18
+STAT_UNITES = 19
+STAT_SLIPS = 20
+STAT_GAGS = 21
+
+CHAIR_START = 0
+CHAIR_STOP = 1
+CHAIR_NONE = 0
+CHAIR_EXIT = 1
+CHAIR_UNEXPECTED_EXIT = 2
+
+MAX_TF_TRIES = 5
+TF_COOLDOWN_SECS = 60 * 60 * 24
+TF_EXPIRE_SECS = 3 * 60 * 60 * 24
+TF_COOLDOWN = 0
+TF_UNKNOWN_SECRET = 1
+TF_SELF_SECRET = 2
+TF_TOO_FAST = 3
+TF_FRIENDS_LIST_FULL_YOU = 4
+TF_FRIENDS_LIST_FULL_HIM = 5
+TF_ALREADY_FRIENDS = 6
+TF_ALREADY_FRIENDS_NAME = 7
+TF_SUCCESS = 8
+
+GROUP_ZONES = [11000, 11100, 11200, 12000, 12100, 13000, 13100, 13200, 10000, 10100]
+
+TOONUP_PULSE_ZONES = [ToontownCentral, DonaldsDock, DaisyGardens, MinniesMelodyland, TheBrrrgh, DonaldsDreamland]
+TOONUP_FREQUENCY = 30
+
+TV_NOT_OWNER = 0
+TV_INVALID_VIDEO = 1
+TV_OK = 2
+
+COLOR_SATURATION_MIN = 0.36
+COLOR_SATURATION_MAX = 0.8
+COLOR_VALUE_MIN = 0.5
+COLOR_VALUE_MAX = 0.9

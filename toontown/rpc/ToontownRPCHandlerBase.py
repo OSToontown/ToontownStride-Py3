@@ -1,4 +1,3 @@
-import base64
 from direct.directnotify.DirectNotifyGlobal import directNotify
 import json
 import time
@@ -41,7 +40,7 @@ class ToontownRPCHandlerBase:
         """
         # First, base64 decode the token:
         try:
-            token = base64.b64decode(token)
+            token = token.decode('base64')
         except TypeError:
             return (-32001, 'Token decode failure')
 

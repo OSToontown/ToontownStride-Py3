@@ -1,144 +1,117 @@
-from panda3d.core import *
-from direct.directnotify import DirectNotifyGlobal
-from direct.gui.DirectGui import *
-from direct.showbase import DirectObject
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from direct.gui.DirectGui import DirectButton, DirectFrame, DGG
 from direct.task.Task import Task
-from toontown.toonbase import ToontownTimer
-import LaffRestockGlobals
-from LaffMeter import LaffMeter
+from otp.otpbase import OTPLocalizer
+from toontown.toonbase import ToontownGlobals, TTLocalizer, ToontownTimer
+import LaffMeter, LaffRestockGlobals
 
 class LaffShopGui(DirectFrame):
 
-    def __init__(self, text):
-        DirectFrame.__init__(self, parent=aspect2d, relief=None, geom=DGG.getDefaultDialogGeom(), geom_color=ToontownGlobals.GlobalDialogColor, geom_scale=(1.33, 1, 1.1), pos=(0, 0, 0), text=text, text_scale=0.07, text_pos=(0, 0.475))
+    def __init__(self):
+        DirectFrame.__init__(self, parent=aspect2d, relief=None, geom=DGG.getDefaultDialogGeom(), geom_color=ToontownGlobals.GlobalDialogColor, geom_scale=(1.33, 1, 1.3), pos=(0, 0, 0), text='', text_scale=0.07, text_pos=(0, 0.475))
         self.initialiseoptions(LaffShopGui)
-        self.text = text
+        
+        self.additionalLaff = 0
         self.timer = ToontownTimer.ToontownTimer()
         self.timer.reparentTo(aspect2d)
         self.timer.posInTopRightCorner()
-        self.timer.accept('RESET_LAFFSHOP_TIMER', self.__resetTimer)
-        self.timer.countdown(LaffRestockGlobals.LAFFCLERK_TIMER, self.__timerExpired)
-        self.hp = base.localAvatar.getHp()
-        self.maxHp = base.localAvatar.getMaxHp()
-        self.floorLimit = self.hp
-        self.ceilLimit = 0
-        money = base.localAvatar.getTotalMoney()
-        while self.ceilLimit * ToontownGlobals.CostPerLaffRestock < money:
-            self.ceilLimit += 1
-        self.__additionalLaff = 0
-        self.__setupButtons()
-        self.__bindButtons()
-        self.laffMeter = LaffMeter(base.localAvatar.style, self.hp, self.maxHp)
+        self.timer.countdown(LaffRestockGlobals.TIMER_SECONDS, self.__cancel, [LaffRestockGlobals.TIMER_END])
+        self.setupButtons()
+        self.bindButtons()
+        self.laffMeter = LaffMeter.LaffMeter(base.localAvatar.style, base.localAvatar.getHp(), base.localAvatar.getMaxHp())
         self.laffMeter.reparentTo(self)
-        self.laffMeter.setPos(0, 0, 0.165)
+        self.laffMeter.setPos(0, 0, 0.065)
         self.laffMeter.setScale(0.13)
-        self.__updateLaffMeter(0)
+        self.__updateLaffMeter(1)
 
-    def __setupButtons(self):
+    def setupButtons(self):
         buttons = loader.loadModel('phase_3/models/gui/dialog_box_buttons_gui')
         arrowGui = loader.loadModel('phase_3/models/gui/create_a_toon_gui')
-        okImageList = (buttons.find('**/ChtBx_OKBtn_UP'), buttons.find('**/ChtBx_OKBtn_DN'), buttons.find('**/ChtBx_OKBtn_Rllvr'))
-        cancelImageList = (buttons.find('**/CloseBtn_UP'), buttons.find('**/CloseBtn_DN'), buttons.find('**/CloseBtn_Rllvr'))
         arrowImageList = (arrowGui.find('**/CrtATn_R_Arrow_UP'), arrowGui.find('**/CrtATn_R_Arrow_DN'), arrowGui.find('**/CrtATn_R_Arrow_RLVR'), arrowGui.find('**/CrtATn_R_Arrow_UP'))
-        self.cancelButton = DirectButton(parent=self, relief=None, image=cancelImageList, pos=(-0.2, 0, -0.4), text=LaffRestockGlobals.GuiCancel, text_scale=0.06, text_pos=(0, -0.1), command=self.__cancel)
-        self.okButton = DirectButton(parent=self, relief=None, image=okImageList, pos=(0.2, 0, -0.4), text=LaffRestockGlobals.GuiOk, text_scale=0.06, text_pos=(0, -0.1), command=self.__requestLaff)
-        self.upArrow = DirectButton(parent=self, relief=None, image=arrowImageList, image_scale=(1, 1, 1), image3_color=Vec4(0.6, 0.6, 0.6, 0.25), pos=(0.2, 0, -0.165))
-        self.downArrow = DirectButton(parent=self, relief=None, image=arrowImageList, image_scale=(-1, 1, 1), image3_color=Vec4(0.6, 0.6, 0.6, 0.25), pos=(-0.2, 0, -0.165))
+
+        self.cancelButton = DirectButton(parent=self, relief=None, image=(buttons.find('**/CloseBtn_UP'), buttons.find('**/CloseBtn_DN'), buttons.find('**/CloseBtn_Rllvr')), pos=(-0.2, 0, -0.5), text=OTPLocalizer.lCancel, text_scale=0.06, text_pos=(0, -0.1), command=self.__cancel, extraArgs=[LaffRestockGlobals.USER_CANCEL])
+        self.okButton = DirectButton(parent=self, relief=None, image=(buttons.find('**/ChtBx_OKBtn_UP'), buttons.find('**/ChtBx_OKBtn_DN'), buttons.find('**/ChtBx_OKBtn_Rllvr')), pos=(0.2, 0, -0.5), text=OTPLocalizer.lOK, text_scale=0.06, text_pos=(0, -0.1), command=self.__restock)
+        self.upArrow = DirectButton(parent=self, relief=None, image=arrowImageList, image_scale=(1, 1, 1), image3_color=Vec4(0.6, 0.6, 0.6, 0.25), pos=(0.2, 0, -0.265))
+        self.downArrow = DirectButton(parent=self, relief=None, image=arrowImageList, image_scale=(-1, 1, 1), image3_color=Vec4(0.6, 0.6, 0.6, 0.25), pos=(-0.2, 0, -0.265))
+
         buttons.removeNode()
         arrowGui.removeNode()
 
-    def __bindButtons(self):
-        self.downArrow.bind(DGG.B1PRESS, self.__downButtonDown)
-        self.downArrow.bind(DGG.B1RELEASE, self.__downButtonUp)
-        self.upArrow.bind(DGG.B1PRESS, self.__upButtonDown)
-        self.upArrow.bind(DGG.B1RELEASE, self.__upButtonUp)
+    def bindButtons(self):
+        self.downArrow.bind(DGG.B1PRESS, self.__taskUpdate, extraArgs=[-1])
+        self.downArrow.bind(DGG.B1RELEASE, self.__taskDone)
+        self.upArrow.bind(DGG.B1PRESS, self.__taskUpdate, extraArgs=[1])
+        self.upArrow.bind(DGG.B1RELEASE, self.__taskDone)
 
     def destroy(self):
         self.ignoreAll()
+
         if self.timer:
             self.timer.destroy()
-        taskMgr.remove(self.taskName('runCounter'))
+
+        taskMgr.remove(self.taskName('runLaffCounter'))
         DirectFrame.destroy(self)
 
-    def __resetTimer(self):
-        if self.timer:
-            self.timer.stop()
-            self.timer.countdown(LaffRestockGlobals.LAFFCLERK_TIMER, self.__timerExpired)
-
-    def __timerExpired(self):
+    def __cancel(self, state):
         self.destroy()
-        messenger.send('guiDone', [True])
+        messenger.send('laffShopDone', [state, 0])
 
-    def __cancel(self):
+    def __restock(self):
         self.destroy()
-        messenger.send('guiDone', [False])
+        messenger.send('laffShopDone', [LaffRestockGlobals.RESTOCK, self.additionalLaff])
 
-    def __requestLaff(self):
-        if self.timer:
-            self.ignoreAll()
-        self.destroy()
-        cost = self.__additionalLaff * ToontownGlobals.CostPerLaffRestock
-        messenger.send('restockLaff', [self.__additionalLaff, cost])
-        messenger.send('guiDone', [False])
-
-    def __updateLaffMeter(self, amt):
+    def __updateLaffMeter(self, amount):
+        self.additionalLaff += amount
         hitLimit = 0
-        self.__additionalLaff += amt
-        newLaff = self.hp + self.__additionalLaff
-        cost = self.__additionalLaff * ToontownGlobals.CostPerLaffRestock
-        if newLaff <= self.floorLimit:
+        newLaff = base.localAvatar.getHp() + self.additionalLaff
+
+        if (newLaff - 1) <= base.localAvatar.getHp():
             self.downArrow['state'] = DGG.DISABLED
             hitLimit = 1
         else:
             self.downArrow['state'] = DGG.NORMAL
-        if newLaff >= self.maxHp or self.__additionalLaff >= self.ceilLimit:
+
+        if newLaff >= base.localAvatar.getMaxHp():
             self.upArrow['state'] = DGG.DISABLED
             hitLimit = 1
         else:
             self.upArrow['state'] = DGG.NORMAL
-        self['text'] = TTLocalizer.RestockAskMessage % (self.__additionalLaff, cost)
+
+        cost = self.additionalLaff * ToontownGlobals.CostPerLaffRestock
+        self['text'] = TTLocalizer.RestockAskMessage % (self.additionalLaff, cost)
+
+        if cost > base.localAvatar.getTotalMoney():
+            self.okButton['state'] = DGG.DISABLED
+            self['text'] += TTLocalizer.RestockNoMoneyGuiMessage
+        else:
+            self.okButton['state'] = DGG.NORMAL
+
         self.laffMeter.hp = newLaff
         self.laffMeter.start()
-        return (hitLimit, newLaff, self.__additionalLaff)
 
-    def __runCounter(self, task):
+        return hitLimit
+
+    def __runTask(self, task):
         if task.time - task.prevTime < task.delayTime:
             return Task.cont
         else:
             task.delayTime = max(0.05, task.delayTime * 0.75)
             task.prevTime = task.time
-            hitLimit, laff, trans = self.__updateLaffMeter(task.delta)
-            if hitLimit:
-                return Task.done
-            else:
-                return Task.cont
+            hitLimit = self.__updateLaffMeter(task.delta)
 
-    def __downButtonUp(self, event):
-        messenger.send('wakeup')
-        taskMgr.remove(self.taskName('runCounter'))
+            return Task.done if hitLimit else Task.cont
 
-    def __downButtonDown(self, event):
+    def __taskDone(self, event):
         messenger.send('wakeup')
-        task = Task(self.__runCounter)
+        taskMgr.remove(self.taskName('runLaffCounter'))
+
+    def __taskUpdate(self, delta, event):
+        messenger.send('wakeup')
+
+        task = Task(self.__runTask)
         task.delayTime = 0.4
         task.prevTime = 0.0
-        task.delta = -1
-        hitLimit, laff, trans = self.__updateLaffMeter(task.delta)
-        if not hitLimit:
-            taskMgr.add(task, self.taskName('runCounter'))
+        task.delta = delta
+        hitLimit = self.__updateLaffMeter(delta)
 
-    def __upButtonUp(self, event):
-        messenger.send('wakeup')
-        taskMgr.remove(self.taskName('runCounter'))
-
-    def __upButtonDown(self, event):
-        messenger.send('wakeup')
-        task = Task(self.__runCounter)
-        task.delayTime = 0.4
-        task.prevTime = 0.0
-        task.delta = 1
-        hitLimit, laff, trans = self.__updateLaffMeter(task.delta)
         if not hitLimit:
-            taskMgr.add(task, self.taskName('runCounter'))
+            taskMgr.add(task, self.taskName('runLaffCounter'))

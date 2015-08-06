@@ -344,8 +344,6 @@ class DistributedElevator(DistributedObject.DistributedObject):
         if hasattr(base.localAvatar, 'elevatorNotifier'):
             if reason == REJECT_SHUFFLE:
                 base.localAvatar.elevatorNotifier.showMe(TTLocalizer.ElevatorHoppedOff)
-            elif reason == REJECT_MINLAFF:
-                base.localAvatar.elevatorNotifier.showMe(TTLocalizer.ElevatorMinLaff % self.minLaff)
             elif reason == REJECT_PROMOTION:
                 base.localAvatar.elevatorNotifier.showMe(TTLocalizer.BossElevatorRejectMessage)
         doneStatus = {'where': 'reject'}
@@ -495,12 +493,6 @@ class DistributedElevator(DistributedObject.DistributedObject):
 
     def getAntiShuffle(self):
         return self.antiShuffle
-
-    def setMinLaff(self, minLaff):
-        self.minLaff = minLaff
-
-    def getMinLaff(self):
-        return self.minLaff
 
     def storeToonTrack(self, avId, track):
         self.clearToonTrack(avId)

@@ -23,6 +23,7 @@ RESISTANCE_MONEY = 2
 RESISTANCE_TICKETS = 3
 RESISTANCE_MERITS = 4
 resistanceMenu = [RESISTANCE_TOONUP, RESISTANCE_RESTOCK, RESISTANCE_MONEY, RESISTANCE_TICKETS, RESISTANCE_MERITS]
+randomResistanceMenu = [RESISTANCE_TOONUP, RESISTANCE_RESTOCK, RESISTANCE_MONEY, RESISTANCE_TICKETS]
 resistanceDict = {
     RESISTANCE_TOONUP: {
         'menuName': TTLocalizer.ResistanceToonupMenu,
@@ -138,7 +139,7 @@ def getItemValue(textId):
 
 
 def getRandomId():
-    menuIndex = random.choice(resistanceMenu)
+    menuIndex = random.choice(randomResistanceMenu)
     itemIndex = random.choice(getItems(menuIndex))
     return encodeId(menuIndex, itemIndex)
 

@@ -43,13 +43,6 @@ only include the comma if there are multiple arguments.
 class TTCodeRedemptionMgrAI(DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("TTCodeRedemptionMgrAI")
     codes = {
-        'weed': {
-            'items': [
-                CatalogClothingItem.CatalogClothingItem(1821, 0)
-            ],
-            'month': 4,
-            'day': 20
-        },
         'gardening': {
             'items': [
                 CatalogGardenStarterItem.CatalogGardenStarterItem()
@@ -74,15 +67,6 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
 
     def announceGenerate(self):
         DistributedObjectAI.announceGenerate(self)
-
-    def getMailboxCount(self, items):
-        count = 0
-
-        for item in items:
-            if item.getDeliveryTime() > 0:
-                count += 1
-
-        return count
 
     def redeemCode(self, code):
         avId = self.air.getAvatarIdFromSender()
@@ -119,9 +103,7 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
             self.air.writeServerEvent('suspicious', avId, 'Toon tried to redeem non-existent code %s' % code)
 
     def requestCodeRedeem(self, avId, av, items):
-        count = self.getMailboxCount(items)
-
-        if len(av.onOrder) + count > 5 or len(av.mailboxContents) + len(av.onOrder) + count >= ToontownGlobals.MaxMailboxContents:
+        if len(av.mailboxContents) + len(av.onOrder) + len(av.onGiftOrder) + len(items) >= ToontownGlobals.MaxMailboxContents:
             self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [3])
             return
 
@@ -129,8 +111,7 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
             if item in av.onOrder:
                 continue
 
-            item.deliveryDate = int(time.time() / 60) + 0.01
-            av.onOrder.append(item)
+            av.addToDeliverySchedule(item)
 
         av.b_setDeliverySchedule(av.onOrder)
         self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [0])

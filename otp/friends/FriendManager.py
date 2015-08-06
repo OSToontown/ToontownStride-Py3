@@ -91,3 +91,14 @@ class FriendManager(DistributedObject.DistributedObject):
         self.notify.debug('Client: inviteeCancelFriendQuery(%d)' % context)
         messenger.send('cancelFriendInvitation', [context])
         self.up_inviteeAcknowledgeCancel(context)
+    
+    def requestTFCode(self, callback):
+        self.tfCallback = callback
+        self.sendUpdate('requestTFCode')
+    
+    def redeemTFCode(self, code, callback):
+        self.tfCallback = callback
+        self.sendUpdate('redeemTFCode', [code])
+    
+    def tfResponse(self, response, code):
+        self.tfCallback(response, code)

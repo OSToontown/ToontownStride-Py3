@@ -9,15 +9,6 @@ CAROLING_REWARD = 100
 SCAVENGER_HUNT_LOCATIONS = 6
 
 Holidays = {
-    ToontownGlobals.LAUGHING_MAN: {
-        'startMonth': 6,
-        'startDay': 22,
-        'endMonth': 6,
-        'endDay': 22,
-        'startMessage': TTLocalizer.LaughingManHolidayStart,
-        'ongoingMessage': TTLocalizer.LaughingManHolidayOngoing,
-        'endMessage': TTLocalizer.LaughingManHolidayEnd
-    },
     ToontownGlobals.GRAND_PRIX: {
         'weekDay': 0,
         'startMessage': TTLocalizer.CircuitRaceStart,

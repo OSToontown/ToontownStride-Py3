@@ -92,6 +92,7 @@ Levels = [[0,
 regMaxSkill = 10000
 UberSkill = 500
 MaxSkill = UberSkill + regMaxSkill
+ExperienceCap = 300
 
 
 MaxToonAcc = 95

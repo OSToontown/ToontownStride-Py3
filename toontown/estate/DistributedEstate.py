@@ -6,29 +6,16 @@ from direct.interval.IntervalGlobal import *
 import math
 from toontown.toonbase import ToontownGlobals
 from direct.distributed import DistributedObject
-from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import ClassicFSM
-from direct.fsm import State
-from toontown.toon import Toon
-from direct.showbase import RandomNumGen
 from direct.task.Task import Task
 from toontown.toonbase import TTLocalizer
 import random
 import cPickle
 import time
-from direct.showbase import PythonUtil
-from toontown.hood import Place
-import Estate
 import HouseGlobals
 from toontown.estate import GardenGlobals
-from toontown.estate import DistributedFlower
-from toontown.estate import DistributedGagTree
-from toontown.estate import DistributedStatuary
-import GardenDropGame
-import GardenProgressMeter
 from toontown.estate import FlowerSellGUI
-from toontown.fishing import FishSellGUI
 from toontown.toontowngui import TTDialog
+from toontown.fishing import FishSellGUI
 
 class DistributedEstate(DistributedObject.DistributedObject):
     notify = directNotify.newCategory('DistributedEstate')
@@ -46,18 +33,15 @@ class DistributedEstate(DistributedObject.DistributedObject):
         self.initCamera()
         self.plotTable = []
         self.idList = []
-        base.estate = self
         self.flowerGuiDoneEvent = 'flowerGuiDone'
         self.fishGuiDoneEvent = 'fishGuiDone'
-        return
 
     def disable(self):
         self.notify.debug('disable')
         self.__stopBirds()
         self.__stopCrickets()
         DistributedObject.DistributedObject.disable(self)
-        self.ignore('enterFlowerSellBox')
-        self.ignore('enterFishSellBox')
+        self.ignoreAll()
 
     def delete(self):
         self.notify.debug('delete')
@@ -67,7 +51,6 @@ class DistributedEstate(DistributedObject.DistributedObject):
     def load(self):
         self.defaultSignModel = loader.loadModel('phase_13/models/parties/eventSign')
         self.activityIconsModel = loader.loadModel('phase_4/models/parties/eventSignIcons')
-        self.lt = base.localAvatar
         if base.cr.newsManager.isHolidayRunning(ToontownGlobals.HALLOWEEN):
             self.loadWitch()
         else:
@@ -76,8 +59,6 @@ class DistributedEstate(DistributedObject.DistributedObject):
         self.loadFishSellBox()
         self.oldClear = base.win.getClearColor()
         base.win.setClearColor(Vec4(0.09, 0.55, 0.21, 1.0))
-        if config.GetBool('want-garden-game', False):
-            self.startGame()
 
     def unload(self):
         self.ignoreAll()
@@ -108,19 +89,9 @@ class DistributedEstate(DistributedObject.DistributedObject):
             self.fishSellBox.removeNode()
             del self.fishSellBox
             self.fishSellBox = None
-        if config.GetBool('want-garden-game', False):
-            GardenDropGame.GardenDropGame().endGame()
-        return
 
     def announceGenerate(self):
         DistributedObject.DistributedObject.announceGenerate(self)
-        self.accept('gardenGame', self.startGame)
-
-    def startGame(self):
-        if config.GetBool('want-garden-game', False):
-            self.game = GardenDropGame.GardenDropGame().playGardenDrop()
-        else:
-            self.game = GardenDropGame.GardenDropGame()
 
     def loadAirplane(self):
         self.airplane = loader.loadModel('phase_4/models/props/airplane.bam')
@@ -131,12 +102,14 @@ class DistributedEstate(DistributedObject.DistributedObject):
         bannerText.setTextColor(1, 0, 0, 1)
         bannerText.setAlign(bannerText.ACenter)
         bannerText.setFont(ToontownGlobals.getSignFont())
-        bannerText.setText('Cog invasion!!!')
+        bannerText.setText(TTLocalizer.EstatePlaneReturn)
         self.bn = self.banner.attachNewNode(bannerText.generate())
         self.bn.setHpr(180, 0, 0)
-        self.bn.setPos(-1.8, 0.1, 0)
-        self.bn.setScale(0.35)
-        self.banner.hide()
+        self.bn.setPos(-5.8, 0.1, -0.25)
+        self.bn.setScale(0.95)
+        self.bn.setDepthTest(1)
+        self.bn.setDepthWrite(1)
+        self.bn.setDepthOffset(500)
 
     def loadWitch(self):
         if not self.airplane:
@@ -148,15 +121,19 @@ class DistributedEstate(DistributedObject.DistributedObject):
             self.airplane = loader.loadModel('phase_4/models/props/tt_m_prp_ext_flyingWitch.bam')
             self.airplane.setScale(2)
             self.airplane.setPos(0, 0, 1)
+            self.airplane.find('**/').setH(180)
             bannerText = TextNode('bannerText')
             bannerText.setTextColor(1, 0, 0, 1)
             bannerText.setAlign(bannerText.ACenter)
             bannerText.setFont(ToontownGlobals.getSignFont())
-            bannerText.setText('Happy halloween!!!')
+            bannerText.setText(TTLocalizer.EstatePlaneHoliday)
             self.bn = self.airplane.attachNewNode(bannerText.generate())
-            self.bn.setHpr(0, 0, 0)
-            self.bn.setPos(20.0, -.1, 0)
+            self.bn.setPos(-20.0, -.1, 0)
+            self.bn.setH(180)
             self.bn.setScale(2.35)
+            self.bn.setDepthTest(1)
+            self.bn.setDepthWrite(1)
+            self.bn.setDepthOffset(500)
 
         replacement = Sequence(LerpColorScaleInterval(self.airplane, 0.1, Vec4(1, 1, 1, 0)), Func(__replaceAirplane__), LerpColorScaleInterval(self.airplane, 0.1, Vec4(1, 1, 1, 1)))
         replacement.start()
@@ -175,12 +152,14 @@ class DistributedEstate(DistributedObject.DistributedObject):
             bannerText.setTextColor(1, 0, 0, 1)
             bannerText.setAlign(bannerText.ACenter)
             bannerText.setFont(ToontownGlobals.getSignFont())
-            bannerText.setText('Happy halloween!!!')
+            bannerText.setText(TTLocalizer.EstatePlaneReturn)
             self.bn = self.banner.attachNewNode(bannerText.generate())
             self.bn.setHpr(180, 0, 0)
-            self.bn.setPos(-1.8, 0.1, 0)
-            self.bn.setScale(0.35)
-            self.banner.hide()
+            self.bn.setPos(-5.8, 0.1, -0.25)
+            self.bn.setScale(0.95)
+            self.bn.setDepthTest(1)
+            self.bn.setDepthWrite(1)
+            self.bn.setDepthOffset(500)
 
         replacement = Sequence(LerpColorScaleInterval(self.airplane, 0.1, Vec4(1, 1, 1, 0)), Func(__replaceWitch__), LerpColorScaleInterval(self.airplane, 0.1, Vec4(1, 1, 1, 1)))
         replacement.start()
@@ -188,6 +167,9 @@ class DistributedEstate(DistributedObject.DistributedObject):
     def initCamera(self):
         initCamPos = VBase3(0, -10, 5)
         initCamHpr = VBase3(0, -10, 0)
+
+    def setEstateType(self, index):
+        self.estateType = index
 
     def setHouseInfo(self, houseInfo):
         self.notify.debug('setHouseInfo')
@@ -200,7 +182,6 @@ class DistributedEstate(DistributedObject.DistributedObject):
         self.housePos = posList
         self.numHouses = len(self.houseType)
         self.house = [None] * self.numHouses
-        return
 
     def __startAirplaneTask(self):
         self.theta = 0
@@ -211,7 +192,7 @@ class DistributedEstate(DistributedObject.DistributedObject):
     def __pauseAirplaneTask(self):
         pause = 45
         self.phi = 0
-        self.airplane.hide()
+        self.airplane.reparentTo(hidden)
         self.theta = (self.theta + 10) % 360
         taskMgr.remove(self.taskName('estate-airplane'))
         taskMgr.doMethodLater(pause, self.airplaneFlyTask, self.taskName('estate-airplane'))
@@ -232,7 +213,7 @@ class DistributedEstate(DistributedObject.DistributedObject):
         y = rad * math.sin(angle)
         z = amp * sinPhi
         self.airplane.reparentTo(render)
-        self.airplane.setH(90 + self.theta + 180)
+        self.airplane.setH(90 + self.theta)
         self.airplane.setPos(x, y, z)
         return Task.cont
 
@@ -280,7 +261,7 @@ class DistributedEstate(DistributedObject.DistributedObject):
 
     def __dayTimeTask(self, task):
         taskName = self.taskName('daytime')
-        track = Sequence(Parallel(LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, HouseGlobals.HALF_DAY_PERIOD, Vec4(1, 0.6, 0.6, 1)), LerpColorScaleInterval(base.cr.playGame.hood.sky, HouseGlobals.HALF_DAY_PERIOD, Vec4(1, 0.8, 0.8, 1))), Parallel(LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, HouseGlobals.HALF_NIGHT_PERIOD, Vec4(0.2, 0.2, 0.5, 1)), LerpColorScaleInterval(base.cr.playGame.hood.sky, HouseGlobals.HALF_NIGHT_PERIOD, Vec4(0.4, 0.4, 0.6, 1))), Parallel(LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, HouseGlobals.HALF_NIGHT_PERIOD, Vec4(0.6, 0.6, 0.8, 1)), LerpColorScaleInterval(base.cr.playGame.hood.sky, HouseGlobals.HALF_NIGHT_PERIOD, Vec4(0.7, 0.7, 0.8, 1))), Parallel(LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, HouseGlobals.HALF_DAY_PERIOD, Vec4(1, 1, 1, 1)), LerpColorScaleInterval(base.cr.playGame.hood.sky, HouseGlobals.HALF_DAY_PERIOD, Vec4(1, 1, 1, 1))), Func(base.cr.playGame.hood.loader.geom.clearColorScale), Func(base.cr.playGame.hood.sky.clearColorScale))
+        track = Sequence(Parallel(LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, HouseGlobals.HALF_DAY_PERIOD, Vec4(1, 0.6, 0.6, 1)), LerpColorScaleInterval(base.cr.playGame.hood.sky, HouseGlobals.HALF_DAY_PERIOD, Vec4(1, 0.8, 0.8, 1))), Parallel(LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, HouseGlobals.HALF_NIGHT_PERIOD, Vec4(0.2, 0.2, 0.5, 1)), LerpColorScaleInterval(base.cr.playGame.hood.sky, HouseGlobals.HALF_NIGHT_PERIOD, Vec4(0.2, 0.2, 0.4, 1))), Parallel(LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, HouseGlobals.HALF_NIGHT_PERIOD, Vec4(0.6, 0.6, 0.8, 1)), LerpColorScaleInterval(base.cr.playGame.hood.sky, HouseGlobals.HALF_NIGHT_PERIOD, Vec4(0.5, 0.5, 0.6, 1))), Parallel(LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, HouseGlobals.HALF_DAY_PERIOD, Vec4(1, 1, 1, 1)), LerpColorScaleInterval(base.cr.playGame.hood.sky, HouseGlobals.HALF_DAY_PERIOD, Vec4(1, 1, 1, 1))), Func(base.cr.playGame.hood.loader.geom.clearColorScale), Func(base.cr.playGame.hood.sky.clearColorScale))
         if self.dayTrack:
             self.dayTrack.finish()
         self.dayTrack = track
@@ -344,8 +325,8 @@ class DistributedEstate(DistributedObject.DistributedObject):
         taskMgr.doMethodLater(1, self.__crickets, 'estate-crickets')
 
     def __crickets(self, task):
-        sfx = random.choice(base.cr.playGame.hood.loader.cricketSound)
-        track = Sequence(Func(base.playSfx, sfx), Wait(1))
+        sfx = base.cr.playGame.hood.loader.cricketSound
+        track = Sequence(Func(base.playSfx, random.choice(sfx)), Wait(1))
         track.start()
         t = random.random() * 20.0 + 1
         taskMgr.doMethodLater(t, self.__crickets, 'estate-crickets')
@@ -376,7 +357,7 @@ class DistributedEstate(DistributedObject.DistributedObject):
             if len(base.localAvatar.flowerBasket.flowerList):
                 self.popupFlowerGUI()
 
-    def __handleFlowerSaleDone(self, sell = 0):
+    def __handleSaleDone(self, sell = 0):
         self.ignore(self.flowerGuiDoneEvent)
         self.sendUpdate('completeFlowerSale', [sell])
         self.ignore('stoppedAsleep')
@@ -384,10 +365,10 @@ class DistributedEstate(DistributedObject.DistributedObject):
         self.flowerGui = None
 
     def popupFlowerGUI(self):
-        self.acceptOnce(self.flowerGuiDoneEvent, self.__handleFlowerSaleDone)
+        self.acceptOnce(self.flowerGuiDoneEvent, self.__handleSaleDone)
         self.flowerGui = FlowerSellGUI.FlowerSellGUI(self.flowerGuiDoneEvent)
         self.accept('stoppedAsleep', self.__handleSaleDone)
-
+    
     def loadFishSellBox(self):
         self.fishSellBox = loader.loadModel('phase_4/models/minigames/treasure_chest.bam')
         self.fishSellBox.setPos(45, -165.75, 0.025)
@@ -408,10 +389,14 @@ class DistributedEstate(DistributedObject.DistributedObject):
                 self.popupFishGUI()
 
     def __handleFishSaleDone(self, sell=0):
+        if sell:
+            self.sendUpdate('completeFishSale')
+        else:
+            base.localAvatar.setSystemMessage(0, TTLocalizer.STOREOWNER_NOFISH)
+
         base.setCellsAvailable(base.bottomCells, 1)
         base.cr.playGame.getPlace().setState('walk')
         self.ignore(self.fishGuiDoneEvent)
-        self.sendUpdate('completeFishSale', [sell])
         self.ignore('stoppedAsleep')
         self.fishGui.destroy()
         self.fishGui = None
@@ -428,8 +413,6 @@ class DistributedEstate(DistributedObject.DistributedObject):
             base.localAvatar.setSystemMessage(0, TTLocalizer.STOREOWNER_TROPHY % (fish, maxFish))
         elif mode == ToontownGlobals.FISHSALE_COMPLETE:
             base.localAvatar.setSystemMessage(0, TTLocalizer.STOREOWNER_THANKSFISH)
-        elif mode == ToontownGlobals.FISHSALE_NONE:
-            base.localAvatar.setSystemMessage(0, TTLocalizer.STOREOWNER_NOFISH)
 
     def closedAwardDialog(self, value):
         self.awardDialog.destroy()

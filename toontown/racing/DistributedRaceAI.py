@@ -3,12 +3,13 @@ from direct.distributed.ClockDelta import *
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from direct.fsm.FSM import FSM
 from direct.task import Task
+from toontown.uberdog import TopToonsGlobals
 import random
 
 from toontown.racing import RaceGlobals
 from toontown.racing.DistributedGagAI import DistributedGagAI
 from toontown.racing.DistributedVehicleAI import DistributedVehicleAI
-from toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer, ToontownGlobals
 
 
 class DistributedRaceAI(DistributedObjectAI, FSM):
@@ -317,9 +318,12 @@ class DistributedRaceAI(DistributedObjectAI, FSM):
         av.b_setTickets(av.getTickets() + winnings)
         if av.getTickets() > RaceGlobals.MaxTickets:
             av.b_setTickets(RaceGlobals.MaxTickets)
+        av.addStat(ToontownGlobals.STAT_RACING)
         self.sendUpdate('setPlace', [avId, totalTime, place, entryFee, qualify, max((winnings-entryFee), 0), bonus, trophies, [], 0])
 
     def calculateTrophies(self, avId, won, qualify, time):
+        if won:
+            messenger.send('topToonsManager-event', [avId, TopToonsGlobals.CAT_RACE_WON, 1])
         av = self.air.doId2do[avId]
         kartingHistory = av.getKartingHistory()
         avTrophies = av.getKartingTrophies()

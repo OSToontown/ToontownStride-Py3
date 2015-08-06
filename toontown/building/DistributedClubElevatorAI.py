@@ -41,8 +41,8 @@ class DistributedClubElevatorAI(DistributedElevatorFSMAI.DistributedElevatorFSMA
     id = 0
     DoBlockedRoomCheck = simbase.config.GetBool('elevator-blocked-rooms-check', 1)
 
-    def __init__(self, air, lawOfficeId, bldg, avIds, markerId = None, numSeats = 4, antiShuffle = 0, minLaff = 0):
-        DistributedElevatorFSMAI.DistributedElevatorFSMAI.__init__(self, air, bldg, numSeats, antiShuffle = antiShuffle, minLaff = minLaff)
+    def __init__(self, air, lawOfficeId, bldg, avIds, markerId = None, numSeats = 4, antiShuffle = 0):
+        DistributedElevatorFSMAI.DistributedElevatorFSMAI.__init__(self, air, bldg, numSeats, antiShuffle = antiShuffle)
         FSM.__init__(self, 'ElevatorFloor_%s_FSM' % self.id)
         self.type = ElevatorConstants.ELEVATOR_COUNTRY_CLUB
         self.countdownTime = ElevatorConstants.ElevatorData[self.type]['countdown']
@@ -291,8 +291,6 @@ class DistributedClubElevatorAI(DistributedElevatorFSMAI.DistributedElevatorFSMA
         return self.latch
 
     def checkBoard(self, av):
-        if av.hp < self.minLaff:
-            return ElevatorConstants.REJECT_MINLAFF
         if self.DoBlockedRoomCheck and self.bldg:
             if hasattr(self.bldg, 'blockedRooms'):
                 if self.bldg.blockedRooms:

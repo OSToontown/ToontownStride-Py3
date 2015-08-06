@@ -29,7 +29,7 @@ class DistributedGagTree(DistributedPlantBase.DistributedPlantBase):
         self.backupFruits = []
         self.signHasBeenStuck2Ground = False
         self.setName('DistributedGagTree')
-        return
+        self.fruiting = 0
 
     def delete(self):
         DistributedPlantBase.DistributedPlantBase.delete(self)
@@ -141,8 +141,6 @@ class DistributedGagTree(DistributedPlantBase.DistributedPlantBase):
         self.confirmDialog.destroy()
         self.confirmDialog = None
         if value > 0:
-            base.localAvatar.showGardeningGui()
-            base.localAvatar.removeShovelRelatedDoId(self.doId)
             self.doPicking()
         else:
             self.finishInteraction()
@@ -151,7 +149,7 @@ class DistributedGagTree(DistributedPlantBase.DistributedPlantBase):
     def doPicking(self):
         if not self.canBePicked():
             return
-        self.sendUpdate('removeItem', [base.localAvatar.doId])
+        self.sendUpdate('removeItem', [])
 
     def createBackupFruits(self):
         if not hasattr(self, 'fruits'):
@@ -175,6 +173,11 @@ class DistributedGagTree(DistributedPlantBase.DistributedPlantBase):
                 self.backupFruits.append(newFruit)
 
     def clearBackupFruits(self):
+        if self.fruits:
+            for fruit in self.fruits:
+                fruit.removeNode()  
+         
+        self.fruits = None         
         self.backupFruits = []
 
     def doHarvesting(self):
@@ -184,14 +187,7 @@ class DistributedGagTree(DistributedPlantBase.DistributedPlantBase):
             for fruit in self.backupFruits:
                 fruit.show()
 
-        self.sendUpdate('requestHarvest', [base.localAvatar.doId])
-
-    def hideItems(self):
-        if hasattr(self, 'fruits') and self.fruits:
-            seq = Parallel()
-            for item in self.fruits:
-                seq.append(LerpFunc(item.setAlphaScale, fromData=1, toData=0, duration=1))
-            seq.start()
+        self.sendUpdate('requestHarvest', [])
 
     def getTrack(self):
         return self.gagTrack
@@ -268,7 +264,6 @@ class DistributedGagTree(DistributedPlantBase.DistributedPlantBase):
         self.movie.append(Func(toon.loop, 'neutral'))
         if avId == localAvatar.doId:
             self.movie.append(Func(self.finishInteraction))
-            self.movie.append(Func(self.hideItems))
             self.movie.append(Func(self.movieDone))
             self.movie.append(Func(self.doResultDialog))
         self.movie.start()
@@ -299,7 +294,6 @@ class DistributedGagTree(DistributedPlantBase.DistributedPlantBase):
         for fruit in self.backupFruits:
             fruitTrack.append(Sequence(Func(fruit.show), LerpPosInterval(fruit, 1.5, pos, startPos=Point3(fruit.getX(), fruit.getY(), fruit.getZ() + self.model.getZ())), Func(fruit.removeNode)))
 
-        self.fruits = None
         harvestTrack = Sequence(fruitTrack, Func(self.clearBackupFruits))
         return harvestTrack
 
@@ -356,25 +350,7 @@ class DistributedGagTree(DistributedPlantBase.DistributedPlantBase):
         return Task.done
 
     def canBeHarvested(self):
-        myTrack, myLevel = GardenGlobals.getTreeTrackAndLevel(self.typeIndex)
-        levelsInTrack = []
-        levelTreeDict = {}
-        allGagTrees = base.cr.doFindAll('DistributedGagTree')
-        for gagTree in allGagTrees:
-            if gagTree.getOwnerId() == localAvatar.doId:
-                curTrack, curLevel = GardenGlobals.getTreeTrackAndLevel(gagTree.typeIndex)
-                if curTrack == myTrack:
-                    levelsInTrack.append(curLevel)
-                    levelTreeDict[curLevel] = gagTree
-
-        for levelToTest in xrange(myLevel):
-            if levelToTest not in levelsInTrack:
-                return False
-            curTree = levelTreeDict[levelToTest]
-            if not curTree.isGTEFullGrown():
-                return False
-
-        return True
+        return self.isFruiting()
 
     def hasDependentTrees(self):
         myTrack, myLevel = GardenGlobals.getTreeTrackAndLevel(self.typeIndex)
@@ -417,3 +393,15 @@ class DistributedGagTree(DistributedPlantBase.DistributedPlantBase):
         if inventory.numItem(self.gagTrack, self.gagLevel) >= inventory.getMax(self.gagTrack, self.gagLevel):
             retval = False
         return retval
+
+    def setFruiting(self, fruiting):
+        self.fruiting = fruiting
+        if self.model:
+            self.model.removeNode()
+            self.loadModel()
+            self.adjustWaterIndicator()
+            self.stick2Ground()
+        
+    def isFruiting(self):
+        return self.fruiting
+        

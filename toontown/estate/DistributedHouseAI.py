@@ -21,7 +21,7 @@ class DistributedHouseAI(DistributedObjectAI):
         self.name = ''
         self.color = 0
         self.housePos = 0
-        self.gender = 1
+        self.gender = 0
         self.isInteriorInitialized = 1
 
         self.atticItems = CatalogItemList(store=Customization)
@@ -55,12 +55,6 @@ class DistributedHouseAI(DistributedObjectAI):
         if self.avatarId:
             self.mailbox = DistributedMailboxAI(self.air, self)
             self.mailbox.generateWithRequired(self.zoneId)
-
-        if not self.isInteriorInitialized:
-            self.notify.info('Initializing interior...')
-            self.interior.initialize()
-            self.b_setInteriorInitialized(1)
-
         self.sendUpdate('setHouseReady', [])
 
     def delete(self):
@@ -275,16 +269,17 @@ class DistributedHouseAI(DistributedObjectAI):
             self.atticItems.append(item)
         elif item.replacesExisting() and item.hasExisting():
             if item.getFlags() & FLCloset:
-                closets = ClosetToClothes.keys()
+                items = ClosetToClothes.keys() if item.getFlags() & FLCloset else BankToMoney.keys()
+                
                 for itItem in self.interiorItems:
-                    if itItem.furnitureType in closets:
+                    if itItem.furnitureType in items:
                         posHpr = itItem.posHpr
                         self.interiorItems.remove(itItem)
                         item.posHpr = posHpr
                         self.interiorItems.append(item)
                         break
                 for itItem in self.atticItems:
-                    if itItem.furnitureType in closets:
+                    if itItem.furnitureType in items:
                         self.atticItems.remove(itItem)
                         self.atticItems.append(item)
                         break
@@ -305,3 +300,9 @@ class DistributedHouseAI(DistributedObjectAI):
         self.atticWallpaper.append(item)
         self.d_setAtticWallpaper(self.atticWallpaper.getBlob())
         self.interior.furnitureManager.loadFromHouse()
+    
+    def initializeInterior(self):
+        if (not self.isInteriorInitialized):
+            self.notify.info('Initializing interior...')
+            self.interior.initialize()
+            self.b_setInteriorInitialized(1)

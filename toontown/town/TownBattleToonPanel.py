@@ -49,7 +49,7 @@ class TownBattleToonPanel(DirectFrame):
             messenger.send(self.avatar.uniqueName('hpChange'), [avatar.hp, avatar.maxHp, 1])
             return None
         else:
-            if self.avatar:
+            if self.avatar or self.laffMeter:
                 self.cleanupLaffMeter()
             self.avatar = avatar
             self.laffMeter = LaffMeter.LaffMeter(avatar.style, avatar.hp, avatar.maxHp)

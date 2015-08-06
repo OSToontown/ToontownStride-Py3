@@ -33,13 +33,13 @@ class CatalogTankItem(CatalogItem.CatalogItem):
         if self.maxTank <= avatar.getMaxFishTank():
             return ToontownGlobals.P_ItemUnneeded
         avatar.b_setMaxFishTank(self.maxTank)
-        return ToontownGlobals.P_ItemAvailable
+        return ToontownGlobals.P_ItemOnOrder
 
     def isGift(self):
         return 0
 
     def getDeliveryTime(self):
-        return 0
+        return 1
 
     def getPicture(self, avatar):
         gui = loader.loadModel('phase_4/models/gui/fishingGui')

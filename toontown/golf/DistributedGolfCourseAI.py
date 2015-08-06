@@ -6,6 +6,7 @@ from panda3d.core import *
 from direct.fsm.FSM import FSM
 from toontown.ai.ToonBarrier import *
 from toontown.golf import GolfGlobals
+from toontown.uberdog import TopToonsGlobals
 INITIAL = 0
 EXITED = 1
 EXPECTED = 2
@@ -767,6 +768,7 @@ class DistributedGolfCourseAI(DistributedObjectAI.DistributedObjectAI, FSM):
                 oldTrophies = GolfGlobals.calcTrophyListFromHistory(oldHistory)
                 endingTrophies = GolfGlobals.calcTrophyListFromHistory(endingHistory)
                 av.b_setGolfHistory(endingHistory)
+                av.addStat(ToontownGlobals.STAT_GOLF)
                 newTrophies = []
                 for index in xrange(len(oldTrophies)):
                     if not oldTrophies[index] and endingTrophies[index]:
@@ -970,12 +972,17 @@ class DistributedGolfCourseAI(DistributedObjectAI.DistributedObjectAI, FSM):
         stillPlaying = self.getStillPlayingAvIds()
         for avId in stillPlaying:
             scoreList = self.scores[avId]
+            ns = 0
             for holeIndex in xrange(len(scoreList)):
                 strokes = scoreList[holeIndex]
                 if strokes == 1:
+                    ns +=1
                     holeId = self.holeIds[holeIndex]
                     self.air.writeServerEvent('golf_ace', avId, '%d|%d|%s' % (self.courseId, holeId, stillPlaying))
 
+        if ns:
+            messenger.send('topToonsManager-event', [avId, TopToonsGlobals.CAT_HOLE_IN_ONE, ns])
+            
     def recordCourseUnderPar(self):
         coursePar = self.calcCoursePar()
         stillPlaying = self.getStillPlayingAvIds()
@@ -984,7 +991,8 @@ class DistributedGolfCourseAI(DistributedObjectAI.DistributedObjectAI, FSM):
             netScore = totalScore - coursePar
             if netScore < 0:
                 self.air.writeServerEvent('golf_underPar', avId, '%d|%d|%s' % (self.courseId, netScore, stillPlaying))
-
+            messenger.send('topToonsManager-event', [avId, TopToonsGlobals.CAT_COURSE_UNDER_PAR, 1])
+            
     def addAimTime(self, avId, aimTime):
         if avId in self.aimTimes:
             self.aimTimes[avId] += aimTime

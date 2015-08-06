@@ -99,7 +99,6 @@ want-cogbuildings #t
 # Optional:
 show-total-population #t
 want-mat-all-tailors #t
-want-talkative-tyler #f
 estate-day-night #t
 want-garden-game #f
 want-language-selection #t

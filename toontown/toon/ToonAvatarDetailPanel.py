@@ -10,7 +10,7 @@ from toontown.friends import FriendInviter
 import ToonTeleportPanel
 from toontown.toonbase import TTLocalizer
 from toontown.hood import ZoneUtil
-from toontown.toonbase.ToontownBattleGlobals import Tracks, Levels
+from toontown.toonbase.ToontownBattleGlobals import Tracks, Levels, getAvPropDamage
 from toontown.toon import Toon
 globalAvatarDetail = None
 
@@ -192,6 +192,9 @@ class ToonAvatarDetailPanel(DirectFrame):
         ySpacing = -0.115
         inventory = self.avatar.inventory
         inventoryModels = loader.loadModel('phase_3.5/models/gui/inventory_gui')
+        rolloverFrame = DirectFrame(parent=self, relief=None, geom=DGG.getDefaultDialogGeom(), geom_color=(0, 0.5, 1, 1), geom_scale=(0.5, 0.3, 0.2), text_scale=0.05, text_pos=(0, 0.0125), text='', text_fg=(1, 1, 1, 1))
+        rolloverFrame.setBin('gui-popup', 0)
+        rolloverFrame.hide()
         buttonModel = inventoryModels.find('**/InventoryButtonUp')
         for track in xrange(0, len(Tracks)):
             DirectLabel(parent=self, relief=None, text=TextEncoder.upper(TTLocalizer.BattleGlobalTracks[track]), text_scale=TTLocalizer.TADPtrackLabel, text_align=TextNode.ALeft, pos=(-0.9, 0, TTLocalizer.TADtrackLabelPosZ + track * ySpacing))
@@ -201,20 +204,30 @@ class ToonAvatarDetailPanel(DirectFrame):
                     level = Levels[track][item]
                     if curExp >= level:
                         numItems = inventory.numItem(track, item)
+                        organic = self.avatar.checkGagBonus(track, item)
                         if numItems == 0:
                             image_color = Vec4(0.5, 0.5, 0.5, 1)
                             geom_color = Vec4(0.2, 0.2, 0.2, 0.5)
-                        elif self.avatar.getTrackBonusLevel(track) >= item:
+                        elif organic:
                             image_color = Vec4(0, 0.8, 0.4, 1)
                             geom_color = None
                         else:
                             image_color = Vec4(0, 0.6, 1, 1)
                             geom_color = None
-                        DirectLabel(parent=self, image=buttonModel, image_scale=(0.92, 1, 1), image_color=image_color, geom=inventory.invModels[track][item], geom_color=geom_color, geom_scale=0.6, relief=None, pos=(xOffset + item * xSpacing, 0, yOffset + track * ySpacing))
+                        pos = (xOffset + item * xSpacing, 0, yOffset + track * ySpacing)
+                        label = DirectLabel(parent=self, image=buttonModel, image_scale=(0.92, 1, 1), image_color=image_color, geom=inventory.invModels[track][item], geom_color=geom_color, geom_scale=0.6, relief=None, pos=pos, state=DGG.NORMAL)
+                        label.bind(DGG.ENTER, self.showInfo, extraArgs=[rolloverFrame, track, int(getAvPropDamage(track, item, curExp, organic)), numItems, (pos[0] + 0.37, pos[1], pos[2])])
+                        label.bind(DGG.EXIT, self.hideInfo, extraArgs=[rolloverFrame])
                     else:
                         break
+    
+    def showInfo(self, frame, track, damage, numItems, pos, extra):
+        frame.setPos(*pos)
+        frame.show()
+        frame['text'] = TTLocalizer.GagPopup % (self.avatar.inventory.getToonupDmgStr(track, 0), damage, numItems)
 
-        return
+    def hideInfo(self, frame, extra):
+        frame.hide()
 
     def __updateTrophyInfo(self):
         if self.createdAvatar:

@@ -8,7 +8,6 @@ from direct.interval.IntervalGlobal import *
 from direct.fsm.ClassicFSM import ClassicFSM
 from direct.fsm.State import State
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toon import LaughingManGlobals
 
 if not base.config.GetBool('want-new-anims', 1):
     HeadDict = {'dls': '/models/char/dogMM_Shorts-head-',
@@ -196,8 +195,6 @@ class ToonHead(Actor.Actor):
             self.getGeomNode().setDepthTest(1)
         if dna.getAnimal() == 'dog':
             self.loop('neutral')
-        if dna.laughingMan:
-            LaughingManGlobals.addHeadEffect(self.getGeomNode(), book=forGui)
 
     def fitAndCenterHead(self, maxDim, forGui = 0):
         p1 = Point3()

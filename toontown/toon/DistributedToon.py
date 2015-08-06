@@ -13,7 +13,6 @@ import operator
 from panda3d.core import *
 import random
 import time
-
 import Experience
 import InventoryNew
 import TTEmote
@@ -119,7 +118,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.onOrder = CatalogItemList.CatalogItemList(store=CatalogItem.Customization | CatalogItem.DeliveryDate)
         self.onGiftOrder = CatalogItemList.CatalogItemList(store=CatalogItem.Customization | CatalogItem.DeliveryDate)
         self.mailboxContents = CatalogItemList.CatalogItemList(store=CatalogItem.Customization)
-        self.deliveryboxContentsContents = CatalogItemList.CatalogItemList(store=CatalogItem.Customization | CatalogItem.GiftTag)
         self.awardMailboxContents = CatalogItemList.CatalogItemList(store=CatalogItem.Customization)
         self.onAwardOrder = CatalogItemList.CatalogItemList(store=CatalogItem.Customization | CatalogItem.DeliveryDate)
         self.splash = None
@@ -173,6 +171,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.ignored = []
         self.reported = []
         self.trueFriends = []
+        self.specialInventory = [0, 0, 0, 0, 0]
 
     def disable(self):
         for soundSequence in self.soundSequenceList:
@@ -499,12 +498,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
         self.NPCFriendsDict = NPCFriendsDict
 
-    def setMaxAccessories(self, max):
-        self.maxAccessories = max
-
-    def getMaxAccessories(self):
-        return self.maxAccessories
-
     def setHatList(self, clothesList):
         self.hatList = clothesList
 
@@ -531,7 +524,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def isTrunkFull(self, extraAccessories = 0):
         numAccessories = (len(self.hatList) + len(self.glassesList) + len(self.backpackList) + len(self.shoesList)) / 3
-        return numAccessories + extraAccessories >= self.maxAccessories
+        return numAccessories + extraAccessories >= ToontownGlobals.MaxAccessories
 
     def setMaxClothes(self, max):
         self.maxClothes = max
@@ -874,9 +867,25 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def setFishingRod(self, rodId):
         self.fishingRod = rodId
+        if self == base.localAvatar:
+            messenger.send('refreshFishingRod')
 
     def getFishingRod(self):
         return self.fishingRod
+    
+    def setMaxFishingRod(self, rodId):
+        self.maxFishingRod = rodId
+        if self == base.localAvatar:
+            messenger.send('refreshFishingRod')
+
+    def getMaxFishingRod(self):
+        return self.maxFishingRod
+    
+    def requestFishingRod(self, rodId):
+        if not 0 <= rodId <= self.maxFishingRod:
+            return
+
+        self.sendUpdate('requestFishingRod', [rodId])
 
     def setFishingTrophies(self, trophyList):
         self.fishingTrophies = trophyList
@@ -1927,13 +1936,16 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         return self.unlimitedSwing
 
     def getPinkSlips(self):
-        if hasattr(self, 'pinkSlips'):
-            return self.pinkSlips
-        else:
-            return 0
+        return self.specialInventory[0]
+    
+    def getCrateKeys(self):
+        return self.specialInventory[1]
 
-    def setPinkSlips(self, pinkSlips):
-        self.pinkSlips = pinkSlips
+    def setSpecialInventory(self, specialInventory):
+        self.specialInventory = specialInventory
+    
+    def getSpecialInventory(self):
+        return self.specialInventory
 
     def setDisplayName(self, str):
         if not self.isDisguised:
@@ -1967,6 +1979,20 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             nametagStyle = 0
         self.nametagStyle = nametagStyle
         self.setDisplayName(self.getName())
+    
+    def getNametagStyles(self):
+        return self.nametagStyles
+    
+    def setNametagStyles(self, nametagStyles):
+        self.nametagStyles = nametagStyles
+        if self == base.localAvatar:
+            messenger.send('refreshNametagStyle')
+    
+    def requestNametagStyle(self, nametagStyle):
+        if nametagStyle not in self.nametagStyles:
+            return
+        
+        self.sendUpdate('requestNametagStyle', [nametagStyle])
 
     def getAvIdName(self):
         return '%s\n%s' % (self.getName(), self.doId)
@@ -2048,10 +2074,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def setChatAbsolute(self, chatString, chatFlags, dialogue = None, interrupt = 1, quiet = 0):
         DistributedAvatar.DistributedAvatar.setChatAbsolute(self, chatString, chatFlags, dialogue, interrupt)
-
-    def setChatMuted(self, chatString, chatFlags, dialogue=None, interrupt=1, quiet=0):
-        self.nametag.setChat(chatString, chatFlags)
-        self.playCurrentDialogue(dialogue, chatFlags - CFSpeech, interrupt)
 
     def displayTalk(self, chatString):
         flags = CFSpeech | CFTimeout
@@ -2361,29 +2383,12 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         if not self.isReported(doId):
             self.reported.append(doId)
 
-    def b_setTrueFriends(self, trueFriends):
-        self.setTrueFriends(trueFriends)
-        self.d_setTrueFriends(trueFriends)
-
     def setTrueFriends(self, trueFriends):
         Toon.reconsiderAllToonsUnderstandable()
         self.trueFriends = trueFriends
 
-    def d_setTrueFriends(self, trueFriends):
-        self.sendUpdate('setTrueFriends', [trueFriends])
-
     def isTrueFriends(self, doId):
         return doId in self.trueFriends
-
-    def addTrueFriends(self, doId):
-        if not self.isTrueFriends(doId):
-            self.trueFriends.append(doId)
-            self.b_setTrueFriends(self.trueFriends)
-
-    def removeTrueFriends(self, doId):
-        if self.isTrueFriends(doId):
-            self.trueFriends.remove(doId)
-            self.b_setTrueFriends(self.trueFriends)
 
     def applyBuffs(self):
         for id, timestamp in enumerate(self.buffs):
@@ -2401,6 +2406,20 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
                     ToontownGlobals.ToonJumpForce,
                     ToontownGlobals.ToonReverseSpeed * ToontownGlobals.BMovementSpeedMultiplier,
                     ToontownGlobals.ToonRotateSpeed * ToontownGlobals.BMovementSpeedMultiplier)
+    
+    def setStats(self, stats):
+        self.stats = stats
+        if self == base.localAvatar:
+            messenger.send('refreshStats')
+    
+    def getStats(self):
+        return self.stats
+    
+    def getStat(self, index):
+        return self.stats[index]
+    
+    def wipeStats(self):
+        self.sendUpdate('wipeStats')
 
 @magicWord(category=CATEGORY_COMMUNITY_MANAGER)
 def globalTeleport():

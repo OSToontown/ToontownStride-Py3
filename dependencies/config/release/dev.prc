@@ -20,7 +20,7 @@ dc-file dependencies/astron/dclass/stride.dc
 
 # Core features:
 want-pets #t
-want-parties #t
+want-parties #f
 want-cogdominiums #t
 want-lawbot-cogdo #t
 want-anim-props #t
@@ -29,6 +29,8 @@ want-find-four #t
 want-chinese-checkers #t
 want-checkers #t
 want-house-types #t
+want-gifting #t
+want-top-toons #f
 
 # Chat:
 want-whitelist #t
@@ -36,6 +38,12 @@ want-whitelist #t
 # Developer options:
 show-population #t
 want-instant-parties #t
+want-instant-delivery #t
 cogdo-pop-factor 1.5
 cogdo-ratio 0.5
 default-directnotify-level info
+
+# Crates:
+dont-destroy-crate #t
+get-key-reward-always #t
+get-crate-reward-always #t

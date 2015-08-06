@@ -1,40 +1,83 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectGlobalUD import DistributedObjectGlobalUD
+from direct.distributed.PyDatagram import PyDatagram
+from direct.distributed.MsgTypes import *
 from otp.distributed import OtpDoGlobals
-
+from toontown.toonbase import TTLocalizer
+ 
+BLACKLIST = TTLocalizer.Blacklist
+OFFENSE_MSGS = ('-- DEV CHAT -- word blocked: %s', 'Watch your language! This is your first offense. You said "%s".',
+                'Watch your language! This is your second offense. Next offense you\'ll get banned for 24 hours. You said "%s".')
+ 
 class ChatAgentUD(DistributedObjectGlobalUD):
-    notify = DirectNotifyGlobal.directNotify.newCategory("ChatAgentUD")
-
-    def announceGenerate(self):
-        DistributedObjectGlobalUD.announceGenerate(self)
-
-        self.chatMode2channel = {
+    notify = DirectNotifyGlobal.directNotify.newCategory('ChatAgentUD')
+    WantWhitelist = config.GetBool('want-whitelist', True)
+   
+    chatMode2channel = {
             1 : OtpDoGlobals.OTP_MOD_CHANNEL,
             2 : OtpDoGlobals.OTP_ADMIN_CHANNEL,
             3 : OtpDoGlobals.OTP_SYSADMIN_CHANNEL,
-        }
-        self.chatMode2prefix = {
+    }
+    chatMode2prefix = {
             1 : "[MOD] ",
             2 : "[ADMIN] ",
             3 : "[SYSADMIN] ",
-        }
-
+    }
+   
+    def announceGenerate(self):
+        DistributedObjectGlobalUD.announceGenerate(self)
+ 
+        self.offenses = {}
+ 
     def chatMessage(self, message, chatMode):
         sender = self.air.getAvatarIdFromSender()
-
         if sender == 0:
-            self.air.writeServerEvent('suspicious', accId=self.air.getAccountIdFromSender(),
-                                      issue='Account sent chat without an avatar', message=message)
+            self.air.writeServerEvent('suspicious', self.air.getAccountIdFromSender(),
+                                      'Account sent chat without an avatar', message)
             return
-
-        self.air.writeServerEvent('chat-said', avId=sender, chatMode=chatMode, msg=message)
-
-        if chatMode != 0:
-            if message.startswith('.'):
-                message = '.' + self.chatMode2prefix.get(chatMode, "") + message[1:]
-            else:
-                message = self.chatMode2prefix.get(chatMode, "") + message
-
+ 
+        if chatMode == 0:
+            if self.detectBadWords(self.air.getMsgSender(), message):
+                return
+ 
+        self.air.writeServerEvent('chat-said', sender, message)
+ 
         DistributedAvatar = self.air.dclassesByName['DistributedAvatarUD']
-        dg = DistributedAvatar.aiFormatUpdate('setTalk', sender, self.chatMode2channel.get(chatMode, sender), self.air.ourChannel, [message])
+        dg = DistributedAvatar.aiFormatUpdate('setTalk', sender, sender,
+                                              self.air.ourChannel,
+                                              [message])
         self.air.send(dg)
+ 
+    def detectBadWords(self, sender, message):
+        words = message.split()
+        print words
+        for word in words:
+            if word.lower() in BLACKLIST:
+                accountId = (sender >> 32) & 0xFFFFFFFF
+                avId = sender & 0xFFFFFFFF
+               
+                if not sender in self.offenses:
+                    self.offenses[sender] = 0
+                   
+                if self.air.friendsManager.getToonAccess(avId) < 300:
+                    self.offenses[sender] += 1
+               
+                if self.offenses[sender] >= 3:
+                    msg = 'Banned'    
+                   
+                else:
+                    msg = OFFENSE_MSGS[self.offenses[sender]] % word
+                    dclass = self.air.dclassesByName['ClientServicesManagerUD']
+                    dg = dclass.aiFormatUpdate('systemMessage',
+                               OtpDoGlobals.OTP_DO_ID_CLIENT_SERVICES_MANAGER,
+                               sender, 1000000, [msg])
+                    self.air.send(dg)
+                    #self.air.banManager.ban(sender, 2, 'language')
+                   
+                self.air.writeServerEvent('chat-offense', accountId, word=word, num=self.offenses[sender], msg=msg)
+                if self.offenses[sender] >= 3:
+                    del self.offenses[sender]
+                   
+                return 1
+               
+        return 0

@@ -46,12 +46,12 @@ from toontown.racing.LeaderboardMgrAI import LeaderboardMgrAI
 from toontown.pets.PetManagerAI import PetManagerAI
 from toontown.safezone.SafeZoneManagerAI import SafeZoneManagerAI
 from toontown.suit.SuitInvasionManagerAI import SuitInvasionManagerAI
-from toontown.groups.GroupManagerAI import GroupManagerAI
 from toontown.toon import NPCToons
 from toontown.toonbase import ToontownGlobals
 from toontown.tutorial.TutorialManagerAI import TutorialManagerAI
 from toontown.uberdog.DistributedPartyManagerAI import DistributedPartyManagerAI
-from toontown.uberdog.DistributedLobbyManagerAI import DistributedLobbyManagerAI
+from toontown.uberdog.TopToonsManagerAI import TopToonsManagerAI
+#from toontown.uberdog.DistributedLobbyManagerAI import DistributedLobbyManagerAI
 
 class ToontownAIRepository(ToontownInternalRepository):
     def __init__(self, baseChannel, stateServerChannel, districtName):
@@ -71,7 +71,6 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.mintMgr = None
         self.lawOfficeMgr = None
         self.countryClubMgr = None
-        self.groupManager = GroupManagerAI(self)
 
         self.zoneAllocator = UniqueIdAllocator(ToontownGlobals.DynamicZonesBegin,
                                                ToontownGlobals.DynamicZonesEnd)
@@ -86,6 +85,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.wantCogbuildings = self.config.GetBool('want-cogbuildings', True)
         self.wantCogdominiums = self.config.GetBool('want-cogdominiums', True)
         self.wantTrackClsends = self.config.GetBool('want-track-clsends', False)
+        self.wantTopToons = self.config.GetBool('want-top-toons', True)
         self.baseXpMultiplier = self.config.GetFloat('base-xp-multiplier', 1.0)
 
         self.cogSuitMessageSent = False
@@ -103,7 +103,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.tutorialManager.generateWithRequired(2)
         self.friendManager = FriendManagerAI(self)
         self.friendManager.generateWithRequired(2)
-        self.questManager = QuestManagerAI(self)
+        self.questManager = QuestManagerAI(self)       
         self.banManager = BanManagerAI.BanManagerAI(self)
         self.suitInvasionManager = SuitInvasionManagerAI(self)
         self.blackCatMgr = DistributedBlackCatMgrAI(self)
@@ -119,7 +119,8 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.codeRedemptionMgr.generateWithRequired(2)
         self.buildingQueryMgr = DistributedBuildingQueryMgrAI(self)
         self.buildingQueryMgr.generateWithRequired(2)
-        self.groupManager.generateWithRequired(2)
+        if self.wantTopToons:
+            self.topToonsMgr = TopToonsManagerAI(self)
         if self.wantKarts:
             self.leaderboardMgr = LeaderboardMgrAI(self)
         if self.wantFishing:
@@ -136,10 +137,10 @@ class ToontownAIRepository(ToontownInternalRepository):
             self.partyManager.generateWithRequired(2)
             self.globalPartyMgr = self.generateGlobalObject(
                 OTP_DO_ID_GLOBAL_PARTY_MANAGER, 'GlobalPartyManager')
-        self.lobbyManager = DistributedLobbyManagerAI(self)
-        self.lobbyManager.generateWithRequired(2)
-        self.globalLobbyMgr = self.generateGlobalObject(
-            OTP_DO_ID_GLOBAL_LOBBY_MANAGER, 'GlobalLobbyManager')
+        #self.lobbyManager = DistributedLobbyManagerAI(self)
+        #self.lobbyManager.generateWithRequired(2)
+        #self.globalLobbyMgr = self.generateGlobalObject(
+        #    OTP_DO_ID_GLOBAL_LOBBY_MANAGER, 'GlobalLobbyManager')
 
     def createSafeZones(self):
         NPCToons.generateZone2NpcDict()
@@ -178,6 +179,7 @@ class ToontownAIRepository(ToontownInternalRepository):
             self.cogHeadquarters.append(BossbotHQAI.BossbotHQAI(self))
 
     def handleConnected(self):
+        ToontownInternalRepository.handleConnected(self)
         self.districtId = self.allocateChannel()
         self.notify.info('Creating ToontownDistrictAI(%d)...' % self.districtId)
         self.distributedDistrict = ToontownDistrictAI(self)

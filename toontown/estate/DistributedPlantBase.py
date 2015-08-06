@@ -44,12 +44,6 @@ class DistributedPlantBase(DistributedLawnDecor.DistributedLawnDecor):
         DistributedLawnDecor.DistributedLawnDecor.setupShadow(self)
         self.adjustWaterIndicator()
 
-    def setOwnerPlot(self, owner):
-        self.ownerPlot = owner
-
-    def getOwnerPlot(self):
-        return self.ownerPlot
-
     def setTypeIndex(self, typeIndex):
         self.typeIndex = typeIndex
         self.attributes = GardenGlobals.PlantAttributes[typeIndex]
@@ -69,9 +63,7 @@ class DistributedPlantBase(DistributedLawnDecor.DistributedLawnDecor):
         self.waterLevel = waterLevel
 
     def getWaterLevel(self):
-        if hasattr(self, 'waterLevel'):
-            return self.waterLevel
-        return 0
+        return self.waterLevel
 
     def setGrowthLevel(self, growthLevel):
         self.growthLevel = growthLevel
@@ -105,11 +97,11 @@ class DistributedPlantBase(DistributedLawnDecor.DistributedLawnDecor):
 
     def handleWatering(self):
         self.startInteraction()
-        self.sendUpdate('waterPlant', [localAvatar.doId])
+        self.sendUpdate('waterPlant')
 
     def __handleWatering(self, plantToWaterId):
         if plantToWaterId == self.doId:
-            self.sendUpdate('waterPlant', [localAvatar.doId])
+            self.sendUpdate('waterPlant')
         else:
             self.notify.debug('not sending water plant')
 

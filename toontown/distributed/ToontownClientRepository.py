@@ -30,6 +30,7 @@ from toontown.toonbase.ToontownGlobals import *
 from toontown.distributed import DelayDelete
 from toontown.friends import FriendHandle
 from toontown.friends import FriendsListPanel
+from toontown.friends import ToontownFriendSecret
 from toontown.login import AvatarChooser
 from toontown.makeatoon import MakeAToon
 from toontown.pets import DistributedPet, PetDetail, PetHandle
@@ -184,7 +185,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         TexturePool.garbageCollect()
         self.sendSetAvatarIdMsg(0)
         self.clearFriendState()
-        self.startHeartbeat()
         if self.music == None and base.musicManagerIsValid:
             self.music = base.musicManager.getSound('phase_3/audio/bgm/tt_theme.ogg')
             if self.music:
@@ -409,6 +409,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         if self.objectManager != None:
             self.objectManager.destroy()
             self.objectManager = None
+        ToontownFriendSecret.unloadFriendSecret()
         FriendsListPanel.unloadFriendsList()
         messenger.send('cancelFriendInvitation')
         base.removeGlitchMessage()
@@ -664,7 +665,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
 
     def removeFriend(self, avatarId):
         self.ttsFriendsManager.d_removeFriend(avatarId)
-        base.localAvatar.removeTrueFriends(avatarId)
 
     def clearFriendState(self):
         self.friendsMap = {}

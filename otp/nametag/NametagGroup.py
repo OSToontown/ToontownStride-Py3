@@ -2,18 +2,16 @@ from pandac.PandaModules import *
 from NametagConstants import *
 from Nametag3d import *
 from Nametag2d import *
+import subprocess
 
 class NametagGroup:
     CCNormal = CCNormal
-    CCNoChat = CCNoChat
     CCNonPlayer = CCNonPlayer
     CCSuit = CCSuit
     CCToonBuilding = CCToonBuilding
     CCSuitBuilding = CCSuitBuilding
     CCHouseBuilding = CCHouseBuilding
     CCSpeedChat = CCSpeedChat
-    CCFreeChat = CCFreeChat
-    CCAdmin = CCAdmin
 
     CHAT_TIMEOUT_MAX = 12.0
     CHAT_TIMEOUT_MIN = 4.0
@@ -244,6 +242,9 @@ class NametagGroup:
         tag.chatFlags = self.chatFlags
         tag.avatar = self.avatar
         tag.icon = self.icon
+        
+        if settings['talk2speech']:
+            subprocess.Popen('espeak "%s"' % tag.chatString)
 
         tag.update()
 

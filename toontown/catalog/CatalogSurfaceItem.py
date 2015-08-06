@@ -24,11 +24,10 @@ class CatalogSurfaceItem(CatalogAtticItem.CatalogAtticItem):
         return 1
 
     def recordPurchase(self, avatar, optional):
-        self.giftTag = None
         house, retcode = self.getHouseInfo(avatar)
         if retcode >= 0:
             house.addWallpaper(self)
         return retcode
 
     def getDeliveryTime(self):
-        return 1
+        return 60

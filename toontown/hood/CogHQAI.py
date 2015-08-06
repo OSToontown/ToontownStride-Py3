@@ -61,7 +61,7 @@ class CogHQAI:
             doorIndex=intDoorIndex, lockValue=lock)
         intDoor.zoneId = destinationZone
 
-        extDoor = DistributedCogHQExteriorDoorAI.DistributedCogHQExteriorDoorAI(
+        extDoor = DistributedCogHQDoorAI.DistributedCogHQDoorAI(
             self.air, 0, DoorTypes.EXT_COGHQ, destinationZone,
             doorIndex=extDoorIndex, lockValue=lock)
 
