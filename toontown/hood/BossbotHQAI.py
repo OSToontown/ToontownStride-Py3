@@ -37,14 +37,13 @@ class BossbotHQAI(CogHQAI.CogHQAI):
             (-48.44, 15.308, 0)
         )
         hprList = ((110.815, 0, 0), (61.231, 0, 0), (-105.481, 0, 0))
-        mins = ToontownGlobals.FactoryLaffMinimums[3]
         for cogCourse in xrange(len(posList)):
             pos = posList[cogCourse]
             hpr = hprList[cogCourse]
             cogKart = DistributedCogKartAI.DistributedCogKartAI(
                 self.air, cogCourse,
                 pos[0], pos[1], pos[2], hpr[0], hpr[1], hpr[2],
-                self.air.countryClubMgr, minLaff=mins[cogCourse])
+                self.air.countryClubMgr)
             cogKart.generateWithRequired(self.zoneId)
             self.cogKarts.append(cogKart)
 

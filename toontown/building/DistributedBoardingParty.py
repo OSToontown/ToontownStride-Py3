@@ -198,17 +198,10 @@ class DistributedBoardingParty(DistributedObject.DistributedObject, BoardingPart
             self.groupInviteePanel = None
         return
 
-    def postInviteNotQualify(self, avId, reason, elevatorId):
+    def postInviteNotQualify(self, avId, reason):
         messenger.send('updateGroupStatus')
         rejectText = ''
-        minLaff = TTLocalizer.BoardingMore
-        if elevatorId:
-            elevator = base.cr.doId2do.get(elevatorId)
-            if elevator:
-                minLaff = elevator.minLaff
         if avId == localAvatar.doId:
-            if reason == BoardingPartyBase.BOARDCODE_MINLAFF:
-                rejectText = TTLocalizer.BoardingInviteMinLaffInviter % minLaff
             if reason == BoardingPartyBase.BOARDCODE_PROMOTION:
                 rejectText = TTLocalizer.BoardingInvitePromotionInviter
         else:
@@ -217,8 +210,6 @@ class DistributedBoardingParty(DistributedObject.DistributedObject, BoardingPart
                 avatarNameText = avatar.name
             else:
                 avatarNameText = ''
-            if reason == BoardingPartyBase.BOARDCODE_MINLAFF:
-                rejectText = TTLocalizer.BoardingInviteMinLaffInvitee % (avatarNameText, minLaff)
             if reason == BoardingPartyBase.BOARDCODE_PROMOTION:
                 rejectText = TTLocalizer.BoardingInvitePromotionInvitee % avatarNameText
             if reason == BoardingPartyBase.BOARDCODE_BATTLE:
@@ -229,8 +220,8 @@ class DistributedBoardingParty(DistributedObject.DistributedObject, BoardingPart
                 rejectText = TTLocalizer.BoardingInviteePendingIvite % avatarNameText
             if reason == BoardingPartyBase.BOARDCODE_IN_ELEVATOR:
                 rejectText = TTLocalizer.BoardingInviteeInElevator % avatarNameText
-            if reason == BoardingPartyBase.BOARDCODE_GROUPS_TO_LARGE: # JBS
-                rejectText = TTLocalizer.BoardingGroupsToLarge % avatarNameText
+            if reason == BoardingPartyBase.BOARDCODE_GROUPS_TOO_LARGE: # JBS
+                rejectText = TTLocalizer.BoardingGroupsTooLarge % avatarNameText
         if self.inviterPanels.isInvitingPanelIdCorrect(avId) or avId == localAvatar.doId:
             self.inviterPanels.destroyInvitingPanel()
         self.showMe(rejectText)
@@ -316,23 +307,8 @@ class DistributedBoardingParty(DistributedObject.DistributedObject, BoardingPart
 
                     avatarText += secondLastName + ' ' + TTLocalizer.And + ' ' + lastName
             return avatarText
-
-        if reason == BoardingPartyBase.BOARDCODE_MINLAFF:
-            self.notify.debug("%s 's group cannot board because it does not have enough laff points." % leaderId)
-            elevator = base.cr.doId2do.get(elevatorId)
-            if elevator:
-                minLaffPoints = elevator.minLaff
-            else:
-                minLaffPoints = TTLocalizer.BoardingMore
-            if leaderId in avatarsFailingRequirements:
-                rejectText = TTLocalizer.BoardcodeMinLaffLeader % minLaffPoints
-            else:
-                avatarNameText = getAvatarText(avatarsFailingRequirements)
-                if len(avatarsFailingRequirements) == 1:
-                    rejectText = TTLocalizer.BoardcodeMinLaffNonLeaderSingular % (avatarNameText, minLaffPoints)
-                else:
-                    rejectText = TTLocalizer.BoardcodeMinLaffNonLeaderPlural % (avatarNameText, minLaffPoints)
-        elif reason == BoardingPartyBase.BOARDCODE_PROMOTION:
+            
+        if reason == BoardingPartyBase.BOARDCODE_PROMOTION:
             self.notify.debug("%s 's group cannot board because it does not have enough promotion merits." % leaderId)
             if leaderId in avatarsFailingRequirements:
                 rejectText = TTLocalizer.BoardcodePromotionLeader

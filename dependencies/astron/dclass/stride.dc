@@ -1836,7 +1836,6 @@ dclass DistributedElevator : DistributedObject {
   requestExit() airecv clsend;
   setElevatorTripId(uint32) required broadcast ram;
   setAntiShuffle(uint8) required broadcast ram;
-  setMinLaff(uint8) required broadcast ram;
 };
 
 dclass DistributedElevatorFSM : DistributedObject {
@@ -1863,7 +1862,6 @@ dclass DistributedElevatorFSM : DistributedObject {
   requestExit() airecv clsend;
   setElevatorTripId(uint32) required broadcast ram;
   setAntiShuffle(uint8) required broadcast ram;
-  setMinLaff(uint8) required broadcast ram;
 };
 
 dclass DistributedElevatorFloor : DistributedElevatorFSM {
@@ -1939,7 +1937,7 @@ dclass DistributedBoardingParty : DistributedObject {
   postSizeReject(uint32, uint32, uint32) broadcast;
   postInviteAccepted(uint32) broadcast;
   postInviteDelcined(uint32) broadcast;
-  postInviteNotQualify(uint32, int8, uint32) broadcast;
+  postInviteNotQualify(uint32, int8) broadcast;
   postAlreadyInGroup() broadcast;
   postGroupDissolve(uint32, uint32, uint32 [], uint8) broadcast;
   postMessageAcceptanceFailed(uint32, int8) broadcast;
