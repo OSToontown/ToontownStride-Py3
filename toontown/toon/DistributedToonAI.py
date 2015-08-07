@@ -4843,7 +4843,7 @@ def dna(part, value):
         return 'Bottom texture color index set to: ' + str(dna.botTexColor)
 
     if part == 'show':
-        return dna.asTuple()
+        return dna.asNpcTuple() if value else dna.asTuple()
     if part == 'showrandom':
         return NPCToons.getRandomDNA(time.time(), value)
     return 'Invalid part: ' + part

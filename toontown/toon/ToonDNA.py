@@ -2703,6 +2703,22 @@ class ToonDNA:
          self.sleeveTexColor,
          self.botTex,
          self.botTexColor)
+    
+    def asNpcTuple(self):
+        return (self.head,
+         self.torso,
+         self.legs,
+         self.gender,
+         allColorsList.index(self.armColor),
+         allColorsList.index(self.gloveColor),
+         allColorsList.index(self.legColor),
+         allColorsList.index(self.headColor),
+         self.topTex,
+         self.topTexColor,
+         self.sleeveTex,
+         self.sleeveTexColor,
+         self.botTex,
+         self.botTexColor)
 
     def getType(self):
         if self.type == 't':
