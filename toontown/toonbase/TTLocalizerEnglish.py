@@ -8719,6 +8719,10 @@ ColorAdvanced = 'Advanced'
 ColorBasic = 'Basic'
 ColorAll = 'All'
 
+ShardPagePreferred = 'Preferred'
+ShardPageShardTitle = '%s Population: %s'
+ShardPageTeleport = 'Teleport to\n%s'
+
 Blacklist = [
  "$1ut",
  "$h1t",

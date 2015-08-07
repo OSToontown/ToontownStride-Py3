@@ -813,7 +813,7 @@ class OTPClientRepository(ClientRepositoryBase):
             district = None
         if not district:
             self.distributedDistrict = self.getStartingDistrict()
-            if self.distributedDistrict is None:
+            if not self.distributedDistrict:
                 self.loginFSM.request('noShards')
                 return
             shardId = self.distributedDistrict.doId
@@ -1030,26 +1030,26 @@ class OTPClientRepository(ClientRepositoryBase):
         pass
 
     def getStartingDistrict(self):
-        district = None
-        if len(self.activeDistrictMap.keys()) == 0:
+        if not self.activeDistrictMap:
             self.notify.info('no shards')
             return
 
         maxPop = config.GetInt('shard-mid-pop', 300)
+        preferred = settings.get('preferredShard', None)
+        
+        if preferred:
+            for shard in self.activeDistrictMap.values():
+                if shard.available and shard.name == preferred and shard.avatarCount < maxPop:
+                    return shard
 
-        # Join the least populated district.
         for shard in self.activeDistrictMap.values():
-            if district:
-                if shard.avatarCount < district.avatarCount and shard.available:
-                    if shard.avatarCount < maxPop:
-                        district = shard
-            else:
-                if shard.available:
-                    if shard.avatarCount < maxPop:
-                        district = shard
+            if shard.available and shard.avatarCount < maxPop:
+                district = shard
+                maxPop = district.avatarCount
 
-        if district is not None:
+        if district:
             self.notify.debug('chose %s: pop %s' % (district.name, district.avatarCount))
+
         return district
 
     def getShardName(self, shardId):

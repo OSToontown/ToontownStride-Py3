@@ -87,6 +87,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
         self.groupDialog = None
 
     def load(self):
+        matchGui = loader.loadModel('phase_3.5/models/gui/matching_game_gui')
         main_text_scale = 0.06
         title_text_scale = 0.12
         self.title = DirectLabel(parent=self, relief=None, text=TTLocalizer.ShardPageTitle, text_scale=title_text_scale, textMayChange=0, pos=(0, 0, 0.6))
@@ -96,6 +97,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
         totalPop_ycoord = shardPop_ycoord - 0.44
         self.districtInfo = NodePath('Selected-Shard-Info')
         self.districtInfo.reparentTo(self)
+        self.preferredButton = DirectButton(parent=self, relief=None, image=matchGui.find('**/minnieCircle'), pos=(0.1, 0, -0.575), scale=0.35, text=TTLocalizer.ShardPagePreferred, text_scale=0.11, text_pos=(0, -0.2), command=self.setPreferredShard)
         self.totalPopulationText = DirectLabel(parent=self.districtInfo, relief=None, text=TTLocalizer.ShardPagePopulationTotal % 1, text_scale=main_text_scale, text_wordwrap=8, textMayChange=1, text_align=TextNode.ACenter, pos=(0.4247, 0, totalPop_ycoord))
         if self.showTotalPop:
             self.totalPopulationText.show()
@@ -112,6 +114,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
         self.buttonXstart = self.itemFrameXorigin + 0.293
         self.regenerateScrollList()
         scrollTitle = DirectFrame(parent=self.scrollList, text=TTLocalizer.ShardPageScrollTitle, text_scale=main_text_scale, text_align=TextNode.ACenter, relief=None, pos=(self.buttonXstart, 0, self.itemFrameZorigin + 0.127))
+        matchGui.removeNode()
 
     def firstLoadShard(self, buttonTuple):
         curShardTuples = base.cr.listActiveShards()
@@ -258,9 +261,9 @@ class ShardPage(ShtikerPage.ShtikerPage):
         popText = self.getPopText(shardPop)
         districtInfoNode = self.districtInfo.attachNewNode('district-info')
         self.districtStatusLabel = DirectLabel(parent=districtInfoNode, relief=None, pos=(0.4247, 0, 0.45), text=popText, text_scale=0.09, text_fg=Vec4(0, 0, 0, 1), textMayChange=1)
-        pText = '%s Population: %s' % (shardName, str(shardPop))
+        pText = TTLocalizer.ShardPageShardTitle % (shardName, str(shardPop))
         self.populationStatusLabel = DirectLabel(parent=districtInfoNode, relief=None, pos=(0.4247, 0, 0.38), text=pText, text_scale=0.04, text_fg=Vec4(0, 0, 0, 1), textMayChange=1)
-        tText = 'Teleport to\n%s' % shardName
+        tText = TTLocalizer.ShardPageTeleport % shardName
         tImage = loader.loadModel('phase_4/models/gui/purchase_gui')
         tImage.setSz(1.35)
         self.shardTeleportButton = DirectButton(parent=districtInfoNode, relief=None, pos=(0.4247, 0, 0.25), image=(tImage.find('**/PurchScrn_BTN_UP'), tImage.find('**/PurchScrn_BTN_DN'), tImage.find('**/PurchScrn_BTN_RLVR')), text=tText, text_scale=0.065, text_pos=(0.0, 0.015), text_fg=Vec4(0, 0, 0, 1), textMayChange=1, command=self.choseShard, extraArgs=[shardId])
@@ -272,6 +275,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
         self.currentO = [shardPop, shardName, shardId]
         self.currentBTL['state'] = DGG.DISABLED
         self.currentBTR['state'] = DGG.DISABLED
+        self.preferredButton.setColor((0, 1, 0, 1) if settings.get('preferredShard') == shardName else (1, 0, 0, 1))
 
         if shardId == base.localAvatar.defaultShard:
             self.shardTeleportButton['state'] = DGG.DISABLED
@@ -487,3 +491,11 @@ class ShardPage(ShtikerPage.ShtikerPage):
                 place = base.cr.playGame.hood.place
 
         place.requestTeleport(canonicalHoodId, canonicalHoodId, shardId, -1)
+    
+    def setPreferredShard(self):
+        if settings.get('preferredShard', '') == self.currentO[1]:
+            self.preferredButton.setColor(1, 0, 0, 1)
+            del settings['preferredShard']
+        else:
+            self.preferredButton.setColor(0, 1, 0, 1)
+            settings['preferredShard'] = self.currentO[1]
