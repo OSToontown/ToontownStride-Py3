@@ -316,8 +316,6 @@ class DistributedElevatorFSM(DistributedObject.DistributedObject, FSM):
         if hasattr(base.localAvatar, 'elevatorNotifier'):
             if reason == REJECT_SHUFFLE:
                 base.localAvatar.elevatorNotifier.showMe(TTLocalizer.ElevatorHoppedOff)
-            elif reason == REJECT_MINLAFF:
-                base.localAvatar.elevatorNotifier.showMe(TTLocalizer.ElevatorMinLaff % self.minLaff)
             elif reason == REJECT_PROMOTION:
                 base.localAvatar.elevatorNotifier.showMe(TTLocalizer.BossElevatorRejectMessage)
             elif reason == REJECT_BLOCKED_ROOM:
@@ -474,12 +472,6 @@ class DistributedElevatorFSM(DistributedObject.DistributedObject, FSM):
 
     def getAntiShuffle(self):
         return self.antiShuffle
-
-    def setMinLaff(self, minLaff):
-        self.minLaff = minLaff
-
-    def getMinLaff(self):
-        return self.minLaff
 
     def getDestName(self):
         return None

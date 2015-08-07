@@ -3057,10 +3057,8 @@ ElevatorHopOff = 'Hop off'
 ElevatorStayOff = "If you hop off, you'll need to wait\nfor the elevator to leave or empty."
 ElevatorLeaderOff = 'Only your leader can decide when to hop off.'
 ElevatorHoppedOff = 'You need to wait for the next elevator.'
-ElevatorMinLaff = 'You need %s laff points to ride this elevator.'
 ElevatorHopOK = 'Okay'
 ElevatorGroupMember = 'Only your group leader can\n decide when to board.'
-KartMinLaff = 'You need %s laff points to ride this kart'
 CogsIncExt = ', Inc.'
 CogsIncModifier = '%s' + CogsIncExt
 CogsInc = Cogs.upper() + CogsIncExt
@@ -5591,7 +5589,6 @@ CatalogExitButtonText = 'Hang Up'
 CatalogPastButtonText = 'To Past Items'
 TutorialHQOfficerName = 'HQ Harry'
 NPCToonNames = {20000: 'Tutorial Tom',
- 998: 'Talkative Tyler',
  999: 'Toon Tailor',
  1000: lToonHQ,
  20001: Flippy,
@@ -5607,7 +5604,6 @@ NPCToonNames = {20000: 'Tutorial Tom',
  2009: lHQOfficerF,
  2010: lHQOfficerF,
  2012: 'Fisherman Freddy',
- 2018: 'Duff..err..TIP Man',
  2013: 'Clerk Poppy',
  2014: 'Clerk Peppy',
  2015: 'Clerk Pappy',
@@ -8080,9 +8076,6 @@ QuitBoardingPartyLeader = 'Disband'
 QuitBoardingPartyNonLeader = 'Leave'
 QuitBoardingPartyConfirm = 'Are you sure you want to quit this Boarding Group?'
 BoardcodeMissing = 'Something went wrong; try again later.'
-BoardcodeMinLaffLeader = 'Your group cannot board because you have less than %s laff points.'
-BoardcodeMinLaffNonLeaderSingular = 'Your group cannot board because %s has less than %s laff points.'
-BoardcodeMinLaffNonLeaderPlural = 'Your group cannot board because %s have less than %s laff points.'
 BoardcodePromotionLeader = 'Your group cannot board because you do not have enough promotion merits.'
 BoardcodePromotionNonLeaderSingular = 'Your group cannot board because %s does not have enough promotion merits.'
 BoardcodePromotionNonLeaderPlural = 'Your group cannot board because %s do not have enough promotion merits.'
@@ -8090,8 +8083,6 @@ BoardcodeSpace = 'Your group cannot board because there is not enough space.'
 BoardcodeBattleLeader = 'Your group cannot board because you are in battle.'
 BoardcodeBattleNonLeaderSingular = 'Your group cannot board because %s is in battle.'
 BoardcodeBattleNonLeaderPlural = 'Your group cannot board because %s are in battle.'
-BoardingInviteMinLaffInviter = 'You need %s Laff Points before being a member of this Boarding Group.'
-BoardingInviteMinLaffInvitee = '%s needs %s Laff Points before being a member of this Boarding Group.'
 BoardingInvitePromotionInviter = 'You need to earn a promotion before being a member of this Boarding Group.'
 BoardingInvitePromotionInvitee = '%s needs to earn a promotion before being a member of this Boarding Group.'
 BoardingInviteeInDiffGroup = '%s is already in a different Boarding Group.'
@@ -8099,7 +8090,7 @@ BoardingInviteeInKickOutList = '%s had been removed by your leader. Only the lea
 BoardingInviteePendingIvite = '%s has a pending invite; try again later.'
 BoardingInviteeInElevator = '%s is currently busy; try again later.'
 BoardingInviteGroupFull = 'Your Boarding Group is already full.'
-BoardingGroupsToLarge = '%s is already in a different Boarding Group that is too large to merge.'
+BoardingGroupsTooLarge = '%s is already in a different Boarding Group that is too large to merge.'
 BoardingAlreadyInGroup = 'You cannot accept this invitation because you are part of another Boarding Group.'
 BoardingGroupAlreadyFull = 'You cannot accept this invitation because the group is already full.'
 BoardingKickOutConfirm = 'Are you sure you want to remove %s?'
@@ -8727,6 +8718,10 @@ ColorfulToon = 'Vibrant'
 ColorAdvanced = 'Advanced'
 ColorBasic = 'Basic'
 ColorAll = 'All'
+
+ShardPagePreferred = 'Preferred'
+ShardPageShardTitle = '%s Population: %s'
+ShardPageTeleport = 'Teleport to\n%s'
 
 Blacklist = [
  "$1ut",

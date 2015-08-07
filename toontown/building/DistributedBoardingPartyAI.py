@@ -105,17 +105,17 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
         merger = False
         if invitee and invitee.battleId != 0:
             reason = BoardingPartyBase.BOARDCODE_BATTLE
-            self.sendUpdateToAvatarId(inviterId, 'postInviteNotQualify', [inviteeId, reason, 0])
+            self.sendUpdateToAvatarId(inviterId, 'postInviteNotQualify', [inviteeId, reason])
             self.sendUpdateToAvatarId(inviteeId, 'postMessageInvitationFailed', [inviterId])
             return
         if self.hasPendingInvite(inviteeId):
             reason = BoardingPartyBase.BOARDCODE_PENDING_INVITE
-            self.sendUpdateToAvatarId(inviterId, 'postInviteNotQualify', [inviteeId, reason, 0])
+            self.sendUpdateToAvatarId(inviterId, 'postInviteNotQualify', [inviteeId, reason])
             self.sendUpdateToAvatarId(inviteeId, 'postMessageInvitationFailed', [inviterId])
             return
         if self.__isInElevator(inviteeId):
             reason = BoardingPartyBase.BOARDCODE_IN_ELEVATOR
-            self.sendUpdateToAvatarId(inviterId, 'postInviteNotQualify', [inviteeId, reason, 0])
+            self.sendUpdateToAvatarId(inviterId, 'postInviteNotQualify', [inviteeId, reason])
             self.sendUpdateToAvatarId(inviteeId, 'postMessageInvitationFailed', [inviterId])
             return
         if self.hasActiveGroup(inviteeId):
@@ -127,7 +127,7 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
                 # group merge already requested?
                 if self.hasPendingInvite(inviteeLeaderId):
                     reason = BoardingPartyBase.BOARDCODE_PENDING_INVITE
-                    self.sendUpdateToAvatarId(inviterId, 'postInviteNotQualify', [inviteeId, reason, 0])
+                    self.sendUpdateToAvatarId(inviterId, 'postInviteNotQualify', [inviteeId, reason])
                     self.sendUpdateToAvatarId(inviteeId, 'postMessageInvitationFailed', [inviterId])
                     return
 
@@ -137,13 +137,13 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
                     inviteeId = inviteeLeaderId
                     merger = True
                 else:
-                    reason = BoardingPartyBase.BOARDCODE_GROUPS_TO_LARGE
-                    self.sendUpdateToAvatarId(inviterId, 'postInviteNotQualify', [inviteeId, reason, 0])
+                    reason = BoardingPartyBase.BOARDCODE_GROUPS_TOO_LARGE
+                    self.sendUpdateToAvatarId(inviterId, 'postInviteNotQualify', [inviteeId, reason])
                     self.sendUpdateToAvatarId(inviteeId, 'postMessageInvitationFailed', [inviterId])
                     return
             else:
                 reason = BoardingPartyBase.BOARDCODE_DIFF_GROUP
-                self.sendUpdateToAvatarId(inviterId, 'postInviteNotQualify', [inviteeId, reason, 0])
+                self.sendUpdateToAvatarId(inviterId, 'postInviteNotQualify', [inviteeId, reason])
                 self.sendUpdateToAvatarId(inviteeId, 'postMessageInvitationFailed', [inviterId])
                 return
         # Lets see what the invitee is currently doing
@@ -152,20 +152,16 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
         # I know there is an unexpected issue here when we are merging groups... lets think about this really hard..
         if len(self.elevatorIdList) == 1:
             if inviteeOkay:
-                if inviteeOkay == REJECT_MINLAFF:
-                    reason = BoardingPartyBase.BOARDCODE_MINLAFF
-                elif inviteeOkay == REJECT_PROMOTION:
+                if inviteeOkay == REJECT_PROMOTION:
                     reason = BoardingPartyBase.BOARDCODE_PROMOTION
-                self.sendUpdateToAvatarId(inviterId, 'postInviteNotQualify', [inviteeId, reason, self.elevatorIdList[0]])
+                self.sendUpdateToAvatarId(inviterId, 'postInviteNotQualify', [inviteeId, reason])
                 return
             else:
                 inviterOkay = self.checkBoard(inviterId, self.elevatorIdList[0])
                 if inviterOkay:
-                    if inviterOkay == REJECT_MINLAFF:
-                        reason = BoardingPartyBase.BOARDCODE_MINLAFF
-                    elif inviterOkay == REJECT_PROMOTION:
+                    if inviterOkay == REJECT_PROMOTION:
                         reason = BoardingPartyBase.BOARDCODE_PROMOTION
-                    self.sendUpdateToAvatarId(inviterId, 'postInviteNotQualify', [inviterId, reason, self.elevatorIdList[0]])
+                    self.sendUpdateToAvatarId(inviterId, 'postInviteNotQualify', [inviterId, reason])
                     return
         # Is the inviter already in the avIdDict?  It follows they either must be in a group or have a pending invite...
         if inviterId in self.avIdDict:
@@ -277,8 +273,8 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
                     return
                 # Lets make sure we still CAN merge them in
                 if ((len(self.getGroupMemberList(leaderId)) + len(self.getGroupMemberList(inviteeId))) > self.maxSize):
-                    reason = BoardingPartyBase.BOARDCODE_GROUPS_TO_LARGE
-                    self.sendUpdateToAvatarId(inviterId, 'postInviteNotQualify', [inviteeId, reason, 0])
+                    reason = BoardingPartyBase.BOARDCODE_GROUPS_TOO_LARGE
+                    self.sendUpdateToAvatarId(inviterId, 'postInviteNotQualify', [inviteeId, reason])
                     self.sendUpdateToAvatarId(inviteeId, 'postMessageInvitationFailed', [inviterId])
                     return
                 group = self.groupListDict.get(leaderId)
@@ -365,9 +361,7 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
                         avatar = simbase.air.doId2do.get(avId)
                         if avatar:
                             if elevator.checkBoard(avatar) != 0:
-                                if elevator.checkBoard(avatar) == REJECT_MINLAFF:
-                                    boardOkay = BoardingPartyBase.BOARDCODE_MINLAFF
-                                elif elevator.checkBoard(avatar) == REJECT_PROMOTION:
+                                if elevator.checkBoard(avatar) == REJECT_PROMOTION:
                                     boardOkay = BoardingPartyBase.BOARDCODE_PROMOTION
                                 avatarsFailingRequirements.append(avId)
                             elif avatar.battleId != 0:
@@ -382,8 +376,6 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
                             boardOkay = BoardingPartyBase.BOARDCODE_SPACE
         if boardOkay != BoardingPartyBase.BOARDCODE_OKAY:
             self.notify.debug('Something is wrong with the group board request')
-            if boardOkay == BoardingPartyBase.BOARDCODE_MINLAFF:
-                self.notify.debug('An avatar did not meet the elevator laff requirements')
             if boardOkay == BoardingPartyBase.BOARDCODE_PROMOTION:
                 self.notify.debug('An avatar did not meet the elevator promotion requirements')
             elif boardOkay == BoardingPartyBase.BOARDCODE_BATTLE:

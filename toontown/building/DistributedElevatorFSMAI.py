@@ -38,7 +38,7 @@ class DistributedElevatorFSMAI(DistributedObjectAI.DistributedObjectAI, FSM):
             'Opening'] }
     id = 0
 
-    def __init__(self, air, bldg, numSeats = 4, antiShuffle = 0, minLaff = 0):
+    def __init__(self, air, bldg, numSeats = 4, antiShuffle = 0):
         DistributedObjectAI.DistributedObjectAI.__init__(self, air)
         FSM.__init__(self, 'Elevator_%s_FSM' % self.id)
         self.type = ELEVATOR_NORMAL
@@ -50,7 +50,6 @@ class DistributedElevatorFSMAI(DistributedObjectAI.DistributedObjectAI, FSM):
             self.seats.append(None)
         self.accepting = 0
         self.setAntiShuffle(antiShuffle)
-        self.setMinLaff(minLaff)
         if self.antiShuffle:
             if not hasattr(simbase.air, 'elevatorTripId'):
                 simbase.air.elevatorTripId = 1
@@ -146,13 +145,9 @@ class DistributedElevatorFSMAI(DistributedObjectAI.DistributedObjectAI, FSM):
         return self.state
 
     def avIsOKToBoard(self, av):
-        if av.hp > self.minLaff:
-            pass
         return self.accepting
 
     def checkBoard(self, av):
-        if av.hp < self.minLaff:
-            return REJECT_MINLAFF
         return 0
 
     def requestBoard(self, *args):
@@ -275,9 +270,3 @@ class DistributedElevatorFSMAI(DistributedObjectAI.DistributedObjectAI, FSM):
 
     def getAntiShuffle(self):
         return self.antiShuffle
-
-    def setMinLaff(self, minLaff):
-        self.minLaff = minLaff
-
-    def getMinLaff(self):
-        return self.minLaff

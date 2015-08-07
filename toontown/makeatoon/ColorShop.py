@@ -285,10 +285,10 @@ class ColorShop(StateData.StateData):
         self.notify.debug('Entering changeColor')
         colorList = self.getColorList()
         newChoice = self.shuffleButton.getCurrChoice()
-        newHeadColorIndex = colorList.index(newChoice[0])
-        newArmColorIndex = colorList.index(newChoice[1])
-        newGloveColorIndex = colorList.index(newChoice[2])
-        newLegColorIndex = colorList.index(newChoice[3])
+        newHeadColorIndex = self.indexOf(colorList, newChoice[0], 25)
+        newArmColorIndex = self.indexOf(colorList, newChoice[1], 25)
+        newGloveColorIndex = self.indexOf(colorList, newChoice[2], 0)
+        newLegColorIndex = self.indexOf(colorList, newChoice[3], 25)
         self.__swapHeadColor(newHeadColorIndex - self.headChoice)
         if self.colorAll:
             self.__swapArmColor(newHeadColorIndex - self.armChoice)
@@ -298,6 +298,12 @@ class ColorShop(StateData.StateData):
             self.__swapArmColor(newArmColorIndex - self.armChoice)
             self.__swapGloveColor(newGloveColorIndex - self.gloveChoice)
             self.__swapLegColor(newLegColorIndex - self.legChoice)
+    
+    def indexOf(self, list, item, default):
+        try:
+            return list.index(item)
+        except:
+            return default
 
     def getCurrToonSetting(self):
         return [self.dna.headColor, self.dna.armColor, self.dna.gloveColor, self.dna.legColor]

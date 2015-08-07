@@ -10,8 +10,8 @@ import CogDisguiseGlobals
 
 class DistributedMintElevatorExtAI(DistributedElevatorExtAI.DistributedElevatorExtAI):
 
-    def __init__(self, air, bldg, mintId, antiShuffle = 0, minLaff = 0):
-        DistributedElevatorExtAI.DistributedElevatorExtAI.__init__(self, air, bldg, antiShuffle=antiShuffle, minLaff=minLaff)
+    def __init__(self, air, bldg, mintId, antiShuffle = 0):
+        DistributedElevatorExtAI.DistributedElevatorExtAI.__init__(self, air, bldg, antiShuffle=antiShuffle)
         self.mintId = mintId
         self.cogDept = ToontownGlobals.cogHQZoneId2deptIndex(self.mintId)
         self.type = ELEVATOR_MINT

@@ -1,4 +1,8 @@
 #!/usr/bin/env python2
+import gc
+
+gc.disable()
+
 import __builtin__
 
 __builtin__.process = 'client'
@@ -193,11 +197,15 @@ del version
 base.loader = base.loader
 __builtin__.loader = base.loader
 autoRun = ConfigVariableBool('toontown-auto-run', 1)
+
+gc.enable()
+gc.collect()
+
 if autoRun:
     try:
         base.run()
     except SystemExit:
-        raise
+        pass
     except:
-        print describeException()
-        raise
+        import traceback
+        traceback.print_exc()

@@ -11,8 +11,8 @@ from direct.directnotify import DirectNotifyGlobal
 class DistributedElevatorExtAI(DistributedElevatorAI.DistributedElevatorAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedElevatorExtAI')
 
-    def __init__(self, air, bldg, numSeats = 4, antiShuffle = 0, minLaff = 0):
-        DistributedElevatorAI.DistributedElevatorAI.__init__(self, air, bldg, numSeats, antiShuffle=antiShuffle, minLaff=minLaff)
+    def __init__(self, air, bldg, numSeats = 4, antiShuffle = 0):
+        DistributedElevatorAI.DistributedElevatorAI.__init__(self, air, bldg, numSeats, antiShuffle=antiShuffle)
         self.anyToonsBailed = 0
         self.boardingParty = None
         return

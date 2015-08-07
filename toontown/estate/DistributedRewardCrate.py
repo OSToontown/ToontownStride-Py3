@@ -10,6 +10,7 @@ class DistributedRewardCrate(DistributedFurnitureItem):
     def __init__(self, cr):
         DistributedFurnitureItem.__init__(self, cr)
         self.dialog = None
+        self.accept('exitingStoppedState', self.destroyDialog)
     
     def loadModel(self):
         model = DistributedFurnitureItem.loadModel(self)
