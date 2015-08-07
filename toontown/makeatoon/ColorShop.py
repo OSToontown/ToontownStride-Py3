@@ -220,6 +220,10 @@ class ColorShop(StateData.StateData):
         length = len(colorList)
         self.allChoice = (self.allChoice + offset) % length
         self.__updateScrollButtons(self.allChoice, length, self.allLButton, self.allRButton)
+        self.__updateScrollButtons(self.allChoice, length, self.headLButton, self.headRButton)
+        self.__updateScrollButtons(self.allChoice, length, self.armLButton, self.armRButton)
+        self.__updateScrollButtons(self.allChoice, length, self.gloveLButton, self.gloveRButton)
+        self.__updateScrollButtons(self.allChoice, length, self.legLButton, self.legRButton)
         newColor = colorList[self.allChoice]
         self.dna.headColor = newColor
         self.dna.armColor = newColor
