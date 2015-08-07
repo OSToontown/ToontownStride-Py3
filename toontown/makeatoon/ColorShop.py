@@ -28,6 +28,7 @@ class ColorShop(StateData.StateData):
         self.allParts = (TTLocalizer.ColorAll, TTLocalizer.ColorShopHead, TTLocalizer.ColorShopBody, TTLocalizer.ColorShopGloves, TTLocalizer.ColorShopLegs)
         if not hasattr(self, 'headChoice'):
             self.headChoice = colorList.index(self.dna.headColor)
+            self.allChoice = self.headChoice
             self.armChoice = colorList.index(self.dna.armColor)
             self.gloveChoice = colorList.index(self.dna.gloveColor)
             self.legChoice = colorList.index(self.dna.legColor)
@@ -217,15 +218,14 @@ class ColorShop(StateData.StateData):
     def __swapAllColor(self, offset):
         colorList = self.getColorList()
         length = len(colorList)
-        choice = (self.headChoice + offset) % length
-        self.__updateScrollButtons(choice, length, self.allLButton, self.allRButton)
-        self.__swapHeadColor(offset)
-        oldArmColorIndex = colorList.index(self.toon.style.armColor)
-        oldGloveColorIndex = colorList.index(self.toon.style.gloveColor)
-        oldLegColorIndex = colorList.index(self.toon.style.legColor)
-        self.__swapArmColor(choice - oldArmColorIndex)
-        self.__swapGloveColor(choice - oldGloveColorIndex)
-        self.__swapLegColor(choice - oldLegColorIndex)
+        self.allChoice = (self.allChoice + offset) % length
+        self.__updateScrollButtons(self.allChoice, length, self.allLButton, self.allRButton)
+        newColor = colorList[self.allChoice]
+        self.dna.headColor = newColor
+        self.dna.armColor = newColor
+        self.dna.gloveColor = newColor
+        self.dna.legColor = newColor
+        self.toon.swapToonColor(self.dna)
 
     def __swapHeadColor(self, offset):
         colorList = self.getColorList()
