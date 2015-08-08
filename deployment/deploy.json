@@ -4,5 +4,5 @@
   "panda3d": "b924139",
   "libpandadna": "a0047ce",
   "version-prefix": "ttstride-alpha-",
-  "server-resources": ["pdna", "dna", "xml", "txt", "dat", "bam", "ttf"]
+  "server-resources": ["pdna", "txt", "dat", "bam", "ttf"]
 }
