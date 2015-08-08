@@ -156,11 +156,6 @@ class BingoCardGui(DirectFrame):
             elif self.game.getGameState() & 1 << index:
                 self.cellGuiList[index].disable()
 
-    def disableCard(self):
-        self.stopCellBlinking()
-        for index in xrange(self.game.getCardSize()):
-            self.cellGuiList[index].disable()
-
     def enableCard(self, callback = None):
         self.notify.info('enable Bingo card')
         self.stopCellBlinking()

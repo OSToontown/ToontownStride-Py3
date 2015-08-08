@@ -5,7 +5,6 @@ import HouseGlobals
 import time, random
 
 from toontown.fishing.DistributedFishingPondAI import DistributedFishingPondAI
-from toontown.fishing.DistributedPondBingoManagerAI import DistributedPondBingoManagerAI
 from toontown.fishing import FishingTargetGlobals, FishGlobals
 from toontown.safezone import TreasureGlobals
 from toontown.safezone.SZTreasurePlannerAI import SZTreasurePlannerAI
@@ -505,11 +504,6 @@ class DistributedEstateAI(DistributedObjectAI):
         self.pond.setArea(ToontownGlobals.MyEstate)
         self.pond.generateWithRequired(self.zoneId)
         self.pond.start()
-
-        self.pond.bingoMgr = DistributedPondBingoManagerAI(simbase.air)
-        self.pond.bingoMgr.setPondDoId(self.pond.getDoId())
-        self.pond.bingoMgr.generateWithRequired(self.zoneId)
-        self.pond.bingoMgr.initTasks()
 
         treasureType, healAmount, spawnPoints, spawnRate, maxTreasures = TreasureGlobals.SafeZoneTreasureSpawns[ToontownGlobals.MyEstate]
         self.treasurePlanner = SZTreasurePlannerAI(self.zoneId, treasureType, healAmount, spawnPoints, spawnRate, maxTreasures)

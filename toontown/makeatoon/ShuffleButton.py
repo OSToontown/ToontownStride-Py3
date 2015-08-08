@@ -51,7 +51,6 @@ class ShuffleButton:
         self.incBtnShowLerp = LerpColorInterval(self.incBtn, self.lerpDuration, Vec4(1, 1, 1, 1), Vec4(1, 1, 1, 0))
         self.decBtnShowLerp = LerpColorInterval(self.decBtn, self.lerpDuration, Vec4(1, 1, 1, 1), Vec4(1, 1, 1, 0))
         self.__updateArrows()
-        return
 
     def unload(self):
         if self.showLerp:
