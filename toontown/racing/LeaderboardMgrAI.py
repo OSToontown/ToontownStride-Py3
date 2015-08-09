@@ -1,6 +1,7 @@
 from otp.ai.MagicWordGlobal import *
 from toontown.toonbase import TTLocalizer
 import RaceGlobals, operator, time
+from pymongo.errors import AutoReconnect
 
 class LeaderboardMgrAI:
 

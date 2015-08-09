@@ -8,6 +8,8 @@ from toontown.building import KartShopBuildingAI
 from toontown.building import PetshopBuildingAI
 from toontown.hood import ZoneUtil
 
+from pymongo.errors import AutoReconnect
+
 
 class DistributedBuildingMgrAI:
     notify = directNotify.newCategory('DistributedBuildingMgrAI')
