@@ -773,7 +773,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
             self.sosButton.show()
             self.passButton.show()
             self.fireButton.show()
-            if localAvatar.getPinkSlips() > 0:
+            if localAvatar.getPinkSlips():
                 self.fireButton['state'] = DGG.NORMAL
                 self.fireButton['image_color'] = Vec4(0, 0.6, 1, 1)
             else:

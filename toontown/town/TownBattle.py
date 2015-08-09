@@ -122,10 +122,6 @@ class TownBattle(StateData.StateData):
         self.SOSPetInfoPanel = TownBattleSOSPetInfoPanel.TownBattleSOSPetInfoPanel(self.SOSPetInfoPanelDoneEvent)
         self.fireCogPanelDoneEvent = 'fire-cog-panel-done'
         self.FireCogPanel = FireCogPanel.FireCogPanel(self.fireCogPanelDoneEvent)
-        self.cogFireCosts = [None,
-         None,
-         None,
-         None]
         self.toonPanels = (TownBattleToonPanel.TownBattleToonPanel(0),
          TownBattleToonPanel.TownBattleToonPanel(1),
          TownBattleToonPanel.TownBattleToonPanel(2),
@@ -460,11 +456,8 @@ class TownBattle(StateData.StateData):
         toonIds = map(lambda toon: toon.doId, toons)
         self.notify.debug('adjustCogsAndToons() toonIds: %s self.toons: %s' % (toonIds, self.toons))
         maxSuitLevel = 0
-        cogFireCostIndex = 0
         for cog in cogs:
             maxSuitLevel = max(maxSuitLevel, cog.getActualLevel())
-            self.cogFireCosts[cogFireCostIndex] = 1
-            cogFireCostIndex += 1
 
         creditLevel = maxSuitLevel
         resetActivateMode = 0
@@ -603,7 +596,7 @@ class TownBattle(StateData.StateData):
 
     def enterFire(self):
         canHeal, canTrap, canLure = self.checkHealTrapLure()
-        self.FireCogPanel.enter(self.numCogs, luredIndices=self.luredIndices, trappedIndices=self.trappedIndices, track=self.track, fireCosts=self.cogFireCosts)
+        self.FireCogPanel.enter(self.numCogs, luredIndices=self.luredIndices, trappedIndices=self.trappedIndices, track=self.track)
         self.accept(self.fireCogPanelDoneEvent, self.__handleCogFireDone)
         return None
 
