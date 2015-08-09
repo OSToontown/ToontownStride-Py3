@@ -10,10 +10,10 @@ class LeaderboardMgrAI:
         if not self.air.dbConn:
             self.database = simbase.backups.load('leaderboard', (self.air.districtId,), default=({}))
         else:
-            self.air.mongodb.toontown.leaderboard.ensure_index([('ai', 1)])
+            self.air.dbGlobalCursor.leaderboard.ensure_index([('ai', 1)])
             district = {'ai': self.air.districtId}
             try:
-                doc = self.air.mongodb.toontown.leaderboard.find_one(district)
+                doc = self.air.dbGlobalCursor.leaderboard.find_one(district)
             except AutoReconnect:
                 return blocks
 
