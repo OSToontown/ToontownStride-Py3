@@ -197,7 +197,7 @@ class DistributedBuildingMgrAI:
         if not self.air.dbConn:
             simbase.backups.save('block-info', (self.air.districtId, self.branchId), backups)
         else:
-            street = {'district': self.air.districtId, 'branch': self.branchID}
+            street = {'district': self.air.districtId, 'branch': self.branchId}
             try:
                 self.air.dbGlobalCursor.blockInfo.update(street, {'$setOnInsert': street, '$set': {'buildings': backups}}, upsert=True)
             except AutoReconnect:
@@ -209,7 +209,7 @@ class DistributedBuildingMgrAI:
             blocks = simbase.backups.load('block-info', (self.air.districtId, self.branchId), default={})
             return blocks
         self.air.dbGlobalCursor.blockInfo.ensure_index([('district', 1), ('branch', 1)])
-        street = {'district': self.air.districtId, 'branch': self.branchID}
+        street = {'district': self.air.districtId, 'branch': self.branchId}
         try:
             doc = self.air.dbGlobalCursor.blockInfo.find_one(street)
         except AutoReconnect:

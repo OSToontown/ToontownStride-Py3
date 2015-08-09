@@ -182,7 +182,7 @@ class DeveloperAccountDB(AccountDB):
                                        'notAfter': 0},
                                 callback)
 
-class RemoteAccountDB(AccountDB):
+class RemoteAccountDB:
     # TO DO FOR NAMES:
     # CURRENTLY IT MAKES n REQUESTS FOR EACH AVATAR
     # IN THE FUTURE, MAKE ONLY 1 REQUEST
@@ -190,6 +190,8 @@ class RemoteAccountDB(AccountDB):
     # ^ done, check before removing todo note
     notify = directNotify.newCategory('RemoteAccountDB')
 
+    def __init__(self, csm):
+        self.csm = csm
 
     def addNameRequest(self, avId, name, accountID = None):
         username = avId
