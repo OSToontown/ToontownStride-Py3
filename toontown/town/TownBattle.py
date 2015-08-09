@@ -122,19 +122,12 @@ class TownBattle(StateData.StateData):
         self.SOSPetInfoPanel = TownBattleSOSPetInfoPanel.TownBattleSOSPetInfoPanel(self.SOSPetInfoPanelDoneEvent)
         self.fireCogPanelDoneEvent = 'fire-cog-panel-done'
         self.FireCogPanel = FireCogPanel.FireCogPanel(self.fireCogPanelDoneEvent)
-        self.toonPanels = (TownBattleToonPanel.TownBattleToonPanel(0),
-         TownBattleToonPanel.TownBattleToonPanel(1),
-         TownBattleToonPanel.TownBattleToonPanel(2),
-         TownBattleToonPanel.TownBattleToonPanel(3))
-        self.cogPanels = (TownBattleCogPanel.TownBattleCogPanel(0),
-         TownBattleCogPanel.TownBattleCogPanel(1),
-         TownBattleCogPanel.TownBattleCogPanel(2),
-         TownBattleCogPanel.TownBattleCogPanel(3))
+        self.toonPanels = [TownBattleToonPanel.TownBattleToonPanel(i) for i in xrange(4)]
+        self.cogPanels = [TownBattleCogPanel.TownBattleCogPanel(i) for i in xrange(4)]
         self.timer = ToontownTimer.ToontownTimer()
         self.timer.posInTopRightCorner()
         self.timer.setScale(0.4)
         self.timer.hide()
-        return
 
     def cleanup(self):
         self.ignore(self.attackPanelDoneEvent)
@@ -150,11 +143,9 @@ class TownBattle(StateData.StateData):
         del self.FireCogPanel
         del self.SOSPetSearchPanel
         del self.SOSPetInfoPanel
-        for toonPanel in self.toonPanels:
-            toonPanel.cleanup()
 
-        for cogPanel in self.cogPanels:
-            cogPanel.cleanup()
+        for panel in self.toonPanels + self.cogPanels:
+            panel.cleanup()
 
         del self.toonPanels
         del self.cogPanels
@@ -167,7 +158,6 @@ class TownBattle(StateData.StateData):
         self.parentFSMState.addChild(self.fsm)
         if not self.isLoaded:
             self.load()
-        print 'Battle Event %s' % event
         self.battleEvent = event
         self.fsm.enterInitialState()
         base.localAvatar.laffMeter.start()
@@ -182,7 +172,6 @@ class TownBattle(StateData.StateData):
         base.localAvatar.inventory.setBattleCreditMultiplier(self.creditMultiplier)
         base.localAvatar.inventory.setActivateMode('battle', heal=0, bldg=bldg, tutorialFlag=tutorialFlag)
         self.SOSPanel.bldg = bldg
-        return
 
     def exit(self):
         base.localAvatar.laffMeter.stop()
@@ -231,44 +220,21 @@ class TownBattle(StateData.StateData):
         for toonPanel in self.toonPanels:
             toonPanel.hide()
             toonPanel.setPos(0, 0, -0.9)
-
-        if num == 1:
-            self.toonPanels[0].setX(self.oddPos[1])
-            self.toonPanels[0].show()
-        elif num == 2:
-            self.toonPanels[0].setX(self.evenPos[1])
-            self.toonPanels[0].show()
-            self.toonPanels[1].setX(self.evenPos[2])
-            self.toonPanels[1].show()
-        elif num == 3:
-            self.toonPanels[0].setX(self.oddPos[0])
-            self.toonPanels[0].show()
-            self.toonPanels[1].setX(self.oddPos[1])
-            self.toonPanels[1].show()
-            self.toonPanels[2].setX(self.oddPos[2])
-            self.toonPanels[2].show()
-        elif num == 4:
-            self.toonPanels[0].setX(self.evenPos[0])
-            self.toonPanels[0].show()
-            self.toonPanels[1].setX(self.evenPos[1])
-            self.toonPanels[1].show()
-            self.toonPanels[2].setX(self.evenPos[2])
-            self.toonPanels[2].show()
-            self.toonPanels[3].setX(self.evenPos[3])
-            self.toonPanels[3].show()
-        else:
-            self.notify.error('Bad number of toons: %s' % num)
-        return None
+        
+        self.positionPanels(num, self.toonPanels)
 
     def __enterCogPanels(self, num):
         for cogPanel in self.cogPanels:
             cogPanel.hide()
             cogPanel.updateHealthBar()
             cogPanel.setPos(0, 0, 0.62)
-
+        
+        self.positionPanels(num, self.cogPanels)
+    
+    def positionPanels(self, num, panels):
         pos = self.evenPos if num % 2 == 0 else self.oddPos
 
-        for i, panel in enumerate(self.cogPanels):
+        for i, panel in enumerate(panels):
             if num > i:
                 panel.setX(pos[i if num >= 3 else i + 1])
                 panel.show()
@@ -460,18 +426,7 @@ class TownBattle(StateData.StateData):
             maxSuitLevel = max(maxSuitLevel, cog.getActualLevel())
 
         creditLevel = maxSuitLevel
-        resetActivateMode = 0
-        if numCogs == self.numCogs and creditLevel == self.creditLevel and luredIndices == self.luredIndices and trappedIndices == self.trappedIndices and toonIds == self.toons:
-            for i in xrange(len(cogs)):
-                if cogs[i].getHP() == self.cogPanels[i].getDisplayedCurrHp():
-                    if cogs[i].getMaxHP() == self.cogPanels[i].getDisplayedMaxHp():
-                        if cogs[i] == self.cogPanels[i].getSuit():
-                            continue
-                else:
-                    resetActivateMode = 1
-                    break
-        else:
-            resetActivateMode = 1
+        resetActivateMode = numCogs != self.numCogs or creditLevel != self.creditLevel or luredIndices != self.luredIndices or trappedIndices != self.trappedIndices or toonIds != self.toons
         self.notify.debug('adjustCogsAndToons() resetActivateMode: %s' % resetActivateMode)
         self.numCogs = numCogs
         self.creditLevel = creditLevel
