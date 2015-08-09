@@ -184,7 +184,7 @@ class DistributedBuildingMgrAI:
 
     def save(self):
         backups = {}
-        buildings = []
+        #buildings = []
         for blockNumber in self.getSuitBlocks():
             building = self.getBuilding(blockNumber)
             backup = {
@@ -198,22 +198,24 @@ class DistributedBuildingMgrAI:
             }
             backups[blockNumber] = backup
 
-        for i in backups.values():
-            if isinstance(i, HQBuildingAI.HQBuildingAI):
-                continue
-            buildings.append(i.getPickleData())
-        if not self.air.dbConn:
+        #for i in self.__buildings.values():
+        #    if isinstance(i, HQBuildingAI.HQBuildingAI):
+        #        continue
+        #    buildings.append(i.getPickleData())
+        simbase.backups.save('block-info', (self.air.districtId, self.branchId), backups)
+        '''if not self.air.dbConn:
             simbase.backups.save('block-info', (self.air.districtId, self.branchId), backups)
         else:
             street = {'district': self.air.districtId, 'branch': self.branchId}
             try:
                 self.air.dbGlobalCursor.blockInfo.update(street, {'$setOnInsert': street, '$set': {'buildings': buildings}}, upsert=True)
             except AutoReconnect:
-                taskMgr.doMethodLater(config.GetInt('mongodb-retry-time', 2), self.save, 'retrySave', extraArgs=[])
+                taskMgr.doMethodLater(config.GetInt('mongodb-retry-time', 2), self.save, 'retrySave', extraArgs=[])'''
 
     def load(self):
-        blocks = {}
-        if not self.air.dbConn:
+        blocks = simbase.backups.load('block-info', (self.air.districtId, self.branchId), default={})
+        return blocks
+        '''if not self.air.dbConn:
             blocks = simbase.backups.load('block-info', (self.air.districtId, self.branchId), default={})
             return blocks
         self.air.dbGlobalCursor.blockInfo.ensure_index([('district', 1), ('branch', 1)])
@@ -226,4 +228,4 @@ class DistributedBuildingMgrAI:
             return blocks
         for building in doc.get('buildings', []):
             blocks[int(building['block'])] = building
-        return blocks
+        return blocks'''
