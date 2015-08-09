@@ -184,6 +184,7 @@ class DistributedBuildingMgrAI:
 
     def save(self):
         backups = {}
+        buildings = []
         for blockNumber in self.getSuitBlocks():
             building = self.getBuilding(blockNumber)
             backup = {
@@ -196,12 +197,17 @@ class DistributedBuildingMgrAI:
                 'becameSuitTime': building.becameSuitTime
             }
             backups[blockNumber] = backup
+
+        for i in backups.values():
+            if isinstance(i, HQBuildingAI.HQBuildingAI):
+                continue
+            buildings.append(i.getPickleData())
         if not self.air.dbConn:
             simbase.backups.save('block-info', (self.air.districtId, self.branchId), backups)
         else:
             street = {'district': self.air.districtId, 'branch': self.branchId}
             try:
-                self.air.dbGlobalCursor.blockInfo.update(street, {'$setOnInsert': street, '$set': {'buildings': backups}}, upsert=True)
+                self.air.dbGlobalCursor.blockInfo.update(street, {'$setOnInsert': street, '$set': {'buildings': buildings}}, upsert=True)
             except AutoReconnect:
                 taskMgr.doMethodLater(config.GetInt('mongodb-retry-time', 2), self.save, 'retrySave', extraArgs=[])
 
