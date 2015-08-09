@@ -254,7 +254,24 @@ class RemoteAccountDB(AccountDB):
             callback(resp)
             return resp
 
-        return AccountDB.lookup(self, token, callback)
+        return self.lookup_account(token, callback)
+
+    def lookup_account(self, data, callback):
+        userId = data['userId']
+
+        data['success'] = True
+        data['accessLevel'] = max(data['accessLevel'], minAccessLevel)
+
+        data['accountId'] = int(data['accountId'])
+
+        callback(data)
+        return data
+    
+    def storeAccountID(self, userId, accountId, callback):
+        r = executeHttpRequest('associateUser', username=str(userId), accountId=str(accountId))
+        if r:
+            return 'SUCCESS'
+        return 'FAILURE'
 
 
 # --- FSMs ---
