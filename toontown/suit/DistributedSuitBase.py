@@ -326,12 +326,12 @@ class DistributedSuitBase(DistributedAvatar.DistributedAvatar, Suit.Suit, SuitBa
         self.loop('neutral', 0)
         self.disableBattleDetect()
         self.corpMedallion.hide()
-        self.healthBar.show()
+        self.healthBar.geom.show()
         if self.currHP < self.maxHP:
             self.updateHealthBar(0, 1)
 
     def exitBattle(self):
-        self.healthBar.hide()
+        self.healthBar.geom.hide()
         self.corpMedallion.show()
         self.currHP = self.maxHP
         self.interactivePropTrackBonus = -1
