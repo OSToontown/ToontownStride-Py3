@@ -8,8 +8,7 @@ __builtin__.process = 'ai'
 __builtin__.__dict__.update(__import__('pandac.PandaModules', fromlist=['*']).__dict__)
 from direct.extensions_native import HTTPChannel_extensions
 
-import argparse
-import gc
+import argparse, gc, os
 
 # Panda3D 1.10.0 is 63.
 gc.disable()
