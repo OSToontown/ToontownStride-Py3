@@ -134,10 +134,7 @@ def createNPC(air, npcId, desc, zoneId, posIndex = 0, questCallback = None):
     npc.setMaxHp(15)
     npc.setPositionIndex(posIndex)
     npc.generateWithRequired(zoneId)
-    if hasattr(npc, 'getStartAnimState'):
-        npc.d_setAnimState(npc.getStartAnimState(), 1.0)
-    else:
-        npc.d_setAnimState('neutral', 1.0)
+    npc.d_setAnimState(npc.getStartAnimState(), 1.0)
     return npc
 
 
@@ -148,6 +145,7 @@ def createNpcsInZone(air, zoneId):
     for npcId in npcIdList:
         while npcIdList.count(npcId) > 1:
             npcIdList.remove(npcId)
+    npcIdList.sort()
     for i in xrange(len(npcIdList)):
         npcId = npcIdList[i]
         npcDesc = NPCToonDict.get(npcId)
@@ -11927,6 +11925,9 @@ del lnames
 zone2NpcDict = {}
 
 def generateZone2NpcDict():
+    if zone2NpcDict:
+        return
+
     for id, npcDesc in NPCToonDict.items():
         zoneId = npcDesc[0]
         if zoneId in zone2NpcDict:
@@ -11937,20 +11938,12 @@ def generateZone2NpcDict():
 
 def getNPCName(npcId):
     npc = NPCToonDict.get(npcId)
-    if npc:
-        return npc[1]
-    else:
-        return None
-    return None
+    return npc[1] if npc else None
 
 
 def getNPCZone(npcId):
     npc = NPCToonDict.get(npcId)
-    if npc:
-        return npc[0]
-    else:
-        return None
-    return None
+    return npc[0] if npc else None
 
 
 def getBuildingArticle(zoneId):
