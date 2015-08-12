@@ -1098,18 +1098,18 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
 
     def __friendOnline(self, doId):
         friend = base.cr.identifyFriend(doId)
-        if friend != None:
+        if friend:
             self.setSystemMessage(doId, OTPLocalizer.WhisperFriendComingOnline % friend.getName())
 
     def __friendOffline(self, doId):
         friend = base.cr.identifyFriend(doId)
-        if friend != None:
+        if friend:
             self.setSystemMessage(0, OTPLocalizer.WhisperFriendLoggedOut % friend.getName())
 
     def clickedWhisper(self, doId):
         friend = base.cr.identifyFriend(doId)
 
-        if friend != None:
+        if friend:
             messenger.send('clickedNametag', [friend])
             self.chatMgr.whisperTo(friend.getName(), doId)
 
