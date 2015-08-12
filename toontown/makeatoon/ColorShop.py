@@ -205,7 +205,10 @@ class ColorShop(StateData.StateData):
         if not (0.0 <= x <= 1.0 and 0.0 <= y <= 1.0):
             return Task.cont
 
-        rgb = colorsys.hsv_to_rgb(self.hueSlider['value'], self.calcRelative(x, 0.0, 1.0, 0.36, 0.7), self.calcRelative(y, 0.0, 1.0, 0.5, 0.8)) + (1,)
+        x = self.calcRelative(x, 0.0, 1.0, ToontownGlobals.COLOR_SATURATION_MIN, ToontownGlobals.COLOR_SATURATION_MAX)
+        y = self.calcRelative(y, 0.0, 1.0, ToontownGlobals.COLOR_VALUE_MIN, ToontownGlobals.COLOR_VALUE_MAX)
+        rgb = colorsys.hsv_to_rgb(self.hueSlider['value'], x, y) + (1,)
+        rgb = tuple([float('%.2f' % x) for x in rgb])
 
         if self.partChoice in (0, 1):
             self.dna.headColor = rgb
