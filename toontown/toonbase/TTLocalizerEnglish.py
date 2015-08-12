@@ -8729,6 +8729,8 @@ ShardPagePreferred = 'Preferred'
 ShardPageShardTitle = '%s Population: %s'
 ShardPageTeleport = 'Teleport to\n%s'
 
+TeleportButton = 'Teleport'
+
 Blacklist = [
  "$1ut",
  "$h1t",

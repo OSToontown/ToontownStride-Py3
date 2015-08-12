@@ -176,7 +176,9 @@ class ToonInterior(Place.Place):
 
     def enterTeleportIn(self, requestStatus):
         modelType = DistributedToonInterior.DistributedToonInterior(base.cr).getModelType(self.getZoneId())
-        if ZoneUtil.isPetshop(self.zoneId):
+        if ZoneUtil.isHQ(self.zoneId):
+            base.localAvatar.setPosHpr(-5.5, -1.5, ToontownGlobals.FloorOffset, 0.0, 0.0, 0.0)
+        elif ZoneUtil.isPetshop(self.zoneId):
             base.localAvatar.setPosHpr(0, 0, ToontownGlobals.FloorOffset, 45.0, 0.0, 0.0)
         else:
             if modelType in InteriorTypes:
