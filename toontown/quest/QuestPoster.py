@@ -179,7 +179,10 @@ class QuestPoster(DirectFrame):
         hqZone = {2000:2520, 1000:1507, 3000:3508, 4000:4504, 5000:5502, 7000:7503, 9000:9505}
 
         if npcZone in (-1, 0, None):
-            npcHood = ZoneUtil.getCanonicalHoodId(base.localAvatar.getZoneId())
+            zoneId = base.localAvatar.getZoneId()
+            if ZoneUtil.isDynamicZone(zoneId) or ZoneUtil.isCogHQZone(zoneId):
+                zoneId = 2000 
+            npcHood = ZoneUtil.getCanonicalHoodId(zoneId)
             npcZone = hqZone.get(npcHood, 2520)
 
         base.cr.buildingQueryMgr.d_isSuit(npcZone, lambda isSuit: self.teleportToShopCallback(npcZone, npcHood, isSuit))
