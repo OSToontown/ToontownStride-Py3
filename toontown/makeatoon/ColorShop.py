@@ -7,6 +7,7 @@ from toontown.toonbase import TTLocalizer, ToontownGlobals
 import ShuffleButton
 import random, colorsys
 from direct.directnotify import DirectNotifyGlobal
+from direct.task import Task
 
 class ColorShop(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('ColorShop')
@@ -15,7 +16,6 @@ class ColorShop(StateData.StateData):
         StateData.StateData.__init__(self, doneEvent)
         self.toon = None
         self.colorAll = 1
-        return
 
     def getColorList(self):
         return ToonDNA.allColorsList
@@ -60,6 +60,7 @@ class ColorShop(StateData.StateData):
             print 'ColorShop: toon not found'
 
         self.hideButtons()
+        taskMgr.remove('colorDragTask')
 
     def load(self):
         self.gui = loader.loadModel('phase_3/models/gui/tt_m_gui_mat_mainGui')
@@ -95,7 +96,8 @@ class ColorShop(StateData.StateData):
         self.pickImage = PNMImage(int((ToontownGlobals.COLOR_SATURATION_MAX - ToontownGlobals.COLOR_SATURATION_MIN) * 100), int((ToontownGlobals.COLOR_VALUE_MAX - ToontownGlobals.COLOR_VALUE_MIN) * 100))
         self.hueSlider = DirectSlider(parent=self.advancedFrame, relief=None, image='phase_3/maps/color_picker_hue.jpg', scale=0.3, pos=(-0.05, 0, -0.43), image_scale=(0.1, 1.0, 1.0), pageSize=5, orientation=DGG.VERTICAL, command=self.__chooseHue)
         self.pickButton = DirectButton(parent=self.advancedFrame, relief=None, image='phase_3/maps/color_picker_empty.png', scale=0.3, pos=(-0.45, 0, -0.43), frameColor=(1, 1, 1, 0.1), pressEffect=0)
-        self.pickButton.bind(DGG.B1CLICK, self.__pickColor)
+        self.pickButton.bind(DGG.B1PRESS, self.__startPickColor)
+        self.pickButton.bind(DGG.B1RELEASE, self.__stopPickColor)
         self.partsFrame = DirectFrame(parent=self.advancedFrame, image=shuffleFrame, image_scale=halfButtonInvertScale, relief=None, pos=(-0.395, 0, -0.85), hpr=(0, 0, -2), scale=0.9, frameColor=(1, 1, 1, 1), text=TTLocalizer.ColorAll, text_scale=0.0625, text_pos=(-0.001, -0.015), text_fg=(1, 1, 1, 1))
         self.partLButton = DirectButton(parent=self.partsFrame, relief=None, image=shuffleImage, image_scale=halfButtonScale, image1_scale=halfButtonHoverScale, image2_scale=halfButtonHoverScale, pos=(-0.2, 0, 0), state=DGG.DISABLED, command=self.__swapPart, extraArgs=[-1])
         self.partRButton = DirectButton(parent=self.partsFrame, relief=None, image=shuffleImage, image_scale=halfButtonInvertScale, image1_scale=halfButtonInvertHoverScale, image2_scale=halfButtonInvertHoverScale, pos=(0.2, 0, 0), command=self.__swapPart, extraArgs=[1])
@@ -184,8 +186,9 @@ class ColorShop(StateData.StateData):
         texture.load(self.pickImage)
         self.pickButton['image'] = texture
     
-    def __pickColor(self, pos):
-        x, y = pos.getMouse()
+    def __pickColor(self, task=None):
+        x = base.mouseWatcherNode.getMouseX()
+        y = base.mouseWatcherNode.getMouseY()
         win_w, win_h = base.win.getSize()
 
         if win_w < win_h:
@@ -198,7 +201,12 @@ class ColorShop(StateData.StateData):
         image_scale = self.pickButton['image_scale']
         x = (.5 + x / (2. * self.pickButton.getSx(aspect2d) * image_scale[0]))
         y = (.5 + y / -(2. * self.pickButton.getSz(aspect2d) * image_scale[2]))
+
+        if not (0.0 <= x <= 1.0 and 0.0 <= y <= 1.0):
+            return Task.cont
+
         rgb = colorsys.hsv_to_rgb(self.hueSlider['value'], self.calcRelative(x, 0.0, 1.0, 0.36, 0.7), self.calcRelative(y, 0.0, 1.0, 0.5, 0.8)) + (1,)
+
         if self.partChoice in (0, 1):
             self.dna.headColor = rgb
         if self.partChoice in (0, 2):
@@ -207,7 +215,16 @@ class ColorShop(StateData.StateData):
             self.dna.gloveColor = rgb
         if self.partChoice in (0, 4):
             self.dna.legColor = rgb
+
         self.toon.swapToonColor(self.dna)
+        return Task.cont
+    
+    def __startPickColor(self, extra):
+        self.__stopPickColor(extra)
+        taskMgr.add(self.__pickColor, 'colorDragTask')
+    
+    def __stopPickColor(self, extra):
+        taskMgr.remove('colorDragTask')
 
     def __swapPart(self, offset):
         self.partChoice += offset
