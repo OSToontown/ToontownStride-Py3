@@ -84,14 +84,21 @@ class DistributedTV(DistributedFurnitureItem):
             base.localAvatar.setSystemMessage(0, TTLocalizer.TVUnknownVideoPack % pack if pack else TTLocalizer.TVUnknownVideo)
             self.resetScreen()
             return
-
+        
+        start = time.time() - startTime
         movie = loader.loadTexture(video)
         self.sound = loader.loadSfx(video)
+        length = self.sound.length()
+        
+        if start >= length:
+            start -= int(start / length) * length
+        
         movie.synchronizeTo(self.sound)
         self.screen.setColor(1, 1, 1, 1)
         self.screen.setTexture(movie)
         self.screen.setTexScale(TextureStage.getDefault(), movie.getTexScale())
-        self.sound.setTime(min(self.sound.length(), int(time.time() - startTime)))
+        self.sound.setTime(start)
+        self.sound.setLoop(True)
         self.sound.play()
     
     def __enterSphere(self, collisionEntry):
