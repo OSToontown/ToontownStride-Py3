@@ -239,6 +239,7 @@ class TTSFriendsManagerUD(DistributedObjectGlobalUD):
             friendId = friend[0]
             if friendId in self.onlineToons:
                 self.sendUpdateToAvatarId(doId, 'friendOnline', [friendId])
+            self.sendUpdateToAvatarId(friendId, 'friendOnline', [doId])
 
     def goingOffline(self, avId):
         self.toonOffline(avId)
