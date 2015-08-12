@@ -191,7 +191,6 @@ class TTSFriendsManagerUD(DistributedObjectGlobalUD):
                 return
             inventory = fields['setInventory'][0]
             trackAccess = fields['setTrackAccess'][0]
-            trophies = 0 # fields['setTrophyScore'][0] is not db
             hp = fields['setHp'][0]
             maxHp = fields['setMaxHp'][0]
             defaultShard = fields['setDefaultShard'][0]
@@ -200,7 +199,7 @@ class TTSFriendsManagerUD(DistributedObjectGlobalUD):
             experience = fields['setExperience'][0]
             trackBonusLevel = fields['setTrackBonusLevel'][0]
 
-            self.sendUpdateToAvatarId(senderId, 'friendDetails', [avId, inventory, trackAccess, trophies, hp, maxHp, defaultShard, lastHood, dnaString, experience, trackBonusLevel])
+            self.sendUpdateToAvatarId(senderId, 'friendDetails', [avId, inventory, trackAccess, hp, maxHp, defaultShard, lastHood, dnaString, experience, trackBonusLevel])
         self.air.dbInterface.queryObject(self.air.dbId, avId, handleToon)
     
     def getPetDetails(self, avId):
