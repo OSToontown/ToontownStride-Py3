@@ -227,6 +227,7 @@ class QuestPoster(DirectFrame):
         self.lPictureFrame.hide()
         self.rPictureFrame.hide()
         self.questProgress.hide()
+        self.teleportButton.hide()
         if hasattr(self, 'chooseButton'):
             self.chooseButton.destroy()
             del self.chooseButton
