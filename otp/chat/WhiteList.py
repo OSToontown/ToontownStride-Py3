@@ -29,7 +29,11 @@ class WhiteList:
         return i != self.numWords and self.words[i].startswith(text)
 
     def getReplacement(self, text, av=None, garbler=None):
-        return '\x01WLRed\x01%s\x02' % text if not garbler else garbler.garble(av, len(text.split(' ')))
+        if av and av == base.localAvatar:
+            return '\x01WLDisplay\x01%s\x02' % text
+        elif not garbler:
+            return '\x01WLRed\x01%s\x02' % text
+        return garbler.garble(av, len(text.split(' ')))
 
     def processText(self, text, av=None, garbler=None):
         if not self.words:

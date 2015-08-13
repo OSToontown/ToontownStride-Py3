@@ -32,6 +32,7 @@ dclass Account {
   string ACCOUNT_ID db;
   uint16 ACCESS_LEVEL db;
   uint32 LAST_LOGIN_TS db;
+  uint8[] CHAT_SETTINGS db;
 };
 
 struct BarrierData {
@@ -3154,7 +3155,7 @@ dclass ClientServicesManager : DistributedObjectGlobal {
   acceptLogin(uint32 timestamp);
 
   requestAvatars() clsend;
-  setAvatars(PotentialToon[]);
+  setAvatars(uint8[], PotentialToon[]);
 
   createAvatar(blob dna, uint8 index) clsend;
   createAvatarResp(uint32 avId);

@@ -8,7 +8,7 @@ globalFriendSecret = None
 
 def showFriendSecret():
     global globalFriendSecret
-    if not settings['trueFriends']:
+    if not base.cr.wantTrueFriends():
         chatMgr = base.localAvatar.chatMgr
         chatMgr.fsm.request('noTrueFriends')
     else:
