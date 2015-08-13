@@ -66,7 +66,7 @@ class NPCFriendPanel(DirectFrame):
         self.update()
 
     def update(self):
-        friendList = self.friendDict.keys()
+        friendList = sorted(self.friendDict.keys(), reverse=True, key=lambda id: NPCToons.getNPCTrackLevelHpRarity(id)[3])
         cardNum = 0
 
         for i in xrange(self.pos, self.pos + 16):
