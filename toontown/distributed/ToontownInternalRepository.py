@@ -14,10 +14,12 @@ class ToontownInternalRepository(AstronInternalRepository):
         AstronInternalRepository.__init__(
             self, baseChannel, serverId=serverId, dcFileNames=dcFileNames,
             dcSuffix=dcSuffix, connectMethod=connectMethod, threadedNet=threadedNet)
+        
+        self.wantMongo = config.GetBool('want-mongo', False)
     
     def handleConnected(self):
         self.__messenger = ToontownNetMessengerAI(self)
-        if config.GetBool('want-mongo', False):
+        if self.wantMongo:
             import pymongo
             self.dbConn = pymongo.MongoClient(config.GetString('mongodb-url', 'localhost'))
             self.dbGlobalCursor = self.dbConn.toontownstride
