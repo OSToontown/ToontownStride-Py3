@@ -33,7 +33,8 @@ want-gifting #t
 want-top-toons #f
 
 # Chat:
-want-whitelist #t
+want-whitelist #f
+want-sequence-list #f
 
 # Developer options:
 show-population #t

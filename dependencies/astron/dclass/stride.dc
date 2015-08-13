@@ -32,6 +32,7 @@ dclass Account {
   string ACCOUNT_ID db;
   uint16 ACCESS_LEVEL db;
   uint32 LAST_LOGIN_TS db;
+  uint8[] CHAT_SETTINGS db;
 };
 
 struct BarrierData {
@@ -237,6 +238,7 @@ from toontown.safezone import SafeZoneManager/AI
 from toontown.tutorial import TutorialManager/AI
 from toontown.catalog import CatalogManager/AI
 from toontown.safezone import DistributedTreasure/AI
+from toontown.safezone import DistributedEFlyingTreasure/AI
 from toontown.coghq import DistributedCashbotBossTreasure/AI
 from toontown.building import DistributedTrophyMgr/AI
 from toontown.building import DistributedBuilding/AI
@@ -1520,6 +1522,9 @@ dclass DistributedTreasure : DistributedObject {
   requestGrab() airecv clsend;
   setGrab(uint32) broadcast ram;
   setReject() broadcast;
+};
+
+dclass DistributedEFlyingTreasure : DistributedTreasure {
 };
 
 dclass DistributedCashbotBossTreasure : DistributedTreasure {
@@ -3150,7 +3155,7 @@ dclass ClientServicesManager : DistributedObjectGlobal {
   acceptLogin(uint32 timestamp);
 
   requestAvatars() clsend;
-  setAvatars(PotentialToon[]);
+  setAvatars(uint8[], PotentialToon[]);
 
   createAvatar(blob dna, uint8 index) clsend;
   createAvatarResp(uint32 avId);
@@ -3197,7 +3202,7 @@ dclass TTSFriendsManager : DistributedObjectGlobal {
   goingOffline(uint32 avId);
 
   getAvatarDetails(uint32) clsend;
-  friendDetails(uint32, blob, uint16[], uint16, int16, int16, uint32, uint32, blob, blob, int8[]);
+  friendDetails(uint32, blob, uint16[], int16, int16, uint32, uint32, blob, blob, int8[]);
 
   getPetDetails(uint32) clsend;
   petDetails(uint32, uint32, string, uint32, uint32, uint16/1000[], PetTrait[], int8[], uint32);

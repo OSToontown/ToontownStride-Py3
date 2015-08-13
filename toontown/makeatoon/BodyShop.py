@@ -18,7 +18,6 @@ class BodyShop(StateData.StateData):
         self.legChoice = 0
         self.headChoice = 0
         self.speciesChoice = 0
-        return
 
     def enter(self, toon, shopsVisited = []):
         base.disableMouse()

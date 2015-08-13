@@ -4878,18 +4878,20 @@ def givePies(pieType, numPies=0):
     else:
         target.b_setNumPies(ToontownGlobals.FullPies)
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
-def trackBonus(trackIndex):
+@magicWord(category=CATEGORY_PROGRAMMER, types=[int, int])
+def trackBonus(trackIndex, level):
     """
     Modify the invoker's track bonus level.
     """
     invoker = spellbook.getInvoker()
     if not 0 <= trackIndex < 7:
         return 'Invalid track index!'
+    if not -1 <= level <= 6:
+        return 'Invalid level!'
     trackBonusLevel = [0] * 7
-    trackBonusLevel[trackIndex] = 1
+    trackBonusLevel[trackIndex] = level
     invoker.b_setTrackBonusLevel(trackBonusLevel)
-    return 'Your track bonus level has been set!'
+    return 'Your track bonus level has been set to %s!' % level
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[str, str, int])
 def track(command, track, value=None):

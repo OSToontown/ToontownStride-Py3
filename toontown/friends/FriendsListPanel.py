@@ -6,6 +6,7 @@ from toontown.friends import ToontownFriendSecret
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 from otp.nametag.NametagGroup import *
+from otp.nametag.NametagConstants import *
 from otp.otpbase import OTPGlobals
 FLPPets = 1
 FLPOnline = 2
@@ -241,7 +242,6 @@ class FriendsListPanel(DirectFrame, StateData.StateData):
 
     def __updateScrollList(self):
         petFriends = []
-        admins = []
         trueFriends = []
         friends = []
 
@@ -257,9 +257,7 @@ class FriendsListPanel(DirectFrame, StateData.StateData):
                         base.cr.fillUpFriendsMap()
                         return
 
-                    if handle.isAdmin():
-                        admins.insert(0, friendId)
-                    elif base.localAvatar.isTrueFriends(friendId):
+                    if base.localAvatar.isTrueFriends(friendId):
                         trueFriends.insert(0, friendId)
                     else:
                         friends.insert(0, friendId)

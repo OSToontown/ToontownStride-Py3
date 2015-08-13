@@ -35,7 +35,7 @@ class ClientServicesManager(DistributedObjectGlobal):
     def requestAvatars(self):
         self.sendUpdate('requestAvatars')
 
-    def setAvatars(self, avatars):
+    def setAvatars(self, chatSettings, avatars):
         avList = []
         for avNum, avName, avDNA, avPosition, nameState in avatars:
             nameOpen = int(nameState == 1)
@@ -48,6 +48,7 @@ class ClientServicesManager(DistributedObjectGlobal):
                 names[3] = avName
             avList.append(PotentialAvatar(avNum, names, avDNA, avPosition, nameOpen))
 
+        self.cr.handleChatSettings(chatSettings)
         self.cr.handleAvatarsList(avList)
 
     # --- AVATAR CREATION/DELETION ---

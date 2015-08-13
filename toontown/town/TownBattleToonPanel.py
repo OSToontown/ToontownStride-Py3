@@ -126,6 +126,8 @@ class TownBattleToonPanel(DirectFrame):
             self.gag.setScale(0.8)
             self.gag.setPos(0, 0, 0.02)
             self.hasGag = 1
+            if self.avatar is not None and self.avatar.checkGagBonus(track, level):
+                self.gag.setColor((1, 0, 0, 1) if track == 1 and level == 5 else (0, 1, 0, 1))
             if numTargets is not None and targetIndex is not None and localNum is not None:
                 self.whichText.show()
                 self.whichText['text'] = self.determineWhichText(numTargets, targetIndex, localNum, index)

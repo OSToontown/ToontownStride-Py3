@@ -5,7 +5,6 @@ from toontown.fishing.DistributedFishingPondAI import DistributedFishingPondAI
 from toontown.hood import ZoneUtil
 from toontown.safezone import TreasureGlobals
 from toontown.safezone.DistributedFishingSpotAI import DistributedFishingSpotAI
-from toontown.fishing.DistributedPondBingoManagerAI import DistributedPondBingoManagerAI
 from toontown.safezone.DistributedPartyGateAI import DistributedPartyGateAI
 from toontown.safezone.SZTreasurePlannerAI import SZTreasurePlannerAI
 from toontown.suit import DistributedSuitPlannerAI
@@ -90,12 +89,6 @@ class HoodAI:
             fishingPond.setArea(area)
             fishingPond.generateWithRequired(zoneId)
             fishingPond.start()
-
-            fishingPond.bingoMgr = DistributedPondBingoManagerAI(simbase.air)
-            fishingPond.bingoMgr.setPondDoId(fishingPond.getDoId())
-            fishingPond.bingoMgr.generateWithRequired(zoneId)
-            fishingPond.bingoMgr.initTasks()
-
             fishingPonds.append(fishingPond)
         elif isinstance(dnaGroup, DNAVisGroup):
             zoneId = int(dnaGroup.getName().split(':')[0])

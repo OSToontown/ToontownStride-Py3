@@ -116,16 +116,16 @@ class Avatar(Actor, ShadowCaster):
         elif self.playerType not in (NametagGroup.CCNormal, NametagGroup.CCSpeedChat):
             self.understandable = 1
             self.setPlayerType(NametagGroup.CCNonPlayer)
-        elif settings['trueFriends'] and base.localAvatar.isTrueFriends(self.doId):
+        elif base.localAvatar.isTrueFriends(self.doId):
             self.understandable = 2
             self.setPlayerType(NametagGroup.CCNormal)
-        elif settings['speedchatPlus']:
+        elif base.cr.wantSpeedchatPlus():
             self.understandable = 1
             self.setPlayerType(NametagGroup.CCSpeedChat)
         else:
             self.understandable = 0
             self.setPlayerType(NametagGroup.CCSpeedChat)
-        if hasattr(self, 'adminAccess') and self.isAdmin():
+        if base.cr.wantSpeedchatPlus() and hasattr(self, 'adminAccess') and self.isAdmin() and self != base.localAvatar:
             self.understandable = 2
         if not hasattr(self, 'nametag'):
             self.notify.warning('no nametag attributed, but would have been used')

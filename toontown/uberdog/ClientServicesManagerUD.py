@@ -333,7 +333,8 @@ class LoginAccountFSM(OperationFSM):
             'LAST_LOGIN': time.ctime(),
             'LAST_LOGIN_TS': time.time(),
             'ACCOUNT_ID': str(self.userId),
-            'ACCESS_LEVEL': self.accessLevel
+            'ACCESS_LEVEL': self.accessLevel,
+            'CHAT_SETTINGS': [1, 1]
         }
         self.csm.air.dbInterface.createObject(
             self.csm.air.dbId,
@@ -645,7 +646,7 @@ class GetAvatarsFSM(AvatarOperationFSM):
             potentialAvs.append([avId, name, fields['setDNAString'][0],
                                  index, nameState])
 
-        self.csm.sendUpdateToAccountId(self.target, 'setAvatars', [potentialAvs])
+        self.csm.sendUpdateToAccountId(self.target, 'setAvatars', [self.account['CHAT_SETTINGS'], potentialAvs])
         self.demand('Off')
 
     def enterQueryNameState(self):

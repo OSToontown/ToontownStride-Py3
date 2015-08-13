@@ -1,6 +1,7 @@
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from direct.distributed.ClockDelta import globalClockDelta
 from direct.task import Task
+from otp.ai.MagicWordGlobal import *
 from toontown.effects.DistributedFireworkShowAI import DistributedFireworkShowAI
 from toontown.effects import FireworkShows
 from toontown.toonbase import ToontownGlobals
@@ -18,19 +19,21 @@ class NewsManagerAI(DistributedObjectAI):
     def announceGenerate(self):
         DistributedObjectAI.announceGenerate(self)
         self.__checkHolidays()
-        self.checkTask = taskMgr.doMethodLater(15, self.__checkHolidays, 'holidayCheckTask')
         self.accept('avatarEntered', self.__handleAvatarEntered)
+        taskMgr.doMethodLater(15, self.__checkHolidays, 'holidayCheckTask')
 
     def delete(self):
         DistributedObjectAI.delete(self)
-        taskMgr.remove(self.checkTask)
+        self.deleteTasks()
+    
+    def deleteTasks(self):
+        taskMgr.remove('holidayCheckTask')
         self.deleteFireworkTasks()
 
     def deleteFireworkTasks(self):
-        if self.fireworkTasks:
-            for task in self.fireworkTasks:
-                taskMgr.remove(task)
-            self.fireworkTasks = []
+        for task in self.fireworkTasks:
+            taskMgr.remove(task)
+        self.fireworkTasks = []
 
     def __handleAvatarEntered(self, av):
         avId = av.getDoId()
@@ -64,41 +67,44 @@ class NewsManagerAI(DistributedObjectAI):
         else:
             return HolidayGlobals.getStartDate(holiday) <= date <= HolidayGlobals.getEndDate(holiday)
 
-    def isHolidayRunning(self, id):
-        return id in self.activeHolidays
+    def isHolidayRunning(self, *args):
+        for id in args:
+            if id in self.activeHolidays:
+                return True
 
     def startHoliday(self, id):
         if id in self.activeHolidays or id not in HolidayGlobals.Holidays:
-            return
+            return False
 
         self.activeHolidays.append(id)
         self.startSpecialHoliday(id)
         self.sendUpdate('startHoliday', [id])
+        return True
 
     def endHoliday(self, id):
         if id not in self.activeHolidays or id not in HolidayGlobals.Holidays:
-            return
+            return False
 
         self.activeHolidays.remove(id)
         self.endSpecialHoliday(id)
         self.sendUpdate('endHoliday', [id])
+        return True
 
     def startSpecialHoliday(self, id):
         if id == ToontownGlobals.FISH_BINGO or id == ToontownGlobals.SILLY_SATURDAY:
-            messenger.send('checkBingoState')
+            messenger.send('startBingo')
         elif id in [ToontownGlobals.SUMMER_FIREWORKS, ToontownGlobals.NEW_YEAR_FIREWORKS]:
             self.fireworkTasks.append(taskMgr.doMethodLater((60 - datetime.datetime.now().minute) * 60, self.startFireworkTask, 'initialFireworkTask-%s' % id, extraArgs=[id]))
 
     def endSpecialHoliday(self, id):
         if id == ToontownGlobals.FISH_BINGO or id == ToontownGlobals.SILLY_SATURDAY:
-            messenger.send('checkBingoState')
+            messenger.send('stopBingo')
         elif id in [ToontownGlobals.SUMMER_FIREWORKS, ToontownGlobals.NEW_YEAR_FIREWORKS]:
             self.deleteFireworkTasks()
 
     def startFireworkTask(self, id, task=None):
         self.startFireworks(id)
         self.fireworkTasks.append(taskMgr.doMethodLater(3600, self.startFireworks, 'fireworkTask-%s' % id, extraArgs=[id]))
-        return Task.done
 
     def startFireworks(self, type, task=None):
         maxShow = len(FireworkShows.shows.get(type, [])) - 1
@@ -112,3 +118,31 @@ class NewsManagerAI(DistributedObjectAI):
             fireworkShow.b_startShow(type, random.randint(0, maxShow), globalClockDelta.getRealNetworkTime())
 
         return Task.again
+
+@magicWord(category=CATEGORY_PROGRAMMER)
+def newsShutdown():
+    """
+    Shutdown the news manager tasks.
+    """
+    simbase.air.newsManager.deleteTasks()
+    return 'News manager shut down!'
+
+@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+def startHoliday(holiday):
+    """
+    Start a holiday.
+    """
+    if simbase.air.newsManager.startHoliday(holiday):
+        return 'Started holiday %s!' % holiday
+    
+    return 'Holiday %s is already running!' % holiday
+
+@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+def stopHoliday(holiday):
+    """
+    Stop a holiday.
+    """
+    if simbase.air.newsManager.endHoliday(holiday):
+        return 'Stopped holiday %s!' % holiday
+    
+    return 'Holiday %s is not running!' % holiday

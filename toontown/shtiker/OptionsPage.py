@@ -729,31 +729,25 @@ class ExtraOptionsTabPage(DirectFrame):
         button_image = (guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR'))
         self.speed_chat_scale = 0.055
         self.fov_label = DirectLabel(parent=self, relief=None, text=TTLocalizer.FieldOfViewLabel, text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight))
-        self.speedchatPlus_label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - textRowHeight))
-        self.trueFriends_label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - 2 * textRowHeight))
-        self.cogInterface_label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - 3 * textRowHeight))
-        self.tpTransition_label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - 4 * textRowHeight))
+        self.cogInterface_label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - textRowHeight))
+        self.tpTransition_label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - 2 * textRowHeight))
         self.fov_slider = DirectSlider(parent=self, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord),
                                                value=settings['fov'], pageSize=5, range=(ToontownGlobals.DefaultCameraFov, ToontownGlobals.MaxCameraFov), command=self.__doFov,
                                                thumb_geom=(circleModel.find('**/tt_t_gui_mat_namePanelCircle')), thumb_relief=None, thumb_geom_scale=2)
         self.fov_slider.setScale(0.25)
-        self.speedchatPlus_toggleButton = DirectButton(parent=self, relief=None, image=button_image, image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight), command=self.__doToggleSpeedchatPlus)
-        self.trueFriends_toggleButton = DirectButton(parent=self, relief=None, image=button_image, image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - 2 * textRowHeight), command=self.__doToggleTrueFriends)
-        self.cogInterface_toggleButton = DirectButton(parent=self, relief=None, image=button_image, image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - 3 * textRowHeight), command=self.__doToggleCogInterface)
-        self.tpTransition_toggleButton = DirectButton(parent=self, relief=None, image=button_image, image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - 4 * textRowHeight), command=self.__doToggleTpTransition)
+        self.cogInterface_toggleButton = DirectButton(parent=self, relief=None, image=button_image, image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight), command=self.__doToggleCogInterface)
+        self.tpTransition_toggleButton = DirectButton(parent=self, relief=None, image=button_image, image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - 2 * textRowHeight), command=self.__doToggleTpTransition)
         self.bugReportButton = DirectButton(parent=self, relief=None, text=TTLocalizer.BugReportButton, image=button_image, image_scale=button_image_scale, text_pos=(0, -0.01), text_fg=(0, 0, 0, 1),
         command=self.showReportNotice, pos=(0.0, 0.0, -0.6), text_scale=(0.045))
         guiButton.removeNode()
         circleModel.removeNode()
 
-        self.optionChoosers['pole'] = OptionChooser.OptionChooser(self, TTLocalizer.FishingPoleLabel, 5, self.__updateFishingPole, [False], self.__applyFishingPole)
-        self.optionChoosers['nametag_style'] = OptionChooser.OptionChooser(self, TTLocalizer.NametagStyleLabel, 6, self.__updateNametagStyle, [False], self.__applyNametagStyle)
+        self.optionChoosers['pole'] = OptionChooser.OptionChooser(self, TTLocalizer.FishingPoleLabel, 3, self.__updateFishingPole, [False], self.__applyFishingPole)
+        self.optionChoosers['nametag_style'] = OptionChooser.OptionChooser(self, TTLocalizer.NametagStyleLabel, 4, self.__updateNametagStyle, [False], self.__applyNametagStyle)
 
     def enter(self):
         self.show()
         self.settingsChanged = 0
-        self.__setSpeedchatPlusButton()
-        self.__setTrueFriendsButton()
         self.__setCogInterfaceButton()
         self.__setTpTransitionButton()
         self.__updateNametagStyle()
@@ -774,18 +768,14 @@ class ExtraOptionsTabPage(DirectFrame):
         del self.fov_label
         self.fov_slider.destroy()
         del self.fov_slider
-        self.speedchatPlus_label.destroy()
-        del self.speedchatPlus_label
-        self.trueFriends_label.destroy()
-        del self.trueFriends_label
         self.cogInterface_label.destroy()
         del self.cogInterface_label
-        self.speedchatPlus_toggleButton.destroy()
-        del speedchatPlus_toggleButton
-        self.trueFriends_toggleButton.destroy()
-        del self.trueFriends_toggleButton
         self.cogInterface_toggleButton.destroy()
-        del self.cogInterface_toggleButton
+        del self.cogInterface_label
+        self.tpTransition_label.destroy()
+        del self.tpTransition_label
+        self.tpTransition_toggleButton.destroy()
+        del self.tpTransition_toggleButton
         self.bugReportButton.destroy()
         del self.bugReportButton
         self.destroyReportNotice()
@@ -808,28 +798,6 @@ class ExtraOptionsTabPage(DirectFrame):
         self.cogInterface_label['text'] = TTLocalizer.CogInterfaceLabelOn if settings['cogInterface'] else TTLocalizer.CogInterfaceLabelOff
         self.cogInterface_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff if settings['cogInterface'] else TTLocalizer.OptionsPageToggleOn
 
-    def __doToggleSpeedchatPlus(self):
-        messenger.send('wakeup')
-        settings['speedchatPlus'] = not settings['speedchatPlus']
-        Toon.reconsiderAllToonsUnderstandable()
-        self.settingsChanged = 1
-        self.__setSpeedchatPlusButton()
-
-    def __setSpeedchatPlusButton(self):
-        self.speedchatPlus_label['text'] = TTLocalizer.SpeedchatPlusLabelOn if settings['speedchatPlus'] else TTLocalizer.SpeedchatPlusLabelOff
-        self.speedchatPlus_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff if settings['speedchatPlus'] else TTLocalizer.OptionsPageToggleOn
-
-    def __doToggleTrueFriends(self):
-        messenger.send('wakeup')
-        settings['trueFriends'] = not settings['trueFriends']
-        Toon.reconsiderAllToonsUnderstandable()
-        self.settingsChanged = 1
-        self.__setTrueFriendsButton()
-
-    def __setTrueFriendsButton(self):
-        self.trueFriends_label['text'] = TTLocalizer.TrueFriendsLabelOn if settings['trueFriends'] else TTLocalizer.TrueFriendsLabelOff
-        self.trueFriends_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff if settings['trueFriends'] else TTLocalizer.OptionsPageToggleOn
-    
     def __doToggleTpTransition(self):
         messenger.send('wakeup')
         settings['tpTransition'] = not settings['tpTransition']

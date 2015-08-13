@@ -66,8 +66,8 @@ class FriendHandle:
         base.cr.ttsFriendsManager.d_teleportGiveup(self.doId)
 
     def isUnderstandable(self):
-        if settings['speedchatPlus']:
+        if base.cr.wantTypedChat():
             return 1
-        elif settings['trueFriends'] and base.localAvatar.isTrueFriends(self.doId):
+        elif base.localAvatar.isTrueFriends(self.doId):
             return 1
         return 0

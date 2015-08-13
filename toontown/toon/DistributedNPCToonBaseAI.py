@@ -61,3 +61,6 @@ class DistributedNPCToonBaseAI(DistributedToonAI.DistributedToonAI):
 
     def getPositionIndex(self):
         return self.posIndex
+    
+    def getStartAnimState(self):
+        return 'neutral'
