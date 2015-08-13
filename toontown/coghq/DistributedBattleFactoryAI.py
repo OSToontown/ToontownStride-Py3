@@ -29,7 +29,7 @@ class DistributedBattleFactoryAI(DistributedLevelBattleAI.DistributedLevelBattle
             self.toonItems[toon.doId][1].extend(notRecovered)
             meritArray = self.air.promotionMgr.recoverMerits(
                 toon, self.suitsKilled, self.getTaskZoneId(),
-                getFactoryMeritMultiplier(self.getTaskZoneId()))
+                getFactoryMeritMultiplier(self.getTaskZoneId()) * 2.0, addInvasion=False)
             if toon.doId in self.helpfulToons:
                 self.toonMerits[toon.doId] = addListsByValue(self.toonMerits[toon.doId], meritArray)
             else:

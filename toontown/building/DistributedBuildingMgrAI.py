@@ -1,6 +1,5 @@
 from direct.directnotify.DirectNotifyGlobal import *
 import cPickle
-from pymongo.errors import AutoReconnect
 
 from otp.ai.AIBaseGlobal import *
 from toontown.building import DistributedBuildingAI
@@ -193,7 +192,7 @@ class DistributedBuildingMgrAI:
                                                         {'$setOnInsert': street,
                                                         '$set': {'buildings': buildings}},
                                                         upsert=True)
-            except AutoReconnect: # Something happened to our DB, but we can reconnect and retry.
+            except: # Something happened to our DB, but we can reconnect and retry.
                 taskMgr.doMethodLater(config.GetInt('mongodb-retry-time', 2), self.save, 'retrySave', extraArgs=[])
         
         else:
@@ -219,7 +218,7 @@ class DistributedBuildingMgrAI:
             street = {'ai': self.air.districtId, 'branch': self.branchId}
             try:
                 doc = self.air.dbGlobalCursor.streets.find_one(street)
-            except AutoReconnect: # We're failing over - normally we'd wait to retry, but this is on AI startup so we might want to retry (or refactor the bldgMgr so we can sanely retry).
+            except: # We're failing over - normally we'd wait to retry, but this is on AI startup so we might want to retry (or refactor the bldgMgr so we can sanely retry).
                 return blocks
 
             if not doc:
