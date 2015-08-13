@@ -526,8 +526,14 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
     def __handleCastDialog(self):
         self.cleanupDialog()
         base.cr.playGame.getPlace().setState('stopped')
-        self.dialog = TTDialog.TTDialog(style=TTDialog.Acknowledge, text=TTLocalizer.AvatarPanelCastInfo % self.avatar.getName(), text_wordwrap=20, command=self.cleanupDialogAndWalk)
+        self.dialog = TTDialog.TTDialog(style=TTDialog.Acknowledge, text=TTLocalizer.AvatarPanelCastInfo % self.avatar.getName(), text_wordwrap=20, command=self.__cleanupDialogAndWalk)
         self.dialog.show()
+    
+    def __cleanupDialogAndWalk(self, extra=None):
+        if self.dialog:
+            self.dialog.destroy()
+            self.dialog = None
+        base.cr.playGame.getPlace().fsm.request('walk')
 
     def __makeBoardingGui(self):
         self.confirmKickOutDialog = None
