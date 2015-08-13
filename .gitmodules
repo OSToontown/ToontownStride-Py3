@@ -1,0 +1,3 @@
+[submodule "resources"]
+	path = resources
+	url = git@Repo.Ez-webz.com:Stride/resources.git
