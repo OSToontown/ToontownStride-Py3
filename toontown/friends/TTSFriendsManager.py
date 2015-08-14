@@ -1,8 +1,14 @@
 from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
-from otp.otpbase import OTPLocalizer
+from otp.otpbase import OTPLocalizer, OTPGlobals
 from toontown.hood import ZoneUtil
+import time
 
 class TTSFriendsManager(DistributedObjectGlobal):
+    
+    def __init__(self, cr):
+        DistributedObjectGlobal.__init__(self, cr)
+        self.nextTeleportFail = 0
+    
     def d_removeFriend(self, friendId):
         self.sendUpdate('removeFriend', [friendId])
 
@@ -69,7 +75,8 @@ class TTSFriendsManager(DistributedObjectGlobal):
         friend = base.cr.identifyFriend(fromId)
 
         if not base.localAvatar.getTeleportAvailable() or base.localAvatar.ghostMode:
-            if hasattr(friend, 'getName'):
+            if hasattr(friend, 'getName') and self.nextTeleportFail < time.time():
+                self.nextTeleportFail = time.time() + OTPGlobals.TeleportFailCooldown
                 base.localAvatar.setSystemMessage(fromId, OTPLocalizer.WhisperFailedVisit % friend.getName())
             self.sendUpdate('teleportResponse', [ fromId, 0, 0, 0, 0 ])
             return

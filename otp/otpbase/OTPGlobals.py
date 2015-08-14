@@ -288,3 +288,5 @@ PeriodOnlyAfterLetter = 'You can use a period in your name, but only after a let
 ApostropheOnlyAfterLetter = 'You can use an apostrophe in your name, but only after a letter.'
 NoNumbersInTheMiddle = 'Numeric digits may not appear in the middle of a word.'
 ThreeWordsOrLess = 'Your name must be three words or fewer.'
+
+TeleportFailCooldown = 2.0
