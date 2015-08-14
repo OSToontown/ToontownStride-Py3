@@ -18,7 +18,7 @@ class ColorShop(StateData.StateData):
         self.colorAll = 1
 
     def getColorList(self):
-        return ToonDNA.allColorsList
+        return ToonDNA.matColorsList
 
     def enter(self, toon, shopsVisited = []):
         base.disableMouse()
@@ -30,7 +30,7 @@ class ColorShop(StateData.StateData):
             self.headChoice = colorList.index(self.dna.headColor)
             self.allChoice = self.headChoice
             self.armChoice = colorList.index(self.dna.armColor)
-            self.gloveChoice = colorList.index(self.dna.gloveColor)
+            self.gloveChoice = 0
             self.legChoice = colorList.index(self.dna.legColor)
             self.partChoice = 0
 
