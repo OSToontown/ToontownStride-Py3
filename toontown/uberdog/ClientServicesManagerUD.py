@@ -78,7 +78,8 @@ def executeHttpRequest(url, **extras):
             _data[k] = v
     signature = hashlib.sha512(json.dumps(_data) + apiSecret).hexdigest()
     data = urllib.urlencode({'data': json.dumps(_data), 'hmac': signature})
-    req = urllib2.Request('http://www.toontownstride.com/api/' + url, data)
+    req = urllib2.Request('https://toontownstride.com/api/' + url, data,
+                          headers={"Content-Type" : "application/x-www-form-urlencoded"})
     req.get_method = lambda: "POST"
     try:
         return urllib2.urlopen(req).read()

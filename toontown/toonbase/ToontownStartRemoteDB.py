@@ -7,16 +7,13 @@ from panda3d.core import *
 username = os.environ['ttsUsername']
 password = os.environ['ttsPassword']
 
-accountServerEndpoint = 'http://www.toontownstride.com/api/'
-session = requests.Session()
-csrf_query = session.get(accountServerEndpoint + 'login/')
-csrf = session.cookies.get_dict().get('csrftoken', '')
-request = session.post(
+accountServerEndpoint = 'https://toontownstride.com/api/'
+request = requests.post(
     accountServerEndpoint + 'login/',
-    data={'username': username, 'password': password, 'csrfmiddlewaretoken': csrf})
+    data={'username': username, 'password': password, 'distribution': 'qa'})
 
 try:
-    response = json.loads('{'+request.text.split('{', 1)[1]) # so that we ignore the csrf token
+    response = json.loads(request.text)
 except ValueError:
     print "Couldn't verify account credentials."
 else:

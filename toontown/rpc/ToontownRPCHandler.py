@@ -773,3 +773,48 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
         oldFields = {'setWishNameState': 'PENDING'}
         return self.rpc_updateObject(
             avId, 'DistributedToonUD', newFields, oldFields=oldFields)
+
+    @rpcmethod(accessLevel=MODERATOR)
+    def rpc_getChatSettings(self, accId):
+        """
+        Summary:
+            Retrieves the chat settings of the account associated with the provided
+            [accId].
+        
+        Parameters:
+            [int accId]      = The ID of the account whose chat settings
+                               are to be retreived.
+        
+        Example response:
+            On success: [uint8[sp+, tf]]
+            On failure: False
+        """
+        dclassName, fields = self.rpc_queryObject(int(accId))
+        if dclassName == 'Account':
+            if 'CHAT_SETTINGS' in fields:
+                return fields['CHAT_SETTINGS']
+            # The chat settings haven't been set yet, so we'll
+            # want to do that now.
+            self.rpc_setChatSettings(accId)
+            return [1, 1]
+        return False
+
+    @rpcmethod(accessLevel=MODERATOR)
+    def rpc_setChatSettings(self, accId, speedChatPlus = 1, trueFriends = 1):
+        """
+        Summary:
+            Sets the chat settings of the account associated with the provided
+            [accId].
+        
+        Parameters:
+            [int accId]      = The ID of the account whose chat settings
+                               are to be changed.
+            [uint8[sp+, tf]] = The chat settings - SpeedChat Plus and
+                               True Friends
+        
+        Example response:
+            On success: True
+            On failure: False
+        """
+        return self.rpc_updateObject(accId, 'AccountUD', {'CHAT_SETTINGS':
+                                    [int(speedChatPlus), int(trueFriends)]})
