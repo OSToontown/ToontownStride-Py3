@@ -1,126 +1,44 @@
 from panda3d.core import *
 
-import argparse, marshal, struct
-import glob, sys, os
-import rc4
+import argparse, struct
+import sys, glob
+import os
+
+sys.path.append('nirai/src')
+
+from niraitools import *
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--compile-cxx', '-c', action='store_true',
-                    help='Compile the CXX codes and generate Nirai.exe into built.')
+                    help='Compile the CXX codes and generate stride.exe into built.')
 parser.add_argument('--make-nri', '-n', action='store_true',
                     help='Generate stride NRI.')
+parser.add_argument('--make-mfs', '-m', action='store_true',
+                    help='Make multifiles')
 args = parser.parse_args()
 
-# BEGIN (STRIPPED AND MODIFIED) COPY FROM niraitools.py
-class NiraiPackager:
-    HEADER = 'NRI\n'
+if not os.path.exists('built'):
+    os.mkdir('built')
 
-    def __init__(self, outfile):
-        self.modules = {}
-        self.outfile = outfile
+def niraicall_obfuscate(code):
+    # We'll obfuscate if len(code) % 4 == 0
+    # This way we make sure both obfuscated and non-obfuscated code work.
+    if len(code) % 4:
+        return False, None
 
-    def __read_file(self, filename, mangler=None):
-        with open(filename, 'rb') as f:
-            data = f.read()
+    return True, code[::-1]
 
-        base = filename.rsplit('.', 1)[0].replace('\\', '/').replace('/', '.')
-        pkg = base.endswith('.__init__')
-        moduleName = base.rsplit('.', 1)[0] if pkg else base
-
-        name = moduleName
-        if mangler is not None:
-            name = mangler(name)
-
-        if not name:
-            return '', ('', 0)
-
-        try:
-            data = self.compile_module(name, data)
-
-        except:
-            print 'WARNING: Failed to compile', filename
-            return '', ('', 0)
-
-        size = len(data) * (-1 if pkg else 1)
-        return name, (data, size)
-
-    def compile_module(self, name, data):
-        return marshal.dumps(compile(data, name, 'exec'))
-
-    def add_module(self, moduleName, data, size=None, compile=False):
-        if compile:
-            data = self.compile_module(moduleName, data)
-
-        if size is None:
-            size = len(data)
-
-        self.modules[moduleName] = (data, size)
-
-    def add_file(self, filename, mangler=None):
-        print 'Adding file', filename
-        moduleName, (data, size) = self.__read_file(filename, mangler)
-        if moduleName:
-            moduleName = os.path.basename(filename).rsplit('.', 1)[0]
-            self.add_module(moduleName, data, size)
-
-    def add_directory(self, dir, mangler=None):
-        print 'Adding directory', dir
-
-        def _recurse_dir(dir):
-            for f in os.listdir(dir):
-                f = os.path.join(dir, f)
-
-                if os.path.isdir(f):
-                    _recurse_dir(f)
-
-                elif f.endswith('py'):
-                    moduleName, (data, size) = self.__read_file(f, mangler)
-                    if moduleName:
-                        self.add_module(moduleName, data, size)
-
-        _recurse_dir(dir)
-
-    def get_mangle_base(self, *path):
-        return len(os.path.join(*path).rsplit('.', 1)[0].replace('\\', '/').replace('/', '.')) + 1
-
-    def write_out(self):
-        f = open(self.outfile, 'wb')
-        f.write(self.HEADER)
-        f.write(self.process_modules())
-        f.close()
-
-    def generate_key(self, size=256):
-        return os.urandom(size)
-
-    def dump_key(self, key):
-        for k in key:
-            print ord(k),
-
-        print
-
-    def process_modules(self):
-        # Pure virtual
-        raise NotImplementedError('process_datagram')
-
-    def get_file_contents(self, filename, keysize=0):
-        with open(filename, 'rb') as f:
-            data = f.read()
-
-        if keysize:
-            key = self.generate_key(keysize)
-            rc4.rc4_setkey(key)
-            data = key + rc4.rc4(data)
-
-        return data
-# END COPY FROM niraitools.py
+niraimarshal.niraicall_obfuscate = niraicall_obfuscate
 
 class StridePackager(NiraiPackager):
-    HEADER = 'STRIDETT'
+    HEADER = 'TTSROCKS'
     BASEDIR = '..' + os.sep
 
     def __init__(self, outfile):
         NiraiPackager.__init__(self, outfile)
         self.__manglebase = self.get_mangle_base(self.BASEDIR)
+        #self.add_panda3d_dirs()
+        #self.add_default_lib()
 
     def add_source_dir(self, dir):
         self.add_directory(self.BASEDIR + dir, mangler=self.__mangler)
@@ -131,7 +49,7 @@ class StridePackager(NiraiPackager):
 
     def __mangler(self, name):
         if name.endswith('AI') or name.endswith('UD') or name in ('ToontownAIRepository', 'ToontownUberRepository',
-                                                                  'ToontownInternalRepository'):
+                                                                  'ToontownInternalRepository', 'ServiceStart'):
             if not 'NonRepeatableRandomSource' in name:
                 return ''
 
@@ -139,26 +57,26 @@ class StridePackager(NiraiPackager):
 
     def generate_niraidata(self):
         print 'Generating niraidata'
+        # Config
+        config = self.get_file_contents('../deployment/public_client.prc')
 
-        config = self.get_file_contents('../dependencies/config/release/en.prc')
-        config += '\n\n' + self.get_file_contents('../dependencies/config/general.prc')
-        key = self.generate_key(128)
-        rc4.rc4_setkey(key)
-        config = key + rc4.rc4(config)
-
+        config_iv = self.generate_key(16)
+        config_key = self.generate_key(16)
+        config = config_iv + config_key + aes.encrypt(config, config_key, config_iv)
         niraidata = 'CONFIG = %r' % config
-        niraidata += '\nDC = %r' % self.get_file_contents('../dependencies/astron/dclass/stride.dc', 128)
+        
+        # DC
+        niraidata += '\nDC = %r' % self.get_file_contents('../dependencies/astron/dclass/stride.dc', True)
         self.add_module('niraidata', niraidata, compile=True)
 
     def process_modules(self):
         with open('base.dg', 'rb') as f:
             basesize, = struct.unpack('<I', f.read(4))
             data = f.read()
-
+        # TODO: Compression
         dg = Datagram()
         dg.addUint32(len(self.modules) + basesize)
         dg.appendData(data)
-
         for moduleName in self.modules:
             data, size = self.modules[moduleName]
 
@@ -167,19 +85,26 @@ class StridePackager(NiraiPackager):
             dg.appendData(data)
 
         data = dg.getMessage()
-        compressed = compressString(data, 9)
-        key = self.generate_key(100)
-        fixed = ''.join(chr((i ^ (5 * i + 7)) % ((i + 6) * 10)) for i in xrange(28))
-        rc4.rc4_setkey(key + fixed)
-        data = rc4.rc4(compressed)
-        return key + data
+        #compressed = compressString(data, 9)
+        iv = self.generate_key(16)
+        key = self.generate_key(16)
+        fixed_key = ''.join(chr((i ^ (7 * i + 16)) % ((i + 5) * 3)) for i in xrange(16))
+        fixed_iv = ''.join(chr((i ^ (2 * i + 53)) % ((i + 9) * 6)) for i in xrange(16))
+        securekeyandiv = aes.encrypt(iv + key, fixed_key, fixed_iv)
+        return securekeyandiv + aes.encrypt(data, key, iv)
 
-# 1. Make the NRI
+# Compile the engine
+if args.compile_cxx:
+    compiler = NiraiCompiler('stride.exe', libs=set(glob.glob('C:/repos/libpandadna/libpandadna.dir/Release/*.obj')))
+
+    compiler.add_nirai_files()
+    compiler.add_source('src/stride.cxx')
+
+    compiler.run()
+
+# Compile the game data
 if args.make_nri:
-    if not os.path.exists('built'):
-        os.mkdir('built')
-
-    pkg = StridePackager('built/stride.dist')
+    pkg = StridePackager('built/TTSData.bin')
 
     pkg.add_source_dir('otp')
     pkg.add_source_dir('toontown')
@@ -187,19 +112,18 @@ if args.make_nri:
     pkg.add_data_file('NiraiStart')
 
     pkg.generate_niraidata()
+
     pkg.write_out()
 
-# 2. Compile CXX stuff
-if args.compile_cxx:
-    if not os.path.exists('built'):
-        os.mkdir('built')
+if args.make_mfs:
+    os.chdir('../resources')
+    cmd = ''
+    for phasenum in ['3', '3.5', '4', '5', '5.5', '6', '7', '8', '9', '10', '11', '12', '13']:
+        print 'phase_%s' % (phasenum)
+        cmd = 'multify -cf ../build/built/resources/default/phase_%s.mf phase_%s' % (phasenum, phasenum)
+        p = subprocess.Popen(cmd, stdout=sys.stdout, stderr=sys.stderr)
+        v = p.wait()
 
-    sys.path.append('../../../N2')
-    from niraitools import NiraiCompiler
-
-    compiler = NiraiCompiler('stride.exe', r'"C:\\Users\\Usuario\\workspace\\nirai-panda3d\\thirdparty\\win-libs-vc10"',
-                             libs=set(glob.glob('libpandadna/libpandadna.dir/Release/*.obj')))
-    compiler.add_nirai_files()
-    compiler.add_source('src/stride.cxx')
-
-    compiler.run()
+        if v != 0:
+            print 'The following command returned non-zero value (%d): %s' % (v, cmd[:100] + '...')
+            sys.exit(1)

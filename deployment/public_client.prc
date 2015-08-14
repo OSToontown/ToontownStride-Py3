@@ -5,7 +5,6 @@
 # Client settings
 window-title Toontown Stride
 server-version SERVER_VERSION_HERE
-audio-library-name p3openal_audio
 video-library-name p3ffmpeg
 want-dev #f
 preload-avatars #t
@@ -65,6 +64,8 @@ want-old-fireworks #t
 # Developer options:
 want-dev #f
 want-pstats 0
+
+preferences-filename preferences.json
 
 
 # Crates:

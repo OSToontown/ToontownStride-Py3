@@ -1,18 +1,17 @@
 #include "nirai.h"
 #include <datagram.h>
 #include <datagramIterator.h>
+#include <algorithm>
+#include <string>
 #include <compress_string.h>
-
-string rc4(const char* data, const char* key, int ds, int ks);
 
 extern "C" __declspec(dllexport) void initlibpandadna();
 void init_libpandadna();
 
-const char* header = "STRIDETT";
+const char* header = "TTSROCKS";
 const int header_size = 8;
 
-const int keysize = 100;
-const int fixedsize = 28;
+const int key_and_iv_size = 16;
 
 int niraicall_onPreStart(int argc, char* argv[])
 {
@@ -24,7 +23,7 @@ int niraicall_onLoadGameData()
     fstream gd;
 
     // Open the file
-    gd.open("stride.dist", ios_base::in | ios_base::binary);
+    gd.open("TTSData.bin", ios_base::in | ios_base::binary);
 	if (!gd.is_open())
     {
         std::cerr << "Unable to open game file!" << std::endl;
@@ -43,31 +42,50 @@ int niraicall_onLoadGameData()
 
     delete[] read_header;
 
-    // Extract the key
-    char* key = new char[keysize + fixedsize];
-    char* fixed = new char[keysize];
-
-    for (int i = 0; i < fixedsize; ++i)
-        fixed[i] = (i ^ (5 * i + 7)) % ((i + 6) * 10);
-
-    gd.read(key, keysize);
-    memcpy(&key[keysize], fixed, fixedsize);
-
+    // Decrypt
     std::stringstream ss;
+    
     ss << gd.rdbuf();
     gd.close();
 
-    // Decrypt
-    std::string rawdata = ss.str();
-    std::string decrypted_data = rc4(rawdata.c_str(), key, rawdata.size(),
-                                     keysize + fixedsize);
+    std::string brawdata = ss.str();
+
+    // Decrypted the encrypted key and iv
+    std::string enckeyandiv = brawdata.substr(0, 48);
+
+    unsigned char* deckeyandiv = new unsigned char[32];
+    unsigned char* fixed_key = new unsigned char[key_and_iv_size];
+    unsigned char* fixed_iv = new unsigned char[key_and_iv_size];
+
+    // Create fixed key and iv
+
+    for (int i = 0; i < key_and_iv_size; ++i)
+        fixed_key[i] = (i ^ (7 * i + 16)) % ((i + 5) * 3);
+
+    for (int i = 0; i < key_and_iv_size; ++i)
+        fixed_iv[i] = (i ^ (2 * i + 53)) % ((i + 9) * 6);
+
+    int deckeyandivsize = AES_decrypt((unsigned char*)enckeyandiv.c_str(), enckeyandiv.size(), fixed_key, fixed_iv, deckeyandiv);
+    
+    std::stringstream sss;
+    sss << deckeyandiv;
+    std::string strdeckeyandiv = sss.str();
+
+    // Decrypt the game data
+    std::string rawdata = brawdata.substr(48);
+    unsigned char* iv = (unsigned char*)strdeckeyandiv.substr(0, key_and_iv_size).c_str();
+    unsigned char* key = (unsigned char*)strdeckeyandiv.substr(key_and_iv_size).c_str();
+    unsigned char* decrypted_data = new unsigned char[rawdata.size()];
+    int decsize = AES_decrypt((unsigned char*)rawdata.c_str(), rawdata.size(), key, iv, decrypted_data); // Assumes no error
+
     delete[] key;
-    delete[] fixed;
+    delete[] iv;
+ 
+    // Read
 
-    // Decompress and read
-    std::string decompressed = decompress_string(decrypted_data);
+    // TODO: Compression
 
-    Datagram dg(decompressed);
+    Datagram dg(decrypted_data, decsize);
     DatagramIterator dgi(dg);
 
     unsigned int num_modules = dgi.get_uint32();
@@ -102,12 +120,21 @@ int niraicall_onLoadGameData()
         return 1;
     }
 
+    delete[] decrypted_data;
+
     memset(&fzns[num_modules], 0, sizeof(_frozen));
     PyImport_FrozenModules = fzns;
-
+    
     // libpandadna
     init_libpandadna();
     initlibpandadna();
 
     return 0;
+}
+
+extern "C" PyObject* niraicall_deobfuscate(char* code, Py_ssize_t size)
+{
+    std::string output(code, size);
+    std::reverse(output.begin(), output.end());
+    return PyString_FromStringAndSize(output.data(), size);
 }
