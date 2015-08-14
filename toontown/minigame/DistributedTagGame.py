@@ -4,7 +4,7 @@ from DistributedMinigame import *
 from direct.interval.IntervalGlobal import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from toontown.safezone import Walk, SnowUtil
+from toontown.safezone import Walk, SZUtil
 from toontown.toonbase import ToontownTimer
 from direct.gui import OnscreenText
 import MinigameAvatarScorePanel
@@ -54,7 +54,7 @@ class DistributedTagGame(DistributedMinigame):
         self.IT = None
 
         if TagGameGlobals.isSnowHood(safezoneId):
-            self.snow, self.snowRender = SnowUtil.createSnow(self.ground)
+            self.snow, self.snowRender = SZUtil.createSnow(self.ground)
 
         return
 

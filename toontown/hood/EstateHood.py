@@ -5,13 +5,12 @@ from toontown.distributed.ToontownMsgTypes import *
 from direct.fsm import ClassicFSM, State
 from toontown.minigame import Purchase
 from otp.avatar import DistributedAvatar
-from toontown.hood import SkyUtil
 from direct.task.Task import Task
 from toontown.hood.Hood import Hood
 from toontown.estate.EstateLoader import EstateLoader
 from toontown.estate import HouseGlobals
 from toontown.hood import ZoneUtil
-
+from toontown.safezone import SZUtil
 
 class EstateHood(Hood):
     notify = directNotify.newCategory('EstateHood')
@@ -113,12 +112,12 @@ class EstateHood(Hood):
         self.popupInfo.reparentTo(hidden)
 
     def skyTrack(self, task):
-        return SkyUtil.cloudSkyTrack(task)
+        return SZUtil.cloudSkyTrack(task)
 
     def startSky(self):
         if not self.sky.getTag('sky') == 'Regular':
             self.endSpookySky()
-        SkyUtil.startCloudSky(self)
+        SZUtil.startCloudSky(self)
         if base.cloudPlatformsEnabled:
             self.loader.startCloudPlatforms()
 

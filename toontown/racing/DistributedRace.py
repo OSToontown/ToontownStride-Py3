@@ -19,7 +19,6 @@ from math import sqrt
 from RaceGUI import RaceGUI
 import RaceGlobals
 from direct.task.Task import Task
-from toontown.hood import SkyUtil
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from toontown.battle.BattleProps import *
@@ -29,6 +28,7 @@ from toontown.racing import EffectManager
 from toontown.racing import PiejectileManager
 from toontown.dna.DNAParser import *
 from otp.ai.MagicWordGlobal import *
+from toontown.safezone import SZUtil
 
 class DistributedRace(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedRace')
@@ -1095,13 +1095,13 @@ class DistributedRace(DistributedObject.DistributedObject):
             self.gui.racerLeft(avId, unexpected=False)
 
     def skyTrack(self, task):
-        return SkyUtil.cloudSkyTrack(task)
+        return SZUtil.cloudSkyTrack(task)
 
     def startSky(self):
         if self.hasFog:
-            SkyUtil.startCloudSky(self, parent=self.dummyNode, effects=CompassEffect.PRot)
+            SZUtil.startCloudSky(self, parent=self.dummyNode, effects=CompassEffect.PRot)
         else:
-            SkyUtil.startCloudSky(self, parent=render)
+            SZUtil.startCloudSky(self, parent=render)
 
     def stopSky(self):
         taskMgr.remove('skyTrack')

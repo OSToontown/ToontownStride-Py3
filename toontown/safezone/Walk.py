@@ -1,9 +1,6 @@
 from panda3d.core import *
-from direct.task.Task import Task
 from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import StateData
-from direct.fsm import ClassicFSM, State
-import colorsys
+from direct.fsm import ClassicFSM, StateData, State
 
 class Walk(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('Walk')
@@ -91,13 +88,7 @@ class Walk(StateData.StateData):
             self.swimSoundPlaying = 0
             self.swimSound.stop()
 
-        saturation = min(max((base.localAvatar.getZ() / -12.3), 0.51), 1)
-        self.getFog().setColor(*colorsys.hsv_to_rgb(0.616, saturation, 0.5))
-
-        return Task.cont
-
-    def getFog(self):
-        return base.cr.playGame.hood.fog if hasattr(base.cr.playGame.hood, 'fog') else base.cr.playGame.place.fog
+        return task.cont
 
     def enterSlowWalking(self):
         self.accept(base.localAvatar.uniqueName('positiveHP'), self.__handlePositiveHP)

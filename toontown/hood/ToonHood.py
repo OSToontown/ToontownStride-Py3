@@ -9,7 +9,7 @@ from toontown.hood.Hood import Hood
 from toontown.building import SuitInterior
 from toontown.cogdominium import CogdoInterior
 from toontown.toon.Toon import teleportDebug
-from toontown.hood import SkyUtil
+from toontown.safezone import SZUtil
 
 class ToonHood(Hood):
     notify = directNotify.newCategory('ToonHood')
@@ -208,12 +208,12 @@ class ToonHood(Hood):
         pass
 
     def skyTrack(self, task):
-        return SkyUtil.cloudSkyTrack(task)
+        return SZUtil.cloudSkyTrack(task)
 
     def startSky(self):
         if not self.sky.getTag('sky') == 'Regular':
             self.endSpookySky()
-        SkyUtil.startCloudSky(self)
+        SZUtil.startCloudSky(self)
 
     def startSpookySky(self):
         if hasattr(self, 'sky') and self.sky:
@@ -237,10 +237,10 @@ class ToonHood(Hood):
 
     def setUnderwaterFog(self):
         if base.wantFog:
-            self.fog.setColor(0.245, 0.322, 0.5)
             self.fog.setLinearRange(0.1, 100.0)
             render.setFog(self.fog)
             self.sky.setFog(self.fog)
+            SZUtil.startUnderwaterFog()
 
     def setWhiteFog(self):
         if base.wantFog:
@@ -250,8 +250,10 @@ class ToonHood(Hood):
             render.setFog(self.fog)
             self.sky.clearFog()
             self.sky.setFog(self.fog)
+            SZUtil.stopUnderwaterFog()
 
     def setNoFog(self):
         if base.wantFog:
             render.clearFog()
             self.sky.clearFog()
+            SZUtil.stopUnderwaterFog()
