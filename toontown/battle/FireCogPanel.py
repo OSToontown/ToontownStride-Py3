@@ -47,7 +47,7 @@ class FireCogPanel(StateData.StateData):
             del self.backButton
         self.loaded = 0
 
-    def enter(self, numAvatars, localNum = None, luredIndices = None, trappedIndices = None, track = None, fireCosts = None):
+    def enter(self, numAvatars, localNum = None, luredIndices = None, trappedIndices = None, track = None):
         if not self.loaded:
             self.load()
         self.frame.show()
@@ -59,7 +59,7 @@ class FireCogPanel(StateData.StateData):
             if len(trappedIndices) > 0:
                 if track == BattleBase.TRAP:
                     invalidTargets += trappedIndices
-        self.__placeButtons(numAvatars, invalidTargets, localNum, fireCosts)
+        self.__placeButtons(numAvatars, invalidTargets, localNum)
 
     def exit(self):
         self.frame.hide()
@@ -87,23 +87,24 @@ class FireCogPanel(StateData.StateData):
     def adjustToons(self, numToons, localNum):
         self.__placeButtons(numToons, [], localNum)
 
-    def __placeButtons(self, numAvatars, invalidTargets, localNum, fireCosts):
-        canfire = 0
+    def __placeButtons(self, numAvatars, invalidTargets, localNum):
+        canFire = 0
+
         for i in xrange(4):
             if numAvatars > i and i not in invalidTargets and i != localNum:
                 self.avatarButtons[i].show()
                 self.avatarButtons[i]['text'] = ''
-                if fireCosts[i] <= localAvatar.getPinkSlips():
+                if localAvatar.getPinkSlips():
                     self.avatarButtons[i]['state'] = DGG.NORMAL
                     self.avatarButtons[i]['text_fg'] = (0, 0, 0, 1)
-                    canfire = 1
+                    canFire = 1
                 else:
                     self.avatarButtons[i]['state'] = DGG.DISABLED
                     self.avatarButtons[i]['text_fg'] = (1.0, 0, 0, 1)
             else:
                 self.avatarButtons[i].hide()
 
-        if canfire:
+        if canFire:
             self.textFrame['text'] = TTLocalizer.FireCogTitle % localAvatar.getPinkSlips()
         else:
             self.textFrame['text'] = TTLocalizer.FireCogLowTitle % localAvatar.getPinkSlips()

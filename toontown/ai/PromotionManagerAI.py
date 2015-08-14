@@ -15,12 +15,12 @@ class PromotionManagerAI:
     def getPercentChance(self):
         return 100.0
 
-    def recoverMerits(self, av, cogList, zoneId, multiplier = 1, extraMerits = None):
+    def recoverMerits(self, av, cogList, zoneId, multiplier = 1, extraMerits = None, addInvasion = True):
         avId = av.getDoId()
         meritsRecovered = [0, 0, 0, 0]
         if extraMerits is None:
             extraMerits = [0, 0, 0, 0]
-        if self.air.suitInvasionManager.getInvading():
+        if addInvasion and self.air.suitInvasionManager.getInvading():
             multiplier *= getInvasionMultiplier()
         for i in xrange(len(extraMerits)):
             if CogDisguiseGlobals.isSuitComplete(av.getCogParts(), i):

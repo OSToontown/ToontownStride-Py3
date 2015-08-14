@@ -49,6 +49,7 @@ class DistributedPondBingoManager(DistributedObject.DistributedObject, FSM.FSM):
         self.notify.debug('generate: DistributedPondBingoManager')
 
     def delete(self):
+        self.pond.resetSpotGui()
         del self.pond.pondBingoMgr
         self.pond.pondBingoMgr = None
         del self.pond
@@ -58,7 +59,6 @@ class DistributedPondBingoManager(DistributedObject.DistributedObject, FSM.FSM):
         del self.card
         self.notify.debug('delete: Deleting Local PondManager %s' % self.doId)
         DistributedObject.DistributedObject.delete(self)
-        return
 
     def d_cardUpdate(self, cellId, genus, species):
         self.sendUpdate('cardUpdate', [self.cardId,
@@ -121,7 +121,7 @@ class DistributedPondBingoManager(DistributedObject.DistributedObject, FSM.FSM):
             self.card.hide()
 
     def showCard(self):
-        if (self.state != 'Off' or self.state != 'CloseEvent') and self.card.getGame():
+        if self.state != 'Off' and self.card.getGame() != None:
             self.card.loadCard()
             self.card.show()
         elif self.state == 'GameOver':
@@ -283,8 +283,6 @@ class DistributedPondBingoManager(DistributedObject.DistributedObject, FSM.FSM):
             return (request, args)
         elif request == 'Intermission':
             return (request, args)
-        elif request == 'CloseEvent':
-            return 'CloseEvent'
         elif request == 'Off':
             return 'Off'
         else:
@@ -305,8 +303,6 @@ class DistributedPondBingoManager(DistributedObject.DistributedObject, FSM.FSM):
             return (request, args)
         elif request == 'Intermission':
             return (request, args)
-        elif request == 'CloseEvent':
-            return 'CloseEvent'
         elif request == 'Off':
             return 'Off'
         else:
@@ -338,17 +334,3 @@ class DistributedPondBingoManager(DistributedObject.DistributedObject, FSM.FSM):
 
     def exitIntermission(self):
         self.notify.debug('enterIntermission: Exit Intermission State')
-
-    def enterCloseEvent(self, timestamp):
-        self.notify.debug('enterCloseEvent: Enter CloseEvent State')
-        self.card.hide()
-        self.pond.resetSpotGui()
-
-    def filterCloseEvent(self, request, args):
-        if request == 'Off':
-            return 'Off'
-        else:
-            self.notify.warning('filterOff: Invalid State Transition from GameOver to %s' % request)
-
-    def exitCloseEvent(self):
-        self.notify.debug('exitCloseEvent: Exit CloseEvent State')

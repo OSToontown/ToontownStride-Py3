@@ -18,8 +18,7 @@ from toontown.effects import DustCloud
 from toontown.suit import DistributedBossCog
 from toontown.suit import Suit
 from toontown.suit import SuitDNA
-from toontown.toon import Toon
-from toontown.toon import ToonDNA
+from toontown.toon import Toon, NPCToons
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import ToontownTimer
@@ -197,17 +196,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
     def __makeResistanceToon(self):
         if self.resistanceToon:
             return
-        npc = Toon.Toon()
-        npc.setName(TTLocalizer.BossbotResistanceToonName)
-        npc.setPickable(0)
-        npc.setPlayerType(NametagGroup.CCNonPlayer)
-        dna = ToonDNA.ToonDNA()
-        dna.newToonRandom(11237, 'm', 1)
-        dna.head = 'sls'
-        npc.setDNAString(dna.makeNetString())
-        npc.animFSM.request('neutral')
-        npc.loop('neutral')
-        self.resistanceToon = npc
+        self.resistanceToon = NPCToons.createLocalNPC(10002)
         self.resistanceToon.setPosHpr(*ToontownGlobals.BossbotRTIntroStartPosHpr)
         state = random.getstate()
         random.seed(self.doId)

@@ -65,7 +65,6 @@ class FriendsListOperation(OperationFSM):
             self.demand('Error', 'Friend was not a Toon')
             return
         friendId = self.friendsList[self.friendIndex]
-
         self.realFriendsList.append([friendId, fields['setName'][0],
             fields['setDNAString'][0], fields['setAdminAccess'][0], fields['setPetId'][0]])
 
@@ -98,8 +97,10 @@ class RemoveFriendOperation(OperationFSM):
         self.demand('Retrieved', fields['setFriendsList'][0], fields['setTrueFriends'][0])
 
     def enterRetrieved(self, friendsList, trueFriendsList):
-        friendsList.remove(self.target)
-        trueFriendsList.remove(self.target)
+        if self.target in friendsList:
+            friendsList.remove(self.target)
+        if self.target in trueFriendsList:
+            trueFriendsList.remove(self.target)
         if self.sender in self.mgr.onlineToons:
             dg = self.air.dclassesByName['DistributedToonUD'].aiFormatUpdate(
                     'setFriendsList', self.sender, self.sender,
@@ -115,7 +116,7 @@ class RemoveFriendOperation(OperationFSM):
 
         self.air.dbInterface.updateObject(self.air.dbId, self.sender,
             self.air.dclassesByName['DistributedToonUD'],
-            {'setFriendsList' : [friendsList], 'setTrueFriends' : [trueFriendsList]})
+            {'setFriendsList' : [friendsList], 'setTrueFriends': [trueFriendsList]})
         self.demand('Off')
 
 # -- Clear List --
@@ -190,7 +191,6 @@ class TTSFriendsManagerUD(DistributedObjectGlobalUD):
                 return
             inventory = fields['setInventory'][0]
             trackAccess = fields['setTrackAccess'][0]
-            trophies = 0 # fields['setTrophyScore'][0] is not db
             hp = fields['setHp'][0]
             maxHp = fields['setMaxHp'][0]
             defaultShard = fields['setDefaultShard'][0]
@@ -199,9 +199,9 @@ class TTSFriendsManagerUD(DistributedObjectGlobalUD):
             experience = fields['setExperience'][0]
             trackBonusLevel = fields['setTrackBonusLevel'][0]
 
-            self.sendUpdateToAvatarId(senderId, 'friendDetails', [avId, inventory, trackAccess, trophies, hp, maxHp, defaultShard, lastHood, dnaString, experience, trackBonusLevel])
+            self.sendUpdateToAvatarId(senderId, 'friendDetails', [avId, inventory, trackAccess, hp, maxHp, defaultShard, lastHood, dnaString, experience, trackBonusLevel])
         self.air.dbInterface.queryObject(self.air.dbId, avId, handleToon)
-
+    
     def getPetDetails(self, avId):
         senderId = self.air.getAvatarIdFromSender()
         def handlePet(dclass, fields):
@@ -235,9 +235,10 @@ class TTSFriendsManagerUD(DistributedObjectGlobalUD):
         self.air.send(dg)
 
         for friend in friendsList:
-            if friend[0] in self.onlineToons:
-                self.sendUpdateToAvatarId(doId, 'friendOnline', [friend[0]])
-            self.sendUpdateToAvatarId(friend[0], 'friendOnline', [doId])
+            friendId = friend[0]
+            if friendId in self.onlineToons:
+                self.sendUpdateToAvatarId(doId, 'friendOnline', [friendId])
+            self.sendUpdateToAvatarId(friendId, 'friendOnline', [doId])
 
     def goingOffline(self, avId):
         self.toonOffline(avId)
@@ -249,9 +250,9 @@ class TTSFriendsManagerUD(DistributedObjectGlobalUD):
             if dclass != self.air.dclassesByName['DistributedToonUD']:
                 return
             friendsList = fields['setFriendsList'][0]
-            for friendId in friendsList:
-                if friendId in self.onlineToons:
-                    self.sendUpdateToAvatarId(friendId, 'friendOffline', [doId])
+            for friend in friendsList:
+                if friend in self.onlineToons:
+                    self.sendUpdateToAvatarId(friend, 'friendOffline', [doId])
             if doId in self.onlineToons:
                 self.onlineToons.remove(doId)
             if doId in self.toon2data:

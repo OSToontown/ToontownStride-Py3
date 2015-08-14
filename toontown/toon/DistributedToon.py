@@ -2382,13 +2382,19 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def addReport(self, doId):
         if not self.isReported(doId):
             self.reported.append(doId)
+    
+    def setFriendsList(self, friendsList):
+        DistributedPlayer.DistributedPlayer.setFriendsList(self, friendsList)
+        messenger.send('friendsListChanged')
+        Toon.reconsiderAllToonsUnderstandable()
 
     def setTrueFriends(self, trueFriends):
-        Toon.reconsiderAllToonsUnderstandable()
         self.trueFriends = trueFriends
+        Toon.reconsiderAllToonsUnderstandable()
+        messenger.send('friendsListChanged')
 
     def isTrueFriends(self, doId):
-        return doId in self.trueFriends
+        return base.cr.wantTrueFriends() and doId in self.trueFriends
 
     def applyBuffs(self):
         for id, timestamp in enumerate(self.buffs):

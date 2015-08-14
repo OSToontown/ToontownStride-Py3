@@ -693,6 +693,18 @@ class OTPClientRepository(ClientRepositoryBase):
     def handleAvatarsList(self, avatars):
         self.avList = avatars
         self.loginFSM.request('chooseAvatar', [self.avList])
+    
+    def handleChatSettings(self, chatSettings):
+        self.chatSettings = chatSettings
+    
+    def wantSpeedchatPlus(self):
+        return self.chatSettings[0]
+    
+    def wantTrueFriends(self):
+        return self.chatSettings[1]
+    
+    def wantTypedChat(self):
+        return self.wantSpeedchatPlus() or self.wantTrueFriends()
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def enterChooseAvatar(self, avList):

@@ -59,8 +59,8 @@ class ToonInterior(Place.Place):
          State.State('NPCFAReject', self.enterNPCFAReject, self.exitNPCFAReject, ['walk']),
          State.State('HFA', self.enterHFA, self.exitHFA, ['HFAReject', 'teleportOut', 'tunnelOut']),
          State.State('HFAReject', self.enterHFAReject, self.exitHFAReject, ['walk']),
-         State.State('doorIn', self.enterDoorIn, self.exitDoorIn, ['walk']),
-         State.State('doorOut', self.enterDoorOut, self.exitDoorOut, ['walk']),
+         State.State('doorIn', self.enterDoorIn, self.exitDoorIn, ['walk', 'stopped']),
+         State.State('doorOut', self.enterDoorOut, self.exitDoorOut, ['walk', 'stopped']),
          State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk']),
          State.State('teleportOut', self.enterTeleportOut, self.exitTeleportOut, ['teleportIn']),
          State.State('quest', self.enterQuest, self.exitQuest, ['walk', 'doorOut']),
@@ -176,7 +176,9 @@ class ToonInterior(Place.Place):
 
     def enterTeleportIn(self, requestStatus):
         modelType = DistributedToonInterior.DistributedToonInterior(base.cr).getModelType(self.getZoneId())
-        if ZoneUtil.isPetshop(self.zoneId):
+        if ZoneUtil.isHQ(self.zoneId):
+            base.localAvatar.setPosHpr(-5.5, -1.5, ToontownGlobals.FloorOffset, 0.0, 0.0, 0.0)
+        elif ZoneUtil.isPetshop(self.zoneId):
             base.localAvatar.setPosHpr(0, 0, ToontownGlobals.FloorOffset, 45.0, 0.0, 0.0)
         else:
             if modelType in InteriorTypes:

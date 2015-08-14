@@ -1,4 +1,5 @@
 from direct.directnotify.DirectNotifyGlobal import *
+import cPickle
 
 from otp.ai.AIBaseGlobal import *
 from toontown.building import DistributedBuildingAI
@@ -7,8 +8,6 @@ from toontown.building import HQBuildingAI
 from toontown.building import KartShopBuildingAI
 from toontown.building import PetshopBuildingAI
 from toontown.hood import ZoneUtil
-
-from pymongo.errors import AutoReconnect
 
 
 class DistributedBuildingMgrAI:
@@ -21,6 +20,7 @@ class DistributedBuildingMgrAI:
         self.dnaStore = dnaStore
         self.trophyMgr = trophyMgr
         self.__buildings = {}
+        self.tableName = 'buildings_%s' % self.branchId
         self.findAllLandmarkBuildings()
 
     def cleanup(self):
@@ -107,10 +107,10 @@ class DistributedBuildingMgrAI:
         return (blocks, hqBlocks, gagshopBlocks, petshopBlocks, kartshopBlocks)
 
     def findAllLandmarkBuildings(self):
-        backups = self.load()
+        buildings = self.load()
         (blocks, hqBlocks, gagshopBlocks, petshopBlocks, kartshopBlocks) = self.getDNABlockLists()
         for blockNumber in blocks:
-            self.newBuilding(blockNumber, backup=backups.get(blockNumber, None))
+            self.newBuilding(blockNumber, buildings.get(blockNumber, None))
         for blockNumber in hqBlocks:
             self.newHQBuilding(blockNumber)
         for blockNumber in gagshopBlocks:
@@ -120,25 +120,21 @@ class DistributedBuildingMgrAI:
         for block in kartshopBlocks:
             self.newKartShopBuilding(block)
 
-    def newBuilding(self, blockNumber, backup=None):
-        building = DistributedBuildingAI.DistributedBuildingAI(
-            self.air, blockNumber, self.branchId, self.trophyMgr)
+    def newBuilding(self, blockNumber, blockData = None):
+        building = DistributedBuildingAI.DistributedBuildingAI(self.air, blockNumber, self.branchId, self.trophyMgr)
         building.generateWithRequired(self.branchId)
-        if backup is not None:
-            state = backup.get('state', 'toon')
-            if ((state == 'suit') and simbase.air.wantCogbuildings) or (
-                (state == 'cogdo') and simbase.air.wantCogdominiums):
-                building.track = backup.get('track', 'c')
-                building.difficulty = backup.get('difficulty', 1)
-                building.numFloors = backup.get('numFloors', 1)
-                building.updateSavedBy(backup.get('savedBy'))
-                building.becameSuitTime = backup.get('becameSuitTime', time.time())
-                if (state == 'suit') and simbase.air.wantCogbuildings:
-                    building.setState('suit')
-                elif (state == 'cogdo') and simbase.air.wantCogdominiums:
+        if blockData:
+            building.track = blockData.get('track', 'c')
+            building.realTrack = blockData.get('track', 'c')
+            building.difficulty = int(blockData.get('difficulty', 1))
+            building.numFloors = int(blockData.get('numFloors', 1))
+            building.numFloors = max(1, min(5, building.numFloors))
+            building.becameSuitTime = blockData.get('becameSuitTime', time.time())
+            if blockData['state'] == 'suit':
+                building.setState('suit')
+            elif blockData['state'] == 'cogdo':
+                if simbase.air.wantCogdominiums:
                     building.setState('cogdo')
-                else:
-                    building.setState('toon')
             else:
                 building.setState('toon')
         else:
@@ -183,49 +179,59 @@ class DistributedBuildingMgrAI:
         return building
 
     def save(self):
+        if self.air.dbConn:
+            buildings = []
+            for i in self.__buildings.values():
+                if isinstance(i, HQBuildingAI.HQBuildingAI):
+                    continue
+                buildings.append(i.getPickleData())
+
+            street = {'ai': self.air.districtId, 'branch': self.branchId}
+            try:
+                self.air.dbGlobalCursor.streets.update(street,
+                                                        {'$setOnInsert': street,
+                                                        '$set': {'buildings': buildings}},
+                                                        upsert=True)
+            except: # Something happened to our DB, but we can reconnect and retry.
+                taskMgr.doMethodLater(config.GetInt('mongodb-retry-time', 2), self.save, 'retrySave', extraArgs=[])
+        
+        else:
+            self.saveDev()
+            
+    def saveDev(self):
         backups = {}
-        #buildings = []
         for blockNumber in self.getSuitBlocks():
             building = self.getBuilding(blockNumber)
-            backup = {
-                'state': building.fsm.getCurrentState().getName(),
-                'block': building.block,
-                'track': building.track,
-                'difficulty': building.difficulty,
-                'numFloors': building.numFloors,
-                'savedBy': building.savedBy,
-                'becameSuitTime': building.becameSuitTime
-            }
-            backups[blockNumber] = backup
-
-        #for i in self.__buildings.values():
-        #    if isinstance(i, HQBuildingAI.HQBuildingAI):
-        #        continue
-        #    buildings.append(i.getPickleData())
+            backups[blockNumber] = building.getPickleData()
         simbase.backups.save('block-info', (self.air.districtId, self.branchId), backups)
-        '''if not self.air.dbConn:
-            simbase.backups.save('block-info', (self.air.districtId, self.branchId), backups)
-        else:
-            street = {'district': self.air.districtId, 'branch': self.branchId}
-            try:
-                self.air.dbGlobalCursor.blockInfo.update(street, {'$setOnInsert': street, '$set': {'buildings': buildings}}, upsert=True)
-            except AutoReconnect:
-                taskMgr.doMethodLater(config.GetInt('mongodb-retry-time', 2), self.save, 'retrySave', extraArgs=[])'''
-
+        
     def load(self):
-        blocks = simbase.backups.load('block-info', (self.air.districtId, self.branchId), default={})
-        return blocks
-        '''if not self.air.dbConn:
+        if self.air.dbConn:
+            blocks = {}
+
+            # Ensure that toontown.streets is indexed. Doing this at loading time
+            # is a fine way to make sure that we won't upset players with a
+            # lagspike while we wait for the backend to handle the index request.
+            self.air.dbGlobalCursor.streets.ensure_index([('ai', 1),
+                                                        ('branch', 1)])
+
+            street = {'ai': self.air.districtId, 'branch': self.branchId}
+            try:
+                doc = self.air.dbGlobalCursor.streets.find_one(street)
+            except: # We're failing over - normally we'd wait to retry, but this is on AI startup so we might want to retry (or refactor the bldgMgr so we can sanely retry).
+                return blocks
+
+            if not doc:
+                return blocks
+
+            for building in doc.get('buildings', []):
+                blocks[int(building['block'])] = building
+
+            return blocks
+        
+        else:
             blocks = simbase.backups.load('block-info', (self.air.districtId, self.branchId), default={})
             return blocks
-        self.air.dbGlobalCursor.blockInfo.ensure_index([('district', 1), ('branch', 1)])
-        street = {'district': self.air.districtId, 'branch': self.branchId}
-        try:
-            doc = self.air.dbGlobalCursor.blockInfo.find_one(street)
-        except AutoReconnect:
-            return blocks
-        if not doc:
-            return blocks
-        for building in doc.get('buildings', []):
-            blocks[int(building['block'])] = building
-        return blocks'''
+            
+
+   

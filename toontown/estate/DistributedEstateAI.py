@@ -5,11 +5,10 @@ import HouseGlobals
 import time, random
 
 from toontown.fishing.DistributedFishingPondAI import DistributedFishingPondAI
-from toontown.fishing.DistributedPondBingoManagerAI import DistributedPondBingoManagerAI
 from toontown.fishing import FishingTargetGlobals, FishGlobals
 from toontown.safezone import TreasureGlobals
 from toontown.safezone.SZTreasurePlannerAI import SZTreasurePlannerAI
-from toontown.safezone import DistributedTreasureAI
+from toontown.safezone import DistributedEFlyingTreasureAI
 from toontown.safezone import ButterflyGlobals
 from toontown.safezone import DistributedButterflyAI
 from toontown.safezone.DistributedFishingSpotAI import DistributedFishingSpotAI
@@ -432,7 +431,7 @@ class CannonRental(Rental):
         for i in xrange(20):
             x = random.randint(100, 300) - 200
             y = random.randint(100, 300) - 200
-            treasure = DistributedTreasureAI.DistributedTreasureAI(self.estate.air, self, 7, x, y, z)
+            treasure = DistributedEFlyingTreasureAI.DistributedEFlyingTreasureAI(self.estate.air, self, 7, x, y, z)
             treasure.generateWithRequired(self.estate.zoneId)
             self.objects.add(treasure)
             doIds.append(treasure.doId)
@@ -505,11 +504,6 @@ class DistributedEstateAI(DistributedObjectAI):
         self.pond.setArea(ToontownGlobals.MyEstate)
         self.pond.generateWithRequired(self.zoneId)
         self.pond.start()
-
-        self.pond.bingoMgr = DistributedPondBingoManagerAI(simbase.air)
-        self.pond.bingoMgr.setPondDoId(self.pond.getDoId())
-        self.pond.bingoMgr.generateWithRequired(self.zoneId)
-        self.pond.bingoMgr.initTasks()
 
         treasureType, healAmount, spawnPoints, spawnRate, maxTreasures = TreasureGlobals.SafeZoneTreasureSpawns[ToontownGlobals.MyEstate]
         self.treasurePlanner = SZTreasurePlannerAI(self.zoneId, treasureType, healAmount, spawnPoints, spawnRate, maxTreasures)

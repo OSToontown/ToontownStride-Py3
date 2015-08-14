@@ -19,8 +19,7 @@ from toontown.building import ElevatorUtils
 from toontown.chat import ResistanceChat
 from toontown.coghq import CogDisguiseGlobals
 from toontown.distributed import DelayDelete
-from toontown.toon import Toon
-from toontown.toon import ToonDNA
+from toontown.toon import Toon, NPCToons
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
 from otp.nametag import NametagGroup
@@ -38,7 +37,7 @@ class DistributedCashbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
 
     def __init__(self, cr):
         DistributedBossCog.DistributedBossCog.__init__(self, cr)
-        FSM.FSM.__init__(self, 'DistributedSellbotBoss')
+        FSM.FSM.__init__(self, 'DistributedCashbotBoss')
         self.resistanceToon = None
         self.resistanceToonOnstage = 0
         self.cranes = {}
@@ -104,16 +103,7 @@ class DistributedCashbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
     def __makeResistanceToon(self):
         if self.resistanceToon:
             return
-        npc = Toon.Toon()
-        npc.setName(TTLocalizer.ResistanceToonName)
-        npc.setPickable(0)
-        npc.setPlayerType(NametagGroup.CCNonPlayer)
-        dna = ToonDNA.ToonDNA()
-        dna.newToonRandom(11237, 'f', 1)
-        dna.head = 'pls'
-        npc.setDNAString(dna.makeNetString())
-        npc.animFSM.request('neutral')
-        self.resistanceToon = npc
+        self.resistanceToon = NPCToons.createLocalNPC(12002)
         self.resistanceToon.setPosHpr(*ToontownGlobals.CashbotRTBattleOneStartPosHpr)
         state = random.getstate()
         random.seed(self.doId)
@@ -700,7 +690,6 @@ class DistributedCashbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.endVault.unstash()
         self.evWalls.stash()
         self.midVault.unstash()
-        self.__showResistanceToon(True)
         base.playMusic(self.stingMusic, looping=1, volume=0.9)
         DistributedBossCog.DistributedBossCog.enterIntroduction(self)
 
@@ -784,7 +773,7 @@ class DistributedCashbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.stopAnimate()
         self.cleanupAttacks()
         self.setDizzy(0)
-        self.removeHealthBar()
+        self.healthBar.delete()
         localAvatar.setCameraFov(ToontownGlobals.CogHQCameraFov)
         if self.newState != 'Victory':
             self.battleThreeMusic.stop()

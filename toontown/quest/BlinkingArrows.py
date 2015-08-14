@@ -38,6 +38,11 @@ class BlinkingArrows:
         self.stopArrowsFlashing()
         self.arrow1.reparentTo(hidden)
         self.arrow2.reparentTo(hidden)
+    
+    def reparentTo(self, parent):
+        self.parent = parent
+        self.arrow1.reparentTo(self.parent)
+        self.arrow2.reparentTo(self.parent)
 
     def startArrowsFlashing(self):
         onColor = Vec4(1, 1, 1, 1)

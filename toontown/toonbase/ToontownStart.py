@@ -107,10 +107,6 @@ if 'language' not in settings:
     settings['language'] = 'English'
 if 'cogInterface' not in settings:
     settings['cogInterface'] = True
-if 'speedchatPlus' not in settings:
-    settings['speedchatPlus'] = True
-if 'trueFriends' not in settings:
-    settings['trueFriends'] = True
 if 'tpTransition' not in settings:
     settings['tpTransition'] = True
 if 'fov' not in settings:

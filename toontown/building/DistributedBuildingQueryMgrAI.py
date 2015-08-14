@@ -11,7 +11,7 @@ class DistributedBuildingQueryMgrAI(DistributedObjectAI.DistributedObjectAI):
 
     def isSuit(self, context, zoneId):
         avId = self.air.getAvatarIdFromSender()
-        building = self.buildings.get(zoneId)
-        if building is None:
-            return
-        self.sendUpdateToAvatarId(avId, 'response', [context, building.isSuitBlock()])
+        if zoneId not in self.buildings:
+            self.sendUpdateToAvatarId(avId, 'response', [context, False])
+        else:
+            self.sendUpdateToAvatarId(avId, 'response', [context, self.buildings[zoneId].isSuitBlock()])

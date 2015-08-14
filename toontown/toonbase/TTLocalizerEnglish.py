@@ -4288,7 +4288,7 @@ HeadingToFactoryTitle = '%s'
 ForemanConfrontedMsg = '%s is battling the ' + Foreman + '!'
 MintBossConfrontedMsg = '%s is battling the Supervisor!'
 StageBossConfrontedMsg = '%s is battling the District Attorney!'
-stageToonEnterElevator = '%s \nhas entered the elevator'
+StageToonEnterElevator = '%s\nhas entered the elevator!'
 ForcedLeaveStageAckMsg = 'The Law Clerk was defeated before you could reach him. You did not recover any Jury Notices.'
 MinigameWaitingForOtherToons = 'Waiting for other toons to join...'
 MinigamePleaseWait = 'Please wait...'
@@ -4701,7 +4701,7 @@ LawbotBossName = 'Chief Justice'
 BossbotBossName = 'C. E. O.'
 BossCogNameWithDept = '%(name)s\n%(dept)s'
 BossCogPromoteDoobers = 'You are hereby promoted to full-fledged %s.  Congratulations!'
-BossCogDoobersAway = {'s': 'Go!  And make that sale!'}
+BossCogDoobersAway = {'s': 'Go! And make that sale!'}
 BossCogWelcomeToons = 'Welcome, new Cogs!'
 BossCogPromoteToons = 'You are hereby promoted to full-fledged %s.  Congratu--'
 CagedToonInterruptBoss = 'Hey! Hiya! Hey over there!'
@@ -4741,7 +4741,6 @@ CagedToonBattleThreeMaxTouchCage = 21
 CagedToonBattleThreeMaxAdvice = 106
 CashbotBossHadEnough = "That's it.  I've had enough of these pesky Toons!"
 CashbotBossOuttaHere = "I've got a train to catch!"
-ResistanceToonName = 'Mata Hairy'
 ResistanceToonCongratulations = "You did it!  Congratulations!\x07You're an asset to the Resistance!\x07Here's a special phrase you can use in a tight spot:\x07%s\x07When you say it, %s.\x07But you can only use it once, so choose that time well!"
 ResistanceToonToonupInstructions = 'all the Toons near you will gain %s Laff points'
 ResistanceToonToonupAllInstructions = 'all the Toons near you will gain full Laff points'
@@ -6241,6 +6240,9 @@ NPCToonNames = {20000: 'Tutorial Tom',
  9319: 'Psyche',
  9320: 'Toony Bob',
  9321: 'Sir Biscuit',
+ 9322: 'Glower',
+ 9323: 'Zedd',
+ 9324: 'Nacib',
  7001: 'N. Prisoned',
  7002: 'R.E. Leaseme',
  7003: 'Lemmy Owte',
@@ -6265,8 +6267,10 @@ NPCToonNames = {20000: 'Tutorial Tom',
  7022: 'Dee Version',
  7023: 'Bo Nanapeel',
  10001: 'Healer Sara',
+ 10002: "Good ol' Gil Giggles",
  11001: 'Healer Gabriel',
  12001: 'Healer Bill',
+ 12002: 'Mata Hairy',
  13001: 'Healer Clover'}
 zone2TitleDict = {2513: ('Toon Hall', ''),
  2514: ('Toontown Bank', ''),
@@ -6806,6 +6810,7 @@ zone2TitleDict = {2513: ('Toon Hall', ''),
  3830: ('Wait and See Goggle Defogging', ''),
  9802: ("Barbra's Bohemian Art Supplies", ''),
  9804: ("Angry Dan's Garden Sprinklers", ''),
+ 9806: ("Nacib Niri", ''),
  9808: ("Ori-O's Creamery and Dairy", ''),
  9809: ('Rave of the Forks', ''),
  9812: ('Louds Silent-Shop', ''),
@@ -6816,6 +6821,8 @@ zone2TitleDict = {2513: ('Toon Hall', ''),
  9817: ('The Psyche-Ologist', ''),
  9819: ("Toony Bob's Fluffy Pillows", ''),
  9820: ("Batty's Bat Supply", ''),
+ 9821: ("Milk or Sugar? Tea Shop", ''),
+ 9822: ("Zedd's Pasta", ''),
  9824: ("Joe's Burnt Biscuits", ''),
  9826: ("Juste-A-Cote Taxi Service", ''),
  9827: ("Frekly Fred's Storage Shack", ''),
@@ -8124,7 +8131,6 @@ BossbotBossPreTwo1 = "What's taking so long?"
 BossbotBossPreTwo2 = 'Get cracking and serve my banquet!'
 BossbotRTServeFood1 = 'Hehe, serve the food I place on these conveyor belts.'
 BossbotRTServeFood2 = 'If you serve a cog three times in a row it will explode.'
-BossbotResistanceToonName = "Good ol' Gil Giggles"
 BossbotPhase3Speech1 = "What's happening here?!"
 BossbotPhase3Speech2 = 'These waiters are toons!'
 BossbotPhase3Speech3 = 'Get them!!!'
@@ -8528,10 +8534,6 @@ BugReportNotice = 'Attention!\n\nThis button will open a browser which will send
 CodeRedemptionWarning = 'NOTICE: All codes can only be entered once!'
 CogInterfaceLabelOn = 'The cog battle interface is on.'
 CogInterfaceLabelOff = 'The cog battle interface is off.'
-SpeedchatPlusLabelOn = 'Speedchat Plus is on.'
-SpeedchatPlusLabelOff = 'Speedchat Plus is off.'
-TrueFriendsLabelOn = 'True Friends is on.'
-TrueFriendsLabelOff = 'True Friends is off.'
 TpTransitionLabelOn = 'The teleport transition is on.'
 TpTransitionLabelOff = 'The teleport transition is off.'
 FieldOfViewLabel = 'Field of View:'
@@ -8722,6 +8724,8 @@ ColorAll = 'All'
 ShardPagePreferred = 'Preferred'
 ShardPageShardTitle = '%s Population: %s'
 ShardPageTeleport = 'Teleport to\n%s'
+
+TeleportButton = 'Teleport'
 
 Blacklist = [
  "$1ut",

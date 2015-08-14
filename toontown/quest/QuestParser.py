@@ -21,6 +21,9 @@ def init():
      'camera': camera,
      'hidden': hidden,
      'aspect2d': aspect2d,
+     'topLeft': base.a2dTopLeft,
+     'bottomLeft': base.a2dBottomLeft,
+     'bottomRight': base.a2dBottomRight,
      'localToon': base.localAvatar,
      'laffMeter': base.localAvatar.laffMeter,
      'inventory': base.localAvatar.inventory,
@@ -137,7 +140,7 @@ class NPCMoviePlayer(DirectObject.DirectObject):
         elif varName in globalVarDict:
             return globalVarDict[varName]
         elif varName.find('tomDialogue') > -1 or varName.find('harryDialogue') > -1:
-            notify.warning('%s getting referenced. Tutorial Ack: %d                                  Place: %s' % (varName, base.localAvatar.tutorialAck, base.cr.playGame.hood))
+            notify.warning('%s getting referenced. Tutorial Ack: %d Place: %s' % (varName, base.localAvatar.tutorialAck, base.cr.playGame.hood))
             return None
         else:
             notify.error('Variable not defined: %s' % varName)
