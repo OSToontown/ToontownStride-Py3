@@ -6,6 +6,9 @@ The source code for Toontown Stride.
 
 * Game Development
 
+### Submodule info.
+* First, Clone and then run: git submodule init then run: git submodule update
+
 ### Info
 
 * Do not erase or revert another person's commit without first consulting them.

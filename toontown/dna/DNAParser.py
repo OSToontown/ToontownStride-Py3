@@ -16,20 +16,20 @@ class DNABulkLoader:
 
 def loadDNABulk(dnaStorage, file):
     dnaLoader = DNALoader()
-    fileu = '../resources/' + file
+    fileu = '/' + file
     dnaLoader.loadDNAFile(dnaStorage, fileu)
 
 def loadDNAFile(dnaStorage, file):
     print 'Reading DNA file...', file
     dnaLoader = DNALoader()
-    fileu = '../resources/' + file
+    fileu = '/' + file
     node = dnaLoader.loadDNAFile(dnaStorage, fileu)
     if node.node().getNumChildren() > 0:
         return node.node()
 
 def loadDNAFileAI(dnaStorage, file):
     dnaLoader = DNALoader()
-    fileu = '../resources/' + file
+    fileu = '/' + file
     data = dnaLoader.loadDNAFileAI(dnaStorage, fileu)
     return data
 

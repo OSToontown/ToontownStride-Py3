@@ -71,6 +71,15 @@ from direct.directnotify.DirectNotifyGlobal import directNotify
 notify = directNotify.newCategory('ToontownStart')
 notify.setInfo(True)
 
+# The VirtualFileSystem, which has already initialized, doesn't see the mount
+# directives in the config(s) yet. We have to force it to load those manually:
+from panda3d.core import VirtualFileSystem, ConfigVariableList, Filename
+vfs = VirtualFileSystem.getGlobalPtr()
+mounts = ConfigVariableList('vfs-mount')
+for mount in mounts:
+    mountfile, mountpoint = (mount.split(' ', 2) + [None, None, None])[:2]
+    vfs.mount(Filename(mountfile), Filename(mountpoint), 0)
+
 from otp.settings.Settings import Settings
 from otp.otpbase import OTPGlobals
 
@@ -98,6 +107,10 @@ if 'language' not in settings:
     settings['language'] = 'English'
 if 'cogInterface' not in settings:
     settings['cogInterface'] = True
+if 'speedchatPlus' not in settings:
+    settings['speedchatPlus'] = True
+if 'trueFriends' not in settings:
+    settings['trueFriends'] = True
 if 'tpTransition' not in settings:
     settings['tpTransition'] = True
 if 'fov' not in settings:
