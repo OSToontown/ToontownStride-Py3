@@ -65,8 +65,6 @@ want-old-fireworks #t
 want-dev #f
 want-pstats 0
 
-preferences-filename preferences.json
-
 
 # Crates:
 dont-destroy-crate #t
