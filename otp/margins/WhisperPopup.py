@@ -65,7 +65,7 @@ class WhisperPopup(MarginPopup, ClickablePopup):
         if self.active and self.fromId:
             self.setClickRegionEvent('clickedWhisper', clickArgs=[self.fromId])
 
-    def setClickable(self, senderName, fromId, todo=0):
+    def setClickable(self, fromId):
         self.active = True
         self.fromId = fromId
 
