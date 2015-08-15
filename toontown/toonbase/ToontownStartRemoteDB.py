@@ -1,22 +1,31 @@
-import json
-import os
-import requests
+import json, os, sys
+import urllib, urllib2, cookielib, socket
 from panda3d.core import *
 
 
+req_version = (2,7,9)
+cur_version = sys.version_info
+if cur_version < req_version:
+    print 'Your version of python is too old. Please upgrade to 2.7.9.'
+    sys.exit()
+
 username = os.environ['ttsUsername']
 password = os.environ['ttsPassword']
+distribution = 'qa'
 
-accountServerEndpoint = 'http://www.toontownstride.com/api/'
-session = requests.Session()
-csrf_query = session.get(accountServerEndpoint + 'login/')
-csrf = session.cookies.get_dict().get('csrftoken', '')
-request = session.post(
-    accountServerEndpoint + 'login/',
-    data={'username': username, 'password': password, 'csrfmiddlewaretoken': csrf})
+accountServerEndpoint = 'https://toontownstride.com/api/'
+
+data = urllib.urlencode({'username': username, 'password': password, 'distribution': distribution})
+cookie_jar = cookielib.LWPCookieJar()
+cookie = urllib2.HTTPCookieProcessor(cookie_jar)
+opener = urllib2.build_opener(cookie)
+req = urllib2.Request(accountServerEndpoint + 'login', data,
+                      headers={"Content-Type" : "application/x-www-form-urlencoded"})
+req.get_method = lambda: "POST"
+_response = opener.open(req).read()
 
 try:
-    response = json.loads('{'+request.text.split('{', 1)[1]) # so that we ignore the csrf token
+    response = json.loads(_response)
 except ValueError:
     print "Couldn't verify account credentials."
 else:

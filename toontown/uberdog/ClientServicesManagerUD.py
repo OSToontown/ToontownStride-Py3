@@ -16,6 +16,7 @@ from panda3d.core import *
 import hashlib, hmac, json
 import anydbm, math, os
 import urllib2, time, urllib
+import cookielib, socket
 
 def rejectConfig(issue, securityIssue=True, retarded=True):
     print
@@ -72,16 +73,21 @@ minAccessLevel = config.GetInt('min-access-level', 100)
 def executeHttpRequest(url, **extras):
     # TO DO: THIS IS QUITE DISGUSTING
     # MOVE THIS TO ToontownInternalRepository (this might be interesting for AI)
+    ##### USE PYTHON 2.7.9 ON PROD WITH SSL AND CLOUDFLARE #####
     _data = {}
     if len(extras.items()) != 0:
         for k, v in extras.items():
             _data[k] = v
     signature = hashlib.sha512(json.dumps(_data) + apiSecret).hexdigest()
     data = urllib.urlencode({'data': json.dumps(_data), 'hmac': signature})
-    req = urllib2.Request('http://www.toontownstride.com/api/' + url, data)
+    cookie_jar = cookielib.LWPCookieJar()
+    cookie = urllib2.HTTPCookieProcessor(cookie_jar)
+    opener = urllib2.build_opener(cookie)
+    req = urllib2.Request('https://toontownstride.com/api/' + url, data,
+                          headers={"Content-Type" : "application/x-www-form-urlencoded"})
     req.get_method = lambda: "POST"
     try:
-        return urllib2.urlopen(req).read()
+        return opener.open(req).read()
     except:
         return None
 
@@ -182,7 +188,7 @@ class DeveloperAccountDB(AccountDB):
                                        'notAfter': 0},
                                 callback)
 
-class RemoteAccountDB(AccountDB):
+class RemoteAccountDB:
     # TO DO FOR NAMES:
     # CURRENTLY IT MAKES n REQUESTS FOR EACH AVATAR
     # IN THE FUTURE, MAKE ONLY 1 REQUEST
@@ -190,6 +196,8 @@ class RemoteAccountDB(AccountDB):
     # ^ done, check before removing todo note
     notify = directNotify.newCategory('RemoteAccountDB')
 
+    def __init__(self, csm):
+        self.csm = csm
 
     def addNameRequest(self, avId, name, accountID = None):
         username = avId
@@ -248,13 +256,34 @@ class RemoteAccountDB(AccountDB):
                 raise ValueError('Invalid hash.')
 
             token = json.loads(token.decode('base64')[::-1].decode('rot13'))
-
         except:
             resp = {'success': False}
             callback(resp)
             return resp
 
-        return AccountDB.lookup(self, token, callback)
+        return self.account_lookup(token, callback)
+
+    def account_lookup(self, data, callback):
+        data['success'] = True
+        data['accessLevel'] = max(data['accessLevel'], minAccessLevel)
+        data['accountId'] = int(data['accountId'])
+
+        callback(data)
+        return data
+
+    def storeAccountID(self, userId, accountId, callback):
+        r = executeHttpRequest('associateuser', username=str(userId), accountId=str(accountId))
+        try:
+            r = json.loads(r)
+            print r
+            if r['success']:
+                callback(True)
+            else:
+                self.notify.warning('Unable to associate user %s with account %d, got the return message of %s!' % (userId, accountId, r['error']))
+                callback(False)
+        except:
+            self.notify.warning('Unable to associate user %s with account %d!' % (userId, accountId))
+            callback(False)
 
 
 # --- FSMs ---
