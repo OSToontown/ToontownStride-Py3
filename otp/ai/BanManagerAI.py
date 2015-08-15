@@ -1,6 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
 from toontown.uberdog.ClientServicesManagerUD import executeHttpRequest
-import datetime
+import time
 from direct.fsm.FSM import FSM
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.MsgTypes import *
@@ -22,9 +22,9 @@ class BanFSM(FSM):
         self.accountId = None
         self.avName = None
 
-    def performBan(self, bannedUntil):
-        executeHttpRequest('accounts/ban/', Id=self.accountId, Release=bannedUntil,
-                           Reason=self.comment)
+    def performBan(self, duration):
+        executeHttpRequest('ban', username=self.accountId, start=int(time.time()),
+                           duration=duration, reason=self.comment, bannedby='todo')
 
     def ejectPlayer(self):
         av = self.air.doId2do.get(self.avId)
@@ -49,15 +49,9 @@ class BanFSM(FSM):
         if not self.accountId:
             return
 
-        date = datetime.date.today()
         if simbase.config.GetBool('want-bans', True):
-            if self.duration == 0:
-                bannedUntil = "0000-00-00" # Terminated.
-            else:
-                bannedUntil = date + datetime.timedelta(days=self.duration)
-
+            self.performBan(self.duration)
             self.duration = None
-            self.performBan(bannedUntil)
 
     def getAvatarDetails(self):
         av = self.air.doId2do.get(self.avId)
