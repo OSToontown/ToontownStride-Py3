@@ -20,7 +20,7 @@ want-chinese-checkers #t
 want-checkers #t
 want-house-types #t
 want-gifting #t
-want-top-toons #f
+want-top-toons #t
 want-language-selection #t
 estate-day-night #t
 want-mat-all-tailors #t
