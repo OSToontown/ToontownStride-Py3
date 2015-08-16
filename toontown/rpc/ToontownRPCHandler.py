@@ -2,7 +2,7 @@ import datetime
 from direct.distributed.MsgTypes import CLIENTAGENT_EJECT
 from direct.distributed.PyDatagram import PyDatagram
 from direct.stdpy import threading2
-import re
+import re, json
 
 from otp.distributed import OtpDoGlobals
 from toontown.distributed.ShardStatusReceiver import ShardStatusReceiver
@@ -437,8 +437,14 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
             On success: 100000000
             On failure: None
         """
-        if str(userId) in self.air.csm.accountDB.dbm:
-            return int(self.air.csm.accountDB.dbm[str(userId)])
+        response = executeHttpRequest('accountid', username=str(userId))
+        if response is not None:
+            response = json.loads(response)
+            if response['success'] is True:
+                return str(response['accountId'])
+            else:
+                print response['error']
+        return False
 
     @rpcmethod(accessLevel=MODERATOR)
     def rpc_getUserAvatars(self, userId):
