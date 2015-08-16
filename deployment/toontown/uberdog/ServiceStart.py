@@ -50,6 +50,11 @@ if ':' in host:
     port = int(port)
 simbase.air.connect(host, port)
 
+isServer = config.GetBool('is-server', False)
+
+if isServer:
+    import datetime
+
 try:
     run()
 except SystemExit:
@@ -57,4 +62,9 @@ except SystemExit:
 except Exception:
     info = describeException()
     simbase.air.writeServerEvent('uberdog-exception', simbase.air.getAvatarIdFromSender(), simbase.air.getAccountIdFromSender(), info)
+
+    if isServer:
+        with open(config.GetString('ud-crash-log-name', '/opt/var/log/Uberdog-crash-%s.txt' % (datetime.datetime.now())), 'w+') as file:
+            file.write(info + "\n")
+
     raise
