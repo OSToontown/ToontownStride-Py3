@@ -14,12 +14,14 @@ from direct.task import Task
 import math
 from panda3d.core import *
 import random
-
+import webbrowser
+import numbers
 import DistributedAvatar
 from otp.ai.MagicWordGlobal import *
 from otp.otpbase import OTPGlobals
 from otp.otpbase import OTPLocalizer
 from otp.nametag.NametagConstants import *
+from otp.margins.WhisperPopup import *
 from toontown.toonbase import ToontownGlobals
 
 
@@ -893,16 +895,20 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
 
     def displayWhisper(self, fromId, chatString, whisperType):
         sender = None
-        sfx = self.soundWhisper
-        if whisperType == WTNormal:
-            if sender == None:
-                return
-            chatString = sender.getName() + ': ' + chatString
+
+        if isinstance(fromId, numbers.Number):
+            sender = base.cr.identifyAvatar(fromId)
+
+            if whisperType == WTNormal:
+                chatString = '%s: %s' % (sender.getName(), chatString)
+
         whisper = WhisperPopup(chatString, OTPGlobals.getInterfaceFont(), whisperType)
-        if sender != None:
-            whisper.setClickable(sender.getName(), fromId)
+
+        if sender or isinstance(fromId, basestring):
+            whisper.setClickable(fromId)
+
         whisper.manage(base.marginManager)
-        base.playSfx(sfx)
+        base.playSfx(self.soundSystemMessage if whisperType == WTSystem else self.soundWhisper)
 
     def setAnimMultiplier(self, value):
         self.animMultiplier = value
@@ -1069,7 +1075,6 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
 
     def stopChat(self):
         self.chatMgr.stop()
-        self.ignore(OTPGlobals.WhisperIncomingEvent)
         self.ignore(OTPGlobals.ThinkPosHotkey)
         if self.__enableMarkerPlacement:
             self.ignore(OTPGlobals.PlaceMarkerHotkey)
@@ -1107,6 +1112,10 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
             self.setSystemMessage(0, OTPLocalizer.WhisperFriendLoggedOut % friend.getName())
 
     def clickedWhisper(self, doId):
+        if isinstance(doId, basestring):
+            webbrowser.open(doId, new=2, autoraise=True)
+            return
+
         friend = base.cr.identifyFriend(doId)
 
         if friend != None:

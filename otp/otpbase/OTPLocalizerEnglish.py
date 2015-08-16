@@ -222,7 +222,6 @@ SCMenuIdesOfMarch = 'GREEN'
 ScMenuBugs = 'Bugs'
 FriendInviteeTooManyFriends = '%s would like to be your friend, but you already have too many friends on your list!'
 FriendInviteeInvitation = '%s would like to be your friend.'
-FriendNotifictation = '%s is now your friend.'
 FriendInviteeOK = lOK
 FriendInviteeNo = lNo
 FriendOnline = 'has come online.'

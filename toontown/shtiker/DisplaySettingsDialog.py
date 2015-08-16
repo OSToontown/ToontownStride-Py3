@@ -45,16 +45,16 @@ class DisplaySettingsDialog(DirectFrame, StateData.StateData):
         self.anyChanged = 0
         self.apiChanged = 0
 
-        if len(base.resDict[base.nativeRatio]) > 1:
-            # We have resolutions that match our native ratio and fit it:
-            self.screenSizes = sorted(base.resDict[base.nativeRatio])
-        else:
-            # Okay, we don't have any resolutions that match our native ratio
-            # and fit it (besides the native resolution itself, of course).
-            # Let's just use the second largest ratio's resolutions:
-            ratios = sorted(base.resDict.keys(), reverse=False)
-            nativeIndex = ratios.index(base.nativeRatio)
-            self.screenSizes = sorted(base.resDict[ratios[nativeIndex - 1]])
+        self.screenSizes = ((640, 480),
+         (800, 600),
+         (1024, 768),
+         (1280, 720),
+         (1280, 1024),
+         (1440, 900),
+         (1600, 900),
+         (1600, 1200),
+         (1920, 1080),
+         (2560, 1440))
 
         guiButton = loader.loadModel('phase_3/models/gui/quit_button.bam')
         gui = loader.loadModel('phase_3.5/models/gui/friendslist_gui.bam')
@@ -298,26 +298,12 @@ class DisplaySettingsDialog(DirectFrame, StateData.StateData):
         self.current_pipe = base.pipe
         self.current_properties = WindowProperties(base.win.getProperties())
         properties = self.current_properties
-        if self.current_pipe == pipe  and self.current_properties.getFullscreen() == fullscreen and self.current_properties.getXSize() == width and self.current_properties.getYSize() == height:
+
+        if self.current_pipe == pipe and self.current_properties.getFullscreen() == fullscreen and self.current_properties.getXSize() == width and self.current_properties.getYSize() == height:
             self.notify.info('DISPLAY NO CHANGE REQUIRED')
             state = True
         else:
             properties = WindowProperties()
-            if fullscreen:
-                width, height = (base.nativeWidth, base.nativeHeight)
-            elif self.current_properties.getFullscreen():
-                if len(base.resDict[base.nativeRatio]) > 1:
-                    # We have resolutions that match our native ratio and fit
-                    # it! Let's use one:
-                    width, height = sorted(base.resDict[base.nativeRatio])[0]
-                else:
-                    # Okay, we don't have any resolutions that match our native
-                    # ratio and fit it (besides the native resolution itself,
-                    # of course). Let's just use one of the second largest
-                    # ratio's resolutions:
-                    ratios = sorted(base.resDict.keys(), reverse=False)
-                    nativeIndex = ratios.index(base.nativeRatio)
-                    width, height = sorted(base.resDict[ratios[nativeIndex - 1]])[0]
             properties.setSize(width, height)
             properties.setFullscreen(fullscreen)
             properties.setParentWindow(0)

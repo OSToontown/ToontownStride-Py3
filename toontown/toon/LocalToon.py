@@ -11,8 +11,6 @@ from panda3d.core import *
 import random
 import re
 import time
-import zlib
-
 import DistributedToon
 import LaffMeter
 import Toon
@@ -144,9 +142,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.guiConflict = 0
             self.lastElevatorLeft = 0
             self.elevatorNotifier = ElevatorNotifier.ElevatorNotifier()
-            self.accept(OTPGlobals.AvatarFriendAddEvent, self.sbFriendAdd)
-            self.accept(OTPGlobals.AvatarFriendUpdateEvent, self.sbFriendUpdate)
-            self.accept(OTPGlobals.AvatarFriendRemoveEvent, self.sbFriendRemove)
             self._zoneId = None
             self.accept('system message aknowledge', self.systemWarning)
             self.systemMsgAckGuiDoneEvent = 'systemMsgAckGuiDoneEvent'
@@ -416,12 +411,11 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             return
 
         if base.whiteList:
-            chat = base.whiteList.processThroughAll(chat, sender, self.chatGarbler)
+            chat = base.whiteList.processThroughAll(chat, sender, sender.chatGarbler)
 
-        name = sender.getName()
-        chatString = '%s: %s' % (name, chat)
+        chatString = '%s: %s' % (sender.getName(), chat)
         whisper = WhisperPopup(chatString, OTPGlobals.getInterfaceFont(), WTNormal)
-        whisper.setClickable(name, avId)
+        whisper.setClickable(avId)
         whisper.manage(base.marginManager)
         base.playSfx(self.soundWhisper)
 
@@ -778,73 +772,9 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             else:
                 self.__pieButton['text'] = str(self.numPies)
             self.__pieButtonCount = self.numPies
-        return
-
+    
     def displayWhisper(self, fromId, chatString, whisperType):
-        sender = None
-        sfx = self.soundWhisper
-        if fromId == TTLocalizer.Clarabelle:
-            chatString = TTLocalizer.Clarabelle + ': ' + chatString
-            sfx = self.soundPhoneRing
-        elif fromId != 0:
-            sender = base.cr.identifyAvatar(fromId)
-        if whisperType == WTNormal:
-            if sender == None:
-                return
-            chatString = sender.getName() + ': ' + chatString
-        elif whisperType == WTSystem:
-            sfx = self.soundSystemMessage
-        whisper = WhisperPopup(chatString, OTPGlobals.getInterfaceFont(), whisperType)
-        if sender != None:
-            whisper.setClickable(sender.getName(), fromId)
-        whisper.manage(base.marginManager)
-        base.playSfx(sfx)
-        return
-
-    def displaySystemClickableWhisper(self, fromId, chatString, whisperType):
-        sender = None
-        sfx = self.soundWhisper
-        if fromId == TTLocalizer.Clarabelle:
-            chatString = TTLocalizer.Clarabelle + ': ' + chatString
-            sfx = self.soundPhoneRing
-        elif fromId != 0:
-            sender = base.cr.identifyAvatar(fromId)
-        if whisperType == WTNormal:
-            if sender == None:
-                return
-            chatString = sender.getName() + ': ' + chatString
-        elif whisperType == WTSystem:
-            sfx = self.soundSystemMessage
-        whisper = WhisperPopup(chatString, OTPGlobals.getInterfaceFont(), whisperType)
-        whisper.setClickable('', fromId)
-        whisper.manage(base.marginManager)
-        base.playSfx(sfx)
-        return
-
-    def clickedWhisper(self, doId):
-        if doId > 0:
-            LocalAvatar.LocalAvatar.clickedWhisper(self, doId)
-        else:
-            foundCanStart = False
-            for partyInfo in self.hostedParties:
-                if partyInfo.status == PartyGlobals.PartyStatus.CanStart:
-                    foundCanStart = True
-                    break
-
-            if base.cr and base.cr.playGame and base.cr.playGame.getPlace() and base.cr.playGame.getPlace().fsm:
-                fsm = base.cr.playGame.getPlace().fsm
-                curState = fsm.getCurrentState().getName()
-                if curState == 'walk':
-                    if hasattr(self, 'eventsPage'):
-                        desiredMode = -1
-                        if doId == -1:
-                            desiredMode = EventsPage.EventsPage_Invited
-                        elif foundCanStart:
-                            desiredMode = EventsPage.EventsPage_Host
-                        if desiredMode >= 0:
-                            self.book.setPage(self.eventsPage)
-                            self.eventsPage.setMode(desiredMode)
-                            fsm.request('stickerBook')
+        LocalAvatar.LocalAvatar.displayWhisper(self, fromId, chatString, whisperType)
 
     def loadFurnitureGui(self):
         if self.__furnitureGui:
@@ -861,7 +791,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
          bMoveStartUp], text=['', TTLocalizer.HDMoveFurnitureButton, TTLocalizer.HDMoveFurnitureButton], text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), text_font=ToontownGlobals.getInterfaceFont(), pos=(-0.3, 0, 9.4), command=self.__startMoveFurniture)
         self.__furnitureGui.hide()
         guiModels.removeNode()
-        return
 
     def showFurnitureGui(self):
         self.loadFurnitureGui()
@@ -1629,15 +1558,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
     def __handleSwimExitTeleport(self, requestStatus):
         self.notify.info('closing shard...')
         base.cr.gameFSM.request('closeShard', ['afkTimeout'])
-
-    def sbFriendAdd(self, id, info):
-        print 'sbFriendAdd'
-
-    def sbFriendUpdate(self, id, info):
-        print 'sbFriendUpdate'
-
-    def sbFriendRemove(self, id):
-        print 'sbFriendRemove'
 
     def addGolfPage(self):
         if self.hasPlayedGolf():
