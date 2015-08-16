@@ -275,7 +275,6 @@ class RemoteAccountDB:
         r = executeHttpRequest('associateuser', username=str(userId), accountId=str(accountId))
         try:
             r = json.loads(r)
-            print r
             if r['success']:
                 callback(True)
             else:

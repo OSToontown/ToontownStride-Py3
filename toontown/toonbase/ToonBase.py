@@ -27,6 +27,21 @@ from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownBattleGlobals
 from toontown.toontowngui import TTDialog
 
+tempdir = tempfile.mkdtemp()
+vfs = VirtualFileSystem.getGlobalPtr()
+searchPath = DSearchPath()
+if __debug__:
+    searchPath.appendDirectory(Filename('resources/phase_3/etc'))
+searchPath.appendDirectory(Filename('/phase_3/etc'))
+
+for filename in ['toonmono.cur', 'icon.ico']:
+    p3filename = Filename(filename)
+    found = vfs.resolveFilename(p3filename, searchPath)
+    if not found:
+        continue
+    with open(os.path.join(tempdir, filename), 'wb') as f:
+        f.write(vfs.readFile(p3filename, False))
+loadPrcFileData('Window: icon', 'icon-filename %s' % Filename.fromOsSpecific(os.path.join(tempdir, 'icon.ico')))
 
 class ToonBase(OTPBase.OTPBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToonBase')
@@ -148,23 +163,7 @@ class ToonBase(OTPBase.OTPBase):
         return result
 
     def setCursorAndIcon(self):
-        tempdir = tempfile.mkdtemp()
         atexit.register(shutil.rmtree, tempdir)
-        vfs = VirtualFileSystem.getGlobalPtr()
-
-        searchPath = DSearchPath()
-        if __debug__:
-            searchPath.appendDirectory(Filename('resources/phase_3/etc'))
-        searchPath.appendDirectory(Filename('/phase_3/etc'))
-
-        for filename in ['toonmono.cur', 'icon.ico']:
-            p3filename = Filename(filename)
-            found = vfs.resolveFilename(p3filename, searchPath)
-            if not found:
-                return # Can't do anything past this point.
-
-            with open(os.path.join(tempdir, filename), 'wb') as f:
-                f.write(vfs.readFile(p3filename, False))
 
         wp = WindowProperties()
         wp.setCursorFilename(Filename.fromOsSpecific(os.path.join(tempdir, 'toonmono.cur')))
