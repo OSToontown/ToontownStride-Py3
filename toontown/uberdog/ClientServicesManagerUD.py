@@ -241,7 +241,12 @@ class RemoteAccountDB:
             Token = BASE64(H + X)
         '''
 
+        cookie_check = executeHttpRequest('cookie', cookie=token)
+
         try:
+            check = json.loads(cookie_check)
+            if check['success'] is not True:
+                raise ValueError(check['error'])
             token = token.decode('base64')
             hash, token = token[:hashSize], token[hashSize:]
             correctHash = hashAlgo(token + accountServerSecret).digest()
@@ -256,6 +261,9 @@ class RemoteAccountDB:
                 raise ValueError('Invalid hash.')
 
             token = json.loads(token.decode('base64')[::-1].decode('rot13'))
+
+            if token['notAfter'] < int(time.time()):
+                raise ValueError('Expired token.')
         except:
             resp = {'success': False}
             callback(resp)
