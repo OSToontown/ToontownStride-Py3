@@ -66,7 +66,8 @@ want-pstats 0
 
 
 # Chat:
-want-whitelist #t
+want-whitelist #f
+want-sequence-list #f
 
 
 #<dev>

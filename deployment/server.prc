@@ -26,7 +26,20 @@ estate-day-night #t
 want-mat-all-tailors #t
 is-server #t
 
+# Developer options:
+show-population #t
+want-instant-parties #t
+want-instant-delivery #t
+cogdo-pop-factor 1.5
+cogdo-ratio 0.5
+default-directnotify-level info
+
+# Crates:
+dont-destroy-crate #t
+get-key-reward-always #t
+get-crate-reward-always #t
+
 
 # Chat Settings
-want-whitelist #t
-want-sequence-list #t
+want-whitelist #f
+want-sequence-list #f
