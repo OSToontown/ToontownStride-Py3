@@ -16,8 +16,11 @@ class TTSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):
                                             'phase_4/audio/sfx/SZ_TC_bird2.ogg',
                                             'phase_4/audio/sfx/SZ_TC_bird3.ogg'])
         bank = self.geom.find('**/*toon_landmark_TT_bank_DNARoot')
+        library = self.geom.find('**/library/square_drop_shadow')
         doorTrigger = bank.find('**/door_trigger*')
         doorTrigger.setY(doorTrigger.getY() - 1.5)
+        library.find('**/building_front').setY(0.3)
+        library.find('**/front_entrance_flag').setY(0.1)
 
     def unload(self):
         SafeZoneLoader.SafeZoneLoader.unload(self)
