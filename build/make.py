@@ -31,14 +31,12 @@ def niraicall_obfuscate(code):
 niraimarshal.niraicall_obfuscate = niraicall_obfuscate
 
 class StridePackager(NiraiPackager):
-    HEADER = 'TTSROCKS'
+    HEADER = 'TTSTRIDE'
     BASEDIR = '..' + os.sep
 
     def __init__(self, outfile):
         NiraiPackager.__init__(self, outfile)
         self.__manglebase = self.get_mangle_base(self.BASEDIR)
-        #self.add_panda3d_dirs()
-        #self.add_default_lib()
 
     def add_source_dir(self, dir):
         self.add_directory(self.BASEDIR + dir, mangler=self.__mangler)
@@ -95,7 +93,7 @@ class StridePackager(NiraiPackager):
 
 # Compile the engine
 if args.compile_cxx:
-    compiler = NiraiCompiler('stride.exe', libs=set(glob.glob('C:/repos/libpandadna/libpandadna.dir/Release/*.obj')))
+    compiler = NiraiCompiler('stride.exe', libs=set(glob.glob('libpandadna/libpandadna.dir/Release/*.obj')))
 
     compiler.add_nirai_files()
     compiler.add_source('src/stride.cxx')

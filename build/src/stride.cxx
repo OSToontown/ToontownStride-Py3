@@ -8,7 +8,7 @@
 extern "C" __declspec(dllexport) void initlibpandadna();
 void init_libpandadna();
 
-const char* header = "TTSROCKS";
+const char* header = "TTSTRIDE";
 const int header_size = 8;
 
 const int key_and_iv_size = 16;
@@ -51,9 +51,9 @@ int niraicall_onLoadGameData()
     std::string brawdata = ss.str();
 
     // Decrypted the encrypted key and iv
-    std::string enckeyandiv = brawdata.substr(0, 48);
+    std::string enckeyandiv = brawdata.substr(0, (key_and_iv_size * 2) + key_and_iv_size);
 
-    unsigned char* deckeyandiv = new unsigned char[32];
+    unsigned char* deckeyandiv = new unsigned char[enckeyandiv.size()];
     unsigned char* fixed_key = new unsigned char[key_and_iv_size];
     unsigned char* fixed_iv = new unsigned char[key_and_iv_size];
 
@@ -67,15 +67,24 @@ int niraicall_onLoadGameData()
 
     int deckeyandivsize = AES_decrypt((unsigned char*)enckeyandiv.c_str(), enckeyandiv.size(), fixed_key, fixed_iv, deckeyandiv);
     
-    std::stringstream sss;
-    sss << deckeyandiv;
-    std::string strdeckeyandiv = sss.str();
-
+    delete[] fixed_key;
+    delete[] fixed_iv;
+    
+    unsigned char* key = new unsigned char[key_and_iv_size];
+    unsigned char* iv = new unsigned char[key_and_iv_size];
+    
+    // Move the decrypted key and iv into their subsequent char
+    
+    for (int i = 0; i < key_and_iv_size; ++i)
+        iv[i] = deckeyandiv[i];
+    
+    for (int i = 0; i < key_and_iv_size; ++i)
+        key[i] = deckeyandiv[i + key_and_iv_size];
+    
     // Decrypt the game data
-    std::string rawdata = brawdata.substr(48);
-    unsigned char* iv = (unsigned char*)strdeckeyandiv.substr(0, key_and_iv_size).c_str();
-    unsigned char* key = (unsigned char*)strdeckeyandiv.substr(key_and_iv_size).c_str();
+    std::string rawdata = brawdata.substr((key_and_iv_size * 2) + key_and_iv_size);
     unsigned char* decrypted_data = new unsigned char[rawdata.size()];
+    
     int decsize = AES_decrypt((unsigned char*)rawdata.c_str(), rawdata.size(), key, iv, decrypted_data); // Assumes no error
 
     delete[] key;
