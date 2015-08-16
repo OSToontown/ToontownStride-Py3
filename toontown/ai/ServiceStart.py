@@ -62,8 +62,6 @@ if ':' in host:
     port = int(port)
 simbase.air.connect(host, port)
 
-isServer = config.GetBool('is-server', False)
-
 try:
     run()
     gc.enable()
@@ -73,10 +71,5 @@ except Exception:
     info = describeException()
 
     simbase.air.writeServerEvent('ai-exception', avId=simbase.air.getAvatarIdFromSender(), accId=simbase.air.getAccountIdFromSender(), exception=info)
-
-    if isServer:
-        import datetime
-        with open(config.GetString('ai-crash-log-name', '/opt/var/log/%s-ai-crash-%s.txt' % (config.GetString('district-name', 'Devhaven'), datetime.datetime.now())), 'w+') as file:
-            file.write(info + "\n")
 
     raise
