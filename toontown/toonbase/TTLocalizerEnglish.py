@@ -8726,8 +8726,10 @@ ShardPageTeleport = 'Teleport to\n%s'
 
 TeleportButton = 'Teleport'
 
-SuitPageAttackFormat = '\x01androidGreen\x01Group attacks:\x02\n%s\n\n\x01androidGreen\x01Regular attacks:\x02\n%s'
+SuitPageAttackFormat = 'Levels: %s-%s\n\n\x01androidGreen\x01Group attacks:\x02\n%s\n\n\x01androidGreen\x01Regular attacks:\x02\n%s'
 SuitPageNoAttacks = 'None'
+
+BattleGagPopup = '%s: %s\nGags left: %s'
 
 Blacklist = [
  "$1ut",

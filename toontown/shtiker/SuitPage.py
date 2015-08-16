@@ -336,7 +336,7 @@ class SuitPage(ShtikerPage.ShtikerPage):
         yStart = -0.18
         xOffset = 0.199
         yOffset = 0.284
-        self.rolloverFrame = DirectFrame(parent=self.panelNode, relief=None, geom=DGG.getDefaultDialogGeom(), geom_color=(0.5, 0.5, 0.5, 1), geom_scale=(0.73, 0, 0.55), text_scale=0.05, text_pos=(0, 0.2), text='', text_fg=(1, 1, 1, 1), pos=(0.44, 0, 0))
+        self.rolloverFrame = DirectFrame(parent=self.panelNode, relief=None, geom=DGG.getDefaultDialogGeom(), geom_color=(0.5, 0.5, 0.5, 1), geom_scale=(0.73, 0, 0.65), text_scale=0.05, text_pos=(0, 0.26), text='', text_fg=(1, 1, 1, 1), pos=(0.44, 0, 0))
         self.rolloverFrame.setBin('gui-popup', 0)
         self.rolloverFrame.hide()
         for dept in xrange(0, len(SuitDNA.suitDepts)):
@@ -488,10 +488,11 @@ class SuitPage(ShtikerPage.ShtikerPage):
         if status in (COG_DEFEATED, COG_COMPLETE1, COG_COMPLETE2):
             name = SuitDNA.suitHeadTypes[index]
             attributes = SuitBattleGlobals.SuitAttributes[name]
+            level = attributes['level']
             attacks = sorted(attributes['attacks'], key=lambda x: x[0])
             groupAttacks = []
             singleAttacks = []
-            
+
             for attack in attacks:
                 if attack[0] in SuitBattleGlobals.DisabledAttacks:
                     continue
@@ -500,7 +501,7 @@ class SuitPage(ShtikerPage.ShtikerPage):
                 else:
                     singleAttacks.append(attack)
             
-            info = TTLocalizer.SuitPageAttackFormat % (self.getAttackStrings(groupAttacks), self.getAttackStrings(singleAttacks))
+            info = TTLocalizer.SuitPageAttackFormat % (level + 1, level + 5, self.getAttackStrings(groupAttacks), self.getAttackStrings(singleAttacks))
             panel.hoverButton.bind(DGG.ENTER, self.showInfo, extraArgs=[panel, info])
             panel.hoverButton.bind(DGG.EXIT, self.hideInfo)
     
