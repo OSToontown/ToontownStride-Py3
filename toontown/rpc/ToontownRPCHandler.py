@@ -441,7 +441,7 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
         if response is not None:
             response = json.loads(response)
             if response['success'] is True:
-                return str(response['accountId'])
+                return int(response['accountId'])
             else:
                 print response['error']
         return False
