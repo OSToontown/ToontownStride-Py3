@@ -2,7 +2,6 @@ from panda3d.core import *
 import FriendsListPanel
 import FriendInviter
 import FriendInvitee
-import FriendNotifier
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toon import ToonTeleportPanel
 from toontown.friends import ToontownFriendSecret
@@ -25,10 +24,9 @@ class FriendsListManager:
         self._preserveFriendsList = False
         self._entered = False
         self.friendsRequestQueue = []
-        return
 
     def load(self):
-        self.accept(OTPGlobals.AvatarNewFriendAddEvent, self.__friendAdded)
+        pass
 
     def unload(self):
         self.exitFLM()
@@ -135,13 +133,3 @@ class FriendsListManager:
     def preserveFriendsList(self):
         self.notify.debug('Preserving Friends List')
         self._preserveFriendsList = True
-
-    def __friendAdded(self, avId):
-        if FriendInviter.globalFriendInviter != None:
-            messenger.send('FriendsListManagerAddEvent', [avId])
-        else:
-            friendToon = base.cr.doId2do.get(avId)
-            if friendToon:
-                dna = friendToon.getStyle()
-                FriendNotifier.FriendNotifier(avId, friendToon.getName(), dna, None)
-        return

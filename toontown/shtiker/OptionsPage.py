@@ -827,7 +827,6 @@ class ExtraOptionsTabPage(DirectFrame):
         chooser = self.optionChoosers['pole']
 
         if resetIndex:
-            print 'resetting index'
             chooser.setIndex(base.localAvatar.getFishingRod())
 
         chooser.setDisplayText(TTLocalizer.FishingRodNameDict[chooser.index])

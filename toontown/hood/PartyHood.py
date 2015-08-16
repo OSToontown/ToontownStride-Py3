@@ -7,11 +7,9 @@ from toontown.toonbase.ToonBaseGlobal import *
 from toontown.toonbase.ToontownGlobals import *
 from toontown.distributed.ToontownMsgTypes import *
 from toontown.minigame import Purchase
-from toontown.parties import PartyLoader
-from toontown.parties import PartyGlobals
-from toontown.hood import SkyUtil
-from toontown.hood import Hood
-from toontown.hood import ZoneUtil
+from toontown.parties import PartyLoader, PartyGlobals
+from toontown.hood import Hood, ZoneUtil
+from toontown.safezone import SZUtil
 
 class PartyHood(Hood.Hood):
     notify = DirectNotifyGlobal.directNotify.newCategory('PartyHood')
@@ -30,7 +28,6 @@ class PartyHood(Hood.Hood):
         self.holidayStorageDNADict = {CHRISTMAS: ['phase_5.5/dna/winter_storage_estate.pdna']}
         self.skyFile = 'phase_3.5/models/props/TT_sky'
         self.popupInfo = None
-        return
 
     def load(self):
         Hood.Hood.load(self)
@@ -107,10 +104,10 @@ class PartyHood(Hood.Hood):
         pass
 
     def skyTrack(self, task):
-        return SkyUtil.cloudSkyTrack(task)
+        return SZUtil.cloudSkyTrack(task)
 
     def startSky(self):
-        SkyUtil.startCloudSky(self)
+        SZUtil.startCloudSky(self)
         if base.cloudPlatformsEnabled:
             self.loader.startCloudPlatforms()
 

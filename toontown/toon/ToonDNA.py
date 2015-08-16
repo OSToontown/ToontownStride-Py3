@@ -1932,6 +1932,12 @@ allColorsList = [(1.0, 1.0, 1.0, 1.0),
  (0.86, 0.07, 0.23, 1.0),
  (0.0, 0.63, 0.51, 1.0),
  (0.8, 0.49, 0.19, 1.0)]
+disallowedColorsList = [(1.0, 1.0, 1.0, 1.0),
+ (0.7, 0.7, 0.8, 1.0),
+ (0.3, 0.3, 0.35, 1.0),
+ (0.47, 0.44, 0.44, 1.0),
+ (0.74, 0.75, 0.76, 1.0)]
+matColorsList = [x for x in allColorsList if x not in disallowedColorsList]
 defaultColorList = [0,
  1,
  32,
@@ -2662,7 +2668,7 @@ class ToonDNA:
             self.head = generator.choice(toonHeadTypes[:22])
         top, topColor, sleeve, sleeveColor = getRandomTop(gender, generator=generator)
         bottom, bottomColor = getRandomBottom(gender, generator=generator)
-        color = generator.choice(allColorsList)
+        color = generator.choice(matColorsList)
         if gender == 'm':
             self.torso = generator.choice(toonTorsoTypes[:3])
             self.topTex = top

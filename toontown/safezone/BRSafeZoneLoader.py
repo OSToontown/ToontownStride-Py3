@@ -1,6 +1,6 @@
 from toontown.safezone import BRPlayground
 from toontown.safezone import SafeZoneLoader
-import SnowUtil
+import SZUtil
 
 class BRSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):
     def __init__(self, hood, parentFSM, doneEvent):
@@ -16,7 +16,7 @@ class BRSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):
         self.windSound = map(base.loadSfx, ['phase_8/audio/sfx/SZ_TB_wind_1.ogg',
                                             'phase_8/audio/sfx/SZ_TB_wind_2.ogg',
                                             'phase_8/audio/sfx/SZ_TB_wind_3.ogg'])
-        self.snow, self.snowRender = SnowUtil.createSnow(self.geom)
+        self.snow, self.snowRender = SZUtil.createSnow(self.geom)
 
     def unload(self):
         SafeZoneLoader.SafeZoneLoader.unload(self)

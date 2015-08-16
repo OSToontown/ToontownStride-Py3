@@ -2211,10 +2211,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
                 from toontown.shtiker import EventsPage
                 if hasattr(self, 'eventsPage') and base.localAvatar.book.entered and base.localAvatar.book.isOnPage(self.eventsPage) and self.eventsPage.getMode() == EventsPage.EventsPage_Host:
                     base.localAvatar.eventsPage.loadHostedPartyInfo()
-                if hasattr(self, 'displaySystemClickableWhisper'):
-                    self.displaySystemClickableWhisper(0, TTLocalizer.PartyCanStart, whisperType=WTSystem)
-                else:
-                    self.setSystemMessage(0, TTLocalizer.PartyCanStart)
+                self.setSystemMessage(0, TTLocalizer.PartyCanStart, WTSystem)
 
     def setPartyStatus(self, partyId, newStatus):
         DistributedToon.partyNotify.debug('setPartyCanStatus called passing in partyId=%s status=%s' % (partyId, newStatus))
@@ -2232,7 +2229,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
                 from toontown.shtiker import EventsPage
                 if hasattr(self, 'eventsPage') and base.localAvatar.book.entered and base.localAvatar.book.isOnPage(self.eventsPage) and self.eventsPage.getMode() == EventsPage.EventsPage_Invited:
                     base.localAvatar.eventsPage.loadInvitations()
-                if newStatus == PartyStatus.Started and hasattr(self, 'displaySystemClickableWhisper'):
+                if newStatus == PartyStatus.Started and hasattr(self, 'setSystemMessage'):
                     invite = self.getInviteForPartyId(partyId)
                     if invite:
                         name = ' '
@@ -2241,10 +2238,9 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
                             name = host.getName()
                         if invite.status == InviteStatus.Accepted:
                             displayStr = TTLocalizer.PartyHasStartedAcceptedInvite % TTLocalizer.GetPossesive(name)
-                            self.displaySystemClickableWhisper(-1, displayStr, whisperType=WTSystem)
                         else:
                             displayStr = TTLocalizer.PartyHasStartedNotAcceptedInvite % TTLocalizer.GetPossesive(name)
-                            self.setSystemMessage(partyInfo.hostId, displayStr, whisperType=WTSystem)
+                        self.setSystemMessage(partyInfo.hostId, displayStr, WTSystem)
                 break
 
         if not found:
