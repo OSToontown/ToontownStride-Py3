@@ -42,7 +42,7 @@ default-model-extension .bam
 want-pets #t
 want-parties #f
 want-cogdominiums #t
-want-lawbot-cogdo #t
+want-lawbot-cogdo #f
 want-anim-props #t
 want-game-tables #t
 want-find-four #t
@@ -67,9 +67,9 @@ want-pstats 0
 
 
 # Crates:
-dont-destroy-crate #t
-get-key-reward-always #t
-get-crate-reward-always #t
+dont-destroy-crate #f
+get-key-reward-always #f
+get-crate-reward-always #f
 
 
 # Chat:
