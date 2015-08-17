@@ -731,25 +731,28 @@ class ExtraOptionsTabPage(DirectFrame):
         self.fov_label = DirectLabel(parent=self, relief=None, text=TTLocalizer.FieldOfViewLabel, text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight))
         self.cogInterface_label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - textRowHeight))
         self.tpTransition_label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - 2 * textRowHeight))
+        self.teleport_label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - 3 * textRowHeight))
         self.fov_slider = DirectSlider(parent=self, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord),
                                                value=settings['fov'], pageSize=5, range=(ToontownGlobals.DefaultCameraFov, ToontownGlobals.MaxCameraFov), command=self.__doFov,
                                                thumb_geom=(circleModel.find('**/tt_t_gui_mat_namePanelCircle')), thumb_relief=None, thumb_geom_scale=2)
         self.fov_slider.setScale(0.25)
         self.cogInterface_toggleButton = DirectButton(parent=self, relief=None, image=button_image, image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight), command=self.__doToggleCogInterface)
         self.tpTransition_toggleButton = DirectButton(parent=self, relief=None, image=button_image, image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - 2 * textRowHeight), command=self.__doToggleTpTransition)
+        self.teleport_toggleButton = DirectButton(parent=self, relief=None, image=button_image, image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - 3 * textRowHeight), command=self.__doToggleTeleport)
         self.bugReportButton = DirectButton(parent=self, relief=None, text=TTLocalizer.BugReportButton, image=button_image, image_scale=button_image_scale, text_pos=(0, -0.01), text_fg=(0, 0, 0, 1),
         command=self.showReportNotice, pos=(0.0, 0.0, -0.6), text_scale=(0.045))
         guiButton.removeNode()
         circleModel.removeNode()
 
-        self.optionChoosers['pole'] = OptionChooser.OptionChooser(self, TTLocalizer.FishingPoleLabel, 3, self.__updateFishingPole, [False], self.__applyFishingPole)
-        self.optionChoosers['nametag_style'] = OptionChooser.OptionChooser(self, TTLocalizer.NametagStyleLabel, 4, self.__updateNametagStyle, [False], self.__applyNametagStyle)
+        self.optionChoosers['pole'] = OptionChooser.OptionChooser(self, TTLocalizer.FishingPoleLabel, 4, self.__updateFishingPole, [False], self.__applyFishingPole)
+        self.optionChoosers['nametag_style'] = OptionChooser.OptionChooser(self, TTLocalizer.NametagStyleLabel, 5, self.__updateNametagStyle, [False], self.__applyNametagStyle)
 
     def enter(self):
         self.show()
         self.settingsChanged = 0
         self.__setCogInterfaceButton()
         self.__setTpTransitionButton()
+        self.__setTeleportButton()
         self.__updateNametagStyle()
         self.__updateFishingPole()
         self.accept('refreshNametagStyle', self.__updateNametagStyle)
@@ -776,6 +779,10 @@ class ExtraOptionsTabPage(DirectFrame):
         del self.tpTransition_label
         self.tpTransition_toggleButton.destroy()
         del self.tpTransition_toggleButton
+        self.teleport_label.destroy()
+        del self.teleport_label
+        self.teleport_toggleButton.destroy()
+        del self.teleport_toggleButton
         self.bugReportButton.destroy()
         del self.bugReportButton
         self.destroyReportNotice()
@@ -807,6 +814,23 @@ class ExtraOptionsTabPage(DirectFrame):
     def __setTpTransitionButton(self):
         self.tpTransition_label['text'] = TTLocalizer.TpTransitionLabelOn if settings['tpTransition'] else TTLocalizer.TpTransitionLabelOff
         self.tpTransition_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff if settings['tpTransition'] else TTLocalizer.OptionsPageToggleOn
+    
+    def __doToggleTeleport(self):
+        messenger.send('wakeup')
+        acceptingTeleport = settings.get('acceptingTeleport', {})
+        if base.localAvatar.acceptingTeleport:
+            base.localAvatar.acceptingTeleport = 0
+            acceptingTeleport[str(base.localAvatar.doId)] = False
+        else:
+            base.localAvatar.acceptingTeleport  = 1
+            acceptingTeleport[str(base.localAvatar.doId)] = True
+        settings['acceptingTeleport'] = acceptingTeleport
+        self.settingsChanged = 1
+        self.__setTeleportButton()
+    
+    def __setTeleportButton(self):
+        self.teleport_label['text'] = TTLocalizer.TeleportLabelOn if base.localAvatar.acceptingTeleport else TTLocalizer.TeleportLabelOff
+        self.teleport_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff if base.localAvatar.acceptingTeleport else TTLocalizer.OptionsPageToggleOn
 
     def __updateNametagStyle(self, resetIndex=True):
         chooser = self.optionChoosers['nametag_style']

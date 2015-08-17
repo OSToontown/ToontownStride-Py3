@@ -150,6 +150,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.createSystemMsgAckGui()
             self.acceptingNewFriends = True
             self.acceptingNonFriendWhispers = True
+            self.acceptingTeleport = True
             self.physControls.event.addAgainPattern('again%in')
             self.oldPos = None
             self.questMap = None
@@ -214,14 +215,19 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
 
         acceptingNewFriends = settings.get('acceptingNewFriends', {})
         acceptingNonFriendWhispers = settings.get('acceptingNonFriendWhispers', {})
+        acceptingTeleport = settings.get('acceptingTeleport', {})
         if str(self.doId) not in acceptingNewFriends:
             acceptingNewFriends[str(self.doId)] = True
             settings['acceptingNewFriends'] = acceptingNewFriends
         if str(self.doId) not in acceptingNonFriendWhispers:
             acceptingNonFriendWhispers[str(self.doId)] = True
             settings['acceptingNonFriendWhispers'] = acceptingNonFriendWhispers
+        if str(self.doId) not in acceptingTeleport:
+            acceptingTeleport[str(self.doId)] = True
+            settings['acceptingTeleport'] = acceptingTeleport
         self.acceptingNewFriends = acceptingNewFriends[str(self.doId)]
         self.acceptingNonFriendWhispers = acceptingNonFriendWhispers[str(self.doId)]
+        self.acceptingTeleport = acceptingTeleport[str(self.doId)]
 
     def disable(self):
         self.laffMeter.destroy()

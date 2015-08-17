@@ -8743,6 +8743,10 @@ BattleSOSPopupHP = '%s %s HP\n'
 
 DetailPanelSOS = 'SOS Cards'
 
+TeleportLabelOn = 'Accepting teleports.'
+TeleportLabelOff = 'Not accepting teleports.'
+TeleportPanelNoTeleport = '%s needs some time alone right now.'
+
 Blacklist = [
  "$1ut",
  "$h1t",

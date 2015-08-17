@@ -72,6 +72,12 @@ class TTSFriendsManager(DistributedObjectGlobal):
         if not hasattr(base.localAvatar, 'getTeleportAvailable') or not hasattr(base.localAvatar, 'ghostMode'):
             self.sendUpdate('teleportResponse', [ fromId, 0, 0, 0, 0 ])
             return
+        if not base.localAvatar.acceptingTeleport:
+            self.sendUpdate('teleportResponse', [ fromId, 3, 0, 0, 0 ])
+            return
+        if base.localAvatar.isIgnored(fromId):
+            self.sendUpdate('teleportResponse', [ fromId, 2, 0, 0, 0 ])
+            return
 
         friend = base.cr.identifyFriend(fromId)
 
