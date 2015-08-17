@@ -273,6 +273,7 @@ class ToonAvatarDetailPanel(DirectFrame):
         else:
             pos = (0, 0, 0.05)
             scale = 0.5
+            self.sosFrame.setBin('background', 10)
         
         Sequence(
             Parallel(
@@ -285,5 +286,8 @@ class ToonAvatarDetailPanel(DirectFrame):
     def __enableSOSButton(self):
         try:
             self.sosButton['state'] = DGG.NORMAL
+
+            if self.sosFrame.getScale() == 1.0:
+                self.sosFrame.clearBin()
         except:
             pass
