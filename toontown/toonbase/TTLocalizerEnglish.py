@@ -8741,6 +8741,8 @@ BattleSOSPopupHeal = 'Heals'
 BattleSOSPopupHarm = 'Deals'
 BattleSOSPopupHP = '%s %s HP\n'
 
+DetailPanelSOS = 'SOS Cards'
+
 Blacklist = [
  "$1ut",
  "$h1t",
