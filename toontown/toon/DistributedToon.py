@@ -490,6 +490,9 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def getNPCFriendsDict(self):
         return self.NPCFriendsDict
+    
+    def getNPCFriendCount(self, npcId):
+        return self.NPCFriendsDict.get(npcId, 0)
 
     def setNPCFriendsDict(self, NPCFriendsList):
         NPCFriendsDict = {}

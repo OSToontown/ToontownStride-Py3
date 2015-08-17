@@ -18,7 +18,7 @@ from toontown.toonbase import ToontownTimer
 from direct.showbase import PythonUtil
 from toontown.toonbase import TTLocalizer
 from toontown.pets import PetConstants
-from direct.gui.DirectGui import DGG
+from direct.gui.DirectGui import *
 from toontown.battle import FireCogPanel
 
 class TownBattle(StateData.StateData):
@@ -122,7 +122,10 @@ class TownBattle(StateData.StateData):
         self.SOSPetInfoPanel = TownBattleSOSPetInfoPanel.TownBattleSOSPetInfoPanel(self.SOSPetInfoPanelDoneEvent)
         self.fireCogPanelDoneEvent = 'fire-cog-panel-done'
         self.FireCogPanel = FireCogPanel.FireCogPanel(self.fireCogPanelDoneEvent)
-        self.toonPanels = [TownBattleToonPanel.TownBattleToonPanel(i) for i in xrange(4)]
+        self.toonRolloverFrame = DirectFrame(aspect2d, relief=None, geom=DGG.getDefaultDialogGeom(), geom_color=(0.6, 1.0, 0.4, 1), geom_scale=(0.5, 0.3, 0.2), text_scale=0.05, text_pos=(0, 0.0125), text='', text_fg=(0, 0, 0, 1), pos=(0.4, 0, 0))
+        self.toonRolloverFrame.setBin('gui-popup', 0)
+        self.toonRolloverFrame.hide()
+        self.toonPanels = [TownBattleToonPanel.TownBattleToonPanel(self) for i in xrange(4)]
         self.cogPanels = [TownBattleCogPanel.TownBattleCogPanel(i) for i in xrange(4)]
         self.timer = ToontownTimer.ToontownTimer()
         self.timer.posInTopRightCorner()
@@ -143,6 +146,7 @@ class TownBattle(StateData.StateData):
         del self.FireCogPanel
         del self.SOSPetSearchPanel
         del self.SOSPetInfoPanel
+        del self.toonRolloverFrame
 
         for panel in self.toonPanels + self.cogPanels:
             panel.cleanup()
@@ -214,6 +218,14 @@ class TownBattle(StateData.StateData):
         self.time = time
         self.timer.setTime(time)
         return None
+    
+    def scaleToonRolloverFrame(self, scale, textPos, z):
+        self.toonRolloverFrame['geom_scale'] = scale
+        self.toonRolloverFrame['text_pos'] = textPos
+        self.toonRolloverFrame.setZ(z)
+    
+    def hideToonRolloverFrame(self, extra=None):
+        self.toonRolloverFrame.hide()
 
     def __enterPanels(self, num, localNum):
         self.notify.debug('enterPanels() num: %d localNum: %d' % (num, localNum))

@@ -351,13 +351,12 @@ class SuitPage(ShtikerPage.ShtikerPage):
                 panel.shadow = None
                 panel.count = 0
                 panel.summonButton = None
-                panel.hoverButton = DirectButton(parent=panel, relief=None, image_scale=(0.15, 0, 0.225), image='phase_3/maps/invisible.png')
+                panel.hoverButton = DirectButton(parent=panel, relief=None, image_scale=(0.15, 0, 0.225), image='phase_3/maps/invisible.png', pressEffect=0)
                 panel.hoverButton.setTransparency(True)
                 panel.hoverButton.panel = panel
                 self.addCogRadarLabel(panel)
                 self.panels.append(panel)
                 base.panels.append(panel)
-        return
     
     def showInfo(self, panel, text, extra):
         self.rolloverFrame.reparentTo(panel)
