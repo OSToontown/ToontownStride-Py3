@@ -336,7 +336,7 @@ class SuitPage(ShtikerPage.ShtikerPage):
         yStart = -0.18
         xOffset = 0.199
         yOffset = 0.284
-        self.rolloverFrame = DirectFrame(parent=self.panelNode, relief=None, geom=DGG.getDefaultDialogGeom(), geom_color=(0.5, 0.5, 0.5, 1), geom_scale=(0.73, 0, 0.65), text_scale=0.05, text_pos=(0, 0.26), text='', text_fg=(1, 1, 1, 1), pos=(0.44, 0, 0))
+        self.rolloverFrame = DirectFrame(parent=self.panelNode, relief=None, geom=DGG.getDefaultDialogGeom(), geom_color=(0.5, 0.5, 0.5, 1), geom_scale=(0.8, 0, 0.77), text_scale=0.06, text_pos=(0, 0.32), text='', text_fg=(1, 1, 1, 1), pos=(0.44, 0, 0))
         self.rolloverFrame.setBin('gui-popup', 0)
         self.rolloverFrame.hide()
         for dept in xrange(0, len(SuitDNA.suitDepts)):
