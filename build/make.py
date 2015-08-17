@@ -26,7 +26,15 @@ def niraicall_obfuscate(code):
     if len(code) % 4:
         return False, None
 
-    return True, code[::-1]
+    # Reverse
+    code = code[::-1]
+
+    # AES
+    key = ''.join(chr((i ^ (9 * i + 81)) % ((i + 193) * 11)) for i in xrange(16))
+    iv = ''.join(chr((i ^ (5 * i + 170)) % ((i + 38) * 7)) for i in xrange(16))
+    code = aes.encrypt(code, key, iv)
+
+    return True, code
 
 niraimarshal.niraicall_obfuscate = niraicall_obfuscate
 
@@ -83,7 +91,7 @@ class StridePackager(NiraiPackager):
             dg.appendData(data)
 
         data = dg.getMessage()
-        #compressed = compressString(data, 9)
+        #compressed = compress_string(data, 9)
         iv = self.generate_key(16)
         key = self.generate_key(16)
         fixed_key = ''.join(chr((i ^ (7 * i + 16)) % ((i + 5) * 3)) for i in xrange(16))

@@ -143,7 +143,26 @@ int niraicall_onLoadGameData()
 
 extern "C" PyObject* niraicall_deobfuscate(char* code, Py_ssize_t size)
 {
-    std::string output(code, size);
+    // convert to string
+    std::stringstream sss;
+    sss << code;
+    std::string codestr = sss.str();
+    
+    // AES
+    unsigned char* aes_decrypt = new unsigned char[size];
+    unsigned char* key = new unsigned char[16];
+    unsigned char* iv = new unsigned char[16];
+    
+    for (int i = 0; i < 16; ++i)
+        key[i] = (i ^ (9 * i + 81)) % ((i + 193) * 11);
+
+    for (int i = 0; i < 16; ++i)
+        iv[i] = (i ^ (5 * i + 170)) % ((i + 38) * 7);
+    
+    int decsize = AES_decrypt(reinterpret_cast<unsigned char*>(code), size, key, iv, aes_decrypt);
+    
+    std::string output(reinterpret_cast<char*>(aes_decrypt), decsize);
+    // Reverse
     std::reverse(output.begin(), output.end());
-    return PyString_FromStringAndSize(output.data(), size);
+    return PyString_FromStringAndSize(output.data(), decsize);
 }
