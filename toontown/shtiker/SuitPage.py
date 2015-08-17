@@ -488,19 +488,9 @@ class SuitPage(ShtikerPage.ShtikerPage):
             name = SuitDNA.suitHeadTypes[index]
             attributes = SuitBattleGlobals.SuitAttributes[name]
             level = attributes['level']
-            attacks = sorted(attributes['attacks'], key=lambda x: x[0])
-            groupAttacks = []
-            singleAttacks = []
-
-            for attack in attacks:
-                if attack[0] in SuitBattleGlobals.DisabledAttacks:
-                    continue
-                if SuitBattleGlobals.SuitAttacks[attack[0]][1] == SuitBattleGlobals.ATK_TGT_GROUP:
-                    groupAttacks.append(attack)
-                else:
-                    singleAttacks.append(attack)
-            
+            groupAttacks, singleAttacks = SuitBattleGlobals.getAttacksByType(attributes)
             info = TTLocalizer.SuitPageAttackFormat % (level + 1, level + 5, self.getAttackStrings(groupAttacks), self.getAttackStrings(singleAttacks))
+            
             panel.hoverButton.bind(DGG.ENTER, self.showInfo, extraArgs=[panel, info])
             panel.hoverButton.bind(DGG.EXIT, self.hideInfo)
     

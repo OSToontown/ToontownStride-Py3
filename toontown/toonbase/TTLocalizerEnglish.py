@@ -8726,7 +8726,13 @@ ShardPageTeleport = 'Teleport to\n%s'
 
 TeleportButton = 'Teleport'
 
-SuitPageAttackFormat = 'Levels: %s-%s\n\n\x01androidGreen\x01Group attacks:\x02\n%s\n\n\x01androidGreen\x01Regular attacks:\x02\n%s'
+BattleCogPopup = '\x01androidGreen\x01Group attacks:\x02\n%s\n\n\x01androidGreen\x01Regular attacks:\x02\n%s'
+BattleCogPopupAttack = '%s %s HP'
+BattleCogPopupAttackDanger = '\x01red\x01' + BattleCogPopupAttack + '\x02'
+BattleCogPopupDanger = '\x01red\x01Dangerous!\x02\n\n'
+BattleCogPopupDangerColor = '\x01red'
+
+SuitPageAttackFormat = 'Levels: %s-%s\n\n' + BattleCogPopup
 SuitPageNoAttacks = 'None'
 
 BattleGagPopup = '%s: %s\nGags left: %s'

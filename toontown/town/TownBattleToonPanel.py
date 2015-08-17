@@ -44,9 +44,12 @@ class TownBattleToonPanel(DirectFrame):
         self.whichText = DirectLabel(parent=self, text='', pos=(0.1, 0, -0.08), text_scale=0.05)
         self.hoverButton = DirectButton(parent=self, relief=None, image_scale=(0.07, 0, 0.06), pos=(0.105, 0, 0.05), image='phase_3/maps/invisible.png', pressEffect=0)
         self.hoverButton.setTransparency(True)
-        self.hoverButton.bind(DGG.EXIT, self.battle.hideToonRolloverFrame)
+        self.hoverButton.bind(DGG.EXIT, self.battle.hideRolloverFrame)
         self.hide()
         gui.removeNode()
+    
+    def hasAvatar(self):
+        return self.avatar is not None
 
     def setLaffMeter(self, avatar):
         self.notify.debug('setLaffMeter: new avatar %s' % avatar.doId)
@@ -138,7 +141,7 @@ class TownBattleToonPanel(DirectFrame):
             sosType = TextEncoder.upper(sosType)
             count = max(0, self.avatar.getNPCFriendCount(targetIndex) - 1)
             info = TTLocalizer.BattleSOSPopup % (sosType, NPCToons.getNPCName(targetIndex), hpString if hp else '', rarity, count)
-            self.hoverButton.bind(DGG.ENTER, self.showInfo, extraArgs=[(0.5, 0.3, 0.3), (0, 0.08), 0.1, info])
+            self.hoverButton.bind(DGG.ENTER, self.battle.showRolloverFrame, extraArgs=[self, (0.5, 0.3, 0.3), (0, 0.08), (0.6, 1.0, 0.4, 1), (0.4, 0, 0.1), info])
         elif track == BattleBase.SOS or track == BattleBase.PETSOS:
             self.sosText.show()
         elif track >= MIN_TRACK_INDEX and track <= MAX_TRACK_INDEX:
@@ -156,7 +159,7 @@ class TownBattleToonPanel(DirectFrame):
                 damage = int(getAvPropDamage(track, level, curExp, organic))
                 numItems = max(0, self.avatar.inventory.numItem(track, level) - 1)
                 info = TTLocalizer.BattleGagPopup % (self.avatar.inventory.getToonupDmgStr(track, 0), damage, numItems)
-                self.hoverButton.bind(DGG.ENTER, self.showInfo, extraArgs=[(0.5, 0.3, 0.2), (0, 0.0125), 0, info])
+                self.hoverButton.bind(DGG.ENTER, self.battle.showRolloverFrame, extraArgs=[self, (0.5, 0.3, 0.2), (0, 0.0125), (0.6, 1.0, 0.4, 1), (0.4, 0, 0), info])
 
                 if self.avatar.checkGagBonus(track, level):
                     self.gag.setColor((1, 0, 0, 1) if track == 1 and level == 5 else (0, 1, 0, 1))
@@ -176,12 +179,6 @@ class TownBattleToonPanel(DirectFrame):
                 
         else:
             self.notify.error('Bad track value: %s' % track)
-    
-    def showInfo(self, scale, textPos, z, text, extra):
-        self.battle.scaleToonRolloverFrame(scale, textPos, z)
-        self.battle.toonRolloverFrame.reparentTo(self)
-        self.battle.toonRolloverFrame.show()
-        self.battle.toonRolloverFrame['text'] = text
 
     def determineWhichText(self, numTargets, targetIndex, localNum, index):
         returnStr = ''

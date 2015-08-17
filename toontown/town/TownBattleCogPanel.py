@@ -1,17 +1,22 @@
 from direct.gui.DirectGui import *
+from toontown.battle import SuitBattleGlobals
 from toontown.suit import Suit, SuitHealthBar
 from toontown.toonbase import TTLocalizer
 
 class TownBattleCogPanel(DirectFrame):
 
-    def __init__(self, id):
+    def __init__(self, battle):
         gui = loader.loadModel('phase_3.5/models/gui/battle_gui')
         DirectFrame.__init__(self, relief=None, image=gui.find('**/ToonBtl_Status_BG'), image_color=(0.86, 0.86, 0.86, 0.7), scale=0.8)
         self.initialiseoptions(TownBattleCogPanel)
+        self.battle = battle
         self.levelText = DirectLabel(parent=self, text='', pos=(-0.06, 0, -0.075), text_scale=0.055)
         self.typeText = DirectLabel(parent=self, text='', pos=(0.12, 0, -0.075), text_scale=0.045)
         self.healthBar = SuitHealthBar.SuitHealthBar()
         self.generateHealthBar()
+        self.hoverButton = DirectButton(parent=self, relief=None, image_scale=(0.07, 0, 0.06), pos=(0.105, 0, 0.05), image='phase_3/maps/invisible.png', pressEffect=0)
+        self.hoverButton.setTransparency(True)
+        self.hoverButton.bind(DGG.EXIT, self.battle.hideRolloverFrame)
         self.suit = None
         self.suitHead = None
         self.hide()
@@ -23,9 +28,11 @@ class TownBattleCogPanel(DirectFrame):
         self.levelText.removeNode()
         self.typeText.removeNode()
         self.healthBar.delete()
+        self.hoverButton.removeNode()
         del self.levelText
         del self.typeText
         del self.healthBar
+        del self.hoverButton
         DirectFrame.destroy(self)
     
     def cleanupHead(self):
@@ -46,6 +53,31 @@ class TownBattleCogPanel(DirectFrame):
         self.levelText['text'] = TTLocalizer.CogPanelLevel % suit.getActualLevel()
         self.typeText['text'] = suit.getTypeText()
         self.accept(suit.uniqueName('hpChange'), self.updateHealthBar)
+        self.updateRolloverBind()
+    
+    def updateRolloverBind(self):
+        if not self.suit:
+            return
+
+        attributes = SuitBattleGlobals.SuitAttributes[self.suit.getStyleName()]
+        groupAttacks, singleAttacks = SuitBattleGlobals.getAttacksByType(attributes)
+        level = self.suit.getLevel()
+        info = TTLocalizer.BattleCogPopup % (self.getAttackStrings(groupAttacks, level), self.getAttackStrings(singleAttacks, level))
+        
+        if TTLocalizer.BattleCogPopupDangerColor in info:
+            info = TTLocalizer.BattleCogPopupDanger + info
+
+        self.hoverButton.bind(DGG.ENTER, self.battle.showRolloverFrame, extraArgs=[self, (0.73, 0, 0.65), (0, 0.26), (0.5, 0.5, 0.5, 1), (0.6, 0, 0.1), info])
+        
+    def getAttackStrings(self, attacks, level):
+        attackStrings = []
+        
+        for attack in attacks:
+            hp = attack[1][level]
+            attackString = TTLocalizer.BattleCogPopupAttackDanger if self.battle.isAttackDangerous(hp) else TTLocalizer.BattleCogPopupAttack
+            attackStrings.append(attackString % (TTLocalizer.SuitAttackNames[attack[0]], hp))
+
+        return '\n'.join(attackStrings) if attackStrings else TTLocalizer.SuitPageNoAttacks
 
     def generateSuitHead(self, name):
         self.suitHead = Suit.attachSuitHead(self, name)
