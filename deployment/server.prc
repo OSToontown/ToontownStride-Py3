@@ -40,6 +40,10 @@ get-key-reward-always #t
 get-crate-reward-always #t
 
 
+want-emblems #t
+cogdo-want-barrel-room #t
+
+
 # Chat Settings
 want-whitelist #f
 want-sequence-list #f

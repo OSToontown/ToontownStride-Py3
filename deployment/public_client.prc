@@ -74,6 +74,9 @@ want-pstats 0
 want-whitelist #f
 want-sequence-list #f
 
+want-emblems #t
+cogdo-want-barrel-room #t
+
 
 #<dev>
 show-total-population #t

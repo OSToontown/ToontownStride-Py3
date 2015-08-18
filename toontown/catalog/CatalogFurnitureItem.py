@@ -1059,7 +1059,7 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
         return 24 * 60
 
     def getPicture(self, avatar):
-        model = self.loadModel(animate=0)
+        model = self.loadModel()
         spin = 1
         flags = self.getFlags()
         if flags & FLRug:
@@ -1095,7 +1095,7 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
     def getBasePrice(self):
         return FurnitureTypes[self.furnitureType][FTBasePrice]
 
-    def loadModel(self, animate=1):
+    def loadModel(self):
         type = FurnitureTypes[self.furnitureType]
         model = loader.loadModel(type[FTModelName])
         self.applyColor(model, type[FTColor])
