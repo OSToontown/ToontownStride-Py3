@@ -9,6 +9,11 @@ video-library-name p3ffmpeg
 want-dev #f
 preload-avatars #t
 
+# Graphics:
+aux-display pandagl
+aux-display pandadx9
+aux-display p3tinydisplay
+
 
 # Textures:
 texture-anisotropic-degree 16
