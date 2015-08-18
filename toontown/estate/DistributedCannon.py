@@ -864,7 +864,6 @@ class DistributedCannon(DistributedObject.DistributedObject):
 
     def removeAvFromCannon(self):
         place = base.cr.playGame.getPlace()
-        print 'removeAvFromCannon'
         self.notify.debug('self.inWater = %s' % self.inWater)
         if place:
             if not hasattr(place, 'fsm'):
