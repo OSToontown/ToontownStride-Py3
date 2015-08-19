@@ -1328,11 +1328,19 @@ class ObjectManager(NodePath, DirectObject):
         if self.deleteMode:
             self.requestDelete(item, itemIndex, self.deleteWallpaperFromAttic)
             return
-        if base.localAvatar.getY() < 2.3:
-            room = 0
-        else:
-            room = 1
+        room = self.getRoom()
         self.furnitureManager.moveWallpaperFromAttic(itemIndex, room, self.__bringWallpaperFromAtticCallback)
+
+    def getRoom(self):
+        x, y, z = base.localAvatar.getPos()
+
+        if (x <= -13.5 and y <= -7.6 and y >= 0.0) or (z >= 4.5 and z <= 10):
+            return 0
+        elif base.localAvatar.getZ() > 5.0:
+            return 1
+        elif base.localAvatar.getY() < 2.3:
+            return 2
+        return 3
 
     def __bringWallpaperFromAtticCallback(self, retcode, itemIndex, room):
         self.__enableItemButtons(1)
@@ -1367,10 +1375,10 @@ class ObjectManager(NodePath, DirectObject):
         if self.deleteMode:
             self.requestDelete(item, itemIndex, self.deleteWindowFromAttic)
             return
-        if base.localAvatar.getY() < 2.3:
-            slot = 2
-        else:
-            slot = 4
+        room = self.getRoom()
+        if room == 0:
+            room = 1
+        slot = room * 2
         self.furnitureManager.moveWindowFromAttic(itemIndex, slot, self.__bringWindowFromAtticCallback)
 
     def __bringWindowFromAtticCallback(self, retcode, itemIndex, slot):
