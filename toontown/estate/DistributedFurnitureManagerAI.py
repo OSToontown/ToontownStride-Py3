@@ -317,7 +317,7 @@ class DistributedFurnitureManagerAI(DistributedObjectAI):
             self.air.writeServerEvent('suspicious', avId=self.air.getAvatarIdFromSender(), issue='Invalid wallpaper at index %s' % index)
             return ToontownGlobals.FM_InvalidIndex
 
-        if room > 1:
+        if room > 3:
             self.air.writeServerEvent('suspicious', avId=self.air.getAvatarIdFromSender(), issue='Tried to apply a wallpaper in an invalid room %d!' % room)
             return ToontownGlobals.FM_InvalidItem
         interiorIndex = room*4
@@ -354,7 +354,7 @@ class DistributedFurnitureManagerAI(DistributedObjectAI):
     def moveWindowFromAttic(self, index, slot):
         retcode = ToontownGlobals.FM_MovedItem
         window = self.getAtticFurniture(self.atticWindows, index)
-        if slot > 5:
+        if slot > 7:
             self.air.writeServerEvent('suspicious', avId=self.air.getAvatarIdFromSender(),
                                       issue='Tried to move window to invalid slot %d!' % slot)
             return ToontownGlobals.FM_HouseFull
@@ -373,7 +373,7 @@ class DistributedFurnitureManagerAI(DistributedObjectAI):
         window = self.getWindow(fromSlot)
         if window is None:
             return ToontownGlobals.FM_InvalidIndex
-        if toSlot > 5:
+        if toSlot > 7:
             self.air.writeServerEvent('suspicious', avId=self.air.getAvatarIdFromSender(),
                                       issue='DistributedfTried to move window to invalid slot %d!' % toSlot)
             return ToontownGlobals.FM_HouseFull
