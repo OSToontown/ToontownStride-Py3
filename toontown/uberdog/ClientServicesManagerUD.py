@@ -83,7 +83,7 @@ def executeHttpRequest(url, **extras):
     cookie_jar = cookielib.LWPCookieJar()
     cookie = urllib2.HTTPCookieProcessor(cookie_jar)
     opener = urllib2.build_opener(cookie)
-    req = urllib2.Request('https://toontownstride.com/api/' + url, data,
+    req = urllib2.Request('http://192.168.1.212/api/' + url, data,
                           headers={"Content-Type" : "application/x-www-form-urlencoded"})
     req.get_method = lambda: "POST"
     try:
