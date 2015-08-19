@@ -4266,11 +4266,11 @@ def allSummons():
 @magicWord(category=CATEGORY_PROGRAMMER, types=[str])
 def maxToon(missingTrack=None):
     """
-    Max the invoker's stats for end-level gameplay.
+    Max the target's stats for end-level gameplay.
     """
-    invoker = spellbook.getInvoker()
+    target = spellbook.getTarget()
 
-    # First, unlock the invoker's Gag tracks:
+    # First, unlock the target's Gag tracks:
     gagTracks = [1, 1, 1, 1, 1, 1, 1]
     if missingTrack is not None:
         try:
@@ -4281,23 +4281,23 @@ def maxToon(missingTrack=None):
         if index in (4, 5):
             return 'You are required to have Throw and Squirt.'
         gagTracks[index] = 0
-    invoker.b_setTrackAccess(gagTracks)
-    invoker.b_setMaxCarry(80)
+    target.b_setTrackAccess(gagTracks)
+    target.b_setMaxCarry(80)
 
     # Next, max out their experience for the tracks they have:
-    experience = Experience.Experience(invoker.getExperience(), invoker)
-    for i, track in enumerate(invoker.getTrackAccess()):
+    experience = Experience.Experience(target.getExperience(), target)
+    for i, track in enumerate(target.getTrackAccess()):
         if track:
             experience.experience[i] = (
                 Experience.MaxSkill - Experience.UberSkill)
-    invoker.b_setExperience(experience.makeNetString())
+    target.b_setExperience(experience.makeNetString())
 
     # Max out their Laff:
-    invoker.b_setMaxHp(ToontownGlobals.MaxHpLimit)
-    invoker.toonUp(invoker.getMaxHp() - invoker.hp)
+    target.b_setMaxHp(ToontownGlobals.MaxHpLimit)
+    target.toonUp(target.getMaxHp() - target.hp)
 
     # Unlock all of the emotes:
-    emotes = list(invoker.getEmoteAccess())
+    emotes = list(target.getEmoteAccess())
     for emoteId in OTPLocalizer.EmoteFuncDict.values():
         if emoteId >= len(emotes):
             continue
@@ -4306,10 +4306,10 @@ def maxToon(missingTrack=None):
         if emoteId in (17, 18, 19):
             continue
         emotes[emoteId] = 1
-    invoker.b_setEmoteAccess(emotes)
+    target.b_setEmoteAccess(emotes)
 
     # Max out their Cog suits:
-    invoker.b_setCogParts(
+    target.b_setCogParts(
         [
             CogDisguiseGlobals.PartsPerSuitBitmasks[0],  # Bossbot
             CogDisguiseGlobals.PartsPerSuitBitmasks[1],  # Lawbot
@@ -4317,41 +4317,41 @@ def maxToon(missingTrack=None):
             CogDisguiseGlobals.PartsPerSuitBitmasks[3]   # Sellbot
         ]
     )
-    invoker.b_setCogLevels([49] * 4)
-    invoker.b_setCogTypes([7, 7, 7, 7])
+    target.b_setCogLevels([49] * 4)
+    target.b_setCogTypes([7, 7, 7, 7])
 
     # Max their Cog gallery:
     deptCount = len(SuitDNA.suitDepts)
-    invoker.b_setCogCount(list(CogPageGlobals.COG_QUOTAS[1]) * deptCount)
+    target.b_setCogCount(list(CogPageGlobals.COG_QUOTAS[1]) * deptCount)
     cogStatus = [CogPageGlobals.COG_COMPLETE2] * SuitDNA.suitsPerDept
-    invoker.b_setCogStatus(cogStatus * deptCount)
-    invoker.b_setCogRadar([1, 1, 1, 1])
-    invoker.b_setBuildingRadar([1, 1, 1, 1])
+    target.b_setCogStatus(cogStatus * deptCount)
+    target.b_setCogRadar([1, 1, 1, 1])
+    target.b_setBuildingRadar([1, 1, 1, 1])
 
     # Max out their racing tickets:
-    invoker.b_setTickets(99999)
+    target.b_setTickets(99999)
 
     # Give them teleport access everywhere (including Cog HQs):
     hoods = list(ToontownGlobals.HoodsForTeleportAll)
-    invoker.b_setHoodsVisited(hoods)
-    invoker.b_setTeleportAccess(hoods)
+    target.b_setHoodsVisited(hoods)
+    target.b_setTeleportAccess(hoods)
 
     # Max their quest carry limit:
-    invoker.b_setQuestCarryLimit(4)
+    target.b_setQuestCarryLimit(4)
 
     # Complete their quests:
-    invoker.b_setQuests([])
-    invoker.b_setRewardHistory(Quests.ELDER_TIER, [])
+    target.b_setQuests([])
+    target.b_setRewardHistory(Quests.ELDER_TIER, [])
 
     # Max their money:
-    invoker.b_setMaxMoney(250)
-    invoker.b_setMaxBankMoney(30000)
-    invoker.b_setMoney(invoker.getMaxMoney())
-    invoker.b_setBankMoney(invoker.getMaxBankMoney())
+    target.b_setMaxMoney(250)
+    target.b_setMaxBankMoney(30000)
+    target.b_setMoney(target.getMaxMoney())
+    target.b_setBankMoney(target.getMaxBankMoney())
 
     # Finally, unlock all of their pet phrases:
     if simbase.wantPets:
-        invoker.b_setPetTrickPhrases(range(7))
+        target.b_setPetTrickPhrases(range(7))
 
     return 'Maxed your Toon!'
 
@@ -4695,11 +4695,11 @@ def inventory(a, b=None, c=None):
 
 @magicWord(category=CATEGORY_CREATIVE, types=[str, str])
 def dna(part, value):
-    """Modify a DNA part on the invoker."""
-    invoker = spellbook.getInvoker()
+    """Modify a DNA part on the target."""
+    target = spellbook.getTarget()
 
     dna = ToonDNA.ToonDNA()
-    dna.makeFromNetString(invoker.getDNAString())
+    dna.makeFromNetString(target.getDNAString())
 
     part = part.lower()
     if part.endswith('color') or part.endswith('tex') or part.endswith('size'):
@@ -4709,7 +4709,7 @@ def dna(part, value):
         if value not in ('m', 'f', 'male', 'female'):
             return 'Invalid gender: ' + value
         dna.gender = value[0]
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Gender set to: ' + dna.gender
 
     if part in ('head', 'species'):
@@ -4723,7 +4723,7 @@ def dna(part, value):
         if value not in ToonDNA.toonSpeciesTypes:
             return 'Invalid species: ' + value
         dna.head = value + dna.head[1:3]
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Species set to: ' + dna.head[0]
 
     if part == 'headsize':
@@ -4731,7 +4731,7 @@ def dna(part, value):
         if not 0 <= value <= len(sizes):
             return 'Invalid head size index: ' + str(value)
         dna.head = dna.head[0] + sizes[value]
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Head size index set to: ' + dna.head[1:]
 
     if part == 'torso':
@@ -4743,7 +4743,7 @@ def dna(part, value):
         if (dna.gender == 'f') and (not 3 <= value <= 8):
             return 'Female torso index out of range (3-8).'
         dna.torso = ToonDNA.toonTorsoTypes[value]
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Torso set to: ' + dna.torso
 
     if part == 'legs':
@@ -4751,28 +4751,28 @@ def dna(part, value):
         if not 0 <= value <= len(ToonDNA.toonLegTypes):
             return 'Legs index out of range (0-%d).' % len(ToonDNA.toonLegTypes)
         dna.legs = ToonDNA.toonLegTypes[value]
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Legs set to: ' + dna.legs
 
     if part == 'headcolor':
         if value not in ToonDNA.defaultColorList:
             return 'Invalid head color index: ' + str(value)
         dna.headColor = value
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Head color index set to: ' + str(dna.headColor)
 
     if part == 'armcolor':
         if value not in ToonDNA.defaultColorList:
             return 'Invalid arm color index: ' + str(value)
         dna.armColor = value
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Arm color index set to: ' + str(dna.armColor)
 
     if part == 'legcolor':
         if value not in ToonDNA.defaultColorList:
             return 'Invalid leg color index: ' + str(value)
         dna.legColor = value
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Leg color index set to: ' + str(dna.legColor)
 
     if part == 'color':
@@ -4785,41 +4785,41 @@ def dna(part, value):
         dna.headColor = value
         dna.armColor = value
         dna.legColor = value
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Color index set to: ' + str(dna.headColor)
 
     if part == 'gloves':
         value = int(value)
         dna.gloveColor = value
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Glove color set to: ' + str(dna.gloveColor)
 
     if part == 'toptex':
         if not 0 <= value <= len(ToonDNA.Shirts):
             return 'Top texture index out of range (0-%d).' % len(ToonDNA.Shirts)
         dna.topTex = value
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Top texture index set to: ' + str(dna.topTex)
 
     if part == 'toptexcolor':
         if not 0 <= value <= len(ToonDNA.ClothesColors):
             return 'Top texture color index out of range(0-%d).' % len(ToonDNA.ClothesColors)
         dna.topTexColor = value
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Top texture color index set to: ' + str(dna.topTexColor)
 
     if part == 'sleevetex':
         if not 0 <= value <= len(ToonDNA.Sleeves):
             return 'Sleeve texture index out of range(0-%d).' % len(ToonDNA.Sleeves)
         dna.sleeveTex = value
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Sleeve texture index set to: ' + str(dna.sleeveTex)
 
     if part == 'sleevetexcolor':
         if not 0 <= value <= len(ToonDNA.ClothesColors):
             return 'Sleeve texture color index out of range(0-%d).' % len(ToonDNA.ClothesColors)
         dna.sleeveTexColor = value
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Sleeve texture color index set to: ' + str(dna.sleeveTexColor)
 
     if part == 'bottex':
@@ -4832,14 +4832,14 @@ def dna(part, value):
         if not 0 <= value <= len(bottoms):
             return 'Bottom texture index out of range (0-%d).' % len(bottoms)
         dna.botTex = value
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Bottom texture index set to: ' + str(dna.botTex)
 
     if part == 'bottexcolor':
         if not 0 <= value <= len(ToonDNA.ClothesColors):
             return 'Bottom texture color index out of range(0-%d).' % len(ToonDNA.ClothesColors)
         dna.botTexColor = value
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Bottom texture color index set to: ' + str(dna.botTexColor)
 
     if part == 'show':
