@@ -45,6 +45,8 @@ class StridePackager(NiraiPackager):
     def __init__(self, outfile):
         NiraiPackager.__init__(self, outfile)
         self.__manglebase = self.get_mangle_base(self.BASEDIR)
+        self.add_panda3d_dirs()
+        self.add_default_lib()
 
     def add_source_dir(self, dir):
         self.add_directory(self.BASEDIR + dir, mangler=self.__mangler)
@@ -76,13 +78,9 @@ class StridePackager(NiraiPackager):
         self.add_module('niraidata', niraidata, compile=True)
 
     def process_modules(self):
-        with open('base.dg', 'rb') as f:
-            basesize, = struct.unpack('<I', f.read(4))
-            data = f.read()
         # TODO: Compression
         dg = Datagram()
-        dg.addUint32(len(self.modules) + basesize)
-        dg.appendData(data)
+        dg.addUint32(len(self.modules))
         for moduleName in self.modules:
             data, size = self.modules[moduleName]
 
