@@ -4925,7 +4925,7 @@ def track(command, track, value=None):
         return 'Set the experience of the %s track to: %d!' % (track, value)
     return 'Invalid command.'
 
-@magicWord(category=CATEGORY_ADMINISTRATOR, types=[str, str])
+@magicWord(category=CATEGORY_DEVELOPER, types=[str, str])
 def suit(command, suitName):
     invoker = spellbook.getInvoker()
     command = command.lower()
