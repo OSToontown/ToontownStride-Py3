@@ -18,7 +18,7 @@ from toontown.toonbase import ToontownTimer
 from direct.showbase import PythonUtil
 from toontown.toonbase import TTLocalizer
 from toontown.pets import PetConstants
-from direct.gui.DirectGui import DGG
+from direct.gui.DirectGui import *
 from toontown.battle import FireCogPanel
 
 class TownBattle(StateData.StateData):
@@ -122,8 +122,11 @@ class TownBattle(StateData.StateData):
         self.SOSPetInfoPanel = TownBattleSOSPetInfoPanel.TownBattleSOSPetInfoPanel(self.SOSPetInfoPanelDoneEvent)
         self.fireCogPanelDoneEvent = 'fire-cog-panel-done'
         self.FireCogPanel = FireCogPanel.FireCogPanel(self.fireCogPanelDoneEvent)
-        self.toonPanels = [TownBattleToonPanel.TownBattleToonPanel(i) for i in xrange(4)]
-        self.cogPanels = [TownBattleCogPanel.TownBattleCogPanel(i) for i in xrange(4)]
+        self.rolloverFrame = DirectFrame(aspect2d, relief=None, geom=DGG.getDefaultDialogGeom(), geom_color=(0.6, 1.0, 0.4, 1), geom_scale=(0.5, 0.3, 0.2), text_scale=0.05, text_pos=(0, 0.0125), text='', text_fg=(0, 0, 0, 1), pos=(0.4, 0, 0))
+        self.rolloverFrame.setBin('gui-popup', 0)
+        self.rolloverFrame.hide()
+        self.toonPanels = [TownBattleToonPanel.TownBattleToonPanel(self) for i in xrange(4)]
+        self.cogPanels = [TownBattleCogPanel.TownBattleCogPanel(self) for i in xrange(4)]
         self.timer = ToontownTimer.ToontownTimer()
         self.timer.posInTopRightCorner()
         self.timer.setScale(0.4)
@@ -143,6 +146,7 @@ class TownBattle(StateData.StateData):
         del self.FireCogPanel
         del self.SOSPetSearchPanel
         del self.SOSPetInfoPanel
+        del self.rolloverFrame
 
         for panel in self.toonPanels + self.cogPanels:
             panel.cleanup()
@@ -214,6 +218,23 @@ class TownBattle(StateData.StateData):
         self.time = time
         self.timer.setTime(time)
         return None
+    
+    def showRolloverFrame(self, parent, scale, textPos, color, pos, text, extra=None):
+        self.rolloverFrame['geom_scale'] = scale
+        self.rolloverFrame['text_pos'] = textPos
+        self.rolloverFrame['geom_color'] = color
+        self.rolloverFrame.setPos(pos)
+        self.rolloverFrame.reparentTo(parent)
+        self.rolloverFrame.show()
+        self.rolloverFrame['text'] = text
+    
+    def hideRolloverFrame(self, extra=None):
+        self.rolloverFrame.hide()
+    
+    def isAttackDangerous(self, hp):
+        for panel in self.toonPanels:
+            if panel.hasAvatar() and panel.avatar.getHp() <= hp:
+                return True
 
     def __enterPanels(self, num, localNum):
         self.notify.debug('enterPanels() num: %d localNum: %d' % (num, localNum))
@@ -227,6 +248,7 @@ class TownBattle(StateData.StateData):
         for cogPanel in self.cogPanels:
             cogPanel.hide()
             cogPanel.updateHealthBar()
+            cogPanel.updateRolloverBind()
             cogPanel.setPos(0, 0, 0.62)
         
         self.positionPanels(num, self.cogPanels)
@@ -436,6 +458,7 @@ class TownBattle(StateData.StateData):
         self.numToons = len(toons)
         self.localNum = toons.index(base.localAvatar)
         currStateName = self.fsm.getCurrentState().getName()
+        
         if resetActivateMode:
             self.__enterPanels(self.numToons, self.localNum)
             for i in xrange(len(toons)):

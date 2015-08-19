@@ -230,6 +230,7 @@ class SuitPage(ShtikerPage.ShtikerPage):
         self.legalRadarButton.destroy()
         self.moneyRadarButton.destroy()
         self.salesRadarButton.destroy()
+        self.rolloverFrame.destroy()
         for panel in self.panels:
             panel.destroy()
         del self.panels
@@ -335,6 +336,9 @@ class SuitPage(ShtikerPage.ShtikerPage):
         yStart = -0.18
         xOffset = 0.199
         yOffset = 0.284
+        self.rolloverFrame = DirectFrame(parent=self.panelNode, relief=None, geom=DGG.getDefaultDialogGeom(), geom_color=(0.5, 0.5, 0.5, 1), geom_scale=(0.8, 0, 0.77), text_scale=0.06, text_pos=(0, 0.32), text='', text_fg=(1, 1, 1, 1), pos=(0.44, 0, 0))
+        self.rolloverFrame.setBin('gui-popup', 0)
+        self.rolloverFrame.hide()
         for dept in xrange(0, len(SuitDNA.suitDepts)):
             row = []
             color = PANEL_COLORS[dept]
@@ -347,10 +351,20 @@ class SuitPage(ShtikerPage.ShtikerPage):
                 panel.shadow = None
                 panel.count = 0
                 panel.summonButton = None
+                panel.hoverButton = DirectButton(parent=panel, relief=None, image_scale=(0.15, 0, 0.225), image='phase_3/maps/invisible.png', pressEffect=0)
+                panel.hoverButton.setTransparency(True)
+                panel.hoverButton.panel = panel
                 self.addCogRadarLabel(panel)
                 self.panels.append(panel)
                 base.panels.append(panel)
-        return
+    
+    def showInfo(self, panel, text, extra):
+        self.rolloverFrame.reparentTo(panel)
+        self.rolloverFrame.show()
+        self.rolloverFrame['text'] = text
+
+    def hideInfo(self, extra):
+        self.rolloverFrame.hide()
 
     def addQuotaLabel(self, panel):
         index = self.panels.index(panel)
@@ -428,6 +442,9 @@ class SuitPage(ShtikerPage.ShtikerPage):
             panel.shadow.hide()
         if panel.summonButton:
             panel.summonButton.hide()
+        self.rolloverFrame.hide()
+        panel.hoverButton.unbind(DGG.ENTER)
+        panel.hoverButton.unbind(DGG.EXIT)
         color = PANEL_COLORS[dept]
         panel['image_color'] = color
         for button in self.radarButtons:
@@ -467,6 +484,19 @@ class SuitPage(ShtikerPage.ShtikerPage):
             panel['image_color'] = PANEL_COLORS_COMPLETE1[index / SuitDNA.suitsPerDept]
         elif status == COG_COMPLETE2:
             panel['image_color'] = PANEL_COLORS_COMPLETE2[index / SuitDNA.suitsPerDept]
+        if status in (COG_DEFEATED, COG_COMPLETE1, COG_COMPLETE2):
+            name = SuitDNA.suitHeadTypes[index]
+            attributes = SuitBattleGlobals.SuitAttributes[name]
+            level = attributes['level']
+            groupAttacks, singleAttacks = SuitBattleGlobals.getAttacksByType(attributes)
+            info = TTLocalizer.SuitPageAttackFormat % (level + 1, level + 5, self.getAttackStrings(groupAttacks), self.getAttackStrings(singleAttacks))
+            
+            panel.hoverButton.bind(DGG.ENTER, self.showInfo, extraArgs=[panel, info])
+            panel.hoverButton.bind(DGG.EXIT, self.hideInfo)
+    
+    def getAttackStrings(self, attacks):
+        string = '\n'.join(['%s %s' % (TTLocalizer.SuitAttackNames[attack[0]], '-'.join(str(x) for x in attack[1])) for attack in attacks])
+        return string if string else TTLocalizer.SuitPageNoAttacks
 
     def updateAllCogs(self, status):
         for index in xrange(0, len(base.localAvatar.cogs)):
