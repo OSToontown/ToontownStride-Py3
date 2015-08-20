@@ -667,13 +667,13 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
 
         Example response: [100000001, ...]
         """
-        if not config.GetBool('want-mongo-client', False):
+        if not config.GetBool('want-mongo', False):
             return []
         if not needle:
             return []
-        self.air.mongodb.astron.objects.ensure_index('fields.setName')
+        self.air.database.astron.objects.ensure_index('fields.setName')
         exp = re.compile('.*%s.*' % needle, re.IGNORECASE)
-        result = self.air.mongodb.astron.objects.find({'fields.setName._0': exp})
+        result = self.air.database.astron.objects.find({'fields.setName._0': exp})
         return [avatar['_id'] for avatar in result]
 
     # --- SHARDS ---
