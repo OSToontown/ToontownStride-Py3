@@ -42,7 +42,7 @@ class BanFSM(FSM):
         simbase.air.send(datagram)
 
     def dbCallback(self, dclass, fields):
-        if dclass != self.air.dclassesByName['AccountAI']:
+        if dclass != simbase.air.dclassesByName['AccountAI']:
             return
 
         self.accountId = fields.get('ACCOUNT_ID')

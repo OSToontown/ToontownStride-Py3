@@ -21,7 +21,7 @@ want-house-types #t
 want-gifting #t
 want-top-toons #t
 want-language-selection #t
-estate-day-night #t
+estate-day-night #f
 want-mat-all-tailors #t
 is-server #t
 
@@ -39,6 +39,7 @@ get-key-reward-always #t
 get-crate-reward-always #t
 want-lawbot-cogdo #f
 
+server-timezone EST/EDT/-5
 
 want-emblems #f
 cogdo-want-barrel-room #f

@@ -18,6 +18,8 @@ aux-display p3tinydisplay
 # Textures:
 texture-anisotropic-degree 16
 
+server-timezone EST/EDT/-5
+
 
 # Resources settings
 model-path /
@@ -56,7 +58,7 @@ want-house-types #t
 want-gifting #t
 want-top-toons #t
 want-language-selection #t
-estate-day-night #t
+estate-day-night #f
 want-mat-all-tailors #t
 
 
