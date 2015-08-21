@@ -1,6 +1,6 @@
 [submodule "resources"]
 	path = resources
-	url = git@Repo.Ez-webz.com:Stride/resources.git
+	url = http://Repo.Ez-webz.com/Stride/resources.git
 [submodule "build/nirai/src"]
 	path = build/nirai/src
 	url = https://github.com/nirai-compiler/src
