@@ -74,8 +74,8 @@ want-pstats 0
 want-whitelist #f
 want-sequence-list #f
 
-want-emblems #t
-cogdo-want-barrel-room #t
+want-emblems #f
+cogdo-want-barrel-room #f
 
 
 #<dev>
@@ -87,7 +87,7 @@ cogdo-ratio 0.5
 default-directnotify-level info
 
 # Core features:
-want-lawbot-cogdo #t
+want-lawbot-cogdo #f
 
 # Crates:
 dont-destroy-crate #t

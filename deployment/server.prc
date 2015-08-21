@@ -12,7 +12,6 @@ cogsuit-hack-prevent #t
 want-pets #t
 want-parties #f
 want-cogdominiums #t
-want-lawbot-cogdo #t
 want-anim-props #t
 want-game-tables #t
 want-find-four #t
@@ -38,10 +37,11 @@ default-directnotify-level info
 dont-destroy-crate #t
 get-key-reward-always #t
 get-crate-reward-always #t
+want-lawbot-cogdo #f
 
 
-want-emblems #t
-cogdo-want-barrel-room #t
+want-emblems #f
+cogdo-want-barrel-room #f
 
 
 # Chat Settings
