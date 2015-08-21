@@ -156,6 +156,7 @@ class BattleCalculatorAI:
         else:
             randChoice = random.randint(0, 99)
         propAcc = AvPropAccuracy[atkTrack][atkLevel]
+        propAcc = min(propAcc * 1.3, 100)
         if atkTrack == LURE:
             treebonus = self.__toonCheckGagBonus(attack[TOON_ID_COL], atkTrack, atkLevel)
             propBonus = self.__checkPropBonus(atkTrack)
