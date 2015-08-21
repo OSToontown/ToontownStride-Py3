@@ -625,7 +625,7 @@ class OTPClientRepository(ClientRepositoryBase):
         else:
             message = OTPLocalizer.CRLostConnection
         reconnect = 1
-        if self.bootedIndex in (152, 127):
+        if self.bootedIndex in (152, 127, 124, 101, 102, 103):
             reconnect = 0
         if self.bootedIndex == 152:
             message = message % {'name': self.bootedText}
