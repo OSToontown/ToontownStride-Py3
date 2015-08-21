@@ -2451,6 +2451,18 @@ def blackCat():
     """
     base.cr.blackCatMgr.requestBlackCatTransformation()
 
+@magicWord(category=CATEGORY_COMMUNITY_MANAGER)
+def toggleGM():
+    invoker = spellbook.getInvoker()
+    if invoker.gmIcon:
+        invoker.setWantAdminTag(False)
+        invoker.removeGMIcon()
+        invoker.setNametagName()#setName(invoker.getName())
+    else:
+        invoker.setWantAdminTag(True)
+        invoker.setGMIcon(invoker.getAdminAccess())
+        invoker.setNametagName()#setName(invoker.getName())
+
 @magicWord(category=CATEGORY_COMMUNITY_MANAGER, types=[str])
 def showParticle(name):
     """
