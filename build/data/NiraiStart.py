@@ -1,5 +1,5 @@
 from panda3d.core import *
-import __builtin__, os, sys
+import __builtin__, os, sys, glob
 import aes
 
 import niraidata
@@ -30,10 +30,18 @@ del dc
 del iv
 del key
 
+# The VirtualFileSystem, which has already initialized, doesn't see the mount
+# directives in the config(s) yet. We have to force it to load those manually:
+#from panda3d.core import VirtualFileSystem, ConfigVariableList, Filename
+vfs = VirtualFileSystem.getGlobalPtr()
+mounts = ConfigVariableList('vfs-mount')
+for mount in mounts:
+    mountfile, mountpoint = (mount.split(' ', 2) + [None, None, None])[:2]
+    vfs.mount(Filename(mountfile), Filename(mountpoint), 0)
+
 # Resources
 # TO DO: Sign and verify the phases to prevent edition
 abort = False
-
 
 # Packs
 pack = os.environ.get('TT_STRIDE_CONTENT_PACK')
@@ -50,7 +58,7 @@ if pack and pack != 'default':
 
         mf.flush()
 
-        if not vfs.mount(mf, '../resources', 0):
+        if not vfs.mount(mf, '/', 0):
             print 'Unable to mount %s' % filename
             abort = True
             break
