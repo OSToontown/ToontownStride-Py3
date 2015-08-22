@@ -565,4 +565,5 @@ def target():
     """
     Returns the current Spellbook target.
     """
-    return 'Your current target is: %s [avId: %s, access: %s]' % (spellbook.getTarget().getName(), spellbook.getTarget().doId, spellbook.getTarget().getAdminAccess())
+    return 'Your current target is: %s [avId: %s]' % (spellbook.getTarget().getName(), spellbook.getTarget().doId)
+    #return 'Your current target is: %s [avId: %s, access: %s]' % (spellbook.getTarget().getName(), spellbook.getTarget().doId, spellbook.getTarget().getAdminAccess())
