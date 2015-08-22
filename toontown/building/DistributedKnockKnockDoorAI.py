@@ -10,6 +10,9 @@ class DistributedKnockKnockDoorAI(DistributedAnimatedPropAI.DistributedAnimatedP
         self.fsm.setName('DistributedKnockKnockDoor')
         self.propId = propId
         self.doLaterTask = None
+    
+    def delete(self):
+        DistributedAnimatedPropAI.DistributedAnimatedPropAI.delete(self)
 
     def enterOff(self):
         DistributedAnimatedPropAI.DistributedAnimatedPropAI.enterOff(self)

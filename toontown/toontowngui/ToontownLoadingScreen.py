@@ -11,7 +11,7 @@ class ToontownLoadingScreen:
     def __init__(self):
         self.__expectedCount = 0
         self.__count = 0
-        self.textures = [(loader.loadTexture('phase_3.5/maps/loading/toon.jpg'), ToontownGlobals.getInterfaceFont(), (0.2, 0.6, 0.9, 1)),
+        self.textures = [(loader.loadTexture('phase_3.5/maps/loading/toon.jpg'), ToontownGlobals.getInterfaceFont(), (0, 0, 0.5, 1)),
          (loader.loadTexture('phase_3.5/maps/loading/cog.jpg'), ToontownGlobals.getSuitFont(), (1.0, 1.0, 1.0, 1)),
          (loader.loadTexture('phase_3.5/maps/loading/default.jpg'), ToontownGlobals.getInterfaceFont(), (0, 0, 0.5, 1))
         ]
