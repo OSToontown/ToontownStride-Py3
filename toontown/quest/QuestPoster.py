@@ -419,8 +419,8 @@ class QuestPoster(DirectFrame):
         elif quest.getType() == Quests.TrackChoiceQuest:
             frameBgColor = 'green'
             invModel = loader.loadModel('phase_3.5/models/gui/inventory_icons')
-            track1, track2 = quest.getChoices(base.localAvatar)
 
+            track1, track2 = quest.getChoices()
             lIconGeom = invModel.find('**/' + AvPropsNew[track1][1])
 
             if not fComplete:
