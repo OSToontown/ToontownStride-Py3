@@ -1,5 +1,5 @@
 from panda3d.core import *
-import __builtin__, os, sys, glob
+import __builtin__, os, sys
 import aes
 
 import niraidata
@@ -45,6 +45,7 @@ abort = False
 
 # Packs
 pack = os.environ.get('TT_STRIDE_CONTENT_PACK')
+import glob
 if pack and pack != 'default':
     print 'Loading content pack', pack
     for file in glob.glob('resources/%s/*.mf' % pack):
@@ -53,15 +54,9 @@ if pack and pack != 'default':
         names = mf.getSubfileNames()
         for name in names:
             ext = os.path.splitext(name)[1]
-            if ext not in ('.jpg', '.jpeg', '.ogg', '.rgb'):
+            if ext not in ['.jpg', '.jpeg', '.ogg', '.rgb']:
                 mf.removeSubfile(name)
-
-        mf.flush()
-
-        if not vfs.mount(mf, '/', 0):
-            print 'Unable to mount %s' % filename
-            abort = True
-            break
+        vfs.mount(mf, Filename('/'), 0)
 
 if not abort:
     # Run
