@@ -3,6 +3,6 @@
   "astron": "6b769e6",
   "panda3d": "b924139",
   "libpandadna": "a0047ce",
-  "version-prefix": "ttstride-alpha-",
+  "version-prefix": "ttstride-beta-",
   "server-resources": ["pdna", "txt", "dat", "bam", "ttf"]
 }

@@ -3,7 +3,7 @@
 # Config.prc should be reproduced here.
 
 # Client settings
-window-title Toontown Stride [Alpha]
+window-title Toontown Stride [Beta]
 server-version SERVER_VERSION_HERE
 video-library-name p3ffmpeg
 want-dev #f
