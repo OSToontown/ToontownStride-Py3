@@ -29,10 +29,15 @@ def niraicall_obfuscate(code):
     # Reverse
     code = code[::-1]
 
-    # AES
-    key = ''.join(chr((i ^ (9 * i + 81)) % ((i + 193) * 11)) for i in xrange(16))
-    iv = ''.join(chr((i ^ (5 * i + 170)) % ((i + 38) * 7)) for i in xrange(16))
-    code = aes.encrypt(code, key, iv)
+    # XOR
+    key = ['B', 'A', 'Q', 'J', 'R', 'P', 'Z', 'P', 'A', 'H', 'U', 'T']
+    output = []
+
+    for i in range(len(code)):
+        xor_num = ord(code[i]) ^ ord(key[i % len(key)])
+        output.append(chr(xor_num))
+
+    code = ''.join(output)
 
     return True, code
 

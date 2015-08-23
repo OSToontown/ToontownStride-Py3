@@ -145,21 +145,12 @@ extern "C" PyObject* niraicall_deobfuscate(char* code, Py_ssize_t size)
 {
     std::string codestr(code, size);
    
-    // AES
-    unsigned char* aes_decrypted = new unsigned char[size];
-    unsigned char key[16];
-    unsigned char iv[16];
-   
-    for (int i = 0; i < 16; ++i)
-        key[i] = (i ^ (9 * i + 81)) % ((i + 193) * 11);
- 
-    for (int i = 0; i < 16; ++i)
-        iv[i] = (i ^ (5 * i + 170)) % ((i + 38) * 7);
-   
-    int decsize = AES_decrypt((unsigned char*)code, size, key, iv, aes_decrypted);
-   
-    std::string output((char*)aes_decrypted, decsize);
+    char key[12] = {'B', 'A', 'Q', 'J', 'R', 'P', 'Z', 'P', 'A', 'H', 'U', 'T'};
+    std::string output = codestr;
+    
+    for (int i = 0; i < codestr.size(); i++)
+        output[i] = codestr[i] ^ key[i % (sizeof(key) / sizeof(char))];
+    
     std::reverse(output.begin(), output.end());
-    delete[] aes_decrypted;
-    return PyString_FromStringAndSize(output.data(), decsize);
+    return PyString_FromStringAndSize(output.data(), size);
 }

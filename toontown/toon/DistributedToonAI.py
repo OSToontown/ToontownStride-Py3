@@ -3126,6 +3126,24 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
          self.zoneId))
         return ['success', suitIndex, building.doId]
 
+    def doToonBuildingTakeover(self):
+        streetId = ZoneUtil.getBranchZone(self.zoneId)
+        if streetId not in self.air.suitPlanners:
+            self.notify.warning('Street %d is not known.' % streetId)
+            return ['badlocation', 'notknownstreet', 0]
+        sp = self.air.suitPlanners[streetId]
+        bm = sp.buildingMgr
+        building = self.findClosestSuitDoor()
+        if building == None:
+            return ['badlocation', 'nobuilding', 0]
+        if building.isToonBlock():
+            return ['badlocation', 'toonblock', 0]
+        building.toonTakeOver()
+        self.notify.warning('toonTakeOverFromStreet %s %d' % (building.block,
+         self.zoneId))
+        
+        return ['success', building.doId]
+
     def doCogdoTakeOver(self, suitIndex):
         if suitIndex >= len(SuitDNA.suitHeadTypes):
             self.notify.warning('Bad suit index: %s' % suitIndex)
@@ -3294,6 +3312,31 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
                 if not NPCToons.isZoneProtected(intZoneId):
                     if hasattr(building, 'door'):
                         if building.door.zoneId == zone:
+                            return building
+
+        return None
+
+    def findClosestSuitDoor(self):
+        zoneId = self.zoneId
+        streetId = ZoneUtil.getBranchZone(zoneId)
+        sp = self.air.suitPlanners[streetId]
+        if not sp:
+            return None
+        bm = sp.buildingMgr
+        if not bm:
+            return None
+        zones = [zoneId,
+         zoneId - 1,
+         zoneId + 1,
+         zoneId - 2,
+         zoneId + 2]
+        for zone in zones:
+            for i in bm.getSuitBlocks():
+                building = bm.getBuilding(i)
+                extZoneId, intZoneId = building.getExteriorAndInteriorZoneId()
+                if not NPCToons.isZoneProtected(intZoneId):
+                    if hasattr(building, 'elevator'):
+                        if building.elevator.zoneId == zone:
                             return building
 
         return None
@@ -4925,8 +4968,8 @@ def track(command, track, value=None):
         return 'Set the experience of the %s track to: %d!' % (track, value)
     return 'Invalid command.'
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[str, str])
-def suit(command, suitName):
+@magicWord(category=CATEGORY_ADMINISTRATOR, types=[str, str])
+def suit(command, suitName = 'unset'):
     invoker = spellbook.getInvoker()
     command = command.lower()
     if suitName not in SuitDNA.suitHeadTypes:
@@ -4942,6 +4985,11 @@ def suit(command, suitName):
         if returnCode[0] == 'success':
             return 'Successfully spawned a Cog building with: ' + suitFullName
         return "Couldn't spawn a Cog building with: " + suitFullName
+    elif command == 'nobuilding':
+        returnCode = invoker.doToonBuildingTakeover()
+        if returnCode[0] == 'success':
+            return 'Toons took over the cog building!'
+        return "Couldn't allow toons to take over cog building because " + returnCode[1]
     else:
         return 'Invalid command.'
 
