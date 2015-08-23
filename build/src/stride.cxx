@@ -81,6 +81,8 @@ int niraicall_onLoadGameData()
     for (int i = 0; i < key_and_iv_size; ++i)
         key[i] = deckeyandiv[i + key_and_iv_size];
     
+    delete[] deckeyandiv;
+    
     // Decrypt the game data
     std::string rawdata = brawdata.substr((key_and_iv_size * 2) + key_and_iv_size);
     unsigned char* decrypted_data = new unsigned char[rawdata.size()];
