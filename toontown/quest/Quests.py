@@ -2280,10 +2280,11 @@ QuestDict = {
     5247: (BR_TIER, Start, (VisitQuest,), Any, 3112, NA, 5248, TTLocalizer.QuestDialogDict[5247]),
     5248: (BR_TIER, Start, (CogLevelQuest, Anywhere, 10, 8), 3112, Same, NA, 5249, TTLocalizer.QuestDialogDict[5248]),
     5249: (BR_TIER, Cont, (RecoverItemQuest, Anywhere, 3, 3018, VeryHard, AnyFish), Same, Same, NA, (5250, 5258, 5259, 5260), TTLocalizer.QuestDialogDict[5249]),
-    5250: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 'l', 4, 0), Same, Same, 408, NA, TTLocalizer.QuestDialogDict[5250]),
-    5258: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 'c', 4, 0), Same, Same, 408, NA, TTLocalizer.QuestDialogDict[5258]),
-    5259: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 'm', 4, 0), Same, Same, 408, NA, TTLocalizer.QuestDialogDict[5259]),
-    5260: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 's', 4, 0), Same, Same, 408, NA, TTLocalizer.QuestDialogDict[5260]),
+    5250: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 'l', 4), Same, Same, NA, 5001, TTLocalizer.QuestDialogDict[5250]),
+    5258: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 'c', 4), Same, Same, NA, 5001, TTLocalizer.QuestDialogDict[5258]),
+    5259: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 'm', 4), Same, Same, NA, 5001, TTLocalizer.QuestDialogDict[5259]),
+    5260: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 's', 4), Same, Same, NA, 5001, TTLocalizer.QuestDialogDict[5260]),
+    5001: (BR_TIER, Cont, (TrackChoiceQuest,), Same, Same, 400, NA, TTLocalizer.TheBrrrghTrackQuestDict),
     5020: (BR_TIER, Start, (CogQuest, Anywhere, 36, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     5021: (BR_TIER, Start, (CogQuest, Anywhere, 38, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     5022: (BR_TIER, Start, (CogQuest, Anywhere, 40, Any), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -3329,7 +3330,7 @@ def chooseMatchingQuest(tier, validQuestPool, rewardId, npc, av):
     questsMatchingReward = Tier2Reward2QuestsDict[tier].get(rewardId, [])
     if notify.getDebug():
         notify.debug('questsMatchingReward: %s tier: %s = %s' % (rewardId, tier, questsMatchingReward))
-    if rewardId == 400 and QuestDict[questsMatchingReward[0]][QuestDictNextQuestIndex] == NA:
+    if rewardId == 400:
         bestQuest = chooseTrackChoiceQuest(tier, av)
         if notify.getDebug():
             notify.debug('single part track choice quest: %s tier: %s avId: %s trackAccess: %s bestQuest: %s' % (rewardId,
@@ -3790,26 +3791,28 @@ class TrackTrainingReward(Reward):
     def __init__(self, id, reward):
         Reward.__init__(self, id, reward)
 
-    def getTrack(self, av):
+    def getTrack(self):
         track = self.reward[0]
         if track == None:
             track = 0
+
             trackAccess = av.getTrackAccess()
 
             for i in xrange(len(trackAccess)):
                 if trackAccess[i] == 0:
                     return i
+                    
         return track
 
     def sendRewardAI(self, av):
-        av.b_setTrackProgress(self.getTrack(av), 0)
+        av.b_setTrackProgress(self.getTrack(), 0)
 
     def countReward(self, qrc):
-        qrc.trackProgressId = self.getTrack(base.localAvatar)
+        qrc.trackProgressId = self.getTrack()
         qrc.trackProgress = 0
 
     def getString(self):
-        trackName = ToontownBattleGlobals.Tracks[self.getTrack(base.localAvatar)].capitalize()
+        trackName = ToontownBattleGlobals.Tracks[self.getTrack()].capitalize()
         return TTLocalizer.QuestsTrackTrainingReward % trackName
 
     def getPosterString(self):
@@ -4160,7 +4163,6 @@ RewardDict = {
     405: (TrackTrainingReward, ToontownBattleGlobals.THROW_TRACK),
     406: (TrackTrainingReward, ToontownBattleGlobals.SQUIRT_TRACK),
     407: (TrackTrainingReward, ToontownBattleGlobals.DROP_TRACK),
-    408: (TrackTrainingReward, None),
     500: (MaxQuestCarryReward, 2),
     501: (MaxQuestCarryReward, 3),
     502: (MaxQuestCarryReward, 4),

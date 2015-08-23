@@ -551,6 +551,12 @@ INCOMPLETE_PROGRESS = 3
 INCOMPLETE_WRONG_NPC = 4
 COMPLETE = 5
 LEAVING = 6
+TheBrrrghTrackQuestDict = {GREETING: '',
+ QUEST: 'Now you are ready.\x07Go out and walk the earth until you know which track you would like to choose.\x07When you are certain, return to me.',
+ INCOMPLETE_PROGRESS: 'Choose wisely.',
+ INCOMPLETE_WRONG_NPC: 'Choose wisely.',
+ COMPLETE: 'Very wise choice!\x07Good luck.  Return to me when you have mastered your new skill.',
+ LEAVING: ''}
 QuestDialog_3225 = {QUEST: "Oh, thanks for coming, _avName_!\x07The Cogs in the neighborhood frightened away my delivery person.\x07I don't have anyone to deliver this salad to _toNpcName_!\x07Can you do it for me? Thanks so much!_where_"}
 QuestDialog_2910 = {QUEST: 'Back so soon?\x07Great job on the spring.\x07The final item is a counter weight.\x07Stop by and see _toNpcName_ and bring back whatever you can get._where_'}
 QuestDialogDict = {
@@ -966,22 +972,18 @@ QuestDialogDict = {
         INCOMPLETE_PROGRESS: 'It seems you may not be so clever with the rod and reel.'},
  5250: {GREETING: '',
         LEAVING: '',
-        COMPLETE: 'Now you are ready.\x07Good luck.  Return to me when you have mastered your new skill.',
         QUEST: 'Aha!  These dice will look great hanging from the rearview mirror of my ox cart!\x07Now, show me that you can tell your enemies from one another.\x07Return when you have restored two of the tallest Lawbot buildings.',
         INCOMPLETE_PROGRESS: 'Do the buildings give you trouble?'},
  5258: {GREETING: '',
         LEAVING: '',
-        COMPLETE: 'Now you are ready.\x07Good luck.  Return to me when you have mastered your new skill.',
         QUEST: 'Aha!  These dice will look great hanging from the rearview mirror of my ox cart!\x07Now, show me that you can tell your enemies from one another.\x07Return when you have restored two of the tallest Bossbot buildings.',
         INCOMPLETE_PROGRESS: 'Do the buildings give you trouble?'},
  5259: {GREETING: '',
         LEAVING: '',
-        COMPLETE: 'Now you are ready.\x07Good luck.  Return to me when you have mastered your new skill.',
         QUEST: 'Aha!  These dice will look great hanging from the rearview mirror of my ox cart!\x07Now, show me that you can tell your enemies from one another.\x07Return when you have restored two of the tallest Cashbot buildings.',
         INCOMPLETE_PROGRESS: 'Do the buildings give you trouble?'},
  5260: {GREETING: '',
         LEAVING: '',
-        COMPLETE: 'Now you are ready.\x07Good luck.  Return to me when you have mastered your new skill.',
         QUEST: 'Aha!  These dice will look great hanging from the rearview mirror of my ox cart!\x07Now, show me that you can tell your enemies from one another.\x07Return when you have restored two of the tallest Sellbot buildings.',
         INCOMPLETE_PROGRESS: 'Do the buildings give you trouble?'},
  5200: {QUEST: 'Those sneaky Cogs are at it again.\x07_toNpcName_ has reported another missing item. Stop by and see if you can straighten it out._where_'},
