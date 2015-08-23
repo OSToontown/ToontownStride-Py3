@@ -51,11 +51,12 @@ if ':' in host:
     port = int(port)
 simbase.air.connect(host, port)
 
+gc.enable()
+
 isServer = config.GetBool('is-server', False)
 
 try:
     run()
-    gc.enable()
 except SystemExit:
     raise
 except Exception:
