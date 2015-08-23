@@ -1,5 +1,6 @@
 from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
 from otp.ai.MagicWordGlobal import *
+from otp.avatar import Avatar
 
 class ChatAgent(DistributedObjectGlobal):
 
