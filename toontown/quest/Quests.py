@@ -3836,13 +3836,6 @@ class TrackTrainingReward(Reward):
         track = self.reward[0]
         if track == None:
             track = 0
-
-            trackAccess = av.getTrackAccess()
-
-            for i in xrange(len(trackAccess)):
-                if trackAccess[i] == 0:
-                    return i
-                    
         return track
 
     def sendRewardAI(self, av):
