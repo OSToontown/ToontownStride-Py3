@@ -70,7 +70,7 @@ class DistributedBankAI(DistributedFurnitureItemAI):
             if av.bankMoney + amount < 0:
                 self.air.writeServerEvent('suspicious', avId=avId, issue='Toon tried to withdraw more money than they have!')
             else:
-                av.b_setMoney(av.money - amount)
-                av.b_setBankMoney(av.bankMoney + amount)
+                av.b_setMoney(av.money + amount)
+                av.b_setBankMoney(av.bankMoney - amount)
 
         self.avId = None
