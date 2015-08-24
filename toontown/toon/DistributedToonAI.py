@@ -163,14 +163,22 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.nextKnockHeal = 0
         self.tfRequest = (0, 0)
         self.epp = []
+        if self.emoteAccess[26]:
+            self.emoteAccess.remove(self.emoteAccess[26])
 
     def generate(self):
         DistributedPlayerAI.DistributedPlayerAI.generate(self)
         DistributedSmoothNodeAI.DistributedSmoothNodeAI.generate(self)
 
+        if self.emoteAccess[26]:
+            self.emoteAccess.remove(self.emoteAccess[26])
+
     def announceGenerate(self):
         DistributedPlayerAI.DistributedPlayerAI.announceGenerate(self)
         DistributedSmoothNodeAI.DistributedSmoothNodeAI.announceGenerate(self)
+
+        if self.emoteAccess[26]:
+            self.emoteAccess.remove(self.emoteAccess[26])
 
         if self.isPlayerControlled():
             messenger.send('avatarEntered', [self])
@@ -1951,6 +1959,10 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         return anyChanged
 
     def b_setEmoteAccess(self, bits):
+        if bits[26]:
+            bits.remove(bits[26])
+        if self.emoteAccess[26]:
+            self.emoteAccess.remove(self.emoteAccess[26])
         self.setEmoteAccess(bits)
         self.d_setEmoteAccess(bits)
 
@@ -1958,6 +1970,10 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.sendUpdate('setEmoteAccess', [bits])
 
     def setEmoteAccess(self, bits):
+        if bits[26]:
+            bits.remove(bits[26])
+        if self.emoteAccess[26]:
+            self.emoteAccess.remove(self.emoteAccess[26])
         maxBitCount = len(self.emoteAccess)
         bits = bits[:maxBitCount]
         bitCount = len(bits)
