@@ -163,22 +163,14 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.nextKnockHeal = 0
         self.tfRequest = (0, 0)
         self.epp = []
-        if self.emoteAccess[26]:
-            self.emoteAccess.remove(self.emoteAccess[26])
 
     def generate(self):
         DistributedPlayerAI.DistributedPlayerAI.generate(self)
         DistributedSmoothNodeAI.DistributedSmoothNodeAI.generate(self)
 
-        if self.emoteAccess[26]:
-            self.emoteAccess.remove(self.emoteAccess[26])
-
     def announceGenerate(self):
         DistributedPlayerAI.DistributedPlayerAI.announceGenerate(self)
         DistributedSmoothNodeAI.DistributedSmoothNodeAI.announceGenerate(self)
-
-        if self.emoteAccess[26]:
-            self.emoteAccess.remove(self.emoteAccess[26])
 
         if self.isPlayerControlled():
             messenger.send('avatarEntered', [self])
