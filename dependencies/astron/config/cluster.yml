@@ -33,7 +33,7 @@ uberdogs:
 roles:
     - type: clientagent
       bind: 0.0.0.0:7199
-      version: "stride-beta-dev-g20cbfe0"
+      version: "tts-dev"
       client:
        relocate: true
        add_interest: enabled

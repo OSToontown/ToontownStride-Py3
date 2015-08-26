@@ -4,7 +4,7 @@
 
 # Client settings
 window-title Toontown Stride [Beta]
-server-version stride-beta-dev-g3af22c4
+server-version SERVER_VERSION_HERE
 video-library-name p3ffmpeg
 want-dev #f
 preload-avatars #t
