@@ -27,7 +27,7 @@ class DistributedMMPiano(DistributedObject.DistributedObject):
         taskMgr.doMethodLater(4, self.setupGeom, self.uniqueName('setup-geom'))
 
     def setupGeom(self, task):
-        geom = self.cr.playGame.getPlace().loader.geom
+        '''geom = self.cr.playGame.getPlace().loader.geom
         self.piano = geom.find('**/center_icon')
         if self.piano.isEmpty():
             loader.notify.error('Piano not found')
@@ -43,7 +43,7 @@ class DistributedMMPiano(DistributedObject.DistributedObject):
         base.cr.parentMgr.registerParent(ToontownGlobals.SPMinniesPiano, self.piano)
         self.accept('enter' + self.whitePartNodeName, self.__handleOnFloor)
         self.accept('exit' + self.whitePartNodeName, self.__handleOffFloor)
-        self.accept('entermid_fishpond', self.__handleChangeDirectionButton)
+        self.accept('entermid_fishpond', self.__handleChangeDirectionButton)'''
         self.speedUpSound = base.loadSfx('phase_6/audio/sfx/SZ_MM_gliss.ogg')
         self.changeDirectionSound = base.loadSfx('phase_6/audio/sfx/SZ_MM_cymbal.ogg')
         self.__setupSpin()

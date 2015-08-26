@@ -104,7 +104,7 @@ class StridePackager(NiraiPackager):
 
 # Compile the engine
 if args.compile_cxx:
-    compiler = NiraiCompiler('stride.exe', libs=set(glob.glob('libpandadna/libpandadna.dir/Release/*.obj')))
+    compiler = NiraiCompiler('stride.exe', libs=set(glob.glob('c:/repos/libpandadna/libpandadna.dir/Release/*.obj')))
 
     compiler.add_nirai_files()
     compiler.add_source('src/stride.cxx')
