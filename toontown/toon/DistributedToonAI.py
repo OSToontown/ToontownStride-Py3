@@ -5041,8 +5041,8 @@ def unlimitedGags():
     return 'Toggled unlimited gags %s for %s' % ('ON' if av.unlimitedGags else 'OFF', av.getName())
 
 @magicWord(category=CATEGORY_PROGRAMMER)
-def maxCogpage():
-    """ Max the target's cog Page.. """
+def maxCogPage():
+    """ Max the target's discovered cogs. """
     target = spellbook.getTarget()
     deptCount = len(SuitDNA.suitDepts)
     target.b_setCogCount(list(CogPageGlobals.COG_QUOTAS[1]) * deptCount)
@@ -5050,6 +5050,7 @@ def maxCogpage():
     target.b_setCogStatus(cogStatus * deptCount)
     target.b_setCogRadar([1, 1, 1, 1])
     target.b_setBuildingRadar([1, 1, 1, 1])
+    return 'Maxed %s\'s discovered cogs -- Jumble' % (target.getName())
 
 @magicWord(category=CATEGORY_PROGRAMMER)
 def immortal():
