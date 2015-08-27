@@ -2,8 +2,6 @@ import TTLocalizer
 from otp.otpbase.OTPGlobals import *
 from direct.showbase.PythonUtil import Enum, invertDict
 from pandac.PandaModules import BitMask32, Vec4
-MapHotkeyOn = 'alt'
-MapHotkeyOff = 'alt-up'
 MapHotkey = 'alt'
 CogHQCameraFov = 60.0
 BossBattleCameraFov = 72.0
