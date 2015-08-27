@@ -9,7 +9,6 @@ class StatPage(ShtikerPage.ShtikerPage):
         ShtikerPage.ShtikerPage.__init__(self)
         self.dialog = None
         self.chunkCount = 11
-        base.cr.lol = self
 
     def load(self):
         guiButton = loader.loadModel('phase_3/models/gui/quit_button')
@@ -57,7 +56,7 @@ class StatPage(ShtikerPage.ShtikerPage):
 
     def updateStats(self):
         stats = base.localAvatar.stats
-        allStats = [TTLocalizer.Stats[i] % stats[i] for i in xrange(len(stats))]
+        allStats = [TTLocalizer.Stats[i] % '{:,}'.format(stats[i]) for i in xrange(len(stats))]
         textChunks = list(self.cutToChunks(allStats, self.chunkCount))
         
         for i, chunk in enumerate(textChunks):
