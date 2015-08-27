@@ -15,7 +15,7 @@ distribution = 'qa'
 
 accountServerEndpoint = 'https://toontownstride.com/api/'
 
-data = urllib.urlencode({'username': username, 'password': password, 'distribution': distribution})
+data = urllib.urlencode({'username': username, 'password': password, 'distribution': distribution, 'version': 'dev'})
 cookie_jar = cookielib.LWPCookieJar()
 cookie = urllib2.HTTPCookieProcessor(cookie_jar)
 opener = urllib2.build_opener(cookie)
