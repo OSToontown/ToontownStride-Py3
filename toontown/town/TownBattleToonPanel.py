@@ -24,8 +24,6 @@ class TownBattleToonPanel(DirectFrame):
         self.sosText.hide()
         self.fireText = DirectLabel(parent=self, relief=None, pos=(0.1, 0, 0.015), text=TTLocalizer.TownBattleToonFire, text_scale=0.06)
         self.fireText.hide()
-        self.roundsText = DirectLabel(parent=self, relief=None, pos=(0.16, 0, -0.07), text='', text_scale=0.045)
-        self.roundsText.hide()
         self.sosHead = None
         self.undecidedText = DirectLabel(parent=self, relief=None, pos=(0.1, 0, 0.015), text=TTLocalizer.TownBattleUndecided, text_scale=0.1)
         self.healthText = DirectLabel(parent=self, text='', pos=(-0.06, 0, -0.075), text_scale=0.055)
@@ -102,14 +100,11 @@ class TownBattleToonPanel(DirectFrame):
         self.undecidedText.hide()
         self.sosText.hide()
         self.fireText.hide()
-        self.roundsText.hide()
         self.gagNode.hide()
         self.whichText.hide()
         self.passNode.hide()
         self.cleanupSosHead()
         self.hoverButton.unbind(DGG.ENTER)
-        self.whichText.setPos(0.1, 0, -0.08)
-        self.whichText['text_scale'] = 0.05
         if self.hasGag:
             self.gag.removeNode()
             self.hasGag = 0
@@ -166,17 +161,6 @@ class TownBattleToonPanel(DirectFrame):
             if numTargets is not None and targetIndex is not None and localNum is not None:
                 self.whichText.show()
                 self.whichText['text'] = self.determineWhichText(numTargets, targetIndex, localNum, index)
-                self.roundsText.setPos(0.16, 0, -0.07)
-                self.roundsText['text_scale'] = 0.045
-            elif track == LURE_TRACK:
-                self.roundsText['text_scale'] = 0.05
-                self.roundsText.setPos(0.1, 0, -0.08)
-            if track == LURE_TRACK:
-                self.roundsText.show()
-                self.roundsText['text'] = str(NumRoundsLured[level])
-                self.whichText.setPos(0.085, 0, -0.07)
-                self.whichText['text_scale'] = 0.045
-                
         else:
             self.notify.error('Bad track value: %s' % track)
 
@@ -184,6 +168,7 @@ class TownBattleToonPanel(DirectFrame):
         returnStr = ''
         targetList = range(numTargets)
         targetList.reverse()
+
         for i in targetList:
             if targetIndex == -1:
                 returnStr += 'X'
@@ -221,9 +206,8 @@ class TownBattleToonPanel(DirectFrame):
             self.sosHead = None
 
     def cleanupLaffMeter(self):
-        self.notify.debug('Cleaning up laffmeter!')
         self.ignore(self.hpChangeEvent)
+
         if self.laffMeter:
             self.laffMeter.destroy()
             self.laffMeter = None
-        return
