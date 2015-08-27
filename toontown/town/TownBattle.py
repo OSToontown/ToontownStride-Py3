@@ -328,20 +328,14 @@ class TownBattle(StateData.StateData):
 
     def enterOff(self):
         if self.isLoaded:
-            for toonPanel in self.toonPanels:
-                toonPanel.hide()
+            for panel in self.toonPanels + self.cogPanels:
+                panel.hide()
 
-            for cogPanel in self.cogPanels:
-                cogPanel.hide()
-
-        self.toonAttacks = [(-1, 0, 0),
-         (-1, 0, 0),
-         (-1, 0, 0),
-         (-1, 0, 0)]
+        self.toonAttacks = [(-1, 0, 0)] * 4
         self.target = 0
+
         if hasattr(self, 'timer'):
             self.timer.hide()
-        return None
 
     def exitOff(self):
         if self.isLoaded:
@@ -352,17 +346,14 @@ class TownBattle(StateData.StateData):
         self.track = -1
         self.level = -1
         self.target = 0
-        return None
 
     def enterAttack(self):
         self.attackPanel.enter()
         self.accept(self.attackPanelDoneEvent, self.__handleAttackPanelDone)
-        return None
 
     def exitAttack(self):
         self.ignore(self.attackPanelDoneEvent)
         self.attackPanel.exit()
-        return None
 
     def __handleAttackPanelDone(self, doneStatus):
         self.notify.debug('doneStatus: %s' % doneStatus)
@@ -495,12 +486,10 @@ class TownBattle(StateData.StateData):
         self.cog = 0
         self.chooseCogPanel.enter(self.numCogs, luredIndices=self.luredIndices, trappedIndices=self.trappedIndices, track=self.track)
         self.accept(self.chooseCogPanelDoneEvent, self.__handleChooseCogPanelDone)
-        return None
 
     def exitChooseCog(self):
         self.ignore(self.chooseCogPanelDoneEvent)
         self.chooseCogPanel.exit()
-        return None
 
     def __handleChooseCogPanelDone(self, doneStatus):
         mode = doneStatus['mode']
@@ -548,12 +537,10 @@ class TownBattle(StateData.StateData):
         self.toon = 0
         self.chooseToonPanel.enter(self.numToons, localNum=self.localNum)
         self.accept(self.chooseToonPanelDoneEvent, self.__handleChooseToonPanelDone)
-        return None
 
     def exitChooseToon(self):
         self.ignore(self.chooseToonPanelDoneEvent)
         self.chooseToonPanel.exit()
-        return None
 
     def __handleChooseToonPanelDone(self, doneStatus):
         mode = doneStatus['mode']
@@ -590,12 +577,10 @@ class TownBattle(StateData.StateData):
         canHeal, canTrap, canLure = self.checkHealTrapLure()
         self.FireCogPanel.enter(self.numCogs, luredIndices=self.luredIndices, trappedIndices=self.trappedIndices, track=self.track)
         self.accept(self.fireCogPanelDoneEvent, self.__handleCogFireDone)
-        return None
 
     def exitFire(self):
         self.ignore(self.fireCogPanelDoneEvent)
         self.FireCogPanel.exit()
-        return None
 
     def __handleCogFireDone(self, doneStatus):
         mode = doneStatus['mode']
@@ -616,12 +601,10 @@ class TownBattle(StateData.StateData):
         canHeal, canTrap, canLure = self.checkHealTrapLure()
         self.SOSPanel.enter(canLure, canTrap)
         self.accept(self.SOSPanelDoneEvent, self.__handleSOSPanelDone)
-        return None
 
     def exitSOS(self):
         self.ignore(self.SOSPanelDoneEvent)
         self.SOSPanel.exit()
-        return None
 
     def __handleSOSPanelDone(self, doneStatus):
         mode = doneStatus['mode']
@@ -655,13 +638,11 @@ class TownBattle(StateData.StateData):
         self.accept(self.proxyGenerateMessage, self.__handleProxyGenerated)
         self.accept(self.SOSPetSearchPanelDoneEvent, self.__handleSOSPetSearchPanelDone)
         messenger.send(self.battleEvent, [response])
-        return None
 
     def exitSOSPetSearch(self):
         self.ignore(self.proxyGenerateMessage)
         self.ignore(self.SOSPetSearchPanelDoneEvent)
         self.SOSPetSearchPanel.exit()
-        return None
 
     def __handleSOSPetSearchPanelDone(self, doneStatus):
         mode = doneStatus['mode']
@@ -676,12 +657,10 @@ class TownBattle(StateData.StateData):
     def enterSOSPetInfo(self):
         self.SOSPetInfoPanel.enter(self.petId)
         self.accept(self.SOSPetInfoPanelDoneEvent, self.__handleSOSPetInfoPanelDone)
-        return None
 
     def exitSOSPetInfo(self):
         self.ignore(self.SOSPetInfoPanelDoneEvent)
         self.SOSPetInfoPanel.exit()
-        return None
 
     def __handleSOSPetInfoPanelDone(self, doneStatus):
         mode = doneStatus['mode']
@@ -697,15 +676,10 @@ class TownBattle(StateData.StateData):
             self.fsm.request('SOS')
 
     def __isCogChoiceNecessary(self):
-        if self.numCogs > 1 and not self.__isGroupAttack(self.track, self.level):
-            return 1
-        else:
-            return 0
+        return self.numCogs > 1 and not self.__isGroupAttack(self.track, self.level)
 
     def __isGroupAttack(self, trackNum, levelNum):
-        retval = BattleBase.attackAffectsGroup(trackNum, levelNum)
-        return retval
+        return BattleBase.attackAffectsGroup(trackNum, levelNum)
 
     def __isGroupHeal(self, levelNum):
-        retval = BattleBase.attackAffectsGroup(HEAL_TRACK, levelNum)
-        return retval
+        return self.__isGroupAttack(HEAL_TRACK, levelNum)
