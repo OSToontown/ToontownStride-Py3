@@ -53,11 +53,7 @@ class DistributedKnockKnockDoor(DistributedAnimatedProp.DistributedAnimatedProp)
 
     def avatarExit(self, avatarId):
         if avatarId == self.avatarId:
-            for track in self.avatarTracks:
-                track.finish()
-                DelayDelete.cleanupDelayDeletes(track)
-
-            self.avatarTracks = []
+            self.stopTracks()
 
     def knockKnockTrack(self, avatar, duration):
         if avatar is None:
@@ -96,7 +92,7 @@ class DistributedKnockKnockDoor(DistributedAnimatedProp.DistributedAnimatedProp)
         return track
 
     def cleanupTrack(self):
-        avatar = self.cr.doId2do.get(self.avatarId, None)
+        avatar = self.cr.doId2do.get(self.avatarId)
         if avatar:
             avatar.clearChat()
         if self.nametag:
@@ -105,7 +101,6 @@ class DistributedKnockKnockDoor(DistributedAnimatedProp.DistributedAnimatedProp)
             self.nametag.destroy()
         self.nametag = None
         self.nametagNP = None
-        return
 
     def enterOff(self):
         DistributedAnimatedProp.DistributedAnimatedProp.enterOff(self)
@@ -132,9 +127,13 @@ class DistributedKnockKnockDoor(DistributedAnimatedProp.DistributedAnimatedProp)
 
     def exitPlaying(self):
         DistributedAnimatedProp.DistributedAnimatedProp.exitPlaying(self)
+        self.stopTracks()
+    
+    def stopTracks(self):
         for track in self.avatarTracks:
-            track.finish()
+            track.pause()
             DelayDelete.cleanupDelayDeletes(track)
 
+        self.cleanupTrack()
         self.avatarTracks = []
         self.avatarId = 0
