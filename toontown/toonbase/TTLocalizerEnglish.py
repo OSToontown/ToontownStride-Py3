@@ -12,7 +12,7 @@ ToonFont = 'phase_3/models/fonts/ImpressBT.ttf'
 SuitFont = 'phase_3/models/fonts/vtRemingtonPortable.ttf'
 SignFont = 'phase_3/models/fonts/MickeyFont'
 MinnieFont = 'phase_3/models/fonts/MinnieFont'
-FancyFont = 'phase_3/models/fonts/Comedy'
+ChalkFont = 'phase_3/models/fonts/Chawp.ttf'
 BuildingNametagFont = 'phase_3/models/fonts/MickeyFont'
 BuildingNametagShadow = None
 NametagFonts = (
@@ -3978,7 +3978,6 @@ EmoteHappy = 'Happy'
 EmoteSad = 'Sad'
 EmoteAnnoyed = 'Annoyed'
 EmoteSleep = 'Sleepy'
-StatPageTitle = 'Statistics'
 SuitBaseNameWithLevel = '%(name)s\n%(dept)s\nLevel %(level)s'
 HealthForceAcknowledgeMessage = 'You cannot leave the playground until your Laff meter is smiling!'
 InventoryTotalGags = 'Total gags\n%d / %d'
@@ -8656,31 +8655,33 @@ CrateClothingPrize = "Congratulations! You've received a new clothing item. Chec
 CrateAccessoryPrize = 'Congratulations! You found a new accessory for your Toon. Check your mailbox and rock it!'
 
 Stats = [
- 'Cogs defeated: %(cog)s',
- 'V2.0 cogs defeated: %(v2)s',
- 'Skelecogs defeated: %(skele)s',
- 'Jellybeans spent: %(beanSpent)s',
- 'Jellybeans earnt: %(beanEarnt)s',
- 'Tasks completed: %(task)s',
- 'Total VP defeats: %(vp)s',
- 'Total CFO defeats: %(cfo)s',
- 'Total CJ defeats: %(cj)s',
- 'Total CEO defeats: %(ceo)s',
- 'Gone sad: %(sad)s times',
- 'Buildings liberated: %(bldg)s',
- 'Field Offices defeated: %(cogdo)s',
- 'Items purchased: %(item)s',
- 'Fish caught: %(fish)s',
- 'Flowers picked: %(flower)s',
- 'Races completed: %(race)s',
- 'Golf holes played: %(golf)s',
- 'Total SOS cards: %(sos)s',
- 'Total unites: %(unite)s',
- 'Total pink slips: %(slip)s',
- 'Total gags used: %(gag)s'
+ 'Cogs defeated: %s',
+ 'V2.0 cogs defeated: %s',
+ 'Skelecogs defeated: %s',
+ 'Jellybeans spent: %s',
+ 'Jellybeans earnt: %s',
+ 'Tasks completed: %s',
+ 'Total VP defeats: %s',
+ 'Total CFO defeats: %s',
+ 'Total CJ defeats: %s',
+ 'Total CEO defeats: %s',
+ 'Gone sad: %s times',
+ 'Buildings liberated: %s',
+ 'Offices defeated: %s',
+ 'Items ordered: %s',
+ 'Fish caught: %s',
+ 'Flowers picked: %s',
+ 'Races completed: %s',
+ 'Golf holes played: %s',
+ 'Total SOS cards: %s',
+ 'Total unites: %s',
+ 'Total pink slips: %s',
+ 'Total gags used: %s'
 ]
-StatResetAsk = 'Are you sure you want to reset your stats? This is an irreversible action!'
-StatResetDone = 'Your stats have been reset.'
+StatPageTitle = 'Statistics'
+StatPageClear = 'Clear'
+StatPageClearAsk = 'Are you sure you want to clear your stats? This is an irreversible action!'
+StatPageClearDone = 'Your stats have been cleared.'
 
 ChairAskToUse = 'Would you like to sit on this chair?'
 
