@@ -14,9 +14,8 @@ import TownBattleCogPanel
 from toontown.toontowngui import TTDialog
 from direct.directnotify import DirectNotifyGlobal
 from toontown.battle import BattleBase
-from toontown.toonbase import ToontownTimer
 from direct.showbase import PythonUtil
-from toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer, ToontownGlobals, ToontownTimer
 from toontown.pets import PetConstants
 from direct.gui.DirectGui import *
 from toontown.battle import FireCogPanel
@@ -125,6 +124,8 @@ class TownBattle(StateData.StateData):
         self.rolloverFrame = DirectFrame(aspect2d, relief=None, geom=DGG.getDefaultDialogGeom(), geom_color=(0.6, 1.0, 0.4, 1), geom_scale=(0.5, 0.3, 0.2), text_scale=0.05, text_pos=(0, 0.0125), text='', text_fg=(0, 0, 0, 1), pos=(0.4, 0, 0))
         self.rolloverFrame.setBin('gui-popup', 0)
         self.rolloverFrame.hide()
+        self.suitGui = loader.loadModel('phase_3.5/models/gui/suit_detail_panel')
+        self.suitGui.find('**/avatar_panel/shadow').setColor(1, 1, 1, 0.5)
         self.toonPanels = [TownBattleToonPanel.TownBattleToonPanel(self) for i in xrange(4)]
         self.cogPanels = [TownBattleCogPanel.TownBattleCogPanel(self) for i in xrange(4)]
         self.timer = ToontownTimer.ToontownTimer()
@@ -154,6 +155,8 @@ class TownBattle(StateData.StateData):
         del self.toonPanels
         del self.cogPanels
         self.timer.destroy()
+        self.suitGui.removeNode()
+        del self.suitGui
         del self.timer
         del self.toons
 
@@ -219,11 +222,22 @@ class TownBattle(StateData.StateData):
         self.timer.setTime(time)
         return None
     
-    def showRolloverFrame(self, parent, scale, textPos, color, pos, text, extra=None):
-        self.rolloverFrame['geom_scale'] = scale
-        self.rolloverFrame['text_pos'] = textPos
-        self.rolloverFrame['geom_color'] = color
-        self.rolloverFrame.setPos(pos)
+    def showRolloverFrame(self, parent, type, text, extra=None):
+        dict = TTLocalizer.BattleHoverAttributes[type]
+
+        for key, value in dict.iteritems():
+            if key == 'pos':
+                self.rolloverFrame.setPos(value)
+            elif key == 'suit':
+                if value:
+                    self.rolloverFrame['text_font'] = ToontownGlobals.getSuitFont()
+                    self.rolloverFrame['geom'] = self.suitGui.find('**/avatar_panel')
+                else:
+                    self.rolloverFrame['text_font'] = ToontownGlobals.getInterfaceFont()
+                    self.rolloverFrame['geom'] = DGG.getDefaultDialogGeom()
+            else:
+                self.rolloverFrame[key] = value
+
         self.rolloverFrame.reparentTo(parent)
         self.rolloverFrame.show()
         self.rolloverFrame['text'] = text

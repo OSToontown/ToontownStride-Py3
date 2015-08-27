@@ -67,7 +67,7 @@ class TownBattleCogPanel(DirectFrame):
         if TTLocalizer.BattleCogPopupDangerColor in info:
             info = TTLocalizer.BattleCogPopupDanger + info
 
-        self.hoverButton.bind(DGG.ENTER, self.battle.showRolloverFrame, extraArgs=[self, (0.73, 0, 0.65), (0, 0.26), (0.5, 0.5, 0.5, 1), (0.6, 0, 0.1), info])
+        self.hoverButton.bind(DGG.ENTER, self.battle.showRolloverFrame, extraArgs=[self, TTLocalizer.BattleHoverCog, info])
         
     def getAttackStrings(self, attacks, level):
         attackStrings = []

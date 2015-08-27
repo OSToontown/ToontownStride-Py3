@@ -6,7 +6,7 @@ RPskipScale = 0.2
 RPskipPos = (0, -.28)
 RPmeritLabelPosX = 0.55
 RPmeritBarsPosX = 0.825
-BBbattleInputTimeout = 20.0
+BBbattleInputTimeout = 999.0
 FCPtextFrame = 0.08
 DHQInamePath = 0.9
 DHQInamePathPos = (-4, 0, 0)
@@ -298,3 +298,33 @@ SellbotFactoryPosPart1 = (0, -0.25)
 SellbotFactoryScalePart1 = 0.075
 SellbotFactoryPosPart2 = (0, -0.34)
 SellbotFactoryScalePart2 = 0.12
+BattleHoverCog = 0
+BattleHoverGag = 1
+BattleHoverSos = 2
+
+BattleHoverAttributes = {
+ BattleHoverCog: {
+  'geom_scale': (0.4, 0, 0.18),
+  'text_pos': (0, 0.29),
+  'geom_color': (0.5, 0.5, 0.5, 1),
+  'pos': (0.6, 0, 0.05),
+  'text_fg': (1, 1, 1, 1),
+  'suit': True
+ },
+ BattleHoverGag: {
+  'geom_scale': (0.5, 0, 0.2),
+  'text_pos': (0, 0.0125),
+  'geom_color': (0.6, 1.0, 0.4, 1),
+  'pos': (0.4, 0, 0),
+  'text_fg': (0, 0, 0, 1),
+  'suit': False
+ },
+ BattleHoverSos: {
+  'geom_scale': (0.5, 0, 0.3),
+  'text_pos': (0, 0.08),
+  'geom_color': (0.6, 1.0, 0.4, 1),
+  'pos': (0.4, 0, 0.1),
+  'text_fg': (0, 0, 0, 1),
+  'suit': False
+ }
+}

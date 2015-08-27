@@ -136,7 +136,7 @@ class TownBattleToonPanel(DirectFrame):
             sosType = TextEncoder.upper(sosType)
             count = max(0, self.avatar.getNPCFriendCount(targetIndex) - 1)
             info = TTLocalizer.BattleSOSPopup % (sosType, NPCToons.getNPCName(targetIndex), hpString if hp else '', rarity, count)
-            self.hoverButton.bind(DGG.ENTER, self.battle.showRolloverFrame, extraArgs=[self, (0.5, 0.3, 0.3), (0, 0.08), (0.6, 1.0, 0.4, 1), (0.4, 0, 0.1), info])
+            self.hoverButton.bind(DGG.ENTER, self.battle.showRolloverFrame, extraArgs=[self, TTLocalizer.BattleHoverSos, info])
         elif track == BattleBase.SOS or track == BattleBase.PETSOS:
             self.sosText.show()
         elif track >= MIN_TRACK_INDEX and track <= MAX_TRACK_INDEX:
@@ -154,7 +154,7 @@ class TownBattleToonPanel(DirectFrame):
                 damage = int(getAvPropDamage(track, level, curExp, organic))
                 numItems = max(0, self.avatar.inventory.numItem(track, level) - 1)
                 info = TTLocalizer.BattleGagPopup % (self.avatar.inventory.getToonupDmgStr(track, 0), damage, numItems)
-                self.hoverButton.bind(DGG.ENTER, self.battle.showRolloverFrame, extraArgs=[self, (0.5, 0.3, 0.2), (0, 0.0125), (0.6, 1.0, 0.4, 1), (0.4, 0, 0), info])
+                self.hoverButton.bind(DGG.ENTER, self.battle.showRolloverFrame, extraArgs=[self, TTLocalizer.BattleHoverGag, info])
 
                 if self.avatar.checkGagBonus(track, level):
                     self.gag.setColor((1, 0, 0, 1) if track == 1 and level == 5 else (0, 1, 0, 1))
