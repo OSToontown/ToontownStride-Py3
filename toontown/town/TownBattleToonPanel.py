@@ -41,7 +41,7 @@ class TownBattleToonPanel(DirectFrame):
         passGui.reparentTo(self.passNode)
         self.passNode.hide()
         self.laffMeter = None
-        self.whichText = DirectLabel(parent=self, text='', pos=(0.1, 0, -0.08), text_scale=0.05)
+        self.whichText = DirectLabel(parent=self, relief=None, text='', pos=(0.1, 0, -0.08), text_scale=0.05)
         self.hoverButton = DirectButton(parent=self, relief=None, image_scale=(0.07, 0, 0.06), pos=(0.105, 0, 0.05), image='phase_3/maps/invisible.png', pressEffect=0)
         self.hoverButton.setTransparency(True)
         self.hoverButton.bind(DGG.EXIT, self.battle.hideRolloverFrame)
