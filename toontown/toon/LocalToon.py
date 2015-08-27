@@ -428,9 +428,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
     def isLocal(self):
         return 1
 
-    def canChat(self):
-        return 1
-
     def startChat(self):
         if self.tutorialAck:
             self.notify.info('calling LocalAvatar.startchat')
