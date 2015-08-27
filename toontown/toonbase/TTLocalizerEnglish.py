@@ -6272,7 +6272,8 @@ NPCToonNames = {20000: 'Tutorial Tom',
  11001: 'Healer Gabriel',
  12001: 'Healer Bill',
  12002: 'Mata Hairy',
- 13001: 'Healer Clover'}
+ 13001: 'Healer Clover',
+ 13002: 'Bumpy Bumblebehr'}
 zone2TitleDict = {2513: ('Toon Hall', ''),
  2514: ('Toontown Bank', ''),
  2516: ('Toontown School House', ''),
@@ -7596,7 +7597,6 @@ LawbotBossTaunts = ['%s, I find you in contempt of court!',
  'Strike that from the record.',
  'Your appeal has been rejected. I sentence you to sadness!',
  'Order in the court!']
-WitnessToonName = 'Bumpy Bumblebehr'
 WitnessToonPrepareBattleTwo = "Oh no! They're putting only Cogs on the jury!\x07Quick, use the cannons and shoot some Toon jurors into the jury chairs.\x07We need %d to get a balanced scale."
 WitnessToonNoJuror = 'Oh oh, no Toon jurors. This will be a tough trial.'
 WitnessToonOneJuror = 'Cool! There is 1 Toon in the jury!'
