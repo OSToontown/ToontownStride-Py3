@@ -5050,7 +5050,7 @@ def maxCogPage():
     target.b_setCogStatus(cogStatus * deptCount)
     target.b_setCogRadar([1, 1, 1, 1])
     target.b_setBuildingRadar([1, 1, 1, 1])
-    return 'Maxed %s\'s discovered cogs -- Jumble' % (target.getName())
+    return 'Maxed %s\'s discovered cogs!' % (target.getName())
 
 @magicWord(category=CATEGORY_PROGRAMMER)
 def immortal():
