@@ -23,7 +23,6 @@ class TownBattleCogPanel(DirectFrame):
         gui.removeNode()
     
     def cleanup(self):
-        self.ignoreAll()
         self.cleanupHead()
         self.levelText.removeNode()
         self.typeText.removeNode()
@@ -42,17 +41,14 @@ class TownBattleCogPanel(DirectFrame):
 
     def setSuit(self, suit):
         if self.suit == suit:
-            messenger.send(self.suit.uniqueName('hpChange'))
             return
 
-        self.ignoreAll()
         self.cleanupHead()
         self.suit = suit
         self.generateSuitHead(suit.getStyleName())
         self.updateHealthBar()
         self.levelText['text'] = TTLocalizer.CogPanelLevel % suit.getActualLevel()
         self.typeText['text'] = suit.getTypeText()
-        self.accept(suit.uniqueName('hpChange'), self.updateHealthBar)
         self.updateRolloverBind()
     
     def updateRolloverBind(self):

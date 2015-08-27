@@ -42,10 +42,7 @@ class TownBattle(StateData.StateData):
         self.track = -1
         self.level = -1
         self.target = 0
-        self.toonAttacks = [(-1, 0, 0),
-         (-1, 0, 0),
-         (-1, 0, 0),
-         (-1, 0, 0)]
+        self.toonAttacks = [(-1, 0, 0)] * 4
         self.fsm = ClassicFSM.ClassicFSM('TownBattle', [
             State.State('Off',
                 self.enterOff,
@@ -446,7 +443,7 @@ class TownBattle(StateData.StateData):
         self.notify.debug('adjustCogsAndToons() numCogs: %s self.numCogs: %s' % (numCogs, self.numCogs))
         self.notify.debug('adjustCogsAndToons() luredIndices: %s self.luredIndices: %s' % (luredIndices, self.luredIndices))
         self.notify.debug('adjustCogsAndToons() trappedIndices: %s self.trappedIndices: %s' % (trappedIndices, self.trappedIndices))
-        toonIds = map(lambda toon: toon.doId, toons)
+        toonIds = [toon.doId for toon in toons]
         self.notify.debug('adjustCogsAndToons() toonIds: %s self.toons: %s' % (toonIds, self.toons))
         maxSuitLevel = 0
         for cog in cogs:
@@ -464,15 +461,16 @@ class TownBattle(StateData.StateData):
         self.localNum = toons.index(base.localAvatar)
         currStateName = self.fsm.getCurrentState().getName()
         
+        if settings['cogInterface']:
+            self.__enterCogPanels(self.numCogs)
+
+            for i in xrange(len(cogs)):
+                self.cogPanels[i].setSuit(cogs[i])
+        
         if resetActivateMode:
             self.__enterPanels(self.numToons, self.localNum)
             for i in xrange(len(toons)):
                 self.toonPanels[i].setLaffMeter(toons[i])
-
-            if settings['cogInterface']:
-                self.__enterCogPanels(self.numCogs)
-            for i in xrange(len(cogs)):
-                self.cogPanels[i].setSuit(cogs[i])
 
             if currStateName == 'ChooseCog':
                 self.chooseCogPanel.adjustCogs(self.numCogs, self.luredIndices, self.trappedIndices, self.track)
