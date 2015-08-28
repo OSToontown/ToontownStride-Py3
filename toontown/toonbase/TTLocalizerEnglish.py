@@ -8752,6 +8752,8 @@ TeleportPanelNoTeleport = '%s needs some time alone right now.'
 InventoryDeleteAll = 'DELETE ALL'
 InventoryDeleteConfirm = "Are you sure you want to delete all your gags? Don't worry, your level 7 gags are safe!"
 
+ClothesGUICount = '%s/%s'
+
 Blacklist = [
  "$1ut",
  "$h1t",

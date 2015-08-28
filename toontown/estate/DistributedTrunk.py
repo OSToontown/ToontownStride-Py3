@@ -231,20 +231,6 @@ class DistributedTrunk(DistributedCloset.DistributedCloset):
         else:
             self.notify.warning("cant delete this item(type = %s), since we don't have a replacement" % which)
 
-    def resetItemLists(self):
-        self.hatList = self.oldHatList[0:]
-        self.glassesList = self.oldGlassesList[0:]
-        self.backpackList = self.oldBackpackList[0:]
-        self.shoesList = self.oldShoesList[0:]
-        self.closetGUI.hat = self.hatList
-        self.closetGUI.glasses = self.glassesList
-        self.closetGUI.backpack = self.backpackList
-        self.closetGUI.shoes = self.shoesList
-        self.hatDeleted = 0
-        self.glassesDeleted = 0
-        self.backpackDeleted = 0
-        self.shoesDeleted = 0
-
     def __proceedToCheckout(self):
         if self.hatDeleted or self.glassesDeleted or self.backpackDeleted or self.shoesDeleted:
             self.__popupAreYouSurePanel()

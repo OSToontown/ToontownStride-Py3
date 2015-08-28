@@ -2048,7 +2048,6 @@ dclass DistributedCloset : DistributedFurnitureItem {
   setDNA(blob, int8, uint8) airecv clsend;
   setState(uint8, uint32, uint32, string, uint8[], uint8[]) broadcast ram;
   setMovie(uint8, uint32, int16) broadcast ram;
-  resetItemLists() broadcast ram;
   setCustomerDNA(uint32, blob) broadcast ram;
 };
 

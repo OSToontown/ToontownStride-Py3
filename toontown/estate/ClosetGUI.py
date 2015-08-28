@@ -28,21 +28,23 @@ class ClosetGUI(ClothesGUI.ClothesGUI):
         self.gui = loader.loadModel('phase_3/models/gui/create_a_toon_gui')
         self.cancelButton = DirectButton(relief=None, image=(self.gui.find('**/CrtAtoon_Btn2_UP'), self.gui.find('**/CrtAtoon_Btn2_DOWN'), self.gui.find('**/CrtAtoon_Btn2_RLLVR')), pos=(0.15, 0, -0.85), command=self.__handleCancel, text=('', TTLocalizer.MakeAToonCancel, TTLocalizer.MakeAToonCancel), text_font=ToontownGlobals.getInterfaceFont(), text_scale=0.08, text_pos=(0, -0.03), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1))
         self.cancelButton.hide()
+        self.countFrame = DirectFrame(parent=self.parentFrame, image=self.shuffleFrame, image_scale=(-0.6, 0.6, 0.6), relief=None, pos=(0, 0, -0.125), scale=1.2, frameColor=(1, 1, 1, 1), text=TTLocalizer.ClothesGUICount % (0, 0), text_scale=0.0575, text_pos=(-0.001, -0.015), text_fg=(1, 1, 1, 1))
         if self.isOwner:
-            trashcanGui = loader.loadModel('phase_3/models/gui/trashcan_gui.bam')
+            trashcanGui = loader.loadModel('phase_3/models/gui/trashcan_gui')
             trashImage = (trashcanGui.find('**/TrashCan_CLSD'), trashcanGui.find('**/TrashCan_OPEN'), trashcanGui.find('**/TrashCan_RLVR'))
             self.trashPanel = DirectFrame(parent=aspect2d, image=DGG.getDefaultDialogGeom(), image_color=(1, 1, 0.75, 0.8), image_scale=(0.36, 0, 0.75), pos=(-.86, 0, -.05), relief=None)
             self.topTrashButton = DirectButton(parent=self.trashPanel, image=trashImage, relief=None, pos=(-0.09, 0, 0.2), command=self.__handleDelete, extraArgs=[ClosetGlobals.SHIRT], scale=(0.5, 0.5, 0.5), text=TTLocalizer.ClosetDeleteShirt, text_font=ToontownGlobals.getInterfaceFont(), text_scale=0.12, text_pos=(0.3, 0), text_fg=(0.8, 0.2, 0.2, 1), text_shadow=(0, 0, 0, 1), textMayChange=0)
             self.bottomTrashButton = DirectButton(parent=self.trashPanel, image=trashImage, relief=None, textMayChange=1, pos=(-0.09, 0, -0.2), command=self.__handleDelete, extraArgs=[ClosetGlobals.SHORTS], scale=(0.5, 0.5, 0.5), text=TTLocalizer.ClosetDeleteShorts, text_font=ToontownGlobals.getInterfaceFont(), text_scale=0.12, text_pos=(0.3, 0), text_fg=(0.8, 0.2, 0.2, 1), text_shadow=(0, 0, 0, 1))
             self.button = DirectButton(relief=None, image=(self.gui.find('**/CrtAtoon_Btn1_UP'), self.gui.find('**/CrtAtoon_Btn1_DOWN'), self.gui.find('**/CrtAtoon_Btn1_RLLVR')), pos=(-0.15, 0, -0.85), command=self.__handleButton, text=('', TTLocalizer.MakeAToonDone, TTLocalizer.MakeAToonDone), text_font=ToontownGlobals.getInterfaceFont(), text_scale=0.08, text_pos=(0, -0.03), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1))
             trashcanGui.removeNode()
-        return
 
     def unload(self):
         self.ignore('verifyDone')
         ClothesGUI.ClothesGUI.unload(self)
         self.cancelButton.destroy()
         del self.cancelButton
+        self.countFrame.destroy()
+        del self.countFrame
         if self.isOwner:
             self.topTrashButton.destroy()
             self.bottomTrashButton.destroy()
@@ -108,7 +110,9 @@ class ClosetGUI(ClothesGUI.ClothesGUI):
         if self.isOwner:
             self.updateTrashButtons()
         self.setupButtons()
-        return
+    
+    def updateCount(self, clothes, maxClothes):
+        self.countFrame['text'] = TTLocalizer.ClothesGUICount % (clothes, maxClothes)
 
     def updateTrashButtons(self):
         if len(self.tops) < 2:

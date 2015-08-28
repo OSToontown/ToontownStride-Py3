@@ -25,20 +25,20 @@ class ClothesGUI(StateData.StateData):
         return
 
     def load(self):
-        self.gui = loader.loadModel('phase_3/models/gui/tt_m_gui_mat_mainGui')
-        guiRArrowUp = self.gui.find('**/tt_t_gui_mat_arrowUp')
-        guiRArrowRollover = self.gui.find('**/tt_t_gui_mat_arrowUp')
-        guiRArrowDown = self.gui.find('**/tt_t_gui_mat_arrowDown')
-        guiRArrowDisabled = self.gui.find('**/tt_t_gui_mat_arrowDisabled')
-        shuffleFrame = self.gui.find('**/tt_t_gui_mat_shuffleFrame')
-        shuffleArrowUp = self.gui.find('**/tt_t_gui_mat_shuffleArrowUp')
-        shuffleArrowDown = self.gui.find('**/tt_t_gui_mat_shuffleArrowDown')
-        shuffleArrowRollover = self.gui.find('**/tt_t_gui_mat_shuffleArrowUp')
-        shuffleArrowDisabled = self.gui.find('**/tt_t_gui_mat_shuffleArrowDisabled')
+        self.matGui = loader.loadModel('phase_3/models/gui/tt_m_gui_mat_mainGui')
+        guiRArrowUp = self.matGui.find('**/tt_t_gui_mat_arrowUp')
+        guiRArrowRollover = self.matGui.find('**/tt_t_gui_mat_arrowUp')
+        guiRArrowDown = self.matGui.find('**/tt_t_gui_mat_arrowDown')
+        guiRArrowDisabled = self.matGui.find('**/tt_t_gui_mat_arrowDisabled')
+        self.shuffleFrame = self.matGui.find('**/tt_t_gui_mat_shuffleFrame')
+        shuffleArrowUp = self.matGui.find('**/tt_t_gui_mat_shuffleArrowUp')
+        shuffleArrowDown = self.matGui.find('**/tt_t_gui_mat_shuffleArrowDown')
+        shuffleArrowRollover = self.matGui.find('**/tt_t_gui_mat_shuffleArrowUp')
+        shuffleArrowDisabled = self.matGui.find('**/tt_t_gui_mat_shuffleArrowDisabled')
         self.parentFrame = DirectFrame(relief=DGG.RAISED, pos=(0.98, 0, 0.416), frameColor=(1, 0, 0, 0))
         self.parentFrame.setPos(-0.36, 0, -0.5)
         self.parentFrame.reparentTo(base.a2dTopRight)
-        self.shirtFrame = DirectFrame(parent=self.parentFrame, image=shuffleFrame, image_scale=halfButtonInvertScale, relief=None, pos=(0, 0, -0.4), hpr=(0, 0, 3), scale=1.2, frameColor=(1, 1, 1, 1), text=TTLocalizer.ClothesShopShirt, text_scale=0.0575, text_pos=(-0.001, -0.015), text_fg=(1, 1, 1, 1))
+        self.shirtFrame = DirectFrame(parent=self.parentFrame, image=self.shuffleFrame, image_scale=halfButtonInvertScale, relief=None, pos=(0, 0, -0.4), hpr=(0, 0, 3), scale=1.2, frameColor=(1, 1, 1, 1), text=TTLocalizer.ClothesShopShirt, text_scale=0.0575, text_pos=(-0.001, -0.015), text_fg=(1, 1, 1, 1))
         self.topLButton = DirectButton(parent=self.shirtFrame, relief=None, image=(shuffleArrowUp,
          shuffleArrowDown,
          shuffleArrowRollover,
@@ -47,7 +47,7 @@ class ClothesGUI(StateData.StateData):
          shuffleArrowDown,
          shuffleArrowRollover,
          shuffleArrowDisabled), image_scale=halfButtonInvertScale, image1_scale=halfButtonInvertHoverScale, image2_scale=halfButtonInvertHoverScale, pos=(0.2, 0, 0), command=self.swapTop, extraArgs=[1])
-        self.bottomFrame = DirectFrame(parent=self.parentFrame, image=shuffleFrame, image_scale=halfButtonInvertScale, relief=None, pos=(0, 0, -0.65), hpr=(0, 0, -2), scale=1.2, frameColor=(1, 1, 1, 1), text=TTLocalizer.ColorShopToon, text_scale=0.0575, text_pos=(-0.001, -0.015), text_fg=(1, 1, 1, 1))
+        self.bottomFrame = DirectFrame(parent=self.parentFrame, image=self.shuffleFrame, image_scale=halfButtonInvertScale, relief=None, pos=(0, 0, -0.65), hpr=(0, 0, -2), scale=1.2, frameColor=(1, 1, 1, 1), text=TTLocalizer.ColorShopToon, text_scale=0.0575, text_pos=(-0.001, -0.015), text_fg=(1, 1, 1, 1))
         self.bottomLButton = DirectButton(parent=self.bottomFrame, relief=None, image=(shuffleArrowUp,
          shuffleArrowDown,
          shuffleArrowRollover,
@@ -59,11 +59,10 @@ class ClothesGUI(StateData.StateData):
         self.parentFrame.hide()
         self.shuffleFetchMsg = 'ClothesShopShuffle'
         self.shuffleButton = ShuffleButton.ShuffleButton(self, self.shuffleFetchMsg)
-        return
 
     def unload(self):
-        self.gui.removeNode()
-        del self.gui
+        self.matGui.removeNode()
+        del self.matGui
         self.parentFrame.destroy()
         self.shirtFrame.destroy()
         self.bottomFrame.destroy()
@@ -71,6 +70,7 @@ class ClothesGUI(StateData.StateData):
         self.topRButton.destroy()
         self.bottomLButton.destroy()
         self.bottomRButton.destroy()
+        del self.shuffleFrame
         del self.parentFrame
         del self.shirtFrame
         del self.bottomFrame
