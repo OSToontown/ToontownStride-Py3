@@ -3986,7 +3986,6 @@ InventoryPinkSlip = '1 Pink Slip'
 InventoryCrateKeys = '%s Crate Keys'
 InventoryCrateKey = '1 Crate Key'
 InventoryDelete = 'DELETE'
-InventoryDeleteAll = 'DELETE ALL'
 InventoryDone = 'DONE'
 InventoryDeleteHelp = 'Click on a gag to DELETE it.'
 InventorySkillCredit = 'Skill credit: %s'
@@ -8749,6 +8748,9 @@ DetailPanelSOS = 'SOS Cards'
 TeleportLabelOn = 'Accepting teleports.'
 TeleportLabelOff = 'Not accepting teleports.'
 TeleportPanelNoTeleport = '%s needs some time alone right now.'
+
+InventoryDeleteAll = 'DELETE ALL'
+InventoryDeleteConfirm = "Are you sure you want to delete all your gags? Don't worry, your level 7 gags are safe!"
 
 Blacklist = [
  "$1ut",
