@@ -130,15 +130,9 @@ class ToontownChatManager(ChatManager.ChatManager):
         if avatarId:
             self.enterWhisperChat(avatarName, avatarId)
         self.whisperFrame.hide()
-        return
 
     def enterNormalChat(self):
-        if not base.cr.wantTypedChat():
-            self.fsm.request('mainMenu')
-            return
-        result = ChatManager.ChatManager.enterNormalChat(self)
-        if result == None:
-            self.notify.warning('something went wrong in enterNormalChat, falling back to main menu')
+        if not base.cr.wantTypedChat() or not base.localAvatar.getTutorialAck() or not ChatManager.ChatManager.enterNormalChat(self):
             self.fsm.request('mainMenu')
 
     def enterWhisperChat(self, avatarName, avatarId):

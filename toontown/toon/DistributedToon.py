@@ -592,6 +592,9 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def setTutorialAck(self, tutorialAck):
         self.tutorialAck = tutorialAck
+    
+    def getTutorialAck(self):
+        return self.tutorialAck
 
     def setEarnedExperience(self, earnedExp):
         self.earnedExperience = earnedExp
