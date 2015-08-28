@@ -11,7 +11,7 @@ from toontown.toonbase import TTLocalizer
 class ClosetGUI(ClothesGUI.ClothesGUI):
     notify = directNotify.newCategory('ClosetGUI')
 
-    def __init__(self, isOwner, doneEvent, cancelEvent, swapEvent, deleteEvent, topList = None, botList = None):
+    def __init__(self, isOwner, doneEvent, cancelEvent, swapEvent, deleteEvent, topList = None, botList = None, maxClothes = 0):
         ClothesGUI.ClothesGUI.__init__(self, ClothesGUI.CLOTHES_CLOSET, doneEvent, swapEvent)
         self.toon = None
         self.topsList = topList
@@ -20,8 +20,8 @@ class ClosetGUI(ClothesGUI.ClothesGUI):
         self.deleteEvent = deleteEvent
         self.cancelEvent = cancelEvent
         self.genderChange = 0
+        self.maxClothes = maxClothes
         self.verify = None
-        return
 
     def load(self):
         ClothesGUI.ClothesGUI.load(self)
@@ -110,6 +110,7 @@ class ClosetGUI(ClothesGUI.ClothesGUI):
         if self.isOwner:
             self.updateTrashButtons()
         self.setupButtons()
+        self.updateCount()
     
     def updateCount(self, clothes, maxClothes):
         self.countFrame['text'] = TTLocalizer.ClothesGUICount % (clothes, maxClothes)
@@ -128,6 +129,11 @@ class ClosetGUI(ClothesGUI.ClothesGUI):
                 self.bottomTrashButton['text'] = TTLocalizer.ClosetDeleteSkirt
             else:
                 self.bottomTrashButton['text'] = TTLocalizer.ClosetDeleteShorts
+        self.updateCount()
+    
+    def updateCount(self):
+        clothes = (len(self.tops) + len(self.bottoms)) - 2
+        self.countFrame['text'] = TTLocalizer.ClothesGUICount % (clothes, self.maxClothes)
 
     def setGender(self, gender):
         self.ownerGender = gender

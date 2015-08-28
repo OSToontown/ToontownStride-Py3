@@ -236,9 +236,9 @@ class DistributedCloset(DistributedFurnitureItem.DistributedFurnitureItem):
         if self.isOwner:
             self.accept(self.deleteEvent, self.__handleDelete)
         if not self.closetGUI:
-            self.closetGUI = ClosetGUI.ClosetGUI(self.isOwner, self.purchaseDoneEvent, self.cancelEvent, self.swapEvent, self.deleteEvent, self.topList, self.botList)
+            maxClothes = CatalogFurnitureItem.ClosetToClothes.get(self.item.furnitureType)
+            self.closetGUI = ClosetGUI.ClosetGUI(self.isOwner, self.purchaseDoneEvent, self.cancelEvent, self.swapEvent, self.deleteEvent, self.topList, self.botList, maxClothes)
             self.closetGUI.load()
-            self.updateCount()
             if self.gender != self.ownerGender:
                 self.closetGUI.setGender(self.ownerGender)
             self.closetGUI.enter(base.localAvatar)
@@ -319,7 +319,6 @@ class DistributedCloset(DistributedFurnitureItem.DistributedFurnitureItem):
             self.sendUpdate('removeItem', [trashItem, t_or_b])
             swapFunc(0)
             self.closetGUI.updateTrashButtons()
-            self.updateCount()
         else:
             self.notify.warning("cant delete this item(type = %s), since we don't have a replacement" % t_or_b)
 
@@ -355,11 +354,6 @@ class DistributedCloset(DistributedFurnitureItem.DistributedFurnitureItem):
                         self.av.swapToonTorso(self.av.style.torso, genClothes=0)
                         self.av.loop('neutral', 0)
                     self.av.generateToonClothes()
-    
-    def updateCount(self):
-        maxClothes = CatalogFurnitureItem.ClosetToClothes.get(self.item.furnitureType)
-        clothes = int(len(self.topList) / 4) + int(len(self.botList) / 2)
-        self.closetGUI.updateCount(clothes, maxClothes)
 
     def printInfo(self):
         print 'avid: %s, gender: %s' % (self.av.doId, self.av.style.gender)
