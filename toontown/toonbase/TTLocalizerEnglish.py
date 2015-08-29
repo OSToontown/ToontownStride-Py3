@@ -8528,9 +8528,12 @@ def convertSecondsToDate(seconds):
     return '%d:%02d:%02d' % (h, m, s)
 
 ToonDefeatedMessage = '%s was defeated!'
+
 BugReportButton = 'Report a Bug'
 BugReportNotice = 'Attention!\n\nThis button will open a browser which will send you to a third party bug tracker website. This site requires an Ubuntu One account to login. It may ask you to create an account.\n\nAre you sure you want to continue?'
+
 CodeRedemptionWarning = 'NOTICE: All codes can only be entered once!'
+
 CogInterfaceLabelOn = 'The cog battle interface is on.'
 CogInterfaceLabelOff = 'The cog battle interface is off.'
 TpTransitionLabelOn = 'The teleport transition is on.'
@@ -8538,6 +8541,7 @@ TpTransitionLabelOff = 'The teleport transition is off.'
 FieldOfViewLabel = 'Field of View:'
 NametagStyleLabel = 'Nametag Style:'
 FishingPoleLabel = 'Fishing Rod:'
+
 BossLocations = {
  'c': 'Bossbot Clubhouse\nBanquet',
  'l': "Lawbot Courthouse\nBumpy Bumblebehr's Trial",
@@ -8756,6 +8760,9 @@ InventoryDeleteAll = 'DELETE ALL'
 InventoryDeleteConfirm = "Are you sure you want to delete all your gags? Don't worry, your level 7 gags are safe!"
 
 ClothesGUICount = '%s/%s'
+
+FpsMeterLabelOn = 'The frame rate meter is on.'
+FpsMeterLabelOff = 'The frame rate meter is off.'
 
 Blacklist = [
  "$1ut",
