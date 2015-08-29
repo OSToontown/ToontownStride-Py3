@@ -30,6 +30,7 @@ Holidays = {
     ToontownGlobals.BLACK_CAT_DAY: {
         'startMonth': 10,
         'startDay': 31,
+        'endMonth': 10,
         'endDay': 31,
         'startMessage': TTLocalizer.BlackCatHolidayStart,
         'ongoingMessage': TTLocalizer.BlackCatHolidayStart,
