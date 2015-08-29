@@ -1689,3 +1689,16 @@ COLOR_SATURATION_MIN = 0.5
 COLOR_SATURATION_MAX = 0.8
 COLOR_VALUE_MIN = 0.5
 COLOR_VALUE_MAX = 0.8
+
+TELEPORT_BUTTON_DEFAULT_COST = 50
+TELEPORT_BUTTON_COSTS = {
+ ToontownCentral: 5,
+ DonaldsDock: 15,
+ DaisyGardens: 30,
+ MinniesMelodyland: 45,
+ TheBrrrgh: 60,
+ DonaldsDreamland: 75
+}
+
+def getTeleportButtonCost(hoodId):
+    return TELEPORT_BUTTON_COSTS.get(hoodId, TELEPORT_BUTTON_DEFAULT_COST)

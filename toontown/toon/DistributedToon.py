@@ -1258,6 +1258,9 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def getTotalMoney(self):
         return self.getBankMoney() + self.getMoney()
+    
+    def takeMoney(self, money):
+        self.sendUpdate('takeMoney', [money])
 
     def setEmblems(self, emblems):
         if self.emblems != emblems:

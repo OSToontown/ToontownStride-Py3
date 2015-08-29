@@ -8727,6 +8727,9 @@ ShardPageShardTitle = '%s Population: %s'
 ShardPageTeleport = 'Teleport to\n%s'
 
 TeleportButton = 'Teleport'
+TeleportButtonNoMoney = 'Sorry, but you need %s jellybeans to teleport!'
+TeleportButtonConfirm = 'Would you like to spend %s jellybeans to teleport?'
+TeleportButtonTakenOver = 'Sorry, but this shop has been taken over by the Cogs!'
 
 BattleCogPopup = '\x01androidGreen\x01Group attacks:\x02\n%s\n\n\x01androidGreen\x01Regular attacks:\x02\n%s'
 BattleCogPopupAttack = '%s %s HP'
