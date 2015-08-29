@@ -229,8 +229,8 @@ class BattleBase:
      posA]
     suitSpeed = 4.8
     toonSpeed = 8.0
-    maxTimeToon = 10.0
-    maxTimeSuit = 11.0
+    maxTimeToon = 3.0
+    maxTimeSuit = 4.0
 
     def __init__(self):
         self.pos = Point3(0, 0, 0)
