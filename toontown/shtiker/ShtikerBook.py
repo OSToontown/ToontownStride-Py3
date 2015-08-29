@@ -21,8 +21,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         self.pages = []
         self.pageTabs = []
         self.currPageTabIndex = None
-        self.pageTabFrame = DirectFrame(parent=self, relief=None, pos=(0.93, 1, 0.575), scale=1.25)
-        self.pageTabFrame.hide()
+        self.pageTabFrames = [self.createPageTabFrame(x) for x in (-0.93, 0.93)]
         self.currPageIndex = None
         self.entered = 0
         self.safeMode = 0
@@ -47,6 +46,11 @@ class ShtikerBook(DirectFrame, StateData.StateData):
          TTLocalizer.PhotoPageTitle,
          TTLocalizer.EventsPageName,
          TTLocalizer.StatPageTitle]
+    
+    def createPageTabFrame(self, x):
+        frame = DirectFrame(parent=self, relief=None, pos=(x, 0, 0.66), scale=1.25)
+        frame.hide()
+        return frame
 
     def setSafeMode(self, setting):
         self.safeMode = setting
@@ -76,7 +80,8 @@ class ShtikerBook(DirectFrame, StateData.StateData):
             self.accept('shtiker-page-done', self.__pageDone)
             self.accept(ToontownGlobals.StickerBookHotkey, self.__close)
             self.accept(ToontownGlobals.OptionsPageHotkey, self.__close)
-            self.pageTabFrame.show()
+            for tab in self.pageTabFrames:
+                tab.show()
         self.pages[self.currPageIndex].enter()
 
     def exit(self):
@@ -106,7 +111,8 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         self.hide()
         self.hideButton()
         cleanupDialog('globalDialog')
-        self.pageTabFrame.hide()
+        for tab in self.pageTabFrames:
+            tab.hide()
         self.ignore('shtiker-page-done')
         self.ignore(ToontownGlobals.StickerBookHotkey)
         self.ignore(ToontownGlobals.OptionsPageHotkey)
@@ -178,7 +184,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
             if base.config.GetBool('want-qa-regression', 0):
                 self.notify.info('QA-REGRESSION: SHTICKERBOOK: Browse tabs %s' % page.pageName)
 
-        yOffset = 0.07 * pageIndex
+        yOffset = 0.07 * (pageIndex % 16)
         iconGeom = None
         iconImage = None
         iconScale = 1
@@ -257,13 +263,14 @@ class ShtikerBook(DirectFrame, StateData.StateData):
             iconModels.detachNode()
         if pageName == TTLocalizer.OptionsPageTitle:
             pageName = TTLocalizer.OptionsTabTitle
-        pageTab = DirectButton(parent=self.pageTabFrame, relief=DGG.RAISED, frameSize=(-0.575,
+        rightSide = pageIndex < 16
+        pageTab = DirectButton(parent=self.pageTabFrames[rightSide], relief=DGG.RAISED, frameSize=(-0.575,
          0.575,
          -0.575,
          0.575), borderWidth=(0.05, 0.05), text=('',
          '',
          pageName,
-         ''), text_align=TextNode.ALeft, text_pos=(1, -0.2), text_scale=TTLocalizer.SBpageTab, text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), image=iconImage, image_scale=iconScale, geom=iconGeom, geom_scale=iconScale, geom_color=iconColor, pos=(0, 0, -yOffset), scale=0.06, command=buttonPressedCommand, extraArgs=extraArgs)
+         ''), text_align=TextNode.ALeft, text_pos=(1 if rightSide else -4, -0.2), text_scale=TTLocalizer.SBpageTab, text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), image=iconImage, image_scale=iconScale, geom=iconGeom, geom_scale=iconScale, geom_color=iconColor, pos=(0, 0, -yOffset), scale=0.06, command=buttonPressedCommand, extraArgs=extraArgs)
         self.pageTabs.insert(pageIndex, pageTab)
         return
 
