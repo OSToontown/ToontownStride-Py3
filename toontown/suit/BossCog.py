@@ -461,7 +461,8 @@ class BossCog(Avatar.Avatar):
                 self.doAnimate(None, raised=1, happy=1, queueNeutral=1)
             ival = Sequence()
             if self.dna.dept == 'm':
-                ival.append(Parallel(SoundInterval(self.warningSfx, node=self), Wait(5.0)))
+                ival.append(Func(self.loop, 'Ff_neutral'))
+                ival.append(Parallel(SoundInterval(self.warningSfx, node=self, volume=2.0), Wait(3.0)))
             ival.append(Parallel(ActorInterval(self, 'Fb_jump'), Sequence(Func(self.setChatAbsolute, random.choice(TTLocalizer.JumpBossTaunts[self.dna.dept]), CFSpeech | CFTimeout), SoundInterval(self.swishSfx, duration=1.1, node=self), SoundInterval(self.boomSfx, duration=1.9)), Sequence(Wait(1.21), Func(self.announceAreaAttack))))
             if self.twoFaced:
                 self.happy = 0

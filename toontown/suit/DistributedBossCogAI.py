@@ -600,7 +600,6 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
         if self.dept == 'm' and attackCode == ToontownGlobals.BossCogAreaAttack:
             delayTime += 5.0
         self.waitForNextAttack(delayTime)
-        return
 
     def d_setAttackCode(self, attackCode, avId = 0):
         self.sendUpdate('setAttackCode', [attackCode, avId])
