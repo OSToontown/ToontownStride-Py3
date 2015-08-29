@@ -1125,9 +1125,6 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
     def d_setParent(self, parentToken):
         DistributedSmoothNode.DistributedSmoothNode.d_setParent(self, parentToken)
 
-    def canChat(self):
-        return 0
-
 
 @magicWord(category=CATEGORY_COMMUNITY_MANAGER)
 def run():

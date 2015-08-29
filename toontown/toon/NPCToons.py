@@ -864,7 +864,8 @@ NPCToonDict = {
  11001: (11000, lnames[11001], 'r', 'm', 0, NPC_LAFF_RESTOCK),
  12001: (12000, lnames[12001], 'r', 'm', 0, NPC_LAFF_RESTOCK),
  12002: (-1, lnames[12002], ('pls', 'ls', 'l', 'f', 3, 0, 3, 3, 111, 27, 97, 27, 45, 27), 'f', 0, NPC_REGULAR),
- 13001: (13000, lnames[13001], 'r', 'f', 0, NPC_LAFF_RESTOCK)
+ 13001: (13000, lnames[13001], 'r', 'f', 0, NPC_LAFF_RESTOCK),
+ 13002: (-1, lnames[13002], ('bss', 'ss', 'm', 'm', 19, 0, 19, 19, 0, 3, 0, 3, 1, 16), 'm', 0, NPC_REGULAR)
 }
 
 if config.GetBool('want-new-toonhall', 1):

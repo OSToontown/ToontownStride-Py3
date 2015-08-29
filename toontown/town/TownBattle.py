@@ -14,9 +14,8 @@ import TownBattleCogPanel
 from toontown.toontowngui import TTDialog
 from direct.directnotify import DirectNotifyGlobal
 from toontown.battle import BattleBase
-from toontown.toonbase import ToontownTimer
 from direct.showbase import PythonUtil
-from toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer, ToontownGlobals, ToontownTimer
 from toontown.pets import PetConstants
 from direct.gui.DirectGui import *
 from toontown.battle import FireCogPanel
@@ -43,10 +42,7 @@ class TownBattle(StateData.StateData):
         self.track = -1
         self.level = -1
         self.target = 0
-        self.toonAttacks = [(-1, 0, 0),
-         (-1, 0, 0),
-         (-1, 0, 0),
-         (-1, 0, 0)]
+        self.toonAttacks = [(-1, 0, 0)] * 4
         self.fsm = ClassicFSM.ClassicFSM('TownBattle', [
             State.State('Off',
                 self.enterOff,
@@ -125,6 +121,8 @@ class TownBattle(StateData.StateData):
         self.rolloverFrame = DirectFrame(aspect2d, relief=None, geom=DGG.getDefaultDialogGeom(), geom_color=(0.6, 1.0, 0.4, 1), geom_scale=(0.5, 0.3, 0.2), text_scale=0.05, text_pos=(0, 0.0125), text='', text_fg=(0, 0, 0, 1), pos=(0.4, 0, 0))
         self.rolloverFrame.setBin('gui-popup', 0)
         self.rolloverFrame.hide()
+        self.suitGui = loader.loadModel('phase_3.5/models/gui/suit_detail_panel')
+        self.suitGui.find('**/avatar_panel/shadow').setColor(1, 1, 1, 0.5)
         self.toonPanels = [TownBattleToonPanel.TownBattleToonPanel(self) for i in xrange(4)]
         self.cogPanels = [TownBattleCogPanel.TownBattleCogPanel(self) for i in xrange(4)]
         self.timer = ToontownTimer.ToontownTimer()
@@ -154,6 +152,8 @@ class TownBattle(StateData.StateData):
         del self.toonPanels
         del self.cogPanels
         self.timer.destroy()
+        self.suitGui.removeNode()
+        del self.suitGui
         del self.timer
         del self.toons
 
@@ -219,11 +219,22 @@ class TownBattle(StateData.StateData):
         self.timer.setTime(time)
         return None
     
-    def showRolloverFrame(self, parent, scale, textPos, color, pos, text, extra=None):
-        self.rolloverFrame['geom_scale'] = scale
-        self.rolloverFrame['text_pos'] = textPos
-        self.rolloverFrame['geom_color'] = color
-        self.rolloverFrame.setPos(pos)
+    def showRolloverFrame(self, parent, type, text, extra=None):
+        dict = TTLocalizer.BattleHoverAttributes[type]
+
+        for key, value in dict.iteritems():
+            if key == 'pos':
+                self.rolloverFrame.setPos(value)
+            elif key == 'suit':
+                if value:
+                    self.rolloverFrame['text_font'] = ToontownGlobals.getSuitFont()
+                    self.rolloverFrame['geom'] = self.suitGui.find('**/avatar_panel')
+                else:
+                    self.rolloverFrame['text_font'] = ToontownGlobals.getInterfaceFont()
+                    self.rolloverFrame['geom'] = DGG.getDefaultDialogGeom()
+            else:
+                self.rolloverFrame[key] = value
+
         self.rolloverFrame.reparentTo(parent)
         self.rolloverFrame.show()
         self.rolloverFrame['text'] = text
@@ -314,20 +325,14 @@ class TownBattle(StateData.StateData):
 
     def enterOff(self):
         if self.isLoaded:
-            for toonPanel in self.toonPanels:
-                toonPanel.hide()
+            for panel in self.toonPanels + self.cogPanels:
+                panel.hide()
 
-            for cogPanel in self.cogPanels:
-                cogPanel.hide()
-
-        self.toonAttacks = [(-1, 0, 0),
-         (-1, 0, 0),
-         (-1, 0, 0),
-         (-1, 0, 0)]
+        self.toonAttacks = [(-1, 0, 0)] * 4
         self.target = 0
+
         if hasattr(self, 'timer'):
             self.timer.hide()
-        return None
 
     def exitOff(self):
         if self.isLoaded:
@@ -338,17 +343,14 @@ class TownBattle(StateData.StateData):
         self.track = -1
         self.level = -1
         self.target = 0
-        return None
 
     def enterAttack(self):
         self.attackPanel.enter()
         self.accept(self.attackPanelDoneEvent, self.__handleAttackPanelDone)
-        return None
 
     def exitAttack(self):
         self.ignore(self.attackPanelDoneEvent)
         self.attackPanel.exit()
-        return None
 
     def __handleAttackPanelDone(self, doneStatus):
         self.notify.debug('doneStatus: %s' % doneStatus)
@@ -441,7 +443,7 @@ class TownBattle(StateData.StateData):
         self.notify.debug('adjustCogsAndToons() numCogs: %s self.numCogs: %s' % (numCogs, self.numCogs))
         self.notify.debug('adjustCogsAndToons() luredIndices: %s self.luredIndices: %s' % (luredIndices, self.luredIndices))
         self.notify.debug('adjustCogsAndToons() trappedIndices: %s self.trappedIndices: %s' % (trappedIndices, self.trappedIndices))
-        toonIds = map(lambda toon: toon.doId, toons)
+        toonIds = [toon.doId for toon in toons]
         self.notify.debug('adjustCogsAndToons() toonIds: %s self.toons: %s' % (toonIds, self.toons))
         maxSuitLevel = 0
         for cog in cogs:
@@ -459,15 +461,16 @@ class TownBattle(StateData.StateData):
         self.localNum = toons.index(base.localAvatar)
         currStateName = self.fsm.getCurrentState().getName()
         
+        if settings['cogInterface']:
+            self.__enterCogPanels(self.numCogs)
+
+            for i in xrange(len(cogs)):
+                self.cogPanels[i].setSuit(cogs[i])
+        
         if resetActivateMode:
             self.__enterPanels(self.numToons, self.localNum)
             for i in xrange(len(toons)):
                 self.toonPanels[i].setLaffMeter(toons[i])
-
-            if settings['cogInterface']:
-                self.__enterCogPanels(self.numCogs)
-            for i in xrange(len(cogs)):
-                self.cogPanels[i].setSuit(cogs[i])
 
             if currStateName == 'ChooseCog':
                 self.chooseCogPanel.adjustCogs(self.numCogs, self.luredIndices, self.trappedIndices, self.track)
@@ -481,12 +484,10 @@ class TownBattle(StateData.StateData):
         self.cog = 0
         self.chooseCogPanel.enter(self.numCogs, luredIndices=self.luredIndices, trappedIndices=self.trappedIndices, track=self.track)
         self.accept(self.chooseCogPanelDoneEvent, self.__handleChooseCogPanelDone)
-        return None
 
     def exitChooseCog(self):
         self.ignore(self.chooseCogPanelDoneEvent)
         self.chooseCogPanel.exit()
-        return None
 
     def __handleChooseCogPanelDone(self, doneStatus):
         mode = doneStatus['mode']
@@ -534,12 +535,10 @@ class TownBattle(StateData.StateData):
         self.toon = 0
         self.chooseToonPanel.enter(self.numToons, localNum=self.localNum)
         self.accept(self.chooseToonPanelDoneEvent, self.__handleChooseToonPanelDone)
-        return None
 
     def exitChooseToon(self):
         self.ignore(self.chooseToonPanelDoneEvent)
         self.chooseToonPanel.exit()
-        return None
 
     def __handleChooseToonPanelDone(self, doneStatus):
         mode = doneStatus['mode']
@@ -576,12 +575,10 @@ class TownBattle(StateData.StateData):
         canHeal, canTrap, canLure = self.checkHealTrapLure()
         self.FireCogPanel.enter(self.numCogs, luredIndices=self.luredIndices, trappedIndices=self.trappedIndices, track=self.track)
         self.accept(self.fireCogPanelDoneEvent, self.__handleCogFireDone)
-        return None
 
     def exitFire(self):
         self.ignore(self.fireCogPanelDoneEvent)
         self.FireCogPanel.exit()
-        return None
 
     def __handleCogFireDone(self, doneStatus):
         mode = doneStatus['mode']
@@ -602,12 +599,10 @@ class TownBattle(StateData.StateData):
         canHeal, canTrap, canLure = self.checkHealTrapLure()
         self.SOSPanel.enter(canLure, canTrap)
         self.accept(self.SOSPanelDoneEvent, self.__handleSOSPanelDone)
-        return None
 
     def exitSOS(self):
         self.ignore(self.SOSPanelDoneEvent)
         self.SOSPanel.exit()
-        return None
 
     def __handleSOSPanelDone(self, doneStatus):
         mode = doneStatus['mode']
@@ -641,13 +636,11 @@ class TownBattle(StateData.StateData):
         self.accept(self.proxyGenerateMessage, self.__handleProxyGenerated)
         self.accept(self.SOSPetSearchPanelDoneEvent, self.__handleSOSPetSearchPanelDone)
         messenger.send(self.battleEvent, [response])
-        return None
 
     def exitSOSPetSearch(self):
         self.ignore(self.proxyGenerateMessage)
         self.ignore(self.SOSPetSearchPanelDoneEvent)
         self.SOSPetSearchPanel.exit()
-        return None
 
     def __handleSOSPetSearchPanelDone(self, doneStatus):
         mode = doneStatus['mode']
@@ -662,12 +655,10 @@ class TownBattle(StateData.StateData):
     def enterSOSPetInfo(self):
         self.SOSPetInfoPanel.enter(self.petId)
         self.accept(self.SOSPetInfoPanelDoneEvent, self.__handleSOSPetInfoPanelDone)
-        return None
 
     def exitSOSPetInfo(self):
         self.ignore(self.SOSPetInfoPanelDoneEvent)
         self.SOSPetInfoPanel.exit()
-        return None
 
     def __handleSOSPetInfoPanelDone(self, doneStatus):
         mode = doneStatus['mode']
@@ -683,15 +674,10 @@ class TownBattle(StateData.StateData):
             self.fsm.request('SOS')
 
     def __isCogChoiceNecessary(self):
-        if self.numCogs > 1 and not self.__isGroupAttack(self.track, self.level):
-            return 1
-        else:
-            return 0
+        return self.numCogs > 1 and not self.__isGroupAttack(self.track, self.level)
 
     def __isGroupAttack(self, trackNum, levelNum):
-        retval = BattleBase.attackAffectsGroup(trackNum, levelNum)
-        return retval
+        return BattleBase.attackAffectsGroup(trackNum, levelNum)
 
     def __isGroupHeal(self, levelNum):
-        retval = BattleBase.attackAffectsGroup(HEAL_TRACK, levelNum)
-        return retval
+        return self.__isGroupAttack(HEAL_TRACK, levelNum)

@@ -993,6 +993,7 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
             self.notify.warning('requestAttack() - no toon: %d' % toonId)
             return
         validResponse = 1
+        self.npcAttacks = {k:v for k, v in self.npcAttacks.iteritems() if v != toonId}
         if track == SOS:
             self.notify.debug('toon: %d calls for help' % toonId)
             self.air.writeServerEvent('friendSOS', toonId, '%s' % av)
@@ -1007,7 +1008,7 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                 npcCollision = 0
                 if av in self.npcAttacks:
                     callingToon = self.npcAttacks[av]
-                    if self.activeToons.count(callingToon) == 1:
+                    if callingToon != toonId and self.activeToons.count(callingToon) == 1:
                         self.toonAttacks[toonId] = getToonAttack(toonId, track=PASS)
                         npcCollision = 1
                 if npcCollision == 0:

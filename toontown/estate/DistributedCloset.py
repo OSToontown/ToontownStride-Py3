@@ -13,6 +13,7 @@ from direct.task.Task import Task
 import ClosetGlobals
 import DistributedFurnitureItem
 from toontown.toonbase import TTLocalizer
+from toontown.catalog import CatalogFurnitureItem
 
 class DistributedCloset(DistributedFurnitureItem.DistributedFurnitureItem):
     notify = directNotify.newCategory('DistributedCloset')
@@ -235,7 +236,8 @@ class DistributedCloset(DistributedFurnitureItem.DistributedFurnitureItem):
         if self.isOwner:
             self.accept(self.deleteEvent, self.__handleDelete)
         if not self.closetGUI:
-            self.closetGUI = ClosetGUI.ClosetGUI(self.isOwner, self.purchaseDoneEvent, self.cancelEvent, self.swapEvent, self.deleteEvent, self.topList, self.botList)
+            maxClothes = CatalogFurnitureItem.ClosetToClothes.get(self.item.furnitureType)
+            self.closetGUI = ClosetGUI.ClosetGUI(self.isOwner, self.purchaseDoneEvent, self.cancelEvent, self.swapEvent, self.deleteEvent, self.topList, self.botList, maxClothes)
             self.closetGUI.load()
             if self.gender != self.ownerGender:
                 self.closetGUI.setGender(self.ownerGender)
@@ -320,14 +322,6 @@ class DistributedCloset(DistributedFurnitureItem.DistributedFurnitureItem):
         else:
             self.notify.warning("cant delete this item(type = %s), since we don't have a replacement" % t_or_b)
 
-    def resetItemLists(self):
-        self.topList = self.oldTopList[0:]
-        self.botList = self.oldBotList[0:]
-        self.closetGUI.tops = self.topList
-        self.closetGUI.bottoms = self.botList
-        self.topDeleted = 0
-        self.bottomDeleted = 0
-
     def __proceedToCheckout(self):
         if self.topDeleted or self.bottomDeleted:
             self.__popupAreYouSurePanel()
@@ -360,7 +354,6 @@ class DistributedCloset(DistributedFurnitureItem.DistributedFurnitureItem):
                         self.av.swapToonTorso(self.av.style.torso, genClothes=0)
                         self.av.loop('neutral', 0)
                     self.av.generateToonClothes()
-        return
 
     def printInfo(self):
         print 'avid: %s, gender: %s' % (self.av.doId, self.av.style.gender)
@@ -425,7 +418,6 @@ class DistributedCloset(DistributedFurnitureItem.DistributedFurnitureItem):
         DirectButton(self.popupInfo, image=okButtonImage, relief=None, text=TTLocalizer.ClosetPopupOK, text_scale=0.05, text_pos=(0.0, -0.1), textMayChange=0, pos=(0.0, 0.0, -0.16), command=self.__handleTimeoutMessageOK)
         buttons.removeNode()
         self.popupInfo.reparentTo(aspect2d)
-        return
 
     def __handleTimeoutMessageOK(self):
         self.popupInfo.reparentTo(hidden)

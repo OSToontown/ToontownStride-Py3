@@ -116,6 +116,8 @@ if 'fov' not in settings:
     settings['fov'] = OTPGlobals.DefaultCameraFov
 if 'talk2speech' not in settings:
     settings['talk2speech'] = False
+if 'fpsMeter' not in settings:
+    settings['fpsMeter'] = False
 
 loadPrcFileData('Settings: res', 'win-size %d %d' % tuple(settings['res']))
 loadPrcFileData('Settings: fullscreen', 'fullscreen %s' % settings['fullscreen'])
@@ -189,6 +191,7 @@ cr = ToontownClientRepository.ToontownClientRepository(serverVersion)
 cr.music = music
 del music
 base.initNametagGlobals()
+base.setFrameRateMeter(settings['fpsMeter'])
 base.cr = cr
 loader.endBulkLoad('init')
 from otp.friends import FriendManager

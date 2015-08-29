@@ -164,7 +164,7 @@ class House(Place.Place):
         base.localAvatar.setTeleportAvailable(0)
         self.ignore('teleportQuery')
         base.localAvatar.laffMeter.stop()
-        base.localAvatar.obscureMoveFurnitureButton(-1)
+        base.localAvatar.obscureMoveFurnitureButton(0)
         base.localAvatar.stopSleepWatch()
 
     def enterBanking(self):

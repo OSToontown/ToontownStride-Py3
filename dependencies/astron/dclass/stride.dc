@@ -133,7 +133,7 @@ dclass DistributedAvatar : DistributedSmoothNode {
   friendsNotify(DoId avId, int8 status) ownrecv airecv;
   checkAvOnShard(DoId) clsend airecv;
   confirmAvOnShard(DoId avId, int8 isOnShard);
-  setTalk(string(0-400) chat) broadcast;
+  setTalk(string(0-400) chat) broadcast ram;
   setTalkWhisper(uint32 avId, string(0-400) chat) ownrecv clsend;
 };
 
@@ -590,8 +590,8 @@ dclass DistributedToon : DistributedPlayer {
   setTrackAccess(uint16[] = [0,0,0,0,1,1,0]) required broadcast ownrecv db;
   setTrackProgress(int8 = -1, uint32 = 0) required ownrecv db;
   setTrackBonusLevel(int8[] = [-1,-1,-1,-1,-1,-1,-1]) required broadcast ownrecv db;
-  setInventory(blob = [0*7, 0*7, 0*7, 0*7, 0, 0*6, 0, 0*6, 0*7]) required ownrecv db;
-  setNPCFriendsDict(FriendEntry[] = []) required ownrecv db;
+  setInventory(blob = [0*7, 0*7, 0*7, 0*7, 0, 0*6, 0, 0*6, 0*7]) required broadcast ownrecv db;
+  setNPCFriendsDict(FriendEntry[] = []) required broadcast ownrecv db;
   setDefaultShard(uint32 = 0) required ownrecv broadcast db;
   setDefaultZone(uint32 = 0) required ownrecv broadcast db;
   setHoodsVisited(uint32[] = [ 2000 ]) required ownrecv db;
@@ -755,6 +755,7 @@ dclass DistributedToon : DistributedPlayer {
   requestNametagStyle(uint8) airecv ownsend;
   requestFishingRod(uint8) airecv ownsend;
   wipeStats() airecv ownsend;
+  takeMoney(int16) airecv ownsend;
 };
 
 dclass DistributedPartyGate : DistributedObject {
@@ -2048,7 +2049,6 @@ dclass DistributedCloset : DistributedFurnitureItem {
   setDNA(blob, int8, uint8) airecv clsend;
   setState(uint8, uint32, uint32, string, uint8[], uint8[]) broadcast ram;
   setMovie(uint8, uint32, int16) broadcast ram;
-  resetItemLists() broadcast ram;
   setCustomerDNA(uint32, blob) broadcast ram;
 };
 

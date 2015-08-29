@@ -12,7 +12,7 @@ ToonFont = 'phase_3/models/fonts/ImpressBT.ttf'
 SuitFont = 'phase_3/models/fonts/vtRemingtonPortable.ttf'
 SignFont = 'phase_3/models/fonts/MickeyFont'
 MinnieFont = 'phase_3/models/fonts/MinnieFont'
-FancyFont = 'phase_3/models/fonts/Comedy'
+ChalkFont = 'phase_3/models/fonts/Chawp.ttf'
 BuildingNametagFont = 'phase_3/models/fonts/MickeyFont'
 BuildingNametagShadow = None
 NametagFonts = (
@@ -3978,7 +3978,6 @@ EmoteHappy = 'Happy'
 EmoteSad = 'Sad'
 EmoteAnnoyed = 'Annoyed'
 EmoteSleep = 'Sleepy'
-StatPageTitle = 'Statistics'
 SuitBaseNameWithLevel = '%(name)s\n%(dept)s\nLevel %(level)s'
 HealthForceAcknowledgeMessage = 'You cannot leave the playground until your Laff meter is smiling!'
 InventoryTotalGags = 'Total gags\n%d / %d'
@@ -3987,7 +3986,6 @@ InventoryPinkSlip = '1 Pink Slip'
 InventoryCrateKeys = '%s Crate Keys'
 InventoryCrateKey = '1 Crate Key'
 InventoryDelete = 'DELETE'
-InventoryDeleteAll = 'DELETE ALL'
 InventoryDone = 'DONE'
 InventoryDeleteHelp = 'Click on a gag to DELETE it.'
 InventorySkillCredit = 'Skill credit: %s'
@@ -6272,7 +6270,8 @@ NPCToonNames = {20000: 'Tutorial Tom',
  11001: 'Healer Gabriel',
  12001: 'Healer Bill',
  12002: 'Mata Hairy',
- 13001: 'Healer Clover'}
+ 13001: 'Healer Clover',
+ 13002: 'Bumpy Bumblebehr'}
 zone2TitleDict = {2513: ('Toon Hall', ''),
  2514: ('Toontown Bank', ''),
  2516: ('Toontown School House', ''),
@@ -7596,7 +7595,6 @@ LawbotBossTaunts = ['%s, I find you in contempt of court!',
  'Strike that from the record.',
  'Your appeal has been rejected. I sentence you to sadness!',
  'Order in the court!']
-WitnessToonName = 'Bumpy Bumblebehr'
 WitnessToonPrepareBattleTwo = "Oh no! They're putting only Cogs on the jury!\x07Quick, use the cannons and shoot some Toon jurors into the jury chairs.\x07We need %d to get a balanced scale."
 WitnessToonNoJuror = 'Oh oh, no Toon jurors. This will be a tough trial.'
 WitnessToonOneJuror = 'Cool! There is 1 Toon in the jury!'
@@ -8530,9 +8528,12 @@ def convertSecondsToDate(seconds):
     return '%d:%02d:%02d' % (h, m, s)
 
 ToonDefeatedMessage = '%s was defeated!'
+
 BugReportButton = 'Report a Bug'
 BugReportNotice = 'Attention!\n\nThis button will open a browser which will send you to a third party bug tracker website. This site requires an Ubuntu One account to login. It may ask you to create an account.\n\nAre you sure you want to continue?'
+
 CodeRedemptionWarning = 'NOTICE: All codes can only be entered once!'
+
 CogInterfaceLabelOn = 'The cog battle interface is on.'
 CogInterfaceLabelOff = 'The cog battle interface is off.'
 TpTransitionLabelOn = 'The teleport transition is on.'
@@ -8540,6 +8541,7 @@ TpTransitionLabelOff = 'The teleport transition is off.'
 FieldOfViewLabel = 'Field of View:'
 NametagStyleLabel = 'Nametag Style:'
 FishingPoleLabel = 'Fishing Rod:'
+
 BossLocations = {
  'c': 'Bossbot Clubhouse\nBanquet',
  'l': "Lawbot Courthouse\nBumpy Bumblebehr's Trial",
@@ -8656,31 +8658,33 @@ CrateClothingPrize = "Congratulations! You've received a new clothing item. Chec
 CrateAccessoryPrize = 'Congratulations! You found a new accessory for your Toon. Check your mailbox and rock it!'
 
 Stats = [
- 'Cogs defeated: %(cog)s',
- 'V2.0 cogs defeated: %(v2)s',
- 'Skelecogs defeated: %(skele)s',
- 'Jellybeans spent: %(beanSpent)s',
- 'Jellybeans earnt: %(beanEarnt)s',
- 'Tasks completed: %(task)s',
- 'Total VP defeats: %(vp)s',
- 'Total CFO defeats: %(cfo)s',
- 'Total CJ defeats: %(cj)s',
- 'Total CEO defeats: %(ceo)s',
- 'Gone sad: %(sad)s times',
- 'Buildings liberated: %(bldg)s',
- 'Field Offices defeated: %(cogdo)s',
- 'Items purchased: %(item)s',
- 'Fish caught: %(fish)s',
- 'Flowers picked: %(flower)s',
- 'Races completed: %(race)s',
- 'Golf holes played: %(golf)s',
- 'Total SOS cards: %(sos)s',
- 'Total unites: %(unite)s',
- 'Total pink slips: %(slip)s',
- 'Total gags used: %(gag)s'
+ 'Cogs defeated: %s',
+ 'V2.0 cogs defeated: %s',
+ 'Skelecogs defeated: %s',
+ 'Jellybeans spent: %s',
+ 'Jellybeans earnt: %s',
+ 'Tasks completed: %s',
+ 'Total VP defeats: %s',
+ 'Total CFO defeats: %s',
+ 'Total CJ defeats: %s',
+ 'Total CEO defeats: %s',
+ 'Gone sad: %s times',
+ 'Buildings liberated: %s',
+ 'Offices defeated: %s',
+ 'Items ordered: %s',
+ 'Fish caught: %s',
+ 'Flowers picked: %s',
+ 'Races completed: %s',
+ 'Golf holes played: %s',
+ 'Total SOS cards: %s',
+ 'Total unites: %s',
+ 'Total pink slips: %s',
+ 'Total gags used: %s'
 ]
-StatResetAsk = 'Are you sure you want to reset your stats? This is an irreversible action!'
-StatResetDone = 'Your stats have been reset.'
+StatPageTitle = 'Statistics'
+StatPageClear = 'Clear'
+StatPageClearAsk = 'Are you sure you want to clear your stats? This is an irreversible action!'
+StatPageClearDone = 'Your stats have been cleared.'
 
 ChairAskToUse = 'Would you like to sit on this chair?'
 
@@ -8727,6 +8731,9 @@ ShardPageShardTitle = '%s Population: %s'
 ShardPageTeleport = 'Teleport to\n%s'
 
 TeleportButton = 'Teleport'
+TeleportButtonNoMoney = 'Sorry, but you need %s jellybeans to teleport!'
+TeleportButtonConfirm = 'Would you like to spend %s jellybeans to teleport?'
+TeleportButtonTakenOver = 'Sorry, but this shop has been taken over by the Cogs!'
 
 BattleCogPopup = '\x01androidGreen\x01Group attacks:\x02\n%s\n\n\x01androidGreen\x01Regular attacks:\x02\n%s'
 BattleCogPopupAttack = '%s %s HP'
@@ -8748,6 +8755,14 @@ DetailPanelSOS = 'SOS Cards'
 TeleportLabelOn = 'Accepting teleports.'
 TeleportLabelOff = 'Not accepting teleports.'
 TeleportPanelNoTeleport = '%s needs some time alone right now.'
+
+InventoryDeleteAll = 'DELETE ALL'
+InventoryDeleteConfirm = "Are you sure you want to delete all your gags? Don't worry, your level 7 gags are safe!"
+
+ClothesGUICount = '%s/%s'
+
+FpsMeterLabelOn = 'The frame rate meter is on.'
+FpsMeterLabelOff = 'The frame rate meter is off.'
 
 Blacklist = [
  "$1ut",

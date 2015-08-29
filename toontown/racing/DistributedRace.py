@@ -551,14 +551,14 @@ class DistributedRace(DistributedObject.DistributedObject):
         newLapT = (newT - self.startT) / self.curve.getMaxT() % 1.0
         if newLapT - self.currLapT < -0.5:
             self.laps += 1
-            self.changeMusicTempo(1 + self.laps * 0.33)
+            self.changeMusicTempo(1 + self.laps * 0.5)
             self.notify.debug('crossed the start line: %s, %s, %s, %s' % (self.laps,
              self.startT,
              self.currT,
              newT))
         elif newLapT - self.currLapT > 0.5:
             self.laps -= 1
-            self.changeMusicTempo(1 + self.laps * 0.33)
+            self.changeMusicTempo(1 + self.laps * 0.5)
             self.notify.debug('crossed the start line - wrong way: %s, %s, %s, %s' % (self.laps,
              self.startT,
              self.currT,

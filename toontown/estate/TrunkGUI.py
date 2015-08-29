@@ -31,25 +31,24 @@ class TrunkGUI(StateData.StateData):
         self.cancelEvent = cancelEvent
         self.genderChange = 0
         self.verify = None
-        return
 
     def load(self):
-        self.gui = loader.loadModel('phase_3/models/gui/tt_m_gui_mat_mainGui')
-        guiRArrowUp = self.gui.find('**/tt_t_gui_mat_arrowUp')
-        guiRArrowRollover = self.gui.find('**/tt_t_gui_mat_arrowUp')
-        guiRArrowDown = self.gui.find('**/tt_t_gui_mat_arrowDown')
-        guiRArrowDisabled = self.gui.find('**/tt_t_gui_mat_arrowDisabled')
-        guiArrowRotateUp = self.gui.find('**/tt_t_gui_mat_arrowRotateUp')
-        guiArrowRotateDown = self.gui.find('**/tt_t_gui_mat_arrowRotateDown')
-        shuffleFrame = self.gui.find('**/tt_t_gui_mat_shuffleFrame')
-        shuffleArrowUp = self.gui.find('**/tt_t_gui_mat_shuffleArrowUp')
-        shuffleArrowDown = self.gui.find('**/tt_t_gui_mat_shuffleArrowDown')
-        shuffleArrowRollover = self.gui.find('**/tt_t_gui_mat_shuffleArrowUp')
-        shuffleArrowDisabled = self.gui.find('**/tt_t_gui_mat_shuffleArrowDisabled')
-        self.parentFrame = DirectFrame(relief=DGG.RAISED, pos=(0.98, 0, 0.416), frameColor=(1, 0, 0, 0))
+        self.matGui = loader.loadModel('phase_3/models/gui/tt_m_gui_mat_mainGui')
+        guiRArrowUp = self.matGui.find('**/tt_t_gui_mat_arrowUp')
+        guiRArrowRollover = self.matGui.find('**/tt_t_gui_mat_arrowUp')
+        guiRArrowDown = self.matGui.find('**/tt_t_gui_mat_arrowDown')
+        guiRArrowDisabled = self.matGui.find('**/tt_t_gui_mat_arrowDisabled')
+        guiArrowRotateUp = self.matGui.find('**/tt_t_gui_mat_arrowRotateUp')
+        guiArrowRotateDown = self.matGui.find('**/tt_t_gui_mat_arrowRotateDown')
+        self.shuffleFrame = self.matGui.find('**/tt_t_gui_mat_shuffleFrame')
+        shuffleArrowUp = self.matGui.find('**/tt_t_gui_mat_shuffleArrowUp')
+        shuffleArrowDown = self.matGui.find('**/tt_t_gui_mat_shuffleArrowDown')
+        shuffleArrowRollover = self.matGui.find('**/tt_t_gui_mat_shuffleArrowUp')
+        shuffleArrowDisabled = self.matGui.find('**/tt_t_gui_mat_shuffleArrowDisabled')
+        self.parentFrame = DirectFrame(relief=DGG.RAISED, pos=(0.98, 0, 0.216), frameColor=(1, 0, 0, 0))
 
         def addFrame(posZ, text):
-            return DirectFrame(parent=self.parentFrame, image=shuffleFrame, image_scale=halfButtonInvertScale, relief=None, pos=(0, 0, posZ), hpr=(0, 0, 3), scale=1.2, frameColor=(1, 1, 1, 1), text=text, text_scale=0.0575, text_pos=(-0.001, -0.015), text_fg=(1, 1, 1, 1))
+            return DirectFrame(parent=self.parentFrame, image=self.shuffleFrame, image_scale=halfButtonInvertScale, relief=None, pos=(0, 0, posZ), hpr=(0, 0, 3), scale=1.2, frameColor=(1, 1, 1, 1), text=text, text_scale=0.0575, text_pos=(-0.001, -0.015), text_fg=(1, 1, 1, 1))
 
         def addButton(parent, scale, hoverScale, posX, command, extraArg):
             return DirectButton(parent=parent, relief=None, image=(shuffleArrowUp,
@@ -57,6 +56,7 @@ class TrunkGUI(StateData.StateData):
              shuffleArrowRollover,
              shuffleArrowDisabled), image_scale=scale, image1_scale=hoverScale, image2_scale=hoverScale, pos=(posX, 0, 0), command=command, extraArgs=[extraArg])
 
+        self.countFrame = addFrame(0.37, TTLocalizer.ClothesGUICount % (0, 0))
         self.hatFrame = addFrame(0.1, TTLocalizer.TrunkHatGUI)
         self.hatLButton = addButton(self.hatFrame, halfButtonScale, halfButtonHoverScale, -0.2, self.swapHat, -1)
         self.hatRButton = addButton(self.hatFrame, halfButtonInvertScale, halfButtonInvertHoverScale, 0.2, self.swapHat, 1)
@@ -103,7 +103,6 @@ class TrunkGUI(StateData.StateData):
             self.shoesTrashButton = addTrashButton(-0.4, TTLocalizer.TrunkDeleteShoes, ToonDNA.SHOES)
             self.button = DirectButton(relief=None, image=(self.gui.find('**/CrtAtoon_Btn1_UP'), self.gui.find('**/CrtAtoon_Btn1_DOWN'), self.gui.find('**/CrtAtoon_Btn1_RLLVR')), pos=(-0.15, 0, -0.85), command=self.__handleButton, text=('', TTLocalizer.MakeAToonDone, TTLocalizer.MakeAToonDone), text_font=ToontownGlobals.getInterfaceFont(), text_scale=0.08, text_pos=(0, -0.03), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1))
             trashcanGui.removeNode()
-        return
 
     def unload(self):
         taskMgr.remove(self.taskName('rotateL'))
@@ -111,7 +110,11 @@ class TrunkGUI(StateData.StateData):
         self.ignore('verifyDone')
         self.gui.removeNode()
         del self.gui
+        self.matGui.removeNode()
+        del self.matGui
+        del self.shuffleFrame
         self.parentFrame.destroy()
+        self.countFrame.destroy()
         self.hatFrame.destroy()
         self.glassesFrame.destroy()
         self.backpackFrame.destroy()
@@ -124,6 +127,7 @@ class TrunkGUI(StateData.StateData):
         self.backpackRButton.destroy()
         self.shoesLButton.destroy()
         self.shoesRButton.destroy()
+        del self.countFrame
         del self.parentFrame
         del self.hatFrame
         del self.glassesFrame
@@ -286,7 +290,7 @@ class TrunkGUI(StateData.StateData):
         self.swapShoes(0)
         self.updateTrashButtons()
         self.setupButtons()
-        return
+        self.updateCountFrame()
 
     def updateTrashButtons(self):
         if not self.isOwner:
@@ -307,6 +311,11 @@ class TrunkGUI(StateData.StateData):
             self.shoesTrashButton['state'] = DGG.DISABLED
         else:
             self.shoesTrashButton['state'] = DGG.NORMAL
+        self.updateCountFrame()
+    
+    def updateCountFrame(self):
+        accessories = (len(self.hats) + len(self.glasses) + len(self.backpacks) + len(self.shoes)) - 4
+        self.countFrame['text'] = TTLocalizer.ClothesGUICount % (accessories, ToontownGlobals.MaxAccessories)
 
     def rotateToonL(self, task):
         self.toon.setH(self.toon.getH() - 4)

@@ -336,9 +336,12 @@ class SuitPage(ShtikerPage.ShtikerPage):
         yStart = -0.18
         xOffset = 0.199
         yOffset = 0.284
-        self.rolloverFrame = DirectFrame(parent=self.panelNode, relief=None, geom=DGG.getDefaultDialogGeom(), geom_color=(0.5, 0.5, 0.5, 1), geom_scale=(0.8, 0, 0.77), text_scale=0.06, text_pos=(0, 0.32), text='', text_fg=(1, 1, 1, 1), pos=(0.44, 0, 0))
+        gui = loader.loadModel('phase_3.5/models/gui/suit_detail_panel')
+        gui.find('**/avatar_panel/shadow').setColor(1, 1, 1, 0.5)
+        self.rolloverFrame = DirectFrame(parent=self.panelNode, relief=None, geom=gui.find('**/avatar_panel'), geom_color=(0.5, 0.5, 0.5, 1), geom_scale=(0.59, 0, 0.21), text_scale=0.06, text_pos=(0, 0.35), text='', text_fg=(1, 1, 1, 1), text_font=ToontownGlobals.getSuitFont(), pos=(0.8, 0, 0))
         self.rolloverFrame.setBin('gui-popup', 0)
         self.rolloverFrame.hide()
+        gui.removeNode()
         for dept in xrange(0, len(SuitDNA.suitDepts)):
             row = []
             color = PANEL_COLORS[dept]
@@ -419,7 +422,6 @@ class SuitPage(ShtikerPage.ShtikerPage):
         index = self.panels.index(panel)
         if not base.localAvatar.hasCogSummons(index):
             panel.summonButton.hide()
-        return
 
     def addBuildingRadarLabel(self, button):
         gui = loader.loadModel('phase_3.5/models/gui/suit_detail_panel')
@@ -427,7 +429,6 @@ class SuitPage(ShtikerPage.ShtikerPage):
         buildingRadarLabel = DirectLabel(parent=button, relief=None, pos=(0.225, 0.0, zPos), state=DGG.DISABLED, image=gui.find('**/avatar_panel'), image_hpr=(0, 0, 90), image_scale=(0.05, 1, 0.1), image_pos=(0, 0, 0.015), text=TTLocalizer.SuitPageBuildingRadarP % '0', text_scale=0.05, text_fg=(1, 0, 0, 1), text_font=ToontownGlobals.getSuitFont())
         gui.removeNode()
         button.buildingRadarLabel = buildingRadarLabel
-        return
 
     def resetPanel(self, dept, type):
         panel = self.panels[dept * SuitDNA.suitsPerDept + type]
@@ -602,4 +603,3 @@ class SuitPage(ShtikerPage.ShtikerPage):
                 taskMgr.doMethodLater(RADAR_DELAY * SuitDNA.suitsPerDept, showLabel, 'showBuildingRadarLater', extraArgs=(button,))
             else:
                 button.buildingRadarLabel.hide()
-        return

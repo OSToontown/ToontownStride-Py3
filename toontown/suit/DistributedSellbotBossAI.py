@@ -30,7 +30,6 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         self.bossMaxDamage = ToontownGlobals.SellbotBossMaxDamage
         self.recoverRate = 0
         self.recoverStartTime = 0
-        self.punishedToons = []
 
     def delete(self):
         return DistributedBossCogAI.DistributedBossCogAI.delete(self)
@@ -197,13 +196,6 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
             return self.invokeSuitPlanner(10, 1)
 
     def removeToon(self, avId):
-        av = self.air.doId2do.get(avId)
-        if not av is None:
-            if av.getHp() <= 0:
-                if avId not in self.punishedToons:
-                    self.air.cogSuitMgr.removeParts(av, self.deptIndex)
-                    self.punishedToons.append(avId)
-
         toon = simbase.air.doId2do.get(avId)
         if toon:
             toon.b_setNumPies(0)

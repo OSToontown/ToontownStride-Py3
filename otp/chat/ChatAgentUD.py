@@ -41,12 +41,7 @@ class ChatAgentUD(DistributedObjectGlobalUD):
                 return
  
         self.air.writeServerEvent('chat-said', sender, message)
- 
-        DistributedAvatar = self.air.dclassesByName['DistributedAvatarUD']
-        dg = DistributedAvatar.aiFormatUpdate('setTalk', sender, sender,
-                                              self.air.ourChannel,
-                                              [message])
-        self.air.send(dg)
+        self.air.send(self.air.dclassesByName['DistributedAvatarUD'].aiFormatUpdate('setTalk', sender, sender, self.air.ourChannel, [message]))
  
     def detectBadWords(self, sender, message):
         words = message.split()

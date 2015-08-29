@@ -23,7 +23,6 @@ class CogdoBarrelRoom:
         self.fog = None
         self.defaultFar = None
         self.stomperSfx = None
-        return
 
     def destroy(self):
         self.unload()
@@ -71,7 +70,6 @@ class CogdoBarrelRoom:
         taskMgr.remove(self.rewardUiTaskName)
         taskMgr.remove(self.rewardCameraTaskName)
         self._isLoaded = False
-        return
 
     def isLoaded(self):
         return self._isLoaded

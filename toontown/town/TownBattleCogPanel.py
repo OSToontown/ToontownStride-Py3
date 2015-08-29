@@ -23,7 +23,6 @@ class TownBattleCogPanel(DirectFrame):
         gui.removeNode()
     
     def cleanup(self):
-        self.ignoreAll()
         self.cleanupHead()
         self.levelText.removeNode()
         self.typeText.removeNode()
@@ -42,17 +41,14 @@ class TownBattleCogPanel(DirectFrame):
 
     def setSuit(self, suit):
         if self.suit == suit:
-            messenger.send(self.suit.uniqueName('hpChange'))
             return
 
-        self.ignoreAll()
         self.cleanupHead()
         self.suit = suit
         self.generateSuitHead(suit.getStyleName())
         self.updateHealthBar()
         self.levelText['text'] = TTLocalizer.CogPanelLevel % suit.getActualLevel()
         self.typeText['text'] = suit.getTypeText()
-        self.accept(suit.uniqueName('hpChange'), self.updateHealthBar)
         self.updateRolloverBind()
     
     def updateRolloverBind(self):
@@ -67,7 +63,7 @@ class TownBattleCogPanel(DirectFrame):
         if TTLocalizer.BattleCogPopupDangerColor in info:
             info = TTLocalizer.BattleCogPopupDanger + info
 
-        self.hoverButton.bind(DGG.ENTER, self.battle.showRolloverFrame, extraArgs=[self, (0.73, 0, 0.65), (0, 0.26), (0.5, 0.5, 0.5, 1), (0.6, 0, 0.1), info])
+        self.hoverButton.bind(DGG.ENTER, self.battle.showRolloverFrame, extraArgs=[self, TTLocalizer.BattleHoverCog, info])
         
     def getAttackStrings(self, attacks, level):
         attackStrings = []

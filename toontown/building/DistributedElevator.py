@@ -465,7 +465,6 @@ class DistributedElevator(DistributedObject.DistributedObject):
             del self.elevatorFSM
             elevator.signalDone(doneStatus)
             base.camLens.setMinFov(ToontownGlobals.CBElevatorFov/(4./3.))
-        return
 
     def getElevatorModel(self):
         self.notify.error('getElevatorModel: pure virtual -- inheritors must override')
@@ -530,10 +529,7 @@ class DistributedElevator(DistributedObject.DistributedObject):
         return self.offsetNP.getPos(render)
 
     def canHideBoardingQuitBtn(self, avId):
-        if avId == localAvatar.doId and hasattr(localAvatar, 'boardingParty') and localAvatar.boardingParty and localAvatar.boardingParty.groupPanel:
-            return True
-        else:
-            return False
+        return avId == localAvatar.doId and hasattr(localAvatar, 'boardingParty') and localAvatar.boardingParty and localAvatar.boardingParty.groupPanel
 
     def getBoardingTrack(self, toon, seatIndex, wantToonRotation):
         self.boardingGroupShow = BoardingGroupShow.BoardingGroupShow(toon)

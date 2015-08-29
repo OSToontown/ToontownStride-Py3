@@ -19,4 +19,4 @@ class TutorialStreet(TTStreet.TTStreet):
         TTStreet.TTStreet.handleEnterTunnel(self, requestStatus, collEntry)
 
     def exitDoorIn(self):
-        base.localAvatar.obscureMoveFurnitureButton(-1)
+        base.localAvatar.obscureMoveFurnitureButton(0)

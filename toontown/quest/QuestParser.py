@@ -406,8 +406,11 @@ class NPCMoviePlayer(DirectObject.DirectObject):
                     self.closePreviousChapter(iList)
                     chapterList = []
                     self.currentEvent = nextEvent
+                elif command == 'TUTORIAL_ACK_DONE':
+                    iList.append(Func(base.localAvatar.setTutorialAck, True))
                 else:
                     notify.warning('Unknown command token: %s for scriptId: %s on line: %s' % (command, self.scriptId, lineNum))
+                
 
         self.closePreviousChapter(chapterList)
         if timeoutList:

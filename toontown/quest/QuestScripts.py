@@ -253,7 +253,8 @@ WAIT 0.5
 WRTREPARENTTO chatNormalButton topLeft
 LERP_POS chatNormalButton 0.068 0 -0.072 0.6
 LERP_SCALE chatNormalButton 1.179 1.179 1.179 0.6
-WAIT 0.6 
+WAIT 0.6
+TUTORIAL_ACK_DONE
 LOCAL_CHAT_CONFIRM npc QuestScriptTutorialBlocker_7 "CFReversed"
 LOCAL_CHAT_CONFIRM npc QuestScriptTutorialBlocker_8 1 "CFReversed"
 LOOP_ANIM npc "walk"
