@@ -24,5 +24,3 @@ dependencies/config/local.prc
 bson
 gridfs
 pymongo
-Toon Bot
-DNS
