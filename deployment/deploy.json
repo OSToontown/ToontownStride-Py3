@@ -1,8 +1,0 @@
-{
-  "__fyi__": "If you use anything other than the first 7 characters of the git hash, you just broke everything",
-  "astron": "696a6c4",
-  "panda3d": "b924139",
-  "libpandadna": "a0047ce",
-  "version-prefix": "stride-beta-",
-  "server-resources": ["pdna", "txt", "dat", "bam", "ttf"]
-}
