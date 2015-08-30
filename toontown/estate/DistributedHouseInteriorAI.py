@@ -22,10 +22,18 @@ houseInteriors = [
 ]
 
 defaultWindows = [
-    CatalogWindowItem(20, placement=2), CatalogWindowItem(20, placement=4)
+    CatalogWindowItem(20, placement=2), CatalogWindowItem(20, placement=4), CatalogWindowItem(20, placement=6)
 ]
 
 defaultWallpaper = [
+    CatalogWallpaperItem(1110, 0, 1010, 0),
+    CatalogMouldingItem(1000, 2),
+    CatalogFlooringItem(1000, 4),
+    CatalogWainscotingItem(1010, 4),
+    CatalogWallpaperItem(1110, 0, 1010, 0),
+    CatalogMouldingItem(1000, 2),
+    CatalogFlooringItem(1000, 4),
+    CatalogWainscotingItem(1010, 4),
     CatalogWallpaperItem(1110, 0, 1010, 0),
     CatalogMouldingItem(1000, 2),
     CatalogFlooringItem(1000, 4),

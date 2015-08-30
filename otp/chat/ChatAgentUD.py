@@ -11,7 +11,7 @@ OFFENSE_MSGS = ('-- DEV CHAT -- word blocked: %s', 'Watch your language! This is
  
 class ChatAgentUD(DistributedObjectGlobalUD):
     notify = DirectNotifyGlobal.directNotify.newCategory('ChatAgentUD')
-    WantWhitelist = config.GetBool('want-whitelist', True)
+    wantWhitelist = config.GetBool('want-whitelist', True)
    
     chatMode2channel = {
             1 : OtpDoGlobals.OTP_MOD_CHANNEL,
@@ -36,17 +36,12 @@ class ChatAgentUD(DistributedObjectGlobalUD):
                                       'Account sent chat without an avatar', message)
             return
  
-        if chatMode == 0:
+        if chatMode == 0 and self.wantWhitelist:
             if self.detectBadWords(self.air.getMsgSender(), message):
                 return
  
         self.air.writeServerEvent('chat-said', sender, message)
- 
-        DistributedAvatar = self.air.dclassesByName['DistributedAvatarUD']
-        dg = DistributedAvatar.aiFormatUpdate('setTalk', sender, sender,
-                                              self.air.ourChannel,
-                                              [message])
-        self.air.send(dg)
+        self.air.send(self.air.dclassesByName['DistributedAvatarUD'].aiFormatUpdate('setTalk', sender, sender, self.air.ourChannel, [message]))
  
     def detectBadWords(self, sender, message):
         words = message.split()

@@ -23,10 +23,9 @@ from toontown.building import ElevatorConstants
 from toontown.building import ElevatorUtils
 from toontown.coghq import CogDisguiseGlobals
 from toontown.distributed import DelayDelete
-from otp.nametag import NametagGroup
 from otp.nametag.NametagConstants import *
 from otp.nametag import NametagGlobals
-from toontown.toon import Toon
+from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownBattleGlobals
 from toontown.toonbase import ToontownGlobals
@@ -1567,15 +1566,11 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         return bossTrack
 
     def __makeWitnessToon(self):
-        dnaNetString = 't\x1b\x00\x01\x01\x00\x03\x00\x03\x01\x10\x13\x00\x13\x13'
-        npc = Toon.Toon()
-        npc.setDNAString(dnaNetString)
-        npc.setName(TTLocalizer.WitnessToonName)
-        npc.setPickable(0)
-        npc.setPlayerType(NametagGroup.CCNonPlayer)
-        npc.animFSM.request('Sit')
-        self.witnessToon = npc
+        if self.witnessToon:
+            return
+        self.witnessToon = NPCToons.createLocalNPC(13002)
         self.witnessToon.setPosHpr(*ToontownGlobals.LawbotBossWitnessStandPosHpr)
+        self.witnessToon.animFSM.request('Sit')
 
     def __cleanupWitnessToon(self):
         self.__hideWitnessToon()
@@ -1583,7 +1578,6 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
             self.witnessToon.removeActive()
             self.witnessToon.delete()
             self.witnessToon = None
-        return
 
     def __showWitnessToon(self):
         if not self.witnessToonOnstage:

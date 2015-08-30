@@ -132,6 +132,7 @@ CRBootedReasons = {100: 'You have been disconnected because someone else just lo
  102: 'You are not authorized to use administrator privileges.',
  103: 'You were banned by a moderator.\n\nBehave next time!',
  105: 'Toontown Stride is now temporarily closed for maintenance. Everyone who was playing has been disconnected from the game.\n\nFor more information, please visit the Toontown Stride website.',
+ 124: 'Your installed files are out of date!  Use the official launcher to download the newest version, or contact Toontown Stride Support if the problem persists.',
  153: 'The district you were playing on has been reset.  Everyone who was playing on that district has been disconnected.  However, you should be able to connect again and go right back into the game.',
  166: 'You were disconnected to prevent a district reset.'}
 CRBootedReasonUnknownCode = 'An unexpected problem has occurred (error code %s).  Your connection has been lost, but you should be able to connect again and go right back into the game.'
@@ -291,7 +292,6 @@ EmoteList = ['Wave',
  'Delighted',
  'Furious',
  'Laugh',
- 'Taunt',
  'Rage']
 EmoteWhispers = ['%s waves.',
  '%s is happy.',
@@ -318,7 +318,6 @@ EmoteWhispers = ['%s waves.',
  '%s is delighted.',
  '%s is furious.',
  '%s is laughing.',
- '%s taunts you.',
  '%s is raging.']
 EmoteFuncDict = {'Wave': 0,
  'Happy': 1,
@@ -345,8 +344,7 @@ EmoteFuncDict = {'Wave': 0,
  'Delighted': 22,
  'Furious': 23,
  'Laugh': 24,
- 'Taunt': 25,
- 'Rage': 26}
+ 'Rage': 25}
 SuitBrushOffs = {'f': ["I'm late for a meeting."],
  'p': ['Push off.'],
  'ym': ['Yes Man says NO.'],

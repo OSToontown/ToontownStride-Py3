@@ -4,6 +4,7 @@ from toontown.distributed.ToontownNetMessengerAI import ToontownNetMessengerAI
 from direct.distributed.PyDatagram import PyDatagram
 import traceback
 import sys
+import urlparse
 
 class ToontownInternalRepository(AstronInternalRepository):
     GameGlobalsId = OTP_DO_ID_TOONTOWN
@@ -21,13 +22,19 @@ class ToontownInternalRepository(AstronInternalRepository):
         self.__messenger = ToontownNetMessengerAI(self)
         if self.wantMongo:
             import pymongo
-            self.dbConn = pymongo.MongoClient(config.GetString('mongodb-url', 'localhost'))
-            self.dbGlobalCursor = self.dbConn.toontownstride
-            self.dbCursor = self.dbGlobalCursor['air-%d' % self.ourChannel]
+            mongourl = config.GetString('mongodb-url', 'mongodb://localhost')
+            replicaset = config.GetString('mongodb-replicaset', '')
+            db = (urlparse.urlparse(mongourl).path or '/Astron_Dev')[1:]
+            if replicaset:
+                self.dbConn = pymongo.MongoClient(mongourl, replicaset=replicaset)
+            else:
+                self.dbConn = pymongo.MongoClient(mongourl)
+            self.database = self.dbConn[db]
+            self.dbGlobalCursor = self.database.toontownstride
         else:
             self.dbConn = None
+            self.database = None
             self.dbGlobalCursor = None
-            self.dbCursor = None
     
     def sendNetEvent(self, message, sentArgs=[]):
         self.__messenger.send(message, sentArgs)

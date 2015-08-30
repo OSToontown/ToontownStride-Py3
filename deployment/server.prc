@@ -12,7 +12,6 @@ cogsuit-hack-prevent #t
 want-pets #t
 want-parties #f
 want-cogdominiums #t
-want-lawbot-cogdo #t
 want-anim-props #t
 want-game-tables #t
 want-find-four #t
@@ -20,13 +19,32 @@ want-chinese-checkers #t
 want-checkers #t
 want-house-types #t
 want-gifting #t
-want-top-toons #f
+want-top-toons #t
 want-language-selection #t
-estate-day-night #t
+estate-day-night #f
 want-mat-all-tailors #t
 is-server #t
 
+# Developer options:
+show-population #t
+want-instant-parties #t
+want-instant-delivery #t
+cogdo-pop-factor 1.5
+cogdo-ratio 0.5
+default-directnotify-level info
+
+# Crates:
+dont-destroy-crate #t
+get-key-reward-always #t
+get-crate-reward-always #t
+want-lawbot-cogdo #f
+
+server-timezone EST/EDT/-5
+
+want-emblems #f
+cogdo-want-barrel-room #f
+
 
 # Chat Settings
-want-whitelist #t
-want-sequence-list #t
+want-whitelist #f
+want-sequence-list #f

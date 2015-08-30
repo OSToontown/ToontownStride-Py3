@@ -12,7 +12,7 @@ ToonFont = 'phase_3/models/fonts/ImpressBT.ttf'
 SuitFont = 'phase_3/models/fonts/vtRemingtonPortable.ttf'
 SignFont = 'phase_3/models/fonts/MickeyFont'
 MinnieFont = 'phase_3/models/fonts/MinnieFont'
-FancyFont = 'phase_3/models/fonts/Comedy'
+ChalkFont = 'phase_3/models/fonts/Chawp.ttf'
 BuildingNametagFont = 'phase_3/models/fonts/MickeyFont'
 BuildingNametagShadow = None
 NametagFonts = (
@@ -551,6 +551,12 @@ INCOMPLETE_PROGRESS = 3
 INCOMPLETE_WRONG_NPC = 4
 COMPLETE = 5
 LEAVING = 6
+TheBrrrghTrackQuestDict = {GREETING: '',
+ QUEST: 'Now you are ready.\x07Go out and walk the earth until you know which track you would like to choose.\x07Choose wisely, because this is your final track.\x07When you are certain, return to me.',
+ INCOMPLETE_PROGRESS: 'Choose wisely.',
+ INCOMPLETE_WRONG_NPC: 'Choose wisely.',
+ COMPLETE: 'Very wise choice!',
+ LEAVING: 'Good luck.  Return to me when you have mastered your new skill.'}
 QuestDialog_3225 = {QUEST: "Oh, thanks for coming, _avName_!\x07The Cogs in the neighborhood frightened away my delivery person.\x07I don't have anyone to deliver this salad to _toNpcName_!\x07Can you do it for me? Thanks so much!_where_"}
 QuestDialog_2910 = {QUEST: 'Back so soon?\x07Great job on the spring.\x07The final item is a counter weight.\x07Stop by and see _toNpcName_ and bring back whatever you can get._where_'}
 QuestDialogDict = {
@@ -600,7 +606,7 @@ QuestDialogDict = {
        COMPLETE: 'Hope you have fun ordering things from Clarabelle!\x07I just finished redecorating my house. It looks Toontastic!\x07Keep doing ToonTasks to get more rewards!',
        LEAVING: QuestsDefaultLeaving},
  400: {GREETING: '',
-       QUEST: 'You will need more gags to fight higher level Cogs.\x07When you team up with other Toons against the Cogs, you can combine attacks for even more damage.\x07Try different combinations of gags to see what works best.\x07When you are ready to decide, come back here and choose.',
+       QUEST: 'Throw and Squirt are great, but you will need more gags to fight higher level Cogs.\x07When you team up with other Toons against the Cogs, you can combine attacks for even more damage.\x07Try different combinations of gags to see what works best.\x07For your next track, choose between Sound and Toonup.\x07Sound is special because when it hits, it damages all Cogs.\x07Toonup lets you heal other Toons in battle.\x07When you are ready to decide, come back here and choose.',
        INCOMPLETE_PROGRESS: 'Back so soon?  Okay, are you ready to choose?',
        INCOMPLETE_WRONG_NPC: 'Think about your decision before choosing.',
        COMPLETE: 'Good decision.  Now before you can use those gags, you must train for them.\x07You must complete a series of ToonTasks for training.\x07Each task will give you a single frame of your gag attack animation.\x07When you collect all 15, you can get the Final Gag Training task that will allow you to use your new gags.\x07You can check your progress in the Shticker Book.',
@@ -966,22 +972,18 @@ QuestDialogDict = {
         INCOMPLETE_PROGRESS: 'It seems you may not be so clever with the rod and reel.'},
  5250: {GREETING: '',
         LEAVING: '',
-        COMPLETE: 'Now you are ready.\x07Good luck.  Return to me when you have mastered your new skill.',
         QUEST: 'Aha!  These dice will look great hanging from the rearview mirror of my ox cart!\x07Now, show me that you can tell your enemies from one another.\x07Return when you have restored two of the tallest Lawbot buildings.',
         INCOMPLETE_PROGRESS: 'Do the buildings give you trouble?'},
  5258: {GREETING: '',
         LEAVING: '',
-        COMPLETE: 'Now you are ready.\x07Good luck.  Return to me when you have mastered your new skill.',
         QUEST: 'Aha!  These dice will look great hanging from the rearview mirror of my ox cart!\x07Now, show me that you can tell your enemies from one another.\x07Return when you have restored two of the tallest Bossbot buildings.',
         INCOMPLETE_PROGRESS: 'Do the buildings give you trouble?'},
  5259: {GREETING: '',
         LEAVING: '',
-        COMPLETE: 'Now you are ready.\x07Good luck.  Return to me when you have mastered your new skill.',
         QUEST: 'Aha!  These dice will look great hanging from the rearview mirror of my ox cart!\x07Now, show me that you can tell your enemies from one another.\x07Return when you have restored two of the tallest Cashbot buildings.',
         INCOMPLETE_PROGRESS: 'Do the buildings give you trouble?'},
  5260: {GREETING: '',
         LEAVING: '',
-        COMPLETE: 'Now you are ready.\x07Good luck.  Return to me when you have mastered your new skill.',
         QUEST: 'Aha!  These dice will look great hanging from the rearview mirror of my ox cart!\x07Now, show me that you can tell your enemies from one another.\x07Return when you have restored two of the tallest Sellbot buildings.',
         INCOMPLETE_PROGRESS: 'Do the buildings give you trouble?'},
  5200: {QUEST: 'Those sneaky Cogs are at it again.\x07_toNpcName_ has reported another missing item. Stop by and see if you can straighten it out._where_'},
@@ -3976,7 +3978,6 @@ EmoteHappy = 'Happy'
 EmoteSad = 'Sad'
 EmoteAnnoyed = 'Annoyed'
 EmoteSleep = 'Sleepy'
-StatPageTitle = 'Statistics'
 SuitBaseNameWithLevel = '%(name)s\n%(dept)s\nLevel %(level)s'
 HealthForceAcknowledgeMessage = 'You cannot leave the playground until your Laff meter is smiling!'
 InventoryTotalGags = 'Total gags\n%d / %d'
@@ -3985,7 +3986,6 @@ InventoryPinkSlip = '1 Pink Slip'
 InventoryCrateKeys = '%s Crate Keys'
 InventoryCrateKey = '1 Crate Key'
 InventoryDelete = 'DELETE'
-InventoryDeleteAll = 'DELETE ALL'
 InventoryDone = 'DONE'
 InventoryDeleteHelp = 'Click on a gag to DELETE it.'
 InventorySkillCredit = 'Skill credit: %s'
@@ -5610,7 +5610,7 @@ NPCToonNames = {20000: 'Tutorial Tom',
  2018: 'Doctor Surlee',
  2019: 'Doctor Dimm',
  2020: 'Professor Prepostera',
- 2021: 'Painter Joey',
+ 2021: 'Painter Eddy',
  2101: 'Dentist Daniel',
  2102: 'Sheriff Sherry',
  2103: 'Sneezy Kitty',
@@ -6270,7 +6270,8 @@ NPCToonNames = {20000: 'Tutorial Tom',
  11001: 'Healer Gabriel',
  12001: 'Healer Bill',
  12002: 'Mata Hairy',
- 13001: 'Healer Clover'}
+ 13001: 'Healer Clover',
+ 13002: 'Bumpy Bumblebehr'}
 zone2TitleDict = {2513: ('Toon Hall', ''),
  2514: ('Toontown Bank', ''),
  2516: ('Toontown School House', ''),
@@ -7594,7 +7595,6 @@ LawbotBossTaunts = ['%s, I find you in contempt of court!',
  'Strike that from the record.',
  'Your appeal has been rejected. I sentence you to sadness!',
  'Order in the court!']
-WitnessToonName = 'Bumpy Bumblebehr'
 WitnessToonPrepareBattleTwo = "Oh no! They're putting only Cogs on the jury!\x07Quick, use the cannons and shoot some Toon jurors into the jury chairs.\x07We need %d to get a balanced scale."
 WitnessToonNoJuror = 'Oh oh, no Toon jurors. This will be a tough trial.'
 WitnessToonOneJuror = 'Cool! There is 1 Toon in the jury!'
@@ -8528,9 +8528,12 @@ def convertSecondsToDate(seconds):
     return '%d:%02d:%02d' % (h, m, s)
 
 ToonDefeatedMessage = '%s was defeated!'
+
 BugReportButton = 'Report a Bug'
 BugReportNotice = 'Attention!\n\nThis button will open a browser which will send you to a third party bug tracker website. This site requires an Ubuntu One account to login. It may ask you to create an account.\n\nAre you sure you want to continue?'
+
 CodeRedemptionWarning = 'NOTICE: All codes can only be entered once!'
+
 CogInterfaceLabelOn = 'The cog battle interface is on.'
 CogInterfaceLabelOff = 'The cog battle interface is off.'
 TpTransitionLabelOn = 'The teleport transition is on.'
@@ -8538,6 +8541,7 @@ TpTransitionLabelOff = 'The teleport transition is off.'
 FieldOfViewLabel = 'Field of View:'
 NametagStyleLabel = 'Nametag Style:'
 FishingPoleLabel = 'Fishing Rod:'
+
 BossLocations = {
  'c': 'Bossbot Clubhouse\nBanquet',
  'l': "Lawbot Courthouse\nBumpy Bumblebehr's Trial",
@@ -8654,31 +8658,33 @@ CrateClothingPrize = "Congratulations! You've received a new clothing item. Chec
 CrateAccessoryPrize = 'Congratulations! You found a new accessory for your Toon. Check your mailbox and rock it!'
 
 Stats = [
- 'Cogs defeated: %(cog)s',
- 'V2.0 cogs defeated: %(v2)s',
- 'Skelecogs defeated: %(skele)s',
- 'Jellybeans spent: %(beanSpent)s',
- 'Jellybeans earnt: %(beanEarnt)s',
- 'Tasks completed: %(task)s',
- 'Total VP defeats: %(vp)s',
- 'Total CFO defeats: %(cfo)s',
- 'Total CJ defeats: %(cj)s',
- 'Total CEO defeats: %(ceo)s',
- 'Gone sad: %(sad)s times',
- 'Buildings liberated: %(bldg)s',
- 'Field Offices defeated: %(cogdo)s',
- 'Items purchased: %(item)s',
- 'Fish caught: %(fish)s',
- 'Flowers picked: %(flower)s',
- 'Races completed: %(race)s',
- 'Golf holes played: %(golf)s',
- 'Total SOS cards: %(sos)s',
- 'Total unites: %(unite)s',
- 'Total pink slips: %(slip)s',
- 'Total gags used: %(gag)s'
+ 'Cogs defeated: %s',
+ 'V2.0 cogs defeated: %s',
+ 'Skelecogs defeated: %s',
+ 'Jellybeans spent: %s',
+ 'Jellybeans earnt: %s',
+ 'Tasks completed: %s',
+ 'Total VP defeats: %s',
+ 'Total CFO defeats: %s',
+ 'Total CJ defeats: %s',
+ 'Total CEO defeats: %s',
+ 'Gone sad: %s times',
+ 'Buildings liberated: %s',
+ 'Offices defeated: %s',
+ 'Items ordered: %s',
+ 'Fish caught: %s',
+ 'Flowers picked: %s',
+ 'Races completed: %s',
+ 'Golf holes played: %s',
+ 'Total SOS cards: %s',
+ 'Total unites: %s',
+ 'Total pink slips: %s',
+ 'Total gags used: %s'
 ]
-StatResetAsk = 'Are you sure you want to reset your stats? This is an irreversible action!'
-StatResetDone = 'Your stats have been reset.'
+StatPageTitle = 'Statistics'
+StatPageClear = 'Clear'
+StatPageClearAsk = 'Are you sure you want to clear your stats? This is an irreversible action!'
+StatPageClearDone = 'Your stats have been cleared.'
 
 ChairAskToUse = 'Would you like to sit on this chair?'
 
@@ -8725,6 +8731,38 @@ ShardPageShardTitle = '%s Population: %s'
 ShardPageTeleport = 'Teleport to\n%s'
 
 TeleportButton = 'Teleport'
+TeleportButtonNoMoney = 'Sorry, but you need %s jellybeans to teleport!'
+TeleportButtonConfirm = 'Would you like to spend %s jellybeans to teleport?'
+TeleportButtonTakenOver = 'Sorry, but this shop has been taken over by the Cogs!'
+
+BattleCogPopup = '\x01androidGreen\x01Group attacks:\x02\n%s\n\n\x01androidGreen\x01Regular attacks:\x02\n%s'
+BattleCogPopupAttack = '%s %s HP'
+BattleCogPopupAttackDanger = '\x01red\x01' + BattleCogPopupAttack + '\x02'
+BattleCogPopupDanger = '\x01red\x01Dangerous!\x02\n\n'
+BattleCogPopupDangerColor = '\x01red'
+
+SuitPageAttackFormat = 'Levels: %s-%s\n\n' + BattleCogPopup
+SuitPageNoAttacks = 'None'
+
+BattleGagPopup = '%s: %s\nGags left: %s'
+BattleSOSPopup = '\x01azure\x01%s\x02\n%s\n%s%s stars\nSOS left: %s'
+BattleSOSPopupHeal = 'Heals'
+BattleSOSPopupHarm = 'Deals'
+BattleSOSPopupHP = '%s %s HP\n'
+
+DetailPanelSOS = 'SOS Cards'
+
+TeleportLabelOn = 'Accepting teleports.'
+TeleportLabelOff = 'Not accepting teleports.'
+TeleportPanelNoTeleport = '%s needs some time alone right now.'
+
+InventoryDeleteAll = 'DELETE ALL'
+InventoryDeleteConfirm = "Are you sure you want to delete all your gags? Don't worry, your level 7 gags are safe!"
+
+ClothesGUICount = '%s/%s'
+
+FpsMeterLabelOn = 'The frame rate meter is on.'
+FpsMeterLabelOff = 'The frame rate meter is off.'
 
 Blacklist = [
  "$1ut",

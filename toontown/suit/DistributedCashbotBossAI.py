@@ -145,7 +145,7 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
     def doNextAttack(self, task):
         if random.random() <= 0.2:
             self.b_setAttackCode(ToontownGlobals.BossCogAreaAttack)
-            taskMgr.doMethodLater(9.36, self.__reviveGoons, self.uniqueName('reviveGoons'))
+            taskMgr.doMethodLater(7.36, self.__reviveGoons, self.uniqueName('reviveGoons'))
         else:
             self.__doDirectedAttack()
             if self.heldObject == None and not self.waitingForHelmet:

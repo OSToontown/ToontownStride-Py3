@@ -63,7 +63,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self._playerAvDclass = self.dclassesByName['DistributedToon']
         setInterfaceFont(TTLocalizer.InterfaceFont)
         setSignFont(TTLocalizer.SignFont)
-        setFancyFont(TTLocalizer.FancyFont)
+        setChalkFont(TTLocalizer.ChalkFont)
         for i in xrange(len(TTLocalizer.NametagFonts)):
             setNametagFont(i, TTLocalizer.NametagFonts[i])
 

@@ -91,7 +91,7 @@ class ColorShop(StateData.StateData):
         self.pickContainer.setTransparency(True)
         self.pickImage = PNMImage(int((ToontownGlobals.COLOR_SATURATION_MAX - ToontownGlobals.COLOR_SATURATION_MIN) * 100), int((ToontownGlobals.COLOR_VALUE_MAX - ToontownGlobals.COLOR_VALUE_MIN) * 100))
         self.hueSlider = DirectSlider(parent=self.advancedFrame, relief=None, image='phase_3/maps/color_picker_hue.jpg', scale=0.3, pos=(-0.05, 0, -0.43), image_scale=(0.1, 1.0, 1.0), pageSize=5, orientation=DGG.VERTICAL, command=self.__chooseHue)
-        self.pickButton = DirectButton(parent=self.advancedFrame, relief=None, image='phase_3/maps/color_picker_empty.png', scale=0.3, pos=(-0.45, 0, -0.43), frameColor=(1, 1, 1, 0.1), pressEffect=0)
+        self.pickButton = DirectButton(parent=self.advancedFrame, relief=None, image='phase_3/maps/invisible.png', scale=0.3, pos=(-0.45, 0, -0.43), frameColor=(1, 1, 1, 0.1), pressEffect=0)
         self.pickButton.bind(DGG.B1PRESS, self.__startPickColor)
         self.pickButton.bind(DGG.B1RELEASE, self.__stopPickColor)
         self.partsFrame = DirectFrame(parent=self.advancedFrame, image=shuffleFrame, image_scale=halfButtonInvertScale, relief=None, pos=(-0.395, 0, -0.85), hpr=(0, 0, -2), scale=0.9, frameColor=(1, 1, 1, 1), text=TTLocalizer.ColorAll, text_scale=0.0625, text_pos=(-0.001, -0.015), text_fg=(1, 1, 1, 1))

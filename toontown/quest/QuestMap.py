@@ -30,9 +30,6 @@ class QuestMap(DirectFrame):
         self.cogInfoFrame.setPos(0, 0, 0.6)
         self.buildingMarkers = []
         self.av = av
-        self.wantToggle = False
-        if base.config.GetBool('want-toggle-quest-map', True):
-            self.wantToggle = True
         self.updateMarker = True
         self.cornerPosInfo = None
         self.hqPosInfo = None
@@ -46,8 +43,6 @@ class QuestMap(DirectFrame):
         for currHoodInfo in SuitPlannerBase.SuitPlannerBase.SuitHoodInfo:
             tracks = currHoodInfo[SuitPlannerBase.SuitPlannerBase.SUIT_HOOD_INFO_TRACK]
             self.suitPercentage[currHoodInfo[SuitPlannerBase.SuitPlannerBase.SUIT_HOOD_INFO_ZONE]] = tracks
-
-        return
 
     def load(self):
         gui = loader.loadModel('phase_4/models/questmap/questmap_gui')
@@ -279,7 +274,6 @@ class QuestMap(DirectFrame):
         self.obscureButton()
         self.ignore('questPageUpdated')
         taskMgr.remove('questMapUpdate')
-        return
 
     def handleMarker(self):
         if hasattr(base.cr.playGame.getPlace(), 'isInterior') and base.cr.playGame.getPlace().isInterior:
@@ -288,15 +282,9 @@ class QuestMap(DirectFrame):
             self.updateMarker = True
 
     def acceptOnscreenHooks(self):
-        if self.wantToggle:
-            self.accept(ToontownGlobals.MapHotkey, self.toggle)
-        else:
-            self.accept(ToontownGlobals.MapHotkeyOn, self.show)
-            self.accept(ToontownGlobals.MapHotkeyOff, self.hide)
+        self.accept(ToontownGlobals.MapHotkey, self.toggle)
         self.updateMap()
 
     def ignoreOnscreenHooks(self):
         self.ignore(ToontownGlobals.MapHotkey)
-        self.ignore(ToontownGlobals.MapHotkeyOn)
-        self.ignore(ToontownGlobals.MapHotkeyOff)
         self.obscureButton()

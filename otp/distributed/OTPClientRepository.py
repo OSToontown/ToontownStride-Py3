@@ -18,6 +18,7 @@ from otp.otpbase import OTPGlobals, OTPLocalizer
 from otp.otpgui import OTPDialog
 from otp.nametag.NametagConstants import *
 import sys, time, types, random
+import __builtin__
 
 class OTPClientRepository(ClientRepositoryBase):
     notify = directNotify.newCategory('OTPClientRepository')
@@ -222,7 +223,7 @@ class OTPClientRepository(ClientRepositoryBase):
         if dcFileNames == None:
             try:
                 # For Nirai
-                readResult = dcFile.read(dcStream, '__dc__')
+                readResult = dcFile.read(dcStream)
                 del __builtin__.dcStream
 
             except NameError:
@@ -468,7 +469,7 @@ class OTPClientRepository(ClientRepositoryBase):
         self.handler = self.handleMessageType
         messenger.send('connectionIssue')
         url = self.serverList[0]
-        self.notify.warning('Failed to connect to %s (%s %s).  Notifying user.' % (url.cStr(), statusCode, statusString))
+        self.notify.warning('Failed to connect to %s (%s %s).  Notifying user.' % (config.GetString('TTS_GAMESERVER'), statusCode, statusString))
         dialogClass = OTPGlobals.getGlobalDialogClass()
         self.failedToConnectBox = dialogClass(message=OTPLocalizer.CRNoConnectTryAgain % (url.getServer(), url.getPort()), doneEvent='failedToConnectAck', text_wordwrap=18, style=OTPDialog.TwoChoice)
         self.failedToConnectBox.show()
@@ -624,7 +625,7 @@ class OTPClientRepository(ClientRepositoryBase):
         else:
             message = OTPLocalizer.CRLostConnection
         reconnect = 1
-        if self.bootedIndex in (152, 127):
+        if self.bootedIndex in (152, 127, 124, 101, 102, 103):
             reconnect = 0
         if self.bootedIndex == 152:
             message = message % {'name': self.bootedText}

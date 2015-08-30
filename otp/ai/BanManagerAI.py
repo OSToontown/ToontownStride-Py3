@@ -10,7 +10,7 @@ from direct.showbase.DirectObject import DirectObject
 
 class BanFSM(FSM):
 
-    def __init__(self, air, avId, comment, duration):
+    def __init__(self, air, avId, comment, duration, banner):
         FSM.__init__(self, 'banFSM-%s' % avId)
         self.air = air
         self.avId = avId
@@ -21,10 +21,11 @@ class BanFSM(FSM):
         self.DISLid = None
         self.accountId = None
         self.avName = None
+        self.banner = banner
 
     def performBan(self, duration):
         executeHttpRequest('ban', username=self.accountId, start=int(time.time()),
-                           duration=duration, reason=self.comment, bannedby='todo')
+                           duration=duration, reason=self.comment, bannedby=self.banner)
 
     def ejectPlayer(self):
         av = self.air.doId2do.get(self.avId)
@@ -41,7 +42,7 @@ class BanFSM(FSM):
         simbase.air.send(datagram)
 
     def dbCallback(self, dclass, fields):
-        if dclass != self.air.dclassesByName['AccountAI']:
+        if dclass != simbase.air.dclassesByName['AccountAI']:
             return
 
         self.accountId = fields.get('ACCOUNT_ID')
@@ -99,8 +100,8 @@ class BanManagerAI(DirectObject):
         self.air = air
         self.banFSMs = {}
 
-    def ban(self, avId, duration, comment):
-        self.banFSMs[avId] = BanFSM(self.air, avId, comment, duration)
+    def ban(self, avId, duration, comment, banner):
+        self.banFSMs[avId] = BanFSM(self.air, avId, comment, duration, banner)
         self.banFSMs[avId].request('Start')
 
         self.acceptOnce(self.air.getAvatarExitEvent(avId), self.banDone, [avId])
@@ -136,5 +137,6 @@ def ban(reason, duration):
         return "You can't ban yourself!"
     if reason not in ('hacking', 'language', 'other'):
         return "'%s' is not a valid reason." % reason
-    simbase.air.banManager.ban(target.doId, duration, reason)
+    banner = spellbook.getInvoker().DISLid
+    simbase.air.banManager.ban(target.doId, duration, reason, banner)
     return "Banned %s from the game server!" % target.getName()

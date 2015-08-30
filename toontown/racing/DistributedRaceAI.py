@@ -33,6 +33,7 @@ class DistributedRaceAI(DistributedObjectAI, FSM):
         self.livingGags = []
         self.currentlyAffectedByAnvil = {}
         self.avatarProgress = {}
+        self.startTime = globalClockDelta.networkToLocalTime(globalClockDelta.getRealNetworkTime()) + 3
 
     def generate(self):
         for avatar in self.avatars:

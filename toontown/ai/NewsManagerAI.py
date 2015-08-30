@@ -47,7 +47,7 @@ class NewsManagerAI(DistributedObjectAI):
         return self.activeHolidays
 
     def __checkHolidays(self, task=None):
-        date = datetime.datetime.utcnow().replace(tzinfo=HolidayGlobals.TIME_ZONE)
+        date = datetime.datetime.now(HolidayGlobals.TIME_ZONE)
 
         for id in HolidayGlobals.Holidays:
             holiday = HolidayGlobals.Holidays[id]

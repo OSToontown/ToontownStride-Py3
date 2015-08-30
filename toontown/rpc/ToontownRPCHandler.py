@@ -2,7 +2,7 @@ import datetime
 from direct.distributed.MsgTypes import CLIENTAGENT_EJECT
 from direct.distributed.PyDatagram import PyDatagram
 from direct.stdpy import threading2
-import re
+import re, json
 
 from otp.distributed import OtpDoGlobals
 from toontown.distributed.ShardStatusReceiver import ShardStatusReceiver
@@ -437,8 +437,14 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
             On success: 100000000
             On failure: None
         """
-        if str(userId) in self.air.csm.accountDB.dbm:
-            return int(self.air.csm.accountDB.dbm[str(userId)])
+        response = executeHttpRequest('accountid', username=str(userId))
+        if response is not None:
+            response = json.loads(response)
+            if response['success'] is True:
+                return int(response['accountId'])
+            else:
+                print response['error']
+        return False
 
     @rpcmethod(accessLevel=MODERATOR)
     def rpc_getUserAvatars(self, userId):
@@ -642,8 +648,9 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
             dna.makeFromNetString(fields['setDNAString'][0])
             result['species'] = ToonDNA.getSpeciesName(dna.head)
 
-            result['head-color'] = dna.headColor
-            result['max-hp'] = fields['setMaxHp'][0]
+            result['head_color'] = dna.headColor
+            result['max_hp'] = fields['setMaxHp'][0]
+            result['hp'] = fields['setHp'][0]
             result['online'] = (avId in self.air.friendsManager.onlineToons)
 
             return result
@@ -661,13 +668,13 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
 
         Example response: [100000001, ...]
         """
-        if not config.GetBool('want-mongo-client', False):
+        if not config.GetBool('want-mongo', False):
             return []
         if not needle:
             return []
-        self.air.mongodb.astron.objects.ensure_index('fields.setName')
+        self.air.database.astron.objects.ensure_index('fields.setName')
         exp = re.compile('.*%s.*' % needle, re.IGNORECASE)
-        result = self.air.mongodb.astron.objects.find({'fields.setName._0': exp})
+        result = self.air.database.astron.objects.find({'fields.setName._0': exp})
         return [avatar['_id'] for avatar in result]
 
     # --- SHARDS ---

@@ -16,21 +16,21 @@ class DNABulkLoader:
 
 def loadDNABulk(dnaStorage, file):
     dnaLoader = DNALoader()
-    fileu = 'resources/' + file
-    dnaLoader.loadDNAFile(dnaStorage, fileu)
+    file = '/' + file
+    dnaLoader.loadDNAFile(dnaStorage, file)
 
 def loadDNAFile(dnaStorage, file):
     print 'Reading DNA file...', file
     dnaLoader = DNALoader()
-    fileu = 'resources/' + file
-    node = dnaLoader.loadDNAFile(dnaStorage, fileu)
+    file = '/' + file
+    node = dnaLoader.loadDNAFile(dnaStorage, file)
     if node.node().getNumChildren() > 0:
         return node.node()
 
 def loadDNAFileAI(dnaStorage, file):
     dnaLoader = DNALoader()
-    fileu = 'resources/' + file
-    data = dnaLoader.loadDNAFileAI(dnaStorage, fileu)
+    file = '/' + file
+    data = dnaLoader.loadDNAFileAI(dnaStorage, file)
     return data
 
 def setupDoor(a, b, c, d, e, f):

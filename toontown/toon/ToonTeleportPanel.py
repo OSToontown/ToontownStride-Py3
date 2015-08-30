@@ -62,6 +62,9 @@ class ToonTeleportPanel(DirectFrame):
             State.State('ignored',
                 self.enterIgnored,
                 self.exitIgnored),
+            State.State('noTeleport',
+                self.enterNoTeleport,
+                self.exitNoTeleport),
             State.State('notOnline',
                 self.enterNotOnline,
                 self.exitNotOnline),
@@ -148,10 +151,17 @@ class ToonTeleportPanel(DirectFrame):
         self.bOk.hide()
 
     def enterIgnored(self):
-        self['text'] = TTLocalizer.TeleportPanelNotAvailable % self.avName
+        self['text'] = TTLocalizer.TeleportPanelIgnored % self.avName
         self.bOk.show()
 
     def exitIgnored(self):
+        self.bOk.hide()
+    
+    def enterNoTeleport(self):
+        self['text'] = TTLocalizer.TeleportPanelNoTeleport % self.avName
+        self.bOk.show()
+
+    def exitNoTeleport(self):
         self.bOk.hide()
 
     def enterNotOnline(self):
@@ -270,6 +280,8 @@ class ToonTeleportPanel(DirectFrame):
         elif available == 2:
             teleportNotify.debug('__teleportResponse: ignored')
             self.fsm.request('ignored')
+        elif available == 3:
+            self.fsm.request('noTeleport')
         elif shardId != base.localAvatar.defaultShard:
             teleportNotify.debug('__teleportResponse: otherShard')
             self.fsm.request('otherShard', [shardId, hoodId, zoneId])

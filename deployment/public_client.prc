@@ -3,16 +3,24 @@
 # Config.prc should be reproduced here.
 
 # Client settings
-window-title Toontown Stride
+window-title Toontown Stride [Beta]
 server-version SERVER_VERSION_HERE
-audio-library-name p3openal_audio
 video-library-name p3ffmpeg
 want-dev #f
 preload-avatars #t
 
+game-type remote
+
+# Graphics:
+aux-display pandagl
+aux-display pandadx9
+aux-display p3tinydisplay
+
 
 # Textures:
 texture-anisotropic-degree 16
+
+server-timezone EST/EDT/-5
 
 
 # Resources settings
@@ -43,7 +51,6 @@ default-model-extension .bam
 want-pets #t
 want-parties #f
 want-cogdominiums #t
-want-lawbot-cogdo #t
 want-anim-props #t
 want-game-tables #t
 want-find-four #t
@@ -51,9 +58,9 @@ want-chinese-checkers #t
 want-checkers #t
 want-house-types #t
 want-gifting #t
-want-top-toons #f
+want-top-toons #t
 want-language-selection #t
-estate-day-night #t
+estate-day-night #f
 want-mat-all-tailors #t
 
 
@@ -67,14 +74,12 @@ want-dev #f
 want-pstats 0
 
 
-# Crates:
-dont-destroy-crate #t
-get-key-reward-always #t
-get-crate-reward-always #t
-
-
 # Chat:
-want-whitelist #t
+want-whitelist #f
+want-sequence-list #f
+
+want-emblems #f
+cogdo-want-barrel-room #f
 
 
 #<dev>
@@ -84,5 +89,20 @@ want-instant-delivery #t
 cogdo-pop-factor 1.5
 cogdo-ratio 0.5
 default-directnotify-level info
+
+# Core features:
+want-lawbot-cogdo #f
+
+# Crates:
+dont-destroy-crate #t
+get-key-reward-always #t
+get-crate-reward-always #t
 #</dev>
+
+#<prod>
+dont-destroy-crate #f
+get-key-reward-always #f
+get-crate-reward-always #f
+want-lawbot-cogdo #f
+#</prod>
 

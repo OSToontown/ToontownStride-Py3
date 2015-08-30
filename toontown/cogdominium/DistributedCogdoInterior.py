@@ -113,7 +113,6 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
         self._movie = None
         self.SOSToonName = None
         self.FOType = None
-        return
 
     def setShopOwnerNpcId(self, npcId):
         self.shopOwnerNpcId = npcId
@@ -202,13 +201,11 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
             self.shopOwnerNpc.removeActive()
             self.shopOwnerNpc.delete()
             self.shopOwnerNpc = None
-        return
 
     def __cleanupPenthouseIntro(self):
         if hasattr(self, '_movie') and self._movie:
             self._movie.unload()
             self._movie = None
-        return
 
     def delete(self):
         self._stashEntranceElevatorFC.destroy()
@@ -223,13 +220,9 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
         del self.fsm
         base.localAvatar.inventory.setBattleCreditMultiplier(1)
         DistributedObject.DistributedObject.delete(self)
-        return
 
     def isBossFloor(self, floorNum):
-        if not self.layout.hasBossBattle():
-            return False
-
-        return (self.layout.getBossBattleFloor() + 0) == floorNum
+        return self.layout.hasBossBattle() and (self.layout.getBossBattleFloor() + 0) == floorNum
 
     def __cleanup(self):
         self.toons = []
@@ -251,7 +244,6 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
         self.rightDoorIn = None
         self.leftDoorOut = None
         self.rightDoorOut = None
-        return
 
     def __addToon(self, toon):
         self.accept(toon.uniqueName('disable'), self.__handleUnexpectedExit, extraArgs=[toon])
@@ -404,7 +396,6 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
 
     def enterWaitForAllToonsInside(self, ts = 0):
         base.transitions.fadeOut(0)
-        return None
 
     def exitWaitForAllToonsInside(self):
         return None
@@ -568,7 +559,6 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
             self._movie.end()
             self.__cleanupPenthouseIntro()
         self.__finishInterval(self.elevatorName)
-        return None
 
     def __setupBarrelRoom(self):
         self.currentFloor += 1
@@ -607,7 +597,6 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
                 self.barrelRoomIntroTrack.finish()
                 DelayDelete.cleanupDelayDeletes(self.barrelRoomIntroTrack)
                 self.barrelRoomIntroTrack = None
-        return
 
     def __handleLocalToonLeftBarrelRoom(self):
         self.notify.info('Local toon teleported out of barrel room.')
@@ -620,6 +609,7 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
                 self.acceptOnce('localToonLeft', self.__handleLocalToonLeftBarrelRoom)
                 self.barrelRoom.activate()
                 base.playMusic(self.waitMusic, looping=1, volume=0.7)
+                base.localAvatar.questMap.stop()
 
     def exitCollectBarrels(self):
         if self._wantBarrelRoom and not self.isBossFloor(self.currentFloor):
@@ -675,13 +665,11 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
             self.__playCloseElevatorOut(self.uniqueName('close-out-elevator'))
             camera.setPos(0, -15, 6)
             camera.headsUp(self.elevatorModelOut)
-        return None
 
     def exitBattle(self):
         if self.elevatorOutOpen == 1:
             self.__finishInterval(self.uniqueName('close-out-elevator'))
             self.elevatorOutOpen = 0
-        return None
 
     def __playReservesJoining(self, ts, name, callback):
         index = 0
@@ -698,7 +686,6 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
 
     def enterReservesJoining(self, ts = 0):
         self.__playReservesJoining(ts, self.uniqueName('reserves-joining'), self.__handleReserveJoinDone)
-        return None
 
     def __handleReserveJoinDone(self):
         self.joiningReserves = []
@@ -707,7 +694,6 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
 
     def exitReservesJoining(self):
         self.__finishInterval(self.uniqueName('reserves-joining'))
-        return None
 
     def enterResting(self, ts = 0):
         self._showExitElevator()
@@ -734,7 +720,6 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
             self.penthouseOutroTrack.start(ts)
         else:
             self.exitCogdoBuilding()
-        return None
 
     def exitReward(self):
         self.notify.debug('exitReward')
@@ -747,16 +732,13 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
                 self.__outroPenthouseChatDone()
             self.penthouseOutroChatDoneTrack.finish()
             self.penthouseOutroChatDoneTrack = None
-        return
 
     def enterFailed(self, ts = 0):
         self.exitCogdoBuilding()
-        return None
 
     def exitFailed(self):
         self.notify.debug('exitFailed()')
         self.exitCogdoBuilding()
-        return None
 
     def exitCogdoBuilding(self):
         if base.localAvatar.hp < 0:
@@ -771,7 +753,6 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
          'avId': -1,
          'bldgDoId': self.distBldgDoId}
         messenger.send('DSIDoneEvent', [request])
-        return
 
     def displayBadges(self):
         numFloors = self.layout.getNumGameFloors()
@@ -796,9 +777,8 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
         track = Parallel(name=trackName)
         base.cr.playGame.getPlace().fsm.request('stopped')
 
-        if self.FOType == "l":
+        if self.FOType == 'l':
             speech = TTLocalizer.CogdoExecutiveSuiteToonThankYouLawbot
-
         else:
             speech = TTLocalizer.CogdoExecutiveSuiteToonThankYou % self.SOSToonName
 

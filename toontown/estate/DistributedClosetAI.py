@@ -206,8 +206,5 @@ class DistributedClosetAI(DistributedFurnitureItemAI):
     def setMovie(self, todo0, todo1, todo2):
         pass
 
-    def resetItemLists(self):
-        pass
-
     def setCustomerDNA(self, todo0, todo1):
         pass

@@ -1,14 +1,13 @@
 from panda3d.core import *
-import __builtin__, os
-import rc4
+import __builtin__, os, sys
+import aes
 
 import niraidata
 
 # Config
 prc = niraidata.CONFIG
-key, prc = prc[:32], prc[32:]
-rc4.rc4_setkey(key)
-prc = rc4.rc4(prc)
+iv, key, prc = prc[:16], prc[16:32], prc[32:]
+prc = aes.decrypt(prc, key, iv)
 
 for line in prc.split('\n'):
     line = line.strip()
@@ -16,43 +15,37 @@ for line in prc.split('\n'):
         loadPrcFileData('nirai config', line)
 
 del prc
+del iv
+del key
 
 # DC
 __builtin__.dcStream = StringStream()
 
 dc = niraidata.DC
-key, dc = dc[:32], dc[32:]
-rc4.rc4_setkey(key)
-dc = rc4.rc4(dc)
+iv, key, dc = dc[:16], dc[16:32], dc[32:]
+dc = aes.decrypt(dc, key, iv)
 
 dcStream.setData(dc)
 del dc
-rc4.rc4_setkey('\0\0\0\0')
+del iv
+del key
+
+# The VirtualFileSystem, which has already initialized, doesn't see the mount
+# directives in the config(s) yet. We have to force it to load those manually:
+#from panda3d.core import VirtualFileSystem, ConfigVariableList, Filename
+vfs = VirtualFileSystem.getGlobalPtr()
+mounts = ConfigVariableList('vfs-mount')
+for mount in mounts:
+    mountfile, mountpoint = (mount.split(' ', 2) + [None, None, None])[:2]
+    vfs.mount(Filename(mountfile), Filename(mountpoint), 0)
 
 # Resources
-# TO DO: Sign and verify the phases to prevent editing.
-
-vfs = VirtualFileSystem.getGlobalPtr()
-mfs = (3, 3.5, 4, 5, 5.5, 6, 7, 8, 9, 10, 11, 12, 13)
+# TO DO: Sign and verify the phases to prevent edition
 abort = False
-
-for mf in mfs:
-    filename = 'resources/default/phase_%s.mf' % mf
-    if not os.path.isfile(filename):
-        print 'Phase %s not found' % filename
-        abort = True
-        break
-
-    mf = Multifile()
-    mf.openRead(filename)
-
-    if not vfs.mount(mf, '../resources', 0):
-        print 'Unable to mount %s' % filename
-        abort = True
-        break
 
 # Packs
 pack = os.environ.get('TT_STRIDE_CONTENT_PACK')
+import glob
 if pack and pack != 'default':
     print 'Loading content pack', pack
     for file in glob.glob('resources/%s/*.mf' % pack):
@@ -61,15 +54,9 @@ if pack and pack != 'default':
         names = mf.getSubfileNames()
         for name in names:
             ext = os.path.splitext(name)[1]
-            if ext not in ('.jpg', '.jpeg', '.ogg', '.rgb'):
+            if ext not in ['.jpg', '.jpeg', '.ogg', '.rgb']:
                 mf.removeSubfile(name)
-
-        mf.flush()
-
-        if not vfs.mount(mf, '../resources', 0):
-            print 'Unable to mount %s' % filename
-            abort = True
-            break
+        vfs.mount(mf, Filename('/'), 0)
 
 if not abort:
     # Run

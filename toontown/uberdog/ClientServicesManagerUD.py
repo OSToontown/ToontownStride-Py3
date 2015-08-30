@@ -16,6 +16,7 @@ from panda3d.core import *
 import hashlib, hmac, json
 import anydbm, math, os
 import urllib2, time, urllib
+import cookielib, socket
 
 def rejectConfig(issue, securityIssue=True, retarded=True):
     print
@@ -72,17 +73,21 @@ minAccessLevel = config.GetInt('min-access-level', 100)
 def executeHttpRequest(url, **extras):
     # TO DO: THIS IS QUITE DISGUSTING
     # MOVE THIS TO ToontownInternalRepository (this might be interesting for AI)
+    ##### USE PYTHON 2.7.9 ON PROD WITH SSL AND CLOUDFLARE #####
     _data = {}
     if len(extras.items()) != 0:
         for k, v in extras.items():
             _data[k] = v
     signature = hashlib.sha512(json.dumps(_data) + apiSecret).hexdigest()
     data = urllib.urlencode({'data': json.dumps(_data), 'hmac': signature})
-    req = urllib2.Request('https://toontownstride.com/api/' + url, data,
+    cookie_jar = cookielib.LWPCookieJar()
+    cookie = urllib2.HTTPCookieProcessor(cookie_jar)
+    opener = urllib2.build_opener(cookie)
+    req = urllib2.Request('http://192.168.1.212/api/' + url, data,
                           headers={"Content-Type" : "application/x-www-form-urlencoded"})
     req.get_method = lambda: "POST"
     try:
-        return urllib2.urlopen(req).read()
+        return opener.open(req).read()
     except:
         return None
 
@@ -236,7 +241,12 @@ class RemoteAccountDB:
             Token = BASE64(H + X)
         '''
 
+        cookie_check = executeHttpRequest('cookie', cookie=token)
+
         try:
+            check = json.loads(cookie_check)
+            if check['success'] is not True:
+                raise ValueError(check['error'])
             token = token.decode('base64')
             hash, token = token[:hashSize], token[hashSize:]
             correctHash = hashAlgo(token + accountServerSecret).digest()
@@ -252,29 +262,35 @@ class RemoteAccountDB:
 
             token = json.loads(token.decode('base64')[::-1].decode('rot13'))
 
+            if token['notAfter'] < int(time.time()):
+                raise ValueError('Expired token.')
         except:
             resp = {'success': False}
             callback(resp)
             return resp
 
-        return self.lookup_account(token, callback)
+        return self.account_lookup(token, callback)
 
-    def lookup_account(self, data, callback):
-        userId = data['userId']
-
+    def account_lookup(self, data, callback):
         data['success'] = True
         data['accessLevel'] = max(data['accessLevel'], minAccessLevel)
-
         data['accountId'] = int(data['accountId'])
 
         callback(data)
         return data
-    
+
     def storeAccountID(self, userId, accountId, callback):
-        r = executeHttpRequest('associateUser', username=str(userId), accountId=str(accountId))
-        if r:
-            return 'SUCCESS'
-        return 'FAILURE'
+        r = executeHttpRequest('associateuser', username=str(userId), accountId=str(accountId))
+        try:
+            r = json.loads(r)
+            if r['success']:
+                callback(True)
+            else:
+                self.notify.warning('Unable to associate user %s with account %d, got the return message of %s!' % (userId, accountId, r['error']))
+                callback(False)
+        except:
+            self.notify.warning('Unable to associate user %s with account %d!' % (userId, accountId))
+            callback(False)
 
 
 # --- FSMs ---

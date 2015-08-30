@@ -490,6 +490,9 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def getNPCFriendsDict(self):
         return self.NPCFriendsDict
+    
+    def getNPCFriendCount(self, npcId):
+        return self.NPCFriendsDict.get(npcId, 0)
 
     def setNPCFriendsDict(self, NPCFriendsList):
         NPCFriendsDict = {}
@@ -589,6 +592,9 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def setTutorialAck(self, tutorialAck):
         self.tutorialAck = tutorialAck
+    
+    def getTutorialAck(self):
+        return self.tutorialAck
 
     def setEarnedExperience(self, earnedExp):
         self.earnedExperience = earnedExp
@@ -1176,6 +1182,8 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         DistributedSmoothNode.DistributedSmoothNode.d_setParent(self, parentToken)
 
     def setEmoteAccess(self, bits):
+        if bits[26]:
+            bits.remove(bits[26])
         self.emoteAccess = bits
         if self == base.localAvatar:
             messenger.send('emotesChanged')
@@ -1250,6 +1258,9 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def getTotalMoney(self):
         return self.getBankMoney() + self.getMoney()
+    
+    def takeMoney(self, money):
+        self.sendUpdate('takeMoney', [money])
 
     def setEmblems(self, emblems):
         if self.emblems != emblems:
@@ -2447,6 +2458,18 @@ def blackCat():
     Ask the black cat manager to turn you into a cat.
     """
     base.cr.blackCatMgr.requestBlackCatTransformation()
+
+@magicWord(category=CATEGORY_COMMUNITY_MANAGER)
+def toggleGM():
+    invoker = spellbook.getInvoker()
+    if invoker.gmIcon:
+        invoker.setWantAdminTag(False)
+        invoker.removeGMIcon()
+        invoker.setNametagName()#setName(invoker.getName())
+    else:
+        invoker.setWantAdminTag(True)
+        invoker.setGMIcon(invoker.getAdminAccess())
+        invoker.setNametagName()#setName(invoker.getName())
 
 @magicWord(category=CATEGORY_COMMUNITY_MANAGER, types=[str])
 def showParticle(name):

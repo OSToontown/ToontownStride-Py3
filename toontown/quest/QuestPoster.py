@@ -73,11 +73,18 @@ class QuestPoster(DirectFrame):
         self.teleportButton = DirectButton(parent=self.questFrame, relief=None, image=circleModel, text=TTLocalizer.TeleportButton, text_scale=0.035, text_pos=(-0.0025, -0.015), pos=(0.175, 0, 0.125), scale=0.75)  #, text_bg=(0, 0.75, 1, 1)
         self.teleportButton.hide()
         self.laffMeter = None
-        return
+        self.dialog = None
 
     def destroy(self):
         self._deleteGeoms()
+        self.destroyDialog()
         DirectFrame.destroy(self)
+    
+    def destroyDialog(self, extra=None):
+        if self.dialog:
+            self.dialog.destroy()
+            self.dialog = None
+            base.cr.playGame.getPlace().setState('walk')
 
     def _deleteGeoms(self):
         for icon in (self.lQuestIcon, self.rQuestIcon):
@@ -153,11 +160,7 @@ class QuestPoster(DirectFrame):
     def loadElevator(self, building, numFloors):
         elevatorNodePath = hidden.attachNewNode('elevatorNodePath')
         elevatorModel = loader.loadModel('phase_4/models/modules/elevator')
-        floorIndicator = [None,
-         None,
-         None,
-         None,
-         None]
+        floorIndicator = [None] * 5
         npc = elevatorModel.findAllMatches('**/floor_light_?;+s')
         for i in xrange(npc.getNumPaths()):
             np = npc.getPath(i)
@@ -174,6 +177,9 @@ class QuestPoster(DirectFrame):
         elevatorNodePath.setPosHpr(0, 0, 0, 0, 0, 0)
 
     def teleportToShop(self, npcId):
+        if base.cr.playGame.getPlace().getState() != 'walk':
+            return
+
         npcZone = NPCToons.getNPCZone(npcId)
         npcHood = ZoneUtil.getCanonicalHoodId(npcZone)
         hqZone = {2000:2520, 1000:1507, 3000:3508, 4000:4504, 5000:5502, 7000:7503, 9000:9505}
@@ -184,15 +190,32 @@ class QuestPoster(DirectFrame):
                 zoneId = 2000 
             npcHood = ZoneUtil.getCanonicalHoodId(zoneId)
             npcZone = hqZone.get(npcHood, 2520)
+        
+        cost = ToontownGlobals.getTeleportButtonCost(npcHood)
+        self.destroyDialog()
+        base.cr.playGame.getPlace().setState('stopped')
+        
+        if base.localAvatar.getTotalMoney() < cost:
+            self.dialog = TTDialog.TTDialog(style=TTDialog.Acknowledge, text=TTLocalizer.TeleportButtonNoMoney % cost, command=self.destroyDialog)
+        else:
+            self.dialog = TTDialog.TTDialog(style=TTDialog.YesNo, text=TTLocalizer.TeleportButtonConfirm % cost, command=lambda value: self.teleportToShopConfirm(npcZone, npcHood, cost, value))
 
-        base.cr.buildingQueryMgr.d_isSuit(npcZone, lambda isSuit: self.teleportToShopCallback(npcZone, npcHood, isSuit))
+        self.dialog.show()
     
-    def teleportToShopCallback(self, npcZone, npcHood, flag):
+    def teleportToShopConfirm(self, npcZone, npcHood, cost, value):
+        self.destroyDialog()
+
+        if value > 0:
+            base.cr.buildingQueryMgr.d_isSuit(npcZone, lambda isSuit: self.teleportToShopCallback(npcZone, npcHood, cost, isSuit))
+    
+    def teleportToShopCallback(self, npcZone, npcHood, cost, flag):
         if flag:
-            self.teleportButton.setColorScale(0.3, 0.3, 0.3, 1.0)
+            base.cr.playGame.getPlace().setState('stopped')
+            self.dialog = TTDialog.TTDialog(style=TTDialog.Acknowledge, text=TTLocalizer.TeleportButtonTakenOver, command=self.destroyDialog)
+            self.dialog.show()
             return
         
-        self.teleportButton.setColorScale(1.0, 1.0, 1.0, 1.0)
+        base.localAvatar.takeMoney(cost)
         base.cr.playGame.getPlace().requestTeleport(npcHood, npcZone, base.localAvatar.defaultShard, -1)
 
     def fitGeometry(self, geom, fFlip = 0, dimension = 0.8):
@@ -228,6 +251,7 @@ class QuestPoster(DirectFrame):
         self.rPictureFrame.hide()
         self.questProgress.hide()
         self.teleportButton.hide()
+        self.destroyDialog()
         if hasattr(self, 'chooseButton'):
             self.chooseButton.destroy()
             del self.chooseButton
@@ -419,8 +443,8 @@ class QuestPoster(DirectFrame):
         elif quest.getType() == Quests.TrackChoiceQuest:
             frameBgColor = 'green'
             invModel = loader.loadModel('phase_3.5/models/gui/inventory_icons')
-            track1, track2 = quest.getChoices(base.localAvatar)
 
+            track1, track2 = quest.getChoices()
             lIconGeom = invModel.find('**/' + AvPropsNew[track1][1])
 
             if not fComplete:

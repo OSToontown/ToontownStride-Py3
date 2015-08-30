@@ -150,6 +150,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.createSystemMsgAckGui()
             self.acceptingNewFriends = True
             self.acceptingNonFriendWhispers = True
+            self.acceptingTeleport = True
             self.physControls.event.addAgainPattern('again%in')
             self.oldPos = None
             self.questMap = None
@@ -214,14 +215,19 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
 
         acceptingNewFriends = settings.get('acceptingNewFriends', {})
         acceptingNonFriendWhispers = settings.get('acceptingNonFriendWhispers', {})
+        acceptingTeleport = settings.get('acceptingTeleport', {})
         if str(self.doId) not in acceptingNewFriends:
             acceptingNewFriends[str(self.doId)] = True
             settings['acceptingNewFriends'] = acceptingNewFriends
         if str(self.doId) not in acceptingNonFriendWhispers:
             acceptingNonFriendWhispers[str(self.doId)] = True
             settings['acceptingNonFriendWhispers'] = acceptingNonFriendWhispers
+        if str(self.doId) not in acceptingTeleport:
+            acceptingTeleport[str(self.doId)] = True
+            settings['acceptingTeleport'] = acceptingTeleport
         self.acceptingNewFriends = acceptingNewFriends[str(self.doId)]
         self.acceptingNonFriendWhispers = acceptingNonFriendWhispers[str(self.doId)]
+        self.acceptingTeleport = acceptingTeleport[str(self.doId)]
 
     def disable(self):
         self.laffMeter.destroy()
@@ -420,9 +426,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         base.playSfx(self.soundWhisper)
 
     def isLocal(self):
-        return 1
-
-    def canChat(self):
         return 1
 
     def startChat(self):
@@ -932,8 +935,8 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.friendsListButtonObscured += increment
         self.refreshOnscreenButtons()
 
-    def obscureMoveFurnitureButton(self, increment):
-        self.moveFurnitureButtonObscured += increment
+    def obscureMoveFurnitureButton(self, obscured):
+        self.moveFurnitureButtonObscured = obscured
         self.refreshOnscreenButtons()
 
     def obscureClarabelleButton(self, increment):
@@ -968,7 +971,10 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
                 self.__catalogNotifyDialog = None
         else:
             self.newCatalogNotify()
-        if self.moveFurnitureButtonObscured <= 0:
+        if self.moveFurnitureButtonObscured:
+            if self.__furnitureGui:
+                self.__furnitureGui.hide()
+        else:
             if self.furnitureManager != None and self.furnitureDirector == self.doId:
                 self.loadFurnitureGui()
                 self.__furnitureGui.setPos(0.155, -0.6, -1.045)

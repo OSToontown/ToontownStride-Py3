@@ -177,6 +177,7 @@ class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):
 
         self.notify.debug('Entering Phone Sphere....')
         taskMgr.remove(self.uniqueName('ringDoLater'))
+        base.localAvatar.obscureMoveFurnitureButton(1)
         self.cr.playGame.getPlace().detectedPhoneCollision()
         self.hasLocalAvatar = 1
         self.sendUpdate('avatarEnter', [])
@@ -184,6 +185,7 @@ class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):
     def __handlePhoneDone(self):
         self.sendUpdate('avatarExit', [])
         self.ignore(self.phoneGuiDoneEvent)
+        base.localAvatar.obscureMoveFurnitureButton(0)
         self.setPos(self.getPos())
         self.phoneGui = None
 

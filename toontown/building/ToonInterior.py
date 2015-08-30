@@ -176,16 +176,17 @@ class ToonInterior(Place.Place):
 
     def enterTeleportIn(self, requestStatus):
         modelType = DistributedToonInterior.DistributedToonInterior(base.cr).getModelType(self.getZoneId())
-        if ZoneUtil.isHQ(self.zoneId):
+        if self.zoneId == ToontownGlobals.ToonHall:
+            base.localAvatar.setPosHpr(-63.5, 30.5, ToontownGlobals.FloorOffset, 90.0, 0.0, 0.0)
+        elif ZoneUtil.isHQ(self.zoneId):
             base.localAvatar.setPosHpr(-5.5, -1.5, ToontownGlobals.FloorOffset, 0.0, 0.0, 0.0)
         elif ZoneUtil.isPetshop(self.zoneId):
             base.localAvatar.setPosHpr(0, 0, ToontownGlobals.FloorOffset, 45.0, 0.0, 0.0)
+        elif modelType in InteriorTypes:
+            area = InteriorTypes[modelType]
+            base.localAvatar.setPosHpr(area[0], area[1], ToontownGlobals.FloorOffset, area[2], 0.0, 0.0)
         else:
-            if modelType in InteriorTypes:
-                area = InteriorTypes[modelType]
-                base.localAvatar.setPosHpr(area[0], area[1], ToontownGlobals.FloorOffset, area[2], 0.0, 0.0)
-            else:
-                base.localAvatar.setPosHpr(2.5, 11.5, ToontownGlobals.FloorOffset, 45.0, 0.0, 0.0)
+            base.localAvatar.setPosHpr(2.5, 11.5, ToontownGlobals.FloorOffset, 45.0, 0.0, 0.0)
         Place.Place.enterTeleportIn(self, requestStatus)
 
     def enterTeleportOut(self, requestStatus):

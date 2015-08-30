@@ -1951,6 +1951,10 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         return anyChanged
 
     def b_setEmoteAccess(self, bits):
+        if bits[26]:
+            bits.remove(bits[26])
+        if self.emoteAccess[26]:
+            self.emoteAccess.remove(self.emoteAccess[26])
         self.setEmoteAccess(bits)
         self.d_setEmoteAccess(bits)
 
@@ -1958,6 +1962,10 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.sendUpdate('setEmoteAccess', [bits])
 
     def setEmoteAccess(self, bits):
+        if bits[26]:
+            bits.remove(bits[26])
+        if self.emoteAccess[26]:
+            self.emoteAccess.remove(self.emoteAccess[26])
         maxBitCount = len(self.emoteAccess)
         bits = bits[:maxBitCount]
         bitCount = len(bits)
@@ -3126,6 +3134,24 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
          self.zoneId))
         return ['success', suitIndex, building.doId]
 
+    def doToonBuildingTakeover(self):
+        streetId = ZoneUtil.getBranchZone(self.zoneId)
+        if streetId not in self.air.suitPlanners:
+            self.notify.warning('Street %d is not known.' % streetId)
+            return ['badlocation', 'notknownstreet', 0]
+        sp = self.air.suitPlanners[streetId]
+        bm = sp.buildingMgr
+        building = self.findClosestSuitDoor()
+        if building == None:
+            return ['badlocation', 'nobuilding', 0]
+        if building.isToonBlock():
+            return ['badlocation', 'toonblock', 0]
+        building.toonTakeOver()
+        self.notify.warning('toonTakeOverFromStreet %s %d' % (building.block,
+         self.zoneId))
+        
+        return ['success', building.doId]
+
     def doCogdoTakeOver(self, suitIndex):
         if suitIndex >= len(SuitDNA.suitHeadTypes):
             self.notify.warning('Bad suit index: %s' % suitIndex)
@@ -3294,6 +3320,31 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
                 if not NPCToons.isZoneProtected(intZoneId):
                     if hasattr(building, 'door'):
                         if building.door.zoneId == zone:
+                            return building
+
+        return None
+
+    def findClosestSuitDoor(self):
+        zoneId = self.zoneId
+        streetId = ZoneUtil.getBranchZone(zoneId)
+        sp = self.air.suitPlanners[streetId]
+        if not sp:
+            return None
+        bm = sp.buildingMgr
+        if not bm:
+            return None
+        zones = [zoneId,
+         zoneId - 1,
+         zoneId + 1,
+         zoneId - 2,
+         zoneId + 2]
+        for zone in zones:
+            for i in bm.getSuitBlocks():
+                building = bm.getBuilding(i)
+                extZoneId, intZoneId = building.getExteriorAndInteriorZoneId()
+                if not NPCToons.isZoneProtected(intZoneId):
+                    if hasattr(building, 'elevator'):
+                        if building.elevator.zoneId == zone:
                             return building
 
         return None
@@ -4213,20 +4264,20 @@ def cheesyEffect(value, hood=0, expire=0):
         return 'Invalid cheesy effect value: %d' % value
     if (hood != 0) and (not 1000 <= hood < ToontownGlobals.DynamicZonesBegin):
         return 'Invalid hood ID: %d' % hood
-    invoker = spellbook.getInvoker()
-    invoker.b_setCheesyEffect(value, hood, expire)
-    return 'Set your cheesy effect to: %d' % value
+    target = spellbook.getTarget()
+    target.b_setCheesyEffect(value, hood, expire)
+    return 'Set %s\'s cheesy effect to: %d' % (target.getName(), value)
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[int])
 def hp(hp):
     """
-    Modify the invoker's current HP.
+    Modify the target's current HP.
     """
-    invoker = spellbook.getInvoker()
-    maxHp = invoker.getMaxHp()
+    target = spellbook.getTarget()
+    maxHp = target.getMaxHp()
     if not -1 <= hp <= maxHp:
         return 'HP must be in range (-1-%d).' % maxHp
-    invoker.b_setHp(hp)
+    target.b_setHp(hp)
     return 'Set your HP to: %d' % hp
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[int])
@@ -4253,24 +4304,24 @@ def textColor(color):
 @magicWord(category=CATEGORY_MODERATOR, types=[str])
 def allSummons():
     """
-    Max the invoker's summons
+    Max the target's summons
     """
-    invoker = spellbook.getInvoker()
+    target = spellbook.getTarget()
 
     numSuits = len(SuitDNA.suitHeadTypes)
     fullSetForSuit = 1 | 2 | 4 | 8 | 16 | 32
     allSummons = numSuits * [fullSetForSuit]
-    invoker.b_setCogSummonsEarned(allSummons)
+    target.b_setCogSummonsEarned(allSummons)
     return 'Lots of summons!'
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[str])
 def maxToon(missingTrack=None):
     """
-    Max the invoker's stats for end-level gameplay.
+    Max the target's stats for end-level gameplay.
     """
-    invoker = spellbook.getInvoker()
+    target = spellbook.getTarget()
 
-    # First, unlock the invoker's Gag tracks:
+    # First, unlock the target's Gag tracks:
     gagTracks = [1, 1, 1, 1, 1, 1, 1]
     if missingTrack is not None:
         try:
@@ -4281,23 +4332,23 @@ def maxToon(missingTrack=None):
         if index in (4, 5):
             return 'You are required to have Throw and Squirt.'
         gagTracks[index] = 0
-    invoker.b_setTrackAccess(gagTracks)
-    invoker.b_setMaxCarry(80)
+    target.b_setTrackAccess(gagTracks)
+    target.b_setMaxCarry(80)
 
     # Next, max out their experience for the tracks they have:
-    experience = Experience.Experience(invoker.getExperience(), invoker)
-    for i, track in enumerate(invoker.getTrackAccess()):
+    experience = Experience.Experience(target.getExperience(), target)
+    for i, track in enumerate(target.getTrackAccess()):
         if track:
             experience.experience[i] = (
                 Experience.MaxSkill - Experience.UberSkill)
-    invoker.b_setExperience(experience.makeNetString())
+    target.b_setExperience(experience.makeNetString())
 
     # Max out their Laff:
-    invoker.b_setMaxHp(ToontownGlobals.MaxHpLimit)
-    invoker.toonUp(invoker.getMaxHp() - invoker.hp)
+    target.b_setMaxHp(ToontownGlobals.MaxHpLimit)
+    target.toonUp(target.getMaxHp() - target.hp)
 
     # Unlock all of the emotes:
-    emotes = list(invoker.getEmoteAccess())
+    emotes = list(target.getEmoteAccess())
     for emoteId in OTPLocalizer.EmoteFuncDict.values():
         if emoteId >= len(emotes):
             continue
@@ -4306,10 +4357,10 @@ def maxToon(missingTrack=None):
         if emoteId in (17, 18, 19):
             continue
         emotes[emoteId] = 1
-    invoker.b_setEmoteAccess(emotes)
+    target.b_setEmoteAccess(emotes)
 
     # Max out their Cog suits:
-    invoker.b_setCogParts(
+    target.b_setCogParts(
         [
             CogDisguiseGlobals.PartsPerSuitBitmasks[0],  # Bossbot
             CogDisguiseGlobals.PartsPerSuitBitmasks[1],  # Lawbot
@@ -4317,58 +4368,58 @@ def maxToon(missingTrack=None):
             CogDisguiseGlobals.PartsPerSuitBitmasks[3]   # Sellbot
         ]
     )
-    invoker.b_setCogLevels([49] * 4)
-    invoker.b_setCogTypes([7, 7, 7, 7])
+    target.b_setCogLevels([49] * 4)
+    target.b_setCogTypes([7, 7, 7, 7])
 
     # Max their Cog gallery:
     deptCount = len(SuitDNA.suitDepts)
-    invoker.b_setCogCount(list(CogPageGlobals.COG_QUOTAS[1]) * deptCount)
+    target.b_setCogCount(list(CogPageGlobals.COG_QUOTAS[1]) * deptCount)
     cogStatus = [CogPageGlobals.COG_COMPLETE2] * SuitDNA.suitsPerDept
-    invoker.b_setCogStatus(cogStatus * deptCount)
-    invoker.b_setCogRadar([1, 1, 1, 1])
-    invoker.b_setBuildingRadar([1, 1, 1, 1])
+    target.b_setCogStatus(cogStatus * deptCount)
+    target.b_setCogRadar([1, 1, 1, 1])
+    target.b_setBuildingRadar([1, 1, 1, 1])
 
     # Max out their racing tickets:
-    invoker.b_setTickets(99999)
+    target.b_setTickets(99999)
 
     # Give them teleport access everywhere (including Cog HQs):
     hoods = list(ToontownGlobals.HoodsForTeleportAll)
-    invoker.b_setHoodsVisited(hoods)
-    invoker.b_setTeleportAccess(hoods)
+    target.b_setHoodsVisited(hoods)
+    target.b_setTeleportAccess(hoods)
 
     # Max their quest carry limit:
-    invoker.b_setQuestCarryLimit(4)
+    target.b_setQuestCarryLimit(4)
 
     # Complete their quests:
-    invoker.b_setQuests([])
-    invoker.b_setRewardHistory(Quests.ELDER_TIER, [])
+    target.b_setQuests([])
+    target.b_setRewardHistory(Quests.ELDER_TIER, [])
 
     # Max their money:
-    invoker.b_setMaxMoney(250)
-    invoker.b_setMaxBankMoney(30000)
-    invoker.b_setMoney(invoker.getMaxMoney())
-    invoker.b_setBankMoney(invoker.getMaxBankMoney())
+    target.b_setMaxMoney(250)
+    target.b_setMaxBankMoney(30000)
+    target.b_setMoney(target.getMaxMoney())
+    target.b_setBankMoney(target.getMaxBankMoney())
 
     # Finally, unlock all of their pet phrases:
     if simbase.wantPets:
-        invoker.b_setPetTrickPhrases(range(7))
+        target.b_setPetTrickPhrases(range(7))
 
     return 'Maxed your Toon!'
 
 @magicWord(category=CATEGORY_PROGRAMMER)
 def unlocks():
     """
-    Unlocks the invoker's teleport access, emotions, and pet trick phrases.
+    Unlocks the target's teleport access, emotions, and pet trick phrases.
     """
-    invoker = spellbook.getInvoker()
+    target = spellbook.getTarget()
 
     # First, unlock their teleport access:
     hoods = list(ToontownGlobals.HoodsForTeleportAll)
-    invoker.b_setHoodsVisited(hoods)
-    invoker.b_setTeleportAccess(hoods)
+    target.b_setHoodsVisited(hoods)
+    target.b_setTeleportAccess(hoods)
 
     # Next, unlock all of their emotions:
-    emotes = list(invoker.getEmoteAccess())
+    emotes = list(target.getEmoteAccess())
     for emoteId in OTPLocalizer.EmoteFuncDict.values():
         if emoteId >= len(emotes):
             continue
@@ -4377,20 +4428,20 @@ def unlocks():
         if emoteId in (17, 18, 19):
             continue
         emotes[emoteId] = 1
-    invoker.b_setEmoteAccess(emotes)
+    target.b_setEmoteAccess(emotes)
 
     # Finally, unlock all of their pet phrases:
     if simbase.wantPets:
-        invoker.b_setPetTrickPhrases(range(7))
+        target.b_setPetTrickPhrases(range(7))
 
     return 'Unlocked teleport access, emotions, and pet trick phrases!'
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[int, str])
 def sos(count, name):
     """
-    Modifies the invoker's specified SOS card count.
+    Modifies the target's specified SOS card count.
     """
-    invoker = spellbook.getInvoker()
+    target = spellbook.getTarget()
     if not 0 <= count <= 100:
         return 'Your SOS count must be in range (0-100).'
     for npcId, npcName in TTLocalizer.NPCToonNames.items():
@@ -4400,43 +4451,43 @@ def sos(count, name):
             break
     else:
         return 'SOS card %s was not found!' % name
-    if (count == 0) and (npcId in invoker.NPCFriendsDict):
-        del invoker.NPCFriendsDict[npcId]
+    if (count == 0) and (npcId in target.NPCFriendsDict):
+        del target.NPCFriendsDict[npcId]
     else:
-        invoker.NPCFriendsDict[npcId] = count
-    invoker.d_setNPCFriendsDict(invoker.NPCFriendsDict)
-    return "You were given %d %s SOS cards." % (count, name)
+        target.NPCFriendsDict[npcId] = count
+    target.d_setNPCFriendsDict(target.NPCFriendsDict)
+    return "%s was given %d %s SOS cards." % (target.getName(), count, name)
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[int])
 def unites(value=32767):
     """
     Restock all resistance messages.
     """
-    invoker = spellbook.getInvoker()
+    target = spellbook.getTarget()
     value = min(value, 32767)
-    invoker.restockAllResistanceMessages(value)
-    return 'Restocked %d unites!' % value
+    target.restockAllResistanceMessages(value)
+    return 'Restocked %d unites for %s!' % (value, target.getName())
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[int])
 def fires(count):
     """
-    Modifies the invoker's pink slip count.
+    Modifies the target's pink slip count.
     """
-    invoker = spellbook.getInvoker()
+    target = spellbook.getTarget()
     if not 0 <= count <= 255:
         return 'Your fire count must be in range (0-255).'
-    invoker.b_setPinkSlips(count)
-    return 'You were given %d fires.' % count
+    target.b_setPinkSlips(count)
+    return '%s was given %d fires.' % (target.getName(), count)
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[int])
 def crateKeys(count):
     """
     Modifies the invoker's crate key count.
     """
-    invoker = spellbook.getInvoker()
+    target = spellbook.getTarget()
     if not 0 <= count <= 255:
         return 'Your crate key must be in range (0-255).'
-    invoker.b_setCrateKeys(count)
+    target.b_setCrateKeys(count)
     return 'You were given %d crate keys.' % count
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[int])
@@ -4534,66 +4585,54 @@ def squish(laff):
 @magicWord(category=CATEGORY_CREATIVE, types=[int, int])
 def hat(hatIndex, hatTex=0):
     """
-    Modify the invoker's hat.
+    Modify the target's hat.
     """
     if not 0 <= hatIndex < len(ToonDNA.HatModels):
         return 'Invalid hat index.'
     if not 0 <= hatTex < len(ToonDNA.HatTextures):
         return 'Invalid hat texture.'
-    invoker = spellbook.getInvoker()
     target = spellbook.getTarget()
-    if target != invoker:
-        target.b_setHat(hatIndex, hatTex, 0)
-        return "Set %s's hat to %d, %d!" % (target.getName(), hatIndex, hatTex)
-    invoker.b_setHat(hatIndex, hatTex, 0)
-    return "Set %s's hat to %d, %d!" % (invoker.getName(), hatIndex, hatTex)
+    target.b_setHat(hatIndex, hatTex, 0)
+    return "Set %s's hat to %d, %d!" % (target.getName(), hatIndex, hatTex)
 
 @magicWord(category=CATEGORY_CREATIVE, types=[int, int])
 def glasses(glassesIndex, glassesTex=0):
     """
-    Modify the invoker's glasses.
+    Modify the target's glasses.
     """
     if not 0 <= glassesIndex < len(ToonDNA.GlassesModels):
         return 'Invalid glasses index.'
     if not 0 <= glassesTex < len(ToonDNA.GlassesTextures):
         return 'Invalid glasses texture.'
-    invoker = spellbook.getInvoker()
     target = spellbook.getTarget()
-    if target != invoker:
-        target.b_setGlasses(glassesIndex, glassesTex, 0)
-        return "Set %s's glasses to %d, %d!" % (target.getName(), glassesIndex, glassesTex)
-    invoker.b_setGlasses(glassesIndex, glassesTex, 0)
-    return "Set %s's glasses to %d, %d!" % (invoker.getName(), glassesIndex, glassesTex)
+    target.b_setGlasses(glassesIndex, glassesTex, 0)
+    return "Set %s's glasses to %d, %d!" % (target.getName(), glassesIndex, glassesTex)
 
 @magicWord(category=CATEGORY_CREATIVE, types=[int, int])
 def backpack(backpackIndex, backpackTex=0):
     """
-    Modify the invoker's backpack.
+    Modify the target's backpack.
     """
     if not 0 <= backpackIndex < len(ToonDNA.BackpackModels):
         return 'Invalid backpack index.'
     if not 0 <= backpackTex < len(ToonDNA.BackpackTextures):
         return 'Invalid backpack texture.'
-    invoker = spellbook.getInvoker()
-    invoker.b_setBackpack(backpackIndex, backpackTex, 0)
-    return "Set %s's backpack to %d, %d!" % (invoker.getName(), backpackIndex, backpackTex)
+    target = spellbook.getTarget()
+    target.b_setBackpack(backpackIndex, backpackTex, 0)
+    return "Set %s's backpack to %d, %d!" % (target.getName(), backpackIndex, backpackTex)
 
 @magicWord(category=CATEGORY_CREATIVE, types=[int, int])
 def shoes(shoesIndex, shoesTex=0):
     """
-    Modify the invoker's shoes.
+    Modify the target's shoes.
     """
     if not 0 <= shoesIndex < len(ToonDNA.ShoesModels):
         return 'Invalid shoes index.'
     if not 0 <= shoesTex < len(ToonDNA.ShoesTextures):
         return 'Invalid shoes texture.'
-    invoker = spellbook.getInvoker()
     target = spellbook.getTarget()
-    if target != invoker:
-        target.b_setShoes(shoesIndex, shoesTex, 0)
-        return "Set %s's shoes to %d, %d!" % (target.getName(), shoesIndex, shoesTex)
-    invoker.b_setShoes(shoesIndex, shoesTex, 0)
-    return "Set %s's shoes to %d, %d!" % (invoker.getName(), shoesIndex, shoesTex)
+    target.b_setShoes(shoesIndex, shoesTex, 0)
+    return "Set %s's shoes to %d, %d!" % (target.getName(), shoesIndex, shoesTex)
 
 @magicWord(category=CATEGORY_COMMUNITY_MANAGER)
 def ghost():
@@ -4646,8 +4685,8 @@ def cogIndex(index):
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[str, int, int])
 def inventory(a, b=None, c=None):
-    invoker = spellbook.getInvoker()
-    inventory = invoker.inventory
+    target = spellbook.getTarget()
+    inventory = target.inventory
     if a == 'reset':
         maxLevelIndex = b or 5
         if not 0 <= maxLevelIndex < len(ToontownBattleGlobals.Levels[0]):
@@ -4658,7 +4697,7 @@ def inventory(a, b=None, c=None):
         for track in xrange(0, len(ToontownBattleGlobals.Tracks)):
             if (targetTrack == -1) or (track == targetTrack):
                 inventory.inventory[track][:maxLevelIndex + 1] = [0] * (maxLevelIndex+1)
-        invoker.b_setInventory(inventory.makeNetString())
+        target.b_setInventory(inventory.makeNetString())
         if targetTrack == -1:
             return 'Inventory reset.'
         else:
@@ -4670,10 +4709,10 @@ def inventory(a, b=None, c=None):
         targetTrack = -1 or c
         if not -1 <= targetTrack < len(ToontownBattleGlobals.Tracks):
             return 'Invalid target track index: ' + str(targetTrack)
-        if (targetTrack != -1) and (not invoker.hasTrackAccess(targetTrack)):
+        if (targetTrack != -1) and (not target.hasTrackAccess(targetTrack)):
             return "You don't have target track index: " + str(targetTrack)
         inventory.NPCMaxOutInv(targetTrack=targetTrack, maxLevelIndex=maxLevelIndex)
-        invoker.b_setInventory(inventory.makeNetString())
+        target.b_setInventory(inventory.makeNetString())
         if targetTrack == -1:
             return 'Inventory restocked.'
         else:
@@ -4683,23 +4722,23 @@ def inventory(a, b=None, c=None):
             targetTrack = int(a)
         except:
             return 'Invalid first argument.'
-        if not invoker.hasTrackAccess(targetTrack):
+        if not target.hasTrackAccess(targetTrack):
             return "You don't have target track index: " + str(targetTrack)
         maxLevelIndex = b or 6
         if not 0 <= maxLevelIndex < len(ToontownBattleGlobals.Levels[0]):
             return 'Invalid max level index: ' + str(maxLevelIndex)
         for _ in xrange(c):
             inventory.addItem(targetTrack, maxLevelIndex)
-        invoker.b_setInventory(inventory.makeNetString())
+        target.b_setInventory(inventory.makeNetString())
         return 'Restored %d Gags to: %d, %d' % (c, targetTrack, maxLevelIndex)
 
 @magicWord(category=CATEGORY_CREATIVE, types=[str, str])
 def dna(part, value):
-    """Modify a DNA part on the invoker."""
-    invoker = spellbook.getInvoker()
+    """Modify a DNA part on the target."""
+    target = spellbook.getTarget()
 
     dna = ToonDNA.ToonDNA()
-    dna.makeFromNetString(invoker.getDNAString())
+    dna.makeFromNetString(target.getDNAString())
 
     part = part.lower()
     if part.endswith('color') or part.endswith('tex') or part.endswith('size'):
@@ -4709,7 +4748,7 @@ def dna(part, value):
         if value not in ('m', 'f', 'male', 'female'):
             return 'Invalid gender: ' + value
         dna.gender = value[0]
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Gender set to: ' + dna.gender
 
     if part in ('head', 'species'):
@@ -4723,7 +4762,7 @@ def dna(part, value):
         if value not in ToonDNA.toonSpeciesTypes:
             return 'Invalid species: ' + value
         dna.head = value + dna.head[1:3]
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Species set to: ' + dna.head[0]
 
     if part == 'headsize':
@@ -4731,7 +4770,7 @@ def dna(part, value):
         if not 0 <= value <= len(sizes):
             return 'Invalid head size index: ' + str(value)
         dna.head = dna.head[0] + sizes[value]
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Head size index set to: ' + dna.head[1:]
 
     if part == 'torso':
@@ -4743,7 +4782,7 @@ def dna(part, value):
         if (dna.gender == 'f') and (not 3 <= value <= 8):
             return 'Female torso index out of range (3-8).'
         dna.torso = ToonDNA.toonTorsoTypes[value]
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Torso set to: ' + dna.torso
 
     if part == 'legs':
@@ -4751,28 +4790,28 @@ def dna(part, value):
         if not 0 <= value <= len(ToonDNA.toonLegTypes):
             return 'Legs index out of range (0-%d).' % len(ToonDNA.toonLegTypes)
         dna.legs = ToonDNA.toonLegTypes[value]
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Legs set to: ' + dna.legs
 
     if part == 'headcolor':
         if value not in ToonDNA.defaultColorList:
             return 'Invalid head color index: ' + str(value)
         dna.headColor = value
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Head color index set to: ' + str(dna.headColor)
 
     if part == 'armcolor':
         if value not in ToonDNA.defaultColorList:
             return 'Invalid arm color index: ' + str(value)
         dna.armColor = value
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Arm color index set to: ' + str(dna.armColor)
 
     if part == 'legcolor':
         if value not in ToonDNA.defaultColorList:
             return 'Invalid leg color index: ' + str(value)
         dna.legColor = value
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Leg color index set to: ' + str(dna.legColor)
 
     if part == 'color':
@@ -4785,41 +4824,41 @@ def dna(part, value):
         dna.headColor = value
         dna.armColor = value
         dna.legColor = value
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Color index set to: ' + str(dna.headColor)
 
     if part == 'gloves':
         value = int(value)
         dna.gloveColor = value
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Glove color set to: ' + str(dna.gloveColor)
 
     if part == 'toptex':
         if not 0 <= value <= len(ToonDNA.Shirts):
             return 'Top texture index out of range (0-%d).' % len(ToonDNA.Shirts)
         dna.topTex = value
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Top texture index set to: ' + str(dna.topTex)
 
     if part == 'toptexcolor':
         if not 0 <= value <= len(ToonDNA.ClothesColors):
             return 'Top texture color index out of range(0-%d).' % len(ToonDNA.ClothesColors)
         dna.topTexColor = value
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Top texture color index set to: ' + str(dna.topTexColor)
 
     if part == 'sleevetex':
         if not 0 <= value <= len(ToonDNA.Sleeves):
             return 'Sleeve texture index out of range(0-%d).' % len(ToonDNA.Sleeves)
         dna.sleeveTex = value
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Sleeve texture index set to: ' + str(dna.sleeveTex)
 
     if part == 'sleevetexcolor':
         if not 0 <= value <= len(ToonDNA.ClothesColors):
             return 'Sleeve texture color index out of range(0-%d).' % len(ToonDNA.ClothesColors)
         dna.sleeveTexColor = value
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Sleeve texture color index set to: ' + str(dna.sleeveTexColor)
 
     if part == 'bottex':
@@ -4832,14 +4871,14 @@ def dna(part, value):
         if not 0 <= value <= len(bottoms):
             return 'Bottom texture index out of range (0-%d).' % len(bottoms)
         dna.botTex = value
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Bottom texture index set to: ' + str(dna.botTex)
 
     if part == 'bottexcolor':
         if not 0 <= value <= len(ToonDNA.ClothesColors):
             return 'Bottom texture color index out of range(0-%d).' % len(ToonDNA.ClothesColors)
         dna.botTexColor = value
-        invoker.b_setDNAString(dna.makeNetString())
+        target.b_setDNAString(dna.makeNetString())
         return 'Bottom texture color index set to: ' + str(dna.botTexColor)
 
     if part == 'show':
@@ -4926,7 +4965,7 @@ def track(command, track, value=None):
     return 'Invalid command.'
 
 @magicWord(category=CATEGORY_ADMINISTRATOR, types=[str, str])
-def suit(command, suitName):
+def suit(command, suitName = 'f'):
     invoker = spellbook.getInvoker()
     command = command.lower()
     if suitName not in SuitDNA.suitHeadTypes:
@@ -4942,6 +4981,11 @@ def suit(command, suitName):
         if returnCode[0] == 'success':
             return 'Successfully spawned a Cog building with: ' + suitFullName
         return "Couldn't spawn a Cog building with: " + suitFullName
+    elif command == 'nobuilding':
+        returnCode = invoker.doToonBuildingTakeover()
+        if returnCode[0] == 'success':
+            return 'Toons took over the cog building!'
+        return "Couldn't allow toons to take over cog building because " + returnCode[1]
     else:
         return 'Invalid command.'
 
@@ -4997,6 +5041,18 @@ def unlimitedGags():
     return 'Toggled unlimited gags %s for %s' % ('ON' if av.unlimitedGags else 'OFF', av.getName())
 
 @magicWord(category=CATEGORY_PROGRAMMER)
+def maxCogPage():
+    """ Max the target's discovered cogs. """
+    target = spellbook.getTarget()
+    deptCount = len(SuitDNA.suitDepts)
+    target.b_setCogCount(list(CogPageGlobals.COG_QUOTAS[1]) * deptCount)
+    cogStatus = [CogPageGlobals.COG_COMPLETE2] * SuitDNA.suitsPerDept
+    target.b_setCogStatus(cogStatus * deptCount)
+    target.b_setCogRadar([1, 1, 1, 1])
+    target.b_setBuildingRadar([1, 1, 1, 1])
+    return 'Maxed %s\'s discovered cogs!' % (target.getName())
+
+@magicWord(category=CATEGORY_PROGRAMMER)
 def immortal():
     """ Make target (if 500+) or self (if 499-) immortal. """
     av = spellbook.getTarget() if spellbook.getInvokerAccess() >= 500 else spellbook.getInvoker()
@@ -5013,7 +5069,7 @@ def summoncogdo(track="s", difficulty=5):
     av = spellbook.getInvoker()
     building = av.findClosestDoor()
     if building == None:
-        return "No bldg found!"
+        return "No Toon building found!"
 
     building.cogdoTakeOver(difficulty, 2, track)
     return 'Successfully spawned cogdo with track %s and difficulty %d' % (track, difficulty)

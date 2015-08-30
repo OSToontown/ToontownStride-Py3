@@ -27,7 +27,7 @@ class TTSFriendsManager(DistributedObjectGlobal):
     def d_getAvatarDetails(self, avId):
         self.sendUpdate('getAvatarDetails', [avId])
 
-    def friendDetails(self, avId, inventory, trackAccess, hp, maxHp, defaultShard, lastHood, dnaString, experience, trackBonusLevel):
+    def friendDetails(self, avId, inventory, trackAccess, hp, maxHp, defaultShard, lastHood, dnaString, experience, trackBonusLevel, npcFriends):
         fields = [
             ['setExperience' , experience],
             ['setTrackAccess' , trackAccess],
@@ -38,6 +38,7 @@ class TTSFriendsManager(DistributedObjectGlobal):
             ['setDefaultShard' , defaultShard],
             ['setLastHood' , lastHood],
             ['setDNAString' , dnaString],
+            ['setNPCFriendsDict', npcFriends]
         ]
         base.cr.n_handleGetAvatarDetailsResp(avId, fields=fields)
 
@@ -70,6 +71,12 @@ class TTSFriendsManager(DistributedObjectGlobal):
             return
         if not hasattr(base.localAvatar, 'getTeleportAvailable') or not hasattr(base.localAvatar, 'ghostMode'):
             self.sendUpdate('teleportResponse', [ fromId, 0, 0, 0, 0 ])
+            return
+        if not base.localAvatar.acceptingTeleport:
+            self.sendUpdate('teleportResponse', [ fromId, 3, 0, 0, 0 ])
+            return
+        if base.localAvatar.isIgnored(fromId):
+            self.sendUpdate('teleportResponse', [ fromId, 2, 0, 0, 0 ])
             return
 
         friend = base.cr.identifyFriend(fromId)
