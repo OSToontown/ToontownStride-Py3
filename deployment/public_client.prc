@@ -9,8 +9,6 @@ video-library-name p3ffmpeg
 want-dev #f
 preload-avatars #t
 
-game-type remote
-
 # Graphics:
 aux-display pandagl
 aux-display pandadx9

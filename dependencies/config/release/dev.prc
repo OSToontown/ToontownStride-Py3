@@ -25,8 +25,6 @@ accountdb-type developer
 shard-low-pop 50
 shard-mid-pop 100
 
-game-type developer
-
 # RPC:
 want-rpc-server #f
 rpc-server-endpoint http://localhost:8080/
