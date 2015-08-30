@@ -50,7 +50,7 @@ class DistributedRacePadAI(DistributedKartPadAI, FSM):
         taskMgr.remove('changeTrack%i' % self.doId)
 
     def enterWaitCountdown(self):
-        taskMgr.doMethodLater(30, DistributedRacePadAI.startRace, 'startRace%i' % self.doId, [self])
+        taskMgr.doMethodLater(11, DistributedRacePadAI.startRace, 'startRace%i' % self.doId, [self])
 
     def exitWaitCountdown(self):
         taskMgr.remove('startRace%i' % self.doId)
@@ -100,7 +100,7 @@ class DistributedRacePadAI(DistributedKartPadAI, FSM):
         if self.runningMovie:
             self.request('WaitBoarding')
             return
-        if self.trackType != RaceGlobals.Practice:
+        if self.trackType != RaceGlobals.Practice and False:
             count = 0
             for block in self.startingBlocks:
                 if block.avId != 0:
@@ -124,8 +124,13 @@ class DistributedRacePadAI(DistributedKartPadAI, FSM):
         race.setZoneId(self.raceZone)
         race.setTrackId(self.trackId)
         race.setRaceType(self.trackType)
-        race.setCircuitLoop([])
         race.setAvatars(avatars)
+        if self.trackType == RaceGlobals.Circuit:
+            print 'Circuit!'
+            print 'circuit loop: %s' % (RaceGlobals.getCircuitLoop(self.trackId),)
+            race.setCircuitLoop(RaceGlobals.getCircuitLoop(self.trackId))
+        else:
+            race.setCircuitLoop([])
         race.setStartingPlaces(range(len(avatars)))
         race.setLapCount(3)
         race.generateWithRequired(self.raceZone)

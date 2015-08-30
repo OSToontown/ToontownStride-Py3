@@ -41,6 +41,8 @@ class DistributedRace(DistributedObject.DistributedObject):
     SFX_Applause = SFX_BaseDir + 'KART_Applause_%d.ogg'
 
     def __init__(self, cr):
+        if hasattr(base, 'race') and base.race:
+            base.race.delete()
         self.qbox = loader.loadModel('phase_6/models/karting/qbox')
         self.boostArrowTexture = loader.loadTexture('phase_6/maps/boost_arrow.jpg', 'phase_6/maps/boost_arrow_a.rgb')
         self.boostArrowTexture.setMinfilter(Texture.FTLinear)
@@ -182,6 +184,8 @@ class DistributedRace(DistributedObject.DistributedObject):
                 del i
 
         self.piejectileManager.delete()
+        if not hasattr(base, 'race'):
+            return
         if self.curveTs:
             del self.curveTs
         if self.curvePoints:
@@ -194,13 +198,12 @@ class DistributedRace(DistributedObject.DistributedObject):
         del self.anvilFall
         del self.bananaSound
         del self.localKart
-        DistributedObject.DistributedObject.delete(self)
         taskMgr.remove(self.uniqueName('countdownTimerTask'))
         taskMgr.remove('raceWatcher')
         bboard.remove('race')
         self.ignoreAll()
+        DistributedObject.DistributedObject.delete(self)
         del base.race
-        return
 
     def d_requestThrow(self, x, y, z):
         self.sendUpdate('requestThrow', [x, y, z])
@@ -721,6 +724,7 @@ class DistributedRace(DistributedObject.DistributedObject):
         if self.trackId in (RaceGlobals.RT_Urban_2, RaceGlobals.RT_Urban_2_rev):
             dnaFile = 'phase_6/dna/urban_track_town_B.pdna'
         node = loader.loadDNAFile(self.dnaStore, dnaFile)
+        self.geomNode = node
         self.townGeom = self.geom.attachNewNode(node)
         self.townGeom.findAllMatches('**/+CollisionNode').stash()
         self.buildingGroups = {}
@@ -1219,8 +1223,8 @@ class DistributedRace(DistributedObject.DistributedObject):
 
     def setRaceZone(self, zoneId, trackId):
         hoodId = self.cr.playGame.hood.hoodId
-        base.loader.endBulkLoad('atRace')
-        self.kartCleanup()
+        #base.loader.endBulkLoad('atRace')
+        #self.kartCleanup()
         self.doneBarrier('waitingForExit')
         self.sendUpdate('racerLeft', [localAvatar.doId])
         out = {'loader': 'racetrack',

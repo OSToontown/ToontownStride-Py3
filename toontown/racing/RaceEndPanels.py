@@ -129,7 +129,7 @@ class RaceResultsPanel(DirectFrame):
         displayPar = Parallel(bonusSeq, ticketSeq)
         displayPar.start()
         self.entryListSeqs.append(displayPar)
-        if not circuitPoints == []:
+        if circuitPoints:
             self.pointsLabel.show()
             newPoints = circuitPoints[:].pop()
             currentPoints = sum(circuitPoints[:-1])
@@ -376,8 +376,7 @@ class RaceEndPanel(DirectFrame):
     def updateWinningsFromCircuit(self, place, entryFee, winnings, bonus, trophies = ()):
         print 'updateWinningsFromCircuit'
         self.seq.finish()
-        totalTickets = winnings + entryFee + bonus
-        self.results.updateWinnings(place, totalTickets)
+        self.results.updateWinnings(place, winnings + entryFee + bonus)
         self.startWinningsPanel(entryFee, winnings, 0, bonus, trophies, True)
 
     def startWinningsPanel(self, entryFee, winnings, track, bonus = None, trophies = (), endOfCircuitRace = False):

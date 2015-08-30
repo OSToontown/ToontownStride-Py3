@@ -118,6 +118,9 @@ class NewsManagerAI(DistributedObjectAI):
             fireworkShow.b_startShow(type, random.randint(0, maxShow), globalClockDelta.getRealNetworkTime())
 
         return Task.again
+    
+    def isGrandPrixRunning(self):
+        return self.isHolidayRunning(ToontownGlobals.SILLY_SATURDAY, ToontownGlobals.GRAND_PRIX) or True
 
 @magicWord(category=CATEGORY_PROGRAMMER)
 def newsShutdown():
