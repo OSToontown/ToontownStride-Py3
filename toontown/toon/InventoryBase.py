@@ -150,9 +150,8 @@ class InventoryBase(DirectObject.DirectObject):
     def getMax(self, track, level):
         if type(track) == type(''):
             track = Tracks.index(track)
-        maxList = CarryLimits[track]
         if self.toon.experience:
-            return maxList[self.toon.experience.getExpLevel(track)][level]
+            return CarryLimits[self.toon.experience.getExpLevel(track)][level]
         else:
             return 0
 
