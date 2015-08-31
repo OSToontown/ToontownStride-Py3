@@ -469,7 +469,7 @@ class OTPClientRepository(ClientRepositoryBase):
         self.handler = self.handleMessageType
         messenger.send('connectionIssue')
         url = self.serverList[0]
-        self.notify.warning('Failed to connect to %s (%s %s).  Notifying user.' % (config.GetString('TTS_GAMESERVER'), statusCode, statusString))
+        self.notify.warning('Failed to connect to %s (%s %s).  Notifying user.' % (url.cStr(), statusCode, statusString))
         dialogClass = OTPGlobals.getGlobalDialogClass()
         self.failedToConnectBox = dialogClass(message=OTPLocalizer.CRNoConnectTryAgain % (url.getServer(), url.getPort()), doneEvent='failedToConnectAck', text_wordwrap=18, style=OTPDialog.TwoChoice)
         self.failedToConnectBox.show()

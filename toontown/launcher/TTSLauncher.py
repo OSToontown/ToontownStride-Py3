@@ -46,20 +46,7 @@ class TTSLauncher:
         return self.getValue('TTS_PLAYCOOKIE')
 
     def getGameServer(self):
-        if config.GetString('game-type', 'developer') != 'remote':
-            return self.getValue('TTS_GAMESERVER')
-        return self.getServer(self.getValue('TTS_GAMESERVER'))
-
-    def getServer(self, gameserver):
-        import DNS
-        DNS.DiscoverNameServers()
-        srv_req = DNS.Request(qtype = 'srv')
-        srv_result = srv_req.req('_toontown._tcp.'+ gameserver)
-
-        for result in srv_result.answers:
-            if result['typename'] == 'SRV':
-                data = result['data']
-                return data[3] +  ":"  +  str(data[2])
+        return self.getValue('TTS_GAMESERVER')
 
     def getValue(self, key, default = None):
         return os.environ.get(key, default)

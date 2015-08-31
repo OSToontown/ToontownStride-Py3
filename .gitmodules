@@ -1,6 +1,6 @@
 [submodule "resources"]
 	path = resources
-url=https://github.com/ToontownStride1/resources
+url=https://github.com/Toontown-Stride/resources
 [submodule "build/nirai/src"]
 	path = build/nirai/src
 	url = https://github.com/nirai-compiler/src
