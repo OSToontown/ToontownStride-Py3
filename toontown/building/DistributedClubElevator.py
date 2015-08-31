@@ -306,9 +306,8 @@ class DistributedClubElevator(DistributedElevatorFSM.DistributedElevatorFSM):
         return self.elevatorModel
 
     def kickEveryoneOut(self):
-        bailFlag = 0
         for avId, slot in self.boardedAvIds.items():
-            self.emptySlot(slot, avId, bailFlag, globalClockDelta.getRealNetworkTime())
+            self.emptySlot(slot, avId, globalClockDelta.getRealNetworkTime())
             if avId == base.localAvatar.doId:
                 pass
 
@@ -450,7 +449,7 @@ class DistributedClubElevator(DistributedElevatorFSM.DistributedElevatorFSM):
         jumpTrack = Sequence(Parallel(toonJumpTrack, Sequence(Wait(1), toonSitTrack)), Func(av.wrtReparentTo, self.golfKart))
         return jumpTrack
 
-    def emptySlot(self, index, avId, bailFlag, timestamp):
+    def emptySlot(self, index, avId, timestamp, timeSent=0):
         if avId == 0:
             pass
         elif not self.isSetup:
@@ -461,7 +460,7 @@ class DistributedClubElevator(DistributedElevatorFSM.DistributedElevatorFSM):
 
             self.deferredSlots = newSlots
         elif avId in self.cr.doId2do:
-            if bailFlag == 1 and hasattr(self, 'clockNode'):
+            if hasattr(self, 'clockNode'):
                 if timestamp < self.countdownTime and timestamp >= 0:
                     self.countdown(self.countdownTime - timestamp)
                 else:

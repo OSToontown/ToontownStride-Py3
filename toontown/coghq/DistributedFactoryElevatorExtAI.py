@@ -9,8 +9,8 @@ from direct.task import Task
 
 class DistributedFactoryElevatorExtAI(DistributedElevatorExtAI.DistributedElevatorExtAI):
 
-    def __init__(self, air, bldg, factoryId, entranceId, antiShuffle = 0):
-        DistributedElevatorExtAI.DistributedElevatorExtAI.__init__(self, air, bldg, antiShuffle=antiShuffle)
+    def __init__(self, air, bldg, factoryId, entranceId):
+        DistributedElevatorExtAI.DistributedElevatorExtAI.__init__(self, air, bldg)
         self.factoryId = factoryId
         self.entranceId = entranceId
 

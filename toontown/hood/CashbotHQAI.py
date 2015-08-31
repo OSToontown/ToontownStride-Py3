@@ -39,8 +39,7 @@ class CashbotHQAI(CogHQAI.CogHQAI):
         )
         for i in xrange(len(destZones)):
             mintElevator = DistributedMintElevatorExtAI(
-                self.air, self.air.mintMgr, destZones[i],
-                antiShuffle=0)
+                self.air, self.air.mintMgr, destZones[i])
             mintElevator.generateWithRequired(self.zoneId)
             self.mintElevators.append(mintElevator)
 

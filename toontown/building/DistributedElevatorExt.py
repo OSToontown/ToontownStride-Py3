@@ -99,8 +99,6 @@ class DistributedElevatorExt(DistributedElevator.DistributedElevator):
         if hasattr(localAvatar, 'boardingParty') and localAvatar.boardingParty and localAvatar.boardingParty.getGroupLeader(localAvatar.doId):
             if localAvatar.boardingParty.getGroupLeader(localAvatar.doId) == localAvatar.doId:
                 localAvatar.boardingParty.handleEnterElevator(self)
-        elif self.elevatorTripId and localAvatar.lastElevatorLeft == self.elevatorTripId:
-            self.rejectBoard(base.localAvatar.doId, REJECT_SHUFFLE)
         elif base.localAvatar.hp > 0:
             toon = base.localAvatar
             self.sendUpdate('requestBoard', [])

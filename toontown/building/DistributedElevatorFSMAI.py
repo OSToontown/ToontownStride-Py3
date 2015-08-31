@@ -38,7 +38,7 @@ class DistributedElevatorFSMAI(DistributedObjectAI.DistributedObjectAI, FSM):
             'Opening'] }
     id = 0
 
-    def __init__(self, air, bldg, numSeats = 4, antiShuffle = 0):
+    def __init__(self, air, bldg, numSeats = 4):
         DistributedObjectAI.DistributedObjectAI.__init__(self, air)
         FSM.__init__(self, 'Elevator_%s_FSM' % self.id)
         self.type = ELEVATOR_NORMAL
@@ -49,15 +49,6 @@ class DistributedElevatorFSMAI(DistributedObjectAI.DistributedObjectAI, FSM):
         for seat in xrange(numSeats):
             self.seats.append(None)
         self.accepting = 0
-        self.setAntiShuffle(antiShuffle)
-        if self.antiShuffle:
-            if not hasattr(simbase.air, 'elevatorTripId'):
-                simbase.air.elevatorTripId = 1
-
-            self.elevatorTripId = simbase.air.elevatorTripId
-            simbase.air.elevatorTripId += 1
-        else:
-            self.elevatorTripId = 0
 
     def delete(self):
         del self.bldg
@@ -216,7 +207,6 @@ class DistributedElevatorFSMAI(DistributedObjectAI.DistributedObjectAI, FSM):
     def exitWaitCountdown(self):
         self.accepting = 0
         taskMgr.remove(self.uniqueName('countdown-timer'))
-        self.newTrip()
 
     def enterAllAboard(self):
         self.accepting = 0
@@ -250,23 +240,3 @@ class DistributedElevatorFSMAI(DistributedObjectAI.DistributedObjectAI, FSM):
 
     def exitWaitEmpty(self):
         self.accepting = 0
-
-    def setElevatorTripId(self, id):
-        self.elevatorTripId = id
-
-    def getElevatorTripId(self):
-        return self.elevatorTripId
-
-    def newTrip(self):
-        if self.antiShuffle:
-            self.elevatorTripId = simbase.air.elevatorTripId
-            if simbase.air.elevatorTripId > 2100000000:
-                simbase.air.elevatorTripId = 1
-            simbase.air.elevatorTripId += 1
-            self.sendUpdate('setElevatorTripId', [self.elevatorTripId])
-
-    def setAntiShuffle(self, antiShuffle):
-        self.antiShuffle = antiShuffle
-
-    def getAntiShuffle(self):
-        return self.antiShuffle

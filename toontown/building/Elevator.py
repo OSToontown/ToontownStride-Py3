@@ -91,16 +91,8 @@ class Elevator(StateData.StateData):
         if hasattr(localAvatar, 'boardingParty') and localAvatar.boardingParty and localAvatar.boardingParty.getGroupLeader(localAvatar.doId) and localAvatar.boardingParty.getGroupLeader(localAvatar.doId) != localAvatar.doId:
             self.exitButton['command'] = None
             self.exitButton.hide()
-        if self.distElevator.antiShuffle:
-            self.hopWarning = DirectLabel(parent=self.exitButton, relief=None, pos=Vec3(0, 0, 0.0), text=TTLocalizer.ElevatorStayOff, text_fg=(0.9, 0.9, 0.9, 1), text_pos=(0, -1.1), text_scale=0.6)
-            self.hopWarning.reparentTo(self.exitButton.stateNodePath[2])
-        else:
-            self.hopWarning = None
-        return
 
     def disableExitButton(self):
-        if self.hopWarning:
-            self.hopWarning.destroy()
         self.exitButton.destroy()
 
     def enterRequestExit(self):

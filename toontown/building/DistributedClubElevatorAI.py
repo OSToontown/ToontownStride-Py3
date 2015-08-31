@@ -41,13 +41,12 @@ class DistributedClubElevatorAI(DistributedElevatorFSMAI.DistributedElevatorFSMA
     id = 0
     DoBlockedRoomCheck = simbase.config.GetBool('elevator-blocked-rooms-check', 1)
 
-    def __init__(self, air, lawOfficeId, bldg, avIds, markerId = None, numSeats = 4, antiShuffle = 0):
-        DistributedElevatorFSMAI.DistributedElevatorFSMAI.__init__(self, air, bldg, numSeats, antiShuffle = antiShuffle)
+    def __init__(self, air, lawOfficeId, bldg, avIds, markerId = None, numSeats = 4):
+        DistributedElevatorFSMAI.DistributedElevatorFSMAI.__init__(self, air, bldg, numSeats)
         FSM.__init__(self, 'ElevatorFloor_%s_FSM' % self.id)
         self.type = ElevatorConstants.ELEVATOR_COUNTRY_CLUB
         self.countdownTime = ElevatorConstants.ElevatorData[self.type]['countdown']
         self.lawOfficeId = lawOfficeId
-        self.anyToonsBailed = 0
         self.avIds = avIds
         self.isEntering = 0
         self.isLocked = 0
@@ -121,12 +120,8 @@ class DistributedClubElevatorAI(DistributedElevatorFSMAI.DistributedElevatorFSMA
         if seatIndex == None:
             pass
         self.clearFullNow(seatIndex)
-        bailFlag = 0
-        if self.anyToonsBailed == 0:
-            bailFlag = 1
-            self.resetCountdown()
-            self.anyToonsBailed = 1
-        self.sendUpdate('emptySlot' + str(seatIndex), [avId, bailFlag, globalClockDelta.getRealNetworkTime()])
+        self.resetCountdown()
+        self.sendUpdate('emptySlot' + str(seatIndex), [avId, globalClockDelta.getRealNetworkTime()])
         if self.countFullSeats() == 0:
             self.request('WaitEmpty')
         taskMgr.doMethodLater(ElevatorConstants.TOON_EXIT_ELEVATOR_TIME, self.clearEmptyNow, self.uniqueName('clearEmpty-%s' % seatIndex), extraArgs = (seatIndex,))

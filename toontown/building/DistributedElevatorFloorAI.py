@@ -40,13 +40,12 @@ class DistributedElevatorFloorAI(DistributedElevatorFSMAI.DistributedElevatorFSM
             'Opening'] }
     id = 0
 
-    def __init__(self, air, lawOfficeId, bldg, avIds, markerId = None, numSeats = 4, antiShuffle = 0):
-        DistributedElevatorFSMAI.DistributedElevatorFSMAI.__init__(self, air, bldg, numSeats, antiShuffle = antiShuffle)
+    def __init__(self, air, lawOfficeId, bldg, avIds, markerId = None, numSeats = 4):
+        DistributedElevatorFSMAI.DistributedElevatorFSMAI.__init__(self, air, bldg, numSeats)
         FSM.__init__(self, 'ElevatorFloor_%s_FSM' % self.id)
         self.type = ELEVATOR_STAGE
         self.countdownTime = ElevatorData[self.type]['countdown']
         self.lawOfficeId = lawOfficeId
-        self.anyToonsBailed = 0
         self.avIds = avIds
         self.isEntering = 0
         self.isLocked = 0
@@ -120,12 +119,8 @@ class DistributedElevatorFloorAI(DistributedElevatorFSMAI.DistributedElevatorFSM
         if seatIndex == None:
             pass
         self.clearFullNow(seatIndex)
-        bailFlag = 0
-        if self.anyToonsBailed == 0:
-            bailFlag = 1
-            self.resetCountdown()
-            self.anyToonsBailed = 1
-        self.sendUpdate('emptySlot' + str(seatIndex), [avId, bailFlag, globalClockDelta.getRealNetworkTime()])
+        self.resetCountdown()
+        self.sendUpdate('emptySlot' + str(seatIndex), [avId, globalClockDelta.getRealNetworkTime()])
         if self.countFullSeats() == 0:
             self.request('WaitEmpty')
         taskMgr.doMethodLater(TOON_EXIT_ELEVATOR_TIME, self.clearEmptyNow, self.uniqueName('clearEmpty-%s' % seatIndex), extraArgs = (seatIndex,))

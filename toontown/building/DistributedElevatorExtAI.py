@@ -11,11 +11,9 @@ from direct.directnotify import DirectNotifyGlobal
 class DistributedElevatorExtAI(DistributedElevatorAI.DistributedElevatorAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedElevatorExtAI')
 
-    def __init__(self, air, bldg, numSeats = 4, antiShuffle = 0):
-        DistributedElevatorAI.DistributedElevatorAI.__init__(self, air, bldg, numSeats, antiShuffle=antiShuffle)
-        self.anyToonsBailed = 0
+    def __init__(self, air, bldg, numSeats = 4):
+        DistributedElevatorAI.DistributedElevatorAI.__init__(self, air, bldg, numSeats)
         self.boardingParty = None
-        return
 
     def delete(self):
         for seatIndex in xrange(len(self.seats)):
@@ -52,33 +50,11 @@ class DistributedElevatorExtAI(DistributedElevatorAI.DistributedElevatorAI):
             pass
         else:
             self.clearFullNow(seatIndex)
-            bailFlag = 0
+            self.s
             timeToSend = self.countdownTime
-            if self.antiShuffle:
-                myTask = taskMgr.getTasksNamed(self.uniqueName('countdown-timer'))[0]
-                timeLeft = myTask.wakeTime - globalClock.getFrameTime()
-                timeLeft = max(0, timeLeft)
-                timeToSet = timeLeft + 10.0
-                timeToSet = min(timeLeft + 10.0, self.countdownTime)
-                self.setCountdown(timeToSet)
-                timeToSend = timeToSet
-                self.sendUpdate('emptySlot' + str(seatIndex), [avId,
-                 1,
+            self.sendUpdate('emptySlot' + str(seatIndex), [avId,
                  globalClockDelta.getRealNetworkTime(),
-                 timeToSend])
-            elif self.anyToonsBailed == 0:
-                bailFlag = 1
-                self.resetCountdown()
-                self.anyToonsBailed = 1
-                self.sendUpdate('emptySlot' + str(seatIndex), [avId,
-                 bailFlag,
-                 globalClockDelta.getRealNetworkTime(),
-                 timeToSend])
-            else:
-                self.sendUpdate('emptySlot' + str(seatIndex), [avId,
-                 bailFlag,
-                 globalClockDelta.getRealNetworkTime(),
-                 timeToSend])
+                 self.countdownTime])
             if self.countFullSeats() == 0:
                 self.fsm.request('waitEmpty')
             taskMgr.doMethodLater(TOON_EXIT_ELEVATOR_TIME, self.clearEmptyNow, self.uniqueName('clearEmpty-%s' % seatIndex), extraArgs=(seatIndex,))
@@ -94,7 +70,6 @@ class DistributedElevatorExtAI(DistributedElevatorAI.DistributedElevatorAI):
 
     def enterWaitEmpty(self):
         DistributedElevatorAI.DistributedElevatorAI.enterWaitEmpty(self)
-        self.anyToonsBailed = 0
 
     def enterWaitCountdown(self):
         DistributedElevatorAI.DistributedElevatorAI.enterWaitCountdown(self)

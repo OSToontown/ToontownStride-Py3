@@ -1829,19 +1829,17 @@ dclass DistributedElevator : DistributedObject {
   fillSlot5(uint32, uint8) broadcast ram;
   fillSlot6(uint32, uint8) broadcast ram;
   fillSlot7(uint32, uint8) broadcast ram;
-  emptySlot0(uint32, int8, int16, int16) broadcast ram;
-  emptySlot1(uint32, int8, int16, int16) broadcast ram;
-  emptySlot2(uint32, int8, int16, int16) broadcast ram;
-  emptySlot3(uint32, int8, int16, int16) broadcast ram;
-  emptySlot4(uint32, int8, int16, int16) broadcast ram;
-  emptySlot5(uint32, int8, int16, int16) broadcast ram;
-  emptySlot6(uint32, int8, int16, int16) broadcast ram;
-  emptySlot7(uint32, int8, int16, int16) broadcast ram;
+  emptySlot0(uint32, int16, int16) broadcast ram;
+  emptySlot1(uint32, int16, int16) broadcast ram;
+  emptySlot2(uint32, int16, int16) broadcast ram;
+  emptySlot3(uint32, int16, int16) broadcast ram;
+  emptySlot4(uint32, int16, int16) broadcast ram;
+  emptySlot5(uint32, int16, int16) broadcast ram;
+  emptySlot6(uint32, int16, int16) broadcast ram;
+  emptySlot7(uint32, int16, int16) broadcast ram;
   requestBoard() airecv clsend;
   rejectBoard(uint32, uint8);
   requestExit() airecv clsend;
-  setElevatorTripId(uint32) required broadcast ram;
-  setAntiShuffle(uint8) required broadcast ram;
 };
 
 dclass DistributedElevatorFSM : DistributedObject {
@@ -1855,19 +1853,17 @@ dclass DistributedElevatorFSM : DistributedObject {
   fillSlot5(uint32) broadcast ram;
   fillSlot6(uint32) broadcast ram;
   fillSlot7(uint32) broadcast ram;
-  emptySlot0(uint32, int8, int16) broadcast ram;
-  emptySlot1(uint32, int8, int16) broadcast ram;
-  emptySlot2(uint32, int8, int16) broadcast ram;
-  emptySlot3(uint32, int8, int16) broadcast ram;
-  emptySlot4(uint32, int8, int16) broadcast ram;
-  emptySlot5(uint32, int8, int16) broadcast ram;
-  emptySlot6(uint32, int8, int16) broadcast ram;
-  emptySlot7(uint32, int8, int16) broadcast ram;
+  emptySlot0(uint32, int16) broadcast ram;
+  emptySlot1(uint32, int16) broadcast ram;
+  emptySlot2(uint32, int16) broadcast ram;
+  emptySlot3(uint32, int16) broadcast ram;
+  emptySlot4(uint32, int16) broadcast ram;
+  emptySlot5(uint32, int16) broadcast ram;
+  emptySlot6(uint32, int16) broadcast ram;
+  emptySlot7(uint32, int16) broadcast ram;
   requestBoard() airecv clsend;
   rejectBoard(uint32, uint8);
   requestExit() airecv clsend;
-  setElevatorTripId(uint32) required broadcast ram;
-  setAntiShuffle(uint8) required broadcast ram;
 };
 
 dclass DistributedElevatorFloor : DistributedElevatorFSM {

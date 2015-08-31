@@ -52,8 +52,7 @@ class LawbotHQAI(CogHQAI.CogHQAI):
         )
         for i in xrange(len(destZones)):
             lawOfficeElevator = DistributedLawOfficeElevatorExtAI(
-                self.air, self.air.lawOfficeMgr, destZones[i], i,
-                antiShuffle=0)
+                self.air, self.air.lawOfficeMgr, destZones[i], i)
             lawOfficeElevator.generateWithRequired(
                 ToontownGlobals.LawbotOfficeExt)
             self.lawOfficeElevators.append(lawOfficeElevator)

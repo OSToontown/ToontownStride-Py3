@@ -52,7 +52,7 @@ class CogHQAI:
 
     def createLobbyElevator(self):
         self.lobbyElevator = self.lobbyElevatorCtor(
-            self.air, self.lobbyMgr, self.lobbyZoneId, antiShuffle=1)
+            self.air, self.lobbyMgr, self.lobbyZoneId)
         self.lobbyElevator.generateWithRequired(self.lobbyZoneId)
 
     def makeCogHQDoor(self, destinationZone, intDoorIndex, extDoorIndex, lock=0):

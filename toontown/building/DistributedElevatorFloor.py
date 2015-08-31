@@ -264,9 +264,8 @@ class DistributedElevatorFloor(DistributedElevatorFSM.DistributedElevatorFSM):
         return self.elevatorModel
 
     def kickEveryoneOut(self):
-        bailFlag = 0
         for avId, slot in self.boardedAvIds.items():
-            self.emptySlot(slot, avId, bailFlag, globalClockDelta.getRealNetworkTime())
+            self.emptySlot(slot, avId, globalClockDelta.getRealNetworkTime())
             if avId == base.localAvatar.doId:
                 pass
 

@@ -12,8 +12,8 @@ from toontown.suit import DistributedSellbotBossAI
 
 class DistributedBossElevatorAI(DistributedElevatorExtAI.DistributedElevatorExtAI):
 
-    def __init__(self, air, bldg, zone, antiShuffle = 0):
-        DistributedElevatorExtAI.DistributedElevatorExtAI.__init__(self, air, bldg, numSeats=8, antiShuffle=antiShuffle)
+    def __init__(self, air, bldg, zone):
+        DistributedElevatorExtAI.DistributedElevatorExtAI.__init__(self, air, bldg, numSeats=8)
         self.zone = zone
         self.type = ELEVATOR_VP
         self.countdownTime = ElevatorData[self.type]['countdown']

@@ -140,7 +140,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.touchingPlantList = []
             self.inGardenAction = None
             self.guiConflict = 0
-            self.lastElevatorLeft = 0
             self.elevatorNotifier = ElevatorNotifier.ElevatorNotifier()
             self._zoneId = None
             self.accept('system message aknowledge', self.systemWarning)
