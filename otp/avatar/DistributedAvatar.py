@@ -129,12 +129,13 @@ class DistributedAvatar(DistributedActor, Avatar):
         return
 
     def hpChange(self, quietly = 0):
-        if hasattr(self, 'doId'):
-            if self.hp != None and self.maxHp != None:
-                messenger.send(self.uniqueName('hpChange'), [self.hp, self.maxHp, quietly])
-            if self.hp != None and self.hp > 0:
-                messenger.send(self.uniqueName('positiveHP'))
-        return
+        if (not hasattr(self, 'doId')) or self.hp == None:
+            return
+        
+        if self.maxHp != None:
+            messenger.send(self.uniqueName('hpChange'), [self.hp, self.maxHp, quietly])
+        if self.hp > 0:
+            messenger.send(self.uniqueName('positiveHP'))
 
     def died(self):
         pass

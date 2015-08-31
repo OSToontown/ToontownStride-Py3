@@ -1,15 +1,21 @@
 from pandac.PandaModules import VBase3, BitMask32
+
 GameTime = 60
 NumBarrels = 4
-BarrelStartingPositions = (VBase3(4.3, 4, 0),
+BarrelStartingPositions = (
+ VBase3(4.3, 4, 0),
  VBase3(4.3, -4, 0),
  VBase3(-4.3, 4, 0),
- VBase3(-4.3, -4, 0))
-ToonStartingPositions = (VBase3(0, 16, 0),
+ VBase3(-4.3, -4, 0)
+)
+ToonStartingPositions = (
+ VBase3(0, 16, 0),
  VBase3(0, -16, 0),
  VBase3(-16, 0, 0),
- VBase3(16, 0, 0))
-CogStartingPositions = (VBase3(35, 18, 0),
+ VBase3(16, 0, 0)
+)
+CogStartingPositions = (
+ VBase3(35, 18, 0),
  VBase3(35, 0, 0),
  VBase3(35, -18, 0),
  VBase3(-35, 18, 0),
@@ -20,8 +26,10 @@ CogStartingPositions = (VBase3(35, 18, 0),
  VBase3(35, 9, 0),
  VBase3(-35, 9, 0),
  VBase3(35, -9, 0),
- VBase3(-35, -9, 0))
-CogReturnPositions = (VBase3(-35, 28, 0),
+ VBase3(-35, -9, 0)
+)
+CogReturnPositions = (
+ VBase3(-35, 28, 0),
  VBase3(-14, 28, 0),
  VBase3(14, 28, 0),
  VBase3(35, 28, 0),
@@ -30,7 +38,8 @@ CogReturnPositions = (VBase3(-35, 28, 0),
  VBase3(-14, -28, 0),
  VBase3(14, -28, 0),
  VBase3(-35, -28, 0),
- VBase3(-35, 0, 0))
+ VBase3(-35, 0, 0)
+)
 StageHalfWidth = 25
 StageHalfHeight = 18
 NoGoal = 0
@@ -38,11 +47,13 @@ BarrelGoal = 1
 ToonGoal = 2
 RunAwayGoal = 3
 InvalidGoalId = -1
-GoalStr = {NoGoal: 'NoGoal',
+GoalStr = {
+ NoGoal: 'NoGoal',
  BarrelGoal: 'BarrelGoal',
  ToonGoal: 'ToonGoal',
  RunAwayGoal: 'RunAwayGoal',
- InvalidGoalId: 'InvalidGoa'}
+ InvalidGoalId: 'InvalidGoa'
+}
 BarrelBitmask = BitMask32(512)
 BarrelOnGround = -1
 NoBarrelCarried = -1
@@ -61,7 +72,8 @@ def getMaxScore():
     return result
 
 
-NumCogsTable = [{2000: 5,
+NumCogsTable = [
+ {2000: 5,
   1000: 5,
   5000: 5,
   4000: 5,
@@ -84,13 +96,9 @@ NumCogsTable = [{2000: 5,
   5000: 11,
   4000: 11,
   3000: 11,
-  9000: 11}]
-CogSpeedTable = [{2000: 6.0,
-  1000: 6.4,
-  5000: 6.8,
-  4000: 7.2,
-  3000: 7.6,
-  9000: 8.0},
+  9000: 11}
+]
+CogSpeedTable = [
  {2000: 6.0,
   1000: 6.4,
   5000: 6.8,
@@ -108,12 +116,16 @@ CogSpeedTable = [{2000: 6.0,
   5000: 6.8,
   4000: 7.2,
   3000: 7.6,
-  9000: 8.0}]
+  9000: 8.0},
+ {2000: 6.0,
+  1000: 6.4,
+  5000: 6.8,
+  4000: 7.2,
+  3000: 7.6,
+  9000: 8.0}
+]
 ToonSpeed = 9.0
-PerfectBonus = [8,
- 6,
- 4,
- 2]
+PerfectBonus = [8, 6, 4, 2]
 
 def calculateCogs(numPlayers, safezone):
     result = 5

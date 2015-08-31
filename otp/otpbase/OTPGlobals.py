@@ -1,4 +1,5 @@
 from panda3d.core import *
+
 QuietZone = 1
 UberZone = 2
 WallBitmask = BitMask32(1)
@@ -41,22 +42,22 @@ CESnowMan = 14
 CEGreenToon = 15
 CEGhost = 'g'
 CEName2Id = {
-    'normal': CENormal,
-    'bighead': CEBigHead,
-    'smallhead': CESmallHead,
-    'biglegs': CEBigLegs,
-    'smalllegs': CESmallLegs,
-    'bigtoon': CEBigToon,
-    'smalltoon': CESmallToon,
-    'flatportrait': CEFlatPortrait,
-    'flatprofile': CEFlatProfile,
-    'transparent': CETransparent,
-    'nocolor': CENoColor,
-    'invisible': CEInvisible,
-    'pumpkin': CEPumpkin,
-    'bigwhite': CEBigWhite,
-    'snowman': CESnowMan,
-    'greentoon': CEGreenToon
+ 'normal': CENormal,
+ 'bighead': CEBigHead,
+ 'smallhead': CESmallHead,
+ 'biglegs': CEBigLegs,
+ 'smalllegs': CESmallLegs,
+ 'bigtoon': CEBigToon,
+ 'smalltoon': CESmallToon,
+ 'flatportrait': CEFlatPortrait,
+ 'flatprofile': CEFlatProfile,
+ 'transparent': CETransparent,
+ 'nocolor': CENoColor,
+ 'invisible': CEInvisible,
+ 'pumpkin': CEPumpkin,
+ 'bigwhite': CEBigWhite,
+ 'snowman': CESnowMan,
+ 'greentoon': CEGreenToon
 }
 BigToonScale = 1.5
 SmallToonScale = 0.5
@@ -98,7 +99,6 @@ def setInterfaceFont(path):
     global InterfaceFont
     InterfaceFontPath = path
     InterfaceFont = None
-    return
 
 def getSignFont():
     global SignFont
@@ -165,7 +165,6 @@ def setDialogClasses(dialogClass, globalDialogClass):
     GlobalDialogClass = globalDialogClass
 
 NetworkLatency = 1.0
-maxLoginWidth = 9.1
 STAND_INDEX = 0
 WALK_INDEX = 1
 RUN_INDEX = 2
@@ -200,12 +199,10 @@ HideGameHotKeyOSX = 'meta-h'
 HideGameHotKeyRepeatOSX = 'meta-h-repeat'
 MinimizeGameHotKeyOSX = 'meta-m'
 MinimizeGameHotKeyRepeatOSX = 'meta-m-repeat'
-GlobalDialogColor = (1,
- 1,
- 0.75,
- 1)
+GlobalDialogColor = (1, 1, 0.75, 1)
 DefaultBackgroundColor = (0.3, 0.3, 0.3, 1)
-toonBodyScales = {'mouse': 0.6,
+toonBodyScales = {
+ 'mouse': 0.6,
  'cat': 0.73,
  'duck': 0.66,
  'rabbit': 0.74,
@@ -213,8 +210,10 @@ toonBodyScales = {'mouse': 0.6,
  'dog': 0.85,
  'monkey': 0.68,
  'bear': 0.85,
- 'pig': 0.77}
-toonHeadScales = {'mouse': Point3(1.0),
+ 'pig': 0.77
+}
+toonHeadScales = {
+ 'mouse': Point3(1.0),
  'cat': Point3(1.0),
  'duck': Point3(1.0),
  'rabbit': Point3(1.0),
@@ -222,11 +221,15 @@ toonHeadScales = {'mouse': Point3(1.0),
  'dog': Point3(1.0),
  'monkey': Point3(1.0),
  'bear': Point3(1.0),
- 'pig': Point3(1.0)}
-legHeightDict = {'s': 1.5,
+ 'pig': Point3(1.0)
+}
+legHeightDict = {
+ 's': 1.5,
  'm': 2.0,
- 'l': 2.75}
-torsoHeightDict = {'s': 1.5,
+ 'l': 2.75
+}
+torsoHeightDict = {
+ 's': 1.5,
  'm': 1.75,
  'l': 2.25,
  'ss': 1.5,
@@ -234,8 +237,10 @@ torsoHeightDict = {'s': 1.5,
  'ls': 2.25,
  'sd': 1.5,
  'md': 1.75,
- 'ld': 2.25}
-headHeightDict = {'dls': 0.75,
+ 'ld': 2.25
+}
+headHeightDict = {
+ 'dls': 0.75,
  'dss': 0.5,
  'dsl': 0.5,
  'dll': 0.75,
@@ -268,7 +273,8 @@ headHeightDict = {'dls': 0.75,
  'sls': 0.75,
  'sss': 0.5,
  'ssl': 0.5,
- 'sll': 0.75}
+ 'sll': 0.75
+}
 RandomButton = 'Randomize'
 TypeANameButton = 'Type Name'
 PickANameButton = 'Pick-A-Name'
