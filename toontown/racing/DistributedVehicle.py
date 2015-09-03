@@ -205,6 +205,9 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
         self.engine = engine
 
     def disable(self):
+        if self.ownerId not in DistributedVehicle.AvId2kart:
+            return
+
         DistributedVehicle.AvId2kart.pop(self.ownerId)
         self.finishMovies()
         self.request('Off')

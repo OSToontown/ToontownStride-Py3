@@ -523,14 +523,7 @@ class Kart(NodePath, ShadowCaster.ShadowCaster):
         node.setH(amount)
 
     def generateEngineStartTrack(self):
-        length = self.kartStartSfx.length()
-
-        def printVol():
-            print self.kartLoopSfx.getVolume()
-
-        track = Parallel(SoundInterval(self.kartStartSfx), Func(self.kartLoopSfx.play), LerpFunctionInterval(self.kartLoopSfx.setVolume, fromData=0, toData=0.4, duration=length))
-        return Sequence(track, Func(printVol))
+        return Parallel(SoundInterval(self.kartStartSfx), Func(self.kartLoopSfx.play), LerpFunctionInterval(self.kartLoopSfx.setVolume, fromData=0, toData=0.4, duration=self.kartStartSfx.length()))
 
     def generateEngineStopTrack(self, duration = 0):
-        track = Parallel(LerpFunctionInterval(self.kartLoopSfx.setVolume, fromData=0.4, toData=0, duration=duration))
-        return track
+        return Parallel(LerpFunctionInterval(self.kartLoopSfx.setVolume, fromData=0.4, toData=0, duration=duration))

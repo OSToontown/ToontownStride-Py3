@@ -275,7 +275,7 @@ class RaceGUI:
 
     def enableResultMode(self):
         self.endPanel.enable()
-        if not self.race.circuitLoop:
+        if len(self.race.circuitLoop) > 1:
             taskMgr.doMethodLater(180, self.endPanel.closeButtonPressed, 'clearRaceEndPanel', extraArgs=[])
 
     def destroy(self):

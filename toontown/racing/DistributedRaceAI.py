@@ -33,8 +33,6 @@ class DistributedRaceAI(DistributedObjectAI, FSM):
         self.livingGags = []
         self.currentlyAffectedByAnvil = {}
         self.avatarProgress = {}
-        print 'circuit points %s' % (circuitPoints,)
-        print 'circuit winnings %s' % (circuitWinnings,)
         self.circuitPoints = circuitPoints
         self.circuitWinnings = circuitWinnings
         self.quitAvatars = []
@@ -139,7 +137,7 @@ class DistributedRaceAI(DistributedObjectAI, FSM):
     def setCircuitLoop(self, circuitLoop):
         self.circuitLoop = circuitLoop
         if self.circuitLoop and not self.circuitPoints:
-            self.circuitPoints = [0] * len(self.avatars)
+            self.circuitPoints = [[0, 0]] * len(self.avatars)
             self.circuitWinnings = [0] * len(self.avatars)
 
     def getCircuitLoop(self):
@@ -357,17 +355,20 @@ class DistributedRaceAI(DistributedObjectAI, FSM):
         if av.getTickets() > RaceGlobals.MaxTickets:
             av.b_setTickets(RaceGlobals.MaxTickets)
         av.addStat(ToontownGlobals.STAT_RACING)
+        points = []
         if self.circuitPoints:
             avIndex = self.avatars.index(avId)
-            self.circuitPoints[avIndex] += RaceGlobals.CircuitPoints[place - 1]
-        self.sendUpdate('setPlace', [avId, totalTime, place, entryFee, qualify, max((winnings-entryFee), 0), bonus, trophies, self.circuitPoints, 0])
+            points = self.circuitPoints[avIndex]
+            points[0] += points[1]
+            points[1] = RaceGlobals.CircuitPoints[place - 1]
+        self.sendUpdate('setPlace', [avId, totalTime, place, entryFee, qualify, max((winnings-entryFee), 0), bonus, trophies, points, 0])
         if self.circuitPoints:
             self.circuitWinnings[avIndex] += winnings
-            del self.circuitLoop[0]
-            self.sendUpdate('setCircuitLoop', [self.circuitLoop])
             self.sendUpdate('setCircuitPlace', [avId, place, entryFee, self.circuitWinnings[avIndex], bonus, trophies])
             
             if len(self.finishedAvatars) == len(self.avatars):
+                del self.circuitLoop[0]
+                self.sendUpdate('setCircuitLoop', [self.circuitLoop])
                 self.sendUpdate('endCircuitRace')
 
     def calculateTrophies(self, avId, won, qualify, time):

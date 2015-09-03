@@ -542,7 +542,6 @@ def getCircuitLoop(startingTrack):
     circuitLoop = [startingTrack]
     for loop in CircuitLoops:
         if startingTrack in loop:
-            print loop
             numTracks = len(loop)
             tempLoop = loop * 2
             startingIndex = tempLoop.index(startingTrack)

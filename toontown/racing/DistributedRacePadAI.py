@@ -126,8 +126,6 @@ class DistributedRacePadAI(DistributedKartPadAI, FSM):
         race.setRaceType(self.trackType)
         race.setAvatars(avatars)
         if self.trackType == RaceGlobals.Circuit:
-            print 'Circuit!'
-            print 'circuit loop: %s' % (RaceGlobals.getCircuitLoop(self.trackId),)
             race.setCircuitLoop(RaceGlobals.getCircuitLoop(self.trackId))
         else:
             race.setCircuitLoop([])

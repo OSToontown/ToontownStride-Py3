@@ -184,7 +184,7 @@ class DistributedRace(DistributedObject.DistributedObject):
                 del i
 
         self.piejectileManager.delete()
-        if not hasattr(base, 'race'):
+        if not hasattr(base, 'race') or not hasattr(self, 'curveTs'):
             return
         if self.curveTs:
             del self.curveTs
@@ -257,7 +257,6 @@ class DistributedRace(DistributedObject.DistributedObject):
         return
 
     def setCircuitPlace(self, avId, place, entryFee, winnings, bonus, trophies):
-        print 'setting cicruit place'
         if self.fsm.getCurrentState().getName() == 'leaving':
             return
         if avId == localAvatar.doId:
@@ -270,13 +269,9 @@ class DistributedRace(DistributedObject.DistributedObject):
             self.placeFixup.append([oldPlace - 1, place - 1])
         avatar = base.cr.doId2do.get(avId, None)
         if avatar:
-            print 'circuit trophies %s' % trophies
-            print 'winnings %s' % winnings
             self.gui.racerFinishedCircuit(avId, oldPlace, entryFee, winnings, bonus, trophies)
-        return
 
     def endCircuitRace(self):
-        print self.placeFixup
         self.gui.circuitFinished(self.placeFixup)
 
     def prepForRace(self):
@@ -1205,7 +1200,6 @@ class DistributedRace(DistributedObject.DistributedObject):
         dotP = arrowVec.dot(fvec)
         if dotP > 0.7:
             self.localKart.startTurbo()
-        return
 
     def fadeOutMusic(self):
         if self.musicTrack:

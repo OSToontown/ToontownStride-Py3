@@ -43,7 +43,6 @@ class Piejectile(DirectObject, FlyingGag):
         self.rotH = randFloat(-360, 360)
         self.rotP = randFloat(-90, 90)
         self.rotR = randFloat(-90, 90)
-        print 'generating Pie %s' % self.name
         self.ownerKart = base.cr.doId2do.get(base.race.kartMap.get(sourceId, None), None)
         if targetId != 0:
             self.targetKart = base.cr.doId2do.get(base.race.kartMap.get(targetId, None), None)
@@ -64,10 +63,8 @@ class Piejectile(DirectObject, FlyingGag):
         else:
             self.splatTask = taskMgr.doMethodLater(self.maxTime / 2.5, self.splat, self.splatTaskName)
         self.reparentTo(render)
-        return
 
     def delete(self):
-        print 'removing piejectile'
         taskMgr.remove(self.taskName)
         self.__undoCollisions()
         self.physicsMgr.clearLinearForces()
