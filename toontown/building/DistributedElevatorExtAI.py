@@ -50,7 +50,7 @@ class DistributedElevatorExtAI(DistributedElevatorAI.DistributedElevatorAI):
             pass
         else:
             self.clearFullNow(seatIndex)
-            self.s
+            self.resetCountdown()
             timeToSend = self.countdownTime
             self.sendUpdate('emptySlot' + str(seatIndex), [avId,
                  globalClockDelta.getRealNetworkTime(),

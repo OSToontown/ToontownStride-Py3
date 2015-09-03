@@ -61,7 +61,8 @@ class DistributedElevatorIntAI(DistributedElevatorAI.DistributedElevatorAI):
         if seatIndex == None:
             pass
         self.clearFullNow(seatIndex)
-        self.sendUpdate('emptySlot' + str(seatIndex), [avId, 0,
+        self.resetCountdown()
+        self.sendUpdate('emptySlot' + str(seatIndex), [avId,
             globalClockDelta.getRealNetworkTime(), self.countdownTime])
         taskMgr.doMethodLater(TOON_EXIT_ELEVATOR_TIME, self.clearEmptyNow, self.uniqueName('clearEmpty-%s' % seatIndex), extraArgs = (seatIndex,))
 
