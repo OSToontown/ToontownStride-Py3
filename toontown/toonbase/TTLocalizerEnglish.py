@@ -2208,7 +2208,7 @@ MovieNPCSOSThrow = 'Throw'
 MovieNPCSOSSquirt = 'Squirt'
 MovieNPCSOSDrop = 'Drop'
 MovieNPCSOSAll = 'All'
-MoviePetSOSTrickFail = 'Sigh'
+MoviePetSOSTrickFail = 'Sigh...'
 MoviePetSOSTrickSucceedBoy = 'Good boy!'
 MoviePetSOSTrickSucceedGirl = 'Good girl!'
 MovieSuitCancelled = 'CANCELLED\nCANCELLED\nCANCELLED'
@@ -8761,6 +8761,8 @@ ClothesGUICount = '%s/%s'
 
 FpsMeterLabelOn = 'The frame rate meter is on.'
 FpsMeterLabelOff = 'The frame rate meter is off.'
+
+DefaultDoodleName = 'Smiley'
 
 Blacklist = [
  "$1ut",
