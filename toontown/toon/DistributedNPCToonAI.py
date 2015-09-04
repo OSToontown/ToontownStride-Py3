@@ -236,7 +236,7 @@ class DistributedNPCToonAI(DistributedNPCToonBaseAI):
         if not self.tutorial:
             self.clearTasks()
             self.task = self.uniqueName('clearMovie')
-            taskMgr.doMethodLater(60.0, self.sendTimeoutMovie, self.task)
+            taskMgr.doMethodLater(NPCToons.QUEST_COUNTDOWN_TIME, self.sendTimeoutMovie, self.task)
 
     def cancelChoseTrack(self, avId):
         self.busy = avId
@@ -248,7 +248,7 @@ class DistributedNPCToonAI(DistributedNPCToonBaseAI):
         if not self.tutorial:
             self.clearTasks()
             self.task = self.uniqueName('clearMovie')
-            taskMgr.doMethodLater(60.0, self.sendTimeoutMovie, self.task)
+            taskMgr.doMethodLater(NPCToons.QUEST_COUNTDOWN_TIME, self.sendTimeoutMovie, self.task)
 
     def setMovieDone(self):
         avId = self.air.getAvatarIdFromSender()
