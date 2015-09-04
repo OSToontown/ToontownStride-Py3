@@ -71,7 +71,8 @@ class StridePackager(NiraiPackager):
     def generate_niraidata(self):
         print 'Generating niraidata'
         # Config
-        config = self.get_file_contents('../deployment/public_client.prc')
+        config = self.get_file_contents('../dependencies/config/general.prc')
+        config += '\n\n' + self.get_file_contents('../dependencies/config/release/dev.prc')
 
         config_iv = self.generate_key(16)
         config_key = self.generate_key(16)
@@ -104,7 +105,7 @@ class StridePackager(NiraiPackager):
 
 # Compile the engine
 if args.compile_cxx:
-    compiler = NiraiCompiler('stride.exe', libs=set(glob.glob('c:/repos/libpandadna/libpandadna.dir/Release/*.obj')))
+    compiler = NiraiCompiler('stride.exe', libs=set(glob.glob('libpandadna/libpandadna.dir/Release/*.obj')))
 
     compiler.add_nirai_files()
     compiler.add_source('src/stride.cxx')

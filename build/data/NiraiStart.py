@@ -30,18 +30,27 @@ del dc
 del iv
 del key
 
-# The VirtualFileSystem, which has already initialized, doesn't see the mount
-# directives in the config(s) yet. We have to force it to load those manually:
-#from panda3d.core import VirtualFileSystem, ConfigVariableList, Filename
-vfs = VirtualFileSystem.getGlobalPtr()
-mounts = ConfigVariableList('vfs-mount')
-for mount in mounts:
-    mountfile, mountpoint = (mount.split(' ', 2) + [None, None, None])[:2]
-    vfs.mount(Filename(mountfile), Filename(mountpoint), 0)
-
 # Resources
-# TO DO: Sign and verify the phases to prevent edition
+# TO DO: Sign and verify the phases to prevent editing.
+
+vfs = VirtualFileSystem.getGlobalPtr()
+mfs = [3, 3.5, 4, 5, 5.5, 6, 7, 8, 9, 10, 11, 12, 13]
 abort = False
+
+for mf in mfs:
+    filename = 'resources/default/phase_%s.mf' % mf
+    if not os.path.isfile(filename):
+        print 'Phase %s not found' % filename
+        abort = True
+        break
+
+    mf = Multifile()
+    mf.openRead(filename)
+
+    if not vfs.mount(mf, '/', 0):
+        print 'Unable to mount %s' % filename
+        abort = True
+        break
 
 # Packs
 pack = os.environ.get('TT_STRIDE_CONTENT_PACK')
