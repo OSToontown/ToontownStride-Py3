@@ -178,12 +178,17 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         from toontown.toon.DistributedNPCToonBaseAI import DistributedNPCToonBaseAI
         if not isinstance(self, DistributedNPCToonBaseAI):
             self.sendUpdate('setDefaultShard', [self.air.districtId])
+    
+    def clearChat(self):
+        self.sendUpdate('setTalk', ['.'])
 
     def setLocation(self, parentId, zoneId):
         DistributedPlayerAI.DistributedPlayerAI.setLocation(self, parentId, zoneId)
 
         from toontown.toon.DistributedNPCToonBaseAI import DistributedNPCToonBaseAI
         if not isinstance(self, DistributedNPCToonBaseAI):
+            self.clearChat()
+
             if 100 <= zoneId < ToontownGlobals.DynamicZonesBegin:
                 hood = ZoneUtil.getHoodId(zoneId)
                 self.b_setLastHood(hood)
