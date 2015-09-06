@@ -43,16 +43,16 @@ def niraicall_obfuscate(code):
 
 niraimarshal.niraicall_obfuscate = niraicall_obfuscate
 
-class StridePackager(NiraiPackager, configPath=None):
+class StridePackager(NiraiPackager):
     HEADER = 'TTSTRIDE'
     BASEDIR = '..' + os.sep
 
-    def __init__(self, outfile):
+    def __init__(self, outfile, configPath=None):
         NiraiPackager.__init__(self, outfile)
         self.__manglebase = self.get_mangle_base(self.BASEDIR)
         self.add_panda3d_dirs()
         self.add_default_lib()
-        self.globalConfigPath = configPath if configPath is not None else '../dependencies/config/release/qa.prc'
+        self.globalConfigPath = configPath
 
     def add_source_dir(self, dir):
         self.add_directory(self.BASEDIR + dir, mangler=self.__mangler)
@@ -71,8 +71,11 @@ class StridePackager(NiraiPackager, configPath=None):
 
     def generate_niraidata(self):
         print 'Generating niraidata'
-        config = self.get_file_contents('../dependencies/config/general.prc')
-        config += '\n\n' + self.get_file_contents(self.globalConfigPath)
+        if self.globalConfigPath is not None:
+            config = self.get_file_contents(self.globalConfigPath)
+        else:
+            config = self.get_file_contents('../dependencies/config/general.prc')
+            config += '\n\n' + self.get_file_contents('../dependencies/config/release/qa.prc')
 
         config_iv = self.generate_key(16)
         config_key = self.generate_key(16)
