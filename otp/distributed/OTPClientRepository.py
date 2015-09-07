@@ -223,7 +223,7 @@ class OTPClientRepository(ClientRepositoryBase):
         if dcFileNames == None:
             try:
                 # For Nirai
-                readResult = dcFile.read(dcStream)
+                readResult = dcFile.read(dcStream, '__dc__')
                 del __builtin__.dcStream
 
             except NameError:
