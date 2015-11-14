@@ -1,0 +1,3 @@
+# Exclude the debug builds of Astron.
+astrond_debug
+astrond_debug.exe

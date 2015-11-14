@@ -1,0 +1,9 @@
+[submodule "build/nirai/src"]
+	path = build/nirai/src
+	url = https://github.com/nirai-compiler/src
+[submodule "build/nirai/panda3d"]
+	path = build/nirai/panda3d
+	url = https://github.com/nirai-compiler/panda3d
+[submodule "build/nirai/python"]
+	path = build/nirai/python
+	url = https://github.com/nirai-compiler/python
