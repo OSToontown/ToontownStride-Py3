@@ -1,0 +1,5 @@
+Release/
+*.pyc
+*.pyo
+*.lib
+build/
