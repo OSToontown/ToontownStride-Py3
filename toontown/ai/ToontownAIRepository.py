@@ -100,6 +100,8 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.newsManager.generateWithRequired(2)
         self.safeZoneManager = SafeZoneManagerAI(self)
         self.safeZoneManager.generateWithRequired(2)
+        self.topToonsMgr = TopToonsManagerAI(self)
+        #self.topToonsMgr.generateWithRequired(2)
         self.tutorialManager = TutorialManagerAI(self)
         self.tutorialManager.generateWithRequired(2)
         self.friendManager = FriendManagerAI(self)
