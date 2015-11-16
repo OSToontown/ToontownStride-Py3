@@ -1,9 +1,9 @@
-from panda3d.core import *
+from pandac.PandaModules import *
 from direct.gui.DirectGui import *
+from pandac.PandaModules import *
 from direct.gui.DirectScrolledList import *
 from toontown.toonbase import ToontownGlobals
 from toontown.toontowngui import TTDialog
-from toontown.friends import FriendHandle
 import CatalogItem
 import CatalogInvalidItem
 import CatalogFurnitureItem
@@ -14,8 +14,8 @@ from direct.actor import Actor
 import random
 from toontown.toon import DistributedToon
 from direct.directnotify import DirectNotifyGlobal
-from otp.nametag.ChatBalloon import ChatBalloon
-from otp.nametag import NametagGroup, NametagConstants
+from toontown.nametag import NametagGlobals
+import CatalogChatBalloon
 
 NUM_CATALOG_ROWS = 3
 NUM_CATALOG_COLS = 2
@@ -31,10 +31,8 @@ class CatalogScreen(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('CatalogScreen')
 
     def __init__(self, parent = aspect2d, **kw):
-        self.gifting = -1
         guiItems = loader.loadModel('phase_5.5/models/gui/catalog_gui')
         background = guiItems.find('**/catalog_background')
-        background.setBin("background", 10)
         guiButton = loader.loadModel('phase_3/models/gui/quit_button')
         guiBack = loader.loadModel('phase_5.5/models/gui/package_delivery_panel')
         optiondefs = (('scale', 0.667, None),
@@ -45,11 +43,19 @@ class CatalogScreen(DirectFrame):
          ('relief', None, None))
         self.defineoptions(kw, optiondefs)
         DirectFrame.__init__(self, parent)
-        self.friend = None
-        self.friendAvId = None
-        self.friendName = None
-        self.friendList = []
-        self.friends = []
+        self.friendGiftIndex = 0
+        self.friendGiftHandle = None
+        self.frienddoId = None
+        self.receiverName = 'Error Nameless Toon'
+        self.friends = {}
+        self.family = {}
+        self.ffList = []
+        self.textRolloverColor = Vec4(1, 1, 0, 1)
+        self.textDownColor = Vec4(0.5, 0.9, 1, 1)
+        self.textDisabledColor = Vec4(0.4, 0.8, 0.4, 1)
+        self.giftAvatar = None
+        self.gotAvatar = 0
+        self.allowGetDetails = 1
         self.load(guiItems, guiButton, guiBack)
         self.initialiseoptions(CatalogScreen)
         self.enableBackorderCatalogButton()
@@ -59,8 +65,10 @@ class CatalogScreen(DirectFrame):
         self.hide()
         self.clarabelleChatNP = None
         self.clarabelleChatBalloon = None
+        self.gifting = -1
         self.createdGiftGui = None
         self.viewing = None
+        return
 
     def show(self):
         self.accept('CatalogItemPurchaseRequest', self.__handlePurchaseRequest)
@@ -82,6 +90,9 @@ class CatalogScreen(DirectFrame):
 
         taskMgr.doMethodLater(1.0, clarabelleGreeting, 'clarabelleGreeting')
         taskMgr.doMethodLater(12.0, clarabelleHelpText1, 'clarabelleHelpText1')
+        if hasattr(self, 'giftToggle'):
+            self.giftToggle['state'] = DGG.NORMAL
+            self.giftToggle['text'] = TTLocalizer.CatalogGiftToggleOn
 
     def hide(self):
         self.ignore('CatalogItemPurchaseRequest')
@@ -294,8 +305,8 @@ class CatalogScreen(DirectFrame):
             pIndex = 0
             randGen = random.Random()
             randGen.seed(base.localAvatar.catalogScheduleCurrentWeek + (self.pageIndex << 8) + (newOrBackOrSpecial << 16))
-            for i in xrange(NUM_CATALOG_ROWS):
-                for j in xrange(NUM_CATALOG_COLS):
+            for i in range(NUM_CATALOG_ROWS):
+                for j in range(NUM_CATALOG_COLS):
                     if pIndex < len(self.visiblePanels):
                         type = self.visiblePanels[pIndex]['item'].getTypeCode()
                         self.squares[i][j].setColor(CatalogPanelColors.values()[randGen.randint(0, len(CatalogPanelColors) - 1)])
@@ -531,15 +542,15 @@ class CatalogScreen(DirectFrame):
          -2.0,
          -1.45), image_scale=(1.0, 1.0, smash), image_pos=(0.0, 0.0, -1.9 + lift), image=backDown, pressEffect=0, command=self.showEmblemItems, text=TTLocalizer.CatalogEmblem, text_font=ToontownGlobals.getSignFont(), text_pos=(1.75, 0.132), text_scale=0.065, text_fg=(0.353, 0.627, 0.627, 1.0), text2_fg=(0.353, 0.427, 0.427, 1.0))
         self.emblemCatalogButton2.hide()
-        self.__makeFriendList()
-        if len(self.friendList) > 0:
+        self.__makeFFlist()
+        if len(self.ffList) > 0:
             if config.GetBool('want-gifting', True):
                 self.giftToggle = DirectButton(self.base, relief=None, pressEffect=0, image=(giftToggleUp, giftToggleDown, giftToggleUp), image_scale=(1.0, 1, 0.7), command=self.__giftToggle, text=TTLocalizer.CatalogGiftToggleOff, text_font=ToontownGlobals.getSignFont(), text_pos=TTLocalizer.CSgiftTogglePos, text_scale=TTLocalizer.CSgiftToggle, text_fg=(0.353, 0.627, 0.627, 1.0), text3_fg=(0.15, 0.3, 0.3, 1.0), text2_fg=(0.353, 0.427, 0.427, 1.0), image_color=Vec4(1.0, 1.0, 0.2, 1.0), image1_color=Vec4(0.9, 0.85, 0.2, 1.0), image2_color=Vec4(0.9, 0.85, 0.2, 1.0), image3_color=Vec4(0.5, 0.45, 0.2, 1.0))
                 self.giftToggle.setPos(0.0, 0, -0.035)
             self.giftLabel = DirectLabel(self.base, relief=None, image=giftFriends, image_scale=(1.15, 1, 1.14), text=' ', text_font=ToontownGlobals.getSignFont(), text_pos=(1.2, -0.97), text_scale=0.07, text_fg=(0.392, 0.549, 0.627, 1.0), sortOrder=100, textMayChange=1)
             self.giftLabel.setPos(-0.15, 0, 0.08)
             self.giftLabel.hide()
-            self.friendLabel = DirectLabel(self.base, relief=None, text=TTLocalizer.CatalogGiftChoose, text_font=ToontownGlobals.getSignFont(), text_pos=(-0.25, 0.132), text_scale=0.068, text_align=TextNode.ALeft, text_fg=(0.992, 0.949, 0.327, 1.0), sortOrder=100, textMayChange=1)
+            self.friendLabel = DirectLabel(self.base, relief=None, text='Friend Name', text_font=ToontownGlobals.getSignFont(), text_pos=(-0.25, 0.132), text_scale=0.068, text_align=TextNode.ALeft, text_fg=(0.992, 0.949, 0.327, 1.0), sortOrder=100, textMayChange=1)
             self.friendLabel.setPos(0.5, 0, -0.42)
             self.friendLabel.hide()
             gui = loader.loadModel('phase_3.5/models/gui/friendslist_gui')
@@ -558,8 +569,11 @@ class CatalogScreen(DirectFrame):
             clipNP = self.scrollList.attachNewNode(clipper)
             self.scrollList.setClipPlane(clipNP)
             self.__makeScrollList()
+            friendId = self.ffList[0]
+            self.__chooseFriend(self.ffList[0][0], self.ffList[0][1])
+            self.update()
             self.createdGiftGui = 1
-        for i in xrange(4):
+        for i in range(4):
             self.newCatalogButton.component('text%d' % i).setR(90)
             self.newCatalogButton2.component('text%d' % i).setR(90)
             self.backCatalogButton.component('text%d' % i).setR(90)
@@ -573,8 +587,8 @@ class CatalogScreen(DirectFrame):
          [],
          [],
          []]
-        for i in xrange(NUM_CATALOG_ROWS):
-            for j in xrange(NUM_CATALOG_COLS):
+        for i in range(NUM_CATALOG_ROWS):
+            for j in range(NUM_CATALOG_COLS):
                 square = guiItems.find('**/square%d%db' % (i + 1, j + 1))
                 label = DirectLabel(self.base, image=square, relief=None, state='normal')
                 self.squares[i].append(label)
@@ -600,7 +614,7 @@ class CatalogScreen(DirectFrame):
             if item in allBankItems and item.furnitureType == CatalogFurnitureItem.MaxBankId:
                 isMaxBankOffered = True
                 break
-
+                
         for item in itemList:
             if isinstance(item, CatalogInvalidItem.CatalogInvalidItem):
                 self.notify.warning('skipping catalog invalid item %s' % item)
@@ -814,7 +828,8 @@ class CatalogScreen(DirectFrame):
         taskMgr.remove('clarabelleGreeting')
         taskMgr.remove('clarabelleHelpText1')
         taskMgr.remove('clarabelleAskAnythingElse')
-        taskMgr.remove('friendButtonsReady')
+        if self.giftAvatar:
+            base.cr.cancelAvatarDetailsRequest(self.giftAvatar)
         self.hide()
         self.hangup.hide()
         self.destroy()
@@ -846,12 +861,16 @@ class CatalogScreen(DirectFrame):
             del self.giftLabel
             del self.friendLabel
             del self.scrollList
-            del self.friend
-            del self.friends
         self.unloadClarabelle()
         if self.responseDialog:
             self.responseDialog.cleanup()
             self.responseDialog = None
+        if self.giftAvatar:
+            if hasattr(self.giftAvatar, 'doId'):
+                self.giftAvatar.delete()
+            else:
+                self.giftAvatar = None
+        return
 
     def unloadClarabelle(self):
         base.win.removeDisplayRegion(self.cDr)
@@ -869,6 +888,8 @@ class CatalogScreen(DirectFrame):
             del self.clarabelleChatBalloon
 
     def hangUp(self):
+        if hasattr(self, 'giftAvatar') and self.giftAvatar:
+            self.giftAvatar.disable()
         self.setClarabelleChat(random.choice(TTLocalizer.CatalogGoodbyeList), type='goodbye')
         self.setPageIndex(-1)
         self.showPageItems()
@@ -896,21 +917,23 @@ class CatalogScreen(DirectFrame):
     def remoteUpdate(self):
         self.update()
 
-    def update(self, task = None):
-        if (not self.friend) and self.gifting == 1:
-            self.__giftToggle()
+    def update(self, lock = 0):
+        if not hasattr(self.giftAvatar, 'doId'):
+            if self.gifting == 1:
+                self.__giftToggle()
         if hasattr(self, 'beanBank'):
             self.beanBank['text'] = str(base.localAvatar.getTotalMoney())
-            for item in self.panelList + self.backPanelList + self.specialPanelList + self.emblemPanelList:
-                if type(item) != type(''):
-                    item.updateButtons(self.gifting)
+            if lock == 0:
+                for item in self.panelList + self.backPanelList + self.specialPanelList + self.emblemPanelList:
+                    if type(item) != type(''):
+                        item.updateButtons(self.gifting)
 
     def __handlePurchaseRequest(self, item):
         item.requestPurchase(self['phone'], self.__handlePurchaseResponse)
         taskMgr.remove('clarabelleAskAnythingElse')
 
     def __handleGiftPurchaseRequest(self, item):
-        item.requestGiftPurchase(self['phone'], self.friendAvId, self.__handleGiftPurchaseResponse)
+        item.requestGiftPurchase(self['phone'], self.frienddoId, self.__handleGiftPurchaseResponse)
         taskMgr.remove('clarabelleAskAnythingElse')
 
     def __handlePurchaseResponse(self, retCode, item):
@@ -918,10 +941,11 @@ class CatalogScreen(DirectFrame):
             self.update()
             return
 
-        if hasattr(item, 'houseId') and retCode == ToontownGlobals.P_ItemAvailable:
-            localAvatar.houseType = item.houseId
+        if item.__class__.__name__ == "CatalogHouseItem":
+            if retCode == ToontownGlobals.P_ItemAvailable:
+                localAvatar.houseType = item.houseId
+                self.update()
 
-        taskMgr.doMethodLater(0.5, self.update, 'purchaseUpdate')
         self.setClarabelleChat(item.getRequestPurchaseErrorText(retCode), item.getRequestPurchaseErrorTextTimeout())
 
     def __handleGiftPurchaseResponse(self, retCode, item):
@@ -929,7 +953,7 @@ class CatalogScreen(DirectFrame):
             return
         if self.isEmpty() or self.isHidden():
             return
-        self.setClarabelleChat(item.getRequestGiftPurchaseErrorText(retCode) % self.friendName)
+        self.setClarabelleChat(item.getRequestGiftPurchaseErrorText(retCode) % self.receiverName)
         self.__loadFriend()
 
         def askAnythingElse(task):
@@ -948,13 +972,13 @@ class CatalogScreen(DirectFrame):
 
         if not self.clarabelleChatBalloon:
             self.clarabelleChatBalloon = loader.loadModel('phase_3/models/props/chatbox')
-
-        self.clarabelleChat = ChatBalloon(self.clarabelleChatBalloon)
+        
+        self.clarabelleChat = CatalogChatBalloon.CatalogChatBalloon(self.clarabelleChatBalloon)
         chatNode = self.clarabelleChat.generate(str, ToontownGlobals.getInterfaceFont())[0]
         self.clarabelleChatNP = self.attachNewNode(chatNode.node(), 1000)
         self.clarabelleChatNP.setScale(0.08)
         self.clarabelleChatNP.setPos(0.7, 0, 0.6)
-
+        
         if timeout:
             taskMgr.doMethodLater(timeout, self.clearClarabelleChat, 'clearClarabelleChat')
 
@@ -967,10 +991,16 @@ class CatalogScreen(DirectFrame):
         return
 
     def __moneyChange(self, money):
-        self.update()
+        if self.gifting > 0:
+            self.update(1)
+        else:
+            self.update(0)
 
     def __bankMoneyChange(self, bankMoney):
-        self.update()
+        if self.gifting > 0:
+            self.update(1)
+        else:
+            self.update(0)
 
     def __emblemChange(self, newEmblems):
         self.silverLabel['text'] = str(newEmblems[0])
@@ -985,60 +1015,80 @@ class CatalogScreen(DirectFrame):
         self.silverLabel.hide()
         self.goldLabel.hide()
 
-    def __makeFriendList(self):
-        for av in base.cr.avList:
-            if av.id != base.localAvatar.doId:
-                self.friendList.append((av.id, av.name, NametagGroup.CCNonPlayer))
-                
+    def checkFamily(self, doId):
+        test = 0
+        for familyMember in base.cr.avList:
+            if familyMember.id == doId:
+                test = 1
+
+        return test
+
+    def __makeFFlist(self):
         for id, handle in base.cr.friendsMap.items():
-            if isinstance(handle, FriendHandle.FriendHandle):
-                self.friendList.append((id, handle.getName(), NametagConstants.getFriendColor(handle)))
+            self.ffList.append((id, handle.getName(), NametagGlobals.CCFreeChat))
 
     def __makeScrollList(self):
-        for friend in self.friendList:
-            button = self.makeFriendButton(*friend)
-            self.scrollList.addItem(button, refresh=0)
-            self.friends.append(button)
+        for ff in self.ffList:
+            ffbutton = self.makeFamilyButton(ff[0], ff[1], ff[2])
+            if ffbutton:
+                self.scrollList.addItem(ffbutton, refresh=0)
+                self.friends[ff] = ffbutton
 
         self.scrollList.refresh()
 
-    def makeFriendButton(self, avId, name, colorCode):
-        color = NametagConstants.NAMETAG_COLORS[colorCode]
+    def makeFamilyButton(self, familyId, familyName, colorCode):
+        # fg = NametagGlobals.getNameFg(colorCode, PGButton.SInactive)
+        return DirectButton(
+            relief=None,
+            text=familyName,
+            text_scale=0.04,
+            text_align=TextNode.ALeft,
+            # text_fg=fg,
+            text1_bg=self.textDownColor,
+            text2_bg=self.textRolloverColor,
+            text3_fg=self.textDisabledColor,
+            textMayChange=0,
+            command=self.__chooseFriend,
+            extraArgs=[familyId, familyName]
+            )
 
-        return DirectButton(relief=None, text=name, text_scale=0.04, text_align=TextNode.ALeft, text_fg=color[0][0], text1_bg=(1, 1, 0, 1),
-                            text2_bg=(0.5, 0.9, 1, 1), text3_fg=(0.4, 0.8, 0.4, 1), command=self.__chooseFriend, extraArgs=[avId, name])
-
-    def __chooseFriend(self, avId, name):
+    def __chooseFriend(self, friendId, friendName):
         messenger.send('wakeup')
-        
-        if self.friendAvId == avId:
-            return
-
-        self.friendAvId = avId
-        self.friendName = name
+        self.frienddoId = friendId
+        self.receiverName = friendName
+        self.friendLabel['text'] = TTLocalizer.CatalogGiftTo % self.receiverName
         self.__loadFriend()
 
     def __loadFriend(self):
-        if not self.friendAvId:
+        if self.allowGetDetails == 0:
+            CatalogScreen.notify.warning('smashing requests')
+        if self.frienddoId and self.allowGetDetails:
+            if self.giftAvatar:
+                if hasattr(self.giftAvatar, 'doId'):
+                    self.giftAvatar.disable()
+                    self.giftAvatar.delete()
+                self.giftAvatar = None
+            self.giftAvatar = DistributedToon.DistributedToon(base.cr)
+            self.giftAvatar.doId = self.frienddoId
+            self.giftAvatar.forceAllowDelayDelete()
+            self.giftAvatar.generate()
+            base.cr.getAvatarDetails(self.giftAvatar, self.__handleAvatarDetails, 'DistributedToon')
+            self.gotAvatar = 0
+            self.allowGetDetails = 0
+            self.scrollList['state'] = DGG.DISABLED
+        return
+
+    def __handleAvatarDetails(self, gotData, avatar, dclass):
+        if self.giftAvatar.doId != avatar.doId or gotData == 0:
+            CatalogScreen.notify.error('Get Gift Avatar Failed')
+            self.gotAvatar = 0
             return
-
-        for friendButton in self.friends:
-            friendButton['state'] = DGG.DISABLED
-
-        self.friend = None
-        self.friendLabel['text'] = TTLocalizer.CatalogGiftUpdating
-        taskMgr.remove('friendButtonsReady')
-        self['phone'].requestGiftAvatar(self.friendAvId)
-    
-    def setFriendReady(self, friend):
-        self.friend = friend
-        self.friendLabel['text'] = TTLocalizer.CatalogGiftTo % self.friendName
-        taskMgr.doMethodLater(1.5, self.setFriendButtonsReady, 'friendButtonsReady')
+        else:
+            self.gotAvatar = 1
+            self.giftAvatar = avatar
+            self.scrollList['state'] = DGG.NORMAL
+        self.allowGetDetails = 1
         self.update()
-    
-    def setFriendButtonsReady(self, task=None):
-        for friendButton in self.friends:
-            friendButton['state'] = DGG.NORMAL
 
     def __giftToggle(self):
         messenger.send('wakeup')
@@ -1049,12 +1099,8 @@ class CatalogScreen(DirectFrame):
             self.scrollList.show()
             self.hideEmblems()
             self.giftToggle['text'] = TTLocalizer.CatalogGiftToggleOn
-            self.friendLabel['text'] = TTLocalizer.CatalogGiftChoose
             self.__loadFriend()
         else:
-            self.friend = None
-            self.friendAvId = 0
-            self.friendName = None
             self.gifting = -1
             self.giftLabel.hide()
             self.friendLabel.hide()

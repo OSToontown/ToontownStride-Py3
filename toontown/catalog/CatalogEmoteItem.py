@@ -91,14 +91,6 @@ class CatalogEmoteItem(CatalogItem.CatalogItem):
             track = Sequence(Func(Emote.globalEmote.doEmote, toon, self.emoteIndex), Wait(duration + 4), name=name)
         return track
 
-    def cleanupPicture(self):
-        CatalogItem.CatalogItem.cleanupPicture(self)
-        self.pictureToon.emote.finish()
-        self.pictureToon.emote = None
-        self.pictureToon.delete()
-        self.pictureToon = None
-        return
-
     def output(self, store = -1):
         return 'CatalogEmoteItem(%s%s)' % (self.emoteIndex, self.formatOptionalData(store))
 
