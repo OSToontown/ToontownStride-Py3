@@ -80,6 +80,7 @@ class DistributedPetshopInterior(DistributedObject.DistributedObject):
         self.fish.setScale(0.8)
         self.fish.setPos(0, 6, -4)
         self.fish.setPlayRate(0.7, 'swim')
+        self.fish.setBlend(frameBlend=True)
         self.fish.loop('swim')
         hoodId = ZoneUtil.getCanonicalHoodId(self.zoneId)
         self.colors = ToonInteriorColors.colors[hoodId]
