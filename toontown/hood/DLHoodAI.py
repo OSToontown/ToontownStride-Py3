@@ -24,10 +24,10 @@ class DLHoodAI(HoodAI.HoodAI):
         self.resistanceEmoteManager.generateWithRequired(9720)
 
         self.trickOrTreatMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.HALLOWEEN, 12)
-        self.trickOrTreatMgr.generateWithRequired(9619) # Relax to the Max, Candy Close
+        self.trickOrTreatMgr.generateWithRequired(9619) # Relax to the Max, Lullaby Lane
 
         self.winterCarolingMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.CHRISTMAS, 14)
-        self.winterCarolingMgr.generateWithRequired(9722) # Dream On Talent Agency, Peppermint Place
+        self.winterCarolingMgr.generateWithRequired(9722) # Dream On Talent Agency, Pajama Place
 
     def createTrolley(self):
         self.trolley = DistributedTrolleyAI.DistributedTrolleyAI(self.air)

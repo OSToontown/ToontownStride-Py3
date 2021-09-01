@@ -24,10 +24,10 @@ class TTHoodAI(HoodAI.HoodAI):
             self.createButterflies()
 
         self.trickOrTreatMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.HALLOWEEN, 12)
-        self.trickOrTreatMgr.generateWithRequired(2649) # All Fun and Games Shop, Beachball Boulevard
+        self.trickOrTreatMgr.generateWithRequired(2649) # All Fun and Games Shop, Silly Street
 
         self.winterCarolingMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.CHRISTMAS, 14)
-        self.winterCarolingMgr.generateWithRequired(2659) # Joy Buzzers to the World, Beachball Boulevard
+        self.winterCarolingMgr.generateWithRequired(2659) # Joy Buzzers to the World, Silly Street
 
     def shutdown(self):
         HoodAI.HoodAI.shutdown(self)

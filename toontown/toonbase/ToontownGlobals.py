@@ -151,31 +151,31 @@ OutdoorZone = 6000
 FunnyFarm = 7000
 GoofySpeedway = 8000
 DonaldsDreamland = 9000
-CoralCourt = 1100
-OceanOverpass = 1200
-PiratePlace = 1300
-BeachballBoulevard = 2100
-AlohaAvenue = 2200
+BarnacleBoulevard = 1100
+SeaweedStreet = 1200
+LighthouseLane = 1300
+SillyStreet = 2100
+LoopyLane = 2200
 PunchlinePlace = 2300
 WalrusWay = 3100
 SleetStreet = 3200
 PolarPlace = 3300
-DesertDrive = 4100
-TumbleweedTerrace = 4200
-CactusCourt = 4300
+AltoAvenue = 4100
+BaritoneBoulevard = 4200
+TenorTerrace = 4300
 ElmStreet = 5100
 MapleStreet = 5200
 OakStreet = 5300
-CandyClose = 9100
-PeppermintPlace = 9200
+LullabyLane = 9100
+PajamaPlace = 9200
 BedtimeBoulevard = 9300
 ToonHall = 2513
-HoodHierarchy = {ToonIslandCentral: (BeachballBoulevard, AlohaAvenue, PunchlinePlace),
- RainbowRise: (CoralCourt, OceanOverpass, PiratePlace),
+HoodHierarchy = {ToonIslandCentral: (SillyStreet, LoopyLane, PunchlinePlace),
+ RainbowRise: (BarnacleBoulevard, SeaweedStreet, LighthouseLane),
  TheBrrrgh: (WalrusWay, SleetStreet, PolarPlace),
- MinniesMelodyland: (DesertDrive, TumbleweedTerrace, CactusCourt),
+ MinniesMelodyland: (AltoAvenue, BaritoneBoulevard, TenorTerrace),
  DaisyGarden: (ElmStreet, MapleStreet, OakStreet),
- DonaldsDreamland: (CandyClose, PeppermintPlace, BedtimeBoulevard),
+ DonaldsDreamland: (LullabyLane, PajamaPlace, BedtimeBoulevard),
  GoofySpeedway: ()}
 BossbotHQ = 10000
 BossbotLobby = 10100
