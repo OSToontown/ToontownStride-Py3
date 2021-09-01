@@ -1,4 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
+from functools import total_ordering
 from panda3d.core import *
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
@@ -22,6 +23,7 @@ CatalogTypeBackorder = 2
 CatalogTypeMonthly = 3
 CatalogTypeSpecial = 4
 
+@total_ordering
 class CatalogItem:
     notify = DirectNotifyGlobal.directNotify.newCategory('CatalogItem')
 
@@ -248,11 +250,11 @@ class CatalogItem:
     def getHashContents(self):
         return None
 
-    def __cmp__(self, other):
-        c = cmp(self.__class__, other.__class__)
-        if c != 0:
-            return c
-        return self.compareTo(other)
+    def __eq__(self, other):
+        return(self.__class__ == other.__class__)
+
+    def __lt__(self, other):
+        return (self.__class__ < other.__class__)
 
     def __hash__(self):
         return hash((self.__class__, self.getHashContents()))
