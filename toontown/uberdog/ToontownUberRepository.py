@@ -1,5 +1,5 @@
 from direct.distributed.PyDatagram import *
-import urlparse
+import urllib.parse
 from otp.distributed.OtpDoGlobals import *
 from otp.distributed.DistributedDirectoryAI import DistributedDirectoryAI
 from toontown.distributed.ToontownInternalRepository import ToontownInternalRepository

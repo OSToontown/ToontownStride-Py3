@@ -13,7 +13,7 @@ class DistributedLobbyManagerAI(DistributedObjectAI):
         self.avId2LobbyId = {}
         self.id2Lobby = {}
         self.pubLobbyInfo = {}
-        self.idPool = range(self.air.ourChannel, self.air.ourChannel + 100000)
+        self.idPool = list(range(self.air.ourChannel, self.air.ourChannel + 100000))
 
     def receiveId(self, ids):
         self.idPool += ids
@@ -102,7 +102,7 @@ class DistributedLobbyManagerAI(DistributedObjectAI):
 
     def exitLobby(self, lobbyZone):
         avId = simbase.air.getAvatarIdFromSender()
-        for lobbyInfo in self.pubLobbyInfo.values():
+        for lobbyInfo in list(self.pubLobbyInfo.values()):
             if lobbyInfo['zoneId'] == lobbyZone:
                 lobby = self.id2Lobby.get(lobbyInfo['lobbyId'])
                 if lobby:

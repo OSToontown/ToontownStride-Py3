@@ -1,6 +1,6 @@
 from direct.interval.IntervalGlobal import *
-import CatalogAtticItem
-import CatalogItem
+from . import CatalogAtticItem
+from . import CatalogItem
 import random, glob
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
@@ -49,7 +49,7 @@ BankToMoney = {
  1340: 30000
 }
 MoneyToBank = {}
-for bankId, maxMoney in BankToMoney.items():
+for bankId, maxMoney in list(BankToMoney.items()):
     MoneyToBank[maxMoney] = bankId
 
 MaxBankId = 1340
@@ -66,7 +66,7 @@ ClosetToClothes = {
  518: 50
 }
 ClothesToCloset = {}
-for closetId, maxClothes in ClosetToClothes.items():
+for closetId, maxClothes in list(ClosetToClothes.items()):
     if not maxClothes in ClothesToCloset:
         ClothesToCloset[maxClothes] = (closetId,)
     else:
@@ -1101,7 +1101,7 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
         self.applyColor(model, type[FTColor])
         if type[FTColorOptions] != None:
             if self.colorOption == None:
-                option = random.choice(type[FTColorOptions].values())
+                option = random.choice(list(type[FTColorOptions].values()))
             else:
                 option = type[FTColorOptions].get(self.colorOption)
             self.applyColor(model, option)
@@ -1192,24 +1192,24 @@ def getMaxClosets():
 
 
 def getAllClosets():
-    list = []
-    for closetId in ClosetToClothes.keys():
-        list.append(CatalogFurnitureItem(closetId))
+    _list = []
+    for closetId in list(ClosetToClothes.keys()):
+        _list.append(CatalogFurnitureItem(closetId))
 
-    return list
+    return _list
 
 def getAllBanks():
-    list = []
+    _list = []
 
-    for bankId in BankToMoney.keys():
-        list.append(CatalogFurnitureItem(bankId))
+    for bankId in list(BankToMoney.keys()):
+        _list.append(CatalogFurnitureItem(bankId))
 
-    return list
+    return _list
 
 def getAllFurnitures(index):
-    list = []
+    _list = []
     colors = FurnitureTypes[index][FTColorOptions]
-    for n in xrange(len(colors)):
-        list.append(CatalogFurnitureItem(index, n))
+    for n in range(len(colors)):
+        _list.append(CatalogFurnitureItem(index, n))
 
-    return list
+    return _list

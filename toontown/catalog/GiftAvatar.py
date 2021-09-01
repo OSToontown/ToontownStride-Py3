@@ -1,5 +1,5 @@
 from toontown.toon import ToonDNA
-import CatalogItem, CatalogItemList
+from . import CatalogItem, CatalogItemList
 import json, time
 
 def createFromJson(jsonData):
@@ -8,7 +8,7 @@ def createFromJson(jsonData):
 def createFromFields(fields):
     avatar = GiftAvatar()
     
-    for key, value in fields.iteritems():
+    for key, value in fields.items():
         getattr(avatar, key)(value)
     
     return avatar

@@ -9,7 +9,7 @@ class DNABulkLoader:
 
     def loadDNAFiles(self):
         for file in self.dnaFiles:
-            print 'Reading DNA file...', file
+            print('Reading DNA file...', file)
             loadDNABulk(self.dnaStorage, file)
         del self.dnaStorage
         del self.dnaFiles
@@ -20,7 +20,7 @@ def loadDNABulk(dnaStorage, file):
     dnaLoader.loadDNAFile(dnaStorage, file)
 
 def loadDNAFile(dnaStorage, file):
-    print 'Reading DNA file...', file
+    print('Reading DNA file...', file)
     dnaLoader = DNALoader()
     file = '/' + file
     node = dnaLoader.loadDNAFile(dnaStorage, file)
@@ -37,7 +37,7 @@ def setupDoor(a, b, c, d, e, f):
     try:
         e = int(str(e).split('_')[0])
     except:
-        print 'setupDoor: error parsing', e
+        print('setupDoor: error parsing', e)
         e = 9999
 
     DNADoor.setupDoor(a, b, c, d, e, f)

@@ -6,7 +6,8 @@ from toontown.battle import SuitBattleGlobals
 from otp.nametag.NametagGroup import NametagGroup
 from toontown.toonbase import TTLocalizer, ToontownGlobals
 from toontown.suit import SuitGlobals
-import SuitDNA, SuitHealthBar, string
+import string
+from . import SuitDNA, SuitHealthBar
 
 aSize = 6.06
 bSize = 5.29
@@ -181,7 +182,7 @@ Preloaded = {}
 def loadModels():
     global Preloaded
     if not Preloaded:
-        print 'Preloading suits...'
+        print('Preloading suits...')
         for filepath in SuitParts:
             Preloaded[filepath] = loader.loadModel(filepath)
             Preloaded[filepath].flattenMedium()
@@ -198,7 +199,7 @@ def unloadSuits(level):
     unloadDialog(level)
 
 def loadSuitModelsAndAnims(level, flag = 0):
-    for key in ModelDict.keys():
+    for key in list(ModelDict.keys()):
         model, phase = ModelDict[key]
         if flag:
             filepath = 'phase_3.5' + model + 'mod'
@@ -214,7 +215,7 @@ def loadSuitAnims(suit, flag = 1):
             animList = ()
 
     else:
-        print 'Invalid suit name: ', suit
+        print('Invalid suit name: ', suit)
         return -1
     for anim in animList:
         phase = 'phase_' + str(anim[2])
@@ -238,7 +239,7 @@ def loadDialog(level):
          'COG_VO_question',
          'COG_VO_exclaim']
         for file in SuitDialogFiles:
-            SuitDialogArray.append(base.loadSfx(loadPath + file + '.ogg'))
+            SuitDialogArray.append(base.loader.loadSfx(loadPath + file + '.ogg'))
 
         SuitDialogArray.append(SuitDialogArray[2])
 
@@ -521,7 +522,7 @@ class Suit(Avatar.Avatar):
         headModel = NodePath('cog_head')
         Preloaded[filepath].copyTo(headModel)
         headReferences = headModel.findAllMatches('**/' + headType)
-        for i in xrange(0, headReferences.getNumPaths()):
+        for i in range(0, headReferences.getNumPaths()):
             headPart = self.instance(headReferences.getPath(i), 'modelRoot', 'joint_head')
             if self.headTexture:
                 headTex = loader.loadTexture('phase_' + str(phase) + '/maps/' + self.headTexture)
@@ -594,7 +595,7 @@ class Suit(Avatar.Avatar):
                 else:
                     self.setSuitClothes(self.loseActor)
             else:
-                loseModel = 'phase_5/models/char/cog' + string.upper(self.style.body) + '_robot-lose-mod'
+                loseModel = 'phase_5/models/char/cog' + self.style.body.upper() + '_robot-lose-mod'
                 filePrefix, phase = TutorialModelDict[self.style.body]
                 loseAnim = 'phase_' + str(phase) + filePrefix + 'lose'
                 self.loseActor = Actor.Actor(loseModel, {'lose': loseAnim})
@@ -618,7 +619,7 @@ class Suit(Avatar.Avatar):
         return
 
     def makeSkeleton(self):
-        model = 'phase_5/models/char/cog' + string.upper(self.style.body) + '_robot-zero'
+        model = 'phase_5/models/char/cog' + self.style.body.upper() + '_robot-zero'
         anims = self.generateAnimDict()
         anim = self.getCurrentAnim()
         dropShadow = self.dropShadow
@@ -633,7 +634,7 @@ class Suit(Avatar.Avatar):
         self.generateCorporateTie()
         self.setHeight(self.height)
         parts = self.findAllMatches('**/pPlane*')
-        for partNum in xrange(0, parts.getNumPaths()):
+        for partNum in range(0, parts.getNumPaths()):
             bb = parts.getPath(partNum)
             bb.setTwoSided(1)
 

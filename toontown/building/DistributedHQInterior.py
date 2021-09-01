@@ -1,6 +1,6 @@
-import cPickle
+import pickle
 import random
-import ToonInteriorColors
+from . import ToonInteriorColors
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
 from direct.task.Task import Task
@@ -65,7 +65,7 @@ class DistributedHQInterior(DistributedObject.DistributedObject):
         self.nameTextNodes = []
         self.scoreTextNodes = []
         self.trophyStars = []
-        for i in xrange(self.numLeaders):
+        for i in range(self.numLeaders):
             (row, nameText, scoreText, trophyStar) = self.buildLeaderRow()
             self.nameTextNodes.append(nameText)
             self.scoreTextNodes.append(scoreText)
@@ -76,13 +76,13 @@ class DistributedHQInterior(DistributedObject.DistributedObject):
 
     def updateLeaderBoard(self):
         taskMgr.remove(self.uniqueName('starSpinHQ'))
-        for i in xrange(len(self.leaderNames)):
+        for i in range(len(self.leaderNames)):
             name = self.leaderNames[i]
             score = self.leaderScores[i]
             self.nameTextNodes[i].setText(name)
             self.scoreTextNodes[i].setText(str(score))
             self.updateTrophyStar(self.trophyStars[i], score)
-        for i in xrange(len(self.leaderNames), self.numLeaders):
+        for i in range(len(self.leaderNames), self.numLeaders):
             self.nameTextNodes[i].setText('-')
             self.scoreTextNodes[i].setText('-')
             self.trophyStars[i].hide()
@@ -120,7 +120,7 @@ class DistributedHQInterior(DistributedObject.DistributedObject):
         return (row, nameText, scoreText, trophyStar)
 
     def setLeaderBoard(self, leaderData):
-        (avIds, names, scores) = cPickle.loads(leaderData)
+        (avIds, names, scores) = pickle.loads(leaderData)
         self.notify.debug('setLeaderBoard: avIds: %s, names: %s, scores: %s' % (avIds, names, scores))
         self.leaderAvIds = avIds
         self.leaderNames = names
@@ -139,11 +139,11 @@ class DistributedHQInterior(DistributedObject.DistributedObject):
     def setupDoors(self):
         self.randomGenerator = random.Random()
         self.randomGenerator.seed(self.zoneId)
-        self.colors = ToonInteriorColors.colors[ToontownCentral]
+        self.colors = ToonInteriorColors.colors[ToonIslandCentral]
         door = self.chooseDoor()
         doorOrigins = render.findAllMatches('**/door_origin*')
         numDoorOrigins = doorOrigins.getNumPaths()
-        for npIndex in xrange(numDoorOrigins):
+        for npIndex in range(numDoorOrigins):
             doorOrigin = doorOrigins[npIndex]
             doorOriginNPName = doorOrigin.getName()
             doorOriginIndexStr = doorOriginNPName[len('door_origin_'):]

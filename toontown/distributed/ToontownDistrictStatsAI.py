@@ -88,7 +88,7 @@ class ToontownDistrictStatsAI(DistributedObjectAI):
         zones = ToontownGlobals.GROUP_ZONES
         self.groupAvCount = [0] * len(zones)
         
-        for av in self.air.doId2do.values():
+        for av in list(self.air.doId2do.values()):
             if isinstance(av, DistributedToonAI.DistributedToonAI) and av.isPlayerControlled() and av.zoneId in zones:
                 self.groupAvCount[zones.index(av.zoneId)] += 1
 

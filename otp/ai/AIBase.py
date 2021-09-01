@@ -6,7 +6,7 @@ import time
 from direct.directnotify.DirectNotifyGlobal import *
 from direct.interval.IntervalManager import ivalMgr
 from direct.showbase import EventManager
-from direct.showbase import PythonUtil
+from toontown.toonbase import PythonUtil
 from direct.showbase.BulletinBoardGlobal import *
 from direct.showbase.EventManagerGlobal import *
 from direct.showbase.JobManagerGlobal import *

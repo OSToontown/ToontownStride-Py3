@@ -1,6 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObjectAI
-import CogdoBarrelRoomConsts
+from . import CogdoBarrelRoomConsts
 import random
 
 class DistributedCogdoBarrelAI(DistributedObjectAI.DistributedObjectAI):

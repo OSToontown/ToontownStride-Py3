@@ -19,9 +19,9 @@ from toontown.cogdominium import CogdoGameConsts
 from toontown.cogdominium import CogdoBarrelRoom, CogdoBarrelRoomConsts
 from toontown.distributed import DelayDelete
 from toontown.toonbase import TTLocalizer
-from CogdoExecutiveSuiteMovies import CogdoExecutiveSuiteIntro
-from CogdoBarrelRoomMovies import CogdoBarrelRoomIntro
-from CogdoElevatorMovie import CogdoElevatorMovie
+from .CogdoExecutiveSuiteMovies import CogdoExecutiveSuiteIntro
+from .CogdoBarrelRoomMovies import CogdoBarrelRoomIntro
+from .CogdoElevatorMovie import CogdoElevatorMovie
 SUITE_DICT = {'s': 'tt_m_ara_crg_penthouse_sell',
  'l': 'tt_m_ara_crg_penthouse_law',
  'm': 'tt_m_ara_crg_penthouse_sell',
@@ -41,8 +41,8 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
         DistributedObject.DistributedObject.__init__(self, cr)
         self.toons = []
         self.activeIntervals = {}
-        self.openSfx = base.loadSfx('phase_5/audio/sfx/elevator_door_open.ogg')
-        self.closeSfx = base.loadSfx('phase_5/audio/sfx/elevator_door_close.ogg')
+        self.openSfx = base.loader.loadSfx('phase_5/audio/sfx/elevator_door_open.ogg')
+        self.closeSfx = base.loader.loadSfx('phase_5/audio/sfx/elevator_door_close.ogg')
         self.suits = []
         self.reserveSuits = []
         self.joiningReserves = []
@@ -83,8 +83,8 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
         self.penthouseOutroTrack = None
         self.penthouseOutroChatDoneTrack = None
         self.penthouseIntroTrack = None
-        self.waitMusic = base.loadMusic('phase_7/audio/bgm/encntr_toon_winning_indoor.ogg')
-        self.elevatorMusic = base.loadMusic('phase_7/audio/bgm/tt_elevator.ogg')
+        self.waitMusic = base.loader.loadMusic('phase_7/audio/bgm/encntr_toon_winning_indoor.ogg')
+        self.elevatorMusic = base.loader.loadMusic('phase_7/audio/bgm/tt_elevator.ogg')
         self.fsm = ClassicFSM.ClassicFSM('DistributedCogdoInterior', [State.State('WaitForAllToonsInside', self.enterWaitForAllToonsInside, self.exitWaitForAllToonsInside, ['Elevator']),
          State.State('Elevator', self.enterElevator, self.exitElevator, ['Game', 'BattleIntro', 'BarrelRoomIntro']),
          State.State('Game', self.enterGame, self.exitGame, ['Resting', 'Failed', 'BattleIntro', 'BarrelRoomIntro', 'Elevator']),
@@ -157,7 +157,7 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
 
     def setElevatorLights(self, elevatorModel):
         npc = elevatorModel.findAllMatches('**/floor_light_?;+s')
-        for i in xrange(npc.getNumPaths()):
+        for i in range(npc.getNumPaths()):
             np = npc.getPath(i)
             np.setDepthOffset(120)
             floor = int(np.getName()[-1:]) - 1
@@ -264,7 +264,7 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
                 interval.finish()
 
     def __cleanupIntervals(self):
-        for interval in self.activeIntervals.values():
+        for interval in list(self.activeIntervals.values()):
             interval.finish()
 
         self.activeIntervals = {}
@@ -343,7 +343,7 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
                 self.notify.warning('setSuits() - no suit: %d' % suitId)
 
         self.reserveSuits = []
-        for index in xrange(len(reserveIds)):
+        for index in range(len(reserveIds)):
             suitId = reserveIds[index]
             if suitId in self.cr.doId2do:
                 suit = self.cr.doId2do[suitId]
@@ -426,7 +426,7 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
             self.barrelRoom.unload()
             if self.FOType:
                 penthouseName = SUITE_DICT.get(self.FOType)
-                for i in xrange(4):
+                for i in range(4):
                     self.floorModel = loader.loadModel('phase_5/models/cogdominium/%s' % penthouseName)
 
             self.cage = self.floorModel.find('**/cage')
@@ -439,17 +439,17 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
             self.cageDoor.wrtReparentTo(self.cage)
             if self.FOType:
                 paintingModelName = PAINTING_DICT.get(self.FOType)
-                for i in xrange(4):
+                for i in range(4):
                     paintingModel = loader.loadModel('phase_5/models/cogdominium/%s' % paintingModelName)
                     loc = self.floorModel.find('**/loc_painting%d' % (i + 1))
                     paintingModel.reparentTo(loc)
 
             if not self.floorModel.find('**/trophyCase').isEmpty():
-                for i in xrange(4):
+                for i in range(4):
                     goldEmblem = loader.loadModel('phase_5/models/cogdominium/tt_m_ara_crg_goldTrophy.bam')
                     loc = self.floorModel.find('**/gold_0%d' % (i + 1))
                     goldEmblem.reparentTo(loc)
-                for i in xrange(20):
+                for i in range(20):
                     silverEmblem = loader.loadModel('phase_5/models/cogdominium/tt_m_ara_crg_silverTrophy.bam')
                     loc = self.floorModel.find('**/silver_0%d' % (i + 1))
                     silverEmblem.reparentTo(loc)
@@ -500,7 +500,7 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
         self.elevIn = elevIn
         self.elevOut = elevOut
         self._haveEntranceElevator.set(True)
-        for index in xrange(len(self.suits)):
+        for index in range(len(self.suits)):
             if not self.suits[index].isEmpty():
                 self.suits[index].setPos(SuitPositions[index])
                 if len(self.suits) > 2:
@@ -760,12 +760,12 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
             pass
         else:
             self.notify.warning('Invalid floor number for display badges.')
-        for player in xrange(len(self.toons)):
+        for player in range(len(self.toons)):
             goldBadge = loader.loadModel('phase_5/models/cogdominium/tt_m_ara_crg_goldTrophy')
             goldBadge.setScale(1.2)
             goldNode = render.find('**/gold_0' + str(player + 1))
             goldBadge.reparentTo(goldNode)
-            for floor in xrange(numFloors):
+            for floor in range(numFloors):
                 silverBadge = loader.loadModel('phase_5/models/cogdominium/tt_m_ara_crg_silverTrophy.bam')
                 silverBadge.setScale(1.2)
                 silverNode = render.find('**/silver_0' + str(floor * 4 + (player + 1)))

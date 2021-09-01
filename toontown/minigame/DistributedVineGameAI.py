@@ -1,7 +1,7 @@
-from DistributedMinigameAI import *
+from .DistributedMinigameAI import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-import VineGameGlobals
+from . import VineGameGlobals
 
 class DistributedVineGameAI(DistributedMinigameAI):
 
@@ -48,7 +48,7 @@ class DistributedVineGameAI(DistributedMinigameAI):
         self.numTreasures = VineGameGlobals.NumVines - 1
         self.numTreasuresTaken = 0
         self.takenTable = [0] * self.numTreasures
-        for avId in self.scoreDict.keys():
+        for avId in list(self.scoreDict.keys()):
             self.scoreDict[avId] = 0
             self.finishedBonus[avId] = 0
             self.finishedTimeLeft[avId] = -1
@@ -224,25 +224,25 @@ class DistributedVineGameAI(DistributedMinigameAI):
         newClimbDir = climbDir
         newVelX = velX
         newVelZ = velZ
-        oldInfo = None
+        oldInfo = [0, 0, 0, 0, 0, 0, 0, 0]
         if avId in self.toonInfo:
             oldInfo = self.toonInfo[avId]
-            if vineIndex == None:
-                newVineIndex = oldInfo[0]
-            if vineT == None:
-                newVineT = oldInfo[1]
-            if posX == None:
-                newPosX = oldInfo[2]
-            if posZ == None:
-                newPosZ = oldInfo[3]
-            if facingRight == None:
-                newFacingRight = oldInfo[4]
-            if climbDir == None:
-                newClimbDir = oldInfo[5]
-            if velX == None:
-                newVelX = oldInfo[6]
-            if velZ == None:
-                newVelZ = oldInfo[7]
+        if vineIndex == None:
+            newVineIndex = oldInfo[0]
+        if vineT == None:
+            newVineT = oldInfo[1]
+        if posX == None:
+            newPosX = oldInfo[2]
+        if posZ == None:
+            newPosZ = oldInfo[3]
+        if facingRight == None:
+            newFacingRight = oldInfo[4]
+        if climbDir == None:
+            newClimbDir = oldInfo[5]
+        if velX == None:
+            newVelX = oldInfo[6]
+        if velZ == None:
+            newVelZ = oldInfo[7]
         if newVineIndex < -1 or newVineIndex >= VineGameGlobals.NumVines:
             newVineIndex = 0
         if newVineT < 0 or newVineT > 1:
@@ -284,10 +284,10 @@ class DistributedVineGameAI(DistributedMinigameAI):
 
         maxSpiders = VineGameGlobals.SpiderLimits[szId]
         curSpiders = 0
-        for i in xrange(4):
+        for i in range(4):
             spidersLeft = maxSpiders - curSpiders
             validChoices = []
-            for numSpiders in xrange(spidersLeft + 1):
+            for numSpiders in range(spidersLeft + 1):
                 validChoices += pool[numSpiders]
 
             if not validChoices:

@@ -34,7 +34,7 @@ class SuitPlannerCogdoInteriorAI:
         difficulty = min(difficulty + 4, len(SuitBuildingGlobals.SuitBuildingInfo) - 1)
         self.respectInvasions = 1
 
-        if isinstance(difficulty, types.StringType):
+        if isinstance(difficulty, bytes):
             self.notify.warning('difficulty is a string!')
             difficulty = int(difficulty)
 
@@ -42,16 +42,16 @@ class SuitPlannerCogdoInteriorAI:
 
     def __genJoinChances(self, num):
         joinChances = []
-        for currChance in xrange(num):
+        for currChance in range(num):
             joinChances.append(random.randint(1, 100))
 
-        joinChances.sort(cmp)
+        joinChances.sort()
         return joinChances
 
     def _genSuitInfos(self, numFloors, difficulty, bldgTrack):
         self.suitInfos = []
         self.notify.debug('\n\ngenerating suitsInfos with numFloors (' + str(numFloors) + ') difficulty (' + str(difficulty) + '+1) and bldgTrack (' + str(bldgTrack) + ')')
-        for currFloor in xrange(numFloors):
+        for currFloor in range(numFloors):
             infoDict = {}
             lvls = self.__genLevelList(difficulty, currFloor, numFloors)
             activeDicts = []
@@ -76,7 +76,7 @@ class SuitPlannerCogdoInteriorAI:
             else:
                 revives = 0
 
-            for currActive in xrange(numActive - 1, -1, -1):
+            for currActive in range(numActive - 1, -1, -1):
                 level = lvls[currActive]
                 type = self.__genNormalSuitType(level)
                 activeDict = {}
@@ -90,7 +90,7 @@ class SuitPlannerCogdoInteriorAI:
             reserveDicts = []
             numReserve = min(len(lvls) - numActive, getMaxReserves(bldgTrack))
             joinChances = self.__genJoinChances(numReserve)
-            for currReserve in xrange(numReserve):
+            for currReserve in range(numReserve):
                 level = lvls[currReserve + numActive]
                 type = self.__genNormalSuitType(level)
                 reserveDict = {}
@@ -130,7 +130,7 @@ class SuitPlannerCogdoInteriorAI:
             bossLvlRange = bldgInfo[SuitBuildingGlobals.SUIT_BLDG_INFO_BOSS_LVLS]
             newLvl = random.randint(bossLvlRange[0], bossLvlRange[1])
             lvlList.append(newLvl)
-        lvlList.sort(cmp)
+        lvlList.sort()
         self.notify.debug('LevelList: ' + repr(lvlList))
         return lvlList
 
@@ -165,7 +165,7 @@ class SuitPlannerCogdoInteriorAI:
         return newSuit
 
     def myPrint(self):
-        print 'Generated suits for cogdo: '
+        print('Generated suits for cogdo: ')
 
         for floor, currInfo in enumerate(self.suitInfos):
             floor += 1
@@ -173,17 +173,17 @@ class SuitPlannerCogdoInteriorAI:
             actives = currInfo['activeSuits']
             reserves = currInfo['reserveSuits']
 
-            print ' Floor %d has %d active suits.' % (floor, len(actives))
-            print ' Floor %d has %d reserve suits.' % (floor, len(reserves))
+            print(' Floor %d has %d active suits.' % (floor, len(actives)))
+            print(' Floor %d has %d reserve suits.' % (floor, len(reserves)))
 
             for idx, currActive in enumerate(actives):
-                type, track, level, revives = map(lambda x: currActive[x], ('type', 'track', 'level', 'revives'))
+                type, track, level, revives = [currActive[x] for x in ('type', 'track', 'level', 'revives')]
 
-                print '-- Active suit %d is %s, %s and level %d and revives is %d' % (idx, type, track, level, revives)
+                print('-- Active suit %d is %s, %s and level %d and revives is %d' % (idx, type, track, level, revives))
 
             for idx, currReserve in enumerate(reserves):
-                type, track, level, revives, res = map(lambda x: currReserve[x], ('type', 'track', 'level', 'revives', 'joinChance'))
-                print '- Reserve suit %d is %s, %s and level %d and JC = %d and revives is %d' % (idx, type, track, level, res, revives)
+                type, track, level, revives, res = [currReserve[x] for x in ('type', 'track', 'level', 'revives', 'joinChance')]
+                print('- Reserve suit %d is %s, %s and level %d and JC = %d and revives is %d' % (idx, type, track, level, res, revives))
 
     def genFloorSuits(self, floor):
         suitHandles = {}
@@ -204,7 +204,7 @@ class SuitPlannerCogdoInteriorAI:
 
     def genSuits(self):
         suitHandles = []
-        for floor in xrange(len(self.suitInfos)):
+        for floor in range(len(self.suitInfos)):
             floorSuitHandles = self.genFloorSuits(floor)
             suitHandles.append(floorSuitHandles)
 

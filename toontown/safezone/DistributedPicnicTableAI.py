@@ -147,7 +147,7 @@ class DistributedPicnicTableAI(DistributedNodeAI):
             self.allowPickers = []
             self.pickGame(gameNum)
             if self.game:
-                for x in xrange(numPickers):
+                for x in range(numPickers):
                     self.game.informGameOfPlayer()
 
     def pickGame(self, gameNum):
@@ -313,7 +313,7 @@ class DistributedPicnicTableAI(DistributedNodeAI):
         self.hasPicked = False
 
     def findAvatar(self, avId):
-        for i in xrange(len(self.seats)):
+        for i in range(len(self.seats)):
             if self.seats[i] == avId:
                 return i
                 continue
@@ -328,7 +328,7 @@ class DistributedPicnicTableAI(DistributedNodeAI):
         return avCounter
 
     def findAvailableSeat(self):
-        for i in xrange(len(self.seats)):
+        for i in range(len(self.seats)):
             if self.seats[i] == None:
                 return i
                 continue

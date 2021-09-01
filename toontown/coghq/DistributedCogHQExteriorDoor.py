@@ -3,9 +3,9 @@ from direct.distributed.ClockDelta import *
 from toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM
-import DistributedCogHQDoor
+from . import DistributedCogHQDoor
 from toontown.hood import ZoneUtil
-from BossLobbyGui import BossLobbyGui
+from .BossLobbyGui import BossLobbyGui
 
 class DistributedCogHQExteriorDoor(DistributedCogHQDoor.DistributedCogHQDoor):
 

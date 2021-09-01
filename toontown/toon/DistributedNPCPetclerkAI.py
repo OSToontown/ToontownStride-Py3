@@ -1,6 +1,6 @@
 from otp.ai.AIBaseGlobal import *
 from panda3d.core import *
-from DistributedNPCToonBaseAI import *
+from .DistributedNPCToonBaseAI import *
 from toontown.toonbase import TTLocalizer
 from direct.task import Task
 from toontown.fishing import FishGlobals
@@ -93,7 +93,7 @@ class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
         if av:
             from toontown.hood import ZoneUtil
             zoneId = ZoneUtil.getCanonicalSafeZoneId(self.zoneId)
-            if petNum not in xrange(0, len(self.petSeeds)):
+            if petNum not in range(0, len(self.petSeeds)):
                 self.air.writeServerEvent('suspicious', avId, 'DistributedNPCPetshopAI.petAdopted and no such pet!')
                 self.notify.warning('somebody called petAdopted on a non-existent pet! avId: %s' % avId)
                 return
@@ -105,7 +105,7 @@ class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
             if av.petId != 0:
                 simbase.air.petMgr.deleteToonsPet(avId)
             gender = petNum % len(PetDNA.PetGenders)
-            if nameIndex not in xrange(0, len(TTLocalizer.PetNameDictionary) - 1):
+            if nameIndex not in range(0, len(TTLocalizer.PetNameDictionary) - 1):
                 self.air.writeServerEvent('avoid_crash', avId, "DistributedNPCPetclerkAI.petAdopted and didn't have valid nameIndex!")
                 self.notify.warning("somebody called petAdopted and didn't have valid nameIndex to adopt! avId: %s" % avId)
                 return

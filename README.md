@@ -1,16 +1,7 @@
+<img src="https://raw.githubusercontent.com/OSToontown/ToontownStride-Python3/master/resources/phase_3/etc/icon.ico" align="right" width="200"/>
+
 # Toontown Stride
- September build of Toontown Stride - open sourced and free to use.
+A build of Toontown Stride, that just works.
 
-##Tired of waiting for keys?
-Great news! Toontown Stride is now available to the public on Github!
-
-##Are we allowed to use this in any projects?
-Yes, you can! No need to worry! The official Toontown Stride team welcomes you to **build off any files listed inside the repository after you clone.**
-
-##Why do this?
-Since Toontown Stride was originally meant to be a community-based server, we decided to make it *truly* community based on behalf of the original contributers to the source.
-
-##Is this version safe?
-Feel free to scan yourself and give us feedback on your findings!
-
-##Credit goes to Mr. Batty and Alexalexer for this build of the source.
+# ❓ What is Toontown Stride
+Toontown Stride is a Community Focused Toontown Server. We are going to keep up this tradition finishing and polishing Toontown Stride for the community.

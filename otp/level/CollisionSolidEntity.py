@@ -1,7 +1,7 @@
 from panda3d.core import *
 from otp.otpbase import OTPGlobals
 from direct.directnotify import DirectNotifyGlobal
-import BasicEntities
+from . import BasicEntities
 
 class CollisionSolidEntity(BasicEntities.NodePathEntity):
     notify = DirectNotifyGlobal.directNotify.newCategory('CollisionSolidEntity')

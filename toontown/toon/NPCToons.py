@@ -2,7 +2,7 @@ from panda3d.core import *
 from otp.nametag.NametagGroup import *
 from toontown.hood import ZoneUtil
 from toontown.toonbase import TTLocalizer, ToontownBattleGlobals, ToontownGlobals
-import ToonDNA
+from . import ToonDNA
 
 QUEST_MOVIE_CLEAR = 0
 QUEST_MOVIE_REJECT = 1
@@ -68,19 +68,19 @@ def getRandomDNA(seed, gender):
     return randomDNA.asTuple()
 
 def createNPC(air, npcId, desc, zoneId, posIndex = 0, questCallback = None):
-    import DistributedNPCToonAI
-    import DistributedNPCClerkAI
-    import DistributedNPCTailorAI
-    import DistributedNPCBlockerAI
-    import DistributedNPCFishermanAI
-    import DistributedNPCPetclerkAI
-    import DistributedNPCKartClerkAI
-    import DistributedNPCPartyPersonAI
-    import DistributedNPCSpecialQuestGiverAI
-    import DistributedNPCFlippyInToonHallAI
-    import DistributedNPCScientistAI
-    import DistributedNPCGloveAI
-    import DistributedNPCLaffRestockAI
+    from . import DistributedNPCToonAI
+    from . import DistributedNPCClerkAI
+    from . import DistributedNPCTailorAI
+    from . import DistributedNPCBlockerAI
+    from . import DistributedNPCFishermanAI
+    from . import DistributedNPCPetclerkAI
+    from . import DistributedNPCKartClerkAI
+    from . import DistributedNPCPartyPersonAI
+    from . import DistributedNPCSpecialQuestGiverAI
+    from . import DistributedNPCFlippyInToonHallAI
+    from . import DistributedNPCScientistAI
+    from . import DistributedNPCGloveAI
+    from . import DistributedNPCLaffRestockAI
     canonicalZoneId, name, dnaType, gender, protected, type = desc
     if type == NPC_REGULAR:
         npc = DistributedNPCToonAI.DistributedNPCToonAI(air, npcId, questCallback=questCallback)
@@ -111,7 +111,7 @@ def createNPC(air, npcId, desc, zoneId, posIndex = 0, questCallback = None):
     elif type == NPC_LAFF_RESTOCK:
         npc = DistributedNPCLaffRestockAI.DistributedNPCLaffRestockAI(air, npcId)
     else:
-        print 'Invalid NPC type: %s' % type
+        print('Invalid NPC type: %s' % type)
     npc.setName(name)
     dna = ToonDNA.ToonDNA()
     if dnaType == 'r':
@@ -146,7 +146,7 @@ def createNpcsInZone(air, zoneId):
 def createLocalNPC(npcId):
     if npcId not in NPCToonDict:
         return
-    import Toon
+    from . import Toon
     desc = NPCToonDict[npcId]
     canonicalZoneId, name, dnaType, gender, protected, type = desc
     npc = Toon.Toon()
@@ -846,7 +846,7 @@ NPCToonDict = {
  7007: (-1, lnames[7007], ('pls', 'ls', 's', 'm', 11, 0, 11, 11, 46, 0, 0, 0, 5, 16), 'm', 0, NPC_REGULAR),
  7008: (-1, lnames[7008], ('bls', 'ld', 's', 'f', 23, 0, 23, 23, 15, 6, 0, 0, 0, 18), 'f', 0, NPC_REGULAR),
  7009: (-1, lnames[7009], ('sll', 'ss', 's', 'm', 1, 0, 1, 1, 1, 6, 0, 0, 0, 6), 'm', 0, NPC_REGULAR),
- 7010: (-1, lnames[7010], ('rll', 'ms', 'm', 'm', 2, 0, 2, 2, 19, 10, 13, 10, 7, 14, 0), 'm', 0, NPC_REGULAR),
+ 7010: (-1, lnames[7010], ('bll', 'md', 's', 'f', (0.8, 0.16, 0.72, 1.0), (1.0, 1.0, 1.0, 1.0), (0.8, 0.16, 0.72, 1.0), (0.8, 0.16, 0.72, 1.0), 2, 22, 2, 22, 1, 22), 'm', 0, NPC_REGULAR),
  7011: (-1, lnames[7011], ('fll', 'ls', 'm', 'm', 0, 0, 9, 0, 10, 10, 0, 10, 5, 27), 'm', 0, NPC_REGULAR),
  7012: (-1, lnames[7012], ('pss', 'ms', 'l', 'm', 20, 0, 20, 20, 26, 0, 0, 0, 15), 'm', 0, NPC_REGULAR),
  7013: (-1, lnames[7013], ('bsl', 'ms', 'm', 'f', 20, 0, 20, 20, 3, 4, 0, 0, 5, 18), 'f', 0, NPC_REGULAR),
@@ -887,7 +887,7 @@ def generateZone2NpcDict():
     if zone2NpcDict:
         return
 
-    for id, npcDesc in NPCToonDict.items():
+    for id, npcDesc in list(NPCToonDict.items()):
         zoneId = npcDesc[0]
         if zoneId in zone2NpcDict:
             zone2NpcDict[zoneId].append(id)
@@ -978,7 +978,7 @@ def getNPCName(npcId):
         return NPCToonDict[npcId][1]
 
 def npcFriendsMinMaxStars(minStars, maxStars):
-    return [id for id in npcFriends.keys() if getNPCTrackLevelHpRarity(id)[3] >= minStars and getNPCTrackLevelHpRarity(id)[3] <= maxStars]
+    return [id for id in list(npcFriends.keys()) if getNPCTrackLevelHpRarity(id)[3] >= minStars and getNPCTrackLevelHpRarity(id)[3] <= maxStars]
 
 def getNPCTrack(npcId):
     if npcId in npcFriends:

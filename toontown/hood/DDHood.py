@@ -7,7 +7,7 @@ from toontown.hood.ToonHood import ToonHood
 class DDHood(ToonHood):
     notify = directNotify.newCategory('DDHood')
 
-    ID = ToontownGlobals.DonaldsDock
+    ID = ToontownGlobals.RainbowRise
     TOWNLOADER_CLASS = DDTownLoader
     SAFEZONELOADER_CLASS = DDSafeZoneLoader
     STORAGE_DNA = 'phase_6/dna/storage_DD.pdna'

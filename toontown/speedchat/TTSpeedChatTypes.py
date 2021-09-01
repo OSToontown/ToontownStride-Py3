@@ -1,16 +1,16 @@
-from TTSCToontaskMenu import TTSCToontaskMenu
-from TTSCFactoryMenu import TTSCFactoryMenu
-from TTSCCogMenu import TTSCCogMenu
-from TTSCToontaskTerminal import TTSCToontaskTerminal
-from TTSCResistanceMenu import TTSCResistanceMenu
-from TTSCResistanceTerminal import TTSCResistanceTerminal
-from TTSCBoardingMenu import TTSCBoardingMenu
+from .TTSCToontaskMenu import TTSCToontaskMenu
+from .TTSCFactoryMenu import TTSCFactoryMenu
+from .TTSCCogMenu import TTSCCogMenu
+from .TTSCToontaskTerminal import TTSCToontaskTerminal
+from .TTSCResistanceMenu import TTSCResistanceMenu
+from .TTSCResistanceTerminal import TTSCResistanceTerminal
+from .TTSCBoardingMenu import TTSCBoardingMenu
 
 if hasattr(base, 'wantPets') and base.wantPets:
-    from TTSCPetTrickMenu import TTSCPetTrickMenu
+    from .TTSCPetTrickMenu import TTSCPetTrickMenu
 
 from otp.otpbase import OTPLocalizer
-from SCSpecialMenu import SCSpecialMenu
+from .SCSpecialMenu import SCSpecialMenu
 
 AprilToonsMenu = [
  (OTPLocalizer.AprilToonsMenuSections[1], [30100]),
@@ -40,8 +40,8 @@ KartRacingMenu = [
 ]
 
 SellbotFieldOfficeMenu = [
- (OTPLocalizer.SellbotFieldOfficeMenuSections[1], range(30409, 30419)),
- (OTPLocalizer.SellbotFieldOfficeMenuSections[0], range(30404, 30409))
+ (OTPLocalizer.SellbotFieldOfficeMenuSections[1], list(range(30409, 30419))),
+ (OTPLocalizer.SellbotFieldOfficeMenuSections[0], list(range(30404, 30409)))
 ]
 
 SellbotNerfMenu = [
@@ -83,10 +83,10 @@ VictoryPartiesMenu = [
 ]
 
 WinterMenu = [
- (OTPLocalizer.WinterMenuSections[0], range(30200, 30206)),
+ (OTPLocalizer.WinterMenuSections[0], list(range(30200, 30206))),
  (OTPLocalizer.WinterMenuSections[1], [30275, 30276, 30277])
 ]
 
 HalloweenMenu = [(OTPLocalizer.HalloweenMenuSections[0], [30250, 30251, 30252, 10003])]
 IdesOfMarchMenu = [(OTPLocalizer.IdesOfMarchMenuSections[0], [30450, 30451, 30452])]
-SellbotInvasionMenu = [(OTPLocalizer.SellbotInvasionMenuSections[0], range(30400, 30404))]
+SellbotInvasionMenu = [(OTPLocalizer.SellbotInvasionMenuSections[0], list(range(30400, 30404)))]

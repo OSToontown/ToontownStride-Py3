@@ -53,9 +53,9 @@ SCRATCH_DIST = {'long': 2.0,
  'short': 1.0}
 TELEPORT_IN_DURATION = 2.34
 TELEPORT_OUT_DURATION = 4.5
-ZoneToCostRange = {ToontownGlobals.ToontownCentral: (100, 500),
- ToontownGlobals.DonaldsDock: (600, 1700),
- ToontownGlobals.DaisyGardens: (1000, 2500),
+ZoneToCostRange = {ToontownGlobals.ToonIslandCentral: (100, 500),
+ ToontownGlobals.RainbowRise: (600, 1700),
+ ToontownGlobals.DaisyGarden: (1000, 2500),
  ToontownGlobals.MinniesMelodyland: (1500, 3000),
  ToontownGlobals.TheBrrrgh: (2500, 4000),
  ToontownGlobals.DonaldsDreamland: (3000, 5000)}

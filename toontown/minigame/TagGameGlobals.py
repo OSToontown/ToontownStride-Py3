@@ -36,7 +36,7 @@ SKY = {
 
 GROUND = {
  ToontownGlobals.TheBrrrgh: 'phase_8/models/minigames/tag_arena_BR',
- ToontownGlobals.DaisyGardens: 'phase_8/models/minigames/tag_arena_DG'
+ ToontownGlobals.DaisyGarden: 'phase_8/models/minigames/tag_arena_DG'
 }
 
 TREASURE_POINTS = {
@@ -55,7 +55,7 @@ TREASURE_POINTS = {
   (-16.8, 0.6, 2.2),
   (-72.4, 37.7, 5)
  ],
- ToontownGlobals.DaisyGardens: [
+ ToontownGlobals.DaisyGarden: [
   (21.3, 27.6, 0.025),
   (30.4, -8.4, 0.025),
   (0.5, -36.3, 0.025),
@@ -78,7 +78,7 @@ DROP_POINTS = {
   (-31.9, -29.4, 10, 1774),
   (-74.1, -30.5, 5.3, 1720)
  ),
- ToontownGlobals.DaisyGardens: (
+ ToontownGlobals.DaisyGarden: (
   (38.6, -55.1, 0.025, 396, 0, 0),
   (3.1, 54, 0.025, 898, 0, 0),
   (-37.8, -49.4, 0.025, 685, 0, 0),

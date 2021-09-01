@@ -2,12 +2,12 @@ from panda3d.core import *
 from direct.distributed.ClockDelta import *
 from direct.task.Task import Task
 from direct.interval.IntervalGlobal import *
-from TrolleyConstants import *
+from .TrolleyConstants import *
 from direct.gui.DirectGui import *
 from toontown.toonbase import TTLocalizer
 from direct.distributed import DistributedNode
 from direct.distributed.ClockDelta import globalClockDelta
-from ChineseCheckersBoard import ChineseCheckersBoard
+from .ChineseCheckersBoard import ChineseCheckersBoard
 from direct.fsm import ClassicFSM, State
 from direct.fsm import StateData
 from toontown.distributed import DelayDelete
@@ -134,16 +134,16 @@ class DistributedChineseCheckers(DistributedNode.DistributedNode):
           45,
           55]]
         self.nonOpposingPositions = []
-        self.knockSound = base.loadSfx('phase_5/audio/sfx/GUI_knock_1.ogg')
-        self.clickSound = base.loadSfx('phase_3/audio/sfx/GUI_balloon_popup.ogg')
-        self.moveSound = base.loadSfx('phase_6/audio/sfx/CC_move.ogg')
+        self.knockSound = base.loader.loadSfx('phase_5/audio/sfx/GUI_knock_1.ogg')
+        self.clickSound = base.loader.loadSfx('phase_3/audio/sfx/GUI_balloon_popup.ogg')
+        self.moveSound = base.loader.loadSfx('phase_6/audio/sfx/CC_move.ogg')
         self.accept('stoppedAsleep', self.handleSleep)
         from direct.fsm import ClassicFSM, State
         self.fsm = ClassicFSM.ClassicFSM('ChineseCheckers', [State.State('waitingToBegin', self.enterWaitingToBegin, self.exitWaitingToBegin, ['playing', 'gameOver']), State.State('playing', self.enterPlaying, self.exitPlaying, ['gameOver']), State.State('gameOver', self.enterGameOver, self.exitGameOver, ['waitingToBegin'])], 'waitingToBegin', 'waitingToBegin')
         x = self.boardNode.find('**/locators')
         self.locatorList = x.getChildren()
         tempList = []
-        for x in xrange(0, 121):
+        for x in range(0, 121):
             self.locatorList[x].setTag('GamePeiceLocator', '%d' % x)
             tempList.append(self.locatorList[x].attachNewNode(CollisionNode('picker%d' % x)))
             tempList[x].node().addSolid(CollisionSphere(0, 0, 0, 0.115))
@@ -299,7 +299,7 @@ class DistributedChineseCheckers(DistributedNode.DistributedNode):
 
     def announceSeatPositions(self, playerPos):
         self.playerSeats = playerPos
-        for x in xrange(6):
+        for x in range(6):
             pos = self.table.seats[x].getPos(render)
             renderedPeice = loader.loadModel('phase_6/models/golf/checker_marble.bam')
             renderedPeice.reparentTo(self.playerTags)
@@ -640,7 +640,7 @@ class DistributedChineseCheckers(DistributedNode.DistributedNode):
         self.board.setStates(squares)
         self.mySquares = []
         messenger.send('wakeup')
-        for x in xrange(121):
+        for x in range(121):
             self.locatorList[x].clearColor()
             owner = self.board.squareList[x].getState()
             if owner == self.playerNum:
@@ -674,7 +674,7 @@ class DistributedChineseCheckers(DistributedNode.DistributedNode):
         self.locatorList[moveList[0]].hide()
         checkersPeiceTrack = Sequence()
         length = len(moveList)
-        for x in xrange(length - 1):
+        for x in range(length - 1):
             checkersPeiceTrack.append(Parallel(SoundInterval(self.moveSound), ProjectileInterval(gamePeiceForAnimation, endPos=self.locatorList[moveList[x + 1]].getPos(), duration=0.5)))
 
         checkersPeiceTrack.append(Func(gamePeiceForAnimation.removeNode))

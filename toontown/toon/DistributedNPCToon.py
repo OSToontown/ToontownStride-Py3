@@ -1,7 +1,7 @@
 from direct.interval.IntervalGlobal import *
 from panda3d.core import *
 import time
-from DistributedNPCToonBase import *
+from .DistributedNPCToonBase import *
 from toontown.hood import ZoneUtil
 from otp.nametag.NametagConstants import *
 from toontown.quest import QuestChoiceGui

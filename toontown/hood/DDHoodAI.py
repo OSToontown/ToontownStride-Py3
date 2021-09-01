@@ -7,8 +7,8 @@ from toontown.ai import DistributedEffectMgrAI
 class DDHoodAI(HoodAI.HoodAI):
     def __init__(self, air):
         HoodAI.HoodAI.__init__(self, air,
-                               ToontownGlobals.DonaldsDock,
-                               ToontownGlobals.DonaldsDock)
+                               ToontownGlobals.RainbowRise,
+                               ToontownGlobals.RainbowRise)
 
         self.trolley = None
         self.boat = None
@@ -23,10 +23,10 @@ class DDHoodAI(HoodAI.HoodAI):
         self.createBoat()
 
         self.trickOrTreatMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.HALLOWEEN, 12)
-        self.trickOrTreatMgr.generateWithRequired(1834) # Rudderly Ridiculous, Lighthouse Lane
+        self.trickOrTreatMgr.generateWithRequired(1834) # Rudderly Ridiculous, Pirate Place
 
         self.winterCarolingMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.CHRISTMAS, 14)
-        self.winterCarolingMgr.generateWithRequired(1707) # Gifts with a Porpoise, Seaweed Street
+        self.winterCarolingMgr.generateWithRequired(1707) # Gifts with a Porpoise, Ocean Overpass
 
     def createTrolley(self):
         self.trolley = DistributedTrolleyAI.DistributedTrolleyAI(self.air)

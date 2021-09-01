@@ -22,7 +22,7 @@ import string
 import copy
 from direct.showbase.PythonUtil import StackTrace
 
-from PetMoverAI import PetMoverAI
+from .PetMoverAI import PetMoverAI
 
 class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLookerAI.PetLookerAI, PetBase.PetBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPetAI')
@@ -38,7 +38,7 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         self.ownerId = 0
         self.petName = 'unnamed'
         self.traitSeed = 0
-        self.safeZone = ToontownGlobals.ToontownCentral
+        self.safeZone = ToontownGlobals.ToonIslandCentral
         self.initialDNA = dna
         self.active = 1
         self.activated = 0
@@ -77,7 +77,7 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
     def setInactive(self):
         self.active = 0
 
-    def _initDBVals(self, ownerId, name = None, traitSeed = 0, dna = None, safeZone = ToontownGlobals.ToontownCentral):
+    def _initDBVals(self, ownerId, name = None, traitSeed = 0, dna = None, safeZone = ToontownGlobals.ToonIslandCentral):
         self.b_setOwnerId(ownerId)
         if name is None:
             name = 'pet%s' % self.doId
@@ -135,7 +135,7 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         else:
             self.inEstate = 0
             self.estateZones = []
-        PetObserve.send(broadcastZones.keys(), PetObserve.PetActionObserve(PetObserve.Actions.CHANGE_ZONE, self.doId, (oldZoneId, newZoneId)))
+        PetObserve.send(list(broadcastZones.keys()), PetObserve.PetActionObserve(PetObserve.Actions.CHANGE_ZONE, self.doId, (oldZoneId, newZoneId)))
 
     def getOwnerId(self):
         return self.ownerId
@@ -208,7 +208,7 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         self.traitList = traitList
 
     def __generateDistTraitFuncs(self):
-        for i in xrange(PetTraits.PetTraits.NumTraits):
+        for i in range(PetTraits.PetTraits.NumTraits):
             traitName = PetTraits.getTraitNames()[i]
             getterName = self.getSetterName(traitName, 'get')
             b_setterName = self.getSetterName(traitName, 'b_set')
@@ -476,7 +476,7 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         self.leashGoal = None
         self.traits = PetTraits.PetTraits(self.traitSeed, self.safeZone)
         if not hasattr(self, '_beingCreatedInDB'):
-            for i in xrange(len(self.traitList)):
+            for i in range(len(self.traitList)):
                 value = self.traitList[i]
                 if value == 0.0:
                     traitName = PetTraits.getTraitNames()[i]
@@ -498,7 +498,7 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         self.setH(randFloat(360))
         if self.initialDNA:
             self.setDNA(self.initialDNA)
-        for mood, value in self.requiredMoodComponents.items():
+        for mood, value in list(self.requiredMoodComponents.items()):
             self.mood.setComponent(mood, value, announce=0)
 
         self.requiredMoodComponents = {}
@@ -663,11 +663,11 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
             self.setMoodComponent(component, lerp(curVal, 1.0, factor))
 
     def addToMoods(self, mood2delta):
-        for mood, delta in mood2delta.items():
+        for mood, delta in list(mood2delta.items()):
             self.addToMood(mood, delta)
 
     def lerpMoods(self, mood2factor):
-        for mood, factor in mood2factor.items():
+        for mood, factor in list(mood2factor.items()):
             self.lerpMood(mood, factor)
 
     def handleMoodChange(self, components = [], distribute = 1):
@@ -814,25 +814,25 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         nearbyToonDict = self._getFullNearbyToonDict()
         if not len(nearbyToonDict):
             return None
-        return nearbyToonDict[random.choice(nearbyToonDict.keys())]
+        return nearbyToonDict[random.choice(list(nearbyToonDict.keys()))]
 
     def _getNearbyToonNonOwner(self):
         nearbyToonDict = self._getNearbyToonDict()
         if not len(nearbyToonDict):
             return None
-        return nearbyToonDict[random.choice(nearbyToonDict.keys())]
+        return nearbyToonDict[random.choice(list(nearbyToonDict.keys()))]
 
     def _getNearbyPet(self):
         nearbyPetDict = self._getNearbyPetDict()
         if not len(nearbyPetDict):
             return None
-        return nearbyPetDict[random.choice(nearbyPetDict.keys())]
+        return nearbyPetDict[random.choice(list(nearbyPetDict.keys()))]
 
     def _getNearbyAvatar(self):
         nearbyAvDict = self._getNearbyAvatarDict()
         if not len(nearbyAvDict):
             return None
-        return nearbyAvDict[random.choice(nearbyAvDict.keys())]
+        return nearbyAvDict[random.choice(list(nearbyAvDict.keys()))]
 
     def isBusy(self):
         return self.busy > 0

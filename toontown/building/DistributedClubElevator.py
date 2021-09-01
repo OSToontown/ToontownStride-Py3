@@ -306,7 +306,7 @@ class DistributedClubElevator(DistributedElevatorFSM.DistributedElevatorFSM):
         return self.elevatorModel
 
     def kickEveryoneOut(self):
-        for avId, slot in self.boardedAvIds.items():
+        for avId, slot in list(self.boardedAvIds.items()):
             self.emptySlot(slot, avId, globalClockDelta.getRealNetworkTime())
             if avId == base.localAvatar.doId:
                 pass

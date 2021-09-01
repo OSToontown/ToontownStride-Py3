@@ -7,10 +7,10 @@ from direct.showbase import DirectObject, PythonUtil
 from toontown.toonbase import ToontownGlobals, TTLocalizer
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownTimer
-from KartShopGlobals import *
+from .KartShopGlobals import *
 from toontown.racing.Kart import Kart
 from toontown.shtiker.KartPage import KartViewer
-from KartDNA import *
+from .KartDNA import *
 MENUS = PythonUtil.Enum('MainMenu, BuyKart, BuyAccessory, ReturnKart, ConfirmBuyAccessory, ConfirmBuyKart, BoughtKart, BoughtAccessory')
 MM_OPTIONS = PythonUtil.Enum('Cancel, BuyAccessory, BuyKart', -1)
 BK_OPTIONS = PythonUtil.Enum('Cancel, BuyKart', -1)
@@ -23,7 +23,7 @@ BTA_OPTIONS = PythonUtil.Enum('Ok', -1)
 KS_TEXT_SIZE_BIG = TTLocalizer.KSGtextSizeBig
 KS_TEXT_SIZE_SMALL = TTLocalizer.KSGtextSizeSmall
 
-class KartShopGuiMgr(object, DirectObject.DirectObject):
+class KartShopGuiMgr(DirectObject.DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('KartShopGuiMgr')
 
     class MainMenuDlg(DirectFrame):
@@ -84,7 +84,7 @@ class KartShopGuiMgr(object, DirectObject.DirectObject):
         def __init__(self, doneEvent):
             self.modelScale = 1
             model = loader.loadModel('phase_6/models/gui/BuyKartPanel')
-            self.unownedKartList = KartDict.keys()
+            self.unownedKartList = list(KartDict.keys())
             if base.localAvatar.hasKart():
                 k = base.localAvatar.getKartBodyType()
                 if k in self.unownedKartList:
@@ -252,7 +252,7 @@ class KartShopGuiMgr(object, DirectObject.DirectObject):
                 pressEffect=False,
                 command=lambda : messenger.send(doneEvent, [RK_OPTIONS.ReturnKart]))
             oldDNA = list(base.localAvatar.getKartDNA())
-            for d in xrange(len(oldDNA)):
+            for d in range(len(oldDNA)):
                 if d == KartDNA.bodyType:
                     continue
                 else:
@@ -600,7 +600,7 @@ class KartShopGuiMgr(object, DirectObject.DirectObject):
                     self.arrowLeftButton['state'] = DGG.NORMAL
                 curDNA = None
                 curDNA = list(base.localAvatar.getKartDNA())
-                for d in xrange(len(curDNA)):
+                for d in range(len(curDNA)):
                     if d == KartDNA.bodyType or d == KartDNA.accColor or d == KartDNA.bodyColor:
                         continue
                     else:
@@ -807,7 +807,7 @@ class KartShopGuiMgr(object, DirectObject.DirectObject):
         self.ignoreAll()
         self.timer.destroy()
         del self.timer
-        for event in self.dialogEventDict.values():
+        for event in list(self.dialogEventDict.values()):
             self.ignore(event)
 
         self.dialogEventDict = None

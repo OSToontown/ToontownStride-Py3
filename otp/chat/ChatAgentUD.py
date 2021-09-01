@@ -45,7 +45,7 @@ class ChatAgentUD(DistributedObjectGlobalUD):
  
     def detectBadWords(self, sender, message):
         words = message.split()
-        print words
+        print(words)
         for word in words:
             if word.lower() in BLACKLIST:
                 accountId = (sender >> 32) & 0xFFFFFFFF

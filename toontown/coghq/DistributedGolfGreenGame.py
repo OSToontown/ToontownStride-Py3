@@ -1,7 +1,7 @@
 from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from direct.particles import ParticleEffect
-from StomperGlobals import *
+from .StomperGlobals import *
 from direct.distributed import ClockDelta
 from direct.showbase.PythonUtil import lerp
 from otp.level import DistributedEntity
@@ -23,7 +23,8 @@ from toontown.battle import BattleParticles
 from toontown.battle import MovieUtil
 from toontown.toonbase import ToontownTimer
 from math import pi
-import GameSprite3D, math, random
+import math, random
+from . import GameSprite3D
 
 class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedGolfGreenGame')
@@ -158,9 +159,9 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
         self.controlOffsetX = 0.0
         self.controlOffsetZ = 0.0
         self.grid = []
-        for countX in xrange(0, self.gridDimX):
+        for countX in range(0, self.gridDimX):
             newRow = []
-            for countZ in xrange(self.gridDimZ):
+            for countZ in range(self.gridDimZ):
                 offset = 0
                 margin = self.cellSizeX * 0.4375
                 if countZ % 2 == 0:
@@ -217,19 +218,19 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
 
     def printGrid(self):
         printout = '       '
-        for columnIndex in xrange(self.gridDimX - 1, -1, -1):
+        for columnIndex in range(self.gridDimX - 1, -1, -1):
             if columnIndex < 10:
                 printout += '%s  ' % columnIndex
             else:
                 printout += '%s ' % columnIndex
 
-        print printout
-        for rowIndex in xrange(self.gridDimZ - 1, -1, -1):
+        print(printout)
+        for rowIndex in range(self.gridDimZ - 1, -1, -1):
             if rowIndex < 10:
                 printout = 'row  %s ' % rowIndex
             else:
                 printout = 'row %s ' % rowIndex
-            for columnIndex in xrange(self.gridDimX - 1, -1, -1):
+            for columnIndex in range(self.gridDimX - 1, -1, -1):
                 hasSprite = '_'
                 if self.grid[columnIndex][rowIndex][0]:
                     hasSprite = 'X'
@@ -238,18 +239,18 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
                 else:
                     printout += '%s  ' % hasSprite
 
-            print printout
+            print(printout)
 
         count = 0
         for sprite in self.sprites:
-            print 'count %s X %s Z %s Color %s' % (count,
+            print('count %s X %s Z %s Color %s' % (count,
              sprite.gridPosX,
              sprite.gridPosZ,
-             sprite.colorType)
+             sprite.colorType))
             count += 1
 
     def pickLevelPattern(self):
-        self.boardIndex = random.choice(range(0, len(self.boardData)))
+        self.boardIndex = random.choice(list(range(0, len(self.boardData))))
         self.board = self.boardData[self.boardIndex]
         self.attackPattern = self.attackPatterns[self.boardIndex]
         self.attackCounter = 0
@@ -268,14 +269,14 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
         self.invModel = loader.loadModel('phase_3.5/models/gui/inventory_icons')
         self.model = model
         self.model1 = model1
-        self.soundFire = base.loadSfx('phase_6/audio/sfx/Golf_Hit_Ball.ogg')
-        self.soundLand = base.loadSfx('phase_4/audio/sfx/MG_maze_pickup.ogg')
-        self.soundBurst = base.loadSfx('phase_5/audio/sfx/Toon_bodyfall_synergy.ogg')
-        self.soundBomb = base.loadSfx('phase_4/audio/sfx/MG_cannon_fire_alt.ogg')
-        self.soundLose = base.loadSfx('phase_11/audio/sfx/LB_capacitor_discharge_3.ogg')
-        self.soundWin = base.loadSfx('phase_4/audio/sfx/MG_pairing_match_bonus_both.ogg')
-        self.soundDone = base.loadSfx('phase_3/audio/sfx/GUI_create_toon_back.ogg')
-        self.soundMove = base.loadSfx('phase_3.5/audio/sfx/SA_shred.ogg')
+        self.soundFire = base.loader.loadSfx('phase_6/audio/sfx/Golf_Hit_Ball.ogg')
+        self.soundLand = base.loader.loadSfx('phase_4/audio/sfx/MG_maze_pickup.ogg')
+        self.soundBurst = base.loader.loadSfx('phase_5/audio/sfx/Toon_bodyfall_synergy.ogg')
+        self.soundBomb = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_fire_alt.ogg')
+        self.soundLose = base.loader.loadSfx('phase_11/audio/sfx/LB_capacitor_discharge_3.ogg')
+        self.soundWin = base.loader.loadSfx('phase_4/audio/sfx/MG_pairing_match_bonus_both.ogg')
+        self.soundDone = base.loader.loadSfx('phase_3/audio/sfx/GUI_create_toon_back.ogg')
+        self.soundMove = base.loader.loadSfx('phase_3.5/audio/sfx/SA_shred.ogg')
         background = model.find('**/bg')
         itemBoard = model.find('**/item_board')
         self.focusPoint = self.baseNode.attachNewNode('GolfGreenGameFrame')
@@ -564,8 +565,8 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
     def findGrid(self, x, z, force = 0):
         currentClosest = None
         currentDist = 10000000
-        for countX in xrange(self.gridDimX):
-            for countZ in xrange(self.gridDimZ):
+        for countX in range(self.gridDimX):
+            for countZ in range(self.gridDimZ):
                 testDist = self.testPointDistanceSquare(x, z, self.grid[countX][countZ][1], self.grid[countX][countZ][2])
                 if self.grid[countX][countZ][0] == None and testDist < currentDist and (force or self.hasNeighbor(countX, countZ) != None):
                     currentClosest = self.grid[countX][countZ]
@@ -608,7 +609,7 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
         self.grounded = []
         self.unknown = []
         groundZ = self.gridDimZ - 1
-        for indexX in xrange(0, self.gridDimX):
+        for indexX in range(0, self.gridDimX):
             gridCell = self.grid[indexX][groundZ]
             if gridCell[0]:
                 self.grounded.append((indexX, groundZ))
@@ -987,7 +988,7 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
         size = self.radiusBall * 2.0
         facing = 1
         if color == None:
-            colorChoice = random.choice(range(0, 3))
+            colorChoice = random.choice(list(range(0, 3)))
         else:
             colorChoice = color
         newSprite = GameSprite3D.GameSprite(spriteBase, size, colorChoice, found, facing)
@@ -1066,7 +1067,7 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
         while self.controlSprite == None and self.attackPattern:
             if self.attackCounter > len(self.attackPattern) - 1:
                 self.attackCounter = 0
-            print 'Pattern %s Place %s Type %s' % (self.attackPattern, self.attackCounter, self.attackPattern[self.attackCounter])
+            print('Pattern %s Place %s Type %s' % (self.attackPattern, self.attackCounter, self.attackPattern[self.attackCounter]))
             if self.standbySprite.holdType != None:
                 color = self.standbySprite.holdType
                 sprite = self.addControlSprite(self.newBallX, self.newBallZ + self.spriteNotchPos * self.cellSizeZ, color)
@@ -1155,8 +1156,8 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
         if self.tick > 5:
             self.tick = 0
         sizeSprites = len(self.sprites)
-        for movingSpriteIndex in xrange(len(self.sprites)):
-            for testSpriteIndex in xrange(movingSpriteIndex, len(self.sprites)):
+        for movingSpriteIndex in range(len(self.sprites)):
+            for testSpriteIndex in range(movingSpriteIndex, len(self.sprites)):
                 movingSprite = self.getSprite(movingSpriteIndex)
                 testSprite = self.getSprite(testSpriteIndex)
                 if testSprite and movingSprite:
@@ -1328,13 +1329,13 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
                 self.joinedToons.append(avId)
                 index = self.everJoinedToons.index(avId)
                 if index > 3:
-                    print 'ERROR! green game has had more than 4 players, we are about to crash\n %s' % self.everJoinedToons
-                    print 'Joining Toon is %s index is %s' % (avId, index)
+                    print('ERROR! green game has had more than 4 players, we are about to crash\n %s' % self.everJoinedToons)
+                    print('Joining Toon is %s index is %s' % (avId, index))
                 toon = base.cr.doId2do.get(avId)
                 selfPos = self.getPos(render)
                 offset = self.toonPoints[index]
                 if index > 3:
-                    print 'odd... we should have crashed by now'
+                    print('odd... we should have crashed by now')
                 standPoint = render.getRelativePoint(self, offset)
                 if toon:
                     toon.stopSmooth()
@@ -1404,7 +1405,7 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
             panel = self.toonPanels[panelIndex]
             panel.extraData['text'] = TTLocalizer.GolfGreenGamePlayerScore % 0
 
-        for entryIndex in xrange(len(scoreList)):
+        for entryIndex in range(len(scoreList)):
             entry = scoreList[entryIndex]
             if entry[0] in self.toonPanels:
                 panel = self.toonPanels[entry[0]]

@@ -42,12 +42,12 @@ class CogdoBarrelRoom:
         self.nearBattleNode.setPos(0, -25, 0)
         self.rewardUi = CogdoBarrelRoomRewardPanel.CogdoBarrelRoomRewardPanel()
         self.hideRewardUi()
-        self.stomperSfx = base.loadSfx(CogdoBarrelRoomConsts.StomperSound)
+        self.stomperSfx = base.loader.loadSfx(CogdoBarrelRoomConsts.StomperSound)
         self.fog = Fog('barrel-room-fog')
         self.fog.setColor(CogdoBarrelRoomConsts.BarrelRoomFogColor)
         self.fog.setLinearRange(*CogdoBarrelRoomConsts.BarrelRoomFogLinearRange)
         self.brBarrel = render.attachNewNode('@@CogdoBarrels')
-        for i in xrange(len(CogdoBarrelRoomConsts.BarrelProps)):
+        for i in range(len(CogdoBarrelRoomConsts.BarrelProps)):
             self.bPath = self.brBarrel.attachNewNode('%s%s'% (CogdoBarrelRoomConsts.BarrelPathName, i))
             self.bPath.setPos(CogdoBarrelRoomConsts.BarrelProps[i]['pos'])
             self.bPath.setH(CogdoBarrelRoomConsts.BarrelProps[i]['heading'])
@@ -107,11 +107,11 @@ class CogdoBarrelRoom:
         self.timer.stash()
 
     def placeToonsAtEntrance(self, toons):
-        for i in xrange(len(toons)):
+        for i in range(len(toons)):
             toons[i].setPosHpr(self.entranceNode, *CogdoBarrelRoomConsts.BarrelRoomPlayerSpawnPoints[i])
 
     def placeToonsNearBattle(self, toons):
-        for i in xrange(len(toons)):
+        for i in range(len(toons)):
             toons[i].setPosHpr(self.nearBattleNode, *CogdoBarrelRoomConsts.BarrelRoomPlayerSpawnPoints[i])
 
     def showBattleAreaLight(self, visible = True):

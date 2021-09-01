@@ -4,7 +4,7 @@ from direct.fsm import FSM
 from direct.interval.IntervalGlobal import Sequence, ActorInterval, Wait, Func, SoundInterval, Parallel
 from direct.showbase.PythonUtil import weightedChoice
 from toontown.toonbase import ToontownGlobals
-import GenericAnimatedProp
+from . import GenericAnimatedProp
 import math, random
 
 def clearPythonIvals(ival):
@@ -72,7 +72,7 @@ class InteractiveAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
         animDict = {}
         animDict['anim'] = '%s/%s' % (self.path, anim)
 
-        for i in xrange(self.numIdles):
+        for i in range(self.numIdles):
             baseAnim = self.ZoneToIdles[self.hoodId][i]
 
             if isinstance(baseAnim, tuple):
@@ -88,7 +88,7 @@ class InteractiveAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
                 settleKey = 'settle%d' % i
                 animDict[settleKey] = settleStr
 
-        for i in xrange(self.numFightAnims):
+        for i in range(self.numFightAnims):
             animStr = self.path + '/' + self.ZoneToFightAnims[self.hoodId][i]
             animKey = 'fight%d' % i
             animDict[animKey] = animStr
@@ -121,8 +121,8 @@ class InteractiveAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
 
         if self.numIdles >= 3:
             numberOfAnimsAbove2 = self.numIdles - 2
-            for rareIdle in xrange(2, self.numIdles):
-                for i in xrange(2):
+            for rareIdle in range(2, self.numIdles):
+                for i in range(2):
                     result.append(ActorInterval(self.node, 'idle0'))
                     result.append(Wait(self.IdlePauseTime))
                     result.append(ActorInterval(self.node, 'idle1'))
@@ -132,7 +132,7 @@ class InteractiveAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
                 result.append(Wait(self.IdlePauseTime))
 
         else:
-            for i in xrange(self.numIdles):
+            for i in range(self.numIdles):
                 result.append(ActorInterval(self.node, 'idle%d' % i))
 
         self.notify.debug('idle interval=%s' % result)
@@ -159,7 +159,7 @@ class InteractiveAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
     def createBattleCheerInterval(self):
         result = Sequence()
 
-        for i in xrange(self.numFightAnims):
+        for i in range(self.numFightAnims):
             animKey = 'fight%d' % i
             animAndSoundIval = self.createAnimAndSoundIval(animKey)
             origAnimName = self.node.getAnimFilename(animKey).split('/')[-1]
@@ -263,7 +263,7 @@ class InteractiveAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
 
         if base.config.GetBool('randomize-interactive-idles', True):
             pairs = []
-            for i in xrange(self.numIdles):
+            for i in range(self.numIdles):
                 reversedChance = self.numIdles - i - 1
                 pairs.append((math.pow(2, reversedChance), i))
 
@@ -333,7 +333,7 @@ class InteractiveAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
             numberOfLoops = random.randrange(minLoop, maxLoop + 1)
             pauseTime = random.randrange(minPauseTime, maxPauseTime + 1)
             result = Sequence()
-            for i in xrange(numberOfLoops):
+            for i in range(numberOfLoops):
                 result.append(idleAnimAndSound)
 
             if self.getSettleName(whichIdleAnim):

@@ -1,4 +1,4 @@
-from DistributedTreasure import DistributedTreasure
+from .DistributedTreasure import DistributedTreasure
 import math, random
 
 class DistributedEFlyingTreasure(DistributedTreasure):

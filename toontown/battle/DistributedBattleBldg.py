@@ -5,10 +5,10 @@ from direct.interval.IntervalGlobal import *
 from panda3d.core import *
 import random
 
-from BattleBase import *
-import DistributedBattleBase
-import MovieUtil
-import SuitBattleGlobals
+from .BattleBase import *
+from . import DistributedBattleBase
+from . import MovieUtil
+from . import SuitBattleGlobals
 from otp.avatar import Emote
 from otp.nametag.NametagConstants import *
 from otp.nametag import NametagGlobals
@@ -40,9 +40,9 @@ class DistributedBattleBldg(DistributedBattleBase.DistributedBattleBase):
     def setBossBattle(self, value):
         self.bossBattle = value
         if self.bossBattle:
-            self.battleMusic = base.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
+            self.battleMusic = base.loader.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
         else:
-            self.battleMusic = base.loadMusic('phase_7/audio/bgm/encntr_general_bg_indoor.ogg')
+            self.battleMusic = base.loader.loadMusic('phase_7/audio/bgm/encntr_general_bg_indoor.ogg')
         base.playMusic(self.battleMusic, looping=1, volume=0.9)
 
     def getBossBattleTaunt(self):

@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from direct.distributed.ClockDelta import *
-import CogdoGameConsts
+from . import CogdoGameConsts
 
 class DistCogdoGameAI(DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistCogdoGameAI")

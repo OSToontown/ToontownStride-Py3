@@ -5,7 +5,7 @@ from direct.fsm import StateData
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.task.Task import Task
-from ToontownMsgTypes import *
+from .ToontownMsgTypes import *
 from toontown.toonbase import ToontownGlobals
 from toontown.hood import TTHood
 from toontown.hood import DDHood
@@ -29,11 +29,11 @@ from toontown.dna.DNAParser import *
 
 class PlayGame(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('PlayGame')
-    Hood2ClassDict = {ToontownGlobals.ToontownCentral: TTHood.TTHood,
-     ToontownGlobals.DonaldsDock: DDHood.DDHood,
+    Hood2ClassDict = {ToontownGlobals.ToonIslandCentral: TTHood.TTHood,
+     ToontownGlobals.RainbowRise: DDHood.DDHood,
      ToontownGlobals.TheBrrrgh: BRHood.BRHood,
      ToontownGlobals.MinniesMelodyland: MMHood.MMHood,
-     ToontownGlobals.DaisyGardens: DGHood.DGHood,
+     ToontownGlobals.DaisyGarden: DGHood.DGHood,
      ToontownGlobals.DonaldsDreamland: DLHood.DLHood,
      ToontownGlobals.GoofySpeedway: GSHood.GSHood,
      ToontownGlobals.OutdoorZone: OZHood.OZHood,
@@ -45,11 +45,11 @@ class PlayGame(StateData.StateData):
      ToontownGlobals.LawbotHQ: LawbotHQ.LawbotHQ,
      ToontownGlobals.GolfZone: GZHood.GZHood,
      ToontownGlobals.PartyHood: PartyHood.PartyHood}
-    Hood2StateDict = {ToontownGlobals.ToontownCentral: 'TTHood',
-     ToontownGlobals.DonaldsDock: 'DDHood',
+    Hood2StateDict = {ToontownGlobals.ToonIslandCentral: 'TTHood',
+     ToontownGlobals.RainbowRise: 'DDHood',
      ToontownGlobals.TheBrrrgh: 'BRHood',
      ToontownGlobals.MinniesMelodyland: 'MMHood',
-     ToontownGlobals.DaisyGardens: 'DGHood',
+     ToontownGlobals.DaisyGarden: 'DGHood',
      ToontownGlobals.DonaldsDreamland: 'DLHood',
      ToontownGlobals.GoofySpeedway: 'GSHood',
      ToontownGlobals.OutdoorZone: 'OZHood',
@@ -516,7 +516,7 @@ class PlayGame(StateData.StateData):
     def getCatalogCodes(self, category):
         numCodes = self.dnaStore.getNumCatalogCodes(category)
         codes = []
-        for i in xrange(numCodes):
+        for i in range(numCodes):
             codes.append(self.dnaStore.getCatalogCode(category, i))
 
         return codes

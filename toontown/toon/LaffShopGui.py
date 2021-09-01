@@ -2,7 +2,7 @@ from direct.gui.DirectGui import DirectButton, DirectFrame, DGG
 from direct.task.Task import Task
 from otp.otpbase import OTPLocalizer
 from toontown.toonbase import ToontownGlobals, TTLocalizer, ToontownTimer
-import LaffMeter, LaffRestockGlobals
+from . import LaffMeter, LaffRestockGlobals
 
 class LaffShopGui(DirectFrame):
 

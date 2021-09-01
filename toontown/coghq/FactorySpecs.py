@@ -1,8 +1,10 @@
 from toontown.toonbase import ToontownGlobals
-import SellbotLegFactorySpec
-import SellbotLegFactoryCogs
-import LawbotLegFactorySpec
-import LawbotLegFactoryCogs
+from . import SellbotLegFactorySpec
+from . import SellbotLegFactoryCogs
+from . import SellbotFatalFactorySpec
+from . import SellbotFatalFactoryCogs
+from . import LawbotLegFactorySpec
+from . import LawbotLegFactoryCogs
 
 def getFactorySpecModule(factoryId):
     return FactorySpecModules[factoryId]
@@ -13,12 +15,8 @@ def getCogSpecModule(factoryId):
 
 
 FactorySpecModules = {ToontownGlobals.SellbotFactoryInt: SellbotLegFactorySpec,
- ToontownGlobals.LawbotOfficeInt: LawbotLegFactorySpec}
+ ToontownGlobals.LawbotOfficeInt: LawbotLegFactorySpec,
+ ToontownGlobals.SellbotFatalInt: SellbotFatalFactorySpec}
 CogSpecModules = {ToontownGlobals.SellbotFactoryInt: SellbotLegFactoryCogs,
- ToontownGlobals.LawbotOfficeInt: LawbotLegFactoryCogs}
-
-if config.GetBool('want-brutal-factory', True):
-    import SellbotMegaCorpLegSpec
-    import SellbotMegaCorpLegCogs
-    FactorySpecModules[ToontownGlobals.SellbotMegaCorpInt] = SellbotMegaCorpLegSpec
-    CogSpecModules[ToontownGlobals.SellbotMegaCorpInt] = SellbotMegaCorpLegCogs
+ ToontownGlobals.LawbotOfficeInt: LawbotLegFactoryCogs,
+ ToontownGlobals.SellbotFatalInt: SellbotFatalFactoryCogs}

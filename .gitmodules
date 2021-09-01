@@ -1,0 +1,6 @@
+[submodule "tools/phasefile-tool"]
+	path = tools/phasefile-tool
+	url = https://github.com/toontown-island-aftermath/phasefile-tool
+[submodule "tools/dna-tools"]
+	path = tools/dna-tools
+	url = https://github.com/toontown-island-aftermath/dna-tools

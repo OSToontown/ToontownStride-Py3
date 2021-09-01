@@ -55,14 +55,14 @@ PetRarities2 = (('leopard', 0.005),
  ('dots', 0.265),
  ('tummy', 0.525),
  ('threeStripe', 1.0))
-PetRarities = {'body': {ToontownGlobals.ToontownCentral: {'threeStripe': 50,
+PetRarities = {'body': {ToontownGlobals.ToonIslandCentral: {'threeStripe': 50,
                                             'tummy': 30,
                                             'dots': 20},
-          ToontownGlobals.DonaldsDock: {'threeStripe': 35,
+          ToontownGlobals.RainbowRise: {'threeStripe': 35,
                                         'tummy': 30,
                                         'dots': 20,
                                         'tigerStripe': 15},
-          ToontownGlobals.DaisyGardens: {'threeStripe': 15,
+          ToontownGlobals.DaisyGarden: {'threeStripe': 15,
                                          'tummy': 20,
                                          'dots': 20,
                                          'tigerStripe': 20,
@@ -182,15 +182,15 @@ PetGenders = [0, 1]
 
 def getRandomPetDNA(zoneId = ToontownGlobals.DonaldsDreamland):
     from random import choice
-    head = choice(range(-1, len(HeadParts)))
-    ears = choice(range(-1, len(EarParts)))
-    nose = choice(range(-1, len(NoseParts)))
-    tail = choice(range(-1, len(TailParts)))
+    head = choice(list(range(-1, len(HeadParts))))
+    ears = choice(list(range(-1, len(EarParts))))
+    nose = choice(list(range(-1, len(NoseParts))))
+    tail = choice(list(range(-1, len(TailParts))))
     body = getSpecies(zoneId)
-    color = choice(range(0, len(getColors(body))))
-    colorScale = choice(range(0, len(ColorScales)))
-    eyes = choice(range(0, len(PetEyeColors)))
-    gender = choice(range(0, len(PetGenders)))
+    color = choice(list(range(0, len(getColors(body)))))
+    colorScale = choice(list(range(0, len(ColorScales))))
+    eyes = choice(list(range(0, len(PetEyeColors))))
+    gender = choice(list(range(0, len(PetGenders))))
     return [head,
      ears,
      nose,

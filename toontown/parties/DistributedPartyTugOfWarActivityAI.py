@@ -1,8 +1,8 @@
 from direct.directnotify import DirectNotifyGlobal
 
-from DistributedPartyTeamActivityAI import DistributedPartyTeamActivityAI
+from .DistributedPartyTeamActivityAI import DistributedPartyTeamActivityAI
 from toontown.toonbase import TTLocalizer
-import PartyGlobals
+from . import PartyGlobals
 
 '''
 dclass DistributedPartyTugOfWarActivity : DistributedPartyTeamActivity {

@@ -182,7 +182,7 @@ class FriendManagerAI(DistributedObjectAI):
         del self.requests[context]
     
     def getRandomCharSequence(self, count):
-        return ''.join(random.choice(AVAILABLE_CHARS) for i in xrange(count))
+        return ''.join(random.choice(AVAILABLE_CHARS) for i in range(count))
     
     def getTFCode(self, tryNumber):
         if tryNumber == ToontownGlobals.MAX_TF_TRIES:

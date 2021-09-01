@@ -13,7 +13,7 @@ class BingoCardBase:
         self.cardSize = cardSize
         self.cellList = []
         self.gameType = None
-        self.gameState = 1 << self.cardSize / 2
+        self.gameState = 1 << self.cardSize // 2
         return
 
     def destroy(self):
@@ -24,7 +24,7 @@ class BingoCardBase:
         fishList = FishGlobals.getPondGeneraList(zoneId)
         emptyCells = self.cardSize - 1 - len(fishList)
         rodId = 0
-        for i in xrange(emptyCells):
+        for i in range(emptyCells):
             fish = FishGlobals.getRandomFishVitals(zoneId, rodId, rng)
             while not fish[0]:
                 fish = FishGlobals.getRandomFishVitals(zoneId, rodId, rng)
@@ -34,8 +34,8 @@ class BingoCardBase:
             if rodId > 4:
                 rodId = 0
 
-        for index in xrange(self.cardSize):
-            if index != self.cardSize / 2:
+        for index in range(self.cardSize):
+            if index != self.cardSize // 2:
                 choice = rng.randrange(0, len(fishList))
                 self.cellList.append(fishList.pop(choice))
             else:
@@ -84,15 +84,15 @@ class BingoCardBase:
         pass
 
     def rowCheck(self, rowId):
-        for colId in xrange(self.colSize):
-            if not self.gameState & 1 << self.rowSize * rowId + colId:
+        for colId in range(self.colSize):
+            if not self.gameState & 1 << int(self.rowSize * rowId) + colId:
                 return 0
 
         return 1
 
     def colCheck(self, colId):
-        for rowId in xrange(self.rowSize):
-            if not self.gameState & 1 << self.rowSize * rowId + colId:
+        for rowId in range(self.rowSize):
+            if not self.gameState & 1 << int(self.rowSize * rowId) + colId:
                 return 0
 
         return 1
@@ -100,8 +100,8 @@ class BingoCardBase:
     def fDiagCheck(self, id):
         checkNum = self.rowSize + 1
         if not id % checkNum:
-            for i in xrange(self.rowSize):
-                if not self.gameState & 1 << i * checkNum:
+            for i in range(self.rowSize):
+                if not self.gameState & 1 << int(i * checkNum):
                     return 0
 
             return 1
@@ -111,8 +111,8 @@ class BingoCardBase:
     def bDiagCheck(self, id):
         checkNum = self.rowSize - 1
         if not id % checkNum and not id == self.cardSize - 1:
-            for i in xrange(self.rowSize):
-                if not self.gameState & 1 << i * checkNum + checkNum:
+            for i in range(self.rowSize):
+                if not self.gameState & 1 << int(i * checkNum) + checkNum:
                     return 0
 
             return 1

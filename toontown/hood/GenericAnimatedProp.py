@@ -1,4 +1,4 @@
-import AnimatedProp
+from . import AnimatedProp
 from direct.actor import Actor
 from direct.interval.IntervalGlobal import *
 from direct.directnotify import DirectNotifyGlobal
@@ -71,7 +71,7 @@ class GenericAnimatedProp(AnimatedProp.AnimatedProp):
         self.node = self.trashcan
 
     def calcHoodId(self, node):
-        self.hoodId = ToontownGlobals.ToontownCentral
+        self.hoodId = ToontownGlobals.ToonIslandCentral
         fullString = str(node)
         splits = fullString.split('/')
 

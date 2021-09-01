@@ -5,7 +5,7 @@ from direct.fsm import StateData
 from direct.showbase import DirectObject
 from direct.task import Task
 from panda3d.core import *
-import DistributedToonInterior
+from . import DistributedToonInterior
 from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
 from toontown.hood import Place
 from toontown.hood import ZoneUtil
@@ -139,7 +139,7 @@ class ToonInterior(Place.Place):
         elif doneStatus['mode'] == 'incomplete':
             self.fsm.request('NPCFAReject')
         else:
-            self.notify.error('Unknown done status for NPCForceAcknowledge: ' + `doneStatus`)
+            self.notify.error('Unknown done status for NPCForceAcknowledge: ' + repr(doneStatus))
 
     def enterNPCFAReject(self):
         self.fsm.request('walk')
@@ -166,7 +166,7 @@ class ToonInterior(Place.Place):
         elif doneStatus['mode'] == 'incomplete':
             self.fsm.request('HFAReject')
         else:
-            self.notify.error('Unknown done status for HealthForceAcknowledge: ' + `doneStatus`)
+            self.notify.error('Unknown done status for HealthForceAcknowledge: ' + repr(doneStatus))
 
     def enterHFAReject(self):
         self.fsm.request('walk')

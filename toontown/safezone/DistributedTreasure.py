@@ -62,8 +62,8 @@ class DistributedTreasure(DistributedObject.DistributedObject):
         if base.cr.newsManager.isHolidayRunning(VALENTOONS_DAY):
             modelPath = TreasureGlobals.ValentineTreasureModel
 
-        self.grabSound = base.loadSfx(grabSoundPath)
-        self.rejectSound = base.loadSfx(self.rejectSoundPath)
+        self.grabSound = base.loader.loadSfx(grabSoundPath)
+        self.rejectSound = base.loader.loadSfx(self.rejectSoundPath)
         if self.nodePath == None:
             self.makeNodePath()
         else:

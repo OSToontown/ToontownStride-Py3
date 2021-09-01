@@ -232,7 +232,7 @@ class TTSFriendsManagerUD(DistributedObjectGlobalUD):
         dgcleanup = self.dclass.aiFormatUpdate('goingOffline', self.doId, self.doId, self.air.ourChannel, [doId])
         dg = PyDatagram()
         dg.addServerHeader(channel, self.air.ourChannel, CLIENTAGENT_ADD_POST_REMOVE)
-        dg.addString(dgcleanup.getMessage())
+        dg.addBlob(dgcleanup.getMessage())
         self.air.send(dg)
 
         for friend in friendsList:
@@ -269,7 +269,7 @@ class TTSFriendsManagerUD(DistributedObjectGlobalUD):
     # -- Teleport and Whispers --
     def routeTeleportQuery(self, toId):
         fromId = self.air.getAvatarIdFromSender()
-        if fromId in self.tpRequests.values():
+        if fromId in list(self.tpRequests.values()):
             return
         self.tpRequests[fromId] = toId
         self.sendUpdateToAvatarId(toId, 'teleportQuery', [fromId])

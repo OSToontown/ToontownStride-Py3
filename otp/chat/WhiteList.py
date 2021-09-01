@@ -64,14 +64,14 @@ class WhiteList:
 
         words = text.split(' ')
 
-        for wordNum in xrange(len(words)):
+        for wordNum in range(len(words)):
             word = words[wordNum].lower()
             sequences = self.getSequenceList(word)
 
             if not sequences:
                 continue
 
-            for sequenceNum in xrange(len(sequences)):
+            for sequenceNum in range(len(sequences)):
                 sequence = sequences[sequenceNum].split()
                 total = wordNum + len(sequence) + 1
 

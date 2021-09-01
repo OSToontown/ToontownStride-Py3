@@ -6,7 +6,7 @@ from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.directnotify import DirectNotifyGlobal
 from otp.avatar.Avatar import teleportNotify
-import ToonAvatarDetailPanel
+from . import ToonAvatarDetailPanel
 from toontown.toonbase import TTLocalizer
 from toontown.hood import ZoneUtil
 globalTeleport = None

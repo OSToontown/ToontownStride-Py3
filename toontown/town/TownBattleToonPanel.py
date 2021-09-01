@@ -166,7 +166,7 @@ class TownBattleToonPanel(DirectFrame):
 
     def determineWhichText(self, numTargets, targetIndex, localNum, index):
         returnStr = ''
-        targetList = range(numTargets)
+        targetList = list(range(numTargets))
         targetList.reverse()
 
         for i in targetList:

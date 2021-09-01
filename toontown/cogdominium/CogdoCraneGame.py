@@ -1,5 +1,5 @@
-import CogdoCraneGameConsts as Globals
-from CogdoGameAudioManager import CogdoGameAudioManager
+from . import CogdoCraneGameConsts as Globals
+from .CogdoGameAudioManager import CogdoGameAudioManager
 
 class CogdoCraneGame(DirectObject):
     notify = directNotify.newCategory('CogdoFlyingGame')

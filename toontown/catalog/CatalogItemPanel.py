@@ -3,13 +3,13 @@ from panda3d.core import *
 from toontown.toonbase import ToontownGlobals
 from toontown.toontowngui import TTDialog
 from toontown.toonbase import TTLocalizer
-import CatalogItemTypes
-import CatalogItem
-from CatalogWallpaperItem import getAllWallpapers
-from CatalogFlooringItem import getAllFloorings
-from CatalogMouldingItem import getAllMouldings
-from CatalogWainscotingItem import getAllWainscotings
-from CatalogFurnitureItem import getAllFurnitures
+from . import CatalogItemTypes
+from . import CatalogItem
+from .CatalogWallpaperItem import getAllWallpapers
+from .CatalogFlooringItem import getAllFloorings
+from .CatalogMouldingItem import getAllMouldings
+from .CatalogWainscotingItem import getAllWainscotings
+from .CatalogFurnitureItem import getAllFurnitures
 from otp.otpbase import OTPGlobals
 CATALOG_PANEL_WORDWRAP = 10
 CATALOG_PANEL_CHAT_WORDWRAP = 9

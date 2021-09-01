@@ -1,4 +1,5 @@
 from toontown.toonbase.ToontownGlobals import *
+from direct.directnotify.DirectNotifyGlobal import *
 
 
 zoneUtilNotify = directNotify.newCategory('ZoneUtil')
@@ -31,7 +32,7 @@ def getStreetName(branchId):
 
 def getLoaderName(zoneId):
     if tutorialDict:
-        if zoneId == ToontownCentral:
+        if zoneId == ToonIslandCentral:
             loaderName = 'safeZoneLoader'
         else:
             loaderName = 'townLoader'
@@ -87,7 +88,7 @@ def getWhereName(zoneId, isToon):
             where = 'toonInterior'
         elif zoneId in tutorialDict['exteriors']:
             where = 'street'
-        elif zoneId == ToontownCentral or zoneId == WelcomeValleyToken:
+        elif zoneId == ToonIslandCentral or zoneId == WelcomeValleyToken:
             where = 'playground'
         else:
             zoneUtilNotify.error('No known zone: ' + str(zoneId))
@@ -108,7 +109,7 @@ def getWhereName(zoneId, isToon):
             elif suffix >= 500:
                 if getHoodId(zoneId) == SellbotHQ:
                     if suffix == 600:
-                        where = 'megaCorpInterior'
+                        where = 'fatalInterior'
                     else:
                         where = 'factoryInterior'
                 elif getHoodId(zoneId) == CashbotHQ:
@@ -201,10 +202,10 @@ def getWakeInfo(hoodId = None, zoneId = None):
         if zoneId is None:
             zoneId = base.cr.playGame.getPlace().getZoneId()
         canonicalZoneId = getCanonicalZoneId(zoneId)
-        if canonicalZoneId == DonaldsDock:
+        if canonicalZoneId == RainbowRise:
             wakeWaterHeight = DDWakeWaterHeight
             showWake = 1
-        elif canonicalZoneId == ToontownCentral:
+        elif canonicalZoneId == ToonIslandCentral:
             wakeWaterHeight = TTWakeWaterHeight
             showWake = 1
         elif canonicalZoneId == OutdoorZone:

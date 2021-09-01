@@ -581,7 +581,7 @@ class PartyPlanner(DirectFrame, FSM):
         return page
 
     def __handleHolidays(self):
-        self.inviteThemes = range(len(PartyGlobals.InviteTheme))
+        self.inviteThemes = list(range(len(PartyGlobals.InviteTheme)))
         if not base.cr.newsManager.isHolidayRunning(ToontownGlobals.VALENTOONS_DAY):
             self.inviteThemes.remove(PartyGlobals.InviteTheme.Valentoons)
         if not base.cr.newsManager.isHolidayRunning(ToontownGlobals.VICTORY_PARTY_HOLIDAY):

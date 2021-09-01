@@ -14,13 +14,13 @@ class DistCogdoCraneGameAI(DistCogdoLevelGameAI, CogdoCraneGameBase):
 
     def enterLoaded(self):
         DistCogdoLevelGameAI.enterLoaded(self)
-        for i in xrange(self.MaxPlayers):
+        for i in range(self.MaxPlayers):
             crane = DistCogdoCraneAI(self.air, self, i)
             crane.generateWithRequired(self.zoneId)
             self._cranes[i] = crane
 
     def exitLoaded(self):
-        for i in xrange(self.MaxPlayers):
+        for i in range(self.MaxPlayers):
             if self._cranes[i]:
                 self._cranes[i].requestDelete()
                 self._cranes[i] = None
@@ -29,7 +29,7 @@ class DistCogdoCraneGameAI(DistCogdoLevelGameAI, CogdoCraneGameBase):
 
     def enterGame(self):
         DistCogdoLevelGameAI.enterGame(self)
-        for i in xrange(self.getNumPlayers()):
+        for i in range(self.getNumPlayers()):
             self._cranes[i].request('Controlled', self.getToonIds()[i])
         self._scheduleGameDone()
 

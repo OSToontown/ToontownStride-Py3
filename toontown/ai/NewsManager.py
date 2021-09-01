@@ -4,7 +4,7 @@ from toontown.battle import SuitBattleGlobals
 from toontown.estate import Estate
 from toontown.toonbase import ToontownGlobals, ToontownBattleGlobals, TTLocalizer
 from toontown.suit import SuitDNA
-import HolidayGlobals
+from . import HolidayGlobals
 
 class NewsManager(DistributedObject):
     neverDisable = 1

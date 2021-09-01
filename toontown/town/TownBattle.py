@@ -3,14 +3,14 @@ import types
 from direct.fsm import StateData
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-import TownBattleAttackPanel
-import TownBattleWaitPanel
-import TownBattleChooseAvatarPanel
-import TownBattleSOSPanel
-import TownBattleSOSPetSearchPanel
-import TownBattleSOSPetInfoPanel
-import TownBattleToonPanel
-import TownBattleCogPanel
+from . import TownBattleAttackPanel
+from . import TownBattleWaitPanel
+from . import TownBattleChooseAvatarPanel
+from . import TownBattleSOSPanel
+from . import TownBattleSOSPetSearchPanel
+from . import TownBattleSOSPetInfoPanel
+from . import TownBattleToonPanel
+from . import TownBattleCogPanel
 from toontown.toontowngui import TTDialog
 from direct.directnotify import DirectNotifyGlobal
 from toontown.battle import BattleBase
@@ -123,8 +123,8 @@ class TownBattle(StateData.StateData):
         self.rolloverFrame.hide()
         self.suitGui = loader.loadModel('phase_3.5/models/gui/suit_detail_panel')
         self.suitGui.find('**/avatar_panel/shadow').setColor(1, 1, 1, 0.5)
-        self.toonPanels = [TownBattleToonPanel.TownBattleToonPanel(self) for i in xrange(4)]
-        self.cogPanels = [TownBattleCogPanel.TownBattleCogPanel(self) for i in xrange(4)]
+        self.toonPanels = [TownBattleToonPanel.TownBattleToonPanel(self) for i in range(4)]
+        self.cogPanels = [TownBattleCogPanel.TownBattleCogPanel(self) for i in range(4)]
         self.timer = ToontownTimer.ToontownTimer()
         self.timer.posInTopRightCorner()
         self.timer.setScale(0.4)
@@ -222,7 +222,7 @@ class TownBattle(StateData.StateData):
     def showRolloverFrame(self, parent, type, text, extra=None):
         dict = TTLocalizer.BattleHoverAttributes[type]
 
-        for key, value in dict.iteritems():
+        for key, value in dict.items():
             if key == 'pos':
                 self.rolloverFrame.setPos(value)
             elif key == 'suit':
@@ -277,7 +277,7 @@ class TownBattle(StateData.StateData):
          tracks,
          levels,
          targets))
-        for i in xrange(4):
+        for i in range(4):
             if battleIndices[i] == -1:
                 pass
             else:
@@ -464,12 +464,12 @@ class TownBattle(StateData.StateData):
         if settings['cogInterface']:
             self.__enterCogPanels(self.numCogs)
 
-            for i in xrange(len(cogs)):
+            for i in range(len(cogs)):
                 self.cogPanels[i].setSuit(cogs[i])
         
         if resetActivateMode:
             self.__enterPanels(self.numToons, self.localNum)
-            for i in xrange(len(toons)):
+            for i in range(len(toons)):
                 self.toonPanels[i].setLaffMeter(toons[i])
 
             if currStateName == 'ChooseCog':

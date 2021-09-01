@@ -3,7 +3,7 @@ from direct.distributed.ClockDelta import *
 from toontown.battle import BattleBase
 from toontown.building.ElevatorConstants import *
 from toontown.cogdominium.DistCogdoGameAI import DistCogdoGameAI
-import CogdoFlyingGameGlobals as Globals
+from . import CogdoFlyingGameGlobals as Globals
 
 class DistCogdoFlyingGameAI(DistCogdoGameAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistCogdoFlyingGameAI")

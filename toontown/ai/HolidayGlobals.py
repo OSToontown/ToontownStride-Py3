@@ -65,7 +65,7 @@ Holidays = {
         'startMessage': TTLocalizer.WinterCarolingStart,
         'ongoingMessage': TTLocalizer.WinterCarolingStart,
         'endMessage': TTLocalizer.WinterCarolingEnd,
-        'speedchatIndexes': range(30200, 30206),
+        'speedchatIndexes': list(range(30200, 30206)),
         'effectDelay': 15,
         'scavengerHunt': WINTER_CAROLING
     },

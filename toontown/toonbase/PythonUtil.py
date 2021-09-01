@@ -59,7 +59,7 @@ def describeException(backTrace = 4):
         lnotab = array.array('B', code.co_lnotab)
 
         line   = code.co_firstlineno
-        for i in xrange(0, len(lnotab), 2):
+        for i in range(0, len(lnotab), 2):
             byte -= lnotab[i]
             if byte <= 0:
                 return line
@@ -91,11 +91,53 @@ def describeException(backTrace = 4):
     stack.append("%s:%s, " % (module, lineno))
 
     description = ""
-    for i in xrange(len(stack) - 1, max(len(stack) - backTrace, 0) - 1, -1):
+    for i in range(len(stack) - 1, max(len(stack) - backTrace, 0) - 1, -1):
         description += stack[i]
 
     description += "%s: %s" % (exceptionName, extraInfo)
     return description
 
-import __builtin__
-__builtin__.describeException = describeException
+# __dev__ is not defined at import time, call this after it's defined
+def recordFunctorCreationStacks():
+    global Functor
+    from pandac.PandaModules import getConfigShowbase
+    config = getConfigShowbase()
+    # off by default, very slow
+    if __dev__ and config.GetBool('record-functor-creation-stacks', 0):
+        if not hasattr(Functor, '_functorCreationStacksRecorded'):
+            Functor = recordCreationStackStr(Functor)
+            Functor._functorCreationStacksRecorded = True
+            Functor.__call__ = Functor._exceptionLoggedCreationStack__call__
+
+# class 'decorator' that records the stack at the time of creation
+# be careful with this, it creates a StackTrace, and that can take a
+# lot of CPU
+def recordCreationStack(cls):
+    if not hasattr(cls, '__init__'):
+        raise 'recordCreationStack: class \'%s\' must define __init__' % cls.__name__
+    cls.__moved_init__ = cls.__init__
+    def __recordCreationStack_init__(self, *args, **kArgs):
+        self._creationStackTrace = StackTrace(start=1)
+        return self.__moved_init__(*args, **kArgs)
+    def getCreationStackTrace(self):
+        return self._creationStackTrace
+    def getCreationStackTraceCompactStr(self):
+        return self._creationStackTrace.compact()
+    def printCreationStackTrace(self):
+        print(self._creationStackTrace)
+    cls.__init__ = __recordCreationStack_init__
+    cls.getCreationStackTrace = getCreationStackTrace
+    cls.getCreationStackTraceCompactStr = getCreationStackTraceCompactStr
+    cls.printCreationStackTrace = printCreationStackTrace
+    return cls
+
+def choice(condition, ifTrue, ifFalse):
+    # equivalent of C++ (condition ? ifTrue : ifFalse)
+    if condition:
+        return ifTrue
+    else:
+        return ifFalse
+
+import builtins
+builtins.describeException = describeException
+builtins.choice = choice

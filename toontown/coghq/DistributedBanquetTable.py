@@ -103,11 +103,11 @@ class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, Banq
         DistributedObject.DistributedObject.delete(self)
         self.boss = None
         self.ignoreAll()
-        for indicator in self.dinerStatusIndicators.values():
+        for indicator in list(self.dinerStatusIndicators.values()):
             indicator.delete()
 
         self.dinerStatusIndicators = {}
-        for diner in self.diners.values():
+        for diner in list(self.diners.values()):
             diner.delete()
 
         self.diners = {}
@@ -156,7 +156,7 @@ class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, Banq
 
     def setDinerInfo(self, hungryDurations, eatingDurations, dinerLevels):
         self.dinerInfo = {}
-        for i in xrange(len(hungryDurations)):
+        for i in range(len(hungryDurations)):
             hungryDur = hungryDurations[i]
             eatingDur = eatingDurations[i]
             dinerLevel = dinerLevels[i]
@@ -177,10 +177,10 @@ class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, Banq
         self.hitBossSfx = loader.loadSfx('phase_5/audio/sfx/SA_watercooler_spray_only.ogg')
         self.hitBossSoundInterval = SoundInterval(self.hitBossSfx, node=self.boss, volume=1.0)
         self.serveFoodSfx = loader.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_bell_for_trolley.ogg')
-        self.pitcherMoveSfx = base.loadSfx('phase_4/audio/sfx/MG_cannon_adjust.ogg')
+        self.pitcherMoveSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_adjust.ogg')
 
     def setupDiners(self):
-        for i in xrange(self.numDiners):
+        for i in range(self.numDiners):
             newDiner = self.createDiner(i)
             self.diners[i] = newDiner
             self.dinerStatus[i] = self.HUNGRY
@@ -228,7 +228,7 @@ class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, Banq
         return diner
 
     def setupChairCols(self):
-        for i in xrange(self.numDiners):
+        for i in range(self.numDiners):
             chairCol = self.tableGroup.find('**/collision_chair_%d' % (i + 1))
             colName = 'ChairCol-%d-%d' % (self.index, i)
             chairCol.setTag('chairIndex', str(i))
@@ -280,7 +280,7 @@ class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, Banq
     def removeFoodModel(self, chairIndex):
         serviceLoc = self.serviceLocs.get(chairIndex)
         if serviceLoc:
-            for i in xrange(serviceLoc.getNumChildren()):
+            for i in range(serviceLoc.getNumChildren()):
                 serviceLoc.getChild(0).removeNode()
 
     def changeDinerToEating(self, chairIndex):
@@ -373,8 +373,8 @@ class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, Banq
         locator = self.tableGroup.find('**/chair_%d' % (chairIndex + 1))
         deathSuit = diner.getLoseActor()
         ival = Sequence(Func(self.notify.debug, 'before actorinterval sit-lose'), ActorInterval(diner, 'sit-lose'), Func(self.notify.debug, 'before deathSuit.setHpr'), Func(deathSuit.setHpr, diner.getHpr()), Func(self.notify.debug, 'before diner.hide'), Func(diner.hide), Func(self.notify.debug, 'before deathSuit.reparentTo'), Func(deathSuit.reparentTo, self.chairLocators[chairIndex]), Func(self.notify.debug, 'befor ActorInterval lose'), ActorInterval(deathSuit, 'lose', duration=MovieUtil.SUIT_LOSE_DURATION), Func(self.notify.debug, 'before remove deathsuit'), Func(removeDeathSuit, diner, deathSuit, name='remove-death-suit-%d-%d' % (chairIndex, self.index)), Func(self.notify.debug, 'diner.stash'), Func(diner.stash))
-        spinningSound = base.loadSfx('phase_3.5/audio/sfx/Cog_Death.ogg')
-        deathSound = base.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart_%s.ogg' % random.randint(1, 6))
+        spinningSound = base.loader.loadSfx('phase_3.5/audio/sfx/Cog_Death.ogg')
+        deathSound = base.loader.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart_%s.ogg' % random.randint(1, 6))
         deathSoundTrack = Sequence(Wait(0.8), SoundInterval(spinningSound, duration=1.2, startTime=1.5, volume=0.2, node=deathSuit), SoundInterval(spinningSound, duration=3.0, startTime=0.6, volume=0.8, node=deathSuit), SoundInterval(deathSound, volume=0.32, node=deathSuit))
         intervalName = 'dinerDie-%d-%d' % (self.index, chairIndex)
         deathIval = Parallel(ival, deathSoundTrack)
@@ -391,13 +391,13 @@ class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, Banq
 
     def setAllDinersToSitNeutral(self):
         startFrame = 0
-        for diner in self.diners.values():
+        for diner in list(self.diners.values()):
             if not diner.isHidden():
                 diner.loop('sit', fromFrame=startFrame)
                 startFrame += 1
 
     def cleanupIntervals(self):
-        for interval in self.activeIntervals.values():
+        for interval in list(self.activeIntervals.values()):
             interval.finish()
 
         self.activeIntervals = {}
@@ -421,7 +421,7 @@ class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, Banq
 
     def getNotDeadInfo(self):
         notDeadList = []
-        for i in xrange(self.numDiners):
+        for i in range(self.numDiners):
             if self.dinerStatus[i] != self.DEAD:
                 notDeadList.append((self.index, i, 12))
 
@@ -434,7 +434,7 @@ class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, Banq
         pass
 
     def enterInactive(self):
-        for chairIndex in xrange(self.numDiners):
+        for chairIndex in range(self.numDiners):
             indicator = self.dinerStatusIndicators.get(chairIndex)
             if indicator:
                 indicator.request('Inactive')
@@ -471,17 +471,17 @@ class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, Banq
 
     def prepareForPhaseFour(self):
         if not self.preparedForPhaseFour:
-            for i in xrange(8):
+            for i in range(8):
                 chair = self.tableGroup.find('**/chair_%d' % (i + 1))
                 if not chair.isEmpty():
                     chair.hide()
                 colChairs = self.tableGroup.findAllMatches('**/ChairCol*')
-                for i in xrange(colChairs.getNumPaths()):
+                for i in range(colChairs.getNumPaths()):
                     col = colChairs.getPath(i)
                     col.stash()
 
                 colChairs = self.tableGroup.findAllMatches('**/collision_chair*')
-                for i in xrange(colChairs.getNumPaths()):
+                for i in range(colChairs.getNumPaths()):
                     col = colChairs.getPath(i)
                     col.stash()
 
@@ -991,7 +991,7 @@ class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, Banq
 
     def __updateWaterPower(self, task):
         if not self.powerBar:
-            print '### no power bar!!!'
+            print('### no power bar!!!')
             return task.done
         newPower = self.__getWaterPower(globalClock.getFrameTime())
         self.power = newPower
@@ -1108,10 +1108,10 @@ class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, Banq
     def __updateKeyPressRateTask(self, task):
         if self.state not in 'Controlled':
             return Task.done
-        for i in xrange(len(self.keyTTL)):
+        for i in range(len(self.keyTTL)):
             self.keyTTL[i] -= 0.1
 
-        for i in xrange(len(self.keyTTL)):
+        for i in range(len(self.keyTTL)):
             if self.keyTTL[i] <= 0:
                 a = self.keyTTL[0:i]
                 del self.keyTTL

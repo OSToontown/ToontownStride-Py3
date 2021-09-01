@@ -1,7 +1,8 @@
 from direct.directnotify import DirectNotifyGlobal
 from otp.ai.MagicWordGlobal import *
 from toontown.estate.DistributedPlantBaseAI import DistributedPlantBaseAI
-import GardenGlobals, time
+import time
+from . import GardenGlobals
 
 ONE_DAY = 86400
 
@@ -93,7 +94,7 @@ class DistributedGagTreeAI(DistributedPlantBaseAI):
         DistributedPlantBaseAI.delete(self)
         
     def update(self):
-        mdata = map(list, self.mgr.data['trees'])
+        mdata = list(map(list, self.mgr.data['trees']))
         mdata[self.treeIndex] = [self.typeIndex, self.waterLevel, self.lastCheck, self.getGrowthLevel(), self.lastHarvested]
         self.mgr.data['trees'] = mdata
         self.mgr.update()
@@ -161,7 +162,7 @@ class DistributedGagTreeAI(DistributedPlantBaseAI):
             
             self.mgr.trees.remove(self)
             
-            mdata = map(list, self.mgr.data['trees'])
+            mdata = list(map(list, self.mgr.data['trees']))
             mdata[self.treeIndex] = self.mgr.getNullPlant()
             self.mgr.data['trees'] = mdata
             self.mgr.update()

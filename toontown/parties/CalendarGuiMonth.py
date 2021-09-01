@@ -31,9 +31,9 @@ class CalendarGuiMonth(DirectFrame):
             self.weekDayLocators.append(weekDayLoc)
 
         self.dayLocators = []
-        for row in xrange(6):
+        for row in range(6):
             oneWeek = []
-            for col in xrange(7):
+            for col in range(7):
                 newDayLoc = self.find('**/loc_box_%s_%s' % (row, col))
                 oneWeek.append(newDayLoc)
 
@@ -57,7 +57,7 @@ class CalendarGuiMonth(DirectFrame):
          246 / 255.0,
          1.0))
         self.weekdayLabels = []
-        for posIndex in xrange(7):
+        for posIndex in range(7):
             adjustedNameIndex = (posIndex - 1) % 7
             self.weekdayLabels.append(DirectLabel(parent=self.weekDayLocators[posIndex], relief=None, text=TTLocalizer.DayNamesAbbrev[adjustedNameIndex], text_font=ToontownGlobals.getInterfaceFont(), text_fg=(255 / 255.0,
              146 / 255.0,

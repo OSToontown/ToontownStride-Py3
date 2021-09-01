@@ -7,10 +7,10 @@ from toontown.battle import BattleBase
 from toontown.building.ElevatorConstants import *
 from toontown.toonbase.ToontownGlobals import *
 from toontown.toonbase.ToontownBattleGlobals import *
-import DistCogdoMazeGameAI, CogdoMazeGameGlobals, DistributedCogdoElevatorIntAI
-import DistCogdoFlyingGameAI, DistributedCogdoBarrelAI
-from DistributedCogdoBattleBldgAI import DistributedCogdoBattleBldgAI
-from SuitPlannerCogdoInteriorAI import SuitPlannerCogdoInteriorAI
+from . import DistCogdoMazeGameAI, CogdoMazeGameGlobals, DistributedCogdoElevatorIntAI
+from . import DistCogdoFlyingGameAI, DistributedCogdoBarrelAI
+from .DistributedCogdoBattleBldgAI import DistributedCogdoBattleBldgAI
+from .SuitPlannerCogdoInteriorAI import SuitPlannerCogdoInteriorAI
 from toontown.cogdominium import CogdoBarrelRoomConsts
 
 from toontown.toon import NPCToons
@@ -35,7 +35,7 @@ class DistributedCogdoInteriorAI(DistributedObjectAI, FSM.FSM):
     def __init__(self, air, exterior):
         DistributedObjectAI.__init__(self, air)
         FSM.FSM.__init__(self, 'CogdoInteriorAIFSM')
-        self.toons = filter(None, exterior.elevator.seats[:])
+        self.toons = [_f for _f in exterior.elevator.seats[:] if _f]
         self.responses = {}
         self.bldgDoId = exterior.doId
         self.numFloors = NUM_FLOORS_DICT[exterior.track]
@@ -91,7 +91,7 @@ class DistributedCogdoInteriorAI(DistributedObjectAI, FSM.FSM):
         self.ignoreReserveJoinDone = 0
 
     def __generateSOS(self, difficulty):
-        g = lambda: random.choice(NPCToons.FOnpcFriends.keys())
+        g = lambda: random.choice(list(NPCToons.FOnpcFriends.keys()))
         v = g()
 
         getStars = lambda x: NPCToons.getNPCTrackLevelHpRarity(x)[-1]
@@ -255,7 +255,7 @@ class DistributedCogdoInteriorAI(DistributedObjectAI, FSM.FSM):
             return
 
         self.b_setState('CollectBarrels')
-        for i in xrange(len(CogdoBarrelRoomConsts.BarrelProps)):
+        for i in range(len(CogdoBarrelRoomConsts.BarrelProps)):
             barrel = DistributedCogdoBarrelAI.DistributedCogdoBarrelAI(self.air, i)
             barrel.generateWithRequired(self.zoneId)
             self.barrels.append(barrel)
@@ -298,7 +298,7 @@ class DistributedCogdoInteriorAI(DistributedObjectAI, FSM.FSM):
             if toon not in seats:
                 self.removeToon(toon)
 
-        self.toons = filter(None, seats)
+        self.toons = [_f for _f in seats if _f]
         self.d_setToons()
         self.request('Elevator')
 
@@ -519,11 +519,11 @@ class DistributedCogdoInteriorAI(DistributedObjectAI, FSM.FSM):
 
     def getEmblemsReward(self):
         hoodIdMap = {2: .5, # Toontown Central
-                     1: 1., # Donald's Dock
+                     1: 1., # Donalds Dock
                      5: 1.5, # Daisy Gardens
-                     4: 2., # Minnie's Melodyland
+                     4: 2., # Minnies Melodyland
                      3: 2.7, # The Brrrgh
-                     9: 3.5 # Donald's Dreamland
+                     9: 3.5 # Donalds Dreamland
                      }
 
         hoodValue = hoodIdMap[int(self.exterior.zoneId // 1000)]

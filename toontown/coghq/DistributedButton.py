@@ -1,11 +1,11 @@
 from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
-import MovingPlatform
+from . import MovingPlatform
 from toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM
-import DistributedSwitch
+from . import DistributedSwitch
 from toontown.toonbase import TTLocalizer
 
 class DistributedButton(DistributedSwitch.DistributedSwitch):
@@ -88,7 +88,7 @@ class DistributedButton(DistributedSwitch.DistributedSwitch):
         DistributedSwitch.DistributedSwitch.exitTrigger(self, args)
 
     def switchOnTrack(self):
-        onSfx = base.loadSfx('phase_9/audio/sfx/CHQ_FACT_switch_pressed.ogg')
+        onSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_switch_pressed.ogg')
         duration = 0.8
         halfDur = duration * 0.5
         pos = Vec3(0.0, 0.0, -0.2)
@@ -98,7 +98,7 @@ class DistributedButton(DistributedSwitch.DistributedSwitch):
 
     def switchCountdownTrack(self):
         wait = self.secondsOn - self.countdownSeconds
-        countDownSfx = base.loadSfx('phase_9/audio/sfx/CHQ_FACT_switch_depressed.ogg')
+        countDownSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_switch_depressed.ogg')
         track = Parallel(
             SoundInterval(countDownSfx),
             Sequence(
@@ -122,7 +122,7 @@ class DistributedButton(DistributedSwitch.DistributedSwitch):
         return track
 
     def switchOffTrack(self):
-        offSfx = base.loadSfx('phase_9/audio/sfx/CHQ_FACT_switch_popup.ogg')
+        offSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_switch_popup.ogg')
         duration = 1.0
         halfDur = duration * 0.5
         pos = Vec3(0.0)

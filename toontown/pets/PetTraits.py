@@ -115,27 +115,27 @@ class PetTraits:
 
     class StdIncDistrib(TraitDistribution):
         TraitType = TraitDistribution.TraitTypes.INCREASING
-        Sz2MinMax = {ToontownGlobals.ToontownCentral: (0.2, 0.65),
-         ToontownGlobals.DonaldsDock: (0.3, 0.7),
-         ToontownGlobals.DaisyGardens: (0.4, 0.75),
+        Sz2MinMax = {ToontownGlobals.ToonIslandCentral: (0.2, 0.65),
+         ToontownGlobals.RainbowRise: (0.3, 0.7),
+         ToontownGlobals.DaisyGarden: (0.4, 0.75),
          ToontownGlobals.MinniesMelodyland: (0.5, 0.8),
          ToontownGlobals.TheBrrrgh: (0.6, 0.85),
          ToontownGlobals.DonaldsDreamland: (0.7, 0.9)}
 
     class StdDecDistrib(TraitDistribution):
         TraitType = TraitDistribution.TraitTypes.DECREASING
-        Sz2MinMax = {ToontownGlobals.ToontownCentral: (0.35, 0.8),
-         ToontownGlobals.DonaldsDock: (0.3, 0.7),
-         ToontownGlobals.DaisyGardens: (0.25, 0.6),
+        Sz2MinMax = {ToontownGlobals.ToonIslandCentral: (0.35, 0.8),
+         ToontownGlobals.RainbowRise: (0.3, 0.7),
+         ToontownGlobals.DaisyGarden: (0.25, 0.6),
          ToontownGlobals.MinniesMelodyland: (0.2, 0.5),
          ToontownGlobals.TheBrrrgh: (0.15, 0.4),
          ToontownGlobals.DonaldsDreamland: (0.1, 0.3)}
 
     class ForgetfulnessDistrib(TraitDistribution):
         TraitType = TraitDistribution.TraitTypes.DECREASING
-        Sz2MinMax = {ToontownGlobals.ToontownCentral: (0.0, 1.0),
-         ToontownGlobals.DonaldsDock: (0.0, 0.9),
-         ToontownGlobals.DaisyGardens: (0.0, 0.8),
+        Sz2MinMax = {ToontownGlobals.ToonIslandCentral: (0.0, 1.0),
+         ToontownGlobals.RainbowRise: (0.0, 0.9),
+         ToontownGlobals.DaisyGarden: (0.0, 0.8),
          ToontownGlobals.MinniesMelodyland: (0.0, 0.7),
          ToontownGlobals.TheBrrrgh: (0.0, 0.6),
          ToontownGlobals.DonaldsDreamland: (0.0, 0.5)}
@@ -182,7 +182,7 @@ class PetTraits:
         self.safeZoneId = safeZoneId
         self.rng = random.Random(self.traitSeed)
         self.traits = {}
-        for i in xrange(len(PetTraits.TraitDescs)):
+        for i in range(len(PetTraits.TraitDescs)):
             if i < len(traitValueList) and traitValueList[i] > 0.0:
                 trait = PetTraits.Trait(i, self, traitValueList[i])
             else:
@@ -191,7 +191,7 @@ class PetTraits:
             self.__dict__[trait.name] = trait.value
 
         extremeTraits = []
-        for trait in self.traits.values():
+        for trait in list(self.traits.values()):
             if not trait.hasWorth:
                 continue
             if trait.quality == TraitDistribution.TraitQuality.AVERAGE:
@@ -223,7 +223,7 @@ class PetTraits:
     def getOverallValue(self):
         total = 0
         numUsed = 0
-        for trait in self.traits.values():
+        for trait in list(self.traits.values()):
             if trait.hasWorth:
                 if trait.higherIsBetter:
                     value = trait.value
@@ -232,7 +232,7 @@ class PetTraits:
                 total += value
                 numUsed += 1
 
-        value = total / len(self.traits.values())
+        value = total / len(list(self.traits.values()))
         return value
 
     def getExtremeTraitDescriptions(self):

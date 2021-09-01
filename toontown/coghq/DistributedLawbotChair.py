@@ -93,11 +93,11 @@ class DistributedLawbotChair(DistributedObject.DistributedObject, FSM.FSM):
 
     def loadSounds(self):
         if self.propInSound == None:
-            self.propInSound = base.loadSfx('phase_5/audio/sfx/ENC_propeller_in.ogg')
+            self.propInSound = base.loader.loadSfx('phase_5/audio/sfx/ENC_propeller_in.ogg')
         if self.propOutSound == None:
-            self.propOutSound = base.loadSfx('phase_5/audio/sfx/ENC_propeller_out.ogg')
+            self.propOutSound = base.loader.loadSfx('phase_5/audio/sfx/ENC_propeller_out.ogg')
         if self.cogJurorSound == None:
-            self.cogJurorSound = base.loadSfx('phase_11/audio/sfx/LB_cog_jury.ogg')
+            self.cogJurorSound = base.loader.loadSfx('phase_11/audio/sfx/LB_cog_jury.ogg')
         return
 
     def unloadSounds(self):
@@ -310,7 +310,7 @@ class DistributedLawbotChair(DistributedObject.DistributedObject, FSM.FSM):
         seqName = 'LawbotBossChair-%s' % self.doId
         self.ival = Sequence(name=seqName)
         downAngle = -80
-        for index in xrange(len(myHeadings)):
+        for index in range(len(myHeadings)):
             nextIndex = index + 1
             if nextIndex == len(myHeadings):
                 nextIndex = 0

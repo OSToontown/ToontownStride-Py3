@@ -1,7 +1,7 @@
 from direct.gui.DirectGui import *
 from panda3d.core import *
 
-import ToonHead
+from . import ToonHead
 from toontown.distributed import DelayDelete
 from otp.nametag.Nametag import Nametag
 from otp.nametag.NametagFloat2d import NametagFloat2d

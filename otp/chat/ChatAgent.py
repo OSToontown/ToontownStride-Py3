@@ -16,7 +16,7 @@ class ChatAgent(DistributedObjectGlobal):
 
     def verifyMessage(self, message):
         try:
-            message.decode('ascii')
+            message
             return True
         except:
             return False

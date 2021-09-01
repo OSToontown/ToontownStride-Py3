@@ -1,7 +1,7 @@
 from direct.task.Task import Task
 from otp.ai.AIBaseGlobal import *
 from toontown.toonbase import ToontownGlobals
-import DistributedAnimatedPropAI
+from . import DistributedAnimatedPropAI
 import time
 
 class DistributedKnockKnockDoorAI(DistributedAnimatedPropAI.DistributedAnimatedPropAI):

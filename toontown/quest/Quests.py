@@ -148,9 +148,9 @@ def simulateRecoveryVar(numNeeded, baseChance, list = 0, cap = 1):
         else:
             currentFail += 1
 
-    print 'Test results: %s tries, %s longest failure chain, %s cap hits' % (numTries, greatestFailChain, capHits)
+    print('Test results: %s tries, %s longest failure chain, %s cap hits' % (numTries, greatestFailChain, capHits))
     if list:
-        print 'failures for each succes %s' % attemptList
+        print('failures for each succes %s' % attemptList)
 
 
 def simulateRecoveryFix(numNeeded, baseChance, list = 0):
@@ -175,9 +175,9 @@ def simulateRecoveryFix(numNeeded, baseChance, list = 0):
         else:
             currentFail += 1
 
-    print 'Test results: %s tries, %s longest failure chain' % (numTries, greatestFailChain)
+    print('Test results: %s tries, %s longest failure chain' % (numTries, greatestFailChain))
     if list:
-        print 'failures for each success %s' % attemptList
+        print('failures for each success %s' % attemptList)
 
 
 class Quest:
@@ -196,14 +196,14 @@ class Quest:
         pass
 
     def checkLocation(self, location):
-        locations = [Anywhere] + TTLocalizer.GlobalStreetNames.keys()
+        locations = [Anywhere] + list(TTLocalizer.GlobalStreetNames.keys())
         self.check(location in locations, 'invalid location: %s' % location)
 
     def checkNumCogs(self, num):
         self.check(1, 'invalid number of cogs: %s' % num)
 
     def checkCogType(self, type):
-        types = [Any] + SuitBattleGlobals.SuitAttributes.keys()
+        types = [Any] + list(SuitBattleGlobals.SuitAttributes.keys())
         self.check(type in types, 'invalid cog type: %s' % type)
 
     def checkCogTrack(self, track):
@@ -282,7 +282,7 @@ class Quest:
         holderTypes = ['type', 'level', 'track']
         self.check(holderType in holderTypes, 'invalid recovery item holderType: %s' % holderType)
         if holderType == 'type':
-            holders = [Any, AnyFish] + SuitBattleGlobals.SuitAttributes.keys()
+            holders = [Any, AnyFish] + list(SuitBattleGlobals.SuitAttributes.keys())
             self.check(holder in holders, 'invalid recovery item holder: %s for holderType: %s' % (holder, holderType))
         elif holderType == 'level':
             pass
@@ -748,7 +748,7 @@ class TexturedQuest:
         return True
 
     def getFrame(self):
-        print 'getFrame from TexturedQuest not implemented!'
+        print('getFrame from TexturedQuest not implemented!')
         return [None, None]
 
 class BossQuest(CogQuest, TexturedQuest):
@@ -1234,7 +1234,7 @@ class DeliverGagQuest(Quest):
         gag = self.getGagType()
         inventory = av.inventory
         takenGags = 0
-        for i in xrange(self.getNumGags()):
+        for i in range(self.getNumGags()):
             if inventory.useItem(gag[0], gag[1]):
                 takenGags += 1
         av.b_setInventory(inventory.makeNetString())
@@ -1358,7 +1358,7 @@ class RecoverItemQuest(LocationBasedQuest):
 
     def testDone(self, progress):
         numberDone = progress & pow(2, 16) - 1
-        print 'Quest number done %s' % numberDone
+        print('Quest number done %s' % numberDone)
         if numberDone >= self.getNumItems():
             return 1
         else:
@@ -1708,18 +1708,18 @@ QuestDict = {
     101: (TT_TIER, Start, (CogQuest, Anywhere, 1, 'f'), Any, ToonHQ, NA, 110, DefaultDialog),
     110: (TT_TIER, Cont, (TrolleyQuest,), Any, ToonHQ, NA, (120, 130, 140, 145), DefaultDialog),
     120: (TT_TIER, Cont, (DeliverItemQuest, 5), ToonHQ, 2002, NA, 121, TTLocalizer.QuestDialogDict[120]),
-    121: (TT_TIER, Cont, (RecoverItemQuest, ToontownGlobals.ToontownCentral, 1, 2, VeryEasy, Any, 'type'), Same, 2002, NA, 142, TTLocalizer.QuestDialogDict[121]),
+    121: (TT_TIER, Cont, (RecoverItemQuest, ToontownGlobals.ToonIslandCentral, 1, 2, VeryEasy, Any, 'type'), Same, 2002, NA, 142, TTLocalizer.QuestDialogDict[121]),
     130: (TT_TIER, Cont, (DeliverItemQuest, 6), ToonHQ, 2003, NA, 131, TTLocalizer.QuestDialogDict[130]),
-    131: (TT_TIER, Cont, (RecoverItemQuest, ToontownGlobals.ToontownCentral, 1, 3, VeryEasy, Any, 'type'), Same, 2003, NA, 142, TTLocalizer.QuestDialogDict[131]),
+    131: (TT_TIER, Cont, (RecoverItemQuest, ToontownGlobals.ToonIslandCentral, 1, 3, VeryEasy, Any, 'type'), Same, 2003, NA, 142, TTLocalizer.QuestDialogDict[131]),
     140: (TT_TIER, Cont, (DeliverItemQuest, 4), ToonHQ, 2005, NA, 141, TTLocalizer.QuestDialogDict[140]),
-    141: (TT_TIER, Cont, (RecoverItemQuest, ToontownGlobals.ToontownCentral, 1, 1, VeryEasy, Any, 'type'), Same, 2005, NA, 142, TTLocalizer.QuestDialogDict[141]),
+    141: (TT_TIER, Cont, (RecoverItemQuest, ToontownGlobals.ToonIslandCentral, 1, 1, VeryEasy, Any, 'type'), Same, 2005, NA, 142, TTLocalizer.QuestDialogDict[141]),
     142: (TT_TIER, Cont, (VisitQuest,), Same, ToonHQ, NA, 150, TTLocalizer.QuestDialogDict[142]),
-    145: (TT_TIER, Cont, (RecoverItemQuest, ToontownGlobals.ToontownCentral, 1, 20, VeryEasy, Any, 'type'), ToonHQ, ToonHQ, NA, 150, DefaultDialog),
+    145: (TT_TIER, Cont, (RecoverItemQuest, ToontownGlobals.ToonIslandCentral, 1, 20, VeryEasy, Any, 'type'), ToonHQ, ToonHQ, NA, 150, DefaultDialog),
     150: (TT_TIER, Cont, (FriendQuest,), Same, Same, NA, 175, DefaultDialog),
-    160: (TT_TIER, OBSOLETE, (CogTrackQuest, ToontownGlobals.ToontownCentral, 3, 'c'), Same, ToonHQ, NA, 175, TTLocalizer.QuestDialogDict[160]),
-    161: (TT_TIER, OBSOLETE, (CogTrackQuest, ToontownGlobals.ToontownCentral, 3, 'l'), Same, ToonHQ, NA, 175, TTLocalizer.QuestDialogDict[161]),
-    162: (TT_TIER, OBSOLETE, (CogTrackQuest, ToontownGlobals.ToontownCentral, 3, 's'), Same, ToonHQ, NA, 175, TTLocalizer.QuestDialogDict[162]),
-    163: (TT_TIER, OBSOLETE, (CogTrackQuest, ToontownGlobals.ToontownCentral, 3, 'm'), Same, ToonHQ, NA, 175, TTLocalizer.QuestDialogDict[163]),
+    160: (TT_TIER, OBSOLETE, (CogTrackQuest, ToontownGlobals.ToonIslandCentral, 3, 'c'), Same, ToonHQ, NA, 175, TTLocalizer.QuestDialogDict[160]),
+    161: (TT_TIER, OBSOLETE, (CogTrackQuest, ToontownGlobals.ToonIslandCentral, 3, 'l'), Same, ToonHQ, NA, 175, TTLocalizer.QuestDialogDict[161]),
+    162: (TT_TIER, OBSOLETE, (CogTrackQuest, ToontownGlobals.ToonIslandCentral, 3, 's'), Same, ToonHQ, NA, 175, TTLocalizer.QuestDialogDict[162]),
+    163: (TT_TIER, OBSOLETE, (CogTrackQuest, ToontownGlobals.ToonIslandCentral, 3, 'm'), Same, ToonHQ, NA, 175, TTLocalizer.QuestDialogDict[163]),
     175: (TT_TIER, Cont, (PhoneQuest,), Same, ToonHQ, 100, NA, TTLocalizer.QuestDialogDict[175]),
     164: (TT_TIER + 1, Start, (VisitQuest,), Any, 2001, NA, 165, TTLocalizer.QuestDialogDict[164]),
     165: (TT_TIER + 1, Start, (CogQuest, Anywhere, 4, Any), 2001, Same, NA, (166, 167, 168, 169), TTLocalizer.QuestDialogDict[165]),
@@ -1731,10 +1731,10 @@ QuestDict = {
     171: (TT_TIER + 1, Cont, (VisitQuest,), Same, 2311, NA, 400, TTLocalizer.QuestDialogDict[171]),
     172: (TT_TIER + 1, Cont, (VisitQuest,), Same, 2119, NA, 400, TTLocalizer.QuestDialogDict[172]),
     400: (TT_TIER + 1, Cont, (TrackChoiceQuest, ToontownBattleGlobals.SOUND_TRACK, ToontownBattleGlobals.HEAL_TRACK), Same, Same, 400, NA, TTLocalizer.QuestDialogDict[400]),
-    1001: (TT_TIER + 2, Start, (CogQuest, ToontownGlobals.ToontownCentral, 3, Any), Any, ToonHQ, Any, NA, DefaultDialog),
-    1002: (TT_TIER + 2, Start, (CogQuest, ToontownGlobals.ToontownCentral, 4, Any), Any, ToonHQ, Any, NA, DefaultDialog),
-    1003: (TT_TIER + 2, Start, (CogQuest, ToontownGlobals.ToontownCentral, 5, Any), Any, ToonHQ, Any, NA, DefaultDialog),
-    1004: (TT_TIER + 2, Start, (CogQuest, ToontownGlobals.ToontownCentral, 6, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    1001: (TT_TIER + 2, Start, (CogQuest, ToontownGlobals.ToonIslandCentral, 3, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    1002: (TT_TIER + 2, Start, (CogQuest, ToontownGlobals.ToonIslandCentral, 4, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    1003: (TT_TIER + 2, Start, (CogQuest, ToontownGlobals.ToonIslandCentral, 5, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    1004: (TT_TIER + 2, Start, (CogQuest, ToontownGlobals.ToonIslandCentral, 6, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     1005: (TT_TIER + 2, Start, (CogQuest, Anywhere, 2, 'f'), Any, ToonHQ, Any, NA, DefaultDialog),
     1006: (TT_TIER + 2, Start, (CogQuest, Anywhere, 2, 'p'), Any, ToonHQ, Any, NA, DefaultDialog),
     1007: (TT_TIER + 2, Start, (CogQuest, Anywhere, 2, 'bf'), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -1751,24 +1751,24 @@ QuestDict = {
     1018: (TT_TIER + 2, Start, (CogQuest, Anywhere, 1, 'nd'), Any, ToonHQ, Any, NA, DefaultDialog),
     1019: (TT_TIER + 2, Start, (CogQuest, Anywhere, 1, 'tw'), Any, ToonHQ, Any, NA, DefaultDialog),
     1020: (TT_TIER + 2, Start, (CogQuest, Anywhere, 1, 'dt'), Any, ToonHQ, Any, NA, DefaultDialog),
-    1021: (TT_TIER + 2, Start, (CogLevelQuest, ToontownGlobals.ToontownCentral, 2, 2), Any, ToonHQ, Any, NA, DefaultDialog),
-    1022: (TT_TIER + 2, Start, (CogLevelQuest, ToontownGlobals.ToontownCentral, 6, 2), Any, ToonHQ, Any, NA, DefaultDialog),
-    1023: (TT_TIER + 2, Start, (CogLevelQuest, ToontownGlobals.ToontownCentral, 3, 2), Any, ToonHQ, Any, NA, DefaultDialog),
-    1024: (TT_TIER + 2, Start, (CogLevelQuest, ToontownGlobals.ToontownCentral, 4, 2), Any, ToonHQ, Any, NA, DefaultDialog),
-    1025: (TT_TIER + 2, Start, (CogLevelQuest, ToontownGlobals.ToontownCentral, 4, 3), Any, ToonHQ, Any, NA, DefaultDialog),
-    1026: (TT_TIER + 2, Start, (CogLevelQuest, ToontownGlobals.ToontownCentral, 6, 3), Any, ToonHQ, Any, NA, DefaultDialog),
-    1027: (TT_TIER + 2, Start, (CogTrackQuest, ToontownGlobals.ToontownCentral, 2, 'm'), Any, ToonHQ, Any, NA, DefaultDialog),
-    1028: (TT_TIER + 2, Start, (CogTrackQuest, ToontownGlobals.ToontownCentral, 2, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
-    1029: (TT_TIER + 2, Start, (CogTrackQuest, ToontownGlobals.ToontownCentral, 2, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
-    1030: (TT_TIER + 2, Start, (CogTrackQuest, ToontownGlobals.ToontownCentral, 2, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
-    1031: (TT_TIER + 2, Start, (CogTrackQuest, ToontownGlobals.ToontownCentral, 3, 'm'), Any, ToonHQ, Any, NA, DefaultDialog),
-    1032: (TT_TIER + 2, Start, (CogTrackQuest, ToontownGlobals.ToontownCentral, 3, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
-    1033: (TT_TIER + 2, Start, (CogTrackQuest, ToontownGlobals.ToontownCentral, 3, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
-    1034: (TT_TIER + 2, Start, (CogTrackQuest, ToontownGlobals.ToontownCentral, 3, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
-    1035: (TT_TIER + 2, Start, (CogTrackQuest, ToontownGlobals.ToontownCentral, 5, 'm'), Any, ToonHQ, Any, NA, DefaultDialog),
-    1036: (TT_TIER + 2, Start, (CogTrackQuest, ToontownGlobals.ToontownCentral, 5, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
-    1037: (TT_TIER + 2, Start, (CogTrackQuest, ToontownGlobals.ToontownCentral, 5, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
-    1038: (TT_TIER + 2, Start, (CogTrackQuest, ToontownGlobals.ToontownCentral, 5, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
+    1021: (TT_TIER + 2, Start, (CogLevelQuest, ToontownGlobals.ToonIslandCentral, 2, 2), Any, ToonHQ, Any, NA, DefaultDialog),
+    1022: (TT_TIER + 2, Start, (CogLevelQuest, ToontownGlobals.ToonIslandCentral, 6, 2), Any, ToonHQ, Any, NA, DefaultDialog),
+    1023: (TT_TIER + 2, Start, (CogLevelQuest, ToontownGlobals.ToonIslandCentral, 3, 2), Any, ToonHQ, Any, NA, DefaultDialog),
+    1024: (TT_TIER + 2, Start, (CogLevelQuest, ToontownGlobals.ToonIslandCentral, 4, 2), Any, ToonHQ, Any, NA, DefaultDialog),
+    1025: (TT_TIER + 2, Start, (CogLevelQuest, ToontownGlobals.ToonIslandCentral, 4, 3), Any, ToonHQ, Any, NA, DefaultDialog),
+    1026: (TT_TIER + 2, Start, (CogLevelQuest, ToontownGlobals.ToonIslandCentral, 6, 3), Any, ToonHQ, Any, NA, DefaultDialog),
+    1027: (TT_TIER + 2, Start, (CogTrackQuest, ToontownGlobals.ToonIslandCentral, 2, 'm'), Any, ToonHQ, Any, NA, DefaultDialog),
+    1028: (TT_TIER + 2, Start, (CogTrackQuest, ToontownGlobals.ToonIslandCentral, 2, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
+    1029: (TT_TIER + 2, Start, (CogTrackQuest, ToontownGlobals.ToonIslandCentral, 2, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
+    1030: (TT_TIER + 2, Start, (CogTrackQuest, ToontownGlobals.ToonIslandCentral, 2, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
+    1031: (TT_TIER + 2, Start, (CogTrackQuest, ToontownGlobals.ToonIslandCentral, 3, 'm'), Any, ToonHQ, Any, NA, DefaultDialog),
+    1032: (TT_TIER + 2, Start, (CogTrackQuest, ToontownGlobals.ToonIslandCentral, 3, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
+    1033: (TT_TIER + 2, Start, (CogTrackQuest, ToontownGlobals.ToonIslandCentral, 3, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
+    1034: (TT_TIER + 2, Start, (CogTrackQuest, ToontownGlobals.ToonIslandCentral, 3, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
+    1035: (TT_TIER + 2, Start, (CogTrackQuest, ToontownGlobals.ToonIslandCentral, 5, 'm'), Any, ToonHQ, Any, NA, DefaultDialog),
+    1036: (TT_TIER + 2, Start, (CogTrackQuest, ToontownGlobals.ToonIslandCentral, 5, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
+    1037: (TT_TIER + 2, Start, (CogTrackQuest, ToontownGlobals.ToonIslandCentral, 5, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
+    1038: (TT_TIER + 2, Start, (CogTrackQuest, ToontownGlobals.ToonIslandCentral, 5, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
     1039: (TT_TIER + 2, Start, (VisitQuest,), Any, 2135, NA, (1041, 1042, 1043), TTLocalizer.QuestDialogDict[1039]),
     1040: (TT_TIER + 2, Start, (VisitQuest,), Any, 2207, NA, (1041, 1042, 1043), TTLocalizer.QuestDialogDict[1040]),
     1041: (TT_TIER + 2, Cont, (VisitQuest,), Same, 2211, NA, 1044, TTLocalizer.QuestDialogDict[1041]),
@@ -1784,16 +1784,16 @@ QuestDict = {
     1054: (TT_TIER + 2, Start, (VisitQuest,), Any, 2128, NA, 1055, TTLocalizer.QuestDialogDict[1054]),
     1055: (TT_TIER + 2, Start, (RecoverItemQuest, Anywhere, 4, 10, Easy, AnyFish), 2128, Same, NA, 1056, TTLocalizer.QuestDialogDict[1055]),
     1056: (TT_TIER + 2, Cont, (VisitQuest,), Same, 2213, NA, 1057, TTLocalizer.QuestDialogDict[1056]),
-    1057: (TT_TIER + 2, Cont, (CogLevelQuest, ToontownGlobals.ToontownCentral, 6, 3), Same, Same, NA, 1058, TTLocalizer.QuestDialogDict[1057]),
+    1057: (TT_TIER + 2, Cont, (CogLevelQuest, ToontownGlobals.ToonIslandCentral, 6, 3), Same, Same, NA, 1058, TTLocalizer.QuestDialogDict[1057]),
     1058: (TT_TIER + 2, Cont, (DeliverItemQuest, 11), Same, 2128, 200, NA, TTLocalizer.QuestDialogDict[1058]),
     1059: (TT_TIER + 2, Start, (VisitQuest,), Any, 2302, NA, 1060, TTLocalizer.QuestDialogDict[1059]),
     1060: (TT_TIER + 2, Start, (RecoverItemQuest, Anywhere, 1, 12, Medium, AnyFish), 2302, Same, NA, 1062, TTLocalizer.QuestDialogDict[1060]),
-    1061: (TT_TIER + 2, Cont, (CogQuest, ToontownGlobals.ToontownCentral, 6, 'p'), Same, Same, 101, NA, TTLocalizer.QuestDialogDict[1061]),
-    1062: (TT_TIER + 2, Cont, (CogQuest, ToontownGlobals.ToontownCentral, 6, 'b'), Same, Same, 101, NA, TTLocalizer.QuestDialogDict[1062]),
+    1061: (TT_TIER + 2, Cont, (CogQuest, ToontownGlobals.ToonIslandCentral, 6, 'p'), Same, Same, 101, NA, TTLocalizer.QuestDialogDict[1061]),
+    1062: (TT_TIER + 2, Cont, (CogQuest, ToontownGlobals.ToonIslandCentral, 6, 'b'), Same, Same, 101, NA, TTLocalizer.QuestDialogDict[1062]),
     900: (TT_TIER + 3, Start, (VisitQuest,), Any, 2201, NA, 1063, TTLocalizer.QuestDialogDict[900]),
     1063: (TT_TIER + 3, Start, (RecoverItemQuest, Anywhere, 1, 13, Medium, 3, 'level'), 2201, Same, NA, 1067, TTLocalizer.QuestDialogDict[1063]),
     1067: (TT_TIER + 3, Cont, (DeliverItemQuest, 13), Same, 2112, NA, 1068, TTLocalizer.QuestDialogDict[1067]),
-    1068: (TT_TIER + 3, Cont, (CogQuest, ToontownGlobals.ToontownCentral, 10, Any), Same, Same, NA, (1069, 1070, 1071), TTLocalizer.QuestDialogDict[1068]),
+    1068: (TT_TIER + 3, Cont, (CogQuest, ToontownGlobals.ToonIslandCentral, 10, Any), Same, Same, NA, (1069, 1070, 1071), TTLocalizer.QuestDialogDict[1068]),
     1069: (TT_TIER + 3, Cont, (RecoverItemQuest, Anywhere, 1, 13, Medium, 'm', 'track'), Same, Same, NA, 1072, TTLocalizer.QuestDialogDict[1069]),
     1070: (TT_TIER + 3, Cont, (RecoverItemQuest, Anywhere, 1, 13, Medium, 's', 'track'), Same, Same, NA, 1072, TTLocalizer.QuestDialogDict[1070]),
     1071: (TT_TIER + 3, Cont, (RecoverItemQuest, Anywhere, 1, 13, Medium, 'c', 'track'), Same, Same, NA, 1072, TTLocalizer.QuestDialogDict[1071]),
@@ -1815,10 +1815,10 @@ QuestDict = {
     1086: (TT_TIER + 2, Start, (RecoverItemQuest, Anywhere, 5, 2007, Easy, 2, 'level'), 2003, Same, NA, 1089, TTLocalizer.QuestDialogDict[1086]),
     1089: (TT_TIER + 2, Cont, (DeliverItemQuest, 19), Same, ToonHQ, 100, NA, TTLocalizer.QuestDialogDict[1089]),
     1090: (TT_TIER + 2, Start, (VisitQuest,), Any, 2119, NA, 1091, TTLocalizer.QuestDialogDict[1090]),
-    1091: (TT_TIER + 2, Start, (CogLevelQuest, ToontownGlobals.ToontownCentral, 8, 2), 2119, ToonHQ, 101, NA, TTLocalizer.QuestDialogDict[1091]),
-    1100: (TT_TIER + 2, Start, (CogQuest, ToontownGlobals.ToontownCentral, 10, Any), Any, ToonHQ, NA, 1101, DefaultDialog),
+    1091: (TT_TIER + 2, Start, (CogLevelQuest, ToontownGlobals.ToonIslandCentral, 8, 2), 2119, ToonHQ, 101, NA, TTLocalizer.QuestDialogDict[1091]),
+    1100: (TT_TIER + 2, Start, (CogQuest, ToontownGlobals.ToonIslandCentral, 10, Any), Any, ToonHQ, NA, 1101, DefaultDialog),
     1101: (TT_TIER + 2, Cont, (DeliverItemQuest, 1000), Any, 2004, 1000, NA, DefaultDialog),
-    1102: (TT_TIER + 2, Start, (CogLevelQuest, ToontownGlobals.ToontownCentral, 8, 3), Any, ToonHQ, NA, 1103, DefaultDialog),
+    1102: (TT_TIER + 2, Start, (CogLevelQuest, ToontownGlobals.ToonIslandCentral, 8, 3), Any, ToonHQ, NA, 1103, DefaultDialog),
     1103: (TT_TIER + 2, Cont, (DeliverItemQuest, 1000), Any, 2004, 1000, NA, DefaultDialog),
     1105: (TT_TIER + 2, Start, (CogQuest, Anywhere, 2, 'f'), Any, ToonHQ, Any, NA, DefaultDialog),
     1106: (TT_TIER + 2, Start, (CogQuest, Anywhere, 2, 'p'), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -1858,9 +1858,9 @@ QuestDict = {
     2819: (DD_TIER, Start, (CogLevelQuest, Anywhere, 7, 6), Any, ToonHQ, Any, NA, DefaultDialog),
     2020: (DD_TIER, Start, (CogQuest, Anywhere, 10, Any), Any, ToonHQ, NA, 2021, DefaultDialog),
     2021: (DD_TIER, Cont, (DeliverItemQuest, 1000), Any, 1007, 1000, NA, DefaultDialog),
-    2101: (DD_TIER + 1, Start, (CogQuest, ToontownGlobals.DonaldsDock, 3, Any), Any, ToonHQ, Any, NA, DefaultDialog),
-    2102: (DD_TIER + 1, Start, (CogQuest, ToontownGlobals.DonaldsDock, 4, Any), Any, ToonHQ, Any, NA, DefaultDialog),
-    2103: (DD_TIER + 1, Start, (CogQuest, ToontownGlobals.DonaldsDock, 5, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    2101: (DD_TIER + 1, Start, (CogQuest, ToontownGlobals.RainbowRise, 3, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    2102: (DD_TIER + 1, Start, (CogQuest, ToontownGlobals.RainbowRise, 4, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    2103: (DD_TIER + 1, Start, (CogQuest, ToontownGlobals.RainbowRise, 5, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     2104: (DD_TIER + 1, Start, (CogQuest, Anywhere, 6, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     2105: (DD_TIER + 1, Start, (CogQuest, Anywhere, 7, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     2106: (DD_TIER + 1, Start, (CogQuest, Anywhere, 8, Any), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -1888,22 +1888,22 @@ QuestDict = {
     2128: (DD_TIER + 1, Start, (CogQuest, Anywhere, 3, 'ac'), Any, ToonHQ, Any, NA, DefaultDialog),
     2129: (DD_TIER + 1, Start, (CogQuest, Anywhere, 2, 'bs'), Any, ToonHQ, Any, NA, DefaultDialog),
     2130: (DD_TIER + 1, Start, (CogQuest, Anywhere, 1, 'sd'), Any, ToonHQ, Any, NA, DefaultDialog),
-    2131: (DD_TIER + 1, Start, (CogLevelQuest, ToontownGlobals.DonaldsDock, 2, 3), Any, ToonHQ, Any, NA, DefaultDialog),
-    2132: (DD_TIER + 1, Start, (CogLevelQuest, ToontownGlobals.DonaldsDock, 3, 3), Any, ToonHQ, Any, NA, DefaultDialog),
-    2133: (DD_TIER + 1, Start, (CogLevelQuest, ToontownGlobals.DonaldsDock, 2, 4), Any, ToonHQ, Any, NA, DefaultDialog),
-    2134: (DD_TIER + 1, Start, (CogLevelQuest, ToontownGlobals.DonaldsDock, 4, 4), Any, ToonHQ, Any, NA, DefaultDialog),
-    2135: (DD_TIER + 1, Start, (CogLevelQuest, ToontownGlobals.DonaldsDock, 4, 5), Any, ToonHQ, Any, NA, DefaultDialog),
-    2136: (DD_TIER + 1, Start, (CogLevelQuest, ToontownGlobals.DonaldsDock, 5, 5), Any, ToonHQ, Any, NA, DefaultDialog),
-    2137: (DD_TIER + 1, Start, (CogLevelQuest, ToontownGlobals.DonaldsDock, 4, 6), Any, ToonHQ, Any, NA, DefaultDialog),
-    2138: (DD_TIER + 1, Start, (CogLevelQuest, ToontownGlobals.DonaldsDock, 6, 6), Any, ToonHQ, Any, NA, DefaultDialog),
-    2139: (DD_TIER + 1, Start, (CogTrackQuest, ToontownGlobals.DonaldsDock, 3, 'm'), Any, ToonHQ, Any, NA, DefaultDialog),
-    2140: (DD_TIER + 1, Start, (CogTrackQuest, ToontownGlobals.DonaldsDock, 3, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
-    2141: (DD_TIER + 1, Start, (CogTrackQuest, ToontownGlobals.DonaldsDock, 3, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
-    2142: (DD_TIER + 1, Start, (CogTrackQuest, ToontownGlobals.DonaldsDock, 3, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
-    2143: (DD_TIER + 1, Start, (CogTrackQuest, ToontownGlobals.DonaldsDock, 5, 'm'), Any, ToonHQ, Any, NA, DefaultDialog),
-    2144: (DD_TIER + 1, Start, (CogTrackQuest, ToontownGlobals.DonaldsDock, 5, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
-    2145: (DD_TIER + 1, Start, (CogTrackQuest, ToontownGlobals.DonaldsDock, 5, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
-    2146: (DD_TIER + 1, Start, (CogTrackQuest, ToontownGlobals.DonaldsDock, 5, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2131: (DD_TIER + 1, Start, (CogLevelQuest, ToontownGlobals.RainbowRise, 2, 3), Any, ToonHQ, Any, NA, DefaultDialog),
+    2132: (DD_TIER + 1, Start, (CogLevelQuest, ToontownGlobals.RainbowRise, 3, 3), Any, ToonHQ, Any, NA, DefaultDialog),
+    2133: (DD_TIER + 1, Start, (CogLevelQuest, ToontownGlobals.RainbowRise, 2, 4), Any, ToonHQ, Any, NA, DefaultDialog),
+    2134: (DD_TIER + 1, Start, (CogLevelQuest, ToontownGlobals.RainbowRise, 4, 4), Any, ToonHQ, Any, NA, DefaultDialog),
+    2135: (DD_TIER + 1, Start, (CogLevelQuest, ToontownGlobals.RainbowRise, 4, 5), Any, ToonHQ, Any, NA, DefaultDialog),
+    2136: (DD_TIER + 1, Start, (CogLevelQuest, ToontownGlobals.RainbowRise, 5, 5), Any, ToonHQ, Any, NA, DefaultDialog),
+    2137: (DD_TIER + 1, Start, (CogLevelQuest, ToontownGlobals.RainbowRise, 4, 6), Any, ToonHQ, Any, NA, DefaultDialog),
+    2138: (DD_TIER + 1, Start, (CogLevelQuest, ToontownGlobals.RainbowRise, 6, 6), Any, ToonHQ, Any, NA, DefaultDialog),
+    2139: (DD_TIER + 1, Start, (CogTrackQuest, ToontownGlobals.RainbowRise, 3, 'm'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2140: (DD_TIER + 1, Start, (CogTrackQuest, ToontownGlobals.RainbowRise, 3, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2141: (DD_TIER + 1, Start, (CogTrackQuest, ToontownGlobals.RainbowRise, 3, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2142: (DD_TIER + 1, Start, (CogTrackQuest, ToontownGlobals.RainbowRise, 3, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2143: (DD_TIER + 1, Start, (CogTrackQuest, ToontownGlobals.RainbowRise, 5, 'm'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2144: (DD_TIER + 1, Start, (CogTrackQuest, ToontownGlobals.RainbowRise, 5, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2145: (DD_TIER + 1, Start, (CogTrackQuest, ToontownGlobals.RainbowRise, 5, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2146: (DD_TIER + 1, Start, (CogTrackQuest, ToontownGlobals.RainbowRise, 5, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
     2147: (DD_TIER + 1, Start, (CogTrackQuest, Anywhere, 7, 'm'), Any, ToonHQ, Any, NA, DefaultDialog),
     2148: (DD_TIER + 1, Start, (CogTrackQuest, Anywhere, 7, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
     2149: (DD_TIER + 1, Start, (CogTrackQuest, Anywhere, 7, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -1930,12 +1930,12 @@ QuestDict = {
     2208: (DD_TIER + 1, Start, (RecoverItemQuest, Anywhere, 1, 2005, Easy, 'bs'), 1201, Same, 701, NA, TTLocalizer.QuestDialogDict[2208]),
     2209: (DD_TIER + 1, Start, (VisitQuest,), Any, 1302, NA, 2210, TTLocalizer.QuestDialogDict[2209]),
     2210: (DD_TIER + 1, Start, (VisitQuest,), 1302, 1301, NA, 2211, TTLocalizer.QuestDialogDict[2210]),
-    2211: (DD_TIER + 1, Cont, (CogQuest, ToontownGlobals.DonaldsDock, 5, 'mm'), Same, Same, NA, 2212, TTLocalizer.QuestDialogDict[2211]),
+    2211: (DD_TIER + 1, Cont, (CogQuest, ToontownGlobals.RainbowRise, 5, 'mm'), Same, Same, NA, 2212, TTLocalizer.QuestDialogDict[2211]),
     2212: (DD_TIER + 1, Cont, (DeliverItemQuest, 2006), Same, 1302, NA, 2213, TTLocalizer.QuestDialogDict[2212]),
     2213: (DD_TIER + 1, Cont, (VisitQuest,), Same, 1202, NA, 2214, TTLocalizer.QuestDialogDict[2213]),
-    2214: (DD_TIER + 1, Cont, (RecoverItemQuest, ToontownGlobals.DonaldsDock, 3, 2007, Hard, Any), Same, Same, NA, 2215, TTLocalizer.QuestDialogDict[2214]),
+    2214: (DD_TIER + 1, Cont, (RecoverItemQuest, ToontownGlobals.RainbowRise, 3, 2007, Hard, Any), Same, Same, NA, 2215, TTLocalizer.QuestDialogDict[2214]),
     2215: (DD_TIER + 1, Cont, (DeliverItemQuest, 2008), Same, 1302, 301, NA, TTLocalizer.QuestDialogDict[2215]),
-    2500: (DD_TIER + 1, Start, (CogQuest, ToontownGlobals.DonaldsDock, 15, Any), Any, ToonHQ, NA, 2501, DefaultDialog),
+    2500: (DD_TIER + 1, Start, (CogQuest, ToontownGlobals.RainbowRise, 15, Any), Any, ToonHQ, NA, 2501, DefaultDialog),
     2501: (DD_TIER + 1, Cont, (DeliverItemQuest, 1000), Any, 1007, 1000, NA, DefaultDialog),
     2801: (DD_TIER + 2, Start, (CogQuest, Anywhere, 3, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     2802: (DD_TIER + 2, Start, (CogQuest, Anywhere, 4, Any), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -1966,16 +1966,16 @@ QuestDict = {
     2906: (DD_TIER + 2, Cont, (DeliverGagQuest, 3, ToontownBattleGlobals.SQUIRT_TRACK, 2), Same, Same, NA, 2907, TTLocalizer.QuestDialogDict[2906]),
     2907: (DD_TIER + 2, Cont, (DeliverItemQuest, 2011), Same, 1203, NA, (2910, 2915, 2920), TTLocalizer.QuestDialogDict[2907]),
     2910: (DD_TIER + 2, Cont, (VisitQuest,), Same, 1107, NA, 2911, TTLocalizer.QuestDialog_2910),
-    2911: (DD_TIER + 2, Cont, (CogTrackQuest, ToontownGlobals.DonaldsDock, 4, 'm'), Same, Same, NA, 2925, TTLocalizer.QuestDialogDict[2911]),
+    2911: (DD_TIER + 2, Cont, (CogTrackQuest, ToontownGlobals.RainbowRise, 4, 'm'), Same, Same, NA, 2925, TTLocalizer.QuestDialogDict[2911]),
     2915: (DD_TIER + 2, Cont, (VisitQuest,), Same, 1204, NA, 2916, TTLocalizer.QuestDialog_2910),
-    2916: (DD_TIER + 2, Cont, (CogTrackQuest, ToontownGlobals.DonaldsDock, 2, 's'), Same, Same, NA, 2925, TTLocalizer.QuestDialogDict[2916]),
+    2916: (DD_TIER + 2, Cont, (CogTrackQuest, ToontownGlobals.RainbowRise, 2, 's'), Same, Same, NA, 2925, TTLocalizer.QuestDialogDict[2916]),
     2920: (DD_TIER + 2, Cont, (VisitQuest,), Same, 1204, NA, 2921, TTLocalizer.QuestDialog_2910),
-    2921: (DD_TIER + 2, Cont, (CogTrackQuest, ToontownGlobals.DonaldsDock, 6, 'c'), Same, Same, NA, 2925, TTLocalizer.QuestDialogDict[2921]),
+    2921: (DD_TIER + 2, Cont, (CogTrackQuest, ToontownGlobals.RainbowRise, 6, 'c'), Same, Same, NA, 2925, TTLocalizer.QuestDialogDict[2921]),
     2925: (DD_TIER + 2, Cont, (DeliverItemQuest, 2012), Same, 1203, NA, 2926, TTLocalizer.QuestDialogDict[2925]),
-    2926: (DD_TIER + 2, Cont, (BuildingQuest, ToontownGlobals.DonaldsDock, 1, Any, 2, 0), Same, Same, 900, NA, TTLocalizer.QuestDialogDict[2926]),
-    3101: (DG_TIER, Start, (CogQuest, ToontownGlobals.DaisyGardens, 8, Any), Any, ToonHQ, Any, NA, DefaultDialog),
-    3102: (DG_TIER, Start, (CogQuest, ToontownGlobals.DaisyGardens, 10, Any), Any, ToonHQ, Any, NA, DefaultDialog),
-    3103: (DG_TIER, Start, (CogQuest, ToontownGlobals.DaisyGardens, 12, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    2926: (DD_TIER + 2, Cont, (BuildingQuest, ToontownGlobals.RainbowRise, 1, Any, 2, 0), Same, Same, 900, NA, TTLocalizer.QuestDialogDict[2926]),
+    3101: (DG_TIER, Start, (CogQuest, ToontownGlobals.DaisyGarden, 8, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    3102: (DG_TIER, Start, (CogQuest, ToontownGlobals.DaisyGarden, 10, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    3103: (DG_TIER, Start, (CogQuest, ToontownGlobals.DaisyGarden, 12, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     3104: (DG_TIER, Start, (CogQuest, Anywhere, 14, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     3105: (DG_TIER, Start, (CogQuest, Anywhere, 16, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     3106: (DG_TIER, Start, (CogQuest, Anywhere, 18, Any), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -2011,14 +2011,14 @@ QuestDict = {
     3136: (DG_TIER, Start, (CogLevelQuest, Anywhere, 6, 5), Any, ToonHQ, Any, NA, DefaultDialog),
     3137: (DG_TIER, Start, (CogLevelQuest, Anywhere, 8, 6), Any, ToonHQ, Any, NA, DefaultDialog),
     3138: (DG_TIER, Start, (CogLevelQuest, Anywhere, 12, 6), Any, ToonHQ, Any, NA, DefaultDialog),
-    3139: (DG_TIER, Start, (CogTrackQuest, ToontownGlobals.DaisyGardens, 6, 'm'), Any, ToonHQ, Any, NA, DefaultDialog),
-    3140: (DG_TIER, Start, (CogTrackQuest, ToontownGlobals.DaisyGardens, 6, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
-    3141: (DG_TIER, Start, (CogTrackQuest, ToontownGlobals.DaisyGardens, 6, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
-    3142: (DG_TIER, Start, (CogTrackQuest, ToontownGlobals.DaisyGardens, 6, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
-    3143: (DG_TIER, Start, (CogTrackQuest, ToontownGlobals.DaisyGardens, 10, 'm'), Any, ToonHQ, Any, NA, DefaultDialog),
-    3144: (DG_TIER, Start, (CogTrackQuest, ToontownGlobals.DaisyGardens, 10, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
-    3145: (DG_TIER, Start, (CogTrackQuest, ToontownGlobals.DaisyGardens, 10, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
-    3146: (DG_TIER, Start, (CogTrackQuest, ToontownGlobals.DaisyGardens, 10, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
+    3139: (DG_TIER, Start, (CogTrackQuest, ToontownGlobals.DaisyGarden, 6, 'm'), Any, ToonHQ, Any, NA, DefaultDialog),
+    3140: (DG_TIER, Start, (CogTrackQuest, ToontownGlobals.DaisyGarden, 6, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
+    3141: (DG_TIER, Start, (CogTrackQuest, ToontownGlobals.DaisyGarden, 6, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
+    3142: (DG_TIER, Start, (CogTrackQuest, ToontownGlobals.DaisyGarden, 6, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
+    3143: (DG_TIER, Start, (CogTrackQuest, ToontownGlobals.DaisyGarden, 10, 'm'), Any, ToonHQ, Any, NA, DefaultDialog),
+    3144: (DG_TIER, Start, (CogTrackQuest, ToontownGlobals.DaisyGarden, 10, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
+    3145: (DG_TIER, Start, (CogTrackQuest, ToontownGlobals.DaisyGarden, 10, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
+    3146: (DG_TIER, Start, (CogTrackQuest, ToontownGlobals.DaisyGarden, 10, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
     3147: (DG_TIER, Start, (CogTrackQuest, Anywhere, 14, 'm'), Any, ToonHQ, Any, NA, DefaultDialog),
     3148: (DG_TIER, Start, (CogTrackQuest, Anywhere, 14, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
     3149: (DG_TIER, Start, (CogTrackQuest, Anywhere, 14, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -2033,21 +2033,21 @@ QuestDict = {
     3158: (DG_TIER, Start, (BuildingQuest, Anywhere, 2, 'l', 2, 0), Any, ToonHQ, Any, NA, DefaultDialog),
     3200: (DG_TIER, Start, (VisitQuest,), Any, 5101, NA, 3201, TTLocalizer.QuestDialogDict[3200]),
     3201: (DG_TIER, Start, (DeliverItemQuest, 5001), 5101, 5206, NA, 3203, TTLocalizer.QuestDialogDict[3201]),
-    3203: (DG_TIER, Cont, (RecoverItemQuest, ToontownGlobals.DaisyGardens, 1, 5002, VeryHard, Any), Same, Same, 100, NA, TTLocalizer.QuestDialogDict[3203]),
+    3203: (DG_TIER, Cont, (RecoverItemQuest, ToontownGlobals.DaisyGarden, 1, 5002, VeryHard, Any), Same, Same, 100, NA, TTLocalizer.QuestDialogDict[3203]),
     3204: (DG_TIER, Start, (VisitQuest,), Any, 5106, NA, 3205, TTLocalizer.QuestDialogDict[3204]),
     3205: (DG_TIER, Start, (RecoverItemQuest, Anywhere, 1, 5003, Medium, 'b'), 5106, Same, 100, NA, TTLocalizer.QuestDialogDict[3205]),
     3206: (DG_TIER, Start, (VisitQuest,), Any, 5107, NA, 3207, TTLocalizer.QuestDialogDict[3206]),
-    3207: (DG_TIER, Start, (RecoverItemQuest, ToontownGlobals.DaisyGardens, 10, 5004, VeryEasy, 'dt'), 5107, Same, 101, NA, TTLocalizer.QuestDialogDict[3207]),
-    3208: (DG_TIER, OBSOLETE, (CogQuest, ToontownGlobals.DaisyGardens, 10, 'cc'), Any, ToonHQ, NA, 3209, TTLocalizer.QuestDialogDict[3208]),
-    3209: (DG_TIER, OBSOLETE, (CogQuest, ToontownGlobals.DaisyGardens, 10, 'tm'), Same, Same, 202, NA, TTLocalizer.QuestDialogDict[3209]),
-    3247: (DG_TIER, OBSOLETE, (CogQuest, ToontownGlobals.DaisyGardens, 20, 'b'), Any, ToonHQ, 202, NA, TTLocalizer.QuestDialogDict[3247]),
+    3207: (DG_TIER, Start, (RecoverItemQuest, ToontownGlobals.DaisyGarden, 10, 5004, VeryEasy, 'dt'), 5107, Same, 101, NA, TTLocalizer.QuestDialogDict[3207]),
+    3208: (DG_TIER, OBSOLETE, (CogQuest, ToontownGlobals.DaisyGarden, 10, 'cc'), Any, ToonHQ, NA, 3209, TTLocalizer.QuestDialogDict[3208]),
+    3209: (DG_TIER, OBSOLETE, (CogQuest, ToontownGlobals.DaisyGarden, 10, 'tm'), Same, Same, 202, NA, TTLocalizer.QuestDialogDict[3209]),
+    3247: (DG_TIER, OBSOLETE, (CogQuest, ToontownGlobals.DaisyGarden, 20, 'b'), Any, ToonHQ, 202, NA, TTLocalizer.QuestDialogDict[3247]),
     3210: (DG_TIER, Start, (DeliverGagQuest, 10, ToontownBattleGlobals.SQUIRT_TRACK, 0), Any, 5207, NA, 3211, TTLocalizer.QuestDialogDict[3210]),
     3211: (DG_TIER, Cont, (CogQuest, 5200, 20, Any), Same, Same, 100, NA, TTLocalizer.QuestDialogDict[3211]),
     3212: (DG_TIER, OBSOLETE, (VisitQuest,), Any, 5208, NA, 3213, TTLocalizer.QuestDialogDict[3212]),
-    3213: (DG_TIER, OBSOLETE, (RecoverItemQuest, ToontownGlobals.DaisyGardens, 1, 5005, VeryHard, Any), 5208, Same, NA, 3214, TTLocalizer.QuestDialogDict[3213]),
-    3214: (DG_TIER, OBSOLETE, (RecoverItemQuest, ToontownGlobals.DaisyGardens, 1, 5006, VeryHard, Any), Same, Same, NA, 3215, TTLocalizer.QuestDialogDict[3214]),
-    3215: (DG_TIER, OBSOLETE, (RecoverItemQuest, ToontownGlobals.DaisyGardens, 1, 5007, VeryHard, Any), Same, Same, NA, 3216, TTLocalizer.QuestDialogDict[3215]),
-    3216: (DG_TIER, OBSOLETE, (RecoverItemQuest, ToontownGlobals.DaisyGardens, 1, 5008, VeryHard, Any), Same, Same, 202, NA, TTLocalizer.QuestDialogDict[3216]),
+    3213: (DG_TIER, OBSOLETE, (RecoverItemQuest, ToontownGlobals.DaisyGarden, 1, 5005, VeryHard, Any), 5208, Same, NA, 3214, TTLocalizer.QuestDialogDict[3213]),
+    3214: (DG_TIER, OBSOLETE, (RecoverItemQuest, ToontownGlobals.DaisyGarden, 1, 5006, VeryHard, Any), Same, Same, NA, 3215, TTLocalizer.QuestDialogDict[3214]),
+    3215: (DG_TIER, OBSOLETE, (RecoverItemQuest, ToontownGlobals.DaisyGarden, 1, 5007, VeryHard, Any), Same, Same, NA, 3216, TTLocalizer.QuestDialogDict[3215]),
+    3216: (DG_TIER, OBSOLETE, (RecoverItemQuest, ToontownGlobals.DaisyGarden, 1, 5008, VeryHard, Any), Same, Same, 202, NA, TTLocalizer.QuestDialogDict[3216]),
     3217: (DG_TIER, Start, (RecoverItemQuest, Anywhere, 1, 5010, VeryEasy, 'nd'), ToonHQ, ToonHQ, NA, 3218, TTLocalizer.QuestDialogDict[3217]),
     3218: (DG_TIER, Cont, (RecoverItemQuest, Anywhere, 1, 5010, VeryHard, 'gh'), Same, Same, NA, 3219, TTLocalizer.QuestDialogDict[3218]),
     3219: (DG_TIER, Cont, (RecoverItemQuest, Anywhere, 1, 5010, Easy, 'ms'), Same, Same, 101, NA, TTLocalizer.QuestDialogDict[3219]),
@@ -2055,7 +2055,7 @@ QuestDict = {
     3245: (DG_TIER, Cont, (RecoverItemQuest, Anywhere, 1, 5010, VeryHard, 'bs'), Same, Same, NA, 3246, TTLocalizer.QuestDialogDict[3245]),
     3246: (DG_TIER, Cont, (RecoverItemQuest, Anywhere, 1, 5010, VeryHard, 'sd'), Same, Same, 101, NA, TTLocalizer.QuestDialogDict[3246]),
     3220: (DG_TIER, Start, (VisitQuest,), Any, 5207, NA, 3221, TTLocalizer.QuestDialogDict[3220]),
-    3221: (DG_TIER, Start, (CogQuest, ToontownGlobals.DaisyGardens, 20, Any), 5207, Same, 100, NA, TTLocalizer.QuestDialogDict[3221]),
+    3221: (DG_TIER, Start, (CogQuest, ToontownGlobals.DaisyGarden, 20, Any), 5207, Same, 100, NA, TTLocalizer.QuestDialogDict[3221]),
     3222: (DG_TIER, Start, (BuildingQuest, Anywhere, 2, Any, 1, 0), ToonHQ, ToonHQ, NA, 3223, TTLocalizer.QuestDialogDict[3222]),
     3223: (DG_TIER, Cont, (BuildingQuest, Anywhere, 2, Any, 2, 0), Same, Same, NA, 3224, TTLocalizer.QuestDialogDict[3223]),
     3224: (DG_TIER, Cont, (BuildingQuest, Anywhere, 2, Any, 3, 0), Same, Same, 501, NA, TTLocalizer.QuestDialogDict[3224]),
@@ -2069,7 +2069,7 @@ QuestDict = {
     3232: (DG_TIER, Start, (DeliverItemQuest, 5011), 5108, 5104, NA, 3235, TTLocalizer.QuestDialog_3225),
     3233: (DG_TIER, Start, (DeliverItemQuest, 5011), 5108, 5105, NA, 3235, TTLocalizer.QuestDialog_3225),
     3234: (DG_TIER, Start, (DeliverItemQuest, 5011), 5108, 5207, NA, 3235, TTLocalizer.QuestDialog_3225),
-    3235: (DG_TIER, Cont, (CogQuest, ToontownGlobals.DaisyGardens, 10, Any), Same, 5108, 100, NA, TTLocalizer.QuestDialogDict[3235]),
+    3235: (DG_TIER, Cont, (CogQuest, ToontownGlobals.DaisyGarden, 10, Any), Same, 5108, 100, NA, TTLocalizer.QuestDialogDict[3235]),
     3236: (DG_TIER, OBSOLETE, (BuildingQuest, Anywhere, 3, 'l', 2, 0), Any, ToonHQ, NA, 3237, TTLocalizer.QuestDialogDict[3236]),
     3237: (DG_TIER, OBSOLETE, (BuildingQuest, Anywhere, 3, 's', 2, 0), Same, Same, 702, NA, TTLocalizer.QuestDialogDict[3237]),
     3238: (DG_TIER, Start, (RecoverItemQuest, Anywhere, 1, 2, VeryEasy, 'm'), Any, ToonHQ, NA, 3239, TTLocalizer.QuestDialogDict[3238]),
@@ -2092,7 +2092,7 @@ QuestDict = {
     3261: (DG_TIER, Cont, (RecoverItemQuest, ToontownGlobals.SellbotHQ, 1, 5017, Medium, 's', 'track'), Same, Same, 102, NA, TTLocalizer.QuestDialogDict[3261]),
     3262: (DG_TIER, Start, (VisitQuest,), Any, 5313, NA, 3263, TTLocalizer.QuestDialogDict[3262]),
     3263: (DG_TIER, Start, (FactoryQuest, ToontownGlobals.SellbotHQ, 1), 5313, 5313, 702, NA, TTLocalizer.QuestDialogDict[3263]),
-    3500: (DG_TIER, Start, (CogQuest, ToontownGlobals.DaisyGardens, 25, Any), Any, ToonHQ, NA, 3501, DefaultDialog),
+    3500: (DG_TIER, Start, (CogQuest, ToontownGlobals.DaisyGarden, 25, Any), Any, ToonHQ, NA, 3501, DefaultDialog),
     3501: (DG_TIER, Cont, (DeliverItemQuest, 1000), Any, 5007, 1000, NA, DefaultDialog),
     3502: (DG_TIER, Start, (RescueQuest, InVP, 1), Any, ToonHQ, Any, NA, DefaultDialog),
     3503: (DG_TIER, Start, (RescueQuest, InFO, 2), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -3064,17 +3064,17 @@ QuestDict = {
     10209: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 20, 's', 5, 1), Any, ToonHQ, Any, NA, DefaultDialog),
     10210: (ELDER_TIER, Start, (BuildingQuest, Anywhere, 20, 'l', 5, 1), Any, ToonHQ, Any, NA, DefaultDialog),
     11000: (LAWBOT_HQ_TIER, Start, (VisitQuest,), Any, 3310, NA, 11001, TTLocalizer.QuestDialogDict[11000]),
-    11001: (LAWBOT_HQ_TIER, Start, (RecoverItemQuest, ToontownGlobals.SillyStreet, 1, 3027, Hard, Any), Same, Same, 4100, NA, TTLocalizer.QuestDialogDict[11001]),
+    11001: (LAWBOT_HQ_TIER, Start, (RecoverItemQuest, ToontownGlobals.BeachballBoulevard, 1, 3027, Hard, Any), Same, Same, 4100, NA, TTLocalizer.QuestDialogDict[11001]),
     11002: (LAWBOT_HQ_TIER + 1, Start, (VisitQuest,), Any, 3310, NA, 11003, TTLocalizer.QuestDialogDict[11002]),
-    11003: (LAWBOT_HQ_TIER + 1, Start, (RecoverItemQuest, ToontownGlobals.LoopyLane, 1, 3027, Hard, Any), Same, Same, 4101, NA, TTLocalizer.QuestDialogDict[11003]),
+    11003: (LAWBOT_HQ_TIER + 1, Start, (RecoverItemQuest, ToontownGlobals.AlohaAvenue, 1, 3027, Hard, Any), Same, Same, 4101, NA, TTLocalizer.QuestDialogDict[11003]),
     11004: (LAWBOT_HQ_TIER + 2, Start, (VisitQuest,), Any, 3310, NA, 11005, TTLocalizer.QuestDialogDict[11004]),
     11005: (LAWBOT_HQ_TIER + 2, Start, (RecoverItemQuest, ToontownGlobals.PunchlinePlace, 1, 3027, Hard, Any), Same, Same, 4102, NA, TTLocalizer.QuestDialogDict[11005]),
     11006: (LAWBOT_HQ_TIER + 3, Start, (VisitQuest,), Any, 3310, NA, 11007, TTLocalizer.QuestDialogDict[11006]),
-    11007: (LAWBOT_HQ_TIER + 3, Start, (RecoverItemQuest, ToontownGlobals.BarnacleBoulevard, 1, 3027, Hard, Any), Same, Same, 4103, NA, TTLocalizer.QuestDialogDict[11007]),
+    11007: (LAWBOT_HQ_TIER + 3, Start, (RecoverItemQuest, ToontownGlobals.CoralCourt, 1, 3027, Hard, Any), Same, Same, 4103, NA, TTLocalizer.QuestDialogDict[11007]),
     11008: (LAWBOT_HQ_TIER + 4, Start, (VisitQuest,), Any, 3310, NA, 11009, TTLocalizer.QuestDialogDict[11008]),
-    11009: (LAWBOT_HQ_TIER + 4, Start, (RecoverItemQuest, ToontownGlobals.SeaweedStreet, 1, 3027, Hard, Any), Same, Same, 4104, NA, TTLocalizer.QuestDialogDict[11009]),
+    11009: (LAWBOT_HQ_TIER + 4, Start, (RecoverItemQuest, ToontownGlobals.OceanOverpass, 1, 3027, Hard, Any), Same, Same, 4104, NA, TTLocalizer.QuestDialogDict[11009]),
     11010: (LAWBOT_HQ_TIER + 5, Start, (VisitQuest,), Any, 3310, NA, 11011, TTLocalizer.QuestDialogDict[11010]),
-    11011: (LAWBOT_HQ_TIER + 5, Start, (RecoverItemQuest, ToontownGlobals.LighthouseLane, 1, 3027, Hard, Any), Same, Same, 4105, NA, TTLocalizer.QuestDialogDict[11011]),
+    11011: (LAWBOT_HQ_TIER + 5, Start, (RecoverItemQuest, ToontownGlobals.PiratePlace, 1, 3027, Hard, Any), Same, Same, 4105, NA, TTLocalizer.QuestDialogDict[11011]),
     11012: (LAWBOT_HQ_TIER + 6, Start, (VisitQuest,), Any, 3310, NA, 11013, TTLocalizer.QuestDialogDict[11012]),
     11013: (LAWBOT_HQ_TIER + 6, Start, (RecoverItemQuest, ToontownGlobals.ElmStreet, 1, 3027, Hard, Any), Same, Same, 4106, NA, TTLocalizer.QuestDialogDict[11013]),
     11014: (LAWBOT_HQ_TIER + 7, Start, (VisitQuest,), Any, 3310, NA, 11015, TTLocalizer.QuestDialogDict[11014]),
@@ -3082,15 +3082,15 @@ QuestDict = {
     11016: (LAWBOT_HQ_TIER + 8, Start, (VisitQuest,), Any, 3310, NA, 11017, TTLocalizer.QuestDialogDict[11016]),
     11017: (LAWBOT_HQ_TIER + 8, Start, (RecoverItemQuest, ToontownGlobals.OakStreet, 1, 3027, Hard, Any), Same, Same, 4108, NA, TTLocalizer.QuestDialogDict[11017]),
     11018: (LAWBOT_HQ_TIER + 9, Start, (VisitQuest,), Any, 3310, NA, 11019, TTLocalizer.QuestDialogDict[11018]),
-    11019: (LAWBOT_HQ_TIER + 9, Start, (RecoverItemQuest, ToontownGlobals.AltoAvenue, 1, 3027, Hard, Any), Same, Same, 4109, NA, TTLocalizer.QuestDialogDict[11019]),
+    11019: (LAWBOT_HQ_TIER + 9, Start, (RecoverItemQuest, ToontownGlobals.DesertDrive, 1, 3027, Hard, Any), Same, Same, 4109, NA, TTLocalizer.QuestDialogDict[11019]),
     11020: (LAWBOT_HQ_TIER + 10, Start, (VisitQuest,), Any, 3310, NA, 11021, TTLocalizer.QuestDialogDict[11020]),
-    11021: (LAWBOT_HQ_TIER + 10, Start, (RecoverItemQuest, ToontownGlobals.BaritoneBoulevard, 1, 3027, Hard, Any), Same, Same, 4110, NA, TTLocalizer.QuestDialogDict[11021]),
+    11021: (LAWBOT_HQ_TIER + 10, Start, (RecoverItemQuest, ToontownGlobals.TumbleweedTerrace, 1, 3027, Hard, Any), Same, Same, 4110, NA, TTLocalizer.QuestDialogDict[11021]),
     11022: (LAWBOT_HQ_TIER + 11, Start, (VisitQuest,), Any, 3310, NA, 11023, TTLocalizer.QuestDialogDict[11022]),
-    11023: (LAWBOT_HQ_TIER + 11, Start, (RecoverItemQuest, ToontownGlobals.TenorTerrace, 1, 3027, Hard, Any), Same, Same, 4111, NA, TTLocalizer.QuestDialogDict[11023]),
+    11023: (LAWBOT_HQ_TIER + 11, Start, (RecoverItemQuest, ToontownGlobals.CactusCourt, 1, 3027, Hard, Any), Same, Same, 4111, NA, TTLocalizer.QuestDialogDict[11023]),
     11024: (LAWBOT_HQ_TIER + 12, Start, (VisitQuest,), Any, 3310, NA, 11025, TTLocalizer.QuestDialogDict[11024]),
-    11025: (LAWBOT_HQ_TIER + 12, Start, (RecoverItemQuest, ToontownGlobals.LullabyLane, 1, 3027, Hard, Any), Same, Same, 4112, NA, TTLocalizer.QuestDialogDict[11025]),
+    11025: (LAWBOT_HQ_TIER + 12, Start, (RecoverItemQuest, ToontownGlobals.CandyClose, 1, 3027, Hard, Any), Same, Same, 4112, NA, TTLocalizer.QuestDialogDict[11025]),
     11026: (LAWBOT_HQ_TIER + 13, Start, (VisitQuest,), Any, 3310, NA, 11027, TTLocalizer.QuestDialogDict[11026]),
-    11027: (LAWBOT_HQ_TIER + 13, Start, (RecoverItemQuest, ToontownGlobals.PajamaPlace, 1, 3027, Hard, Any), Same, Same, 4113, NA, TTLocalizer.QuestDialogDict[11027]),
+    11027: (LAWBOT_HQ_TIER + 13, Start, (RecoverItemQuest, ToontownGlobals.PeppermintPlace, 1, 3027, Hard, Any), Same, Same, 4113, NA, TTLocalizer.QuestDialogDict[11027]),
     12000: (BOSSBOT_HQ_TIER, Start, (VisitQuest,), Any, 1222, NA, 12001, TTLocalizer.QuestDialogDict[12000]),
     12001: (BOSSBOT_HQ_TIER, Start, (CogQuest, Anywhere, 1, 'f'), Same, Same, 4200, NA, TTLocalizer.QuestDialogDict[12001]),
     12002: (BOSSBOT_HQ_TIER + 1, Start, (VisitQuest,), Any, 1222, NA, 12003, TTLocalizer.QuestDialogDict[12002]),
@@ -3127,7 +3127,7 @@ QuestDict = {
 
 Tier2QuestsDict = {}
 
-for questId, questDesc in QuestDict.items():
+for questId, questDesc in list(QuestDict.items()):
     if questDesc[QuestDictStartIndex] == Start:
         tier = questDesc[QuestDictTierIndex]
         if tier in Tier2QuestsDict:
@@ -3141,11 +3141,11 @@ Quest2RemainingStepsDict = {}
 
 def getAllRewardIdsForReward(rewardId):
     if rewardId is AnyCashbotSuitPart:
-        return range(4000, 4011 + 1)
+        return list(range(4000, 4011 + 1))
     if rewardId is AnyLawbotSuitPart:
-        return range(4100, 4113 + 1)
+        return list(range(4100, 4113 + 1))
     if rewardId is AnyBossbotSuitPart:
-        return range(4200, 4216 + 1)
+        return list(range(4200, 4216 + 1))
     return (rewardId,)
 
 def findFinalRewardId(questId):
@@ -3156,7 +3156,7 @@ def findFinalRewardId(questId):
         try:
             questDesc = QuestDict[questId]
         except KeyError:
-            print 'findFinalRewardId: Quest ID: %d not found' % questId
+            print('findFinalRewardId: Quest ID: %d not found' % questId)
             return -1
 
         nextQuestId = questDesc[QuestDictNextQuestIndex]
@@ -3188,12 +3188,12 @@ def findFinalRewardId(questId):
     return (finalRewardId, remainingSteps)
 
 
-for questId in QuestDict.keys():
+for questId in list(QuestDict.keys()):
     findFinalRewardId(questId)
 
 def getStartingQuests(tier = None):
     startingQuests = []
-    for questId in QuestDict.keys():
+    for questId in list(QuestDict.keys()):
         if isStartingQuest(questId):
             if tier is None:
                 startingQuests.append(questId)
@@ -3271,7 +3271,7 @@ def filterQuests(entireQuestPool, currentNpc, av):
         notify.debug('filterQuests: entireQuestPool: %s' % entireQuestPool)
     validQuestPool = dict([ (questId, 1) for questId in entireQuestPool ])
     if isLoopingFinalTier(av.getRewardTier()):
-        history = map(lambda questDesc: questDesc[0], av.quests)
+        history = [questDesc[0] for questDesc in av.quests]
     else:
         history = av.getQuestHistory()
     if notify.getDebug():
@@ -3309,7 +3309,7 @@ def filterQuests(entireQuestPool, currentNpc, av):
                     notify.debug('filterQuests: Removed %s because npc involved' % questId)
                 break
 
-    finalQuestPool = filter(lambda key: validQuestPool[key], validQuestPool.keys())
+    finalQuestPool = [key for key in list(validQuestPool.keys()) if validQuestPool[key]]
     if notify.getDebug():
         notify.debug('filterQuests: finalQuestPool: %s' % finalQuestPool)
     return finalQuestPool
@@ -3443,7 +3443,7 @@ def transformReward(baseRewardId, av):
 
 def chooseBestQuests(tier, currentNpc, av):
     if isLoopingFinalTier(tier):
-        rewardHistory = map(lambda questDesc: questDesc[3], av.quests)
+        rewardHistory = [questDesc[3] for questDesc in av.quests]
     else:
         rewardHistory = av.getRewardHistory()[1]
 
@@ -3465,7 +3465,7 @@ def chooseBestQuests(tier, currentNpc, av):
     if numChoices == 0:
         numChoices = 1
     bestQuests = []
-    for i in xrange(numChoices):
+    for i in range(numChoices):
         if len(validQuestPool) == 0:
             break
         if len(rewards) == 0:
@@ -3973,7 +3973,7 @@ class CheesyEffectReward(Reward):
         if hoodId == 0:
             whileStr = ''
         elif hoodId == 1:
-            whileStr = TTLocalizer.CheesyEffectExceptIn % TTLocalizer.ToontownCentral[-1]
+            whileStr = TTLocalizer.CheesyEffectExceptIn % TTLocalizer.ToonIslandCentral[-1]
         else:
             hoodName = base.cr.hoodMgr.getFullnameFromId(hoodId)
             whileStr = TTLocalizer.CheesyEffectWhileYouAreIn % hoodName
@@ -4095,7 +4095,7 @@ def getNextRewards(numChoices, tier, av):
     if tier == TT_TIER + 3:
         optRewards = []
     if isLoopingFinalTier(tier):
-        rewardHistory = map(lambda questDesc: questDesc[3], av.quests)
+        rewardHistory = [questDesc[3] for questDesc in av.quests]
         if notify.getDebug():
             notify.debug('getNextRewards: current rewards (history): %s' % rewardHistory)
     else:
@@ -4137,7 +4137,7 @@ def getNextRewards(numChoices, tier, av):
         else:
             return [rewardTier[0]]
     rewardPool = rewardTier[:numChoices]
-    for i in xrange(len(rewardPool), numChoices * 2):
+    for i in range(len(rewardPool), numChoices * 2):
         if optRewards:
             optionalReward = seededRandomChoice(optRewards)
             optRewards.remove(optionalReward)
@@ -4152,7 +4152,7 @@ def getNextRewards(numChoices, tier, av):
             notify.debug('getNextRewards: no rewards left at all')
         return []
     finalRewardPool = [rewardPool.pop(0)]
-    for i in xrange(numChoices - 1):
+    for i in range(numChoices - 1):
         if len(rewardPool) == 0:
             break
         selectedReward = seededRandomChoice(rewardPool)
@@ -4183,9 +4183,9 @@ RewardDict = {
     205: (MaxGagCarryReward, 60, TTLocalizer.QuestsSmallBackpack),
     206: (MaxGagCarryReward, 70, TTLocalizer.QuestsMediumBackpack),
     207: (MaxGagCarryReward, 80, TTLocalizer.QuestsLargeBackpack),
-    300: (TeleportReward, ToontownGlobals.ToontownCentral),
-    301: (TeleportReward, ToontownGlobals.DonaldsDock),
-    302: (TeleportReward, ToontownGlobals.DaisyGardens),
+    300: (TeleportReward, ToontownGlobals.ToonIslandCentral),
+    301: (TeleportReward, ToontownGlobals.RainbowRise),
+    302: (TeleportReward, ToontownGlobals.DaisyGarden),
     303: (TeleportReward, ToontownGlobals.MinniesMelodyland),
     304: (TeleportReward, ToontownGlobals.TheBrrrgh),
     305: (TeleportReward, ToontownGlobals.DonaldsDreamland),
@@ -4620,7 +4620,7 @@ def avatarHasCompletedPhoneQuest(av):
 def avatarWorkingOnRequiredRewards(av):
     tier = av.getRewardTier()
     rewardList = list(getRewardsInTier(tier))
-    for i in xrange(len(rewardList)):
+    for i in range(len(rewardList)):
         actualRewardId = transformReward(rewardList[i], av)
         rewardList[i] = actualRewardId
 
@@ -4645,7 +4645,7 @@ def avatarHasAllRequiredRewards(av, tier):
     avQuests = av.getQuests()
 
     # Iterate through the current quests.
-    for i in xrange(0, len(avQuests), 5):
+    for i in range(0, len(avQuests), 5):
         questDesc = avQuests[i:i + 5]
         questId, fromNpcId, toNpcId, rewardId, toonProgress = questDesc
         transformedRewardId = transformReward(rewardId, av)
@@ -4705,7 +4705,7 @@ def avatarHasAllRequiredRewards(av, tier):
 def nextQuestList(nextQuest):
     if nextQuest == NA:
         return None
-    seqTypes = (types.ListType, types.TupleType)
+    seqTypes = (list, tuple)
     if type(nextQuest) in seqTypes:
         return nextQuest
     else:
@@ -4718,12 +4718,12 @@ def checkReward(questId, forked = 0):
     reward = quest[5]
     nextQuests = nextQuestList(quest[6])
     if nextQuests is None:
-        validRewards = RewardDict.keys() + [Any,
+        validRewards = list(RewardDict.keys()) + [Any,
          AnyCashbotSuitPart,
          AnyLawbotSuitPart,
          OBSOLETE]
         if reward is OBSOLETE:
-            print 'warning: quest %s is obsolete' % questId
+            print('warning: quest %s is obsolete' % questId)
         return reward
     else:
         forked = forked or len(nextQuests) > 1
@@ -4736,16 +4736,16 @@ def checkReward(questId, forked = 0):
 
 
 def assertAllQuestsValid():
-    print 'checking quests...'
-    for questId in QuestDict.keys():
+    print('checking quests...')
+    for questId in list(QuestDict.keys()):
         try:
             quest = getQuest(questId)
-        except AssertionError, e:
+        except AssertionError as e:
             err = 'invalid quest: %s' % questId
-            print err
+            print(err)
             raise
 
-    for questId in QuestDict.keys():
+    for questId in list(QuestDict.keys()):
         quest = QuestDict[questId]
         tier, start, questDesc, fromNpc, toNpc, reward, nextQuest, dialog = quest
         if start:

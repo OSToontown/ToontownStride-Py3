@@ -170,7 +170,7 @@ class TownBattleSOSPanel(DirectFrame, StateData.StateData):
                     if self.factoryToonIdList is None or friendId in self.factoryToonIdList:
                         friends.append(friendId)
 
-        for friendId in self.friends.keys():
+        for friendId in list(self.friends.keys()):
             if friendId not in friends:
                 friendButton = self.friends[friendId]
                 self.scrollList.removeItem(friendButton)
@@ -187,7 +187,7 @@ class TownBattleSOSPanel(DirectFrame, StateData.StateData):
 
     def __updateNPCFriendsPanel(self):
         self.NPCFriends = {}
-        for friend, count in base.localAvatar.NPCFriendsDict.items():
+        for friend, count in list(base.localAvatar.NPCFriendsDict.items()):
             track = NPCToons.getNPCTrack(friend)
             if track == ToontownBattleGlobals.LURE_TRACK and self.canLure == 0 or track == ToontownBattleGlobals.TRAP_TRACK and self.canTrap == 0:
                 self.NPCFriends[friend] = 0

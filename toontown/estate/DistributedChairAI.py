@@ -3,7 +3,7 @@ from toontown.catalog.CatalogAccessoryItemGlobals import *
 from toontown.toonbase import ToontownGlobals, TTLocalizer
 from toontown.toon import ToonDNA
 from toontown.quest import Quests
-from DistributedFurnitureItemAI import DistributedFurnitureItemAI
+from .DistributedFurnitureItemAI import DistributedFurnitureItemAI
 import random, time
 
 class DistributedChairAI(DistributedFurnitureItemAI):

@@ -3,9 +3,9 @@ import gc
 
 gc.disable()
 
-import __builtin__
+import builtins
 
-__builtin__.process = 'client'
+builtins.process = 'client'
 
 import sys, os
 sys.path.append(
@@ -18,7 +18,7 @@ sys.path.append(
 )
 
 # Temporary hack patch:
-__builtin__.__dict__.update(__import__('pandac.PandaModules', fromlist=['*']).__dict__)
+builtins.__dict__.update(__import__('pandac.PandaModules', fromlist=['*']).__dict__)
 
 
 from panda3d.core import loadPrcFile
@@ -45,29 +45,17 @@ if __debug__:
 
     defaultText = ""
 
-    def __inject_wx(_):
-        code = textbox.GetValue()
-        exec(code, globals())
-
-    def openInjector_wx():
-        app = wx.App(redirect=False)
-        frame = wx.Frame(None, title="Injector", size=(640, 400), style=wx.SYSTEM_MENU | wx.CAPTION | wx.CLOSE_BOX | wx.MINIMIZE_BOX)
-        panel = wx.Panel(frame)
-        button = wx.Button(parent=panel, id=-1, label="Inject", size=(50, 20), pos=(295, 0))
-        global textbox
-        textbox = wx.TextCtrl(parent=panel, id=-1, pos=(20, 22), size=(600, 340), style=wx.TE_MULTILINE)
-        frame.Bind(wx.EVT_BUTTON, __inject_wx, button)
-        frame.Show()
-        app.SetTopWindow(frame)
-        textbox.AppendText(defaultText)
-        threading.Thread(target=app.MainLoop).start()
-
-    openInjector_wx()
-
 from direct.directnotify.DirectNotifyGlobal import directNotify
 
 notify = directNotify.newCategory('ToontownStart')
 notify.setInfo(True)
+
+from direct.gui.DirectGuiGlobals import FADE_SORT_INDEX, NO_FADE_SORT_INDEX
+builtins.NO_FADE_SORT_INDEX = NO_FADE_SORT_INDEX
+builtins.FADE_SORT_INDEX = FADE_SORT_INDEX
+
+for dtool in ('children', 'parent', 'name'):
+    del NodePath.DtoolClassDict[dtool]
 
 if __debug__:
     # The VirtualFileSystem, which has already initialized, doesn't see the mount
@@ -89,7 +77,7 @@ preferencesFilename = ConfigVariableString(
 
 notify.info('Reading %s...' % preferencesFilename)
 
-__builtin__.settings = Settings(preferencesFilename)
+builtins.settings = Settings(preferencesFilename)
 if 'res' not in settings:
     settings['res'] = (1280, 720)
 if 'fullscreen' not in settings:
@@ -128,10 +116,10 @@ loadPrcFileData('Settings: loadDisplay', 'load-display %s' % settings['loadDispl
 import time
 import sys
 import random
-import __builtin__
-from toontown.launcher.TTSLauncher import TTSLauncher
+import builtins
+from toontown.launcher.TIALauncher import TIALauncher
 
-__builtin__.launcher = TTSLauncher()
+builtins.launcher = TIALauncher()
 
 notify.info('Starting the game...')
 tempLoader = Loader()
@@ -139,9 +127,9 @@ backgroundNode = tempLoader.loadSync(Filename('phase_3/models/gui/loading-backgr
 from direct.gui import DirectGuiGlobals
 from direct.gui.DirectGui import *
 notify.info('Setting the default font...')
-import ToontownGlobals
+from . import ToontownGlobals
 DirectGuiGlobals.setDefaultFontFunc(ToontownGlobals.getInterfaceFont)
-import ToonBase
+from . import ToonBase
 ToonBase.ToonBase()
 from panda3d.core import *
 if base.win is None:
@@ -161,21 +149,21 @@ logo.setBin('fixed', 20)
 logo.reparentTo(backgroundNodePath)
 backgroundNodePath.find('**/bg').setBin('fixed', 10)
 base.graphicsEngine.renderFrame()
-DirectGuiGlobals.setDefaultRolloverSound(base.loadSfx('phase_3/audio/sfx/GUI_rollover.ogg'))
-DirectGuiGlobals.setDefaultClickSound(base.loadSfx('phase_3/audio/sfx/GUI_create_toon_fwd.ogg'))
+DirectGuiGlobals.setDefaultRolloverSound(base.loader.loadSfx('phase_3/audio/sfx/GUI_rollover.ogg'))
+DirectGuiGlobals.setDefaultClickSound(base.loader.loadSfx('phase_3/audio/sfx/GUI_create_toon_fwd.ogg'))
 DirectGuiGlobals.setDefaultDialogGeom(loader.loadModel('phase_3/models/gui/dialog_box_gui'))
-import TTLocalizer
+from . import TTLocalizer
 if base.musicManagerIsValid:
     music = base.loadMusic('phase_3/audio/bgm/tt_theme.ogg')
     if music:
         music.setLoop(1)
         music.play()
     notify.info('Loading the default GUI sounds...')
-    DirectGuiGlobals.setDefaultRolloverSound(base.loadSfx('phase_3/audio/sfx/GUI_rollover.ogg'))
-    DirectGuiGlobals.setDefaultClickSound(base.loadSfx('phase_3/audio/sfx/GUI_create_toon_fwd.ogg'))
+    DirectGuiGlobals.setDefaultRolloverSound(base.loader.loadSfx('phase_3/audio/sfx/GUI_rollover.ogg'))
+    DirectGuiGlobals.setDefaultClickSound(base.loader.loadSfx('phase_3/audio/sfx/GUI_create_toon_fwd.ogg'))
 else:
     music = None
-import ToontownLoader
+from . import ToontownLoader
 from direct.gui.DirectGui import *
 serverVersion = base.config.GetString('server-version', 'no_version_set')
 version = OnscreenText(serverVersion, pos=(-1.3, -0.975), scale=0.06, fg=Vec4(0, 0, 1, 0.6), align=TextNode.ALeft)
@@ -184,7 +172,7 @@ version.reparentTo(base.a2dBottomLeft)
 from toontown.suit import Suit
 Suit.loadModels()
 loader.beginBulkLoad('init', TTLocalizer.LoaderLabel, 138, 0, TTLocalizer.TIP_NONE, 0)
-from ToonBaseGlobal import *
+from .ToonBaseGlobal import *
 from direct.showbase.MessengerGlobal import *
 from toontown.distributed import ToontownClientRepository
 cr = ToontownClientRepository.ToontownClientRepository(serverVersion)
@@ -206,7 +194,7 @@ del tempLoader
 version.cleanup()
 del version
 base.loader = base.loader
-__builtin__.loader = base.loader
+builtins.loader = base.loader
 autoRun = ConfigVariableBool('toontown-auto-run', 1)
 
 gc.enable()

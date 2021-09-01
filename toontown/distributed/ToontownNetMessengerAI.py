@@ -1,6 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.PyDatagram import PyDatagram
-import cPickle, zlib
+import pickle, zlib
 
 class ToontownNetMessengerAI:
     """
@@ -19,7 +19,7 @@ class ToontownNetMessengerAI:
         dg = PyDatagram()
         dg.addServerHeader(self.msgChannel, self.air.ourChannel, self.msgType)
         dg.addString(message)
-        dg.addString(zlib.compress(cPickle.dumps(sentArgs)))
+        dg.addBlob(zlib.compress(pickle.dumps(sentArgs)))
         return dg
         
     def send(self, message, sentArgs=[]):
@@ -29,7 +29,7 @@ class ToontownNetMessengerAI:
         
     def handle(self, msgType, di):
         message = di.getString()
-        data = zlib.decompress(di.getString())
-        sentArgs = cPickle.loads(data)
+        data = zlib.decompress(di.getBlob())
+        sentArgs = pickle.loads(data)
         messenger.send(message, sentArgs)
         

@@ -254,13 +254,13 @@ class Playground(Place.Place):
 
     def showTreasurePoints(self, points):
         self.hideDebugPointText()
-        for i in xrange(len(points)):
+        for i in range(len(points)):
             p = points[i]
             self.showDebugPointText(str(i), p)
 
     def showDropPoints(self, points):
         self.hideDebugPointText()
-        for i in xrange(len(points)):
+        for i in range(len(points)):
             p = points[i]
             self.showDebugPointText(str(i), p)
 
@@ -273,7 +273,7 @@ class Playground(Place.Place):
     def hideDebugPointText(self):
         if hasattr(self, 'debugText'):
             children = self.debugText.getChildren()
-            for i in xrange(children.getNumPaths()):
+            for i in range(children.getNumPaths()):
                 children[i].removeNode()
 
     def showDebugPointText(self, text, point):
@@ -363,7 +363,7 @@ class Playground(Place.Place):
         elif doneStatus['mode'] == 'incomplete':
             self.fsm.request('HFAReject')
         else:
-            self.notify.error('Unknown done status for HealthForceAcknowledge: ' + `doneStatus`)
+            self.notify.error('Unknown done status for HealthForceAcknowledge: ' + repr(doneStatus))
 
     def enterHFAReject(self):
         self.fsm.request('walk')
@@ -387,7 +387,7 @@ class Playground(Place.Place):
         elif doneStatus['mode'] == 'incomplete':
             self.fsm.request('NPCFAReject')
         else:
-            self.notify.error('Unknown done status for NPCForceAcknowledge: ' + `doneStatus`)
+            self.notify.error('Unknown done status for NPCForceAcknowledge: ' + repr(doneStatus))
 
     def enterNPCFAReject(self):
         self.fsm.request('walk')
@@ -424,7 +424,7 @@ class Playground(Place.Place):
             x, y, z, h, p, r = base.cr.hoodMgr.getPlaygroundCenterFromId(self.loader.hood.id)
             self.accept('deathAck', self.__handleDeathAck, extraArgs=[requestStatus])
             self.deathAckBox = DeathForceAcknowledge.DeathForceAcknowledge(doneEvent='deathAck')
-        elif base.localAvatar.hp > 0 and (Quests.avatarHasTrolleyQuest(base.localAvatar) or Quests.avatarHasFirstCogQuest(base.localAvatar) or Quests.avatarHasFriendQuest(base.localAvatar) or Quests.avatarHasPhoneQuest(base.localAvatar) and Quests.avatarHasCompletedPhoneQuest(base.localAvatar)) and self.loader.hood.id == ToontownGlobals.ToontownCentral:
+        elif base.localAvatar.hp > 0 and (Quests.avatarHasTrolleyQuest(base.localAvatar) or Quests.avatarHasFirstCogQuest(base.localAvatar) or Quests.avatarHasFriendQuest(base.localAvatar) or Quests.avatarHasPhoneQuest(base.localAvatar) and Quests.avatarHasCompletedPhoneQuest(base.localAvatar)) and self.loader.hood.id == ToontownGlobals.ToonIslandCentral:
             requestStatus['nextState'] = 'popup'
             imageModel = loader.loadModel('phase_4/models/gui/tfa_images')
             if base.localAvatar.quests[0][0] == Quests.TROLLEY_QUEST_ID:
@@ -566,7 +566,7 @@ class Playground(Place.Place):
 
     def makeDictionaries(self, dnaStore):
         self.nodeList = []
-        for i in xrange(dnaStore.getNumDNAVisGroups()):
+        for i in range(dnaStore.getNumDNAVisGroups()):
             groupFullName = dnaStore.getDNAVisGroupName(i)
             groupName = base.cr.hoodMgr.extractGroupName(groupFullName)
             groupNode = self.geom.find('**/' + groupFullName)
@@ -582,5 +582,5 @@ class Playground(Place.Place):
 
     def removeLandmarkBlockNodes(self):
         npc = self.geom.findAllMatches('**/suit_building_origin')
-        for i in xrange(npc.getNumPaths()):
+        for i in range(npc.getNumPaths()):
             npc.getPath(i).removeNode()

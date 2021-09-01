@@ -269,7 +269,7 @@ class DistributedHouseAI(DistributedObjectAI):
             self.atticItems.append(item)
         elif item.replacesExisting() and item.hasExisting():
             if item.getFlags() & FLCloset:
-                items = ClosetToClothes.keys() if item.getFlags() & FLCloset else BankToMoney.keys()
+                items = list(ClosetToClothes.keys()) if item.getFlags() & FLCloset else list(BankToMoney.keys())
                 
                 for itItem in self.interiorItems:
                     if itItem.furnitureType in items:

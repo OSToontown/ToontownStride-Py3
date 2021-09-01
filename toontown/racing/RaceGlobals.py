@@ -359,7 +359,7 @@ TrackDict = {RT_Speedway_1: (TrackPath + 'RT_SpeedwayA',
                   1.0,
                   'GS_Race_CC.ogg',
                   (0.002, 0.003))}
-TrackIds = TrackDict.keys()
+TrackIds = list(TrackDict.keys())
 TrackIds.sort()
 
 def getEntryFee(trackId, raceType):
@@ -385,7 +385,7 @@ AllTime = 2
 PeriodDict = {Daily: 10,
  Weekly: 100,
  AllTime: 1000}
-PeriodIds = PeriodDict.keys()
+PeriodIds = list(PeriodDict.keys())
 NumRecordPeriods = len(PeriodIds)
 NumRecordsPerPeriod = 10
 Winnings = [4.0,
@@ -454,7 +454,7 @@ CircuitSweepsList = [CircuitSweeps1, CircuitSweeps2, CircuitSweeps3]
 CircuitQualList = [CircuitQuals1, CircuitQuals2, CircuitQuals3]
 AllQualsList = [SpeedwayQualsList, RuralQualsList, UrbanQualsList]
 AllWinsList = [SpeedwayWinsList, RuralWinsList, UrbanWinsList]
-TrophiesPerCup = NumTrophies / NumCups
+TrophiesPerCup = NumTrophies // NumCups
 QualifiedRaces = [1, 10, 100]
 TotalQualifiedRaces = 100
 WonRaces = [1, 10, 100]

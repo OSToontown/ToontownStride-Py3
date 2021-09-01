@@ -1,4 +1,4 @@
-from DistributedNPCToonBaseAI import DistributedNPCToonBaseAI
+from .DistributedNPCToonBaseAI import DistributedNPCToonBaseAI
 
 class DistributedNPCClerkAI(DistributedNPCToonBaseAI):
 

@@ -2,7 +2,7 @@ from otp.nametag.NametagConstants import CFSpeech, CFTimeout
 from toontown.minigame import ClerkPurchase
 from toontown.toonbase import TTLocalizer, ToontownGlobals
 from toontown.toon import NPCToons
-from DistributedNPCToonBase import DistributedNPCToonBase
+from .DistributedNPCToonBase import DistributedNPCToonBase
 import time
 
 class DistributedNPCClerk(DistributedNPCToonBase):

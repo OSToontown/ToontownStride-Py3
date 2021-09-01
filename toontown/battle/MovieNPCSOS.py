@@ -2,11 +2,11 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
 import random
 
-import BattleParticles
-from BattleProps import *
-from BattleSounds import *
-import MovieCamera
-import MovieUtil
+from . import BattleParticles
+from .BattleProps import *
+from .BattleSounds import *
+from . import MovieCamera
+from . import MovieUtil
 from otp.nametag.NametagConstants import *
 from otp.nametag import NametagGlobals
 from toontown.toon import NPCToons

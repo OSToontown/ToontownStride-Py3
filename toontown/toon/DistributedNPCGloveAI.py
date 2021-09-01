@@ -1,5 +1,5 @@
 from toontown.toonbase import ToontownGlobals
-import DistributedNPCToonBaseAI, GloveNPCGlobals, ToonDNA
+from . import DistributedNPCToonBaseAI, GloveNPCGlobals, ToonDNA
 
 class DistributedNPCGloveAI(DistributedNPCToonBaseAI.DistributedNPCToonBaseAI):
 

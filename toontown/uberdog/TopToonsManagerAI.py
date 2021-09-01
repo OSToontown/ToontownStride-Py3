@@ -1,5 +1,5 @@
 from direct.showbase.DirectObject import *
-import TopToonsGlobals
+from . import TopToonsGlobals
 
 class TopToonsManagerAI(DirectObject):
     def __init__(self, air):

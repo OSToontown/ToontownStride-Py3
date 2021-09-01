@@ -6,9 +6,9 @@ from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from toontown.shtiker import PurchaseManagerAI
 from toontown.shtiker import NewbiePurchaseManagerAI
-import MinigameCreatorAI
+from . import MinigameCreatorAI
 from direct.task import Task
-import MinigameGlobals
+from . import MinigameGlobals
 from direct.showbase import PythonUtil
 from toontown.toonbase import ToontownGlobals
 EXITED = 0
@@ -218,7 +218,7 @@ class DistributedMinigameAI(DistributedObjectAI.DistributedObjectAI):
             self.setGameAbort()
 
         self.__barrier = ToonBarrier('waitClientsReady', self.uniqueName('waitClientsReady'), self.avIdList, READY_TIMEOUT, allAvatarsReady, handleTimeout)
-        for avId in self.stateDict.keys():
+        for avId in list(self.stateDict.keys()):
             if self.stateDict[avId] == READY:
                 self.__barrier.clear(avId)
 
@@ -262,7 +262,7 @@ class DistributedMinigameAI(DistributedObjectAI.DistributedObjectAI):
             self.frameworkFSM.request('frameworkCleanup')
 
         self.__barrier = ToonBarrier('waitClientsExit', self.uniqueName('waitClientsExit'), self.avIdList, EXIT_TIMEOUT, allAvatarsExited, handleTimeout)
-        for avId in self.stateDict.keys():
+        for avId in list(self.stateDict.keys()):
             if self.stateDict[avId] == EXITED:
                 self.__barrier.clear(avId)
 

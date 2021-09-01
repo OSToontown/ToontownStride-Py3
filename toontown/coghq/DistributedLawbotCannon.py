@@ -129,10 +129,10 @@ class DistributedLawbotCannon(DistributedObject.DistributedObject):
         self.cannon.reparentTo(self.nodePath)
         self.kartColNode = CollisionNode(self.uniqueName('KartColNode'))
         self.kartNode = self.nodePath.attachNewNode(self.kartColNode)
-        self.sndCannonMove = base.loadSfx('phase_4/audio/sfx/MG_cannon_adjust.ogg')
-        self.sndCannonFire = base.loadSfx('phase_4/audio/sfx/MG_cannon_fire_alt.ogg')
-        self.sndHitGround = base.loadSfx('phase_4/audio/sfx/MG_cannon_hit_dirt.ogg')
-        self.sndHitChair = base.loadSfx('phase_11/audio/sfx/LB_toon_jury.ogg')
+        self.sndCannonMove = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_adjust.ogg')
+        self.sndCannonFire = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_fire_alt.ogg')
+        self.sndHitGround = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_hit_dirt.ogg')
+        self.sndHitChair = base.loader.loadSfx('phase_11/audio/sfx/LB_toon_jury.ogg')
         self.cannon.hide()
         self.flashingLabel = None
         return
@@ -270,7 +270,7 @@ class DistributedLawbotCannon(DistributedObject.DistributedObject):
             if self.flashingLabel:
                 self.flashingLabel.stop()
             flashingTrack = Sequence()
-            for i in xrange(10):
+            for i in range(10):
                 flashingTrack.append(LerpColorScaleInterval(self.cannonBallLabel, 0.5, VBase4(1, 0, 0, 1)))
                 flashingTrack.append(LerpColorScaleInterval(self.cannonBallLabel, 0.5, VBase4(1, 1, 1, 1)))
 
@@ -772,7 +772,7 @@ class DistributedLawbotCannon(DistributedObject.DistributedObject):
         if self.localToonShooting:
             pass
         chairlist = ['trigger-chair']
-        for index in xrange(len(ToontownGlobals.LawbotBossChairPosHprs)):
+        for index in range(len(ToontownGlobals.LawbotBossChairPosHprs)):
             chairlist.append('Chair-%s' % index)
 
         if hitNode in chairlist:

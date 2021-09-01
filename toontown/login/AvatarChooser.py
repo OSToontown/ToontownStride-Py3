@@ -1,12 +1,12 @@
 from panda3d.core import *
 from toontown.toonbase import ToontownGlobals
-from toontown.language import LanguageSelector
 from direct.fsm import StateData
 from direct.gui.DirectGui import *
 from toontown.toonbase import TTLocalizer
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
-import random, AvatarChoice
+import random
+from . import AvatarChoice
 
 MAX_AVATARS = 6
 POSITIONS = (Vec3(-0.840167, 0, 0.359333),
@@ -38,8 +38,6 @@ class AvatarChooser(StateData.StateData):
         base.disableMouse()
         self.title.reparentTo(aspect2d)
         self.quitButton.show()
-        if config.GetBool('want-language-selection', False):
-            self.languageButton.show()
         self.pickAToonBG.setBin('background', 1)
         self.pickAToonBG.reparentTo(aspect2d)
         base.setBackgroundColor(Vec4(0.145, 0.368, 0.78, 1))
@@ -59,7 +57,6 @@ class AvatarChooser(StateData.StateData):
         self.ignoreAll()
         self.title.reparentTo(hidden)
         self.quitButton.hide()
-        self.languageButton.hide()
         self.pickAToonBG.reparentTo(hidden)
         base.setBackgroundColor(ToontownGlobals.DefaultBackgroundColor)
         return None
@@ -78,11 +75,7 @@ class AvatarChooser(StateData.StateData):
         quitHover = gui.find('**/QuitBtn_RLVR')
         self.quitButton = DirectButton(image=(quitHover, quitHover, quitHover), relief=None, text=TTLocalizer.AvatarChooserQuit, text_font=ToontownGlobals.getSignFont(), text_fg=(0.977, 0.816, 0.133, 1), text_pos=TTLocalizer.ACquitButtonPos, text_scale=TTLocalizer.ACquitButton, image_scale=1, image1_scale=1.05, image2_scale=1.05, scale=1.05, pos=(-0.25, 0, 0.075), command=self.__handleQuit)
         self.quitButton.reparentTo(base.a2dBottomRight)
-        self.languageButton = DirectButton(relief=None, image=(quitHover, quitHover, quitHover), text=TTLocalizer.LanguageButtonText, text_font=ToontownGlobals.getSignFont(), text_fg=(0.977, 0.816, 0.133, 1), text_scale=TTLocalizer.AClanguageButton, text_pos=(0, -0.025), pos=(0.25, 0, 0.075), image_scale=1.05, image1_scale=1.05, image2_scale=1.05, scale=1.05, command=self.openLanguageGui)
-        self.languageButton.reparentTo(base.a2dBottomLeft)
-        self.languageButton.hide()
         gui.removeNode()
-        gui2.removeNode()
         newGui.removeNode()
         self.panelList = []
         used_position_indexs = []
@@ -92,7 +85,7 @@ class AvatarChooser(StateData.StateData):
             used_position_indexs.append(av.position)
             self.panelList.append(panel)
 
-        for panelNum in xrange(0, MAX_AVATARS):
+        for panelNum in range(0, MAX_AVATARS):
             if panelNum not in used_position_indexs:
                 panel = AvatarChoice.AvatarChoice(position=panelNum)
                 panel.setPos(POSITIONS[panelNum])
@@ -122,7 +115,7 @@ class AvatarChooser(StateData.StateData):
             return toonHead.getRandomForwardLookAtPoint()
         else:
             other_toon_idxs = []
-            for i in xrange(len(self.IsLookingAt)):
+            for i in range(len(self.IsLookingAt)):
                 if self.IsLookingAt[i] == toonidx:
                     other_toon_idxs.append(i)
 
@@ -171,7 +164,7 @@ class AvatarChooser(StateData.StateData):
         if len(self.used_panel_indexs) == 0:
             return
         self.IsLookingAt = []
-        for i in xrange(MAX_AVATARS):
+        for i in range(MAX_AVATARS):
             self.IsLookingAt.append('f')
 
         for panel in self.panelList:
@@ -192,9 +185,6 @@ class AvatarChooser(StateData.StateData):
         del self.title
         self.quitButton.destroy()
         del self.quitButton
-        self.languageButton.destroy()
-        del self.languageButton
-        self.pickAToonBG.removeNode()
         del self.pickAToonBG
         del self.avatarList
         self.ignoreAll()
@@ -228,7 +218,3 @@ class AvatarChooser(StateData.StateData):
 
     def getChoice(self):
         return self.choice
-
-    def openLanguageGui(self):
-        self.exit()
-        LanguageSelector.LanguageSelector(self.enter).create()

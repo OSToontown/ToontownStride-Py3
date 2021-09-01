@@ -1,4 +1,4 @@
-from DistributedToonInteriorAI import *
+from .DistributedToonInteriorAI import *
 
 class DistributedToonHallInteriorAI(DistributedToonInteriorAI):
     pass

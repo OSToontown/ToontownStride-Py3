@@ -4,7 +4,7 @@ from direct.gui.DirectGui import *
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import TTLocalizerEnglish
-from ShtikerPage import ShtikerPage
+from .ShtikerPage import ShtikerPage
 
 class GroupPage(ShtikerPage):
     notify = DirectNotifyGlobal.directNotify.newCategory('GroupPage')

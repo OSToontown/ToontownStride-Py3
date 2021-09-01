@@ -7,6 +7,8 @@ from otp.otpbase import OTPGlobals
 from toontown.toonbase.ToontownGlobals import *
 from toontown.toonbase import TTLocalizer
 from toontown.coghq import DistributedMintRoom, MintLayout, MintRoom
+from direct.gui import OnscreenText
+
 
 class DistributedMint(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedMint')
@@ -15,6 +17,8 @@ class DistributedMint(DistributedObject.DistributedObject):
 
     def __init__(self, cr):
         DistributedObject.DistributedObject.__init__(self, cr)
+        self.titleColor = (1, 1, 1, 1)
+        self.smallTitleText = OnscreenText.OnscreenText('', fg=self.titleColor, font=getSuitFont(), pos=(0.65, 0.9), scale=0.08, drawOrder=0, mayChange=1, bg=(0.5, 0.5, 0.5, 0.5), align=TextNode.ARight)
 
     def generate(self):
         self.notify.debug('generate: %s' % self.doId)
@@ -43,6 +47,7 @@ class DistributedMint(DistributedObject.DistributedObject):
         DistributedMint.notify.debug('floorNum: %s' % num)
         self.floorNum = num
         self.layout = MintLayout.MintLayout(self.mintId, self.floorNum)
+        self.smallTitleText.setText(TTLocalizer.MintFloorTitle % (self.floorNum + 1))
 
     def setRoomDoIds(self, roomDoIds):
         self.roomDoIds = roomDoIds
@@ -166,7 +171,7 @@ class DistributedMint(DistributedObject.DistributedObject):
         return
 
     def warpToRoom(self, roomId):
-        for i in xrange(len(self.rooms)):
+        for i in range(len(self.rooms)):
             room = self.rooms[i]
             if room.roomId == roomId:
                 break
@@ -182,6 +187,9 @@ class DistributedMint(DistributedObject.DistributedObject):
         self.ignoreAll()
         for hallway in self.hallways:
             hallway.exit()
+        if self.smallTitleText:
+            self.smallTitleText.cleanup()
+            self.smallTitleText = None
 
         self.rooms = []
         for hallway in self.hallways:

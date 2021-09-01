@@ -6,8 +6,8 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
 from panda3d.core import *
 from otp.chat import ChatManager
-from TTChatInputSpeedChat import TTChatInputSpeedChat
-from TTChatInputWhiteList import TTChatInputWhiteList
+from .TTChatInputSpeedChat import TTChatInputSpeedChat
+from .TTChatInputWhiteList import TTChatInputWhiteList
 
 class ToontownChatManager(ChatManager.ChatManager):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToontownChatManager')

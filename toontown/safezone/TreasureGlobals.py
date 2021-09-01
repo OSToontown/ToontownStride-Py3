@@ -47,7 +47,7 @@ TreasureModels = {
 }
 
 SafeZoneTreasureSpawns = {
-    ToontownGlobals.ToontownCentral: (
+    ToontownGlobals.ToonIslandCentral: (
         TreasureTT, 3, # TTTreasure heals 3 each...
         [
             (-60.976, -8.866, 1.3),
@@ -75,7 +75,7 @@ SafeZoneTreasureSpawns = {
         10, # Rate
         5 # Maximum
     ),
-    ToontownGlobals.DonaldsDock: (
+    ToontownGlobals.RainbowRise: (
         TreasureDD, 6, # DDTreasure heals 6 each...
         [
             (52.9072, -23.4768, -12.308),
@@ -108,7 +108,7 @@ SafeZoneTreasureSpawns = {
         10, # Rate
         2 # Maximum
     ),
-    ToontownGlobals.DaisyGardens: (
+    ToontownGlobals.DaisyGarden: (
         TreasureDG, 9, # DGTreasure heals 9 each...
         [
             (-49, 156, 0.0),

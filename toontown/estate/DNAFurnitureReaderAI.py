@@ -50,7 +50,7 @@ class DNAFurnitureReaderAI:
                                                CatalogItem.Location))
 
         # Find the interior node:
-        for i in xrange(self.dnaData.getNumChildren()):
+        for i in range(self.dnaData.getNumChildren()):
             child = self.dnaData.at(i)
             if child.getName() == 'interior':
                 interior = child
@@ -60,7 +60,7 @@ class DNAFurnitureReaderAI:
 
         self.itemList.append(CatalogFurnitureItem(1399, posHpr=self.phonePos))
         # Every child in the interior node is a prop, thus:
-        for i in xrange(interior.getNumChildren()):
+        for i in range(interior.getNumChildren()):
             child = interior.at(i)
             code = child.getCode()
 

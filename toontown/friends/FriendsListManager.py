@@ -1,7 +1,7 @@
 from panda3d.core import *
-import FriendsListPanel
-import FriendInviter
-import FriendInvitee
+from . import FriendsListPanel
+from . import FriendInviter
+from . import FriendInvitee
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toon import ToonTeleportPanel
 from toontown.friends import ToontownFriendSecret
@@ -12,7 +12,7 @@ from toontown.toon import ToonDNA
 from toontown.toon import ToonAvatarDetailPanel
 from toontown.toonbase import ToontownGlobals
 from toontown.toon import Toon
-import FriendHandle
+from . import FriendHandle
 from otp.otpbase import OTPGlobals
 from otp.nametag import NametagGlobals
 

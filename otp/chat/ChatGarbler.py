@@ -12,7 +12,7 @@ class ChatGarbler:
             avatarType = avatar.style.getType()
             wordList = self.messages[avatarType if avatarType in self.messages else 'default']
 
-        for i in xrange(1, numWords + 1):
+        for i in range(1, numWords + 1):
             wordIndex = random.randint(0, len(wordList) - 1)
             newMessage = newMessage + wordList[wordIndex]
 

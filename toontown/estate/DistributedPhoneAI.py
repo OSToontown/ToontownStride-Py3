@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import *
 from toontown.estate.DistributedFurnitureItemAI import DistributedFurnitureItemAI
-from PhoneGlobals import *
+from .PhoneGlobals import *
 
 from toontown.toonbase import ToontownGlobals
 from toontown.catalog import CatalogItem, CatalogInvalidItem, GiftAvatar

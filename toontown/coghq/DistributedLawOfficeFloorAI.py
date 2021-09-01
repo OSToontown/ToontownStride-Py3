@@ -6,7 +6,7 @@ from toontown.ai.ToonBarrier import *
 from toontown.coghq import DistributedBattleFactoryAI, DistributedLawOfficeElevatorIntAI, LawOfficeLayout
 from toontown.suit import DistributedFactorySuitAI
 from toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
-import FactoryEntityCreatorAI, FactorySpecs, LawOfficeBase, LevelSuitPlannerAI
+from . import FactoryEntityCreatorAI, FactorySpecs, LawOfficeBase, LevelSuitPlannerAI
 
 class DistributedLawOfficeFloorAI(DistributedLevelAI.DistributedLevelAI, LawOfficeBase.LawOfficeBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLawOfficeAI')

@@ -12,7 +12,7 @@ class SCSpecialMenu(SCMenu):
     def appendPhrases(self, section, menu):
         for phrase in section[1]:
             if phrase not in OTPLocalizer.SpeedChatStaticText:
-                print 'warning: tried to link speedchat menu phrase %s which does not seem to exist' % phrase
+                print('warning: tried to link speedchat menu phrase %s which does not seem to exist' % phrase)
                 break
 
             menu.append(SCStaticTextTerminal.SCStaticTextTerminal(phrase))

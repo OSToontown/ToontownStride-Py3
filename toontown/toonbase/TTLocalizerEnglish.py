@@ -3,7 +3,7 @@ from toontown.catalog import CatalogAccessoryItemGlobals
 from otp.otpbase import OTPLocalizer as OL
 import random
 OL.SpeedChatStaticText = OL.SpeedChatStaticTextToontown.copy()
-for key in OL.SpeedChatStaticTextCommon.iterkeys():
+for key in OL.SpeedChatStaticTextCommon.keys():
     OL.SpeedChatStaticText[key] = OL.SpeedChatStaticTextCommon[key]
 
 commitmantst = 'kptmptest - removable'
@@ -60,9 +60,9 @@ ScreenshotPath = 'user/screenshots/'
 Flippy = 'Flippy'
 lTheBrrrgh = 'The Brrrgh'
 lDaisyGardens = 'Daisy Gardens'
-lDonaldsDock = "Donald's Dock"
-lDonaldsDreamland = "Donald's Dreamland"
-lMinniesMelodyland = "Minnie's Melodyland"
+lDonaldsDock = "Donalds Dock"
+lDonaldsDreamland = "Donalds Dreamland"
+lMinniesMelodyland = "Minnies Melodyland"
 lToontownCentral = 'Toontown Central'
 lToonHQ = 'Toon HQ'
 lSellbotHQ = 'Sellbot HQ'
@@ -72,28 +72,28 @@ lGolfZone = "Chip 'n Dale's MiniGolf"
 lPartyHood = 'Party Grounds'
 GlobalStreetNames = {20000: ('to', 'on', 'Tutorial Terrace'),
  1000: ('to the', 'in the', 'Playground'),
- 1100: ('to', 'on', 'Barnacle Boulevard'),
- 1200: ('to', 'on', 'Seaweed Street'),
- 1300: ('to', 'on', 'Lighthouse Lane'),
+ 1100: ('to', 'on', 'Coral Court'),
+ 1200: ('to', 'on', 'Ocean Overpass'),
+ 1300: ('to', 'on', 'Pirate Place'),
  2000: ('to the', 'in the', 'Playground'),
- 2100: ('to', 'on', 'Silly Street'),
- 2200: ('to', 'on', 'Loopy Lane'),
+ 2100: ('to', 'on', 'Beachball Boulevard'),
+ 2200: ('to', 'on', 'Aloha Avenue'),
  2300: ('to', 'on', 'Punchline Place'),
  3000: ('to the', 'in the', 'Playground'),
  3100: ('to', 'on', 'Walrus Way'),
  3200: ('to', 'on', 'Sleet Street'),
  3300: ('to', 'on', 'Polar Place'),
  4000: ('to the', 'in the', 'Playground'),
- 4100: ('to', 'on', 'Alto Avenue'),
- 4200: ('to', 'on', 'Baritone Boulevard'),
- 4300: ('to', 'on', 'Tenor Terrace'),
+ 4100: ('to', 'on', 'Desert Drive'),
+ 4200: ('to', 'on', 'Tumbleweed Terrace'),
+ 4300: ('to', 'on', 'Cactus Court'),
  5000: ('to the', 'in the', 'Playground'),
  5100: ('to', 'on', 'Elm Street'),
  5200: ('to', 'on', 'Maple Street'),
  5300: ('to', 'on', 'Oak Street'),
  9000: ('to the', 'in the', 'Playground'),
- 9100: ('to', 'on', 'Lullaby Lane'),
- 9200: ('to', 'on', 'Pajama Place'),
+ 9100: ('to', 'on', 'Candy Close'),
+ 9200: ('to', 'on', 'Peppermint Place'),
  9300: ('to', 'on', 'Bedtime Boulevard'),
  10000: ('to the', 'in the', 'Bossbot HQ Country Club'),
  10100: ('to the', 'in the', 'Bossbot HQ Lobby'),
@@ -105,7 +105,7 @@ GlobalStreetNames = {20000: ('to', 'on', 'Tutorial Terrace'),
  11100: ('to the', 'in the', 'Sellbot HQ Lobby'),
  11200: ('to the', 'in the', 'Sellbot Factory'),
  11500: ('to the', 'in the', 'Sellbot Factory'),
- 11600: ('to the', 'in the', 'Sellbot Megacorp'),
+ 11600: ('to the', 'in the', 'Sellbot Fatal Factory'),
  12000: ('to the', 'in the', 'Cashbot Train Yard'),
  12100: ('to the', 'in the', 'Cashbot HQ Lobby'),
  12500: ('to the', 'in the', 'Cashbot Coin Mint'),
@@ -118,11 +118,11 @@ GlobalStreetNames = {20000: ('to', 'on', 'Tutorial Terrace'),
  13400: ('to the', 'in the', 'Lawbot B Office'),
  13500: ('to the', 'in the', 'Lawbot C Office'),
  13600: ('to the', 'in the', 'Lawbot D Office')}
-DonaldsDock = ('to', 'in', lDonaldsDock)
-ToontownCentral = ('to', 'in', lToontownCentral)
+RainbowRise = ('to', 'in', lDonaldsDock)
+ToonIslandCentral = ('to', 'in', lToontownCentral)
 TheBrrrgh = ('to', 'in', lTheBrrrgh)
 MinniesMelodyland = ('to', 'in', lMinniesMelodyland)
-DaisyGardens = ('to', 'in', lDaisyGardens)
+DaisyGarden = ('to', 'in', lDaisyGardens)
 OutdoorZone = ('to', 'in', lOutdoorZone)
 FunnyFarm = ('to the', 'in the', 'Funny Farm')
 GoofySpeedway = ('to', 'in', lGoofySpeedway)
@@ -141,7 +141,7 @@ SellbotFrontEntrance = 'Front Entrance'
 SellbotSideEntrance = 'Side Entrance'
 Office = 'Office'
 FactoryNames = {11500: 'Sellbot Cog Factory',
- 11600: 'Sellbot Cog Megacorp',
+ 11600: 'Sellbot Fatal Factory',
  13300: 'Lawbot Cog Office'}
 FactoryTypeLeg = 'Leg'
 FactoryTypeArm = 'Arm'
@@ -613,15 +613,15 @@ QuestDialogDict = {
        LEAVING: QuestsDefaultLeaving},
  1039: {QUEST: 'Visit _toNpcName_ if you want to get around town more easily._where_'},
  1040: {QUEST: 'Visit _toNpcName_ if you want to get around town more easily._where_'},
- 1041: {QUEST: 'Hi!  What brings you here?\x07Everybody uses their portable hole to travel around Toontown.\x07Why, you can teleport to your friends using the Friends List, or to any neighborhood using the map in the Shticker Book.\x07Of course, you have to earn that!\x07Say, I can turn on your teleport access to ' + lToontownCentral + ' if you help out a friend of mine.\x07Seems the Cogs are causing trouble over on Loopy Lane.  Go visit _toNpcName_._where_'},
- 1042: {QUEST: 'Hi!  What brings you here?\x07Everybody uses their portable hole to travel around Toontown.\x07Why, you can teleport to your friends using the Friends List, or to any neighborhood using the map in the Shticker Book.\x07Of course, you have to earn that!\x07Say, I can turn on your teleport access to ' + lToontownCentral + ' if you help out a friend of mine.\x07Seems the Cogs are causing trouble over on Loopy Lane.  Go visit _toNpcName_._where_'},
- 1043: {QUEST: 'Hi!  What brings you here?\x07Everybody uses their portable hole to travel around Toontown.\x07Why, you can teleport to your friends using the Friends List, or to any neighborhood using the map in the Shticker Book.\x07Of course, you have to earn that!\x07Say, I can turn on your teleport access to ' + lToontownCentral + ' if you help out a friend of mine.\x07Seems the Cogs are causing trouble over on Loopy Lane.  Go visit _toNpcName_._where_'},
+ 1041: {QUEST: 'Hi!  What brings you here?\x07Everybody uses their portable hole to travel around Toontown.\x07Why, you can teleport to your friends using the Friends List, or to any neighborhood using the map in the Shticker Book.\x07Of course, you have to earn that!\x07Say, I can turn on your teleport access to ' + lToontownCentral + ' if you help out a friend of mine.\x07Seems the Cogs are causing trouble over on Aloha Avenue.  Go visit _toNpcName_._where_'},
+ 1042: {QUEST: 'Hi!  What brings you here?\x07Everybody uses their portable hole to travel around Toontown.\x07Why, you can teleport to your friends using the Friends List, or to any neighborhood using the map in the Shticker Book.\x07Of course, you have to earn that!\x07Say, I can turn on your teleport access to ' + lToontownCentral + ' if you help out a friend of mine.\x07Seems the Cogs are causing trouble over on Aloha Avenue.  Go visit _toNpcName_._where_'},
+ 1043: {QUEST: 'Hi!  What brings you here?\x07Everybody uses their portable hole to travel around Toontown.\x07Why, you can teleport to your friends using the Friends List, or to any neighborhood using the map in the Shticker Book.\x07Of course, you have to earn that!\x07Say, I can turn on your teleport access to ' + lToontownCentral + ' if you help out a friend of mine.\x07Seems the Cogs are causing trouble over on Aloha Avenue.  Go visit _toNpcName_._where_'},
  1044: {QUEST: 'Oh, thanks for stopping by.  I really need some help.\x07As you can see, I have no customers.\x07My secret recipe book is lost and nobody comes to my restaurant anymore.\x07I last saw it just before those Cogs took over my building.\x07Can you help me by recovering four of my famous recipes?',
         LEAVING: '',
         INCOMPLETE_PROGRESS: 'Any luck finding my recipes?'},
  1045: {QUEST: 'Thank you so much!\x07Before long I will have the entire collection and can reopen my restaurant.\x07Oh, I have a note here for you - something about teleport access?\x07It says thanks for helping my friend and to deliver this to Toon Headquarters.\x07Well, thanks indeed - bye!',
         LEAVING: '',
-        COMPLETE: 'Ah, yes, says here you have been a great help to some of the fine folks out on Loopy Lane.\x07Says you need teleport access to ' + lToontownCentral + '.\x07Well, consider it done.\x07Now you can teleport back to the playground from almost anywhere in Toontown.\x07Just open your map and click on ' + lToontownCentral + '.'},
+        COMPLETE: 'Ah, yes, says here you have been a great help to some of the fine folks out on Aloha Avenue.\x07Says you need teleport access to ' + lToontownCentral + '.\x07Well, consider it done.\x07Now you can teleport back to the playground from almost anywhere in Toontown.\x07Just open your map and click on ' + lToontownCentral + '.'},
  1046: {QUEST: 'The Cashbots have really been bothering the Funny Money Savings and Loan.\x07Stop by there and see if there is anything you can do._where_'},
  1047: {QUEST: 'Cashbots have been sneaking into the bank and stealing our machines.\x07Please recover 5 adding machines from Cashbots.\x07To save you from running back and forth, just bring them all back at once.',
         LEAVING: '',
@@ -1355,14 +1355,14 @@ QuestDialogDict = {
         QUEST: "Yo! Youse came to da right place. I ain't too happy.\x07Yeah, I was lookin for some help wid dose Cogs. Dey always come and boss me around.\x07If you can retire some of dem Bossbots, I'll make it worth your while.",
         INCOMPLETE_PROGRESS: "Hey, _avName_, what's up wid youse?\x07You gotta keep after dem Bossbots. We got a deal, remember?\x07Rocco always keeps his word.",
         COMPLETE: "Yo, _avName_! Youse ok in my book.\x07Dem Bossbots ain't so bossy now, is they?\x07Here ya go! A nice big boost. Now, you stay outta trouble, ya hear!"},
- 6231: {QUEST: 'Nat over on Pajama Place heard rumors about a Cashbot Headquarters.\x07Head over there and see if you can help him out._where_'},
+ 6231: {QUEST: 'Nat over on Peppermint Place heard rumors about a Cashbot Headquarters.\x07Head over there and see if you can help him out._where_'},
  6232: {GREETING: '',
         LEAVING: '',
-        QUEST: "I got a nibble about some strange goings on.\x07Well, maybe it's the fleas but something is going on anyway.\x07All these Cashbots!\x07I think they've opened another headquarters right off Pajama Place.\x07P.J. knows his way around.\x07Go see _toNpcName_ _where_ Ask him if he's heard anything.",
+        QUEST: "I got a nibble about some strange goings on.\x07Well, maybe it's the fleas but something is going on anyway.\x07All these Cashbots!\x07I think they've opened another headquarters right off Peppermint Place.\x07P.J. knows his way around.\x07Go see _toNpcName_ _where_ Ask him if he's heard anything.",
         INCOMPLETE_PROGRESS: "You haven't seen P.J. yet? What's keeping you?\x07Oh, these darn fleas!"},
  6233: {GREETING: '',
         LEAVING: '',
-        QUEST: "Hey there _avName_, where are you headed?\x07Cashbot Headquarters?? I haven't seen anything.\x07Could you go to the end of Pajama Place and see if it's true?\x07Find some Cashbot Cogs in their headquarters, defeat a few of them, and come tell me about it.",
+        QUEST: "Hey there _avName_, where are you headed?\x07Cashbot Headquarters?? I haven't seen anything.\x07Could you go to the end of Peppermint Place and see if it's true?\x07Find some Cashbot Cogs in their headquarters, defeat a few of them, and come tell me about it.",
         INCOMPLETE_PROGRESS: "Found the HQ yet? You'll need to defeat some Cashbots there to scope it out."},
  6234: {GREETING: '',
         LEAVING: '',
@@ -3079,9 +3079,9 @@ FADoorCodes_TALK_TO_HQ_TOM = 'Go get your reward from Toon Headquarters!'
 FADoorCodes_SUIT_APPROACHING = None
 FADoorCodes_BUILDING_TAKEOVER = "Watch out! There's a Cog in there!"
 FADoorCodes_SB_DISGUISE_INCOMPLETE = "You'll get caught going in there as a Toon! You need to complete your Sellbot Disguise first!\n\nBuild your Sellbot Disguise out of parts from the Factory."
-FADoorCodes_CB_DISGUISE_INCOMPLETE = "You'll get caught going in there as a Toon! You need to complete your Cashbot Disguise first!\n\nBuild your Cashbot Disguise by doing ToonTasks in Donald's Dreamland."
-FADoorCodes_LB_DISGUISE_INCOMPLETE = "You'll get caught going in there as a Toon! You need to complete your Lawbot Disguise first!\n\nBuild your Lawbot Disguise by doing the ToonTasks after Donald's Dreamland."
-FADoorCodes_BB_DISGUISE_INCOMPLETE = "You'll get caught going in there as a Toon! You need to complete your Bossbot Disguise first!\n\nBuild your Bossbot Disguise by doing the ToonTasks after Donald's Dreamland."
+FADoorCodes_CB_DISGUISE_INCOMPLETE = "You'll get caught going in there as a Toon! You need to complete your Cashbot Disguise first!\n\nBuild your Cashbot Disguise by doing ToonTasks in Donalds Dreamland."
+FADoorCodes_LB_DISGUISE_INCOMPLETE = "You'll get caught going in there as a Toon! You need to complete your Lawbot Disguise first!\n\nBuild your Lawbot Disguise by doing the ToonTasks after Donalds Dreamland."
+FADoorCodes_BB_DISGUISE_INCOMPLETE = "You'll get caught going in there as a Toon! You need to complete your Bossbot Disguise first!\n\nBuild your Bossbot Disguise by doing the ToonTasks after Donalds Dreamland."
 KnockKnockJokes = [['Who', "Bad echo in here, isn't there?"],
  ['Dozen', 'Dozen anybody want to let me in?'],
  ['Freddie', 'Freddie or not, here I come.'],
@@ -3430,7 +3430,7 @@ MusicMMatchBg2 = 'Jazzy Minnie'
 MusicMgTarget = "Soarin' Over Toontown"
 MusicFfSafezone = 'The Funny Farm'
 MusicDdSz = 'Waddling Way'
-MusicMmNbrhood = "Minnie's Melodyland"
+MusicMmNbrhood = "Minnies Melodyland"
 MusicGzPlaygolf = "Let's Play Golf!"
 MusicGsSz = 'Goofy Speedway'
 MusicOzSz = "Chip n' Dale's Acres"
@@ -3440,7 +3440,7 @@ MusicGsRaceRr = 'Route 66'
 MusicGzSz = 'The Putt-Putt Polka'
 MusicMmSz = 'Dancing in the Streets'
 MusicMmSzActivity = 'Here Comes Treble'
-MusicDdNbrhood = "Donald's Dock"
+MusicDdNbrhood = "Donalds Dock"
 MusicGsKartshop = 'Mr. Goofywrench'
 MusicDdSzActivity = 'Sea Shanty'
 MusicEncntrGeneralBgIndoor = 'Building Excitement'
@@ -3448,13 +3448,13 @@ MusicTtElevator = 'Going Up?'
 MusicEncntrToonWinningIndoor = 'Toons Unite!'
 MusicEncntrGeneralSuitWinningIndoor = 'Cog-tastrophe!'
 MusicTbNbrhood = 'The Brrrgh'
-MusicDlNbrhood = "Donald's Dreamland"
+MusicDlNbrhood = "Donalds Dreamland"
 MusicDlSzActivity = 'Counting Sheep'
 MusicDgSz = 'Waltz of the Flowers'
 MusicDlSz = 'Sleepwalking'
 MusicTbSzActivity = 'Snow Problem'
 MusicTbSz = 'Shiver and Shimmy'
-MusicDgNbrhood = "Daisy's Garden"
+MusicDgNbrhood = "Daisy Gardens"
 MusicEncntrHallOfFame = 'The Hall of Fame'
 MusicEncntrSuitHqNbrhood = 'Dollars and Cents'
 MusicChqFactBg = 'Cog Factory'
@@ -4311,8 +4311,8 @@ TugOfWarGameReady = 'Ready...'
 TugOfWarGameEnd = 'Good game!'
 TugOfWarGameTie = 'You tied!'
 TugOfWarPowerMeter = 'Power meter'
-PatternGameTitle = 'Match Jaymo'
-PatternGameInstructions = 'Jaymo will show you a dance sequence. ' + "Try to repeat Jaymo's dance just the way you see it using the arrow keys!"
+PatternGameTitle = 'Match Cranky'
+PatternGameInstructions = 'Cranky will show you a dance sequence. ' + "Try to repeat Cranky's dance just the way you see it using the arrow keys!"
 PatternGameWatch = 'Watch these dance steps...'
 PatternGameGo = 'GO!'
 PatternGameRight = 'Good, %s!'
@@ -4991,7 +4991,7 @@ AccessoryNamePrefix = {0: 'hat unisex ',
  10: 'backpack girl ',
  11: 'shoes girl '}
 AccessoryTypeNames = {}
-for accessoryId in CatalogAccessoryItemGlobals.AccessoryTypes.keys():
+for accessoryId in list(CatalogAccessoryItemGlobals.AccessoryTypes.keys()):
     accessoryInfo = CatalogAccessoryItemGlobals.AccessoryTypes[accessoryId]
     if accessoryInfo[0] % 4 == 0:
         accessoryStyleDescription = HatStylesDescriptions
@@ -6249,7 +6249,7 @@ NPCToonNames = {20000: 'Tutorial Tom',
  7007: 'Dewin Tymme',
  7008: 'Ima Cagedtoon',
  7009: 'Jimmy Thelock',
- 7010: 'Jaymo',
+ 7010: 'Cranky Supertoon',
  7011: 'Donald',
  7012: 'Phil Bettur',
  7013: 'Emma Phatic',
@@ -7039,10 +7039,10 @@ TipDict = {TIP_NONE: ('',),
               'If you wait too long to attack a lured Cog, it will wake up. Higher level lures last longer.',
               'There are fishing ponds on every street in Toontown. Some streets have unique fish.'),
  TIP_MINIGAME: ('After you fill up your Jellybean jar, any Jellybeans you get from Trolley Games automatically spill over into your bank.',
-                'You can use the arrow keys instead of the mouse in the "Match Jaymo" Trolley Game.',
+                'You can use the arrow keys instead of the mouse in the "Match Cranky" Trolley Game.',
                 'In the Cannon Game you can use the arrow keys to move your cannon and press the "Control" key to fire.',
                 'In the Ring Game, bonus points are awarded when the entire group successfully swims through its rings.',
-                'A perfect game of Match Jaymo will double your points.',
+                'A perfect game of Match Cranky will double your points.',
                 'In the Tug-of-War you are awarded more Jellybeans if you play against a tougher Cog.',
                 'Trolley Game difficulty varies by neighborhood; ' + lToontownCentral + ' has the easiest and ' + lDonaldsDreamland + ' has the hardest.',
                 'Certain Trolley Games can only be played in a group.'),
@@ -7071,7 +7071,7 @@ TipDict = {TIP_NONE: ('',),
              'Make sure you have full gags and a full Laff Meter before going to Cog Headquarters.',
              'As you get promoted, your Cog disguise updates.',
              'You must defeat the ' + Foreman + ' to recover a Sellbot Cog Disguise part.',
-             "Earn Cashbot disguise suit parts as rewards for completing ToonTasks in Donald's Dreamland.",
+             "Earn Cashbot disguise suit parts as rewards for completing ToonTasks in Donalds Dreamland.",
              'Cashbots manufacture and distribute their currency, Cogbucks, in three Mints - Coin, Dollar and Bullion.',
              'Wait until the C.F.O. is dizzy to throw a safe, or he will use it as a helmet! Hit the helmet with another safe to knock it off.',
              'Earn Lawbot disguise suit parts as rewards for completing ToonTasks for Professor Flake.',
@@ -7793,7 +7793,7 @@ def getRecipeBeanText(beanTuple):
     if not beanTuple:
         return retval
     allTheSame = True
-    for index in xrange(len(beanTuple)):
+    for index in range(len(beanTuple)):
         if index + 1 < len(beanTuple):
             if not beanTuple[index] == beanTuple[index + 1]:
                 allTheSame = False
@@ -7807,7 +7807,7 @@ def getRecipeBeanText(beanTuple):
     else:
         retval += 'a'
         maxBeans = len(beanTuple)
-        for index in xrange(maxBeans):
+        for index in range(maxBeans):
             if index == maxBeans - 1:
                 retval += ' and %s Jellybean' % BeanColorWords[beanTuple[index]]
             elif index == 0:
@@ -8161,7 +8161,7 @@ ElevatorCashBotMint2 = 'Bullion Mint'
 ElevatorSellBotBoss = 'Sellbot Towers'
 ElevatorSellBotFactory0 = 'Front Entrance'
 ElevatorSellBotFactory1 = 'Side Entrance'
-ElevatorSellBotFactory2 = 'Megacorp Entrance'
+ElevatorSellBotFactory2 = 'Fatal Entrance'
 ElevatorLawBotBoss = 'Lawbot Courthouse'
 ElevatorLawBotCourse0 = 'Office A'
 ElevatorLawBotCourse1 = 'Office B'
@@ -8481,7 +8481,7 @@ def getRandomPetName(gender = None, seed = None):
     return random.choice(nameList)
 
 def getPetNameId(name):
-    for key, value in PetNameDictionary.items():
+    for key, value in list(PetNameDictionary.items()):
         if name == value:
             return key
 
@@ -10027,3 +10027,19 @@ Blacklist = [
  "xrated",
  "xxx"
 ]
+
+## Toontown Start
+
+### Fatal Factory
+SellbotFatalEntrance = 'Fatal Factory'
+
+SellbotLegFactorySpecFatalFact1 = 'East Wing Warehouse'
+SellbotLegFactoryFatalLavaRoom = 'East Wing Parkour Challenge'
+SellbotLegFactoryFatalFact2 = 'East Wing Parkour Battle'
+SellbotLegFactoryFatalLavaRoom2 = 'East Wing Gear Challenge'
+SellbotLegFactoryFatalFact3 = 'East Wing Gear Battle'
+SellbotLegFactorySpecFatalFactoryEastCatWalk = 'East Wing Catwalk'
+
+### Floor Label
+LawOfficeFloorTitle = 'Floor %s'
+CountryClubFloorTitle = 'Hole %s'

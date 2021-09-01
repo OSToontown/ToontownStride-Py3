@@ -1,0 +1,9 @@
+*.pyc
+/user/logs
+/dependencies/astron/logs
+/dependencies/astron/databases/astrondb
+/.idea
+/dependencies/backups
+/dependencies/backups/block-info
+/dependencies/backups/trophy-mgr
+user/preferences.json

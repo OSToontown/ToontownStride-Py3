@@ -8,8 +8,8 @@ from toontown.ai import DistributedEffectMgrAI
 class TTHoodAI(HoodAI.HoodAI):
     def __init__(self, air):
         HoodAI.HoodAI.__init__(self, air,
-                               ToontownGlobals.ToontownCentral,
-                               ToontownGlobals.ToontownCentral)
+                               ToontownGlobals.ToonIslandCentral,
+                               ToontownGlobals.ToonIslandCentral)
 
         self.trolley = None
 
@@ -24,10 +24,10 @@ class TTHoodAI(HoodAI.HoodAI):
             self.createButterflies()
 
         self.trickOrTreatMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.HALLOWEEN, 12)
-        self.trickOrTreatMgr.generateWithRequired(2649) # All Fun and Games Shop, Silly Street
+        self.trickOrTreatMgr.generateWithRequired(2649) # All Fun and Games Shop, Beachball Boulevard
 
         self.winterCarolingMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.CHRISTMAS, 14)
-        self.winterCarolingMgr.generateWithRequired(2659) # Joy Buzzers to the World, Silly Street
+        self.winterCarolingMgr.generateWithRequired(2659) # Joy Buzzers to the World, Beachball Boulevard
 
     def shutdown(self):
         HoodAI.HoodAI.shutdown(self)
@@ -42,8 +42,8 @@ class TTHoodAI(HoodAI.HoodAI):
         playground = ButterflyGlobals.TTC
         ButterflyGlobals.generateIndexes(self.zoneId, ButterflyGlobals.TTC)
 
-        for i in xrange(0, ButterflyGlobals.NUM_BUTTERFLY_AREAS[ButterflyGlobals.TTC]):
-            for _ in xrange(0, ButterflyGlobals.NUM_BUTTERFLIES[ButterflyGlobals.TTC]):
+        for i in range(0, ButterflyGlobals.NUM_BUTTERFLY_AREAS[ButterflyGlobals.TTC]):
+            for _ in range(0, ButterflyGlobals.NUM_BUTTERFLIES[ButterflyGlobals.TTC]):
                 butterfly = DistributedButterflyAI.DistributedButterflyAI(self.air, playground, i, self.zoneId)
                 butterfly.generateWithRequired(self.zoneId)
                 butterfly.start()

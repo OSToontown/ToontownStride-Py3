@@ -2,10 +2,10 @@ from otp.ai.AIBaseGlobal import *
 from direct.distributed.ClockDelta import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM
-import DistributedCogHQDoorAI
+from . import DistributedCogHQDoorAI
 from direct.fsm import State
 from toontown.toonbase import ToontownGlobals
-import CogDisguiseGlobals
+from . import CogDisguiseGlobals
 from toontown.building import FADoorCodes
 from toontown.building import DoorTypes
 

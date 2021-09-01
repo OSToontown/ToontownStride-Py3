@@ -1,4 +1,4 @@
-import CatalogItem
+from . import CatalogItem
 from toontown.toonbase import ToontownGlobals
 from toontown.fishing import FishGlobals
 from direct.actor import Actor
@@ -89,7 +89,7 @@ def nextAvailableTank(avatar, duplicateItems):
 
 def getAllTanks():
     list = []
-    for old, new in FishGlobals.NextTank.iteritems():
+    for old, new in FishGlobals.NextTank.items():
         list.append(CatalogTankItem(new))
 
     return list

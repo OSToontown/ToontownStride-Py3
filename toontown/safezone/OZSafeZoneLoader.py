@@ -37,10 +37,10 @@ class OZSafeZoneLoader(SafeZoneLoader):
         self.done = 0
         self.geyserTrack = None
         SafeZoneLoader.load(self)
-        self.birdSound = map(base.loadSfx, ['phase_4/audio/sfx/SZ_TC_bird1.ogg', 'phase_4/audio/sfx/SZ_TC_bird2.ogg', 'phase_4/audio/sfx/SZ_TC_bird3.ogg'])
-        self.underwaterSound = base.loadSfx('phase_4/audio/sfx/AV_ambient_water.ogg')
-        self.swimSound = base.loadSfx('phase_4/audio/sfx/AV_swim_single_stroke.ogg')
-        self.submergeSound = base.loadSfx('phase_5.5/audio/sfx/AV_jump_in_water.ogg')
+        self.birdSound = list(map(base.loader.loadSfx, ['phase_4/audio/sfx/SZ_TC_bird1.ogg', 'phase_4/audio/sfx/SZ_TC_bird2.ogg', 'phase_4/audio/sfx/SZ_TC_bird3.ogg']))
+        self.underwaterSound = base.loader.loadSfx('phase_4/audio/sfx/AV_ambient_water.ogg')
+        self.swimSound = base.loader.loadSfx('phase_4/audio/sfx/AV_swim_single_stroke.ogg')
+        self.submergeSound = base.loader.loadSfx('phase_5.5/audio/sfx/AV_jump_in_water.ogg')
         geyserPlacer = self.geom.find('**/geyser*')
         waterfallPlacer = self.geom.find('**/waterfall*')
         binMgr = CullBinManager.getGlobalPtr()
@@ -189,7 +189,7 @@ class OZSafeZoneLoader(SafeZoneLoader):
                 base.holder = holder
                 toonPos = av.getPos(render)
                 toonHpr = av.getHpr(render)
-                print 'av Pos %s' % av.getPos()
+                print('av Pos %s' % av.getPos())
                 base.toonPos = toonPos
                 holder.setPos(toonPos)
                 av.reparentTo(holder)
@@ -201,7 +201,7 @@ class OZSafeZoneLoader(SafeZoneLoader):
                     lookIn = Vec3(0 + lookAt, -30, 0)
                 else:
                     lookIn = Vec3(360 + lookAt, -30, 0)
-                print 'Camera Hprs toon %s; lookIn %s; final %s' % (newHpr, lookIn, lookIn - newHpr)
+                print('Camera Hprs toon %s; lookIn %s; final %s' % (newHpr, lookIn, lookIn - newHpr))
                 if local == 1:
                     camPosOriginal = camera.getPos()
                     camHprOriginal = camera.getHpr()
@@ -263,7 +263,7 @@ class OZSafeZoneLoader(SafeZoneLoader):
 
     def doPrint(self, thing):
         return 0
-        print thing
+        print(thing)
 
     def unload(self):
         del self.birdSound
@@ -337,7 +337,7 @@ class OZSafeZoneLoader(SafeZoneLoader):
         del self.golfCourseId
 
     def handleRaceOver(self):
-        print 'you done!!'
+        print('you done!!')
 
     def handleLeftGolf(self):
         req = {'loader': 'safeZoneLoader',

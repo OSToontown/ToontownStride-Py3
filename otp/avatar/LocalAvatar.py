@@ -16,7 +16,7 @@ from panda3d.core import *
 import random
 import webbrowser
 import numbers
-import DistributedAvatar
+from . import DistributedAvatar
 from otp.ai.MagicWordGlobal import *
 from otp.otpbase import OTPGlobals
 from otp.otpbase import OTPLocalizer
@@ -136,7 +136,10 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         self.stopUpdateSmartCamera()
         self.shutdownSmartCamera()
         self.deleteCollisions()
-        self.controlManager.delete()
+        try:
+            self.controlManager.delete()
+        except:
+            pass
         self.physControls = None
         del self.controlManager
         self.positionExaminer.delete()
@@ -904,7 +907,7 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
 
         whisper = WhisperPopup(chatString, OTPGlobals.getInterfaceFont(), whisperType)
 
-        if sender or isinstance(fromId, basestring):
+        if sender or isinstance(fromId, str):
             whisper.setClickable(fromId)
 
         whisper.manage(base.marginManager)
@@ -1112,7 +1115,7 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
             self.setSystemMessage(0, OTPLocalizer.WhisperFriendLoggedOut % friend.getName())
 
     def clickedWhisper(self, doId):
-        if isinstance(doId, basestring):
+        if isinstance(doId, str):
             webbrowser.open(doId, new=2, autoraise=True)
             return
 

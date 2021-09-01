@@ -4,7 +4,7 @@ from toontown.distributed.ToontownNetMessengerAI import ToontownNetMessengerAI
 from direct.distributed.PyDatagram import PyDatagram
 import traceback
 import sys
-import urlparse
+import urllib.parse
 
 class ToontownInternalRepository(AstronInternalRepository):
     GameGlobalsId = OTP_DO_ID_TOONTOWN
@@ -24,7 +24,7 @@ class ToontownInternalRepository(AstronInternalRepository):
             import pymongo
             mongourl = config.GetString('mongodb-url', 'mongodb://localhost')
             replicaset = config.GetString('mongodb-replicaset', '')
-            db = (urlparse.urlparse(mongourl).path or '/Astron_Dev')[1:]
+            db = (urllib.parse.urlparse(mongourl).path or '/Astron_Dev')[1:]
             if replicaset:
                 self.dbConn = pymongo.MongoClient(mongourl, replicaset=replicaset)
             else:
@@ -68,7 +68,7 @@ class ToontownInternalRepository(AstronInternalRepository):
         try:
             return AstronInternalRepository.readerPollOnce(self)
             
-        except SystemExit, KeyboardInterrupt:
+        except SystemExit as KeyboardInterrupt:
             raise
             
         except Exception as e:
@@ -81,7 +81,7 @@ class ToontownInternalRepository(AstronInternalRepository):
                 
             self.writeServerEvent('INTERNAL-EXCEPTION', self.getAvatarIdFromSender(), self.getAccountIdFromSender(), repr(e), traceback.format_exc())
             self.notify.warning('INTERNAL-EXCEPTION: %s (%s)' % (repr(e), self.getAvatarIdFromSender()))
-            print traceback.format_exc()
+            print(traceback.format_exc())
             sys.exc_clear()
             
         return 1

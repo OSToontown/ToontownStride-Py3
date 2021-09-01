@@ -6,7 +6,7 @@ from direct.showbase import DirectObject
 from panda3d.core import *
 from otp.otpbase import OTPLocalizer
 from otp.nametag.NametagConstants import *
-import ChatUtil
+from . import ChatUtil
 
 ChatEvent = 'ChatEvent'
 NormalChatEvent = 'NormalChatEvent'

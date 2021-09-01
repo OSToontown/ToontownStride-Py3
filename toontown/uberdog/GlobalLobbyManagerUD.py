@@ -2,7 +2,7 @@ from direct.distributed.DistributedObjectGlobalUD import DistributedObjectGlobal
 from direct.distributed.PyDatagram import *
 from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.task import Task
-from LobbyGlobals import *
+from .LobbyGlobals import *
 from datetime import datetime, timedelta
 from panda3d.core import *
 
@@ -47,7 +47,7 @@ class GlobalLobbyManagerUD(DistributedObjectGlobalUD):
             self.sendToAv(avId, 'setHostedLobby', [[self._formatLobby(lobby)]])
 
     def __updateLobbyCount(self, lobbyId):
-        for sender in self.senders2Mgrs.keys():
+        for sender in list(self.senders2Mgrs.keys()):
             self.sendToAI('updateToPublicLobbyCountUdToAllAi', [self.lobby2PubInfo[lobbyId]['numGuests'], lobbyId], sender=sender)
 
     def lobbyDone(self, lobbyId):
@@ -70,7 +70,7 @@ class GlobalLobbyManagerUD(DistributedObjectGlobalUD):
         self.__updateLobbyCount(lobbyId)
 
     def lobbyManagerAIHello(self, channel):
-        print 'AI with base channel %s, will send replies to DPM %s' % (simbase.air.getAvatarIdFromSender(), channel)
+        print('AI with base channel %s, will send replies to DPM %s' % (simbase.air.getAvatarIdFromSender(), channel))
         self.senders2Mgrs[simbase.air.getAvatarIdFromSender()] = channel
         self.sendToAI('lobbyManagerUdStartingUp', [])
         self.air.addPostRemove(self._makeAIMsg('lobbyManagerUdLost', [], channel))
@@ -87,7 +87,7 @@ class GlobalLobbyManagerUD(DistributedObjectGlobalUD):
             lobby = self.id2Lobby[self.host2LobbyId[hostId]]
             self.sendToAI('lobbyInfoOfHostResponseUdToAi', [self._formatLobby(lobby)])
             return
-        print 'query failed, av %s isnt hosting anything' % hostId
+        print('query failed, av %s isnt hosting anything' % hostId)
 
     def requestLobbySlot(self, lobbyId, avId):
         lobby = self.lobby2PubInfo[lobbyId]

@@ -3,7 +3,7 @@ from direct.distributed.DistributedObject import DistributedObject
 from direct.task.Task import Task
 from panda3d.core import *
 
-from DistributedNPCToonBase import DistributedNPCToonBase
+from .DistributedNPCToonBase import DistributedNPCToonBase
 from otp.otpbase import OTPLocalizer
 from otp.nametag.NametagConstants import *
 from toontown.parties import PartyGlobals

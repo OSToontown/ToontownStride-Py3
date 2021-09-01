@@ -12,8 +12,8 @@ import math
 from panda3d.core import *
 import random
 
-import DistributedBossCog
-import SuitDNA
+from . import DistributedBossCog
+from . import SuitDNA
 from toontown.battle import BattleBase
 from toontown.battle import MovieToonVictory
 from toontown.battle import RewardPanel
@@ -30,6 +30,7 @@ from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownBattleGlobals
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import ToontownTimer
+from toontown.coghq import BossHealthBar
 
 
 OneBossCog = None
@@ -99,7 +100,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.juryMovesSfx = loader.loadSfx('phase_11/audio/sfx/LB_jury_moves.ogg')
         self.toonUpSfx = loader.loadSfx('phase_11/audio/sfx/LB_toonup.ogg')
         self.strafeSfx = []
-        for i in xrange(10):
+        for i in range(10):
             self.strafeSfx.append(loader.loadSfx('phase_3.5/audio/sfx/SA_shred.ogg'))
 
         render.setTag('pieCode', str(ToontownGlobals.PieCodeNotBossCog))
@@ -215,7 +216,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
     def __gotLawyers(self, lawyers):
         self.lawyerRequest = None
         self.lawyers = lawyers
-        for i in xrange(len(self.lawyers)):
+        for i in range(len(self.lawyers)):
             suit = self.lawyers[i]
             suit.fsm.request('neutral')
             suit.loop('neutral')
@@ -224,6 +225,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         return
 
     def setBossDamage(self, bossDamage, recoverRate, timestamp):
+        self.bossHealthBar.update(self.bossMaxDamage - bossDamage, self.bossMaxDamage)
         recoverStartTime = globalClockDelta.networkToLocalTime(timestamp)
         self.bossDamage = bossDamage
         self.recoverRate = recoverRate
@@ -383,9 +385,9 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         elevatorModel = loader.loadModel('phase_11/models/lawbotHQ/LB_Elevator')
         elevatorModel.reparentTo(self.elevatorEntrance)
         self.setupElevator(elevatorModel)
-        self.promotionMusic = base.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
-        self.betweenBattleMusic = base.loadMusic('phase_9/audio/bgm/encntr_toon_winning.ogg')
-        self.battleTwoMusic = base.loadMusic('phase_11/audio/bgm/LB_juryBG.ogg')
+        self.promotionMusic = base.loader.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
+        self.betweenBattleMusic = base.loader.loadMusic('phase_9/audio/bgm/encntr_toon_winning.ogg')
+        self.battleTwoMusic = base.loader.loadMusic('phase_11/audio/bgm/LB_juryBG.ogg')
         floor = self.geom.find('**/MidVaultFloor1')
         if floor.isEmpty():
             floor = self.geom.find('**/CR3_Floor')
@@ -829,7 +831,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
             self.toonsToBattlePosition(self.toonsB, self.battleBNode)
         base.playMusic(self.battleTwoMusic, looping=1, volume=0.9)
         self.startJuryBoxMoving()
-        for index in xrange(len(self.cannons)):
+        for index in range(len(self.cannons)):
             cannon = self.cannons[index]
             cannon.cannon.show()
 
@@ -858,7 +860,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
             self.juryTimer.destroy()
             del self.juryTimer
             self.juryTimer = None
-        for chair in self.chairs.values():
+        for chair in list(self.chairs.values()):
             chair.stopCogsFlying()
 
         return
@@ -942,6 +944,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.stickBossToFloor()
         self.setPosHpr(*ToontownGlobals.LawbotBossBattleThreePosHpr)
         self.bossMaxDamage = ToontownGlobals.LawbotBossMaxDamage
+        self.bossHealthBar.initialize()
         base.playMusic(self.battleThreeMusic, looping=1, volume=0.9)
 
     def __doneBattleThree(self):
@@ -1164,7 +1167,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
     def __toonsToPromotionPosition(self, toonIds, battleNode):
         self.notify.debug('----- __toonsToPromotionPosition')
         points = BattleBase.BattleBase.toonPoints[len(toonIds) - 1]
-        for i in xrange(len(toonIds)):
+        for i in range(len(toonIds)):
             toon = base.cr.doId2do.get(toonIds[i])
             if toon:
                 toon.reparentTo(render)
@@ -1289,7 +1292,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
             spread = -spread
         dist = 50
         rate = time / numGears
-        for i in xrange(numGears):
+        for i in range(numGears):
             node = gearRoot.attachNewNode(str(i))
             node.hide()
             node.setPos(0, 0, 0)
@@ -1318,7 +1321,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
                 self.notify.warning('Not a collision node: %s' % repr(cnp))
                 break
             newCollideMask = newCollideMask | cn.getIntoCollideMask()
-            for i in xrange(cn.getNumSolids()):
+            for i in range(cn.getNumSolids()):
                 solid = cn.getSolid(i)
                 if isinstance(solid, CollisionPolygon):
                     plane = Plane(solid.getPlane())
@@ -1379,7 +1382,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         ival = Parallel()
         points = BattleBase.BattleBase.toonPoints[len(toonIds) - 1]
         self.notify.debug('walkToonsToBattlePosition: points = %s' % points[0][0])
-        for i in xrange(len(toonIds)):
+        for i in range(len(toonIds)):
             toon = base.cr.doId2do.get(toonIds[i])
             if toon:
                 pos, h = points[i]
@@ -1412,7 +1415,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
             points = list(BattleBase.BattleBase.toonPoints[3])
             points.extend(BattleBase.BattleBase.toonPoints[len(toonIds) - 5])
         self.notify.debug('toonsToBattlePosition: points = %s' % points[0][0])
-        for i in xrange(len(toonIds)):
+        for i in range(len(toonIds)):
             toon = base.cr.doId2do.get(toonIds[i])
             if toon:
                 toon.wrtReparentTo(render)
@@ -1460,7 +1463,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         vertexWriter.addData3f(x2, y1, z2)
         vertexWriter.addData3f(x1, y2, z2)
         vertexWriter.addData3f(x2, y2, z2)
-        for index in xrange(8):
+        for index in range(8):
             normalWriter.addData3f(1.0, 1.0, 1.0)
             colorWriter.addData4f(r, g, b, a)
             texWriter.addData2f(1.0, 1.0)
@@ -1614,7 +1617,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         radius = 7
         numToons = len(self.involvedToons)
         center = (numToons - 1) / 2.0
-        for i in xrange(numToons):
+        for i in range(numToons):
             toon = self.cr.doId2do.get(self.involvedToons[i])
             if toon:
                 angle = 90 - 15 * (i - center)
@@ -1703,7 +1706,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
 
     def countToonJurors(self):
         self.numToonJurorsSeated = 0
-        for key in self.chairs.keys():
+        for key in list(self.chairs.keys()):
             chair = self.chairs[key]
             if chair.state == 'ToonJuror' or chair.state == None and chair.newState == 'ToonJuror':
                 self.numToonJurorsSeated += 1
@@ -1751,7 +1754,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
             gotError = True
         if gotError:
             st = StackTrace()
-            print st
+            print(st)
             return
         chatString = TTLocalizer.LawbotBossTaunts[1]
         if tauntIndex == 0:
@@ -1799,7 +1802,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
 
     def numJurorsSeatedByCannon(self, cannonIndex):
         retVal = 0
-        for chair in self.chairs.values():
+        for chair in list(self.chairs.values()):
             if chair.state == 'ToonJuror':
                 if chair.toonJurorIndex == cannonIndex:
                     retVal += 1

@@ -1,13 +1,13 @@
 from toontown.toonbase import ToontownGlobals
-import PhoneGlobals
+from . import PhoneGlobals
 from toontown.catalog import CatalogScreen
 from toontown.catalog import CatalogItem
 from toontown.catalog import GiftAvatar
 from toontown.toontowngui import TTDialog
 from toontown.toonbase import TTLocalizer
-import DistributedHouseInterior
+from . import DistributedHouseInterior
 from direct.actor import Actor
-import DistributedFurnitureItem
+from . import DistributedFurnitureItem
 from direct.distributed import ClockDelta
 from direct.showbase import PythonUtil
 from direct.showutil import Rope
@@ -359,7 +359,7 @@ class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):
         w = 0.05
         shakeOnce = Sequence(Func(phone.setR, r), Wait(w), Func(phone.setR, -r), Wait(w))
         shakeSeq = Sequence()
-        for i in xrange(16):
+        for i in range(16):
             shakeSeq.append(shakeOnce)
 
         ringIval = Parallel(Func(base.playSfx, self.ringSfx), shakeSeq, Func(phone.setR, 0))

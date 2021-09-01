@@ -6,7 +6,7 @@ from toontown.hood.ToonHood import ToonHood
 class DGHood(ToonHood):
     notify = directNotify.newCategory('DGHood')
 
-    ID = ToontownGlobals.DaisyGardens
+    ID = ToontownGlobals.DaisyGarden
     TOWNLOADER_CLASS = DGTownLoader
     SAFEZONELOADER_CLASS = DGSafeZoneLoader
     STORAGE_DNA = 'phase_8/dna/storage_DG.pdna'

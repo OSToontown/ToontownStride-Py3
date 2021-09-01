@@ -1,6 +1,6 @@
 from direct.gui.DirectGui import *
 from toontown.toonbase import TTLocalizer, ToontownGlobals, ToontownBattleGlobals
-import NPCToons, ToonDNA, ToonHead
+from . import NPCToons, ToonDNA, ToonHead
 
 def createNPCToonHead(NPCID, dimension = 0.5):
     NPCInfo = NPCToons.NPCToonDict[NPCID]
@@ -66,10 +66,10 @@ class NPCFriendPanel(DirectFrame):
         self.update()
 
     def update(self):
-        friendList = sorted(self.friendDict.keys(), reverse=True, key=lambda id: NPCToons.getNPCTrackLevelHpRarity(id)[3])
+        friendList = sorted(list(self.friendDict.keys()), reverse=True, key=lambda id: NPCToons.getNPCTrackLevelHpRarity(id)[3])
         cardNum = 0
 
-        for i in xrange(self.pos, self.pos + 16):
+        for i in range(self.pos, self.pos + 16):
             card = self.cardList[cardNum]
 
             if len(friendList) > i:
@@ -91,7 +91,7 @@ class NPCFriendPanel(DirectFrame):
         yOffset = 3.5
         count = 0
 
-        for i in xrange(16):
+        for i in range(16):
             card = NPCFriendCard(parent=self, doneEvent=self['doneEvent'])
             self.cardList.append(card)
             card.setPos(xOffset, 1, yOffset)
@@ -136,7 +136,7 @@ class NPCFriendCard(DirectFrame):
         star = loader.loadModel('phase_3.5/models/gui/name_star')
         self.rarityStars = []
 
-        for i in xrange(self.maxRarity):
+        for i in range(self.maxRarity):
             label = DirectLabel(parent=self.front, relief=None, image=star, image_scale=0.2, image_color=Vec4(0.502, 0.251, 0.251, 1.0), pos=(1.1 - i * 0.24, 0, -1.2))
             label.hide()
             self.rarityStars.append(label)
@@ -184,7 +184,7 @@ class NPCFriendCard(DirectFrame):
             sosText = TextEncoder.upper(sosText)
             self.sosTypeInfo['text'] = sosText
 
-            for i in xrange(self.maxRarity):
+            for i in range(self.maxRarity):
                 if i < rarity:
                     self.rarityStars[i].show()
                 else:

@@ -1,6 +1,6 @@
 from direct.fsm.StatePush import StateVar
 from otp.level.EntityStateVarSet import EntityStateVarSet
-from CogdoUtil import VariableContainer
+from .CogdoUtil import VariableContainer
 from toontown.cogdominium.CogdoEntityTypes import CogdoCraneGameSettings, CogdoCraneCogSettings
 Gameplay = VariableContainer()
 Gameplay.SecondsUntilGameOver = 60.0 * 3.0
@@ -63,5 +63,5 @@ MoneyBagPosHprs = [[77.2 - 84,
   180,
   0,
   0]]
-for i in xrange(len(MoneyBagPosHprs)):
+for i in range(len(MoneyBagPosHprs)):
     MoneyBagPosHprs[i][2] += 6

@@ -1,5 +1,5 @@
 from toontown.toonbase import TTLocalizer
-from DistributedNPCToonBase import DistributedNPCToonBase
+from .DistributedNPCToonBase import DistributedNPCToonBase
 
 class DistributedNPCScientist(DistributedNPCToonBase):
 

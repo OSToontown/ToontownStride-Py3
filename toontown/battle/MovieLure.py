@@ -1,16 +1,16 @@
 from direct.interval.IntervalGlobal import *
-from BattleBase import *
-from BattleProps import *
+from .BattleBase import *
+from .BattleProps import *
 from toontown.suit.SuitBase import *
 from toontown.toon.ToonDNA import *
-from BattleSounds import *
-import MovieCamera
+from .BattleSounds import *
+from . import MovieCamera
 from direct.directnotify import DirectNotifyGlobal
-import MovieUtil
+from . import MovieUtil
 from toontown.toonbase import ToontownBattleGlobals
-import BattleParticles
-import BattleProps
-import MovieNPCSOS
+from . import BattleParticles
+from . import BattleProps
+from . import MovieNPCSOS
 import random
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieLures')
 
@@ -163,7 +163,7 @@ def __createMagnetMultiTrack(lure, magnet, pos, hpr, scale, isSmallMagnet = 1, n
                 suitTrack.append(Func(suit.loop, 'neutral'))
                 suitTrack.append(Wait(suitDelay))
                 suitTrack.append(ActorInterval(suit, 'landing', startTime=2.37, endTime=1.82))
-                for i in xrange(0, numShakes):
+                for i in range(0, numShakes):
                     suitTrack.append(ActorInterval(suit, 'landing', startTime=1.82, endTime=1.16, duration=shakeDuration))
 
                 suitTrack.append(ActorInterval(suit, 'landing', startTime=1.16, endTime=0.7))
@@ -380,7 +380,7 @@ def __createSuitDamageTrack(battle, suit, hp, lure, trapProp):
         explosionTrack = Sequence(Wait(2.3), createTNTExplosionTrack(battle, trapProp=trapProp, relativeTo=parent))
         suitTrack = Sequence(ActorInterval(suit, 'flail', duration=0.7), ActorInterval(suit, 'flail', startTime=0.7, endTime=0.0), ActorInterval(suit, 'neutral', duration=0.4), ActorInterval(suit, 'flail', startTime=0.6, endTime=0.7), Wait(0.4), ActorInterval(suit, 'slip-forward', startTime=2.48, duration=0.1), Func(battle.movie.needRestoreColor), Func(suit.setColorScale, Vec4(0.2, 0.2, 0.2, 1)), Func(trapProp.reparentTo, hidden), ActorInterval(suit, 'slip-forward', startTime=2.58), Func(suit.clearColorScale), Func(trapProp.sparksEffect.cleanup), Func(battle.movie.clearRestoreColor))
         damageTrack = Sequence(Wait(2.3), Func(suit.showHpText, -hp, openEnded=0), Func(suit.updateHealthBar, hp))
-        explosionSound = base.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart_%s.ogg' % random.randint(1, 6))
+        explosionSound = base.loader.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart_%s.ogg' % random.randint(1, 6))
         soundTrack = Sequence(SoundInterval(globalBattleSoundCache.getSound('TL_dynamite.ogg'), duration=2.0, node=suit), SoundInterval(explosionSound, duration=0.6, node=suit))
         result.append(Parallel(tntTrack, suitTrack, damageTrack, explosionTrack, soundTrack))
     elif trapName == 'traintrack':
@@ -413,7 +413,7 @@ def getSplicedLerpAnimsTrack(object, animName, origDuration, newDuration, startT
     numIvals = origDuration * fps
     timeInterval = newDuration / numIvals
     animInterval = origDuration / numIvals
-    for i in xrange(0, int(numIvals)):
+    for i in range(0, int(numIvals)):
         track.append(Wait(timeInterval))
         track.append(ActorInterval(object, animName, startTime=startTime + addition, duration=animInterval))
         addition += animInterval

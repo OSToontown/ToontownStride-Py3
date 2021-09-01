@@ -3,13 +3,15 @@ from direct.actor import Actor
 from otp.avatar import Avatar
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
-import GoonGlobals
-import SuitDNA
+from . import GoonGlobals
+from . import SuitDNA
 import math
 AnimDict = {'pg': (('walk', '-walk'), ('collapse', '-collapse'), ('recovery', '-recovery')),
- 'sg': (('walk', '-walk'), ('collapse', '-collapse'), ('recovery', '-recovery'))}
+ 'sg': (('walk', '-walk'), ('collapse', '-collapse'), ('recovery', '-recovery')),
+ 'fg1': (('walk', '-walk'), ('collapse', '-collapse'), ('recovery', '-recovery'))}
 ModelDict = {'pg': 'phase_9/models/char/Cog_Goonie',
- 'sg': 'phase_9/models/char/Cog_Goonie'}
+ 'sg': 'phase_9/models/char/Cog_Goonie',
+ 'fg1': 'phase_9/models/char/Cog_Goonie'}
 
 class Goon(Avatar.Avatar):
 
@@ -104,6 +106,9 @@ class Goon(Avatar.Avatar):
             self.hat.find('**/security_hat').hide()
         elif self.type == 'sg':
             self.hat.find('**/hard_hat').hide()
+        elif self.type == 'fg1':
+            self.hat.find('**/security_hat').hide()
+            self.hat.setColor(0.862745, 0.517647, 0.0941177, 1)
         else:
             self.hat.find('**/security_hat').hide()
             self.hat.find('**/hard_hat').hide()
@@ -141,6 +146,8 @@ class Goon(Avatar.Avatar):
             colorList = GoonGlobals.PG_COLORS
         elif self.type == 'sg':
             colorList = GoonGlobals.SG_COLORS
+        elif self.type == 'fg1':
+            colorList = GoonGlobals.FG1_COLORS
         else:
             return
         if self.strength >= 20:

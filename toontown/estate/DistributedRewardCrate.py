@@ -3,7 +3,7 @@ from toontown.effects import DustCloud
 from toontown.toonbase import ToontownGlobals, TTLocalizer
 from toontown.toontowngui import TTDialog
 from toontown.quest import Quests
-from DistributedFurnitureItem import DistributedFurnitureItem
+from .DistributedFurnitureItem import DistributedFurnitureItem
 
 class DistributedRewardCrate(DistributedFurnitureItem):
 

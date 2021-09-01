@@ -95,7 +95,7 @@ class DistributedVineGame(DistributedMinigame):
         self.notify.debug('load')
         DistributedMinigame.load(self)
         self.defineConstants()
-        self.music = base.loadMusic('phase_4/audio/bgm/MG_Vine.ogg')
+        self.music = base.loader.loadMusic('phase_4/audio/bgm/MG_Vine.ogg')
         self.gameAssets = loader.loadModel('phase_4/models/minigames/vine_game')
         self.gameBoard = self.gameAssets.find('**/background')
         self.gameBoard.reparentTo(render)
@@ -111,14 +111,14 @@ class DistributedVineGame(DistributedMinigame):
         self.gameBoardR.setPos(635, 0, 0)
         self.treasureModel = self.gameAssets.find('**/bananas')
         self.setupVineCourse()
-        self.grabSound = base.loadSfx('phase_4/audio/sfx/MG_sfx_vine_game_bananas.ogg')
-        self.jumpSound = base.loadSfx('phase_4/audio/sfx/MG_sfx_vine_game_jump.ogg')
-        self.catchSound = base.loadSfx('phase_4/audio/sfx/MG_sfx_vine_game_catch.ogg')
-        self.spiderHitSound = base.loadSfx('phase_4/audio/sfx/MG_sfx_vine_game_spider_hit.ogg')
-        self.batHitVineSound = base.loadSfx('phase_4/audio/sfx/MG_sfx_vine_game_bat_hit.ogg')
-        self.batHitMidairSound = base.loadSfx('phase_4/audio/sfx/MG_sfx_vine_game_bat_hit_midair.ogg')
-        self.winSound = base.loadSfx('phase_4/audio/sfx/MG_sfx_vine_game_finish.ogg')
-        self.fallSound = base.loadSfx('phase_4/audio/sfx/MG_sfx_vine_game_fall.ogg')
+        self.grabSound = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_vine_game_bananas.ogg')
+        self.jumpSound = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_vine_game_jump.ogg')
+        self.catchSound = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_vine_game_catch.ogg')
+        self.spiderHitSound = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_vine_game_spider_hit.ogg')
+        self.batHitVineSound = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_vine_game_bat_hit.ogg')
+        self.batHitMidairSound = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_vine_game_bat_hit_midair.ogg')
+        self.winSound = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_vine_game_finish.ogg')
+        self.fallSound = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_vine_game_fall.ogg')
         self.loadBats()
         self.createBatIvals()
         bothPlatform = loader.loadModel('phase_4/models/minigames/vine_game_shelf')
@@ -190,7 +190,7 @@ class DistributedVineGame(DistributedMinigame):
         self.arrowKeys.setPressHandlers(handlers)
         self.numTreasures = len(self.vines) - 1
         self.treasures = []
-        for i in xrange(self.numTreasures):
+        for i in range(self.numTreasures):
             height = self.randomNumGen.randrange(10, 25)
             xPos = self.randomNumGen.randrange(12, 18)
             pos = Point3(self.vines[i].getX() + 15, 0, height)
@@ -324,27 +324,27 @@ class DistributedVineGame(DistributedMinigame):
         newVelX = velX
         newVelZ = velZ
         newFallingInfo = fallingInfo
-        oldInfo = None
+        oldInfo = [0, 0, 0, 0, 0, 0, 0, 0, 0]
         if avId in self.toonInfo:
             oldInfo = self.toonInfo[avId]
-            if vineIndex == None:
-                newVineIndex = oldInfo[0]
-            if vineT == None:
-                newVineT = oldInfo[1]
-            if posX == None:
-                newPosX = oldInfo[2]
-            if posZ == None:
-                newPosZ = oldInfo[3]
-            if facingRight == None:
-                newFacingRight = oldInfo[4]
-            if climbDir == None:
-                newClimbDir = oldInfo[5]
-            if velX == None:
-                newVelX = oldInfo[6]
-            if velZ == None:
-                newVelZ = oldInfo[7]
-            if fallingInfo == None:
-                newFallingInfo = oldInfo[8]
+        if vineIndex == None:
+            newVineIndex = oldInfo[0]
+        if vineT == None:
+            newVineT = oldInfo[1]
+        if posX == None:
+            newPosX = oldInfo[2]
+        if posZ == None:
+            newPosZ = oldInfo[3]
+        if facingRight == None:
+            newFacingRight = oldInfo[4]
+        if climbDir == None:
+            newClimbDir = oldInfo[5]
+        if velX == None:
+            newVelX = oldInfo[6]
+        if velZ == None:
+            newVelZ = oldInfo[7]
+        if fallingInfo == None:
+            newFallingInfo = oldInfo[8]
         if newVineIndex < -1 or newVineIndex >= len(self.vines):
             self.notify.warning('invalid vineIndex for %d, forcing 0' % avId)
             newVineIndex = 0
@@ -431,11 +431,11 @@ class DistributedVineGame(DistributedMinigame):
     def sanityCheck(self):
         if not self.isInPlayState():
             return
-        for avId in self.toonInfo.keys():
+        for avId in list(self.toonInfo.keys()):
             myVineIndex = self.toonInfo[avId][0]
             foundVines = []
             foundVineIndex = -1
-            for curVine in xrange(len(self.vines)):
+            for curVine in range(len(self.vines)):
                 curInfo = self.vines[curVine].getAttachedToonInfo(avId)
                 if curInfo:
                     foundVines.append(curVine)
@@ -449,7 +449,7 @@ class DistributedVineGame(DistributedMinigame):
     def getVineAndVineInfo(self, avId):
         retVine = -1
         retInfo = None
-        for curVine in xrange(len(self.vines)):
+        for curVine in range(len(self.vines)):
             curInfo = self.vines[curVine].getAttachedToonInfo(avId)
             if curInfo:
                 retVine = curVine
@@ -468,7 +468,7 @@ class DistributedVineGame(DistributedMinigame):
             return
         self.toonOffsets = {}
         self.toonOffsetsFalling = {}
-        for index in xrange(self.numPlayers):
+        for index in range(self.numPlayers):
             avId = self.avIdList[index]
             toon = self.getAvatar(avId)
             if toon:
@@ -513,7 +513,7 @@ class DistributedVineGame(DistributedMinigame):
         self.createRadar()
         self.scores = [0] * self.numPlayers
         spacing = 0.4
-        for i in xrange(self.numPlayers):
+        for i in range(self.numPlayers):
             avId = self.avIdList[i]
             avName = self.getAvatarName(avId)
             scorePanel = MinigameAvatarScorePanel.MinigameAvatarScorePanel(avId, avName)
@@ -581,7 +581,7 @@ class DistributedVineGame(DistributedMinigame):
           (lX, bY),
           (rX, bY)))
         scorePanelLocs = scorePanelLocs[self.numPlayers - 1]
-        for i in xrange(self.numPlayers):
+        for i in range(self.numPlayers):
             panel = self.scorePanels[i]
             pos = scorePanelLocs[i]
             panel.wrtReparentTo(aspect2d)
@@ -672,7 +672,7 @@ class DistributedVineGame(DistributedMinigame):
                 camera.setX(minX)
 
     def __updateOtherToonsClimbing(self):
-        for avId in self.toonInfo.keys():
+        for avId in list(self.toonInfo.keys()):
             if avId == self.localAvId:
                 continue
             toonInfo = self.toonInfo[avId]
@@ -714,7 +714,7 @@ class DistributedVineGame(DistributedMinigame):
                 self.handleLocalToonFellDown()
         avId = self.localAvId
         curInfo = None
-        for vineIndex in xrange(len(self.vines)):
+        for vineIndex in range(len(self.vines)):
             curInfo = self.vines[vineIndex].getAttachedToonInfo(avId)
             if curInfo:
                 break
@@ -846,7 +846,7 @@ class DistributedVineGame(DistributedMinigame):
             swingSeq = curInfo[6]
             if swingSeq:
                 curFrame = -1
-                for i in xrange(len(swingSeq)):
+                for i in range(len(swingSeq)):
                     self.notify.debug('testing actor interval i=%d' % i)
                     actorIval = swingSeq[i]
                     if not actorIval.isStopped():
@@ -1055,7 +1055,7 @@ class DistributedVineGame(DistributedMinigame):
 
     def rightArrowKeyHandler(self):
         curInfo = None
-        for vineIndex in xrange(len(self.vines)):
+        for vineIndex in range(len(self.vines)):
             curInfo = self.vines[vineIndex].getAttachedToonInfo(base.localAvatar.doId)
             if curInfo:
                 break
@@ -1079,7 +1079,7 @@ class DistributedVineGame(DistributedMinigame):
 
     def leftArrowKeyHandler(self):
         curInfo = None
-        for vineIndex in xrange(len(self.vines)):
+        for vineIndex in range(len(self.vines)):
             curInfo = self.vines[vineIndex].getAttachedToonInfo(base.localAvatar.doId)
             if curInfo:
                 break
@@ -1390,7 +1390,7 @@ class DistributedVineGame(DistributedMinigame):
 
     def createBatIvals(self):
         self.batIvals = []
-        for batIndex in xrange(len(self.bats)):
+        for batIndex in range(len(self.bats)):
             newBatIval = self.createBatIval(batIndex)
             self.batIvals.append(newBatIval)
 
@@ -1440,7 +1440,7 @@ class DistributedVineGame(DistributedMinigame):
         retval = Sequence()
         toonTakeoffs = Parallel()
         didCameraMove = False
-        for index in xrange(len(self.avIdList)):
+        for index in range(len(self.avIdList)):
             avId = self.avIdList[index]
             if avId != self.localAvId:
                 continue
@@ -1542,7 +1542,7 @@ class DistributedVineGame(DistributedMinigame):
         for taskName in self.endingTrackTaskNames:
             taskMgr.remove(taskName)
 
-        for endingTrack in self.endingTracks.values():
+        for endingTrack in list(self.endingTracks.values()):
             endingTrack.finish
             del endingTrack
 

@@ -1,4 +1,4 @@
-from Nametag import *
+from .Nametag import *
 from otp.margins.MarginPopup import *
 from pandac.PandaModules import *
 import math

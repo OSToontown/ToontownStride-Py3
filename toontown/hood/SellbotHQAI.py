@@ -27,7 +27,7 @@ class SellbotHQAI(CogHQAI.CogHQAI):
 
         # Sellbot HQ has not just one, but four lobby doors:
         self.cogHQDoors = [self.extDoor]
-        for i in xrange(3):  # CogHQAI already created one of the doors for us.
+        for i in range(3):  # CogHQAI already created one of the doors for us.
             extDoor = self.makeCogHQDoor(self.lobbyZoneId, 0, i + 1, self.lobbyFADoorCode)
             self.cogHQDoors.append(extDoor)
         self.createFactoryElevators()
@@ -43,17 +43,16 @@ class SellbotHQAI(CogHQAI.CogHQAI):
 
     def createFactoryElevators(self):
         # We only have two factory elevators: the front, and side elevators.
-        for i in xrange(2):
+        for i in range(2):
             factoryElevator = DistributedFactoryElevatorExtAI(
                 self.air, self.air.factoryMgr, ToontownGlobals.SellbotFactoryInt, i)
             factoryElevator.generateWithRequired(ToontownGlobals.SellbotFactoryExt)
             self.factoryElevators.append(factoryElevator)
 
-        if simbase.config.GetBool('want-megacorp', True):
-            factoryElevator = DistributedFactoryElevatorExtAI(
-                self.air, self.air.factoryMgr, ToontownGlobals.SellbotMegaCorpInt, 2)
-            factoryElevator.generateWithRequired(ToontownGlobals.SellbotFactoryExt)
-            self.factoryElevators.append(factoryElevator)
+        fatalElevator = DistributedFactoryElevatorExtAI(self.air, self.air.factoryMgr, ToontownGlobals.SellbotFatalInt, 2)
+        fatalElevator.generateWithRequired(ToontownGlobals.SellbotFactoryExt)
+        self.factoryElevators.append(fatalElevator)
+
 
     def createFactoryBoardingParty(self):
         factoryIdList = [elevator.doId for elevator in self.factoryElevators]

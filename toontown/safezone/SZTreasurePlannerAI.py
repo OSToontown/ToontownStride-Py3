@@ -1,4 +1,4 @@
-from RegenTreasurePlannerAI import RegenTreasurePlannerAI
+from .RegenTreasurePlannerAI import RegenTreasurePlannerAI
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
 

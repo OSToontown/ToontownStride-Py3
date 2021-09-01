@@ -1,6 +1,6 @@
 from panda3d.core import *
-import ShtikerPage
-import ShtikerBook
+from . import ShtikerPage
+from . import ShtikerBook
 from direct.gui.DirectGui import *
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import TTLocalizer
@@ -115,7 +115,7 @@ class PhotoAlbumPage(ShtikerPage.ShtikerPage):
         if os.path.isfile(self.photoPath + self.selectedFileName):
             separator = '_'
             validChars = string.letters + string.digits + ' -#&.,'
-            str = filter(lambda s: s in validChars, str)
+            str = [s for s in str if s in validChars]
             oldName = self.selectedFileName
             numUnders = oldName.count(separator)
             if numUnders == 0:
@@ -250,7 +250,7 @@ class PhotoAlbumPage(ShtikerPage.ShtikerPage):
 
     def updateScrollList(self):
         newPhotos = self.getPhotos()
-        for photo in self.photos.keys():
+        for photo in list(self.photos.keys()):
             if photo not in newPhotos:
                 photoButton = self.photos[photo]
                 self.scrollList.removeItem(photoButton)
@@ -263,8 +263,8 @@ class PhotoAlbumPage(ShtikerPage.ShtikerPage):
                 self.scrollList.addItem(photoButton)
                 self.photos[photo] = photoButton
 
-        if self.photos.keys():
-            self.chosePhoto(self.photos.keys()[0])
+        if list(self.photos.keys()):
+            self.chosePhoto(list(self.photos.keys())[0])
             self.scroll.hide()
             self.scrollList.show()
             self.pictureImage.show()

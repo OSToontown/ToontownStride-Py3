@@ -3,7 +3,7 @@ from direct.gui.DirectGui import *
 from toontown.catalog import CatalogFurnitureItem
 from toontown.toonbase import ToontownGlobals, TTLocalizer
 from toontown.toontowngui import TTDialog
-from DistributedFurnitureItem import DistributedFurnitureItem
+from .DistributedFurnitureItem import DistributedFurnitureItem
 
 class DistributedChair(DistributedFurnitureItem):
 

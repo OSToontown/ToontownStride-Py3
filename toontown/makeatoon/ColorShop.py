@@ -2,9 +2,9 @@ from panda3d.core import *
 from toontown.toon import ToonDNA
 from direct.fsm import StateData
 from direct.gui.DirectGui import *
-from MakeAToonGlobals import *
+from .MakeAToonGlobals import *
 from toontown.toonbase import TTLocalizer, ToontownGlobals
-import ShuffleButton
+from . import ShuffleButton
 import random, colorsys
 from direct.directnotify import DirectNotifyGlobal
 from direct.task import Task
@@ -56,7 +56,7 @@ class ColorShop(StateData.StateData):
         try:
             del self.toon
         except:
-            print 'ColorShop: toon not found'
+            print('ColorShop: toon not found')
 
         self.hideButtons()
         taskMgr.remove('colorDragTask')
@@ -170,8 +170,8 @@ class ColorShop(StateData.StateData):
         return ((limitMax - limitMin) * (value - baseMin) / (baseMax - baseMin)) + limitMin
     
     def __chooseHue(self):
-        for x in xrange(self.pickImage.getXSize()):
-            for y in xrange(self.pickImage.getYSize()):
+        for x in range(self.pickImage.getXSize()):
+            for y in range(self.pickImage.getYSize()):
                 self.pickImage.setXel(x, y, colorsys.hsv_to_rgb(self.hueSlider['value'], (x / 100.0) + ToontownGlobals.COLOR_SATURATION_MIN, (y / 100.0) + ToontownGlobals.COLOR_VALUE_MIN))
         
         texture = Texture()

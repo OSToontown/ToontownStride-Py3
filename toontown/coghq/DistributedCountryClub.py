@@ -5,6 +5,7 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.showbase import BulletinBoardWatcher
 from otp.otpbase import OTPGlobals
 from toontown.toonbase import ToontownGlobals
+from toontown.toonbase.ToontownGlobals import *
 from toontown.toonbase import TTLocalizer
 from toontown.coghq import CountryClubLayout
 from toontown.coghq import DistributedCountryClubRoom
@@ -25,6 +26,7 @@ class DistributedCountryClub(DistributedObject.DistributedObject):
         self.lastCamEnterRoom = 0
         self.titleColor = (1, 1, 1, 1)
         self.titleText = OnscreenText.OnscreenText('', fg=self.titleColor, shadow=(0, 0, 0, 1), font=ToontownGlobals.getSignFont(), pos=(0, -0.5), scale=0.1, drawOrder=0, mayChange=1)
+        self.smallTitleText = OnscreenText.OnscreenText('', fg=self.titleColor, font=getSuitFont(), pos=(0.65, 0.9), scale=0.08, drawOrder=0, mayChange=1, bg=(0.5, 0.5, 0.5, 0.5), align=TextNode.ARight)
         self.titleSequence = None
         return
 
@@ -84,6 +86,7 @@ class DistributedCountryClub(DistributedObject.DistributedObject):
         DistributedCountryClub.notify.debug('floorNum: %s' % num)
         self.floorNum = num
         self.layout = CountryClubLayout.CountryClubLayout(self.countryClubId, self.floorNum, self.layoutIndex)
+        self.smallTitleText.setText(TTLocalizer.CountryClubFloorTitle % (self.floorNum + 1))
 
     def setLayoutIndex(self, layoutIndex):
         self.layoutIndex = layoutIndex
@@ -223,7 +226,7 @@ class DistributedCountryClub(DistributedObject.DistributedObject):
         return
 
     def warpToRoom(self, roomId):
-        for i in xrange(len(self.rooms)):
+        for i in range(len(self.rooms)):
             room = self.rooms[i]
             if room.roomId == roomId:
                 break
@@ -243,6 +246,9 @@ class DistributedCountryClub(DistributedObject.DistributedObject):
         self.ignoreAll()
         for hallway in self.hallways:
             hallway.exit()
+        if self.smallTitleText:
+            self.smallTitleText.cleanup()
+            self.smallTitleText = None
 
         self.rooms = []
         for hallway in self.hallways:

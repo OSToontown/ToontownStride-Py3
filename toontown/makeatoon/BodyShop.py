@@ -2,11 +2,11 @@ from panda3d.core import *
 from toontown.toon import ToonDNA
 from direct.fsm import StateData
 from direct.gui.DirectGui import *
-from MakeAToonGlobals import *
+from .MakeAToonGlobals import *
 import random
 from toontown.toonbase import TTLocalizer
 from direct.directnotify import DirectNotifyGlobal
-import ShuffleButton
+from . import ShuffleButton
 
 class BodyShop(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('BodyShop')

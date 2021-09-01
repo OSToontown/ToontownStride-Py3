@@ -4,7 +4,7 @@ daemon:
 general:
     eventlogger: 127.0.0.1:7198
     dc_files:
-        - ../dclass/stride.dc
+        - ../dclass/toonisland.dc
 
 uberdogs:
     - class: ClientServicesManager
@@ -33,7 +33,7 @@ messagedirector:
 roles:
     - type: clientagent
       bind: 0.0.0.0:7699
-      version: "stride-dev"
+      version: "Live-1.0.0"
       client:
         relocate: true
         add_interest: enabled

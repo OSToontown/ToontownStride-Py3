@@ -1,11 +1,11 @@
 from direct.interval.IntervalGlobal import *
-from BattleBase import *
-from BattleProps import *
+from .BattleBase import *
+from .BattleProps import *
 from direct.directnotify import DirectNotifyGlobal
 import random
 from direct.particles import ParticleEffect
-import BattleParticles
-import BattleProps
+from . import BattleParticles
+from . import BattleProps
 from toontown.toonbase import TTLocalizer
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieUtil')
 SUIT_LOSE_DURATION = 8.5
@@ -208,7 +208,7 @@ def virtualize(deathsuit):
     actorNode = deathsuit.find('**/__Actor_modelRoot')
     actorCollection = actorNode.findAllMatches('*')
     parts = ()
-    for thingIndex in xrange(0, actorCollection.getNumPaths()):
+    for thingIndex in range(0, actorCollection.getNumPaths()):
         thing = actorCollection[thingIndex]
         if thing.getName() not in ('joint_attachMeter', 'joint_nameTag', 'def_nameTag'):
             thing.setColorScale(1.0, 0.0, 0.0, 1.0)
@@ -262,8 +262,8 @@ def createSuitReviveTrack(suit, toon, battle, npcs = []):
     suitTrack.append(ActorInterval(suit, 'slip-forward', startTime=2.58))
     suitTrack.append(Func(suit.loop, 'neutral'))
     suitTrack.append(Func(suit.setHP, suit.getMaxHP()))
-    spinningSound = base.loadSfx('phase_3.5/audio/sfx/Cog_Death.ogg')
-    deathSound = base.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart_%s.ogg' % random.randint(1, 6))
+    spinningSound = base.loader.loadSfx('phase_3.5/audio/sfx/Cog_Death.ogg')
+    deathSound = base.loader.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart_%s.ogg' % random.randint(1, 6))
     deathSoundTrack = Sequence(Wait(0.8), SoundInterval(spinningSound, duration=1.2, startTime=1.5, volume=0.2), SoundInterval(spinningSound, duration=3.0, startTime=0.6, volume=0.8), SoundInterval(deathSound, volume=0.32))
     BattleParticles.loadParticles()
     smallGears = BattleParticles.createParticleEffect(file='gearExplosionSmall')
@@ -307,8 +307,8 @@ def createSuitDeathTrack(suit, toon, battle, npcs = []):
     suitTrack.append(Func(notify.debug, 'before removeDeathSuit'))
     suitTrack.append(Func(removeDeathSuit, suit, deathSuit, name='remove-death-suit'))
     suitTrack.append(Func(notify.debug, 'after removeDeathSuit'))
-    spinningSound = base.loadSfx('phase_3.5/audio/sfx/Cog_Death.ogg')
-    deathSound = base.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart_%s.ogg' % random.randint(1, 6))
+    spinningSound = base.loader.loadSfx('phase_3.5/audio/sfx/Cog_Death.ogg')
+    deathSound = base.loader.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart_%s.ogg' % random.randint(1, 6))
     deathSoundTrack = Sequence(Wait(0.8), SoundInterval(spinningSound, duration=1.2, startTime=1.5, volume=0.2), SoundInterval(spinningSound, duration=3.0, startTime=0.6, volume=0.8), SoundInterval(deathSound, volume=0.32))
     BattleParticles.loadParticles()
     smallGears = BattleParticles.createParticleEffect(file='gearExplosionSmall')
@@ -595,7 +595,7 @@ def calcAvgSuitPos(throw):
     battle = throw['battle']
     avgSuitPos = Point3(0, 0, 0)
     numTargets = len(throw['target'])
-    for i in xrange(numTargets):
+    for i in range(numTargets):
         suit = throw['target'][i]['suit']
         avgSuitPos += suit.getPos(battle)
 

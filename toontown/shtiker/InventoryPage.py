@@ -1,4 +1,4 @@
-import ShtikerPage, DisguisePage
+from . import ShtikerPage, DisguisePage
 from toontown.toonbase import ToontownBattleGlobals
 from direct.gui.DirectGui import *
 from panda3d.core import *
@@ -44,7 +44,7 @@ class InventoryPage(ShtikerPage.ShtikerPage):
         if self.meritBars:
             return
 
-        for i in xrange(len(SuitDNA.suitDepts)):
+        for i in range(len(SuitDNA.suitDepts)):
             self.meritBars.append(DirectWaitBar(parent=self.trackInfo, relief=DGG.SUNKEN, frameSize=(-1, 1, -0.15, 0.15),
              borderWidth=(0.02, 0.02), scale=0.65, text='', text_scale=0.18, text_fg=(0, 0, 0, 1), text_align=TextNode.ALeft,
              text_pos=(-0.96, -0.05), pos=(0, 0, 0.365 - 0.24 * i), frameColor=(DisguisePage.DeptColors[i][0] * 0.7,
@@ -67,7 +67,7 @@ class InventoryPage(ShtikerPage.ShtikerPage):
         if not self.meritBars:
             return
 
-        for i in xrange(len(self.meritBars)):
+        for i in range(len(self.meritBars)):
             meritBar = self.meritBars[i]
 
             if CogDisguiseGlobals.isSuitComplete(base.localAvatar.cogParts, i):
@@ -79,7 +79,7 @@ class InventoryPage(ShtikerPage.ShtikerPage):
         if not self.meritBars:
             return
 
-        for i in xrange(len(self.meritBars)):
+        for i in range(len(self.meritBars)):
             meritBar = self.meritBars[i]
 
             if CogDisguiseGlobals.isSuitComplete(base.localAvatar.cogParts, i):

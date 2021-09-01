@@ -6,7 +6,7 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-import ToonBlitzGlobals
+from . import ToonBlitzGlobals
 from otp.otpbase import OTPGlobals
 from direct.task.Task import Task
 from toontown.minigame import TwoDBattleMgr
@@ -64,7 +64,7 @@ class TwoDGameToonSD(StateData.StateData):
             self.toon.pose(anim, 0)
 
         self.battleMgr = TwoDBattleMgr.TwoDBattleMgr(self.game, self.toon)
-        self.squishSound = base.loadSfx('phase_3.5/audio/dial/AV_' + self.toon.style.getAnimal() + '_exclaim.ogg')
+        self.squishSound = base.loader.loadSfx('phase_3.5/audio/dial/AV_' + self.toon.style.getAnimal() + '_exclaim.ogg')
 
     def destroy(self):
         if self.fallBackIval != None:

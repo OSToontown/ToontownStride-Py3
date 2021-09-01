@@ -3,8 +3,8 @@ from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 from panda3d.core import *
 
-import DistributedAnimatedProp
-from KnockKnockJokes import *
+from . import DistributedAnimatedProp
+from .KnockKnockJokes import *
 from toontown.distributed import DelayDelete
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
@@ -58,8 +58,8 @@ class DistributedKnockKnockDoor(DistributedAnimatedProp.DistributedAnimatedProp)
     def knockKnockTrack(self, avatar, duration):
         if avatar is None:
             return
-        self.rimshot = base.loadSfx('phase_5/audio/sfx/AA_heal_telljoke.ogg')
-        self.knockSfx = base.loadSfx('phase_5/audio/sfx/GUI_knock_%s.ogg' % random.randint(1, 4))
+        self.rimshot = base.loader.loadSfx('phase_5/audio/sfx/AA_heal_telljoke.ogg')
+        self.knockSfx = base.loader.loadSfx('phase_5/audio/sfx/GUI_knock_%s.ogg' % random.randint(1, 4))
         joke = KnockKnockJokes[self.propId % len(KnockKnockJokes)]
         place = base.cr.playGame.getPlace()
         doorName = TTLocalizer.DoorNametag

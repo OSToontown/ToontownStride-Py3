@@ -1,6 +1,6 @@
 from direct.gui.DirectGui import *
 from panda3d.core import *
-import Quests
+from . import Quests
 from toontown.toon import NPCToons
 from toontown.toon import ToonHead
 from toontown.toon import ToonDNA
@@ -162,7 +162,7 @@ class QuestPoster(DirectFrame):
         elevatorModel = loader.loadModel('phase_4/models/modules/elevator')
         floorIndicator = [None] * 5
         npc = elevatorModel.findAllMatches('**/floor_light_?;+s')
-        for i in xrange(npc.getNumPaths()):
+        for i in range(npc.getNumPaths()):
             np = npc.getPath(i)
             floor = int(np.getName()[-1:]) - 1
             floorIndicator[floor] = np
@@ -354,7 +354,7 @@ class QuestPoster(DirectFrame):
         auxTextPos = Vec3(0, 0, 0.12)
         headlineString = quest.getHeadlineString()
         objectiveStrings = quest.getObjectiveStrings()
-        captions = map(string.capwords, quest.getObjectiveStrings())
+        captions = list(map(string.capwords, quest.getObjectiveStrings()))
         imageColor = Vec4(*self.colors['white'])
         self.teleportButton.hide()
         
@@ -527,7 +527,7 @@ class QuestPoster(DirectFrame):
                     infoText = TTLocalizer.QuestPosterAnywhere
         elif quest.getType() == Quests.RescueQuest:
             frameBgColor = 'blue'
-            lIconGeom = self.createNpcToonHead(random.choice(NPCToons.HQnpcFriends.keys()))
+            lIconGeom = self.createNpcToonHead(random.choice(list(NPCToons.HQnpcFriends.keys())))
             lIconGeomScale = 0.13
             infoText = quest.getLocationName().strip()
         elif quest.getType() == Quests.FriendQuest:

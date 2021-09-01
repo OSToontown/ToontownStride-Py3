@@ -1,5 +1,5 @@
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
-import HolidayGlobals
+from . import HolidayGlobals
 import datetime
 
 class DistributedEffectMgrAI(DistributedObjectAI):

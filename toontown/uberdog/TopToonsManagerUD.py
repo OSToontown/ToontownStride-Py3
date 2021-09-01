@@ -4,11 +4,11 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.fsm.FSM import FSM
 from direct.showbase.DirectObject import *
 from toontown.toon.ToonDNA import ToonDNA, getSpeciesName
-import TopToonsGlobals
+from . import TopToonsGlobals
 import time, random
 import datetime, json
-import urllib
-import urllib2
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
 import hashlib
 
 def getCurrentMonth():
@@ -64,8 +64,8 @@ class SiteUploadFSM(FSM):
         self.mgr = mgr
         self.data = {}
         self.month = data.pop('month')
-        for category, avs in data.items():
-            self.data[int(category)] = sorted(avs.items(), key=lambda x: -x[1])
+        for category, avs in list(data.items()):
+            self.data[int(category)] = sorted(list(avs.items()), key=lambda x: -x[1])
 
         self.__cat = TopToonsGlobals._CAT_BEGIN
         self.__responses = {}
@@ -85,7 +85,7 @@ class SiteUploadFSM(FSM):
         self.data[self.__cat] = remaining
             
         self.__waiting = {int(x[0]): x[1] for x in selected}
-        avIds = self.__waiting.keys()
+        avIds = list(self.__waiting.keys())
         for avId in avIds:
             if avId in self.__cache:
                 self.__responses[avId] = (self.__cache[avId][0], self.__waiting.pop(avId))
@@ -138,7 +138,7 @@ class SiteUploadFSM(FSM):
             self.demand('QueryAvatars')
             
     def enterSortResults(self):
-        responses = sorted(self.__responses.values(), key=lambda x: -x[-1])
+        responses = sorted(list(self.__responses.values()), key=lambda x: -x[-1])
         self.__dataToSend[self.__cat] = responses
         self.__cache.update(self.__responses)
         self.__failures = -1
@@ -154,7 +154,7 @@ class SiteUploadFSM(FSM):
         self.__dataToSend['month'] = self.month
         
         (success, error), res = self.post(self.URL, self.__dataToSend)
-        print (success, error), res
+        print((success, error), res)
         
     def post(self, url, data):
         headers = {'User-Agent' : 'TTUberAgent'}
@@ -162,16 +162,16 @@ class SiteUploadFSM(FSM):
         innerData = json.dumps(data)
         hmac = hashlib.sha512(innerData + self.mgr.air.getApiKey()).hexdigest() # XXX PROVIDE THE KEY HERE
         
-        data = 'data=%s' % urllib.quote(innerData)
-        data += '&hmac=%s' % urllib.quote(hmac)
+        data = 'data=%s' % urllib.parse.quote(innerData)
+        data += '&hmac=%s' % urllib.parse.quote(hmac)
         
         success = True
         error = None
         res = {}
         
         try:
-            req = urllib2.Request(url, data, headers)
-            res = json.loads(urllib2.urlopen(req).read())
+            req = urllib.request.Request(url, data, headers)
+            res = json.loads(urllib.request.urlopen(req).read())
             success = res['success']
             error = res.get('error')
             

@@ -171,10 +171,10 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         planeNode.setCollideMask(ToontownGlobals.PieBitmask)
         self.geom.attachNewNode(planeNode)
         self.geom.reparentTo(render)
-        self.promotionMusic = base.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
-        self.betweenPhaseMusic = base.loadMusic('phase_9/audio/bgm/encntr_toon_winning.ogg')
-        self.phaseTwoMusic = base.loadMusic('phase_12/audio/bgm/BossBot_CEO_v1.ogg')
-        self.phaseFourMusic = base.loadMusic('phase_12/audio/bgm/BossBot_CEO_v2.ogg')
+        self.promotionMusic = base.loader.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
+        self.betweenPhaseMusic = base.loader.loadMusic('phase_9/audio/bgm/encntr_toon_winning.ogg')
+        self.phaseTwoMusic = base.loader.loadMusic('phase_12/audio/bgm/BossBot_CEO_v1.ogg')
+        self.phaseFourMusic = base.loader.loadMusic('phase_12/audio/bgm/BossBot_CEO_v2.ogg')
         self.pickupFoodSfx = loader.loadSfx('phase_6/audio/sfx/SZ_MM_gliss.ogg')
         self.explodeSfx = loader.loadSfx('phase_4/audio/sfx/firework_distance_02.ogg')
 
@@ -184,7 +184,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
             if belt:
                 belt.cleanup()
 
-        for spot in self.golfSpots.values():
+        for spot in list(self.golfSpots.values()):
             if spot:
                 spot.cleanup()
 
@@ -396,7 +396,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         radius = 9
         numToons = len(self.involvedToons)
         center = (numToons - 1) / 2.0
-        for i in xrange(numToons):
+        for i in range(numToons):
             toon = self.cr.doId2do.get(self.involvedToons[i])
             if toon:
                 angle = 90 - 25 * (i - center)
@@ -547,7 +547,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
     def calcNotDeadList(self):
         if not self.notDeadList:
             self.notDeadList = []
-            for tableIndex in xrange(len(self.tables)):
+            for tableIndex in range(len(self.tables)):
                 table = self.tables[tableIndex]
                 tableInfo = table.getNotDeadInfo()
                 self.notDeadList += tableInfo
@@ -585,7 +585,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
     def enterBattleThree(self):
         self.cleanupIntervals()
         self.calcNotDeadList()
-        for table in self.tables.values():
+        for table in list(self.tables.values()):
             table.setAllDinersToSitNeutral()
 
         self.battleANode.setPosHpr(*ToontownGlobals.DinerBattleAPosHpr)
@@ -666,6 +666,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
             toon = self.cr.doId2do.get(toonId)
             if toon:
                 toon.takeOffSuit()
+        self.bossHealthBar.initialize()
 
         self.bossClub.reparentTo(self.rightHandJoint)
         self.generateHealthBar()
@@ -683,6 +684,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.sendUpdate('ballHitBoss', [bossDamage])
 
     def setBossDamage(self, bossDamage, recoverRate, recoverStartTime):
+        self.bossHealthBar.update(self.bossMaxDamage - bossDamage, self.bossMaxDamage)
         if bossDamage > self.bossDamage:
             delta = bossDamage - self.bossDamage
             self.flashRed()
@@ -860,7 +862,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         radius = 7
         numToons = len(self.involvedToons)
         center = (numToons - 1) / 2.0
-        for i in xrange(numToons):
+        for i in range(numToons):
             toon = self.cr.doId2do.get(self.involvedToons[i])
             if toon:
                 angle = 90 - 15 * (i - center)
@@ -888,7 +890,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
             if not self.twoFaced:
                 neutral = 'Ff_neutral'
             gearTrack = Parallel()
-            for i in xrange(4):
+            for i in range(4):
                 nodeName = '%s-%s' % (str(i), globalClock.getFrameTime())
                 node = gearRoot.attachNewNode(nodeName)
                 node.hide()
@@ -1238,7 +1240,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
 
     def getToonTableIndex(self, toonId):
         tableIndex = -1
-        for table in self.tables.values():
+        for table in list(self.tables.values()):
             if table.avId == toonId:
                 tableIndex = table.index
                 break
@@ -1247,7 +1249,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
 
     def getToonGolfSpotIndex(self, toonId):
         golfSpotIndex = -1
-        for golfSpot in self.golfSpots.values():
+        for golfSpot in list(self.golfSpots.values()):
             if golfSpot.avId == toonId:
                 golfSpotIndex = golfSpot.index
                 break
@@ -1301,7 +1303,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
             if not self.twoFaced:
                 neutral = 'Ff_neutral'
             gearTrack = Parallel()
-            for i in xrange(5):
+            for i in range(5):
                 nodeName = '%s-%s' % (str(i), globalClock.getFrameTime())
                 node = gearRoot.attachNewNode(nodeName)
                 node.hide()
@@ -1390,7 +1392,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
             ballLaunch.reparentTo(gearRoot)
             ballLaunch.setPos(self.BallLaunchOffset)
             gearTrack = Parallel()
-            for i in xrange(5):
+            for i in range(5):
                 nodeName = '%s-%s' % (str(i), globalClock.getFrameTime())
                 node = gearRoot.attachNewNode(nodeName)
                 node.hide()
@@ -1503,7 +1505,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
             if not self.twoFaced:
                 neutral = 'Ff_neutral'
             gearTrack = Parallel()
-            for i in xrange(4):
+            for i in range(4):
                 node = gearRoot.attachNewNode(str(i))
                 node.hide()
                 node.setPos(0, 5.85, 4.0)

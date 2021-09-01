@@ -1,5 +1,5 @@
 from toontown.toonbase import ToontownGlobals
-from DistributedFurnitureItemAI import DistributedFurnitureItemAI
+from .DistributedFurnitureItemAI import DistributedFurnitureItemAI
 import time
 
 class DistributedTVAI(DistributedFurnitureItemAI):

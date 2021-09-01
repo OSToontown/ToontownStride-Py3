@@ -4,10 +4,10 @@ for hi in HoleInfo:
     if 'optionalMovers' in HoleInfo[hi] and type(HoleInfo[hi]['optionalMovers'])==type(0):blockerNum=HoleInfo[hi]['optionalMovers'];HoleInfo[hi]['optionalMovers']=(blockerNum,)
 DistanceToBeInHole=0.75;CoursesCompleted=0;CoursesUnderPar=1;HoleInOneShots=2;EagleOrBetterShots=3;BirdieOrBetterShots=4;ParOrBetterShots=5;MultiPlayerCoursesCompleted=6;CourseZeroWins=7;CourseOneWins=8;CourseTwoWins=9;TwoPlayerWins=10;ThreePlayerWins=11;FourPlayerWins=12;MaxHistoryIndex=9;NumHistory=MaxHistoryIndex+1;CalcOtherHoleBest = False;CalcOtherCourseBest = False;TrophyRequirements={CoursesCompleted:(4,40,400),CoursesUnderPar:(1,10,100),HoleInOneShots:(1,10,100),EagleOrBetterShots:(2,20,200),BirdieOrBetterShots:(3,30,300),ParOrBetterShots:(4,40,400),MultiPlayerCoursesCompleted:(6,60,600),CourseZeroWins:(1,10,100),CourseOneWins:(1,10,100),CourseTwoWins:(1,10,100)};PlayerColors=[(0.925,0.168,0.168,1),(0.13,0.59,0.973,1),(0.973,0.809,0.129,1),(0.598,0.402,0.875,1)];KartColors=[[[0,50],[90,255],[0,85]],[[160,255],[-15,15],[0,120]],[[160,255],[0,110],[0,110]]];NumTrophies=0
 for key in TrophyRequirements:NumTrophies += len(TrophyRequirements[key])
-NumCups=3;TrophiesPerCup=NumTrophies/NumCups
+NumCups=3;TrophiesPerCup=NumTrophies//NumCups
 def calcTrophyListFromHistory(h):
     rv,hi=[],0
-    for ti in xrange(NumHistory):
+    for ti in range(NumHistory):
         r=TrophyRequirements[ti]
         for an in r:
             if h[hi]>=an:rv.append(True)
@@ -18,7 +18,7 @@ def calcCupListFromHistory(h):
     rv,tl,nt=[False]*NumCups,calcTrophyListFromHistory(h),0
     for gt in tl:
         if gt:nt+=1
-    for ci in xrange(len(rv)):
+    for ci in range(len(rv)):
         tr=(ci+1)*TrophiesPerCup
         if tr<=nt:rv[ci]=True
     return rv

@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
-from DistributedLawnDecorAI import DistributedLawnDecorAI
+from .DistributedLawnDecorAI import DistributedLawnDecorAI
 
-import GardenGlobals
+from . import GardenGlobals
 import time
 
 FOUR_DAYS = 86400 * 4

@@ -44,8 +44,8 @@ class DistributedMMPiano(DistributedObject.DistributedObject):
         self.accept('enter' + self.whitePartNodeName, self.__handleOnFloor)
         self.accept('exit' + self.whitePartNodeName, self.__handleOffFloor)
         self.accept('entermid_fishpond', self.__handleChangeDirectionButton)
-        self.speedUpSound = base.loadSfx('phase_6/audio/sfx/SZ_MM_gliss.ogg')
-        self.changeDirectionSound = base.loadSfx('phase_6/audio/sfx/SZ_MM_cymbal.ogg')
+        self.speedUpSound = base.loader.loadSfx('phase_6/audio/sfx/SZ_MM_gliss.ogg')
+        self.changeDirectionSound = base.loader.loadSfx('phase_6/audio/sfx/SZ_MM_cymbal.ogg')
         self.__setupSpin()
         return task.done
 

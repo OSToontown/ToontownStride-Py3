@@ -6,12 +6,12 @@ from panda3d.core import *
 import random
 import types
 import math
-import AccessoryGlobals
-import Motion
-import TTEmote
-import ToonDNA
-import LaffMeter
-from ToonHead import *
+from . import AccessoryGlobals
+from . import Motion
+from . import TTEmote
+from . import ToonDNA
+from . import LaffMeter
+from .ToonHead import *
 from otp.ai.MagicWordGlobal import *
 from otp.avatar import Avatar
 from otp.avatar import Emote
@@ -28,6 +28,7 @@ from otp.nametag.NametagGroup import *
 from toontown.suit import SuitDNA
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
+import importlib, functools
 
 def teleportDebug(requestStatus, msg, onlyIfToAv = True):
     if teleportNotify.getDebug():
@@ -179,16 +180,16 @@ TorsoDict = {
 def loadModels():
     global Preloaded
     if not Preloaded:
-        print 'Preloading avatars...'
+        print('Preloading avatars...')
 
-        for key in LegDict.keys():
+        for key in list(LegDict.keys()):
             fileRoot = LegDict[key]
 
             Preloaded[fileRoot+'-1000'] = loader.loadModel('phase_3' + fileRoot + '1000')
             Preloaded[fileRoot+'-500'] = loader.loadModel('phase_3' + fileRoot + '500')
             Preloaded[fileRoot+'-250'] = loader.loadModel('phase_3' + fileRoot + '250')
 
-        for key in TorsoDict.keys():
+        for key in list(TorsoDict.keys()):
             fileRoot = TorsoDict[key]
 
             Preloaded[fileRoot+'-1000'] = loader.loadModel('phase_3' + fileRoot + '1000')
@@ -260,7 +261,7 @@ def loadPhaseAnims(phaseStr = 'phase_3', loadFlag = 1):
         animList = Phase12AnimList
     else:
         self.notify.error('Unknown phase string %s' % phaseStr)
-    for key in LegDict.keys():
+    for key in list(LegDict.keys()):
         for anim in animList:
             if loadFlag:
                 pass
@@ -268,7 +269,7 @@ def loadPhaseAnims(phaseStr = 'phase_3', loadFlag = 1):
                 if base.localAvatar.style.legs == key:
                     base.localAvatar.unloadAnims([anim[0]], 'legs', None)
 
-    for key in TorsoDict.keys():
+    for key in list(TorsoDict.keys()):
         for anim in animList:
             if loadFlag:
                 pass
@@ -276,7 +277,7 @@ def loadPhaseAnims(phaseStr = 'phase_3', loadFlag = 1):
                 if base.localAvatar.style.torso == key:
                     base.localAvatar.unloadAnims([anim[0]], 'torso', None)
 
-    for key in HeadDict.keys():
+    for key in list(HeadDict.keys()):
         if key.find('d') >= 0:
             for anim in animList:
                 if loadFlag:
@@ -306,19 +307,19 @@ def compileGlobalAnimList():
      'phase_12']
     for animList in phaseList:
         phaseStr = phaseStrList[phaseList.index(animList)]
-        for key in LegDict.keys():
+        for key in list(LegDict.keys()):
             LegsAnimDict.setdefault(key, {})
             for anim in animList:
                 file = phaseStr + LegDict[key] + anim[1]
                 LegsAnimDict[key][anim[0]] = file
 
-        for key in TorsoDict.keys():
+        for key in list(TorsoDict.keys()):
             TorsoAnimDict.setdefault(key, {})
             for anim in animList:
                 file = phaseStr + TorsoDict[key] + anim[1]
                 TorsoAnimDict[key][anim[0]] = file
 
-        for key in HeadDict.keys():
+        for key in list(HeadDict.keys()):
             if key.find('d') >= 0:
                 HeadAnimDict.setdefault(key, {})
                 for anim in animList:
@@ -331,47 +332,47 @@ def loadDialog():
     DogDialogueFiles = ('AV_dog_short', 'AV_dog_med', 'AV_dog_long', 'AV_dog_question', 'AV_dog_exclaim', 'AV_dog_howl')
     global DogDialogueArray
     for file in DogDialogueFiles:
-        DogDialogueArray.append(base.loadSfx(loadPath + file + '.ogg'))
+        DogDialogueArray.append(base.loader.loadSfx(loadPath + file + '.ogg'))
 
     catDialogueFiles = ('AV_cat_short', 'AV_cat_med', 'AV_cat_long', 'AV_cat_question', 'AV_cat_exclaim', 'AV_cat_howl')
     global CatDialogueArray
     for file in catDialogueFiles:
-        CatDialogueArray.append(base.loadSfx(loadPath + file + '.ogg'))
+        CatDialogueArray.append(base.loader.loadSfx(loadPath + file + '.ogg'))
 
     horseDialogueFiles = ('AV_horse_short', 'AV_horse_med', 'AV_horse_long', 'AV_horse_question', 'AV_horse_exclaim', 'AV_horse_howl')
     global HorseDialogueArray
     for file in horseDialogueFiles:
-        HorseDialogueArray.append(base.loadSfx(loadPath + file + '.ogg'))
+        HorseDialogueArray.append(base.loader.loadSfx(loadPath + file + '.ogg'))
 
     rabbitDialogueFiles = ('AV_rabbit_short', 'AV_rabbit_med', 'AV_rabbit_long', 'AV_rabbit_question', 'AV_rabbit_exclaim', 'AV_rabbit_howl')
     global RabbitDialogueArray
     for file in rabbitDialogueFiles:
-        RabbitDialogueArray.append(base.loadSfx(loadPath + file + '.ogg'))
+        RabbitDialogueArray.append(base.loader.loadSfx(loadPath + file + '.ogg'))
 
     mouseDialogueFiles = ('AV_mouse_short', 'AV_mouse_med', 'AV_mouse_long', 'AV_mouse_question', 'AV_mouse_exclaim', 'AV_mouse_howl')
     global MouseDialogueArray
     for file in mouseDialogueFiles:
-        MouseDialogueArray.append(base.loadSfx(loadPath + file + '.ogg'))
+        MouseDialogueArray.append(base.loader.loadSfx(loadPath + file + '.ogg'))
 
     duckDialogueFiles = ('AV_duck_short', 'AV_duck_med', 'AV_duck_long', 'AV_duck_question', 'AV_duck_exclaim', 'AV_duck_howl')
     global DuckDialogueArray
     for file in duckDialogueFiles:
-        DuckDialogueArray.append(base.loadSfx(loadPath + file + '.ogg'))
+        DuckDialogueArray.append(base.loader.loadSfx(loadPath + file + '.ogg'))
 
     monkeyDialogueFiles = ('AV_monkey_short', 'AV_monkey_med', 'AV_monkey_long', 'AV_monkey_question', 'AV_monkey_exclaim', 'AV_monkey_howl')
     global MonkeyDialogueArray
     for file in monkeyDialogueFiles:
-        MonkeyDialogueArray.append(base.loadSfx(loadPath + file + '.ogg'))
+        MonkeyDialogueArray.append(base.loader.loadSfx(loadPath + file + '.ogg'))
 
     bearDialogueFiles = ('AV_bear_short', 'AV_bear_med', 'AV_bear_long', 'AV_bear_question', 'AV_bear_exclaim', 'AV_bear_howl')
     global BearDialogueArray
     for file in bearDialogueFiles:
-        BearDialogueArray.append(base.loadSfx(loadPath + file + '.ogg'))
+        BearDialogueArray.append(base.loader.loadSfx(loadPath + file + '.ogg'))
 
     pigDialogueFiles = ('AV_pig_short', 'AV_pig_med', 'AV_pig_long', 'AV_pig_question', 'AV_pig_exclaim', 'AV_pig_howl')
     global PigDialogueArray
     for file in pigDialogueFiles:
-        PigDialogueArray.append(base.loadSfx(loadPath + file + '.ogg'))
+        PigDialogueArray.append(base.loader.loadSfx(loadPath + file + '.ogg'))
 
 def unloadDialog():
     global CatDialogueArray
@@ -452,8 +453,8 @@ class Toon(Avatar.Avatar, ToonHead):
         self.setTag('pieCode', str(ToontownGlobals.PieCodeToon))
         self.setFont(ToontownGlobals.getToonFont())
         self.nametag.setSpeechFont(ToontownGlobals.getToonFont())
-        self.soundChatBubble = base.loadSfx('phase_3/audio/sfx/GUI_balloon_popup.ogg')
-        self.swimRunSfx = base.loadSfx('phase_4/audio/sfx/AV_footstep_runloop_water.ogg')
+        self.soundChatBubble = base.loader.loadSfx('phase_3/audio/sfx/GUI_balloon_popup.ogg')
+        self.swimRunSfx = base.loader.loadSfx('phase_4/audio/sfx/AV_footstep_runloop_water.ogg')
         self.swimRunLooping = False
         self.animFSM = ClassicFSM('Toon', [State('off', self.enterOff, self.exitOff),
          State('neutral', self.enterNeutral, self.exitNeutral),
@@ -836,7 +837,7 @@ class Toon(Avatar.Avatar, ToonHead):
         # Bugfix: Until upstream Panda3D includes this, we have to do it here.
         if 'head' in self._Actor__commonBundleHandles:
             del self._Actor__commonBundleHandles['head']
-        if headStyle > -1:
+        if len(headStyle) > -1:
             self.style.head = headStyle
         self.generateToonHead(copy)
         self.generateToonColor()
@@ -968,7 +969,7 @@ class Toon(Avatar.Avatar, ToonHead):
                 sleeves.setTexture(sleeveTex, 1)
                 sleeves.setColor(sleeveColor)
                 bottoms = thisPart.findAllMatches('**/torso-bot')
-                for bottomNum in xrange(0, bottoms.getNumPaths()):
+                for bottomNum in range(0, bottoms.getNumPaths()):
                     bottom = bottoms.getPath(bottomNum)
                     bottom.setTexture(bottomTex, 1)
                     bottom.setColor(bottomColor)
@@ -1004,7 +1005,7 @@ class Toon(Avatar.Avatar, ToonHead):
                         tex.setMagfilter(Texture.FTLinear)
                         hatGeom.setTexture(tex, 1)
                 if fromRTM:
-                    reload(AccessoryGlobals)
+                    importlib.reload(AccessoryGlobals)
                 transOffset = None
                 if AccessoryGlobals.ExtendedHatTransTable.get(hat[0]):
                     transOffset = AccessoryGlobals.ExtendedHatTransTable[hat[0]].get(self.style.head[:2])
@@ -1049,7 +1050,7 @@ class Toon(Avatar.Avatar, ToonHead):
                         tex.setMagfilter(Texture.FTLinear)
                         glassesGeom.setTexture(tex, 1)
                 if fromRTM:
-                    reload(AccessoryGlobals)
+                    importlib.reload(AccessoryGlobals)
                 transOffset = None
                 if AccessoryGlobals.ExtendedGlassesTransTable.get(glasses[0]):
                     transOffset = AccessoryGlobals.ExtendedGlassesTransTable[glasses[0]].get(self.style.head[:2])
@@ -1091,7 +1092,7 @@ class Toon(Avatar.Avatar, ToonHead):
                         tex.setMagfilter(Texture.FTLinear)
                         geom.setTexture(tex, 1)
                 if fromRTM:
-                    reload(AccessoryGlobals)
+                    importlib.reload(AccessoryGlobals)
                 transOffset = None
                 if AccessoryGlobals.ExtendedBackpackTransTable.get(backpack[0]):
                     transOffset = AccessoryGlobals.ExtendedBackpackTransTable[backpack[0]].get(self.style.torso[:1])
@@ -1174,7 +1175,7 @@ class Toon(Avatar.Avatar, ToonHead):
 
     def getDialogueArray(self):
         if base.cr.newsManager.isHolidayRunning(ToontownGlobals.APRIL_TOONS_WEEK):
-            animalType = random.choice(TTLocalizer.AnimalToSpecies.keys())
+            animalType = random.choice(list(TTLocalizer.AnimalToSpecies.keys()))
         else:
             animalType = self.style.getType()
         if animalType == 'dog':
@@ -1252,14 +1253,14 @@ class Toon(Avatar.Avatar, ToonHead):
             self.lerpLookAt(Point3(x, 1.5, y), blink=1)
             return
         nodePathList = []
-        for id, obj in self.cr.doId2do.items():
+        for id, obj in list(self.cr.doId2do.items()):
             if hasattr(obj, 'getStareAtNodeAndOffset') and obj != self:
                 node, offset = obj.getStareAtNodeAndOffset()
                 if node.getY(self) > 0.0:
                     nodePathList.append((node, offset))
 
         if nodePathList:
-            nodePathList.sort(lambda x, y: cmp(x[0].getDistance(self), y[0].getDistance(self)))
+            nodePathList.sort() #key=functools.cmp_to_key(x[0].getDistance(self), y[0].getDistance(self)))
             if len(nodePathList) >= 2:
                 if self.randGen.random() < 0.9:
                     chosenNodePath = nodePathList[0]
@@ -1737,7 +1738,7 @@ class Toon(Avatar.Avatar, ToonHead):
 
     def getSoundTeleport(self):
         if not self.soundTeleport:
-            self.soundTeleport = base.loadSfx('phase_3.5/audio/sfx/AV_teleport.ogg')
+            self.soundTeleport = base.loader.loadSfx('phase_3.5/audio/sfx/AV_teleport.ogg')
         return self.soundTeleport
 
     def getTeleportOutTrack(self, autoFinishTrack = 1):
@@ -2187,11 +2188,11 @@ class Toon(Avatar.Avatar, ToonHead):
             for partName, pieceNames in pieces:
                 part = self.getPart(partName, lodName)
                 if part:
-                    if type(pieceNames) == types.StringType:
+                    if type(pieceNames) == bytes:
                         pieceNames = (pieceNames,)
                     for pieceName in pieceNames:
                         npc = part.findAllMatches('**/%s;+s' % pieceName)
-                        for i in xrange(npc.getNumPaths()):
+                        for i in range(npc.getNumPaths()):
                             results.append(npc[i])
 
         return results
@@ -2232,7 +2233,7 @@ class Toon(Avatar.Avatar, ToonHead):
         if scale == None:
             scale = ToontownGlobals.toonHeadScales[self.style.getAnimal()]
         track = Parallel()
-        for hi in xrange(self.headParts.getNumPaths()):
+        for hi in range(self.headParts.getNumPaths()):
             head = self.headParts[hi]
             track.append(LerpScaleInterval(head, lerpTime, scale, blendType='easeInOut'))
 
@@ -2245,7 +2246,7 @@ class Toon(Avatar.Avatar, ToonHead):
         else:
             invScale = 1.0 / scale
         track = Parallel()
-        for li in xrange(self.legsParts.getNumPaths()):
+        for li in range(self.legsParts.getNumPaths()):
             legs = self.legsParts[li]
             torso = self.torsoParts[li]
             track.append(LerpScaleInterval(legs, lerpTime, scale, blendType='easeInOut'))
@@ -2343,10 +2344,10 @@ class Toon(Avatar.Avatar, ToonHead):
 
             def hideParts():
                 self.notify.debug('HidePaths')
-                for hi in xrange(self.headParts.getNumPaths()):
+                for hi in range(self.headParts.getNumPaths()):
                     head = self.headParts[hi]
                     parts = head.getChildren()
-                    for pi in xrange(parts.getNumPaths()):
+                    for pi in range(parts.getNumPaths()):
                         p = parts[pi]
                         if not p.isHidden():
                             p.hide()
@@ -2363,10 +2364,10 @@ class Toon(Avatar.Avatar, ToonHead):
 
             def showHiddenParts():
                 self.notify.debug('ShowHiddenPaths')
-                for hi in xrange(self.headParts.getNumPaths()):
+                for hi in range(self.headParts.getNumPaths()):
                     head = self.headParts[hi]
                     parts = head.getChildren()
-                    for pi in xrange(parts.getNumPaths()):
+                    for pi in range(parts.getNumPaths()):
                         p = parts[pi]
                         if not self.snowMen.hasPath(p) and p.getTag('snowman') == 'enabled':
                             p.show()
@@ -2504,7 +2505,7 @@ class Toon(Avatar.Avatar, ToonHead):
 
     def setPartsAdd(self, parts):
         actorCollection = parts
-        for thingIndex in xrange(0, actorCollection.getNumPaths()):
+        for thingIndex in range(0, actorCollection.getNumPaths()):
             thing = actorCollection[thingIndex]
             if thing.getName() not in ('joint_attachMeter', 'joint_nameTag'):
                 thing.setAttrib(ColorBlendAttrib.make(ColorBlendAttrib.MAdd))
@@ -2513,7 +2514,7 @@ class Toon(Avatar.Avatar, ToonHead):
 
     def setPartsNormal(self, parts, alpha = 0):
         actorCollection = parts
-        for thingIndex in xrange(0, actorCollection.getNumPaths()):
+        for thingIndex in range(0, actorCollection.getNumPaths()):
             thing = actorCollection[thingIndex]
             if thing.getName() not in ('joint_attachMeter', 'joint_nameTag'):
                 thing.setAttrib(ColorBlendAttrib.make(ColorBlendAttrib.MNone))
@@ -2740,9 +2741,9 @@ class Toon(Avatar.Avatar, ToonHead):
                 self.stopTrackAnimToSpeed()
                 self.startTrackAnimToSpeed()
             self.controlManager.disableAvatarJump()
-            indices = range(OTPLocalizer.SCMenuCommonCogIndices[0], OTPLocalizer.SCMenuCommonCogIndices[1] + 1)
+            indices = list(range(OTPLocalizer.SCMenuCommonCogIndices[0], OTPLocalizer.SCMenuCommonCogIndices[1] + 1))
             customIndices = OTPLocalizer.SCMenuCustomCogIndices[suitType]
-            indices += range(customIndices[0], customIndices[1] + 1)
+            indices += list(range(customIndices[0], customIndices[1] + 1))
             self.chatMgr.chatInputSpeedChat.addCogMenu(indices)
         self.suit.loop('neutral')
         self.isDisguised = 1
@@ -3132,7 +3133,7 @@ def headMeter(create=True):
     """
     Create or remove the head meter.
     """
-    for av in base.cr.doId2do.values():
+    for av in list(base.cr.doId2do.values()):
         if isinstance(av, Toon):
             av.createHeadMeter() if create else av.removeHeadMeter()
 
@@ -3141,6 +3142,6 @@ def partyHat(create=True):
     """
     Create or remove the party hat.
     """
-    for av in base.cr.doId2do.values():
+    for av in list(base.cr.doId2do.values()):
         if isinstance(av, Toon):
             av.setPartyHat() if create else av.removePartyHat()

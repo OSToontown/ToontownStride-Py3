@@ -3,7 +3,7 @@ from panda3d.core import *
 from otp.nametag.NametagFloat3d import NametagFloat3d
 from otp.nametag.Nametag import Nametag
 from toontown.toonbase.ToonBaseGlobal import *
-from DistributedMinigame import *
+from .DistributedMinigame import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 from direct.fsm import ClassicFSM, State
@@ -11,12 +11,12 @@ from direct.fsm import State
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import ToontownTimer
 from direct.task.Task import Task
-import Trajectory
+from . import Trajectory
 import math
 from toontown.toon import ToonHead
 from toontown.effects import Splash
 from toontown.effects import DustCloud
-import CannonGameGlobals
+from . import CannonGameGlobals
 from direct.gui.DirectGui import *
 from toontown.toonbase import TTLocalizer
 LAND_TIME = 2
@@ -112,15 +112,15 @@ class DistributedCannonGame(DistributedMinigame):
         self.jarImage.reparentTo(hidden)
         self.rewardPanel = DirectLabel(parent=hidden, relief=None, pos=(-0.173, 0.0, -0.55), scale=0.65, text='', text_scale=0.2, text_fg=(0.95, 0.95, 0, 1), text_pos=(0, -.13), text_font=ToontownGlobals.getSignFont(), image=self.jarImage)
         self.rewardPanelTitle = DirectLabel(parent=self.rewardPanel, relief=None, pos=(0, 0, 0.06), scale=0.08, text=TTLocalizer.CannonGameReward, text_fg=(0.95, 0.95, 0, 1), text_shadow=(0, 0, 0, 1))
-        self.music = base.loadMusic('phase_4/audio/bgm/MG_cannon_game_tug.ogg')
-        self.sndCannonMove = base.loadSfx('phase_4/audio/sfx/MG_cannon_adjust.ogg')
-        self.sndCannonFire = base.loadSfx('phase_4/audio/sfx/MG_cannon_fire_alt.ogg')
-        self.sndHitGround = base.loadSfx('phase_4/audio/sfx/MG_cannon_hit_dirt.ogg')
-        self.sndHitTower = base.loadSfx('phase_4/audio/sfx/MG_cannon_hit_tower.ogg')
-        self.sndHitWater = base.loadSfx('phase_4/audio/sfx/MG_cannon_splash.ogg')
-        self.sndWhizz = base.loadSfx('phase_4/audio/sfx/MG_cannon_whizz.ogg')
-        self.sndWin = base.loadSfx('phase_4/audio/sfx/MG_win.ogg')
-        self.sndRewardTick = base.loadSfx('phase_3.5/audio/sfx/tick_counter.ogg')
+        self.music = base.loader.loadMusic('phase_4/audio/bgm/MG_cannon_game_tug.ogg')
+        self.sndCannonMove = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_adjust.ogg')
+        self.sndCannonFire = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_fire_alt.ogg')
+        self.sndHitGround = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_hit_dirt.ogg')
+        self.sndHitTower = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_hit_tower.ogg')
+        self.sndHitWater = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_splash.ogg')
+        self.sndWhizz = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_whizz.ogg')
+        self.sndWin = base.loader.loadSfx('phase_4/audio/sfx/MG_win.ogg')
+        self.sndRewardTick = base.loader.loadSfx('phase_3.5/audio/sfx/tick_counter.ogg')
         guiModel = 'phase_4/models/gui/cannon_game_gui'
         cannonGui = loader.loadModel(guiModel)
         self.aimPad = DirectFrame(image=cannonGui.find('**/CannonFire_PAD'), relief=None, pos=(0.7, 0, -0.553333), scale=0.8)
@@ -190,7 +190,7 @@ class DistributedCannonGame(DistributedMinigame):
         del self.downButton
         del self.leftButton
         del self.rightButton
-        for avId in self.toonHeadDict.keys():
+        for avId in list(self.toonHeadDict.keys()):
             head = self.toonHeadDict[avId]
             head.stopBlink()
             head.stopLookAroundNow()
@@ -202,12 +202,12 @@ class DistributedCannonGame(DistributedMinigame):
             head.delete()
 
         del self.toonHeadDict
-        for model in self.toonModelDict.values():
+        for model in list(self.toonModelDict.values()):
             model.removeNode()
 
         del self.toonModelDict
         del self.toonScaleDict
-        for interval in self.toonIntervalDict.values():
+        for interval in list(self.toonIntervalDict.values()):
             interval.finish()
 
         del self.toonIntervalDict
@@ -273,7 +273,7 @@ class DistributedCannonGame(DistributedMinigame):
 
     def getTowerPosition(self):
         yRange = TOWER_Y_RANGE
-        yMin = yRange * 0.3
+        yMin = int(yRange * 0.3)
         yMax = yRange
         if self.DEBUG_TOWER_RANGE:
             if self.DEBUG_TOWER_NEAR:
@@ -309,7 +309,7 @@ class DistributedCannonGame(DistributedMinigame):
             self.cannonDict[avId] = [cannon, barrel]
 
         numAvs = self.numPlayers
-        for i in xrange(numAvs):
+        for i in range(numAvs):
             avId = self.avIdList[i]
             self.cannonLocationDict[avId] = Point3(i * CANNON_X_SPACING - (numAvs - 1) * CANNON_X_SPACING / 2, CANNON_Y, CANNON_Z)
             if self.DEBUG_TOWER_RANGE:

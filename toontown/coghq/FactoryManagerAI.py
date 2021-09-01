@@ -1,6 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
-import DistributedMegaCorpAI
-import DistributedFactoryAI
+from . import DistributedFatalFactoryAI
+from . import DistributedFactoryAI
 from toontown.toonbase import ToontownGlobals
 from direct.showbase import DirectObject
 
@@ -20,7 +20,7 @@ class FactoryManagerAI(DirectObject.DirectObject):
         if FactoryManagerAI.factoryId is not None:
             factoryId = FactoryManagerAI.factoryId
         if entranceId == 2:
-            factory = DistributedMegaCorpAI.DistributedMegaCorpAI(self.air, factoryId, factoryZone, entranceId, players)
+            factory = DistributedFatalFactoryAI.DistributedFatalFactoryAI(self.air, factoryId, factoryZone, entranceId, players)
         else:
             factory = DistributedFactoryAI.DistributedFactoryAI(self.air, factoryId, factoryZone, entranceId, players)
         factory.generateWithRequired(factoryZone)

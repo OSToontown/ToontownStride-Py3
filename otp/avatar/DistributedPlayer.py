@@ -118,7 +118,7 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
         self.displayWhisper(aboutId, chatString, whisperType)
 
     def displayWhisper(self, fromId, chatString, whisperType):
-        print 'Whisper type %s from %s: %s' % (whisperType, fromId, chatString)
+        print('Whisper type %s from %s: %s' % (whisperType, fromId, chatString))
 
     def whisperSCTo(self, msgIndex, sendToId):
         messenger.send('wakeup')
@@ -194,10 +194,10 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
         self.displayTalkWhisper(avId, chat)
 
     def displayTalk(self, chat):
-        print 'Talk: %s' % chat
+        print('Talk: %s' % chat)
 
     def displayTalkWhisper(self, avId, chat):
-        print 'TalkWhisper from %s: %s' % (avId, chat)
+        print('TalkWhisper from %s: %s' % (avId, chat))
 
     def b_setSC(self, msgIndex):
         self.setSC(msgIndex)

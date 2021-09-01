@@ -2,7 +2,7 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.showbase import DirectObject
 from otp.chat.ChatGlobals import *
 from otp.nametag.NametagConstants import *
-import ChatUtil
+from . import ChatUtil
 
 class TalkAssistant(DirectObject.DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('TalkAssistant')

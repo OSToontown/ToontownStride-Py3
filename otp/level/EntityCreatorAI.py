@@ -1,7 +1,7 @@
-import EntityCreatorBase
-import LogicGate
-import LevelMgrAI
-import ZoneEntityAI
+from . import EntityCreatorBase
+from . import LogicGate
+from . import LevelMgrAI
+from . import ZoneEntityAI
 from direct.showbase.PythonUtil import Functor
 
 def createDistributedEntity(AIclass, level, entId, zoneId):

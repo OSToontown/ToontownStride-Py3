@@ -37,7 +37,7 @@ class CashbotHQAI(CogHQAI.CogHQAI):
             ToontownGlobals.CashbotMintIntB,
             ToontownGlobals.CashbotMintIntC
         )
-        for i in xrange(len(destZones)):
+        for i in range(len(destZones)):
             mintElevator = DistributedMintElevatorExtAI(
                 self.air, self.air.mintMgr, destZones[i])
             mintElevator.generateWithRequired(self.zoneId)

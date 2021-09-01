@@ -67,13 +67,13 @@ class Kart(NodePath, ShadowCaster.ShadowCaster):
             levelIn[0] = base.config.GetInt('lod1-in', 2500)
             levelIn[1] = base.config.GetInt('lod1-out', 0)
         self.toonSeat = NodePath('toonSeat')
-        for level in xrange(lodRequired):
+        for level in range(lodRequired):
             self.__createLODKart(level)
             self.LODnode.addSwitch(levelIn[level], levelOut[level])
 
         self.setScale(self.baseScale)
         self.flattenMedium()
-        for level in xrange(lodRequired):
+        for level in range(lodRequired):
             self.toonSeat = self.toonSeat.instanceTo(self.toonNode[level])
 
         self.LODpath.reparentTo(self.rotateNode)
@@ -112,8 +112,8 @@ class Kart(NodePath, ShadowCaster.ShadowCaster):
             self.setActiveShadow()
             self.dropShadow.setScale(1.3, 3, 1)
         kartType = self.kartDNA[KartDNA.bodyType]
-        self.kartStartSfx = base.loadSfx(self.SFX_KartStart % kartType)
-        self.kartLoopSfx = base.loadSfx(self.SFX_KartLoop % kartType)
+        self.kartStartSfx = base.loader.loadSfx(self.SFX_KartStart % kartType)
+        self.kartLoopSfx = base.loader.loadSfx(self.SFX_KartLoop % kartType)
         self.kartLoopSfx.setLoop()
 
     def __createLODKart(self, level):
@@ -133,7 +133,7 @@ class Kart(NodePath, ShadowCaster.ShadowCaster):
         self.toonNode[level].setPos(pos)
 
     def resetGeomPos(self):
-        for level in self.geom.keys():
+        for level in list(self.geom.keys()):
             self.geom[level].setPos(0, 0, 0.025)
 
     def __update(self):
@@ -153,7 +153,7 @@ class Kart(NodePath, ShadowCaster.ShadowCaster):
                     self.__applyDecals()
                     self.__applyAccessoryColor()
                 else:
-                    raise StandardError, 'Kart::__update - Has this method been called before generateKart?'
+                    raise Exception('Kart::__update - Has this method been called before generateKart?')
             elif field == KartDNA.bodyColor:
                 self.__applyBodyColor()
             elif field == KartDNA.accColor:
@@ -161,7 +161,7 @@ class Kart(NodePath, ShadowCaster.ShadowCaster):
             elif field == KartDNA.ebType:
                 if self.kartAccessories[KartDNA.ebType] != None:
                     name = self.kartAccessories[KartDNA.ebType].getName()
-                    for key in self.geom.keys():
+                    for key in list(self.geom.keys()):
                         self.geom[key].find('**/%s' % name).removeNode()
 
                     self.kartAccessories[KartDNA.ebType].removeNode()
@@ -170,7 +170,7 @@ class Kart(NodePath, ShadowCaster.ShadowCaster):
             elif field == KartDNA.spType:
                 if self.kartAccessories[KartDNA.spType] != None:
                     name = self.kartAccessories[KartDNA.spType].getName()
-                    for key in self.geom.keys():
+                    for key in list(self.geom.keys()):
                         self.geom[key].find('**/%s' % name).removeNode()
 
                     self.kartAccessories[KartDNA.spType].removeNode()
@@ -179,7 +179,7 @@ class Kart(NodePath, ShadowCaster.ShadowCaster):
             elif field == KartDNA.fwwType:
                 if self.kartAccessories[KartDNA.fwwType] != (None, None):
                     left, right = self.kartAccessories[KartDNA.fwwType]
-                    for key in self.geom.keys():
+                    for key in list(self.geom.keys()):
                         self.geom[key].find('**/%s' % left.getName()).removeNode()
                         self.geom[key].find('**/%s' % right.getName()).removeNode()
 
@@ -190,7 +190,7 @@ class Kart(NodePath, ShadowCaster.ShadowCaster):
             elif field == KartDNA.bwwType:
                 if self.kartAccessories[KartDNA.bwwType] != (None, None):
                     left, right = self.kartAccessories[KartDNA.bwwType]
-                    for key in self.geom.keys():
+                    for key in list(self.geom.keys()):
                         self.geom[key].find('**/%s' % left.getName()).removeNode()
                         self.geom[key].find('**/%s' % right.getName()).removeNode()
 
@@ -435,7 +435,7 @@ class Kart(NodePath, ShadowCaster.ShadowCaster):
 
     def setDNA(self, dna):
         if self.kartDNA != [-1] * getNumFields():
-            for field in xrange(len(self.kartDNA)):
+            for field in range(len(self.kartDNA)):
                 if dna[field] != self.kartDNA[field]:
                     self.updateDNAField(field, dna[field])
 

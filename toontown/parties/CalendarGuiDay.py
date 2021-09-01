@@ -136,7 +136,7 @@ class CalendarGuiDay(DirectFrame):
         except e:
             numItems = 0
 
-        if numItems <= self.scrollList.numItemsVisible:
+        if numItems <= self.scrollList["numItemsVisible"]:
             self.scrollList.incButton.hide()
             self.scrollList.decButton.hide()
         else:
@@ -154,7 +154,7 @@ class CalendarGuiDay(DirectFrame):
                     self.addPartyToScrollList(party)
 
         if self.filter == ToontownGlobals.CalendarFilterShowAll or self.filter == ToontownGlobals.CalendarFilterShowOnlyHolidays:
-            for id, holiday in HolidayGlobals.Holidays.iteritems():
+            for id, holiday in HolidayGlobals.Holidays.items():
                 title, description = TTLocalizer.HolidayNamesInCalendar[id]
 
                 if 'weekDay' in holiday:

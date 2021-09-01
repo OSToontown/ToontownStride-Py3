@@ -1,6 +1,6 @@
 from direct.particles.ParticleEffect import *
 from direct.directnotify import DirectNotifyGlobal
-import ParticleDefs
+from . import ParticleDefs
 
 notify = DirectNotifyGlobal.directNotify.newCategory('BattleParticles')
 TutorialParticleEffects = ('gearExplosionBig.ptf', 'gearExplosionSmall.ptf', 'gearExplosion.ptf')

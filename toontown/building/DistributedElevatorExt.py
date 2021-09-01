@@ -5,9 +5,9 @@ from direct.fsm import State
 from direct.interval.IntervalGlobal import *
 from panda3d.core import *
 
-import DistributedElevator
-from ElevatorConstants import *
-from ElevatorUtils import *
+from . import DistributedElevator
+from .ElevatorConstants import *
+from .ElevatorUtils import *
 from toontown.hood import ZoneUtil
 from otp.nametag.NametagGroup import NametagGroup
 from otp.nametag.Nametag import Nametag

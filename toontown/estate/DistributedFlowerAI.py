@@ -1,9 +1,9 @@
 from direct.directnotify import DirectNotifyGlobal
 from otp.ai.MagicWordGlobal import *
-from DistributedPlantBaseAI import DistributedPlantBaseAI
-from FlowerBase import FlowerBase
+from .DistributedPlantBaseAI import DistributedPlantBaseAI
+from .FlowerBase import FlowerBase
 
-import GardenGlobals
+from . import GardenGlobals
 import time
 
 ONE_DAY = 86400
@@ -42,7 +42,7 @@ class DistributedFlowerAI(DistributedPlantBaseAI, FlowerBase):
         self.update()
         
     def update(self):
-        mdata = map(list, self.mgr.data['flowers'])
+        mdata = list(map(list, self.mgr.data['flowers']))
         mdata[self.flowerIndex] = [self.getSpecies(), self.waterLevel, self.lastCheck, self.getGrowthLevel(), self.getVariety()]
         self.mgr.data['flowers'] = mdata
         self.mgr.update()
@@ -83,7 +83,7 @@ class DistributedFlowerAI(DistributedPlantBaseAI, FlowerBase):
             
             self.mgr.flowers.remove(self)
             
-            mdata = map(list, self.mgr.data['flowers'])
+            mdata = list(map(list, self.mgr.data['flowers']))
             mdata[self.flowerIndex] = self.mgr.getNullPlant()
             self.mgr.data['flowers'] = mdata
             self.mgr.update()

@@ -5,8 +5,8 @@ from direct.showbase import PythonUtil
 from toontown.toonbase import ToontownBattleGlobals
 from toontown.toontowngui import TTDialog
 from toontown.toonbase import TTLocalizer
-import GardenGlobals
-import HouseGlobals
+from . import GardenGlobals
+from . import HouseGlobals
 from direct.task import Task
 from panda3d.core import *
 from otp.otpbase import OTPGlobals
@@ -79,7 +79,7 @@ class DistributedGagTree(DistributedPlantBase.DistributedPlantBase):
         self.model.reparentTo(self.rotateNode)
         if self.isFruiting() and not self.isWilted():
             self.fruits = []
-            for i in xrange(1, self.maxFruit + 1):
+            for i in range(1, self.maxFruit + 1):
                 pos = self.model.find('**/locator' + str(i))
                 if pos and not pos.isEmpty():
                     fruit = self.prop.copyTo(self.model)
@@ -337,7 +337,7 @@ class DistributedGagTree(DistributedPlantBase.DistributedPlantBase):
         picker.traverse(render)
         if queue.getNumEntries() > 0:
             queue.sortEntries()
-            for index in xrange(queue.getNumEntries()):
+            for index in range(queue.getNumEntries()):
                 entry = queue.getEntry(index)
                 if DistributedLawnDecor.recurseParent(entry.getIntoNode(), 'terrain_DNARoot'):
                     self.signModel.wrtReparentTo(render)

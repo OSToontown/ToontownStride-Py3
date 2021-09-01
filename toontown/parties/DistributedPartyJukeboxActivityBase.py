@@ -123,7 +123,7 @@ class DistributedPartyJukeboxActivityBase(DistributedPartyActivity):
 
     def queuedSongsResponse(self, songInfoList, index):
         if self.gui.isLoaded():
-            for i in xrange(len(songInfoList)):
+            for i in range(len(songInfoList)):
                 songInfo = songInfoList[i]
                 self.__addSongToQueue(songInfo, isLocalQueue=index >= 0 and i == index)
 
@@ -166,7 +166,7 @@ class DistributedPartyJukeboxActivityBase(DistributedPartyActivity):
         return
 
     def __play(self, phase, filename, length):
-        self.music = base.loadMusic((MUSIC_PATH + '%s') % (phase, filename))
+        self.music = base.loader.loadMusic((MUSIC_PATH + '%s') % (phase, filename))
         if self.music:
             if self.__checkPartyValidity() and hasattr(base.cr.playGame.getPlace().loader, 'music') and base.cr.playGame.getPlace().loader.music:
                 base.cr.playGame.getPlace().loader.music.stop()

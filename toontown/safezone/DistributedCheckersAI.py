@@ -346,7 +346,7 @@ class DistributedCheckersAI(DistributedNodeAI):
             if self.checkLegalMove(firstSquare, secondSquare, moveType) == True:
                 return True
             else:
-                for x in xrange(len(moveList) - 1):
+                for x in range(len(moveList) - 1):
                     y = self.checkLegalJump(self.board.getSquare(moveList[x]), self.board.getSquare(moveList[x + 1]), moveType)
                     if y == False:
                         return False
@@ -355,7 +355,7 @@ class DistributedCheckersAI(DistributedNodeAI):
                     return False
 
         elif len(moveList) > 2:
-            for x in xrange(len(moveList) - 1):
+            for x in range(len(moveList) - 1):
                 y = self.checkLegalJump(self.board.getSquare(moveList[x]), self.board.getSquare(moveList[x + 1]), moveType)
                 if y == False:
                     return False
@@ -366,7 +366,7 @@ class DistributedCheckersAI(DistributedNodeAI):
 
 
     def makeMove(self, moveList):
-        for x in xrange(len(moveList) - 1):
+        for x in range(len(moveList) - 1):
             firstSquare = self.board.squareList[moveList[x]]
             secondSquare = self.board.squareList[moveList[x + 1]]
             if firstSquare.getNum() in secondSquare.getAdjacent():
@@ -489,7 +489,7 @@ class DistributedCheckersAI(DistributedNodeAI):
 
     def existsLegalJumpsFrom(self, index, peice):
         if peice == 'king':
-            for x in xrange(4):
+            for x in range(4):
                 if self.board.squareList[index].getAdjacent()[x] != None and self.board.squareList[index].getJumps()[x] != None:
                     adj = self.board.squareList[self.board.squareList[index].getAdjacent()[x]]
                     jump = self.board.squareList[self.board.squareList[index].getJumps()[x]]
@@ -564,7 +564,7 @@ class DistributedCheckersAI(DistributedNodeAI):
 
     def existsLegalJumpsFrom(self, index, peice):
         if peice == 'king':
-            for x in xrange(4):
+            for x in range(4):
                 if self.board.squareList[index].getAdjacent()[x] != None and self.board.squareList[index].getJumps()[x] != None:
                     adj = self.board.squareList[self.board.squareList[index].getAdjacent()[x]]
                     jump = self.board.squareList[self.board.squareList[index].getJumps()[x]]
@@ -615,7 +615,7 @@ class DistributedCheckersAI(DistributedNodeAI):
                 0,
                 3]
         if peice == 'king':
-            for x in xrange(4):
+            for x in range(4):
                 if firstSquare.getAdjacent()[x] != None:
                     if self.board.squareList[firstSquare.getAdjacent()[x]].getState() == 0:
                         return True

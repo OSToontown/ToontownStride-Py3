@@ -1,6 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
-import CannonGlobals
+from . import CannonGlobals
 
 class DistributedTargetAI(DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedTargetAI")

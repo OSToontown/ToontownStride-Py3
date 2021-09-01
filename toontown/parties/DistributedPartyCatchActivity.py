@@ -154,10 +154,10 @@ class DistributedPartyCatchActivity(DistributedPartyActivity, DistributedPartyCa
         self.dropObjModels = {}
         if loadModels:
             self.__loadDropModels()
-        self.sndGoodCatch = base.loadSfx('phase_4/audio/sfx/SZ_DD_treasure.ogg')
-        self.sndOof = base.loadSfx('phase_4/audio/sfx/MG_cannon_hit_dirt.ogg')
-        self.sndAnvilLand = base.loadSfx('phase_4/audio/sfx/AA_drop_anvil_miss.ogg')
-        self.sndPerfect = base.loadSfx('phase_4/audio/sfx/ring_perfect.ogg')
+        self.sndGoodCatch = base.loader.loadSfx('phase_4/audio/sfx/SZ_DD_treasure.ogg')
+        self.sndOof = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_hit_dirt.ogg')
+        self.sndAnvilLand = base.loader.loadSfx('phase_4/audio/sfx/AA_drop_anvil_miss.ogg')
+        self.sndPerfect = base.loader.loadSfx('phase_4/audio/sfx/ring_perfect.ogg')
         self.__textGen = TextNode('partyCatchActivity')
         self.__textGen.setFont(ToontownGlobals.getSignFont())
         self.__textGen.setAlign(TextNode.ACenter)
@@ -196,7 +196,7 @@ class DistributedPartyCatchActivity(DistributedPartyActivity, DistributedPartyCa
         self.stopDropTask()
         del self.activityFSM
         del self.__textGen
-        for avId in self.toonSDs.keys():
+        for avId in list(self.toonSDs.keys()):
             if avId in self.toonSDs:
                 toonSD = self.toonSDs[avId]
                 toonSD.unload()
@@ -207,7 +207,7 @@ class DistributedPartyCatchActivity(DistributedPartyActivity, DistributedPartyCa
         self.dropShadow.removeNode()
         del self.dropShadow
         base.cr.parentMgr.unregisterParent(self._avatarNodePathParentToken)
-        for model in self.dropObjModels.values():
+        for model in list(self.dropObjModels.values()):
             model.removeNode()
 
         del self.dropObjModels
@@ -380,7 +380,7 @@ class DistributedPartyCatchActivity(DistributedPartyActivity, DistributedPartyCa
          Toon.Toon(),
          Toon.Toon(),
          Toon.Toon()]
-        for i in xrange(len(self.posts)):
+        for i in range(len(self.posts)):
             tree = self.posts[i]
             tree.reparentTo(render)
             x = self.StageHalfWidth
@@ -401,10 +401,10 @@ class DistributedPartyCatchActivity(DistributedPartyActivity, DistributedPartyCa
     def showDropGrid(self):
         self.hideDropGrid()
         self.dropMarkers = []
-        for row in xrange(self.DropRows):
+        for row in range(self.DropRows):
             self.dropMarkers.append([])
             rowList = self.dropMarkers[row]
-            for column in xrange(self.DropColumns):
+            for column in range(self.DropColumns):
                 toon = Toon.Toon()
                 toon.setDNA(base.localAvatar.getStyle())
                 toon.reparentTo(self.root)
@@ -570,7 +570,7 @@ class DistributedPartyCatchActivity(DistributedPartyActivity, DistributedPartyCa
 
     def finishAllDropIntervals(self):
         if hasattr(self, 'dropIntervals'):
-            for dropInterval in self.dropIntervals.values():
+            for dropInterval in list(self.dropIntervals.values()):
                 dropInterval.finish()
 
     def setGenerations(self, generations):
@@ -583,7 +583,7 @@ class DistributedPartyCatchActivity(DistributedPartyActivity, DistributedPartyCa
             gen2nt[id] = timestamp32
             gen2np[id] = numPlayers
 
-        ids = self._id2gen.keys()
+        ids = list(self._id2gen.keys())
         for id in ids:
             if id not in gen2t:
                 self._removeGeneration(id)
@@ -799,7 +799,7 @@ class DistributedPartyCatchActivity(DistributedPartyActivity, DistributedPartyCa
             del self.finishIval
         if base.localAvatar.doId in self.toonIds:
             self.takeLocalAvatarOutOfActivity()
-        for ival in self.dropIntervals.values():
+        for ival in list(self.dropIntervals.values()):
             ival.finish()
 
         del self.dropIntervals

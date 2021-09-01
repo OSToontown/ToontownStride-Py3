@@ -3,7 +3,7 @@ from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
 from toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
-import DistributedDoorEntityBase
+from . import DistributedDoorEntityBase
 from direct.fsm import FourState
 from direct.fsm import ClassicFSM
 from otp.level import DistributedEntity
@@ -37,7 +37,7 @@ class DistributedDoorEntityLock(DistributedDoorEntityBase.LockBase, FourState.Fo
         if self.track is not None:
             self.track.pause()
             self.track = None
-        for i in self.states.keys():
+        for i in list(self.states.keys()):
             del self.states[i]
 
         self.states = []
@@ -57,7 +57,7 @@ class DistributedDoorEntityLock(DistributedDoorEntityBase.LockBase, FourState.Fo
     def enterState1(self):
         FourState.FourState.enterState1(self)
         beat = self.duration * 0.05
-        slideSfx = base.loadSfx('phase_9/audio/sfx/CHQ_FACT_arms_retracting.ogg')
+        slideSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_arms_retracting.ogg')
         self.setTrack(Sequence(Wait(beat * 2.0), Parallel(SoundInterval(slideSfx, node=self.door.node, volume=0.8), Sequence(ShowInterval(self.leftNodePath), ShowInterval(self.rightNodePath), Parallel(LerpPosInterval(nodePath=self.leftNodePath, other=self.lockedNodePath, duration=beat * 16.0, pos=Vec3(0.0), blendType='easeIn'), LerpPosInterval(nodePath=self.rightNodePath, other=self.lockedNodePath, duration=beat * 16.0, pos=Vec3(0.0), blendType='easeIn')), HideInterval(self.leftNodePath), HideInterval(self.rightNodePath), ShowInterval(self.lockedNodePath)))))
 
     def enterState2(self):
@@ -72,8 +72,8 @@ class DistributedDoorEntityLock(DistributedDoorEntityBase.LockBase, FourState.Fo
 
     def enterState3(self):
         FourState.FourState.enterState3(self)
-        unlockSfx = base.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_unlock.ogg')
-        slideSfx = base.loadSfx('phase_9/audio/sfx/CHQ_FACT_arms_retracting.ogg')
+        unlockSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_unlock.ogg')
+        slideSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_arms_retracting.ogg')
         beat = self.duration * 0.05
         self.setTrack(Sequence(Wait(beat * 2), Parallel(SoundInterval(unlockSfx, node=self.door.node, volume=0.8), SoundInterval(slideSfx, node=self.door.node, volume=0.8), Sequence(HideInterval(self.lockedNodePath), ShowInterval(self.leftNodePath), ShowInterval(self.rightNodePath), Parallel(LerpPosInterval(nodePath=self.leftNodePath, other=self.lockedNodePath, duration=beat * 16, pos=self.slideLeft, blendType='easeOut'), LerpPosInterval(nodePath=self.rightNodePath, other=self.lockedNodePath, duration=beat * 16, pos=self.slideRight, blendType='easeOut')), HideInterval(self.leftNodePath), HideInterval(self.rightNodePath)))))
 
@@ -139,7 +139,7 @@ class DistributedDoorEntity(DistributedDoorEntityBase.DistributedDoorEntityBase,
 
         self.locks = []
         self.fsm = None
-        for i in self.states.keys():
+        for i in list(self.states.keys()):
             del self.states[i]
 
         self.states = []
@@ -254,7 +254,7 @@ class DistributedDoorEntity(DistributedDoorEntityBase.DistributedDoorEntityBase,
 
             door = doorway.find('doortop')
             if door.isEmpty():
-                print 'doortop hack'
+                print('doortop hack')
                 door = doorway.attachNewNode('doortop')
                 doorway.find('doortop1').reparentTo(door)
                 doorway.find('doortop2').reparentTo(door)
@@ -282,7 +282,7 @@ class DistributedDoorEntity(DistributedDoorEntityBase.DistributedDoorEntityBase,
 
             door = doorway.find('doorbottom')
             if door.isEmpty():
-                print 'doorbottom hack'
+                print('doorbottom hack')
                 door = doorway.attachNewNode('doorbottom')
                 doorway.find('doorbottom1').reparentTo(door)
                 doorway.find('doorbottom2').reparentTo(door)
@@ -359,15 +359,15 @@ class DistributedDoorEntity(DistributedDoorEntityBase.DistributedDoorEntityBase,
     def openInnerDoors(self):
         if not self.level.complexVis() or self.isOuterDoorOpen and (not self.isVisBlocker or self.isVisReady):
             duration = self.duration
-            slideSfx = base.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_sliding.ogg')
-            finalSfx = base.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_final.ogg')
+            slideSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_sliding.ogg')
+            finalSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_final.ogg')
             moveDistance = 8.0
             self.setInnerDoorsTrack(Sequence(Func(self.leftInnerCollision.unstash), Func(self.rightInnerCollision.unstash), Parallel(SoundInterval(slideSfx, node=self.node, duration=duration * 0.4, volume=0.8), LerpPosInterval(nodePath=self.doorLeft, duration=duration * 0.4, pos=Vec3(-moveDistance, 0.0, 0.0), blendType='easeOut'), LerpPosInterval(nodePath=self.doorRight, duration=duration * 0.4, pos=Vec3(moveDistance, 0.0, 0.0), blendType='easeOut'), Sequence(Wait(duration * 0.375), SoundInterval(finalSfx, node=self.node, duration=1.0, volume=0.8))), Func(self.doorLeft.stash), Func(self.doorRight.stash)))
 
     def closeInnerDoors(self):
         duration = self.duration
-        slideSfx = base.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_sliding.ogg')
-        finalSfx = base.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_final.ogg')
+        slideSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_sliding.ogg')
+        finalSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_final.ogg')
         moveDistance = 8.0
         self.setInnerDoorsTrack(Sequence(Func(self.doorLeft.unstash), Func(self.doorRight.unstash), Parallel(SoundInterval(slideSfx, node=self.node, duration=duration * 0.4, volume=0.8), LerpPosInterval(nodePath=self.doorLeft, duration=duration * 0.4, pos=Vec3(0.0), blendType='easeIn'), LerpPosInterval(nodePath=self.doorRight, duration=duration * 0.4, pos=Vec3(0.0), blendType='easeIn'), Sequence(Wait(duration * 0.375), SoundInterval(finalSfx, node=self.node, duration=1.0, volume=0.8))), Func(self.leftInnerCollision.stash), Func(self.rightInnerCollision.stash)))
 
@@ -383,8 +383,8 @@ class DistributedDoorEntity(DistributedDoorEntityBase.DistributedDoorEntityBase,
         else:
             self.okToUnblockVis()
         duration = self.duration
-        slideSfx = base.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_sliding.ogg')
-        finalSfx = base.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_final.ogg')
+        slideSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_sliding.ogg')
+        finalSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_final.ogg')
         moveDistance = 8.0
         self.setTrack(Sequence(Wait(duration * 0.1), Parallel(SoundInterval(slideSfx, node=self.node, duration=duration * 0.4, volume=0.8), LerpPosInterval(nodePath=self.doorTop, duration=duration * 0.4, pos=Vec3(0.0, 0.0, moveDistance), blendType='easeOut'), LerpPosInterval(nodePath=self.doorBottom, duration=duration * 0.4, pos=Vec3(0.0, 0.0, -moveDistance), blendType='easeOut'), Sequence(Wait(duration * 0.375), SoundInterval(finalSfx, node=self.node, duration=1.0, volume=0.8))), Func(self.doorTop.stash), Func(self.doorBottom.stash), Func(self.setisOuterDoorOpen, 1), Func(self.openInnerDoors)))
 
@@ -412,8 +412,8 @@ class DistributedDoorEntity(DistributedDoorEntityBase.DistributedDoorEntityBase,
     def enterState3(self):
         FourState.FourState.enterState3(self)
         duration = self.duration
-        slideSfx = base.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_sliding.ogg')
-        finalSfx = base.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_final.ogg')
+        slideSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_sliding.ogg')
+        finalSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_final.ogg')
         self.setTrack(Sequence(Wait(duration * 0.1),
                                Func(self.closeInnerDoors),
                                Wait(duration * 0.4),

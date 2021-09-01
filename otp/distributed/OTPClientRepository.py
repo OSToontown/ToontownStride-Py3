@@ -18,7 +18,7 @@ from otp.otpbase import OTPGlobals, OTPLocalizer
 from otp.otpgui import OTPDialog
 from otp.nametag.NametagConstants import *
 import sys, time, types, random
-import __builtin__
+import builtins
 
 class OTPClientRepository(ClientRepositoryBase):
     notify = directNotify.newCategory('OTPClientRepository')
@@ -215,7 +215,7 @@ class OTPClientRepository(ClientRepositoryBase):
         self.dclassesByNumber = {}
         self.hashVal = 0
 
-        if isinstance(dcFileNames, types.StringTypes):
+        if isinstance(dcFileNames, (str,)):
             # If we were given a single string, make it a list.
             dcFileNames = [dcFileNames]
 
@@ -224,7 +224,7 @@ class OTPClientRepository(ClientRepositoryBase):
             try:
                 # For Nirai
                 readResult = dcFile.read(dcStream, '__dc__')
-                del __builtin__.dcStream
+                del builtins.dcStream
 
             except NameError:
                 readResult = dcFile.readAll()
@@ -244,7 +244,7 @@ class OTPClientRepository(ClientRepositoryBase):
         self.hashVal = dcFile.getHash()
 
         # Now import all of the modules required by the DC file.
-        for n in xrange(dcFile.getNumImportModules()):
+        for n in range(dcFile.getNumImportModules()):
             moduleName = dcFile.getImportModule(n)[:]
 
             # Maybe the module name is represented as "moduleName/AI".
@@ -257,7 +257,7 @@ class OTPClientRepository(ClientRepositoryBase):
                 moduleName += 'AI'
 
             importSymbols = []
-            for i in xrange(dcFile.getNumImportSymbols(n)):
+            for i in range(dcFile.getNumImportSymbols(n)):
                 symbolName = dcFile.getImportSymbol(n, i)
 
                 # Maybe the symbol name is represented as "symbolName/AI".
@@ -275,7 +275,7 @@ class OTPClientRepository(ClientRepositoryBase):
 
         # Now get the class definition for the classes named in the DC
         # file.
-        for i in xrange(dcFile.getNumClasses()):
+        for i in range(dcFile.getNumClasses()):
             dclass = dcFile.getClass(i)
             number = dclass.getNumber()
             className = dclass.getName() + self.dcSuffix
@@ -300,7 +300,7 @@ class OTPClientRepository(ClientRepositoryBase):
                         continue
                     classDef = getattr(classDef, className)
 
-                if type(classDef) != types.ClassType and type(classDef) != types.TypeType:
+                if type(classDef) != type and type(classDef) != type:
                     self.notify.error("Symbol %s is not a class name." % (className))
                 else:
                     dclass.setClassDef(classDef)
@@ -316,7 +316,7 @@ class OTPClientRepository(ClientRepositoryBase):
             ownerImportSymbols = {}
 
             # Now import all of the modules required by the DC file.
-            for n in xrange(dcFile.getNumImportModules()):
+            for n in range(dcFile.getNumImportModules()):
                 moduleName = dcFile.getImportModule(n)
 
                 # Maybe the module name is represented as "moduleName/AI".
@@ -327,7 +327,7 @@ class OTPClientRepository(ClientRepositoryBase):
                     moduleName = moduleName + ownerDcSuffix
 
                 importSymbols = []
-                for i in xrange(dcFile.getNumImportSymbols(n)):
+                for i in range(dcFile.getNumImportSymbols(n)):
                     symbolName = dcFile.getImportSymbol(n, i)
 
                     # Check for the OV suffix
@@ -343,7 +343,7 @@ class OTPClientRepository(ClientRepositoryBase):
 
             # Now get the class definition for the owner classes named
             # in the DC file.
-            for i in xrange(dcFile.getNumClasses()):
+            for i in range(dcFile.getNumClasses()):
                 dclass = dcFile.getClass(i)
                 if ((dclass.getName()+ownerDcSuffix) in ownerImportSymbols):
                     number = dclass.getNumber()
@@ -416,7 +416,7 @@ class OTPClientRepository(ClientRepositoryBase):
         whisper = WhisperPopup(message, OTPGlobals.getInterfaceFont(), WTSystem)
         whisper.manage(base.marginManager)
         if not self.systemMessageSfx:
-            self.systemMessageSfx = base.loadSfx('phase_3/audio/sfx/clock03.ogg')
+            self.systemMessageSfx = base.loader.loadSfx('phase_3/audio/sfx/clock03.ogg')
         if self.systemMessageSfx:
             base.playSfx(self.systemMessageSfx)
 
@@ -534,7 +534,7 @@ class OTPClientRepository(ClientRepositoryBase):
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def _shardsAreReady(self):
         maxPop = config.GetInt('shard-mid-pop', 300)
-        for shard in self.activeDistrictMap.values():
+        for shard in list(self.activeDistrictMap.values()):
             if shard.available:
                 if shard.avatarCount < maxPop:
                     return True
@@ -890,7 +890,7 @@ class OTPClientRepository(ClientRepositoryBase):
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def _removeAllOV(self):
-        ownerDoIds = self.doId2ownerView.keys()
+        ownerDoIds = list(self.doId2ownerView.keys())
         for doId in ownerDoIds:
             self.disableDoId(doId, ownerView=True)
 
@@ -1007,7 +1007,7 @@ class OTPClientRepository(ClientRepositoryBase):
 
     def handlePlayGame(self, msgType, di):
         if self.notify.getDebug():
-            self.notify.debug('handle play game got message type: ' + `msgType`)
+            self.notify.debug('handle play game got message type: ' + repr(msgType))
         if self.__recordObjectMessage(msgType, di):
             return
         if msgType == CLIENT_ENTER_OBJECT_REQUIRED:
@@ -1051,11 +1051,11 @@ class OTPClientRepository(ClientRepositoryBase):
         preferred = settings.get('preferredShard', None)
         
         if preferred:
-            for shard in self.activeDistrictMap.values():
+            for shard in list(self.activeDistrictMap.values()):
                 if shard.available and shard.name == preferred and shard.avatarCount < maxPop:
                     return shard
 
-        for shard in self.activeDistrictMap.values():
+        for shard in list(self.activeDistrictMap.values()):
             if shard.available and shard.avatarCount < maxPop:
                 district = shard
                 maxPop = district.avatarCount
@@ -1080,16 +1080,16 @@ class OTPClientRepository(ClientRepositoryBase):
             return 0
 
     def listActiveShards(self):
-        list = []
+        _list = []
 
-        for s in self.activeDistrictMap.values():
+        for s in list(self.activeDistrictMap.values()):
             if s.available:
-                list.append((s.doId, s.name, s.avatarCount, s.invasionStatus, s.groupAvCount))
+                _list.append((s.doId, s.name, s.avatarCount, s.invasionStatus, s.groupAvCount))
 
-        return list
+        return _list
 
     def getPlayerAvatars(self):
-        return [i for i in self.doId2do.values() if isinstance(i, DistributedPlayer)]
+        return [i for i in list(self.doId2do.values()) if isinstance(i, DistributedPlayer)]
 
     def queryObjectField(self, dclassName, fieldName, doId, context = 0):
         dclass = self.dclassesByName.get(dclassName)
@@ -1262,7 +1262,7 @@ class OTPClientRepository(ClientRepositoryBase):
 
         # Decide whether we should add this to the interest's pending
         # generates, or process it right away:
-        for handle, interest in self._interests.items():
+        for handle, interest in list(self._interests.items()):
             if parentId != interest.parentId:
                 continue
 

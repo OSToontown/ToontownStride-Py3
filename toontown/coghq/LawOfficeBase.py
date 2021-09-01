@@ -1,4 +1,4 @@
-import FactorySpecs
+from . import FactorySpecs
 from otp.level import LevelSpec
 from toontown.toonbase import ToontownGlobals
 

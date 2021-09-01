@@ -3,7 +3,7 @@ from toontown.catalog.CatalogAccessoryItemGlobals import *
 from toontown.toonbase import ToontownGlobals, TTLocalizer
 from toontown.toon import ToonDNA
 from toontown.quest import Quests
-from DistributedFurnitureItemAI import DistributedFurnitureItemAI
+from .DistributedFurnitureItemAI import DistributedFurnitureItemAI
 import random, time
 
 RANDOM_PRIZES = [ToontownGlobals.CRATE_BEANS] * 10 + [ToontownGlobals.CRATE_BUFFS] * 5 + [ToontownGlobals.CRATE_NAMETAGS] * 10 + [ToontownGlobals.CRATE_EMOTES] * 10 + [ToontownGlobals.CRATE_CLOTHING] * 30 + [ToontownGlobals.CRATE_ACCESSORIES] * 35
@@ -46,7 +46,7 @@ class DistributedRewardCrateAI(DistributedFurnitureItemAI):
             buff[0](buffId, buff[1:]).sendRewardAI(av)
             self.sendUpdateToAvatarId(av.doId, 'useKeyResponse', [ToontownGlobals.CRATE_BUFFS, buffId])
         elif prizeType == ToontownGlobals.CRATE_NAMETAGS:
-            allNametags = xrange(len(TTLocalizer.NametagFonts))
+            allNametags = range(len(TTLocalizer.NametagFonts))
             playerNametags = av.nametagStyles
             remainingNametags = [nametag for nametag in allNametags if nametag not in playerNametags]
 
@@ -80,7 +80,7 @@ class DistributedRewardCrateAI(DistributedFurnitureItemAI):
             av.addToDeliverySchedule(item)
             self.sendUpdateToAvatarId(av.doId, 'useKeyResponse', [ToontownGlobals.CRATE_EMOTES, 0])
         elif prizeType == ToontownGlobals.CRATE_CLOTHING:
-            clothing = CatalogClothingItem.ClothingTypes.keys()
+            clothing = list(CatalogClothingItem.ClothingTypes.keys())
             random.shuffle(clothing)
             
             for id in clothing:
@@ -91,7 +91,7 @@ class DistributedRewardCrateAI(DistributedFurnitureItemAI):
                     self.sendUpdateToAvatarId(av.doId, 'useKeyResponse', [ToontownGlobals.CRATE_CLOTHING, 0])
                     return
         elif prizeType == ToontownGlobals.CRATE_ACCESSORIES:
-            accessories = AccessoryTypes.keys()
+            accessories = list(AccessoryTypes.keys())
             random.shuffle(accessories)
             
             for id in accessories:

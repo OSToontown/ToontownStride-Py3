@@ -29,25 +29,25 @@ ExpandFeetPerSec = 5
 ScoreCountUpRate = 0.15
 ShowScoresDuration = 4.0
 NumTreasures = {
- ToontownGlobals.ToontownCentral: 2,
- ToontownGlobals.DonaldsDock: 2,
- ToontownGlobals.DaisyGardens: 2,
+ ToontownGlobals.ToonIslandCentral: 2,
+ ToontownGlobals.RainbowRise: 2,
+ ToontownGlobals.DaisyGarden: 2,
  ToontownGlobals.MinniesMelodyland: 2,
  ToontownGlobals.TheBrrrgh: 1,
  ToontownGlobals.DonaldsDreamland: 1
 }
 NumPenalties = {
- ToontownGlobals.ToontownCentral: 0,
- ToontownGlobals.DonaldsDock: 1,
- ToontownGlobals.DaisyGardens: 1,
+ ToontownGlobals.ToonIslandCentral: 0,
+ ToontownGlobals.RainbowRise: 1,
+ ToontownGlobals.DaisyGarden: 1,
  ToontownGlobals.MinniesMelodyland: 1,
  ToontownGlobals.TheBrrrgh: 2,
  ToontownGlobals.DonaldsDreamland: 2
 }
 Obstacles = {
- ToontownGlobals.ToontownCentral: (),
- ToontownGlobals.DonaldsDock: ((0, 0),),
- ToontownGlobals.DaisyGardens: ((MinWall[0] / 2, 0), (MaxWall[0] / 2, 0)),
+ ToontownGlobals.ToonIslandCentral: (),
+ ToontownGlobals.RainbowRise: ((0, 0),),
+ ToontownGlobals.DaisyGarden: ((MinWall[0] / 2, 0), (MaxWall[0] / 2, 0)),
  ToontownGlobals.MinniesMelodyland: ((0, MinWall[1] / 2), (0, MaxWall[1] / 2)),
  ToontownGlobals.TheBrrrgh: ((MinWall[0] / 2, 0),
                              (MaxWall[0] / 2, 0),
@@ -59,9 +59,9 @@ Obstacles = {
                                     (MaxWall[0] / 2, MaxWall[1] / 2))
 }
 ObstacleShapes = {
- ToontownGlobals.ToontownCentral: True,
- ToontownGlobals.DonaldsDock: True,
- ToontownGlobals.DaisyGardens: True,
+ ToontownGlobals.ToonIslandCentral: True,
+ ToontownGlobals.RainbowRise: True,
+ ToontownGlobals.DaisyGarden: True,
  ToontownGlobals.MinniesMelodyland: True,
  ToontownGlobals.TheBrrrgh: False,
  ToontownGlobals.DonaldsDreamland: False

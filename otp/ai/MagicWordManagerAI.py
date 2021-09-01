@@ -1,6 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from otp.ai.MagicWordGlobal import *
+from toontown.toon.DistributedToonAI import DistributedToonAI
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.MsgTypes import *
 
@@ -11,7 +12,7 @@ class MagicWordManagerAI(DistributedObjectAI):
         invokerId = self.air.getAvatarIdFromSender()
         invoker = self.air.doId2do.get(invokerId)
 
-        if not 'DistributedToonAI' in str(self.air.doId2do.get(targetId)):
+        if not isinstance(self.air.doId2do.get(targetId), DistributedToonAI):
             self.sendUpdateToAvatarId(invokerId, 'sendMagicWordResponse', ['Target is not a toon object!'])
             return
 

@@ -2,7 +2,8 @@ from direct.showbase.ShowBase import ShowBase
 from otp.ai.MagicWordGlobal import *
 from otp.chat import WhiteList, WhiteListData, SequenceListData
 from pandac.PandaModules import Camera, TPLow, VBase4, ColorWriteAttrib, Filename, getModelPath, NodePath, Vec4
-import OTPGlobals, OTPRender, math
+import math
+from . import OTPGlobals, OTPRender
 
 class OTPBase(ShowBase):
 

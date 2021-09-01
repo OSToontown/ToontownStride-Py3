@@ -12,6 +12,8 @@ from toontown.coghq import DistributedStageRoom, StageLayout, StageRoom
 import random
 from direct.task.Task import Task
 from direct.interval.IntervalGlobal import *
+from direct.gui import OnscreenText
+
 
 class DistributedStage(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedStage')
@@ -23,6 +25,7 @@ class DistributedStage(DistributedObject.DistributedObject):
         DistributedObject.DistributedObject.__init__(self, cr)
         self.titleColor = (1, 1, 1, 1)
         self.titleText = OnscreenText.OnscreenText('', fg=self.titleColor, shadow=(0, 0, 0, 1), font=ToontownGlobals.getSuitFont(), pos=(0, -0.5), scale=0.1, drawOrder=0, mayChange=1)
+        self.smallTitleText = OnscreenText.OnscreenText('', fg=self.titleColor, font=getSuitFont(), pos=(0.65, 0.9), scale=0.08, drawOrder=0, mayChange=1, bg=(0.5, 0.5, 0.5, 0.5), align=TextNode.ARight)
         self.titleSequence = None
         self.pendingZoneChange = 0
         return
@@ -69,6 +72,7 @@ class DistributedStage(DistributedObject.DistributedObject):
         self.floorNum = num
         bboard.post(DistributedStage.FloorNum, num)
         self.layout = StageLayout.StageLayout(self.stageId, self.floorNum, self.layoutIndex)
+        self.smallTitleText.setText(TTLocalizer.LawOfficeFloorTitle % (self.floorNum + 1))
 
     def setRoomDoIds(self, roomDoIds):
         self.roomDoIds = roomDoIds
@@ -118,8 +122,8 @@ class DistributedStage(DistributedObject.DistributedObject):
                     DistributedLevel.notify.warning('Invalid zone floor collision node: %s' % name)
                 else:
                     self.camEnterRoom(roomNum)
-                    print collEntry
-                    print
+                    print(collEntry)
+                    print()
 
         self.accept('on-floor', handleCameraRayFloorCollision)
         if bboard.has('stageRoom'):
@@ -211,7 +215,7 @@ class DistributedStage(DistributedObject.DistributedObject):
         return
 
     def warpToRoom(self, roomId):
-        for i in xrange(len(self.rooms)):
+        for i in range(len(self.rooms)):
             room = self.rooms[i]
             if room.roomId == roomId:
                 break
@@ -237,6 +241,9 @@ class DistributedStage(DistributedObject.DistributedObject):
         self.rooms = []
         for hallway in self.hallways:
             hallway.delete()
+        if self.smallTitleText:
+            self.smallTitleText.cleanup()
+            self.smallTitleText = None
 
         self.hallways = []
         self.allRooms = []

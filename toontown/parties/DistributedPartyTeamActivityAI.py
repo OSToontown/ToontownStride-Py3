@@ -1,9 +1,9 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import globalClockDelta
 
-from DistributedPartyActivityAI import DistributedPartyActivityAI
-from activityFSMs import TeamActivityAIFSM
-import PartyGlobals
+from .DistributedPartyActivityAI import DistributedPartyActivityAI
+from .activityFSMs import TeamActivityAIFSM
+from . import PartyGlobals
 
 '''
 dclass DistributedPartyTeamActivity : DistributedPartyActivity {
@@ -118,7 +118,7 @@ class DistributedPartyTeamActivityAI(DistributedPartyActivityAI):
                 
     def __areTeamsCorrect(self):
         minPlayers = self.getPlayersPerTeam()[0]
-        return all(len(self.toonIds[i]) >= minPlayers for i in xrange(2))
+        return all(len(self.toonIds[i]) >= minPlayers for i in range(2))
 
     def getDuration(self):
         raise NotImplementedError('getDuration() -- pure virtual')

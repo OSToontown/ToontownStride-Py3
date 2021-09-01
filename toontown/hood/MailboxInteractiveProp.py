@@ -10,15 +10,15 @@ class MailboxInteractiveProp(InteractiveAnimatedProp.InteractiveAnimatedProp):
     BattleCheerText = TTLocalizer.InteractivePropTrackBonusTerms[BattleTrack]
 
     ZoneToIdles = {
-        ToontownGlobals.ToontownCentral: (('tt_a_ara_ttc_mailbox_idle0', 3, 10, 'tt_a_ara_ttc_mailbox_idle0settle', 3, 10),
+        ToontownGlobals.ToonIslandCentral: (('tt_a_ara_ttc_mailbox_idle0', 3, 10, 'tt_a_ara_ttc_mailbox_idle0settle', 3, 10),
                                          ('tt_a_ara_ttc_mailbox_idleTake2', 1, 1, None, 3, 10),
                                          ('tt_a_ara_ttc_mailbox_idleLook1', 1, 1, None, 3, 10),
                                          ('tt_a_ara_ttc_mailbox_idleAwesome3', 1, 1, None, 3, 10)),
-        ToontownGlobals.DonaldsDock: (('tt_a_ara_dod_mailbox_idle0', 3, 10, 'tt_a_ara_dod_mailbox_idle0settle', 3, 10),
+        ToontownGlobals.RainbowRise: (('tt_a_ara_dod_mailbox_idle0', 3, 10, 'tt_a_ara_dod_mailbox_idle0settle', 3, 10),
                                      ('tt_a_ara_dod_mailbox_idle2', 1, 1, None, 3, 10),
                                      ('tt_a_ara_dod_mailbox_idle1', 1, 1, None, 3, 10),
                                      ('tt_a_ara_dod_mailbox_idleAwesome3', 1, 1, None, 3, 10)),
-        ToontownGlobals.DaisyGardens: (('tt_a_ara_dga_mailbox_idle0', 3, 10, 'tt_a_ara_dga_mailbox_idle0settle', 3, 10),
+        ToontownGlobals.DaisyGarden: (('tt_a_ara_dga_mailbox_idle0', 3, 10, 'tt_a_ara_dga_mailbox_idle0settle', 3, 10),
                                       ('tt_a_ara_dga_mailbox_idleTake1', 1, 1, None, 3, 10),
                                       ('tt_a_ara_dga_mailbox_idleLook2', 1, 1, None, 3, 10),
                                       ('tt_a_ara_dga_mailbox_idleAwesome3', 1, 1, None, 3, 10)),
@@ -36,33 +36,33 @@ class MailboxInteractiveProp(InteractiveAnimatedProp.InteractiveAnimatedProp):
                                           ('tt_a_ara_ddl_mailbox_idleAwesome3', 1, 1, None, 0, 0))}
 
     ZoneToIdleIntoFightAnims = {
-        ToontownGlobals.ToontownCentral: 'tt_a_ara_ttc_mailbox_idleIntoFight',
-        ToontownGlobals.DonaldsDock: 'tt_a_ara_dod_mailbox_idleIntoFight',
-        ToontownGlobals.DaisyGardens: 'tt_a_ara_dga_mailbox_idleIntoFight',
+        ToontownGlobals.ToonIslandCentral: 'tt_a_ara_ttc_mailbox_idleIntoFight',
+        ToontownGlobals.RainbowRise: 'tt_a_ara_dod_mailbox_idleIntoFight',
+        ToontownGlobals.DaisyGarden: 'tt_a_ara_dga_mailbox_idleIntoFight',
         ToontownGlobals.MinniesMelodyland: 'tt_a_ara_mml_mailbox_idleIntoFight',
         ToontownGlobals.TheBrrrgh: 'tt_a_ara_tbr_mailbox_idleIntoFight',
         ToontownGlobals.DonaldsDreamland: 'tt_a_ara_ddl_mailbox_idleIntoFight'}
 
     ZoneToVictoryAnims = {
-        ToontownGlobals.ToontownCentral: 'tt_a_ara_ttc_mailbox_victoryDance',
-        ToontownGlobals.DonaldsDock: 'tt_a_ara_dod_mailbox_victoryDance',
-        ToontownGlobals.DaisyGardens: 'tt_a_ara_dga_mailbox_victoryDance',
+        ToontownGlobals.ToonIslandCentral: 'tt_a_ara_ttc_mailbox_victoryDance',
+        ToontownGlobals.RainbowRise: 'tt_a_ara_dod_mailbox_victoryDance',
+        ToontownGlobals.DaisyGarden: 'tt_a_ara_dga_mailbox_victoryDance',
         ToontownGlobals.MinniesMelodyland: 'tt_a_ara_mml_mailbox_victoryDance',
         ToontownGlobals.TheBrrrgh: 'tt_a_ara_tbr_mailbox_victoryDance',
         ToontownGlobals.DonaldsDreamland: 'tt_a_ara_ddl_mailbox_victoryDance'}
 
     ZoneToSadAnims = {
-        ToontownGlobals.ToontownCentral: 'tt_a_ara_ttc_mailbox_fightSad',
-        ToontownGlobals.DonaldsDock: 'tt_a_ara_dod_mailbox_fightSad',
-        ToontownGlobals.DaisyGardens: 'tt_a_ara_dga_mailbox_fightSad',
+        ToontownGlobals.ToonIslandCentral: 'tt_a_ara_ttc_mailbox_fightSad',
+        ToontownGlobals.RainbowRise: 'tt_a_ara_dod_mailbox_fightSad',
+        ToontownGlobals.DaisyGarden: 'tt_a_ara_dga_mailbox_fightSad',
         ToontownGlobals.MinniesMelodyland: 'tt_a_ara_mml_mailbox_fightSad',
         ToontownGlobals.TheBrrrgh: 'tt_a_ara_tbr_mailbox_fightSad',
         ToontownGlobals.DonaldsDreamland: 'tt_a_ara_ddl_mailbox_fightSad'}
 
     ZoneToFightAnims = {
-        ToontownGlobals.ToontownCentral: ('tt_a_ara_ttc_mailbox_fightBoost', 'tt_a_ara_ttc_mailbox_fightCheer', 'tt_a_ara_ttc_mailbox_fightIdle'),
-        ToontownGlobals.DonaldsDock: ('tt_a_ara_dod_mailbox_fightBoost', 'tt_a_ara_dod_mailbox_fightCheer', 'tt_a_ara_dod_mailbox_fightIdle'),
-        ToontownGlobals.DaisyGardens: ('tt_a_ara_dga_mailbox_fightBoost', 'tt_a_ara_dga_mailbox_fightCheer', 'tt_a_ara_dga_mailbox_fightIdle'),
+        ToontownGlobals.ToonIslandCentral: ('tt_a_ara_ttc_mailbox_fightBoost', 'tt_a_ara_ttc_mailbox_fightCheer', 'tt_a_ara_ttc_mailbox_fightIdle'),
+        ToontownGlobals.RainbowRise: ('tt_a_ara_dod_mailbox_fightBoost', 'tt_a_ara_dod_mailbox_fightCheer', 'tt_a_ara_dod_mailbox_fightIdle'),
+        ToontownGlobals.DaisyGarden: ('tt_a_ara_dga_mailbox_fightBoost', 'tt_a_ara_dga_mailbox_fightCheer', 'tt_a_ara_dga_mailbox_fightIdle'),
         ToontownGlobals.MinniesMelodyland: ('tt_a_ara_mml_mailbox_fightBoost', 'tt_a_ara_mml_mailbox_fightCheer', 'tt_a_ara_mml_mailbox_fightIdle'),
         ToontownGlobals.TheBrrrgh: ('tt_a_ara_tbr_mailbox_fightBoost', 'tt_a_ara_tbr_mailbox_fightCheer', 'tt_a_ara_tbr_mailbox_fightIdle'),
         ToontownGlobals.DonaldsDreamland: ('tt_a_ara_ddl_mailbox_fightBoost', 'tt_a_ara_ddl_mailbox_fightCheer', 'tt_a_ara_ddl_mailbox_fightIdle')}

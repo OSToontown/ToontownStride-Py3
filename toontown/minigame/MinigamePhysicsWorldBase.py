@@ -89,7 +89,7 @@ class MinigamePhysicsWorldBase:
 
     def setupSimulation(self):
         if self.canRender:
-            for count in xrange(self.jointMarkerCount):
+            for count in range(self.jointMarkerCount):
                 testMarker = render.attachNewNode('Joint Marker')
                 ballmodel = loader.loadModel('phase_3/models/misc/sphere')
                 ballmodel.reparentTo(testMarker)
@@ -126,7 +126,7 @@ class MinigamePhysicsWorldBase:
 
     def postStep(self):
         if self.showContacts and self.canRender:
-            for count in xrange(self.jointMarkerCount):
+            for count in range(self.jointMarkerCount):
                 pandaNodePathGeom = self.jointMarkers[count]
                 if count < self.colCount:
                     pandaNodePathGeom.setPos(self.space.getContactData(count * 3 + 0), self.space.getContactData(count * 3 + 1), self.space.getContactData(count * 3 + 2))
@@ -134,7 +134,8 @@ class MinigamePhysicsWorldBase:
                     pandaNodePathGeom.setPos(0.0, 0.0, -100.0)
 
     def simulate(self):
-        self.colCount = self.space.autoCollide()
+        self.space.autoCollide()
+        self.colCount = 0
         if self.maxColCount < self.colCount:
             self.maxColCount = self.colCount
             self.notify.debug('New Max Collision Count %s' % self.maxColCount)

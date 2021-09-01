@@ -9,7 +9,7 @@ from otp.nametag.NametagGroup import NametagGroup
 from otp.nametag.NametagConstants import *
 from toontown.battle import BattleParticles, BattleProps
 from toontown.toonbase import TTLocalizer, ToontownGlobals
-import Suit, SuitDNA, SuitHealthBar
+from . import Suit, SuitDNA, SuitHealthBar
 import types, random
 
 GenericModel = 'phase_9/models/char/bossCog'
@@ -471,7 +471,7 @@ class BossCog(Avatar.Avatar):
             self.raised = 1
         elif anim == 'Fb_fall':
             ival = Parallel(ActorInterval(self, 'Fb_fall'), Sequence(SoundInterval(self.reelSfx, node=self), SoundInterval(self.deathSfx)))
-        elif isinstance(anim, types.StringType):
+        elif isinstance(anim, bytes):
             ival = ActorInterval(self, anim)
         else:
             ival = anim

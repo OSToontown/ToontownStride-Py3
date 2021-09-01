@@ -34,7 +34,7 @@ class HoodMgr(DirectObject.DirectObject):
         [30.488, -101.5, 2.53, -179.23, 0, 0]
     )
     dropPoints = {
-        ToontownGlobals.DonaldsDock: (
+        ToontownGlobals.RainbowRise: (
             [-28, -2.5, 5.8, 120, 0, 0],
             [-22, 13, 5.8, 155.6, 0, 0],
             [67, 47, 5.7, 134.7, 0, 0],
@@ -47,7 +47,7 @@ class HoodMgr(DirectObject.DirectObject):
             [-2, -79, 5.7, 57.4, 0, 0],
             [-38, -78, 5.7, 9.1, 0, 0]
         ),
-        ToontownGlobals.ToontownCentral: (
+        ToontownGlobals.ToonIslandCentral: (
             [-60, -8, 1.3, -90, 0, 0],
             [-66, -9, 1.3, -274, 0, 0],
             [17, -28, 4.1, -44, 0, 0],
@@ -91,7 +91,7 @@ class HoodMgr(DirectObject.DirectObject):
             [56, 72, 6.5, 138.2, 0, 0],
             [-41, 47, 6.5, -98.9, 0, 0]
         ),
-        ToontownGlobals.DaisyGardens: (
+        ToontownGlobals.DaisyGarden: (
             [0, 0, 0, -10.5, 0, 0],
             [76, 35, 1.1, -30.2, 0, 0],
             [97, 106, 0, 51.4, 0, 0],
@@ -173,11 +173,11 @@ class HoodMgr(DirectObject.DirectObject):
     }
     DefaultDropPoint = [0, 0, 0, 0, 0, 0]
     hoodName2Id = {
-        'dd': ToontownGlobals.DonaldsDock,
-        'tt': ToontownGlobals.ToontownCentral,
+        'dd': ToontownGlobals.RainbowRise,
+        'tt': ToontownGlobals.ToonIslandCentral,
         'br': ToontownGlobals.TheBrrrgh,
         'mm': ToontownGlobals.MinniesMelodyland,
-        'dg': ToontownGlobals.DaisyGardens,
+        'dg': ToontownGlobals.DaisyGarden,
         'oz': ToontownGlobals.OutdoorZone,
         'ff': ToontownGlobals.FunnyFarm,
         'gs': ToontownGlobals.GoofySpeedway,
@@ -189,12 +189,12 @@ class HoodMgr(DirectObject.DirectObject):
         'gz': ToontownGlobals.GolfZone
     }
     hoodId2Name = {
-        ToontownGlobals.DonaldsDock: 'dd',
-        ToontownGlobals.ToontownCentral: 'tt',
+        ToontownGlobals.RainbowRise: 'dd',
+        ToontownGlobals.ToonIslandCentral: 'tt',
         ToontownGlobals.Tutorial: 'tt',
         ToontownGlobals.TheBrrrgh: 'br',
         ToontownGlobals.MinniesMelodyland: 'mm',
-        ToontownGlobals.DaisyGardens: 'dg',
+        ToontownGlobals.DaisyGarden: 'dg',
         ToontownGlobals.OutdoorZone: 'oz',
         ToontownGlobals.FunnyFarm: 'ff',
         ToontownGlobals.GoofySpeedway: 'gs',
@@ -249,7 +249,7 @@ class HoodMgr(DirectObject.DirectObject):
         tunnelOriginList = []
         for i in nodeList:
             linkTunnelNPC = i.findAllMatches('**/linktunnel*')
-            for p in xrange(linkTunnelNPC.getNumPaths()):
+            for p in range(linkTunnelNPC.getNumPaths()):
                 linkTunnel = linkTunnelNPC.getPath(p)
                 name = linkTunnel.getName()
                 nameParts = name.split('_')

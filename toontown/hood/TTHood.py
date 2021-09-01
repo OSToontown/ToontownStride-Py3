@@ -7,7 +7,7 @@ from toontown.hood.ToonHood import ToonHood
 class TTHood(ToonHood):
     notify = directNotify.newCategory('TTHood')
 
-    ID = ToontownGlobals.ToontownCentral
+    ID = ToontownGlobals.ToonIslandCentral
     TOWNLOADER_CLASS = TTTownLoader
     SAFEZONELOADER_CLASS = TTSafeZoneLoader
     STORAGE_DNA = 'phase_4/dna/storage_TT.pdna'
@@ -35,6 +35,6 @@ def spooky():
         1.5, Vec4(0.55, 0.55, 0.65, 1), startColorScale=Vec4(1, 1, 1, 1),
         blendType='easeInOut')
     fadeOut.start()
-    spookySfx = base.loadSfx('phase_4/audio/sfx/spooky.ogg')
+    spookySfx = base.loader.loadSfx('phase_4/audio/sfx/spooky.ogg')
     spookySfx.play()
     return 'Activating the spooky effect...'

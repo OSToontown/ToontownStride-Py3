@@ -1,4 +1,4 @@
-import TTLocalizer
+from . import TTLocalizer
 from otp.otpbase.OTPGlobals import *
 from direct.showbase.PythonUtil import Enum, invertDict
 from pandac.PandaModules import BitMask32, Vec4
@@ -142,40 +142,40 @@ def getSuitFont():
     return SuitFont
 
 
-DonaldsDock = 1000
-ToontownCentral = 2000
+RainbowRise = 1000
+ToonIslandCentral = 2000
 TheBrrrgh = 3000
 MinniesMelodyland = 4000
-DaisyGardens = 5000
+DaisyGarden = 5000
 OutdoorZone = 6000
 FunnyFarm = 7000
 GoofySpeedway = 8000
 DonaldsDreamland = 9000
-BarnacleBoulevard = 1100
-SeaweedStreet = 1200
-LighthouseLane = 1300
-SillyStreet = 2100
-LoopyLane = 2200
+CoralCourt = 1100
+OceanOverpass = 1200
+PiratePlace = 1300
+BeachballBoulevard = 2100
+AlohaAvenue = 2200
 PunchlinePlace = 2300
 WalrusWay = 3100
 SleetStreet = 3200
 PolarPlace = 3300
-AltoAvenue = 4100
-BaritoneBoulevard = 4200
-TenorTerrace = 4300
+DesertDrive = 4100
+TumbleweedTerrace = 4200
+CactusCourt = 4300
 ElmStreet = 5100
 MapleStreet = 5200
 OakStreet = 5300
-LullabyLane = 9100
-PajamaPlace = 9200
+CandyClose = 9100
+PeppermintPlace = 9200
 BedtimeBoulevard = 9300
 ToonHall = 2513
-HoodHierarchy = {ToontownCentral: (SillyStreet, LoopyLane, PunchlinePlace),
- DonaldsDock: (BarnacleBoulevard, SeaweedStreet, LighthouseLane),
+HoodHierarchy = {ToonIslandCentral: (BeachballBoulevard, AlohaAvenue, PunchlinePlace),
+ RainbowRise: (CoralCourt, OceanOverpass, PiratePlace),
  TheBrrrgh: (WalrusWay, SleetStreet, PolarPlace),
- MinniesMelodyland: (AltoAvenue, BaritoneBoulevard, TenorTerrace),
- DaisyGardens: (ElmStreet, MapleStreet, OakStreet),
- DonaldsDreamland: (LullabyLane, PajamaPlace, BedtimeBoulevard),
+ MinniesMelodyland: (DesertDrive, TumbleweedTerrace, CactusCourt),
+ DaisyGarden: (ElmStreet, MapleStreet, OakStreet),
+ DonaldsDreamland: (CandyClose, PeppermintPlace, BedtimeBoulevard),
  GoofySpeedway: ()}
 BossbotHQ = 10000
 BossbotLobby = 10100
@@ -186,7 +186,7 @@ SellbotHQ = 11000
 SellbotLobby = 11100
 SellbotFactoryExt = 11200
 SellbotFactoryInt = 11500
-SellbotMegaCorpInt = 11600
+SellbotFatalInt = 11600
 CashbotHQ = 12000
 CashbotLobby = 12100
 CashbotMintIntA = 12500
@@ -212,10 +212,10 @@ cogDept2index = {'c': 0,
  'm': 2,
  's': 3}
 cogIndex2dept = invertDict(cogDept2index)
-HQToSafezone = {SellbotHQ: DaisyGardens,
+HQToSafezone = {SellbotHQ: DaisyGarden,
  CashbotHQ: DonaldsDreamland,
  LawbotHQ: TheBrrrgh,
- BossbotHQ: DonaldsDock}
+ BossbotHQ: RainbowRise}
 CogDeptNames = [TTLocalizer.Bossbot,
  TTLocalizer.Lawbot,
  TTLocalizer.Cashbot,
@@ -290,15 +290,15 @@ FT_Leg = 'leg'
 FT_Arm = 'arm'
 FT_Torso = 'torso'
 factoryId2factoryType = {SellbotFactoryInt: FT_FullSuit,
- SellbotMegaCorpInt: FT_FullSuit,
+ SellbotFatalInt: FT_FullSuit,
  LawbotOfficeInt: FT_FullSuit}
 StreetNames = TTLocalizer.GlobalStreetNames
-StreetBranchZones = StreetNames.keys()
-Hoods = (DonaldsDock,
- ToontownCentral,
+StreetBranchZones = list(StreetNames.keys())
+Hoods = (RainbowRise,
+ ToonIslandCentral,
  TheBrrrgh,
  MinniesMelodyland,
- DaisyGardens,
+ DaisyGarden,
  OutdoorZone,
  FunnyFarm,
  GoofySpeedway,
@@ -308,11 +308,11 @@ Hoods = (DonaldsDock,
  CashbotHQ,
  LawbotHQ,
  GolfZone)
-HoodsForTeleportAll = (DonaldsDock,
- ToontownCentral,
+HoodsForTeleportAll = (RainbowRise,
+ ToonIslandCentral,
  TheBrrrgh,
  MinniesMelodyland,
- DaisyGardens,
+ DaisyGarden,
  OutdoorZone,
  GoofySpeedway,
  DonaldsDreamland,
@@ -327,7 +327,7 @@ BingoCardNames = {'normal': 0,
 'threeway': 3,
 'blockout': 4}
 NoPreviousGameId = 0
-RaceGameId = 1
+#RaceGameId = 1
 CannonGameId = 2
 TagGameId = 3
 PatternGameId = 4
@@ -341,7 +341,7 @@ VineGameId = 11
 IceGameId = 12
 CogThiefGameId = 13
 TwoDGameId = 14
-MinigameNames = {'race': RaceGameId,
+MinigameNames = {#'race': RaceGameId,
  'cannon': CannonGameId,
  'tag': TagGameId,
  'pattern': PatternGameId,
@@ -359,7 +359,7 @@ MinigameNames = {'race': RaceGameId,
  'thief': CogThiefGameId,
  '2d': TwoDGameId}
 MinigameTemplateId = -1
-MinigameIDs = (RaceGameId,
+MinigameIDs = (#RaceGameId,
  CannonGameId,
  TagGameId,
  PatternGameId,
@@ -376,18 +376,18 @@ MinigameIDs = (RaceGameId,
 MinigamePlayerMatrix = {
     1: (CannonGameId, MazeGameId, TugOfWarGameId, RingGameId, VineGameId, CogThiefGameId, TwoDGameId, DivingGameId, CatchGameId, TargetGameId),
     2: (CannonGameId, MazeGameId, TugOfWarGameId, PatternGameId, TagGameId, RingGameId, VineGameId, IceGameId, CogThiefGameId, TwoDGameId, DivingGameId, CatchGameId, TargetGameId),
-    3: (CannonGameId, MazeGameId, TugOfWarGameId, PatternGameId, RaceGameId, TagGameId, VineGameId, RingGameId, IceGameId, CogThiefGameId, TwoDGameId, DivingGameId, CatchGameId, TargetGameId),
-    4: (CannonGameId, MazeGameId, TugOfWarGameId, PatternGameId, RaceGameId, TagGameId, VineGameId, RingGameId, IceGameId, CogThiefGameId, TwoDGameId, DivingGameId, CatchGameId, TargetGameId),
+    3: (CannonGameId, MazeGameId, TugOfWarGameId, PatternGameId, TagGameId, VineGameId, RingGameId, IceGameId, CogThiefGameId, TwoDGameId, DivingGameId, CatchGameId, TargetGameId),
+    4: (CannonGameId, MazeGameId, TugOfWarGameId, PatternGameId, TagGameId, VineGameId, RingGameId, IceGameId, CogThiefGameId, TwoDGameId, DivingGameId, CatchGameId, TargetGameId),
 }
 KeyboardTimeout = 300
 phaseMap = {Tutorial: 4,
- ToontownCentral: 4,
+ ToonIslandCentral: 4,
  MyEstate: 5.5,
- DonaldsDock: 6,
+ RainbowRise: 6,
  MinniesMelodyland: 6,
  GoofySpeedway: 6,
  TheBrrrgh: 8,
- DaisyGardens: 8,
+ DaisyGarden: 8,
  FunnyFarm: 8,
  DonaldsDreamland: 8,
  OutdoorZone: 6,
@@ -397,12 +397,12 @@ phaseMap = {Tutorial: 4,
  LawbotHQ: 11,
  GolfZone: 6,
  PartyHood: 13}
-streetPhaseMap = {ToontownCentral: 5,
- DonaldsDock: 6,
+streetPhaseMap = {ToonIslandCentral: 5,
+ RainbowRise: 6,
  MinniesMelodyland: 6,
  GoofySpeedway: 6,
  TheBrrrgh: 8,
- DaisyGardens: 8,
+ DaisyGarden: 8,
  FunnyFarm: 8,
  DonaldsDreamland: 8,
  OutdoorZone: 8,
@@ -412,12 +412,12 @@ streetPhaseMap = {ToontownCentral: 5,
  LawbotHQ: 11,
  PartyHood: 13}
 dnaMap = {Tutorial: 'toontown_central',
- ToontownCentral: 'toontown_central',
- DonaldsDock: 'donalds_dock',
+ ToonIslandCentral: 'toontown_central',
+ RainbowRise: 'donalds_dock',
  MinniesMelodyland: 'minnies_melody_land',
  GoofySpeedway: 'goofy_speedway',
  TheBrrrgh: 'the_burrrgh',
- DaisyGardens: 'daisys_garden',
+ DaisyGarden: 'daisys_garden',
  FunnyFarm: 'not done yet',
  DonaldsDreamland: 'donalds_dreamland',
  OutdoorZone: 'outdoor_zone',
@@ -426,11 +426,11 @@ dnaMap = {Tutorial: 'toontown_central',
  CashbotHQ: 'cog_hq_cashbot',
  LawbotHQ: 'cog_hq_lawbot',
  GolfZone: 'golf_zone'}
-hoodNameMap = {DonaldsDock: TTLocalizer.DonaldsDock,
- ToontownCentral: TTLocalizer.ToontownCentral,
+hoodNameMap = {RainbowRise: TTLocalizer.RainbowRise,
+ ToonIslandCentral: TTLocalizer.ToonIslandCentral,
  TheBrrrgh: TTLocalizer.TheBrrrgh,
  MinniesMelodyland: TTLocalizer.MinniesMelodyland,
- DaisyGardens: TTLocalizer.DaisyGardens,
+ DaisyGarden: TTLocalizer.DaisyGarden,
  OutdoorZone: TTLocalizer.OutdoorZone,
  FunnyFarm: TTLocalizer.FunnyFarm,
  GoofySpeedway: TTLocalizer.GoofySpeedway,
@@ -445,12 +445,12 @@ hoodNameMap = {DonaldsDock: TTLocalizer.DonaldsDock,
  PartyHood: TTLocalizer.PartyHood}
 safeZoneCountMap = {MyEstate: 8,
  Tutorial: 6,
- ToontownCentral: 6,
- DonaldsDock: 10,
+ ToonIslandCentral: 6,
+ RainbowRise: 10,
  MinniesMelodyland: 5,
  GoofySpeedway: 500,
  TheBrrrgh: 8,
- DaisyGardens: 9,
+ DaisyGarden: 9,
  FunnyFarm: 500,
  DonaldsDreamland: 5,
  OutdoorZone: 500,
@@ -458,24 +458,24 @@ safeZoneCountMap = {MyEstate: 8,
  PartyHood: 500}
 townCountMap = {MyEstate: 8,
  Tutorial: 40,
- ToontownCentral: 37,
- DonaldsDock: 40,
+ ToonIslandCentral: 37,
+ RainbowRise: 40,
  MinniesMelodyland: 40,
  GoofySpeedway: 40,
  TheBrrrgh: 40,
- DaisyGardens: 40,
+ DaisyGarden: 40,
  FunnyFarm: 40,
  DonaldsDreamland: 40,
  OutdoorZone: 40,
  PartyHood: 20}
 hoodCountMap = {MyEstate: 2,
  Tutorial: 2,
- ToontownCentral: 2,
- DonaldsDock: 2,
+ ToonIslandCentral: 2,
+ RainbowRise: 2,
  MinniesMelodyland: 2,
  GoofySpeedway: 2,
  TheBrrrgh: 2,
- DaisyGardens: 2,
+ DaisyGarden: 2,
  FunnyFarm: 2,
  DonaldsDreamland: 2,
  OutdoorZone: 2,
@@ -1678,7 +1678,7 @@ TF_SUCCESS = 8
 
 GROUP_ZONES = [11000, 11100, 11200, 12000, 12100, 13000, 13100, 13200, 10000, 10100]
 
-TOONUP_PULSE_ZONES = [ToontownCentral, DonaldsDock, DaisyGardens, MinniesMelodyland, TheBrrrgh, DonaldsDreamland]
+TOONUP_PULSE_ZONES = [ToonIslandCentral, RainbowRise, DaisyGarden, MinniesMelodyland, TheBrrrgh, DonaldsDreamland]
 TOONUP_FREQUENCY = 30
 
 TV_NOT_OWNER = 0
@@ -1692,9 +1692,9 @@ COLOR_VALUE_MAX = 0.8
 
 TELEPORT_BUTTON_DEFAULT_COST = 50
 TELEPORT_BUTTON_COSTS = {
- ToontownCentral: 5,
- DonaldsDock: 15,
- DaisyGardens: 30,
+ ToonIslandCentral: 5,
+ RainbowRise: 15,
+ DaisyGarden: 30,
  MinniesMelodyland: 45,
  TheBrrrgh: 60,
  DonaldsDreamland: 75

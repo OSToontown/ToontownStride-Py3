@@ -1,5 +1,5 @@
 from toontown.toonbase import ToontownGlobals
-import LaffRestockGlobals, DistributedNPCToonBaseAI
+from . import LaffRestockGlobals, DistributedNPCToonBaseAI
 
 class DistributedNPCLaffRestockAI(DistributedNPCToonBaseAI.DistributedNPCToonBaseAI):
 

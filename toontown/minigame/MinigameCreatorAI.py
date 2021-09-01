@@ -2,22 +2,22 @@ import copy
 import random
 import time
 
-import DistributedMinigameAI
-import DistributedCannonGameAI
-import DistributedCatchGameAI
-import DistributedCogThiefGameAI
-import DistributedDivingGameAI
-import DistributedIceGameAI
-import DistributedMazeGameAI
-import DistributedMinigameTemplateAI
-import DistributedPatternGameAI
-import DistributedRaceGameAI
-import DistributedRingGameAI
-import DistributedTagGameAI
-import DistributedTargetGameAI
-import DistributedTugOfWarGameAI
-import DistributedTwoDGameAI
-import DistributedVineGameAI
+from . import DistributedMinigameAI
+from . import DistributedCannonGameAI
+from . import DistributedCatchGameAI
+from . import DistributedCogThiefGameAI
+from . import DistributedDivingGameAI
+from . import DistributedIceGameAI
+from . import DistributedMazeGameAI
+from . import DistributedMinigameTemplateAI
+from . import DistributedPatternGameAI
+from . import DistributedRaceGameAI
+from . import DistributedRingGameAI
+from . import DistributedTagGameAI
+from . import DistributedTargetGameAI
+from . import DistributedTugOfWarGameAI
+from . import DistributedTwoDGameAI
+from . import DistributedVineGameAI
 from otp.ai.MagicWordGlobal import *
 from toontown.toonbase import ToontownGlobals
 from toontown.uberdog import TopToonsGlobals
@@ -54,7 +54,7 @@ def createMinigame(air, playerArray, trolleyZone, minigameZone=None,
                 randomList.remove(previousGameId)
         mgId = random.choice(randomList)
     mgCtors = {
-        ToontownGlobals.RaceGameId: DistributedRaceGameAI.DistributedRaceGameAI,
+        #ToontownGlobals.RaceGameId: DistributedRaceGameAI.DistributedRaceGameAI, # Race Game is disabled for now due to an unknown bug.
         ToontownGlobals.CannonGameId: DistributedCannonGameAI.DistributedCannonGameAI,
         ToontownGlobals.TagGameId: DistributedTagGameAI.DistributedTagGameAI,
         ToontownGlobals.PatternGameId: DistributedPatternGameAI.DistributedPatternGameAI,
@@ -73,7 +73,7 @@ def createMinigame(air, playerArray, trolleyZone, minigameZone=None,
     try:
         mg = mgCtors[mgId](air, mgId)
     except KeyError:
-        raise Exception, 'unknown minigame ID: %s' % mgId
+        raise Exception('unknown minigame ID: %s' % mgId)
     mg.setExpectedAvatars(playerArray)
     mg.setNewbieIds(newbieIds)
     mg.setTrolleyZone(trolleyZone)
@@ -160,7 +160,7 @@ def minigame(command, arg0=None):
         RequestMinigame[invoker.doId] = request[:3] + (arg0,) + request[4:]
         return 'Stored your request for the minigame safezone: ' + str(arg0)
     if command == 'abort':
-        for do in simbase.air.doId2do.values():
+        for do in list(simbase.air.doId2do.values()):
             if not isinstance(do, DistributedMinigameAI.DistributedMinigameAI):
                 continue
             if invoker.doId not in do.avIdList:

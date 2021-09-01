@@ -8,8 +8,8 @@ from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import ToontownBattleGlobals
 from toontown.battle import BattleExperience
 from toontown.battle import BattleBase
-import BossCog
-import SuitDNA
+from . import BossCog
+from . import SuitDNA
 from toontown.coghq import CogDisguiseGlobals
 from direct.showbase import Transitions
 from toontown.hood import ZoneUtil
@@ -24,6 +24,7 @@ from direct.showbase import PythonUtil
 import random
 from otp.nametag import NametagGlobals
 from otp.nametag.NametagConstants import *
+from toontown.coghq import BossHealthBar
 
 class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBossCog')
@@ -67,6 +68,7 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
 
     def announceGenerate(self):
         DistributedAvatar.DistributedAvatar.announceGenerate(self)
+        self.bossHealthBar = BossHealthBar.BossHealthBar(self.style.dept)
         self.prevCogSuitLevel = localAvatar.getCogLevels()[CogDisguiseGlobals.dept2deptIndex(self.style.dept)]
         nearBubble = CollisionSphere(0, 0, 0, 50)
         nearBubble.setTangible(0)
@@ -137,6 +139,7 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
         self.cleanupFlash()
         self.disableLocalToonSimpleCollisions()
         self.ignoreAll()
+        self.bossHealthBar.cleanUp()
         return
 
     def delete(self):
@@ -176,7 +179,7 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
         self.activeIntervals[name] = interval
 
     def cleanupIntervals(self):
-        for interval in self.activeIntervals.values():
+        for interval in list(self.activeIntervals.values()):
             interval.finish()
             DelayDelete.cleanupDelayDeletes(interval)
 
@@ -487,7 +490,7 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
         self.cqueue.sortEntries()
         numEntries = self.cqueue.getNumEntries()
         if numEntries != 0:
-            for i in xrange(self.cqueue.getNumEntries() - 1, -1, -1):
+            for i in range(self.cqueue.getNumEntries() - 1, -1, -1):
                 entry = self.cqueue.getEntry(i)
                 solid = entry.getFrom()
                 if solid == self.ray1:
@@ -575,10 +578,10 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
         self.rightDoor = self.elevatorModel.find('**/right-door')
         if self.rightDoor.isEmpty():
             self.rightDoor = self.elevatorModel.find('**/right_door')
-        self.openSfx = base.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_sliding.ogg')
-        self.finalOpenSfx = base.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_final.ogg')
-        self.closeSfx = base.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_sliding.ogg')
-        self.finalCloseSfx = base.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_final.ogg')
+        self.openSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_sliding.ogg')
+        self.finalOpenSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_final.ogg')
+        self.closeSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_sliding.ogg')
+        self.finalCloseSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_final.ogg')
         self.openDoors = ElevatorUtils.getOpenInterval(self, self.leftDoor, self.rightDoor, self.openSfx, self.finalOpenSfx, self.elevatorType)
         self.closeDoors = ElevatorUtils.getCloseInterval(self, self.leftDoor, self.rightDoor, self.closeSfx, self.finalCloseSfx, self.elevatorType)
         self.closeDoors.start()
@@ -648,7 +651,7 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
     def toonsToBattlePosition(self, toonIds, battleNode):
         points = BattleBase.BattleBase.toonPoints[len(toonIds) - 1]
         self.notify.debug('toonsToBattlePosition: points = %s' % points[0][0])
-        for i in xrange(len(toonIds)):
+        for i in range(len(toonIds)):
             toon = base.cr.doId2do.get(toonIds[i])
             if toon:
                 toon.reparentTo(render)
@@ -854,7 +857,7 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
         self.notify.debug('backupToonsToBattlePosition:')
         ival = Parallel()
         points = BattleBase.BattleBase.toonPoints[len(toonIds) - 1]
-        for i in xrange(len(toonIds)):
+        for i in range(len(toonIds)):
             toon = base.cr.doId2do.get(toonIds[i])
             if toon:
                 pos, h = points[i]
@@ -906,7 +909,7 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
             if not self.twoFaced:
                 neutral = 'Ff_neutral'
             gearTrack = Parallel()
-            for i in xrange(4):
+            for i in range(4):
                 node = gearRoot.attachNewNode(str(i))
                 node.hide()
                 node.setPos(0, 5.85, 4.0)
@@ -934,11 +937,11 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
             self.zapLocalToon(ToontownGlobals.BossCogAreaAttack)
 
     def loadEnvironment(self):
-        self.elevatorMusic = base.loadMusic('phase_7/audio/bgm/tt_elevator.ogg')
-        self.stingMusic = base.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
-        self.battleOneMusic = base.loadMusic('phase_3.5/audio/bgm/encntr_general_bg.ogg')
-        self.battleThreeMusic = base.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
-        self.epilogueMusic = base.loadMusic('phase_9/audio/bgm/encntr_hall_of_fame.ogg')
+        self.elevatorMusic = base.loader.loadMusic('phase_7/audio/bgm/tt_elevator.ogg')
+        self.stingMusic = base.loader.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
+        self.battleOneMusic = base.loader.loadMusic('phase_3.5/audio/bgm/encntr_general_bg.ogg')
+        self.battleThreeMusic = base.loader.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
+        self.epilogueMusic = base.loader.loadMusic('phase_9/audio/bgm/encntr_hall_of_fame.ogg')
 
     def unloadEnvironment(self):
         pass
@@ -1111,7 +1114,7 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
         pass
 
     def setToonsToNeutral(self, toonIds):
-        for i in xrange(len(toonIds)):
+        for i in range(len(toonIds)):
             toon = base.cr.doId2do.get(toonIds[i])
             if toon:
                 if toon.isDisguised:

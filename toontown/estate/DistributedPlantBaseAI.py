@@ -1,6 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
 from toontown.estate.DistributedLawnDecorAI import DistributedLawnDecorAI
-import GardenGlobals
+from . import GardenGlobals
 
 class DistributedPlantBaseAI(DistributedLawnDecorAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPlantBaseAI')

@@ -15,7 +15,7 @@ from toontown.hood import Place
 from toontown.pets import PetTutorial
 from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs, TLNull
 from toontown.safezone import SZUtil
-import HouseGlobals
+from . import HouseGlobals
 
 class Estate(Place.Place):
     notify = DirectNotifyGlobal.directNotify.newCategory('Estate')

@@ -15,9 +15,8 @@ from sys import platform
 import sys
 import tempfile
 import time
-
-import ToontownGlobals
-import ToontownLoader
+from . import ToontownGlobals
+from . import ToontownLoader
 from otp.otpbase import OTPBase
 from otp.otpbase import OTPGlobals
 from otp.nametag.ChatBalloon import ChatBalloon
@@ -222,7 +221,7 @@ class ToonBase(OTPBase.OTPBase):
         self.graphicsEngine.renderFrame()
         self.screenshot(namePrefix=namePrefix, imageComment=ctext + ' ' + self.screenshotStr)
         self.lastScreenShotTime = globalClock.getRealTime()
-        self.snapshotSfx = base.loadSfx('phase_4/audio/sfx/Photo_shutter.ogg')
+        self.snapshotSfx = base.loader.loadSfx('phase_4/audio/sfx/Photo_shutter.ogg')
         base.playSfx(self.snapshotSfx)
         if coordOnScreen:
             if strTextLabel is not None:
